@@ -1,0 +1,61 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var React = tslib_1.__importStar(require("react"));
+var hoist_non_react_statics_1 = tslib_1.__importDefault(require("hoist-non-react-statics"));
+var parser_1 = require("./parser");
+var Mutation_1 = tslib_1.__importDefault(require("./Mutation"));
+var hoc_utils_1 = require("./hoc-utils");
+function withMutation(document, operationOptions) {
+    if (operationOptions === void 0) { operationOptions = {}; }
+    var operation = parser_1.parser(document);
+    var _a = operationOptions.options, options = _a === void 0 ? hoc_utils_1.defaultMapPropsToOptions : _a, _b = operationOptions.alias, alias = _b === void 0 ? 'Apollo' : _b;
+    var mapPropsToOptions = options;
+    if (typeof mapPropsToOptions !== 'function')
+        mapPropsToOptions = function () { return options; };
+    return function (WrappedComponent) {
+        var graphQLDisplayName = alias + "(" + hoc_utils_1.getDisplayName(WrappedComponent) + ")";
+        var GraphQL = (function (_super) {
+            tslib_1.__extends(GraphQL, _super);
+            function GraphQL() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            GraphQL.prototype.render = function () {
+                var props = this.props;
+                var opts = mapPropsToOptions(props);
+                if (operationOptions.withRef) {
+                    this.withRef = true;
+                    props = Object.assign({}, props, {
+                        ref: this.setWrappedInstance,
+                    });
+                }
+                if (!opts.variables && operation.variables.length > 0) {
+                    opts.variables = hoc_utils_1.calculateVariablesFromProps(operation, props);
+                }
+                return (React.createElement(Mutation_1.default, tslib_1.__assign({}, opts, { mutation: document, ignoreResults: true }), function (mutate, _a) {
+                    var _b, _c;
+                    var data = _a.data, r = tslib_1.__rest(_a, ["data"]);
+                    var result = Object.assign(r, data || {});
+                    var name = operationOptions.name || 'mutate';
+                    var resultName = operationOptions.name ? name + "Result" : 'result';
+                    var childProps = (_b = {}, _b[name] = mutate, _b[resultName] = result, _b);
+                    if (operationOptions.props) {
+                        var newResult = (_c = {},
+                            _c[name] = mutate,
+                            _c[resultName] = result,
+                            _c.ownProps = props,
+                            _c);
+                        childProps = operationOptions.props(newResult);
+                    }
+                    return (React.createElement(WrappedComponent, tslib_1.__assign({}, props, childProps)));
+                }));
+            };
+            GraphQL.displayName = graphQLDisplayName;
+            GraphQL.WrappedComponent = WrappedComponent;
+            return GraphQL;
+        }(hoc_utils_1.GraphQLBase));
+        return hoist_non_react_statics_1.default(GraphQL, WrappedComponent, {});
+    };
+}
+exports.withMutation = withMutation;
+//# sourceMappingURL=mutation-hoc.js.map
