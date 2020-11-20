@@ -1,0 +1,6 @@
+{
+  "admin.app.returns": {
+    "component": "ReturnsAdmin",
+    "path": "/admin/app/returns/requests"
+  }
+}

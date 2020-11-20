@@ -1,0 +1,19 @@
+mutation AddRefund($refund: RefundInput!) {
+    addRefund(refund: $refund) {
+        id
+        orderId
+        userId
+        name
+        email
+        phoneNumber
+        country
+        locality
+        address
+        totalPrice
+        paymentMethod
+        refundedAmount
+        iban
+        status
+        dateSubmitted
+    }
+}

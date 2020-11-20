@@ -1,0 +1,11 @@
+mutation AddComment($comment: CommentInput!) {
+    addComment(comment: $comment) {
+        id
+        refundId
+        status
+        comment
+        visibleForCustomer
+        submittedBy
+        dateSubmitted
+    }
+}

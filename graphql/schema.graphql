@@ -1,0 +1,141 @@
+type Refund {
+  id: ID!
+  userId: String!
+  orderId: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  country: String!
+  locality: String!
+  address: String!
+  totalPrice: Float!
+  paymentMethod: String!
+  refundedAmount: Float!
+  iban: String
+  status: String!
+  dateSubmitted: String!
+  products: [Product]
+  historyStatus: [StatusHistory]
+  comments: [Comment]
+}
+
+type Product {
+  id: ID!
+  refundId: String!
+  skuId: String!
+  skuName: String!
+  unitPrice: Float!
+  quantity: Int!
+  totalPrice: Float!
+  goodProducts: Int
+  status: String!
+}
+
+type StatusHistory {
+  id: ID!
+  refundId: String!
+  status: String!
+  submittedBy: String!
+  dateSubmitted: String!
+}
+
+type Comment {
+  id: ID!
+  refundId: String!
+  status: String!
+  comment: String!
+  visibleForCustomer: Boolean
+  submittedBy: String!
+  dateSubmitted: String!
+}
+
+type RefundsSettings {
+  maxDays: Int!
+  excludedCategories: String
+  termsUrl: String
+}
+
+type RefundsResults {
+  data: [Refund]
+  range: Range
+}
+
+type UserRefunds {
+  data: [Refund]
+}
+
+type Range {
+  total: Int
+  from: Int
+  to: Int
+}
+
+input RefundInput {
+  id: ID
+  userId: String!
+  orderId: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  country: String!
+  locality: String!
+  address: String!
+  totalPrice: Float!
+  paymentMethod: String!
+  refundedAmount: Float!
+  iban: String
+  status: String!
+  dateSubmitted: String!
+}
+
+input ProductInput {
+  id: ID
+  refundId: String!
+  skuId: String!
+  skuName: String!
+  unitPrice: Float!
+  quantity: Int!
+  totalPrice: Float!
+  goodProducts: Int
+  status: String!
+}
+
+input CommentInput {
+  id: ID!
+  refundId: String!
+  status: String!
+  comment: String!
+  visibleForCustomer: Boolean
+  submittedBy: String!
+  dateSubmitted: String!
+}
+
+type Query {
+  refund(id: ID!): Refund
+  refunds(
+    orderId: String
+    status: String
+    from: Int
+    to: Int
+  ): RefundsResults
+  userRefunds(
+    userId: String
+  ) : UserRefunds
+  settings: RefundsSettings
+  comments(
+    refundId: String
+  ): Comment
+}
+
+type Mutation {
+  addRefund(refund: RefundInput!): Refund
+  editRefund(id: ID!, refund: RefundInput!): Refund
+  deleteRefund(id: ID!): Boolean
+  addProduct(product: ProductInput!): Product
+  editProduct(id: ID!, product: ProductInput!): Product
+  deleteProduct(id: ID!): Boolean
+  addComment(comment: CommentInput!): Comment
+  editComment(id: ID!, comment: CommentInput!): Comment
+  deleteComment(id: ID!): Boolean
+}
+

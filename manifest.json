@@ -1,17 +1,33 @@
 {
-  "name": "return-app",
   "vendor": "vtex",
+  "name": "return-app",
   "version": "0.0.1",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
-    "vtex.my-account-commons": "0.x",
-    "vtex.store-graphql": "2.x"
+    "vtex.store-graphql": "2.x",
+    "vtex.styleguide": "9.x",
+    "vtex.format-currency": "0.x",
+    "vtex.store": "2.x",
+    "vtex.my-account": "1.x",
+    "vtex.my-account-commons": "1.x",
+    "vtex.render-runtime": "8.x",
+    "vtex.telemarketing": "2.x",
+    "vtex.store-resources": "0.x",
+    "vtex.store-session": "0.x",
+    "vtex.store-components": "3.x",
+    "vtex.react-portal": "0.x",
+    "vtex.store-icons": "0.x",
+    "vtex.device-detector": "0.x",
+    "vtex.css-handles": "0.x"
   },
   "builders": {
-    "react": "2.x",
+    "admin": "0.x",
+    "react": "3.x",
     "messages": "1.x",
-    "pages": "0.x"
+    "docs": "0.x",
+    "store": "0.x",
+    "graphql": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"

@@ -1,0 +1,11 @@
+{
+  "my-account-link.my-returns-link": {
+    "component": "StoreMyReturnsLink"
+  },
+  "my-account-link.my-returns-page": {
+    "component": "StoreMyReturnsPage"
+  },
+  "my-account-link.my-returns-page-add": {
+    "component": "StoreMyReturnsPageAdd"
+  }
+}

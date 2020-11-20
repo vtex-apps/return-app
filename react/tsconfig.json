@@ -1,9 +1,26 @@
 {
-  "extends": "@vtex/tsconfig",
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "jsx": "preserve",
+    "lib": ["es2017", "DOM"],
     "noEmitOnError": false,
+    "sourceMap": true,
     "typeRoots": ["node_modules/@types"],
     "types": ["node", "jest", "graphql"]
   },
-  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"]
+  "exclude": ["node_modules"],
+  "include": [
+    "./typings/*.d.ts",
+    "./**/*.tsx",
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.ts",
+    "./**/*.d.ts"
+  ],
+  "typeAcquisition": { "enable": false },
+  "extends": "@vtex/tsconfig"
 }

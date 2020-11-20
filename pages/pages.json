@@ -1,22 +1,10 @@
 {
   "extensions": {
-    "store/account/account/routes/my-new-page": {
+    "my-account-portal/routes/vtex.return-app": {
       "component": "ExtensionRouter"
     },
-    "store/account/account/menu-links-after/my-new-page": {
+    "my-account-portal/menu-links-after/vtex.return-app": {
       "component": "ExtensionLinks"
-    },
-    "my-account-portal/routes/my-new-page": {
-      "component": "ExtensionRouter"
-    },
-    "my-account-portal/menu-links-after/my-orders": {
-      "component": "ExtensionLinks"
-    },
-    "my-account-portal/profile/display": {
-      "component": "DisplayExtraInfo"
-    },
-    "store/account/account/profile/display": {
-      "component": "DisplayExtraInfo"
     }
   }
 }

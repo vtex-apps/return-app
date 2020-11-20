@@ -1,0 +1,11 @@
+mutation EditComment($id: ID!, $comment: CommentInput!) {
+    editComment(id: $id, comment: $comment) {
+        id
+        refundId
+        status
+        comment
+        visibleForCustomer
+        submittedBy
+        dateSubmitted
+    }
+}
