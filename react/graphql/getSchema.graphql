@@ -1,0 +1,6 @@
+query getPublicSchema($dataEntity: String!, $schema: String!) {
+    documentPublicSchema(dataEntity: $dataEntity, schema: $schema)
+    @context(provider: "vtex.store-graphql") {
+        schema
+    }
+}

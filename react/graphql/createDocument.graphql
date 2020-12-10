@@ -1,0 +1,16 @@
+mutation createDocument(
+    $dataEntity: String!
+    $document: DocumentInputV2
+    $schema: String
+) {
+    createDocumentV2(
+        dataEntity: $dataEntity
+        document: $document
+        schema: $schema
+    ) @context(provider: "vtex.store-graphql") {
+        cacheId
+        id
+        href
+        documentId
+    }
+}

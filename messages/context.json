@@ -1,6 +1,6 @@
 {
-  "admin/navigation.label": "Returns",
-  "store/my-returns.link": "My Returns",
-  "store/my-returns.addReturn": "Add request",
-  "store/my-returns.no_returns": "No returns"
+  "admin/navigation.label": "admin/navigation.label",
+  "store/my-returns.link": "store/my-returns.link",
+  "store/my-returns.addReturn": "store/my-returns.addReturn",
+  "store/my-returns.no_returns": "store/my-returns.no_returns"
 }

@@ -1,0 +1,29 @@
+{
+  "memory": 256,
+  "ttl": 10,
+  "timeout": 5000,
+  "minReplicas": 2,
+  "maxReplicas": 4,
+  "routes": {
+    "getSchemas": {
+      "path": "/returns/getSchema/:schemaEntity/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "generateSchema": {
+      "path": "/returns/generateSchema",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "getDocuments": {
+      "path": "/returns/getDocuments/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "getCategories": {
+      "path": "/returns/getCategories/",
+      "public": true,
+      "settingsType": "workspace"
+    }
+  }
+}
