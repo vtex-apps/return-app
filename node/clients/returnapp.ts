@@ -199,44 +199,83 @@ export default class ReturnApp extends ExternalClient {
     }
 
 
-  public async getDocuments(schemaName: any): Promise<any> {
-      const settings = await this.apps.getAppSettings(this.appId)
-      if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-          return JSON.stringify({error: this.missing_tokens})
-      }
+    public async getDocuments(schemaName: any): Promise<any> {
+        const settings = await this.apps.getAppSettings(this.appId)
+        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
+            return JSON.stringify({error: this.missing_tokens})
+        }
 
-    let baseURL = `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/search`;
-    if(schemaName) {
-      baseURL += '?_schema=' + schemaName
+        let baseURL = `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/search`;
+        if (schemaName) {
+            baseURL += '?_schema=' + schemaName
+        }
+
+        return this.http.get(baseURL, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'X-VTEX-API-AppKey': settings.storeAppKey,
+                'X-VTEX-API-AppToken': settings.storeAppToken
+            }
+        });
+
     }
 
-    return this.http.get(baseURL, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Vtex-Use-Https': true,
-        'X-VTEX-API-AppKey': settings.storeAppKey,
-        'X-VTEX-API-AppToken': settings.storeAppToken
-      }
-    });
-  }
+    public async saveDocuments(schemaName: any, body: Object): Promise<any> {
+        const settings = await this.apps.getAppSettings(this.appId)
+        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
+            return JSON.stringify({error: this.missing_tokens})
+        }
 
-  public async getCategories(): Promise<any> {
-    const settings = await this.apps.getAppSettings(this.appId)
-    if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-      return JSON.stringify({error: this.missing_tokens})
+        return this.http.post(
+            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/documents?_schema=` + schemaName,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'X-VTEX-API-AppKey': settings.storeAppKey,
+                    'X-VTEX-API-AppToken': settings.storeAppToken
+                }
+            });
     }
 
+    public async updateDocuments(documentId: any, body: Object): Promise<any> {
+        const settings = await this.apps.getAppSettings(this.appId)
+        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
+            return JSON.stringify({error: this.missing_tokens})
+        }
 
-    return this.http.get(`http://${settings.storeVendorName}.vtexcommercestable.com.br/api/catalog_system/pub/category/tree/100`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Vtex-Use-Https': true,
-        'X-VTEX-API-AppKey': settings.storeAppKey,
-        'X-VTEX-API-AppToken': settings.storeAppToken
-      }
-    });
-  }
+        return this.http.put(
+            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/documents/`+ documentId,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'X-VTEX-API-AppKey': settings.storeAppKey,
+                    'X-VTEX-API-AppToken': settings.storeAppToken
+                }
+            });
+    }
+
+    public async getCategories(): Promise<any> {
+        const settings = await this.apps.getAppSettings(this.appId)
+        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
+            return JSON.stringify({error: this.missing_tokens})
+        }
+
+
+        return this.http.get(`http://${settings.storeVendorName}.vtexcommercestable.com.br/api/catalog_system/pub/category/tree/100`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'X-VTEX-API-AppKey': settings.storeAppKey,
+                'X-VTEX-API-AppToken': settings.storeAppToken
+            }
+        });
+    }
 
 }
