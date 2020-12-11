@@ -1,5 +1,7 @@
 {
   "admin/navigation.label": "Returns",
+  "admin/navigation.labelRequests": "Requests",
+  "admin/navigation.labelSettings": "Returns Settings",
   "store/my-returns.link": "My Returns",
   "store/my-returns.addReturn": "Add request",
   "store/my-returns.no_returns": "No returns"

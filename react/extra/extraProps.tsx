@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {BaseLoading, SkeletonBox} from 'vtex.my-account-commons'
 import {useLazyQuery} from 'react-apollo'
 
-import GET_REFUNDS_LIST from '../../graphql/userRefunds.graphql'
+import GET_REFUNDS_LIST from '../graphql/userRefunds.graphql'
 import {Profile} from '../typings/utils'
 
 export {React}

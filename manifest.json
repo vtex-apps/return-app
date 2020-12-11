@@ -27,10 +27,45 @@
     "messages": "1.x",
     "docs": "0.x",
     "store": "0.x",
-    "graphql": "1.x"
+    "graphql": "1.x",
+    "node": "6.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
+  },
+  "credentialType": "absolute",
+  "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "vbase-read-write"
+    }
+  ],
+  "settingsSchema": {
+    "title": "ReturnApp",
+    "type": "object",
+    "properties": {
+      "storeVendorName": {
+        "title": "Vendor name",
+        "description": "Enter the vendor name here",
+        "type": "string"
+      },
+      "storeAppKey": {
+        "title": "Main store X-VTEX-API-AppKey",
+        "description": "Enter main store X-VTEX-API-AppKey",
+        "type": "string"
+      },
+      "storeAppToken": {
+        "title": "Main store X-VTEX-API-AppToken",
+        "description": "Enter main store X-VTEX-API-AppToken",
+        "type": "string"
+      }
+    }
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
