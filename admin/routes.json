@@ -2,5 +2,9 @@
   "admin.app.returns": {
     "component": "ReturnsAdmin",
     "path": "/admin/app/returns/requests"
+  },
+  "admin.app.returnsSettings": {
+    "component": "ReturnsSettings",
+    "path": "/admin/app/returns/settings"
   }
 }
