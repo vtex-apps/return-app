@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "axios": "^0.20.0",
+    "co-body": "^6.0.0",
+    "ramda": "^0.25.0",
+    "@vtex/api": "6.37.1"
+  },
+  "devDependencies": {
+    "@types/co-body": "^0.0.3",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.0.0",
+    "@types/ramda": "types/npm-ramda#dist",
+    "@vtex/api": "6.37.1",
+    "@vtex/test-tools": "^1.0.0",
+    "tslint": "^5.14.0",
+    "tslint-config-vtex": "^2.1.0",
+    "typescript": "3.9.7"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"
+  },
+  "version": "0.0.7"
+}

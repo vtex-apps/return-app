@@ -1,0 +1,46 @@
+.filteredCategoriesContainer {
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.filteredCategoriesItem {
+    padding: 5px 0;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+    display: block;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.filteredCategoriesItem:last-child {
+    border-bottom: none;
+}
+
+.errorMessage {
+    margin: 0;
+    font-size: 14px;
+    color: #ff0000;
+    font-weight: bold;
+    text-align: right;
+}
+
+.hasError {
+    box-shadow: 0 0 3px #ff0000
+}
+
+.successMessage, .errorMessage {
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.successMessage {
+    color: green;
+}
