@@ -16,7 +16,17 @@
       "settingsType": "workspace"
     },
     "getDocuments": {
-      "path": "/returns/getDocuments/:schemaName",
+      "path": "/returns/getDocuments/:schemaName/:type/:whereClause",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "saveDocuments": {
+      "path": "/returns/saveDocuments/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "updateDocuments": {
+      "path": "/returns/updateDocuments/:documentId",
       "public": true,
       "settingsType": "workspace"
     },
