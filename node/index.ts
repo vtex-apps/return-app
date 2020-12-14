@@ -5,6 +5,8 @@ import { returnAppGetSchemas } from './middlewares/returnAppGetSchemas'
 import { generateReturnsSchema } from './middlewares/generateReturnsSchema'
 import { receiveDocuments } from './middlewares/receiveDocuments'
 import { receiveCategories } from './middlewares/receiveCategories'
+import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
+import { updateMasterdataDocuments } from './middlewares/updateMasterdataDocuments'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -42,6 +44,12 @@ export default new Service({
     }),
     getCategories: method({
       GET: receiveCategories
+    }),
+    saveDocuments: method({
+      POST: saveMasterdataDocuments
+    }),
+    updateDocuments: method({
+      PUT: updateMasterdataDocuments
     })
   },
 })

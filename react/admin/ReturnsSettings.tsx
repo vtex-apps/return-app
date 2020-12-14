@@ -49,7 +49,7 @@ export default class ReturnsSettings extends Component<{}, any> {
 
   getSettings = () => {
     this.setState({ loading: true });
-    fetch("/returns/getDocuments/returnSettings/settings/1", {
+    fetch("/returns/getDocuments/returnSettings", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -108,9 +108,7 @@ export default class ReturnsSettings extends Component<{}, any> {
     this.setState({ categoriesFilterError: "", categoryFilterQuery: query });
 
     if (query.length && query.length < 3) {
-      this.setState({
-        categoriesFilterError: "Enter at least 3 characters"
-      });
+      this.setState({ categoriesFilterError: "Enter at least 3 characters" });
     }
 
     categories.map((category: any) => {
@@ -379,7 +377,7 @@ export default class ReturnsSettings extends Component<{}, any> {
                   this.saveSettings();
                 }}
               >
-                <FormattedMessage id={"admin/settings.saveSettings"} />
+                  <FormattedMessage id={"admin/settings.saveSettings"} />
               </button>
             </div>
           ) : null}
