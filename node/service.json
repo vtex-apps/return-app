@@ -20,6 +20,16 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "saveDocuments": {
+      "path": "/returns/saveDocuments/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "updateDocuments": {
+      "path": "/returns/updateDocuments/:documentId",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "getCategories": {
       "path": "/returns/getCategories/",
       "public": true,
