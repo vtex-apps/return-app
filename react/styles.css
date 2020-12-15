@@ -44,3 +44,24 @@
 .successMessage {
     color: green;
 }
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th {
+    text-align: center;
+    background-color: #f1f1f1;
+    font-size: 15px;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.textCenter {
+    text-align: center;
+}

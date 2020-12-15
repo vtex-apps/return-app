@@ -201,7 +201,8 @@ export default class ReturnsSettings extends Component<{}, any> {
     const postData = {
       maxDays: parseInt(maxDays),
       excludedCategories: JSON.stringify(excludedCategories),
-      termsUrl: termsUrl
+      termsUrl: termsUrl,
+      type: "settings"
     };
 
     if (this.state.documentId) {
@@ -269,7 +270,9 @@ export default class ReturnsSettings extends Component<{}, any> {
       >
         <PageBlock variation="full">
           <div className={`flex flex-column`}>
-            <label htmlFor={"maxDays"}>Max days:</label>
+            <label htmlFor={"maxDays"}>
+              <FormattedMessage id={"admin/settings.maxDays_label"} />
+            </label>
             {errors.maxDays ? (
               <p className={`${styles.errorMessage}`}>{errors.maxDays}</p>
             ) : null}
@@ -282,7 +285,9 @@ export default class ReturnsSettings extends Component<{}, any> {
             />
           </div>
           <div className={`flex flex-column mt6`}>
-            <label htmlFor={"terms"}>Terms and conditions URL:</label>
+            <label htmlFor={"terms"}>
+              <FormattedMessage id={"admin/settings.terms_label"} />
+            </label>
             {errors.termsUrl ? (
               <p className={`${styles.errorMessage}`}>{errors.termsUrl}</p>
             ) : null}
@@ -298,7 +303,9 @@ export default class ReturnsSettings extends Component<{}, any> {
           </div>
           <div className={`flex flex-row mt6`}>
             <div className={`flex flex-column w-50`}>
-              <p>Excluded categories</p>
+              <p>
+                <FormattedMessage id={"admin/settings.excludedCategories"} />
+              </p>
               {excludedCategories.length ? (
                 <div className={`${styles.filteredCategoriesContainer}`}>
                   {excludedCategories.map((category: any) => (
@@ -316,7 +323,9 @@ export default class ReturnsSettings extends Component<{}, any> {
               ) : null}
             </div>
             <div className={`flex flex-column w-50`}>
-              <label htmlFor={"search_categories"}>Search category</label>
+              <label htmlFor={"search_categories"}>
+                <FormattedMessage id={"admin/settings.searchCategories"} />
+              </label>
               <input
                 className={`form-control w-100 br2 ba b--light-gray pa2`}
                 type={"text"}
@@ -368,7 +377,7 @@ export default class ReturnsSettings extends Component<{}, any> {
                   this.saveSettings();
                 }}
               >
-                Save settings
+                  <FormattedMessage id={"admin/settings.saveSettings"} />
               </button>
             </div>
           ) : null}

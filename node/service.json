@@ -16,7 +16,7 @@
       "settingsType": "workspace"
     },
     "getDocuments": {
-      "path": "/returns/getDocuments/:schemaName",
+      "path": "/returns/getDocuments/:schemaName/:type/:whereClause",
       "public": true,
       "settingsType": "workspace"
     },
