@@ -219,7 +219,7 @@ export default class ReturnApp extends ExternalClient {
 
         let baseURL = `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/search?_schema=` + schemaName;
 
-        baseURL += '&_where=(type=' + type;
+        baseURL += '&_where=(type="' + type + '"';
 
         if (whereClause !== "1") {
             const where = whereClause.split('__');

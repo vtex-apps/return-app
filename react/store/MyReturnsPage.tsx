@@ -2,6 +2,7 @@ import React, { Component, useEffect } from "react";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import { Button } from "vtex.styleguide";
+import { FormattedCurrency } from "vtex.format-currency";
 
 class MyReturnsPage extends Component<{}, any> {
   constructor(props: any) {
@@ -96,8 +97,12 @@ class MyReturnsPage extends Component<{}, any> {
                 {requests.map((request: any) => (
                   <tr key={request.id}>
                     <td>{request.orderId}</td>
-                    <td>{request.totalPrice}</td>
-                    <td>{request.refundedAmount}</td>
+                    <td>
+                      <FormattedCurrency value={request.totalPrice / 100} />
+                    </td>
+                    <td>
+                      <FormattedCurrency value={request.refundedAmount / 100} />
+                    </td>
                     <td>{request.status}</td>
                   </tr>
                 ))}

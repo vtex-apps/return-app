@@ -729,7 +729,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                             return (
                               <tr key={order.orderId}>
                                 <td>{order.orderId}</td>
-                                <td>{order.creationDate}</td>
+                                <td>{beautifyDate(order.creationDate)}</td>
                                 <td className={styles.textCenter}>
                                   <Button
                                     onClick={() => this.selectOrder(order)}
