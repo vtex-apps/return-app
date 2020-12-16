@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
 import { Button, Input, RadioGroup, Checkbox } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
-import { schemaTypes, requestsStatuses, beautifyDate } from "../common/utils";
+import { schemaTypes, requestsStatuses } from "../common/utils";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";

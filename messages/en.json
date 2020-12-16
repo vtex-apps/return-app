@@ -60,11 +60,11 @@
   "store/my-returns.formErrorPaymentMethod": "Payment method is required",
   "store/my-returns.formErrorIBAN": "IBAN is required",
   "store/my-returns.formErrorAgree": "You must accept our terms and conditions",
+  "store/my-returns.formErrorQuantities": "You must select at least one product",
   "store/my-returns.no_eligible_orders": "You dont't have any eligible order for return",
   "store/my-returns.thSelectOrder": "Select order",
   "store/my-returns.backToOrders": "Back to orders",
   "store/my-returns.thProduct": "Product",
   "store/my-returns.thQuantity": "Quantity",
-  "store/my-returns.goBack": "Go Back",
-  "store/my-returns.formErrorQuantities": "You must select at least one product"
+  "store/my-returns.goBack": "Go Back"
 }

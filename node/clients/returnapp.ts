@@ -17,127 +17,129 @@ export default class ReturnApp extends ExternalClient {
         settingsSchema: {
             'name': "returnSettings",
             'schema': {
-                'properties': {
-                    'maxDays': {'type': "integer"},
-                    'excludedCategories': {'type': "text"},
-                    'termsUrl': {'type': "string"},
-                    'type': {'type': "string"}
+                "properties": {
+                    "maxDays": {"type": "integer"},
+                    "excludedCategories": {"type": "string"},
+                    "termsUrl": {"type": "string"},
+                    "type": {"type": "string"}
                 },
                 "v-security": {
-                    'allowGetAll': true,
-                    'publicRead': ['maxDays', 'excludedCategories', 'termsUrl', 'type'],
-                    'publicWrite': ['maxDays', 'excludedCategories', 'termsUrl', 'type'],
-                    'publicFilter': ['maxDays', 'excludedCategories', 'termsUrl', 'type'],
-                    'publicJsonSchema': true
+                    "allowGetAll": true,
+                    "publicRead": ["maxDays", "excludedCategories", "termsUrl", "type"],
+                    "publicWrite": ["maxDays", "excludedCategories", "termsUrl", "type"],
+                    "publicFilter": ["maxDays", "excludedCategories", "termsUrl", "type"],
+                    "publicJsonSchema": true
                 },
-                'v-cache': false,
-                'v-default-fields': ['id', 'createdIn', 'maxDays', 'excludedCategories', 'termsUrl', 'type'],
-                'indexed': ['id', 'createdIn', 'maxDays', 'excludedCategories', 'termsUrl', 'type'],
+                "v-cache": false,
+                "v-default-fields": ["id", "createdIn", "maxDays", "excludedCategories", "termsUrl", "type"],
+                "v-indexed": ["id", "createdIn", "maxDays", "excludedCategories", "termsUrl", "type"]
             }
         },
         returnSchema: {
             'name': "returnRequests",
             'schema': {
-                'properties': {
-                    'userId': {'type': "string", 'IsRelationship': true},
-                    'orderId': {'type': "string", 'IsRelationship': true},
-                    'name': {'type': "string"},
-                    'email': {'type': "string", 'format': "email"},
-                    'phoneNumber': {'type': "string", 'maxLength': 50},
-                    'country': {'type': "string", 'maxLength': 50},
-                    'locality': {'type': "string", 'maxLength': 50},
-                    'address': {'type': "string"},
-                    'totalPrice': {'type': "integer"},
-                    'paymentMethod': {'type': "string", 'maxLength': 25},
-                    'refundedAmount': {'type': "integer"},
-                    'iban': {'type': "string"},
-                    'status': {'type': "string"},
-                    'dateSubmitted': {'type': "string", 'format': "date-time"},
-                    'type': {'type': "string"}
+                "properties": {
+                    "userId": {"type": "string", "IsRelationship": true},
+                    "orderId": {"type": "string", "IsRelationship": true},
+                    "name": {"type": "string"},
+                    "email": {"type": "string", "format": "email"},
+                    "phoneNumber": {"type": "string", "maxLength": 50},
+                    "country": {"type": "string", "maxLength": 50},
+                    "locality": {"type": "string", "maxLength": 50},
+                    "address": {"type": "string"},
+                    "totalPrice": {"type": "integer"},
+                    "paymentMethod": {"type": "string", "maxLength": 25},
+                    "refundedAmount": {"type": "integer"},
+                    "iban": {"type": "string"},
+                    "status": {"type": "string"},
+                    "dateSubmitted": {"type": "string", "format": "date-time"},
+                    "type": {"type": "string"}
                 },
                 "v-security": {
-                    'allowGetAll': true,
-                    'publicRead': ['userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
-                    'publicWrite': ['userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
-                    'publicFilter': ['userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
-                    'publicJsonSchema': true
+                    "allowGetAll": true,
+                    "publicRead": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicWrite": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicJsonSchema": true
                 },
-                'v-cache': false,
-                'v-default-fields': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
-                'v-indexed': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
+                "v-cache": false,
+                "v-default-fields": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"]
             }
         },
         commentsSchema: {
             'name': "returnComments",
             'schema': {
-                'properties': {
-                    'refundId': {'type': "integer", 'IsRelationship': true},
-                    'status': {'type': "string"},
-                    'comment': {'type': "string"},
-                    'visibleForCustomer': {'type': "boolean"},
-                    'submittedBy': {'type': "string", 'IsRelationship': true},
-                    'dateSubmitted': {'type': "string", 'format': "date-time"},
-                    'type': {'type': "string"}
+                "properties": {
+                    "refundId": {"type": "integer", "IsRelationship": true},
+                    "status": {"type": "string"},
+                    "comment": {"type": "string"},
+                    "visibleForCustomer": {"type": "boolean"},
+                    "submittedBy": {"type": "string", "IsRelationship": true},
+                    "dateSubmitted": {"type": "string", "format": "date-time"},
+                    "type": {"type": "string"},
                 },
                 "v-security": {
-                    'allowGetAll': true,
-                    'publicRead': ['refundId', 'status', 'comment', 'visibleForCustomer', 'submittedBy', 'dateSubmitted', 'type'],
-                    'publicWrite': ['refundId', 'status', 'comment', 'visibleForCustomer', 'submittedBy', 'dateSubmitted', 'type'],
-                    'publicFilter': ['refundId', 'status', 'comment', 'visibleForCustomer', 'submittedBy', 'dateSubmitted', 'type'],
-                    'publicJsonSchema': true
+                    "allowGetAll": true,
+                    "publicRead": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
+                    "publicWrite": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
+                    "publicJsonSchema": true
                 },
-                'v-cache': false,
-                'v-default-fields': ['id', 'createdIn', 'refundId', 'status', 'comment', 'visibleForCustomer', 'submittedBy', 'dateSubmitted', 'type'],
-                'v-indexed': ['id', 'createdIn', 'refundId', 'status', 'comment', 'visibleForCustomer', 'submittedBy', 'dateSubmitted', 'type'],
+                "v-cache": false,
+                "v-default-fields": ["id", "createdIn", "refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"]
             }
         },
         productsSchema: {
             'name': "returnProducts",
             'schema': {
-                'properties': {
-                    'refundId': {'type': "string", 'IsRelationship': true},
-                    'skuId': {'type': "string"},
-                    'skuName': {'type': "string"},
-                    'unitPrice': {'type': "integer"},
-                    'quantity': {'type': "integer"},
-                    'totalPrice': {'type': "integer"},
-                    'goodProducts': {'type': "integer"},
-                    'status': {'type': "string"},
-                    'dateSubmitted': {'type': "string", 'format': "date-time"},
-                    'type': {'type': "string"}
+                "properties": {
+                    "refundId": {"type": "string", "IsRelationship": true},
+                    "orderId": {"type": "string", "IsRelationship": true},
+                    "userId": {"type": "string", "IsRelationship": true},
+                    "skuId": {"type": "string"},
+                    "skuName": {"type": "string"},
+                    "unitPrice": {"type": "integer"},
+                    "quantity": {"type": "integer"},
+                    "totalPrice": {"type": "integer"},
+                    "goodProducts": {"type": "integer"},
+                    "status": {"type": "string"},
+                    "dateSubmitted": {"type": "string", "format": "date-time"},
+                    "type": {"type": "string"}
                 },
                 "v-security": {
-                    'allowGetAll': true,
-                    'publicRead': ['refundId', 'skuId', 'skuName', 'unitPrice', 'quantity', 'totalPrice', 'goodProducts', 'status', 'dateSubmitted', 'type'],
-                    'publicWrite': ['refundId', 'skuId', 'skuName', 'unitPrice', 'quantity', 'totalPrice', 'goodProducts', 'status', 'dateSubmitted', 'type'],
-                    'publicFilter': ['refundId', 'skuId', 'skuName', 'unitPrice', 'quantity', 'totalPrice', 'goodProducts', 'status', 'dateSubmitted', 'type'],
-                    'publicJsonSchema': true
+                    "allowGetAll": true,
+                    "publicRead": ["refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicWrite": ["refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicJsonSchema": true
                 },
-                'v-cache': false,
-                'v-default-fields': ['id', 'createdIn', 'refundId', 'skuId', 'skuName', 'unitPrice', 'quantity', 'totalPrice', 'goodProducts', 'status', 'dateSubmitted', 'type'],
-                'v-indexed': ['id', 'createdIn', 'refundId', 'skuId', 'skuName', 'unitPrice', 'quantity', 'totalPrice', 'goodProducts', 'status', 'dateSubmitted', 'type'],
+                "v-cache": false,
+                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"]
             }
         },
         statusHistorySchema: {
             'name': "returnStatusHistory",
             'schema': {
-                'properties': {
-                    'refundId': {'type': "integer", 'IsRelationship': true},
-                    'status': {'type': "string"},
-                    'submittedBy': {'type': "string", 'IsRelationship': true},
-                    'dateSubmitted': {'type': "string", 'format': "date-time"},
-                    'type': {'type': "string"}
+                "properties": {
+                    "refundId": {"type": "integer", "IsRelationship": true},
+                    "status": {"type": "string"},
+                    "submittedBy": {"type": "string", "IsRelationship": true},
+                    "dateSubmitted": {"type": "string", "format": "date-time"},
+                    "type": {"type": "string"},
                 },
                 "v-security": {
-                    'allowGetAll': true,
-                    'publicRead': ['refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
-                    'publicWrite': ['refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
-                    'publicFilter': ['refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
-                    'publicJsonSchema': true
+                    "allowGetAll": true,
+                    "publicRead": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
+                    "publicWrite": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
+                    "publicJsonSchema": true
                 },
-                'v-cache': false,
-                'v-default-fields': ['id', 'createdIn', 'refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
-                'v-indexed': ['id', 'createdIn', 'refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
+                "v-cache": false,
+                "v-default-fields": ["id", "createdIn", "refundId", "status", "submittedBy", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "refundId", "status", "submittedBy", "dateSubmitted", "type"]
             }
         }
     }
@@ -224,7 +226,6 @@ export default class ReturnApp extends ExternalClient {
             where.map((clause:any) => {
                 baseURL += ' AND ' + clause
             })
-
         }
 
         baseURL += ')';
