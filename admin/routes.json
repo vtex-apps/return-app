@@ -7,8 +7,8 @@
     "component": "ReturnsSettings",
     "path": "/admin/app/returns/settings"
   },
-  "admin.app.return": {
-    "component": "ReturnsSettings",
-    "path": "/admin/app/returns/request/:id"
+  "admin.app.returnDetails": {
+    "component": "ReturnDetails",
+    "path": "/admin/app/returns/details/:id"
   }
 }

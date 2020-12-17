@@ -6,7 +6,7 @@ import { schemaTypes, requestsStatuses } from "../common/utils";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
-import { getCurrentDate, diffDays } from "../common/utils";
+import { getCurrentDate, diffDays, beautifyDate } from "../common/utils";
 
 type Errors = {
   name: string;
