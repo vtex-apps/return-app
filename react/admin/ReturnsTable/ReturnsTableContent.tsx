@@ -105,35 +105,35 @@ class ReturnsTableContent extends Component<any, any> {
 
   handleSort({ sortOrder, sortedBy }) {
     const { returns } = this.state;
-    let orderedItems = [];
+    let slicedData = [];
     if (sortedBy === "orderId") {
-      orderedItems =
+      slicedData =
         sortOrder === "ASC"
           ? returns.slice().sort(this.sortOrderIdASC)
           : returns.slice().sort(this.sortOrderIdDESC);
     }
     if (sortedBy === "id") {
-      orderedItems =
+      slicedData =
         sortOrder === "ASC"
           ? returns.slice().sort(this.sortRequestIdASC)
           : returns.slice().sort(this.sortRequestIdDESC);
     }
 
     if (sortedBy === "dateSubmitted") {
-      orderedItems =
+      slicedData =
         sortOrder === "ASC"
           ? returns.slice().sort(this.sortDateSubmittedASC)
           : returns.slice().sort(this.sortDateSubmittedDESC);
     }
     if (sortedBy === "status") {
-      orderedItems =
+      slicedData =
         sortOrder === "ASC"
           ? returns.slice().sort(this.sortStatusASC)
           : returns.slice().sort(this.sortStatusDESC);
     }
 
     this.setState({
-      orderedItems,
+      slicedData,
       dataSort: {
         sortedBy,
         sortOrder
@@ -232,7 +232,7 @@ class ReturnsTableContent extends Component<any, any> {
             return (
               <Button
                 onClick={() => {
-                  window.open("/admin/returns/request/" + rowData.id);
+                  window.location.href = "/admin/returns/details/" + rowData.id;
                 }}
               >
                 <FormattedMessage id={"admin/returns.view"} />

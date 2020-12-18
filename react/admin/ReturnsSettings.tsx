@@ -49,7 +49,7 @@ export default class ReturnsSettings extends Component<{}, any> {
 
   getSettings = () => {
     this.setState({ loading: true });
-    fetch("/returns/getDocuments/returnSettings", {
+    fetch("/returns/getDocuments/returnSettings/settings/1", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
