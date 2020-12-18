@@ -66,5 +66,21 @@
   "store/my-returns.backToOrders": "Back to orders",
   "store/my-returns.thProduct": "Product",
   "store/my-returns.thQuantity": "Quantity",
-  "store/my-returns.goBack": "Go Back"
+  "store/my-returns.goBack": "Go Back",
+  "admin/returns.product": "Product",
+  "admin/returns.quantity": "Quantity",
+  "admin/returns.unitPrice": "Unit price",
+  "admin/returns.subtotalRefund": "Subtotal refund amount",
+  "admin/returns.productVerificationStatus": "Product verification status",
+  "admin/returns.totalRefundAmount": "Total refund amount",
+  "admin/returns.back": "Back",
+  "admin/returns.contactDetails": "Contact details",
+  "admin/returns.name": "Name",
+  "admin/returns.email": "Email",
+  "admin/returns.phone": "Phone",
+  "admin/returns.pickupAddress": "Pickup address",
+  "admin/returns.country": "Country",
+  "admin/returns.locality": "Locality",
+  "admin/returns.address": "Address",
+  "admin/returns.refundPaymentMethod": "Refund payment method"
 }

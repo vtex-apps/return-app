@@ -232,7 +232,7 @@ class ReturnsTableContent extends Component<any, any> {
             return (
               <Button
                 onClick={() => {
-                  window.location.href = "/admin/returns/details/" + rowData.id;
+                  window.open("/admin/returns/" + rowData.id + "/details");
                 }}
               >
                 <FormattedMessage id={"admin/returns.view"} />

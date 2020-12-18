@@ -9,6 +9,6 @@
   },
   "admin.app.returnDetails": {
     "component": "ReturnDetails",
-    "path": "/admin/app/returns/details/:id"
+    "path": "/admin/app/returns/:id/details"
   }
 }

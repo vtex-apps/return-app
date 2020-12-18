@@ -1051,7 +1051,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                         <div className={"mb2"}>
                           <p className={"ma1 t-small c-on-base "}>
                             <FormattedMessage
-                              id={"store/my-returns.formName"}
+                              id={"store/my-returns.formEmail"}
                             />
                             : {email}
                           </p>
@@ -1059,7 +1059,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                         <div className={"mb2"}>
                           <p className={"ma1 t-small c-on-base "}>
                             <FormattedMessage
-                              id={"store/my-returns.formEmail"}
+                              id={"store/my-returns.formPhone"}
                             />
                             : {phone}
                           </p>

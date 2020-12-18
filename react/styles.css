@@ -62,6 +62,99 @@
     padding: 5px;
 }
 
+.tableProducts th {
+    background-color: transparent;
+    padding: 8px 0;
+}
+
+.tableProducts tbody tr,
+.tableProducts thead {
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.tableProducts tbody tr:last-child {
+    border-bottom: none;
+}
+
+.tableProducts td,
+.tableProducts th {
+    border: none;
+    padding: 10px 0;
+}
+.tableSm td {
+    font-size: 14px;
+}
+
 .textCenter {
     text-align: center;
+}
+
+.statusPendingVerification {
+    color: #ffb100;
+}
+
+.statusDenied {
+    color: #ff0000;
+}
+
+.statusPartiallyApproved {
+    color: #f86d3a;
+}
+
+.statusApproved {
+    color: green;
+}
+
+.statusNew {
+    color: navy;
+}
+
+.tableProductColumn {
+    max-width: 200px;
+}
+
+.tableProductsRow td {
+    padding-top: 20px;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.statusIcon {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #134cd8;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    padding-top: 3px;
+    padding-left: 3px;
+    background: #fff;
+    margin-right: 20px;
+}
+
+.statusIconChecked {
+    background: #134cd8;
+}
+
+.statusLine {
+    display: flex;
+    align-items: center;
+}
+
+.statusUl {
+    background-image: linear-gradient(gray 33%, rgba(255,255,255,0) 0%);
+    background-position: left;
+    background-size: 2px 6px;
+    background-repeat: repeat-y;
+    list-style-type: none;
+    margin-left: 15px;
+    min-height: 20px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.statusUl li {
+    padding-bottom: 5px;
 }
