@@ -1,6 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import PropTypes from "prop-types";
-import { returnFormDate, schemaTypes, requestsStatuses } from "../common/utils";
+import {
+  returnFormDate,
+  schemaTypes,
+  requestsStatuses,
+  statusHistoryTimeline,
+  getCurrentDate
+} from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import { FormattedCurrency } from "vtex.format-currency";
@@ -11,7 +17,11 @@ import {
   IconClock,
   IconCheck,
   IconVisibilityOn,
-  Link
+  Link,
+  Dropdown,
+  Checkbox,
+  Textarea,
+  Button
 } from "vtex.styleguide";
 
 export default class ReturnForm extends Component<{}, any> {
@@ -27,43 +37,80 @@ export default class ReturnForm extends Component<{}, any> {
       comment: [],
       product: [],
       statusHistory: [],
+      statusHistoryTimeline: [],
       error: "",
-      totalRefundAmount: 0
+      totalRefundAmount: 0,
+      statusInput: "",
+      commentInput: "",
+      visibleInput: false,
+      registeredUser: "",
+      errorCommentMessage: ""
     };
   }
 
   componentDidMount(): void {
+    this.getProfile().then();
+    this.getFullData();
+  }
+
+  getFullData() {
     const requestId = this.props["data"]["params"]["id"];
-    this.getFromMasterData("returnRequests", schemaTypes.requests, requestId);
-    this.getFromMasterData("returnProducts", schemaTypes.products, requestId);
-    this.getFromMasterData("returnComments", schemaTypes.comments, requestId);
     this.getFromMasterData(
-      "returnStatusHistory",
-      schemaTypes.history,
+      "returnRequests",
+      schemaTypes.requests,
       requestId
-    );
-    setTimeout(() => {
-      this.getTotalRefundAmount();
-    }, 500);
-  }
-
-  getTotalRefundAmount() {
-    let total = 0;
-    const { product } = this.state;
-    if (product.length) {
-      product.map(currentProduct => {
-        total += currentProduct.quantity * currentProduct.unitPrice;
+    ).then(request => {
+      this.setState({
+        statusInput: request[0].status,
+        commentInput: "",
+        visibleInput: false
       });
-    }
+      this.getFromMasterData(
+        "returnProducts",
+        schemaTypes.products,
+        requestId
+      ).then(response => {
+        let total = 0;
+        if (response.length) {
+          response.map(currentProduct => {
+            total += currentProduct.quantity * currentProduct.unitPrice;
+          });
+          this.setState({ totalRefundAmount: total });
 
-    this.setState({ totalRefundAmount: total });
-    return total;
+          this.getFromMasterData(
+            "returnComments",
+            schemaTypes.comments,
+            requestId
+          ).then(comments => {
+            this.prepareHistoryData(comments, request[0]);
+            this.getFromMasterData(
+              "returnStatusHistory",
+              schemaTypes.history,
+              requestId
+            ).then();
+          });
+        }
+      });
+    });
   }
 
-  getFromMasterData(schema: string, type: string, refundId: string) {
+  async getProfile() {
+    return await fetch("/no-cache/profileSystem/getProfile")
+      .then(response => response.json())
+      .then(response => {
+        if (response.IsUserDefined) {
+          this.setState({
+            registeredUser: response.FirstName + " " + response.LastName
+          });
+        }
+        return Promise.resolve(response);
+      });
+  }
+
+  async getFromMasterData(schema: string, type: string, refundId: string) {
     const isRequest = schema === "returnRequests";
     const whereField = isRequest ? "id" : "refundId";
-    fetch(
+    return await fetch(
       "/returns/getDocuments/" +
         schema +
         "/" +
@@ -83,6 +130,7 @@ export default class ReturnForm extends Component<{}, any> {
       .then(response => response.json())
       .then(json => {
         this.setState({ [type]: isRequest ? json[0] : json });
+        return json;
       })
       .catch(err => this.setState({ error: err }));
   }
@@ -137,18 +185,234 @@ export default class ReturnForm extends Component<{}, any> {
     );
   }
 
+  prepareHistoryData(comment: any, request: any) {
+    const history = [
+      {
+        status: statusHistoryTimeline.new,
+        step: 1,
+        comments: comment.filter(item => item.status === requestsStatuses.new),
+        active: 1
+      },
+      {
+        status: statusHistoryTimeline.picked,
+        step: 2,
+        comments: comment.filter(
+          item => item.status === requestsStatuses.pendingVerification
+        ),
+        active:
+          request.status === requestsStatuses.pendingVerification ||
+          request.status === requestsStatuses.partiallyApproved ||
+          request.status === requestsStatuses.approved ||
+          request.status === requestsStatuses.denied ||
+          request.status === requestsStatuses.refunded
+            ? 1
+            : 0
+      },
+      {
+        status: statusHistoryTimeline.verified,
+        step: 3,
+        comments: comment.filter(
+          item =>
+            item.status === requestsStatuses.partiallyApproved ||
+            item.status === requestsStatuses.approved ||
+            item.status === requestsStatuses.denied
+        ),
+        active:
+          request.status === requestsStatuses.partiallyApproved ||
+          request.status === requestsStatuses.approved ||
+          request.status === requestsStatuses.denied ||
+          request.status === requestsStatuses.refunded
+            ? 1
+            : 0
+      },
+      {
+        status: statusHistoryTimeline.refunded,
+        step: 4,
+        comments: comment.filter(
+          item => item.status === requestsStatuses.refunded
+        ),
+        active: request.status === requestsStatuses.refunded ? 1 : 0
+      }
+    ];
+    this.setState({ statusHistoryTimeline: history });
+  }
+
+  submitStatusCommentForm() {
+    this.setState({ errorCommentMessage: "" });
+    const {
+      commentInput,
+      visibleInput,
+      statusInput,
+      request,
+      registeredUser,
+      comment
+    } = this.state;
+
+    let requestData = request;
+    let oldComments = comment;
+
+    if (statusInput !== request.status || commentInput !== "") {
+      if (statusInput !== request.status) {
+        requestData = { ...requestData, status: statusInput };
+        const statusHistoryData = {
+          refundId: request.id,
+          status: statusInput,
+          submittedBy: registeredUser,
+          dateSubmitted: getCurrentDate(),
+          type: schemaTypes.history
+        };
+        this.updateDocument(request.id, requestData);
+        this.saveMasterData("returnStatusHistory", statusHistoryData);
+        this.setState({
+          request: requestData,
+          statusHistory: [...this.state.statusHistory, statusHistoryData]
+        });
+      }
+
+      if (commentInput !== "") {
+        const commentData = {
+          refundId: request.id,
+          status: statusInput,
+          comment: commentInput,
+          visibleForCustomer: visibleInput,
+          submittedBy: registeredUser,
+          dateSubmitted: getCurrentDate(),
+          type: schemaTypes.comments
+        };
+        oldComments = [...oldComments, commentData];
+        this.setState({ comment: oldComments, commentInput: "" });
+        this.saveMasterData("returnComments", commentData);
+      }
+
+      this.prepareHistoryData(oldComments, requestData);
+    } else {
+      this.setState({
+        errorCommentMessage:
+          "You need to change the current status or leave a comment"
+      });
+    }
+  }
+
+  saveMasterData = (schema: string, body: any) => {
+    fetch("/returns/saveDocuments/" + schema, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    }).then(response => {});
+  };
+
+  updateDocument = (documentId: string, postData: any) => {
+    fetch("/returns/updateDocuments/" + documentId, {
+      method: "PUT",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    })
+      .then(response => {})
+      .catch(err => err);
+  };
+
+  renderStatusCommentForm() {
+    const {
+      request,
+      statusInput,
+      commentInput,
+      visibleInput,
+      errorCommentMessage
+    } = this.state;
+    const statusesOptions: any[] = [];
+    Object.keys(requestsStatuses).map(function(key) {
+      statusesOptions.push({
+        label:
+          requestsStatuses[key] === request.status
+            ? requestsStatuses[key] + " (current status)"
+            : requestsStatuses[key],
+        value: requestsStatuses[key]
+      });
+    });
+
+    return (
+      <div>
+        <p className={"mt7"}>
+          <strong className={"mr6"}>
+            <FormattedMessage id={"admin/returns.changeStatusComment"} />
+          </strong>
+        </p>
+        <div className={`flex flex-row items-stretch`}>
+          <div className={`flex flex-column items-stretch w-50`}>
+            <div className={`mb6`}>
+              <Dropdown
+                size="small"
+                options={statusesOptions}
+                value={statusInput}
+                onChange={(_, v) => this.setState({ statusInput: v })}
+              />
+            </div>
+            <div className={`mb6`}>
+              <Textarea
+                label="Add comment"
+                value={commentInput}
+                onChange={e => this.setState({ commentInput: e.target.value })}
+              />
+            </div>
+            <div className={`mb6`}>
+              <Checkbox
+                checked={visibleInput}
+                id="visible-input"
+                label="Comment visible to client"
+                name="default-checkbox-group"
+                onChange={e =>
+                  this.setState({ visibleInput: !this.state.visibleInput })
+                }
+                value="1"
+              />
+            </div>
+            <div>
+              {errorCommentMessage ? (
+                <div className={`mb6`}>
+                  <p className={styles.errorMessage}>{errorCommentMessage}</p>
+                </div>
+              ) : null}
+              <Button onClick={() => this.submitStatusCommentForm()}>
+                <FormattedMessage id={"admin/returns.addCommentButton"} />
+              </Button>
+            </div>
+          </div>
+          <div className={`flex flex-column items-stretch w-50`} />
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { request, product, totalRefundAmount } = this.state;
+    const {
+      request,
+      product,
+      totalRefundAmount,
+      statusHistoryTimeline,
+      statusHistory
+    } = this.state;
     if (!request) {
       return <div>Not Found</div>;
     }
     return (
       <div>
-        <p>
+        <Button variation="primary" size="small" href="/admin/returns/requests">
           <FormattedMessage id={"admin/returns.back"} />
-        </p>
+        </Button>
         <p>
-          Return form #{request.id} / {returnFormDate(request.dateSubmitted)}
+          <FormattedMessage
+            id={"admin/returns.details.returnForm"}
+            values={{
+              requestId: " #" + request.id,
+              requestDate: " " + returnFormDate(request.dateSubmitted)
+            }}
+          />
         </p>
         <table
           className={
@@ -203,7 +467,7 @@ export default class ReturnForm extends Component<{}, any> {
             ) : (
               <tr>
                 <td colSpan={5} className={styles.textCenter}>
-                  No products
+                  <FormattedMessage id={"admin/returns.noProducts"} />
                 </td>
               </tr>
             )}
@@ -222,7 +486,12 @@ export default class ReturnForm extends Component<{}, any> {
           </tbody>
         </table>
         <p className={"mt7"}>
-          <strong className={"mr6"}>Reference Order: #{request.orderId}</strong>
+          <strong className={"mr6"}>
+            <FormattedMessage
+              id={"admin/returns.refOrder"}
+              values={{ orderId: " #" + request.orderId }}
+            />
+          </strong>
           <Link
             href={"/admin/checkout/#/orders/" + request.orderId}
             target="_blank"
@@ -301,58 +570,89 @@ export default class ReturnForm extends Component<{}, any> {
           </p>
         )}
 
-        <p>
+        <p className={"mt7"}>
           <strong>
             <FormattedMessage id={"admin/returns.status"} />
           </strong>
         </p>
 
         <div>
-          <div>
-            <p className={styles.statusLine}>
-              <span
-                className={styles.statusIcon + " " + styles.statusIconChecked}
+          {statusHistoryTimeline.map((currentHistory, i) => (
+            <div key={`statusHistoryTimeline_` + i}>
+              <p className={styles.statusLine}>
+                {currentHistory.active ? (
+                  <span
+                    className={
+                      styles.statusIcon + " " + styles.statusIconChecked
+                    }
+                  >
+                    <IconCheck size={20} color={"#fff"} />
+                  </span>
+                ) : (
+                  <span className={styles.statusIcon} />
+                )}
+
+                {currentHistory.status === "new"
+                  ? "Return form registered on " +
+                    returnFormDate(request.dateSubmitted)
+                  : currentHistory.status}
+              </p>
+              <ul
+                className={
+                  styles.statusUl +
+                  " " +
+                  (statusHistoryTimeline.length === i + 1
+                    ? styles.statusUlLast
+                    : "")
+                }
               >
-                <IconCheck size={20} color={"#fff"} />
-              </span>
-              Return form registered on 1 January 2020
-            </p>
-            <ul className={styles.statusUl}>
-              <li>Comment 1</li>
-              <li>Comment 2</li>
-              <li>Comment 3</li>
-            </ul>
+                {currentHistory.comments.map(comment => (
+                  <li key={comment.id}>{comment.comment}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        {this.renderStatusCommentForm()}
+        <p className={"mt7"}>
+          <strong>
+            <FormattedMessage id={"admin/returns.statusHistory"} />
+          </strong>
+        </p>
+        <div className={`flex flex-column items-stretch w-100`}>
+          <div className={`flex flex-row items-stretch w-100`}>
+            <div className={`flex w-33`}>
+              <p className={styles.tableThParagraph}>
+                <FormattedMessage id={"admin/returns.date"} />
+              </p>
+            </div>
+            <div className={`flex w-33`}>
+              <p className={styles.tableThParagraph}>
+                <FormattedMessage id={"admin/returns.status"} />
+              </p>
+            </div>
+            <div className={`flex w-33`}>
+              <p className={styles.tableThParagraph}>
+                <FormattedMessage id={"admin/returns.submittedBy"} />
+              </p>
+            </div>
           </div>
-          <div>
-            <p className={styles.statusLine}>
-              <span className={styles.statusIcon} />
-              Picked up from client
-            </p>
-            <ul className={styles.statusUl}>
-              <li></li>
-            </ul>
-          </div>
-          <div>
-            <p className={styles.statusLine}>
-              <span className={styles.statusIcon} />
-              Package Verified
-            </p>
-            <ul className={styles.statusUl}>
-              <li>Comment 1</li>
-              <li>Comment 2</li>
-            </ul>
-          </div>
-          <div>
-            <p className={styles.statusLine}>
-              <span className={styles.statusIcon} />
-              Amount refunded
-            </p>
-            <ul className={styles.statusUl}>
-              <li>Comment 1</li>
-              <li>Comment 2</li>
-              <li>Comment 3</li>
-            </ul>
-          </div>
+          {statusHistory.map((status, i) => (
+            <div
+              key={`statusHistoryTable_` + i}
+              className={`flex flex-row items-stretch w-100`}
+            >
+              <div className={`flex w-33`}>
+                <p>{returnFormDate(status.dateSubmitted)}</p>
+              </div>
+              <div className={`flex w-33`}>
+                <p>{status.status}</p>
+              </div>
+              <div className={`flex w-33`}>
+                <p>{status.submittedBy}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );

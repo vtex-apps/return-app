@@ -71,7 +71,7 @@ export default class ReturnApp extends ExternalClient {
             'name': "returnComments",
             'schema': {
                 "properties": {
-                    "refundId": {"type": "integer", "IsRelationship": true},
+                    "refundId": {"type": "string", "IsRelationship": true},
                     "status": {"type": "string"},
                     "comment": {"type": "string"},
                     "visibleForCustomer": {"type": "boolean"},
@@ -124,7 +124,7 @@ export default class ReturnApp extends ExternalClient {
             'name': "returnStatusHistory",
             'schema': {
                 "properties": {
-                    "refundId": {"type": "integer", "IsRelationship": true},
+                    "refundId": {"type": "string", "IsRelationship": true},
                     "status": {"type": "string"},
                     "submittedBy": {"type": "string", "IsRelationship": true},
                     "dateSubmitted": {"type": "string", "format": "date-time"},
@@ -165,8 +165,6 @@ export default class ReturnApp extends ExternalClient {
                 'X-VTEX-API-AppToken': settings.storeAppToken
             }
         });
-
-
     }
 
     public async generateSchema(): Promise<any> {
@@ -219,7 +217,7 @@ export default class ReturnApp extends ExternalClient {
 
         let baseURL = `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/search?_schema=` + schemaName;
 
-        baseURL += '&_where=(type="' + type + '"';
+        baseURL += '&rand='+Date.now()+'&_where=(type="' + type + '"';
 
         if (whereClause !== "1") {
             const where = whereClause.split('__');
@@ -232,6 +230,7 @@ export default class ReturnApp extends ExternalClient {
 
         return this.http.get(baseURL, {
             headers: {
+                'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Vtex-Use-Https': true,

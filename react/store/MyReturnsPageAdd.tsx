@@ -604,6 +604,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
 
     this.sendData(requestData, "returnRequests").then(response => {
       if ("DocumentId" in response) {
+        this.addStatusHistory(response.DocumentId).then();
         this.submitProductRequest(response.DocumentId)
           .then(() => {
             this.setState({
@@ -619,6 +620,19 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         });
       }
     });
+  }
+
+  async addStatusHistory(DocumentId: string) {
+    const { userId } = this.state;
+    const bodyData = {
+      submittedBy: userId,
+      refundId: DocumentId,
+      status: requestsStatuses.new,
+      dateSubmitted: getCurrentDate(),
+      type: schemaTypes.history
+    };
+
+    this.sendData(bodyData, "returnStatusHistory").then();
   }
 
   async submitProductRequest(DocumentId: string) {

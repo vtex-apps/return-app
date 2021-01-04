@@ -81,6 +81,7 @@
     border: none;
     padding: 10px 0;
 }
+
 .tableSm td {
     font-size: 14px;
 }
@@ -144,7 +145,7 @@
 }
 
 .statusUl {
-    background-image: linear-gradient(gray 33%, rgba(255,255,255,0) 0%);
+    background-image: linear-gradient(gray 33%, rgba(255, 255, 255, 0) 0%);
     background-position: left;
     background-size: 2px 6px;
     background-repeat: repeat-y;
@@ -157,4 +158,13 @@
 
 .statusUl li {
     padding-bottom: 5px;
+}
+
+.statusUlLast {
+    background-image: none;
+}
+
+.tableThParagraph {
+    margin-bottom: 5px;
+    font-weight: bold;
 }

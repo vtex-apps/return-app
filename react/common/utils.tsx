@@ -46,8 +46,17 @@ export const schemaTypes = {
 
 export const requestsStatuses = {
   new: "New",
-  approved: "Approved",
   pendingVerification: "Pending verification",
+  approved: "Approved",
   partiallyApproved: "Partially approved",
-  denied: "Denied"
+  denied: "Denied",
+  refunded: "Refunded"
 };
+
+export const statusHistoryTimeline = {
+  new: "new",
+  picked: "Picked up from client",
+  verified: "Package verified",
+  refunded: "Amount refunded"
+}
+
