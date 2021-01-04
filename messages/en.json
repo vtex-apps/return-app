@@ -82,5 +82,13 @@
   "admin/returns.country": "Country",
   "admin/returns.locality": "Locality",
   "admin/returns.address": "Address",
-  "admin/returns.refundPaymentMethod": "Refund payment method"
+  "admin/returns.refundPaymentMethod": "Refund payment method",
+  "admin/returns.details.returnForm": "Return form {requestId} / {requestDate}",
+  "admin/returns.noProducts": "No products",
+  "admin/returns.refOrder": "Reference order {orderId}",
+  "admin/returns.changeStatusComment": "Change status or add comment",
+  "admin/returns.addCommentButton": "Add comment",
+  "admin/returns.statusHistory": "Status history",
+  "admin/returns.date": "Date",
+  "admin/returns.submittedBy": "Submitted by"
 }
