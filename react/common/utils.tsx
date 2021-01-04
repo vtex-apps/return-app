@@ -6,6 +6,25 @@ export function beautifyDate(date: string) {
   return new Date(date).toLocaleString();
 }
 
+export function returnFormDate(date: string) {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  const d = new Date(date);
+  return d.getDate() + " " + monthNames[d.getMonth()] + " " + d.getFullYear();
+}
+
 export function filterDate(date: string) {
   const d = new Date(date);
   return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
@@ -26,5 +45,9 @@ export const schemaTypes = {
 };
 
 export const requestsStatuses = {
-  new: "New"
+  new: "New",
+  approved: "Approved",
+  pendingVerification: "Pending verification",
+  partiallyApproved: "Partially approved",
+  denied: "Denied"
 };
