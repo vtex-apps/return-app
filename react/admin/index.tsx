@@ -8,6 +8,7 @@ export default class ReturnsRequests extends Component<{}, any> {
   public render() {
     return (
       <Layout
+        fullWidth
         pageHeader={
           <PageHeader
             title={<FormattedMessage id="admin/navigation.label" />}
