@@ -1,7 +1,7 @@
 import React, { Component, useEffect } from "react";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
-import { Button } from "vtex.styleguide";
+import { Button, Link } from "vtex.styleguide";
 import { FormattedCurrency } from "vtex.format-currency";
 
 class MyReturnsPage extends Component<{}, any> {
@@ -91,6 +91,7 @@ class MyReturnsPage extends Component<{}, any> {
                   <th>
                     <FormattedMessage id={"store/my-returns.thStatus"} />
                   </th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -104,6 +105,11 @@ class MyReturnsPage extends Component<{}, any> {
                       <FormattedCurrency value={request.refundedAmount / 100} />
                     </td>
                     <td>{request.status}</td>
+                    <td>
+                      <Link href={`account#/my-returns/details/` + request.id}>
+                        <FormattedMessage id={"store/my-returns.view"} />
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>

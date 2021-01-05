@@ -69,6 +69,7 @@
   "store/my-returns.thProduct": "Product",
   "store/my-returns.thQuantity": "Quantity",
   "store/my-returns.goBack": "Go Back",
+  "store/my-returns.view": "View",
   "admin/returns.product": "Product",
   "admin/returns.quantity": "Quantity",
   "admin/returns.unitPrice": "Unit price",
