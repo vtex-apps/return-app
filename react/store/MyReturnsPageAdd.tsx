@@ -2,7 +2,8 @@ import React, { Component, useEffect, useState } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
 import { Button, Input, RadioGroup, Checkbox } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
-import { schemaTypes, requestsStatuses } from "../common/utils";
+import { schemaTypes, requestsStatuses, returnFormDate } from "../common/utils";
+import { countries } from "../common/countries";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
@@ -206,7 +207,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           : "";
 
       this.setState({
-        country: order.shippingData.address.country,
+        country: countries[order.shippingData.address.country]
+          ? countries[order.shippingData.address.country]
+          : order.shippingData.address.country,
         locality: order.shippingData.address.city,
         address:
           order.shippingData.address.street +
@@ -233,8 +236,6 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     settings: any,
     updateEligibleOrders: boolean
   ) => {
-    const { currentProduct } = this.state;
-    const products: any[] = [];
     const thisOrder = order;
     if (order.shippingData.address) {
       thisOrder.country = order.shippingData.address.country;
@@ -680,6 +681,29 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       });
   }
 
+  renderTermsAndConditions = () => {
+    const { settings }: any = this.state;
+    return (
+      <FormattedMessage
+        id="store/my-returns.formAgree"
+        values={{
+          link: (
+            <span>
+              {" "}
+              <a
+                rel="noopener noreferrer"
+                target="_blank"
+                href={settings.termsUrl}
+              >
+                <FormattedMessage id="store/my-returns.TermsConditions" />
+              </a>
+            </span>
+          )
+        }}
+      />
+    );
+  };
+
   render() {
     const {
       showOrdersTable,
@@ -699,7 +723,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       orderProducts,
       loading,
       errorSubmit,
-      successSubmit
+      successSubmit,
+      selectedOrder
     }: any = this.state;
     return (
       <ContentWrapper {...this.props.headerConfig}>
@@ -772,13 +797,42 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
               )}
               {showForm ? (
                 <div>
-                  <div>
-                    <Button onClick={() => this.showTable()}>
+                  <div className={`mb6 mt4`}>
+                    <Button
+                      variation={"secondary"}
+                      size={"small"}
+                      onClick={() => this.showTable()}
+                    >
                       <FormattedMessage id={"store/my-returns.backToOrders"} />
                     </Button>
                   </div>
+                  <div
+                    className={
+                      `cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ` +
+                      styles.orderInfoHeader
+                    }
+                  >
+                    <div className={`flex flex-row`}>
+                      <div className={`flex flex-column w-50`}>
+                        <div className={`w-100 f7 f6-xl fw4 c-muted-1 ttu`}>
+                          <FormattedMessage id={"store/my-returns.orderDate"} />
+                        </div>
+                        <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
+                          {returnFormDate(selectedOrder.creationDate)}
+                        </div>
+                      </div>
+                      <div className={`flex flex-column w-50`}>
+                        <div className={`w-100 f7 f6-xl fw4 c-muted-1 ttu`}>
+                          <FormattedMessage id={"store/my-returns.thOrderId"} />
+                        </div>
+                        <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
+                          {selectedOrder.orderId}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div>
-                    <table className={styles.table}>
+                    <table className={styles.tblProducts}>
                       <thead>
                         <tr>
                           <th>
@@ -796,9 +850,20 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                       <tbody>
                         {orderProducts.map((product: any) => (
                           <tr key={`product` + product.uniqueId}>
-                            <td>{product.name}</td>
                             <td>
-                              <input
+                              <a
+                                className={styles.productUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={product.detailUrl}
+                              >
+                                {product.name}
+                              </a>
+                            </td>
+                            <td>
+                              <Input
+                                suffix={"/" + product.quantity}
+                                size={"small"}
                                 type={"number"}
                                 value={product.selectedQuantity}
                                 onChange={e => {
@@ -806,8 +871,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                                 }}
                                 max={product.quantity}
                                 min={0}
-                              />{" "}
-                              / {product.quantity}
+                              />
                             </td>
                           </tr>
                         ))}
@@ -987,9 +1051,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     <Checkbox
                       checked={agree}
                       id="agree"
-                      label={
-                        <FormattedMessage id={"store/my-returns.formAgree"} />
-                      }
+                      label={this.renderTermsAndConditions()}
                       name="agree"
                       onChange={this.handleInputChange}
                       value={agree}
@@ -1001,7 +1063,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     ) : null}
                   </div>
 
-                  <div className={"flex-ns flex-wrap flex-auto flex-column"}>
+                  <div className={`mt4`}>
                     <Button
                       type={"submit"}
                       variation="primary"
