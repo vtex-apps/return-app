@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
-import { Layout, PageBlock, PageHeader } from "vtex.styleguide";
+import {
+  Layout,
+  PageBlock,
+  PageHeader,
+  Input,
+  Spinner,
+  IconClear,
+  Button
+} from "vtex.styleguide";
 
 import styles from "../styles.css";
 
@@ -24,7 +32,8 @@ export default class ReturnsSettings extends Component<{}, any> {
       },
       successMessage: "",
       errorMessage: "",
-      loading: false
+      loading: false,
+      categorySearchLoading: false
     };
   }
 
@@ -105,14 +114,18 @@ export default class ReturnsSettings extends Component<{}, any> {
   filterCategories = (query: string) => {
     const { categories, excludedCategories } = this.state;
     const matches: any[] = [];
-    this.setState({ categoriesFilterError: "", categoryFilterQuery: query });
+    this.setState({
+      categoriesFilterError: "",
+      categoryFilterQuery: query,
+      categorySearchLoading: true
+    });
 
     if (query.length && query.length < 3) {
       this.setState({ categoriesFilterError: "Enter at least 3 characters" });
     }
 
     categories.map((category: any) => {
-      if (category.name.includes(query)) {
+      if (category.name.toLowerCase().includes(query.toLocaleLowerCase())) {
         matches.push(category);
       }
     });
@@ -130,6 +143,10 @@ export default class ReturnsSettings extends Component<{}, any> {
     } else {
       this.setState({ filteredCategories: [] });
     }
+
+    setTimeout(() => {
+      this.setState({ categorySearchLoading: false });
+    }, 1000);
   };
 
   excludeCategory = (category: any) => {
@@ -244,6 +261,10 @@ export default class ReturnsSettings extends Component<{}, any> {
       .catch(err => this.setState({ errorMessage: err, loading: false }));
   };
 
+  clearCategoriesSearch = () => {
+    this.setState({ categoryFilterQuery: "", filteredCategories: [] });
+  };
+
   render() {
     const {
       maxDays,
@@ -255,11 +276,10 @@ export default class ReturnsSettings extends Component<{}, any> {
       errors,
       successMessage,
       errorMessage,
-      loading
+      loading,
+      categorySearchLoading
     } = this.state;
-    const inputErrorClass =
-      "form-control w-100 br2 ba b--light-gray pa2 " + styles.hasError;
-    const inputClass = "form-control w-100 br2 ba b--light-gray pa2";
+
     return (
       <Layout
         pageHeader={
@@ -270,85 +290,94 @@ export default class ReturnsSettings extends Component<{}, any> {
       >
         <PageBlock variation="full">
           <div className={`flex flex-column`}>
-            <label htmlFor={"maxDays"}>
-              <FormattedMessage id={"admin/settings.maxDays_label"} />
-            </label>
-            {errors.maxDays ? (
-              <p className={`${styles.errorMessage}`}>{errors.maxDays}</p>
-            ) : null}
-            <input
-              type={"text"}
-              className={errors.maxDays ? inputErrorClass : inputClass}
-              name={"maxDays"}
-              value={maxDays}
-              onChange={e => this.setState({ maxDays: e.target.value })}
-            />
+            <FormattedMessage id={"admin/settings.maxDays_label"}>
+              {msg => (
+                <Input
+                  value={maxDays}
+                  size="regular"
+                  label={msg}
+                  onChange={e => this.setState({ maxDays: e.target.value })}
+                  errorMessage={errors.maxDays}
+                />
+              )}
+            </FormattedMessage>
           </div>
           <div className={`flex flex-column mt6`}>
-            <label htmlFor={"terms"}>
-              <FormattedMessage id={"admin/settings.terms_label"} />
-            </label>
-            {errors.termsUrl ? (
-              <p className={`${styles.errorMessage}`}>{errors.termsUrl}</p>
-            ) : null}
-            <div className={errors.termsUrl ? styles.hasError : ""}>
-              <input
-                name={"terms"}
-                className={errors.termsUrl ? inputErrorClass : inputClass}
-                type={"text"}
-                value={termsUrl}
-                onChange={e => this.setState({ termsUrl: e.target.value })}
-              />
-            </div>
+            <FormattedMessage id={"admin/settings.terms_label"}>
+              {msg => (
+                <Input
+                  value={termsUrl}
+                  size="regular"
+                  label={msg}
+                  onChange={e => this.setState({ termsUrl: e.target.value })}
+                  errorMessage={errors.termsUrl}
+                />
+              )}
+            </FormattedMessage>
           </div>
-          <div className={`flex flex-row mt6`}>
-            <div className={`flex flex-column w-50`}>
+          <div className={`flex flex-column mt6`}>
+            <div className={`flex flex-column w-100`}>
+              <FormattedMessage id={"admin/settings.searchCategories"}>
+                {msg => (
+                  <Input
+                    value={categoryFilterQuery}
+                    size="regular"
+                    label={msg}
+                    onChange={e => {
+                      this.filterCategories(e.target.value);
+                    }}
+                    errorMessage={categoriesFilterError}
+                    suffix={
+                      categoryFilterQuery ? (
+                        <button
+                          className={styles.transparentButton}
+                          onClick={() => {
+                            this.clearCategoriesSearch();
+                          }}
+                        >
+                          <IconClear />
+                        </button>
+                      ) : null
+                    }
+                  />
+                )}
+              </FormattedMessage>
+              {filteredCategories.length ? (
+                <div
+                  className={`${styles.filteredCategoriesContainer} br--bottom br2 bb bl br bw1 b--muted-3 bg-base w-100 z-1 shadow-5`}
+                >
+                  {categorySearchLoading ? (
+                    <div className={`flex justify-center pt6 pb6`}>
+                      <Spinner />
+                    </div>
+                  ) : (
+                    filteredCategories.map((category: any) => (
+                      <button
+                        className={`bn w-100 tl pointer pa4 f6 bg-base ${styles.filteredCategoriesItem}`}
+                        key={"excludeCategory-" + category.id}
+                        onClick={() => {
+                          this.excludeCategory(category);
+                        }}
+                      >
+                        {category.name}
+                      </button>
+                    ))
+                  )}
+                </div>
+              ) : null}
+            </div>
+            <div className={`flex flex-column w-100`}>
               <p>
                 <FormattedMessage id={"admin/settings.excludedCategories"} />
               </p>
               {excludedCategories.length ? (
-                <div className={`${styles.filteredCategoriesContainer}`}>
+                <div className={`flex flex-column`}>
                   {excludedCategories.map((category: any) => (
                     <button
-                      className={`${styles.filteredCategoriesItem}`}
+                      className={`bn w-100 tl pointer pa4 f6 bg-base ${styles.filteredCategoriesItem}`}
                       key={"removeExcludeCategory-" + category.id}
                       onClick={() => {
                         this.removeExcludedCategory(category);
-                      }}
-                    >
-                      {category.name}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-            <div className={`flex flex-column w-50`}>
-              <label htmlFor={"search_categories"}>
-                <FormattedMessage id={"admin/settings.searchCategories"} />
-              </label>
-              <input
-                className={`form-control w-100 br2 ba b--light-gray pa2`}
-                type={"text"}
-                name={"search_categories"}
-                value={categoryFilterQuery}
-                onChange={e => {
-                  this.filterCategories(e.target.value);
-                }}
-              />
-              {categoriesFilterError ? (
-                <div>
-                  <p>{categoriesFilterError}</p>
-                </div>
-              ) : null}
-
-              {filteredCategories.length ? (
-                <div className={`${styles.filteredCategoriesContainer}`}>
-                  {filteredCategories.map((category: any) => (
-                    <button
-                      className={`${styles.filteredCategoriesItem}`}
-                      key={"excludeCategory-" + category.id}
-                      onClick={() => {
-                        this.excludeCategory(category);
                       }}
                     >
                       {category.name}
@@ -372,13 +401,14 @@ export default class ReturnsSettings extends Component<{}, any> {
           ) : null}
           {!loading ? (
             <div className={`flex flex-column mt6`}>
-              <button
+              <Button
+                variation="primary"
                 onClick={() => {
                   this.saveSettings();
                 }}
               >
-                  <FormattedMessage id={"admin/settings.saveSettings"} />
-              </button>
+                <FormattedMessage id={"admin/settings.saveSettings"} />
+              </Button>
             </div>
           ) : null}
         </PageBlock>

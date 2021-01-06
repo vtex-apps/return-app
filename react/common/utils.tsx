@@ -25,8 +25,19 @@ export function returnFormDate(date: string) {
   return d.getDate() + " " + monthNames[d.getMonth()] + " " + d.getFullYear();
 }
 
-export function filterDate(date: string) {
-  const d = new Date(date);
+export function filterDate(date: string, separator = "-") {
+  const newDate = new Date(date);
+  const day = newDate.getDate();
+  const month = newDate.getMonth() + 1;
+  const year = newDate.getFullYear();
+
+  return `${year}${separator}${
+    month < 10 ? `0${month}` : `${month}`
+  }${separator}${day < 10 ? `0${day}` : `${day}`}`;
+}
+
+export function currentDate() {
+  const d = new Date();
   return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
 }
 
@@ -58,5 +69,4 @@ export const statusHistoryTimeline = {
   picked: "Picked up from client",
   verified: "Package verified",
   refunded: "Amount refunded"
-}
-
+};

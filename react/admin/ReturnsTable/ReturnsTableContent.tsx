@@ -8,15 +8,17 @@ import {
   DatePicker,
   ButtonWithIcon,
   ActionMenu,
-  Modal
+  Modal,
+  IconVisibilityOn
 } from "vtex.styleguide";
 import styles from "../../styles.css";
-import { beautifyDate, filterDate } from "../../common/utils";
+import { beautifyDate, currentDate, filterDate } from "../../common/utils";
 
 const initialFilters = {
   orderId: "",
   returnId: "",
-  dateSubmitted: "",
+  fromDate: "",
+  toDate: "",
   status: ""
 };
 
@@ -167,8 +169,14 @@ class ReturnsTableContent extends Component<any, any> {
       where += '__id="' + filters.returnId + '"';
     }
 
-    if (filters.dateSubmitted !== "") {
-      where += '__dateSubmitted="' + filterDate(filters.dateSubmitted) + '"';
+    let startDate = "1970-01-01";
+    let endDate = currentDate();
+    if (filters.fromDate !== "" || filters.toDate !== "") {
+      startDate =
+        filters.fromDate !== "" ? filterDate(filters.fromDate) : startDate;
+      endDate = filters.toDate !== "" ? filterDate(filters.toDate) : endDate;
+
+      where += "__dateSubmitted between " + startDate + " AND " + endDate;
     }
 
     if (filters.status !== "") {
@@ -231,11 +239,12 @@ class ReturnsTableContent extends Component<any, any> {
           cellRenderer: ({ rowData }) => {
             return (
               <Button
+                variation={"tertiary"}
                 onClick={() => {
                   window.open("/admin/returns/" + rowData.id + "/details");
                 }}
               >
-                <FormattedMessage id={"admin/returns.view"} />
+                <IconVisibilityOn />
               </Button>
             );
           }
@@ -271,11 +280,19 @@ class ReturnsTableContent extends Component<any, any> {
     }));
   }
 
-  filterDateSubmitted(val: string) {
+  filterFromDate(val: string) {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        dateSubmitted: val
+        fromDate: val
+      }
+    }));
+  }
+  filterToDate(val: string) {
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        toDate: val
       }
     }));
   }
@@ -365,19 +382,6 @@ class ReturnsTableContent extends Component<any, any> {
       selectedRequestProducts
     } = this.state;
     const statusLabel = filters.status !== "" ? filters.status : "All statuses";
-    let resetFilterButton;
-    if (this.hasFiltersApplied()) {
-      resetFilterButton = (
-        <ButtonWithIcon
-          variation="secondary"
-          size="small"
-          onClick={() => this.handleResetFilters()}
-        >
-          <FormattedMessage id={"admin/returns.clearFilters"} />
-        </ButtonWithIcon>
-      );
-    }
-
     if (error) {
       return (
         <div>
@@ -387,7 +391,6 @@ class ReturnsTableContent extends Component<any, any> {
     }
     return (
       <div>
-        <div className="ma3">{resetFilterButton}</div>
         <div className="flex items-center">
           <div className={"ma2"}>
             <FormattedMessage id={"admin/returns.requestId"}>
@@ -414,14 +417,27 @@ class ReturnsTableContent extends Component<any, any> {
             </FormattedMessage>
           </div>
           <div className={"ma2"}>
-            <FormattedMessage id={"admin/returns.submittedDate"}>
+            <FormattedMessage id={"admin/returns.filterFromDate"}>
               {msg => (
                 <DatePicker
                   placeholder={msg}
                   locale={"en-GB"}
                   size={"small"}
-                  onChange={value => this.filterDateSubmitted(value)}
-                  value={filters.dateSubmitted}
+                  onChange={value => this.filterFromDate(value)}
+                  value={filters.fromDate}
+                />
+              )}
+            </FormattedMessage>
+          </div>
+          <div className={"ma2"}>
+            <FormattedMessage id={"admin/returns.filterToDate"}>
+              {msg => (
+                <DatePicker
+                  placeholder={msg}
+                  locale={"en-GB"}
+                  size={"small"}
+                  onChange={value => this.filterToDate(value)}
+                  value={filters.toDate}
                 />
               )}
             </FormattedMessage>
@@ -469,6 +485,17 @@ class ReturnsTableContent extends Component<any, any> {
               <FormattedMessage id={"admin/returns.filterResults"} />
             </Button>
           </div>
+          {this.hasFiltersApplied() ? (
+            <div className={"ma2"}>
+              <ButtonWithIcon
+                variation="secondary"
+                size="small"
+                onClick={() => this.handleResetFilters()}
+              >
+                <FormattedMessage id={"admin/returns.clearFilters"} />
+              </ButtonWithIcon>
+            </div>
+          ) : null}
         </div>
         <Table
           fullWidth
