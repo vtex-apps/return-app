@@ -3,6 +3,7 @@ import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import { Button, Link } from "vtex.styleguide";
 import { FormattedCurrency } from "vtex.format-currency";
+import { requestsStatuses, returnFormDate } from "../common/utils";
 
 class MyReturnsPage extends Component<{}, any> {
   constructor(props: any) {
@@ -54,13 +55,28 @@ class MyReturnsPage extends Component<{}, any> {
       });
   };
 
+  renderStatusIcon(status: string) {
+    return (
+      <span
+        className={
+          status === requestsStatuses.denied
+            ? styles.iconStatusRed
+            : styles.iconStatusGreen
+        }
+      />
+    );
+  }
+
   render() {
     const { requests } = this.state;
     return (
-      <div>
+      <div className={styles.myReturnsHolder}>
         <div>
           <h2 className={`w-auto`}>
-            <FormattedMessage id="store/my-returns.pageTitle" />
+            <FormattedMessage id="store/my-returns.pageTitle" />{" "}
+            <span className={styles.totalRequestsNumber}>
+              {requests.length} <FormattedMessage id="store/my-returns.total" />
+            </span>
           </h2>
         </div>
         <div className={`flex justify-end mb3`}>
@@ -78,15 +94,10 @@ class MyReturnsPage extends Component<{}, any> {
               <thead>
                 <tr>
                   <th>
-                    <FormattedMessage id={"store/my-returns.thOrderId"} />
+                    <FormattedMessage id={"store/my-returns.thRequestNo"} />
                   </th>
                   <th>
-                    <FormattedMessage id={"store/my-returns.thTotalAmount"} />
-                  </th>
-                  <th>
-                    <FormattedMessage
-                      id={"store/my-returns.thRefundedAmount"}
-                    />
+                    <FormattedMessage id={"store/my-returns.thDate"} />
                   </th>
                   <th>
                     <FormattedMessage id={"store/my-returns.thStatus"} />
@@ -97,15 +108,12 @@ class MyReturnsPage extends Component<{}, any> {
               <tbody>
                 {requests.map((request: any) => (
                   <tr key={request.id}>
-                    <td>{request.orderId}</td>
+                    <td>{request.id}</td>
+                    <td>{returnFormDate(request.dateSubmitted)}</td>
                     <td>
-                      <FormattedCurrency value={request.totalPrice / 100} />
+                      {this.renderStatusIcon(request.status)} {request.status}
                     </td>
-                    <td>
-                      <FormattedCurrency value={request.refundedAmount / 100} />
-                    </td>
-                    <td>{request.status}</td>
-                    <td>
+                    <td className={styles.textCenter}>
                       <Link href={`account#/my-returns/details/` + request.id}>
                         <FormattedMessage id={"store/my-returns.view"} />
                       </Link>

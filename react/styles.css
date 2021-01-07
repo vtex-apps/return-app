@@ -70,21 +70,62 @@
     color: green;
 }
 
+.myReturnsHolder {
+    border: 2px solid #f2f2f2;
+    width: 1170px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.totalRequestsNumber {
+    font-size: 15px;
+    display: inline-block;
+    color: #888;
+    margin-left: 20px;
+}
+
 .table {
     border-collapse: collapse;
     width: 100%;
 }
 
-.table th {
-    text-align: center;
-    background-color: #f1f1f1;
+
+
+.table th,
+.tblProducts th {
+    text-align: left;
     font-size: 15px;
+    padding-bottom: 10px;
 }
 
 .table th,
 .table td {
-    border: 1px solid #ccc;
-    padding: 5px;
+    border: none;
+    padding: 20px 0;
+}
+
+.tblProducts td, .tblProducts th {
+    padding: 20px;
+}
+
+.table tbody tr,
+.table thead {
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.tblProducts {
+    border-collapse: collapse;
+    border: 3px solid #f2f4f5;
+    border-top: none;
+    width: 100%;
+}
+
+.tblProducts th {
+    text-align: left;
+    font-size: 15px;
+    padding-bottom: 10px;
 }
 
 .tableProducts th {
@@ -147,6 +188,23 @@
     text-transform: capitalize;
 }
 
+
+.iconStatusGreen {
+    display: inline-block;
+    background: green;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.iconStatusRed {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+}
+
 .statusIcon {
     width: 30px;
     height: 30px;
@@ -192,4 +250,13 @@
 .tableThParagraph {
     margin-bottom: 5px;
     font-weight: bold;
+}
+
+.productUrl {
+    text-decoration: none;
+    color: #0F3E99;
+}
+
+.orderInfoHeader {
+    background-color:#f2f4f5;
 }
