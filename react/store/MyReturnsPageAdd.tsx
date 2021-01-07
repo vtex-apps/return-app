@@ -2,7 +2,12 @@ import React, { Component, useEffect, useState } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
 import { Button, Input, RadioGroup, Checkbox } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
-import { schemaTypes, requestsStatuses, returnFormDate } from "../common/utils";
+import {
+  schemaTypes,
+  requestsStatuses,
+  returnFormDate,
+  schemaNames
+} from "../common/utils";
 import { countries } from "../common/countries";
 
 import { PageProps } from "../typings/utils";
@@ -145,13 +150,20 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async getSettings() {
-    return await fetch("/returns/getDocuments/returnSettings/settings/1", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
+    return await fetch(
+      "/returns/getDocuments/" +
+        schemaNames.settings +
+        "/" +
+        schemaTypes.settings +
+        "/1",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
       }
-    })
+    )
       .then(response => response.json())
       .then(json => {
         if (json && json[0]) {
@@ -317,7 +329,14 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   };
 
   async checkProduct(where: string) {
-    return await fetch("/returns/getDocuments/returnProducts/product/" + where)
+    return await fetch(
+      "/returns/getDocuments/" +
+        schemaNames.product +
+        "/" +
+        schemaTypes.products +
+        "/" +
+        where
+    )
       .then(response => response.json())
       .then(response => {
         let thisQuantity = 0;
@@ -597,13 +616,14 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       paymentMethod: paymentMethod,
       totalPrice: totalPrice,
       refundedAmount: 0,
+      voucherCode: "",
       iban: iban,
       status: requestsStatuses.new,
       dateSubmitted: getCurrentDate(),
       type: schemaTypes.requests
     };
 
-    this.sendData(requestData, "returnRequests").then(response => {
+    this.sendData(requestData, schemaNames.request).then(response => {
       if ("DocumentId" in response) {
         this.addStatusHistory(response.DocumentId).then();
         this.submitProductRequest(response.DocumentId)
@@ -633,7 +653,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       type: schemaTypes.history
     };
 
-    this.sendData(bodyData, "returnStatusHistory").then();
+    this.sendData(bodyData, schemaNames.history).then();
   }
 
   async submitProductRequest(DocumentId: string) {
@@ -657,7 +677,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           type: schemaTypes.products
         };
 
-        this.sendData(productData, "returnProducts").then();
+        this.sendData(productData, schemaNames.product).then();
       }
     });
   }

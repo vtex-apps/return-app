@@ -49,6 +49,7 @@ export default class ReturnApp extends ExternalClient {
                     "address": {"type": "string"},
                     "totalPrice": {"type": "integer"},
                     "paymentMethod": {"type": "string", "maxLength": 25},
+                    "voucherCode": {"type": "string"},
                     "refundedAmount": {"type": "integer"},
                     "iban": {"type": "string"},
                     "status": {"type": "string"},
@@ -57,14 +58,14 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
-                    "publicWrite": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
-                    "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicRead": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicWrite": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
                 "v-cache": false,
-                "v-default-fields": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
-                "v-indexed": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "refundedAmount", "iban", "status", "dateSubmitted", "type"]
+                "v-default-fields": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"]
             }
         },
         commentsSchema: {
@@ -95,9 +96,9 @@ export default class ReturnApp extends ExternalClient {
             'name': "returnProducts",
             'schema': {
                 "properties": {
-                    "refundId": {"type": "string", "IsRelationship": true},
-                    "orderId": {"type": "string", "IsRelationship": true},
-                    "userId": {"type": "string", "IsRelationship": true},
+                    "refundId": {"type": "string"},
+                    "orderId": {"type": "string"},
+                    "userId": {"type": "string"},
                     "skuId": {"type": "string"},
                     "skuName": {"type": "string"},
                     "unitPrice": {"type": "integer"},
@@ -117,7 +118,7 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-cache": false,
                 "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
-                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"]
+                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "status", "type"]
             }
         },
         statusHistorySchema: {
@@ -234,6 +235,7 @@ export default class ReturnApp extends ExternalClient {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Vtex-Use-Https': true,
+                'REST-Range': 'resources=0-100',
                 'X-VTEX-API-AppKey': settings.storeAppKey,
                 'X-VTEX-API-AppToken': settings.storeAppToken
             }

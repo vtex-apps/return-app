@@ -3,7 +3,12 @@ import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import { Button, Link } from "vtex.styleguide";
 import { FormattedCurrency } from "vtex.format-currency";
-import { requestsStatuses, returnFormDate } from "../common/utils";
+import {
+  requestsStatuses,
+  returnFormDate,
+  schemaNames,
+  schemaTypes
+} from "../common/utils";
 
 class MyReturnsPage extends Component<{}, any> {
   constructor(props: any) {
@@ -46,7 +51,14 @@ class MyReturnsPage extends Component<{}, any> {
 
           const where = "userId=" + response.UserId;
 
-          fetch("/returns/getDocuments/returnRequests/request/" + where)
+          fetch(
+            "/returns/getDocuments/" +
+              schemaNames.request +
+              "/" +
+              schemaTypes.requests +
+              "/" +
+              where
+          )
             .then(response => response.json())
             .then(async response => {
               this.setState({ requests: response });

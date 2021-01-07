@@ -5,7 +5,9 @@ import {
   schemaTypes,
   requestsStatuses,
   statusHistoryTimeline,
-  getCurrentDate
+  getCurrentDate,
+  schemaNames,
+  productStatuses
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
@@ -21,7 +23,8 @@ import {
   Dropdown,
   Checkbox,
   Textarea,
-  Button
+  Button,
+  Input
 } from "vtex.styleguide";
 
 export default class ReturnForm extends Component<{}, any> {
@@ -36,6 +39,8 @@ export default class ReturnForm extends Component<{}, any> {
       request: {},
       comment: [],
       product: [],
+      productsForm: [],
+      initialProductsForm: [],
       statusHistory: [],
       statusHistoryTimeline: [],
       error: "",
@@ -44,7 +49,9 @@ export default class ReturnForm extends Component<{}, any> {
       commentInput: "",
       visibleInput: false,
       registeredUser: "",
-      errorCommentMessage: ""
+      errorCommentMessage: "",
+      showMain: true,
+      showProductsForm: false
     };
   }
 
@@ -56,7 +63,7 @@ export default class ReturnForm extends Component<{}, any> {
   getFullData() {
     const requestId = this.props["data"]["params"]["id"];
     this.getFromMasterData(
-      "returnRequests",
+      schemaNames.request,
       schemaTypes.requests,
       requestId
     ).then(request => {
@@ -66,7 +73,7 @@ export default class ReturnForm extends Component<{}, any> {
         visibleInput: false
       });
       this.getFromMasterData(
-        "returnProducts",
+        schemaNames.product,
         schemaTypes.products,
         requestId
       ).then(response => {
@@ -78,13 +85,13 @@ export default class ReturnForm extends Component<{}, any> {
           this.setState({ totalRefundAmount: total });
 
           this.getFromMasterData(
-            "returnComments",
+            schemaNames.comment,
             schemaTypes.comments,
             requestId
           ).then(comments => {
             this.prepareHistoryData(comments, request[0]);
             this.getFromMasterData(
-              "returnStatusHistory",
+              schemaNames.history,
               schemaTypes.history,
               requestId
             ).then();
@@ -108,7 +115,7 @@ export default class ReturnForm extends Component<{}, any> {
   }
 
   async getFromMasterData(schema: string, type: string, refundId: string) {
-    const isRequest = schema === "returnRequests";
+    const isRequest = schema === schemaNames.request;
     const whereField = isRequest ? "id" : "refundId";
     return await fetch(
       "/returns/getDocuments/" +
@@ -130,47 +137,68 @@ export default class ReturnForm extends Component<{}, any> {
       .then(response => response.json())
       .then(json => {
         this.setState({ [type]: isRequest ? json[0] : json });
+        if (type === schemaTypes.products) {
+          const productsForm: any = [];
+          json.map(currentProduct => {
+            let status = productStatuses.new;
+            if (currentProduct.goodProducts === 0) {
+              status = productStatuses.denied;
+            } else if (currentProduct.goodProducts < currentProduct.quantity) {
+              status = productStatuses.partiallyApproved;
+            } else if (
+              currentProduct.goodProducts === currentProduct.quantity
+            ) {
+              status = productStatuses.approved;
+            }
+            const updatedProduct = { ...currentProduct, status: status };
+            productsForm.push(updatedProduct);
+          });
+          this.setState({
+            productsForm: productsForm,
+            initialProductsForm: productsForm
+          });
+        }
         return json;
       })
       .catch(err => this.setState({ error: err }));
   }
 
-  renderIcon(status: string) {
-    if (status === requestsStatuses.approved) {
+  renderIcon = (product: any) => {
+    if (product.status === requestsStatuses.approved) {
       return (
         <div>
           <span className={styles.statusApproved}>
-            <IconSuccess size={14} /> {status}
+            <IconSuccess size={14} /> {product.status}
           </span>
         </div>
       );
     }
 
-    if (status === requestsStatuses.denied) {
+    if (product.status === requestsStatuses.denied) {
       return (
         <div>
           <span className={styles.statusDenied}>
-            <IconFailure size={14} /> {status}
+            <IconFailure size={14} /> {product.status}
           </span>
         </div>
       );
     }
 
-    if (status === requestsStatuses.partiallyApproved) {
+    if (product.status === requestsStatuses.partiallyApproved) {
       return (
         <div>
           <span className={styles.statusPartiallyApproved}>
-            <IconWarning size={14} /> {status}
+            <IconWarning size={14} /> {product.status}
           </span>
         </div>
       );
     }
 
-    if (status === requestsStatuses.pendingVerification) {
+    if (product.status === requestsStatuses.pendingVerification) {
       return (
         <div>
           <span className={styles.statusPendingVerification}>
-            <IconClock size={14} /> {status}
+            <IconClock size={14} /> {product.status}
           </span>
         </div>
       );
@@ -179,7 +207,7 @@ export default class ReturnForm extends Component<{}, any> {
     return (
       <div>
         <span className={styles.statusNew}>
-          <IconVisibilityOn size={14} /> {status}
+          <IconVisibilityOn size={14} /> {product.status}
         </span>
       </div>
     );
@@ -244,6 +272,7 @@ export default class ReturnForm extends Component<{}, any> {
       visibleInput,
       statusInput,
       request,
+      product,
       registeredUser,
       comment
     } = this.state;
@@ -261,8 +290,20 @@ export default class ReturnForm extends Component<{}, any> {
           dateSubmitted: getCurrentDate(),
           type: schemaTypes.history
         };
-        this.updateDocument(request.id, requestData);
-        this.saveMasterData("returnStatusHistory", statusHistoryData);
+        this.updateDocument(requestData.id, requestData);
+        this.saveMasterData(schemaNames.history, statusHistoryData);
+        if (
+          request.status === requestsStatuses.new &&
+          statusInput === requestsStatuses.pendingVerification
+        ) {
+          product.map(currentProduct => {
+            const newProductInfo = {
+              ...currentProduct,
+              status: productStatuses.pendingVerification
+            };
+            this.updateDocument(newProductInfo.id, newProductInfo);
+          });
+        }
         this.setState({
           request: requestData,
           statusHistory: [...this.state.statusHistory, statusHistoryData]
@@ -281,7 +322,7 @@ export default class ReturnForm extends Component<{}, any> {
         };
         oldComments = [...oldComments, commentData];
         this.setState({ comment: oldComments, commentInput: "" });
-        this.saveMasterData("returnComments", commentData);
+        this.saveMasterData(schemaNames.comment, commentData);
       }
 
       this.prepareHistoryData(oldComments, requestData);
@@ -316,6 +357,39 @@ export default class ReturnForm extends Component<{}, any> {
       .then(response => {})
       .catch(err => err);
   };
+
+  handleQuantity(product: any, quantity: any) {
+    let status = productStatuses.new;
+    if (product.goodProducts === 0) {
+      status = productStatuses.denied;
+    } else if (product.goodProducts < product.quantity) {
+      status = productStatuses.partiallyApproved;
+    } else if (product.goodProducts === product.quantity) {
+      status = productStatuses.approved;
+    }
+
+    this.setState(prevState => ({
+      productsForm: prevState.productsForm.map(el =>
+        el.id === product.id
+          ? { ...el, goodProducts: parseInt(quantity), status: status }
+          : el
+      )
+    }));
+  }
+
+  verifyPackage() {
+    const { product, productsForm } = this.state;
+    console.log(productsForm);
+  }
+
+  cancelProductsForm() {
+    const { initialProductsForm } = this.state;
+    this.setState({
+      showMain: true,
+      showProductsForm: false,
+      productsForm: initialProductsForm
+    });
+  }
 
   renderStatusCommentForm() {
     const {
@@ -389,272 +463,378 @@ export default class ReturnForm extends Component<{}, any> {
     );
   }
 
+  canVerifyPackage() {
+    const { request } = this.state;
+    return !(
+      request.status === requestsStatuses.new ||
+      request.status === requestsStatuses.refunded
+    );
+  }
+
   render() {
     const {
       request,
       product,
+      productsForm,
       totalRefundAmount,
       statusHistoryTimeline,
-      statusHistory
+      statusHistory,
+      showMain,
+      showProductsForm
     } = this.state;
     if (!request) {
       return <div>Not Found</div>;
     }
-    return (
-      <div>
-        <Button variation="primary" size="small" href="/admin/returns/requests">
-          <FormattedMessage id={"admin/returns.back"} />
-        </Button>
-        <p>
-          <FormattedMessage
-            id={"admin/returns.details.returnForm"}
-            values={{
-              requestId: " #" + request.id,
-              requestDate: " " + returnFormDate(request.dateSubmitted)
-            }}
-          />
-        </p>
-        <table
-          className={
-            styles.table + " " + styles.tableSm + " " + styles.tableProducts
-          }
-        >
-          <thead>
-            <tr>
-              <th>
-                <FormattedMessage id={"admin/returns.product"} />
-              </th>
-              <th>
-                <FormattedMessage id={"admin/returns.quantity"} />
-              </th>
-              <th>
-                <FormattedMessage id={"admin/returns.unitPrice"} />
-              </th>
-              <th>
-                <FormattedMessage id={"admin/returns.subtotalRefund"} />
-              </th>
-              <th>
-                <FormattedMessage
-                  id={"admin/returns.productVerificationStatus"}
-                />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {product.length ? (
-              product.map(currentProduct => (
-                <tr key={currentProduct.skuId}>
-                  <td className={styles.tableProductColumn}>
-                    {currentProduct.skuName}
-                  </td>
-                  <td className={styles.textCenter}>
-                    {currentProduct.quantity}
-                  </td>
-                  <td className={styles.textCenter}>
-                    <FormattedCurrency value={currentProduct.unitPrice / 100} />
-                  </td>
-                  <td>
-                    <FormattedCurrency
-                      value={
-                        (currentProduct.unitPrice * currentProduct.quantity) /
-                        100
-                      }
-                    />
-                  </td>
-                  <td>{this.renderIcon(currentProduct.status)}</td>
-                </tr>
-              ))
-            ) : (
+
+    if (showMain) {
+      return (
+        <div>
+          <Button
+            variation="primary"
+            size="small"
+            href="/admin/returns/requests"
+          >
+            <FormattedMessage id={"admin/returns.back"} />
+          </Button>
+          <p>
+            <FormattedMessage
+              id={"admin/returns.details.returnForm"}
+              values={{
+                requestId: " #" + request.id,
+                requestDate: " " + returnFormDate(request.dateSubmitted)
+              }}
+            />
+          </p>
+          {this.canVerifyPackage() ? (
+            <Button
+              size={"small"}
+              onClick={() => {
+                this.setState({ showMain: false, showProductsForm: true });
+              }}
+            >
+              <FormattedMessage id={"admin/returns.verifyPackage"} />
+            </Button>
+          ) : null}
+
+          <table
+            className={
+              styles.table + " " + styles.tableSm + " " + styles.tableProducts
+            }
+          >
+            <thead>
               <tr>
-                <td colSpan={5} className={styles.textCenter}>
-                  <FormattedMessage id={"admin/returns.noProducts"} />
+                <th>
+                  <FormattedMessage id={"admin/returns.product"} />
+                </th>
+                <th>
+                  <FormattedMessage id={"admin/returns.quantity"} />
+                </th>
+                <th>
+                  <FormattedMessage id={"admin/returns.unitPrice"} />
+                </th>
+                <th>
+                  <FormattedMessage id={"admin/returns.subtotalRefund"} />
+                </th>
+                <th>
+                  <FormattedMessage
+                    id={"admin/returns.productVerificationStatus"}
+                  />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {product.length ? (
+                product.map(currentProduct => (
+                  <tr key={currentProduct.skuId}>
+                    <td className={styles.tableProductColumn}>
+                      {currentProduct.skuName}
+                    </td>
+                    <td className={styles.textCenter}>
+                      {currentProduct.quantity}
+                    </td>
+                    <td className={styles.textCenter}>
+                      <FormattedCurrency
+                        value={currentProduct.unitPrice / 100}
+                      />
+                    </td>
+                    <td>
+                      <FormattedCurrency
+                        value={
+                          (currentProduct.unitPrice * currentProduct.quantity) /
+                          100
+                        }
+                      />
+                    </td>
+                    <td>{this.renderIcon(currentProduct)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className={styles.textCenter}>
+                    <FormattedMessage id={"admin/returns.noProducts"} />
+                  </td>
+                </tr>
+              )}
+              <tr className={styles.tableProductsRow}>
+                <td colSpan={3}>
+                  <strong>
+                    <FormattedMessage id={"admin/returns.totalRefundAmount"} />
+                  </strong>
+                </td>
+                <td colSpan={2}>
+                  <strong>
+                    <FormattedCurrency value={totalRefundAmount / 100} />
+                  </strong>
                 </td>
               </tr>
-            )}
-            <tr className={styles.tableProductsRow}>
-              <td colSpan={3}>
-                <strong>
-                  <FormattedMessage id={"admin/returns.totalRefundAmount"} />
-                </strong>
-              </td>
-              <td colSpan={2}>
-                <strong>
-                  <FormattedCurrency value={totalRefundAmount / 100} />
-                </strong>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p className={"mt7"}>
-          <strong className={"mr6"}>
-            <FormattedMessage
-              id={"admin/returns.refOrder"}
-              values={{ orderId: " #" + request.orderId }}
-            />
-          </strong>
-          <Link
-            href={"/admin/checkout/#/orders/" + request.orderId}
-            target="_blank"
-          >
-            view order
-          </Link>
-        </p>
-        <div className={`flex-ns flex-wrap flex-row`}>
-          <div className={`flex-ns flex-wrap flex-auto flex-column pt4 pb4`}>
-            <p>
-              <strong>
-                <FormattedMessage id={"admin/returns.contactDetails"} />
-              </strong>
-            </p>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"admin/returns.name"} />: {request.name}
-              </p>
-            </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"admin/returns.email"} />: {request.email}
-              </p>
-            </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"admin/returns.phone"} />:{" "}
-                {request.phoneNumber}
-              </p>
-            </div>
-          </div>
-
-          <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-            <p>
-              <strong>
-                <FormattedMessage id={"admin/returns.pickupAddress"} />
-              </strong>
-            </p>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessage id={"admin/returns.country"} />:{" "}
-                {request.country}
-              </p>
-            </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessage id={"admin/returns.locality"} />:{" "}
-                {request.locality}
-              </p>
-            </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessage id={"admin/returns.address"} />:{" "}
-                {request.address}
-              </p>
-            </div>
-          </div>
-        </div>
-        <p>
-          <strong>
-            <FormattedMessage id={"admin/returns.refundPaymentMethod"} />
-          </strong>
-        </p>
-        {request.paymentMethod === "bank" ? (
-          <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
-            <p className={"ma1 t-small c-on-base "}>
+            </tbody>
+          </table>
+          <p className={"mt7"}>
+            <strong className={"mr6"}>
               <FormattedMessage
-                id={"store/my-returns.formBankTransferAccount"}
-              />{" "}
-              {request.iban}
-            </p>
-          </div>
-        ) : (
-          <p className={"ma1 t-small c-on-base " + styles.capitalize}>
-            {request.paymentMethod}
-          </p>
-        )}
-
-        <p className={"mt7"}>
-          <strong>
-            <FormattedMessage id={"admin/returns.status"} />
-          </strong>
-        </p>
-
-        <div>
-          {statusHistoryTimeline.map((currentHistory, i) => (
-            <div key={`statusHistoryTimeline_` + i}>
-              <p className={styles.statusLine}>
-                {currentHistory.active ? (
-                  <span
-                    className={
-                      styles.statusIcon + " " + styles.statusIconChecked
-                    }
-                  >
-                    <IconCheck size={20} color={"#fff"} />
-                  </span>
-                ) : (
-                  <span className={styles.statusIcon} />
-                )}
-
-                {currentHistory.status === "new"
-                  ? "Return form registered on " +
-                    returnFormDate(request.dateSubmitted)
-                  : currentHistory.status}
-              </p>
-              <ul
-                className={
-                  styles.statusUl +
-                  " " +
-                  (statusHistoryTimeline.length === i + 1
-                    ? styles.statusUlLast
-                    : "")
-                }
-              >
-                {currentHistory.comments.map(comment => (
-                  <li key={comment.id}>{comment.comment}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        {this.renderStatusCommentForm()}
-        <p className={"mt7"}>
-          <strong>
-            <FormattedMessage id={"admin/returns.statusHistory"} />
-          </strong>
-        </p>
-        <div className={`flex flex-column items-stretch w-100`}>
-          <div className={`flex flex-row items-stretch w-100`}>
-            <div className={`flex w-33`}>
-              <p className={styles.tableThParagraph}>
-                <FormattedMessage id={"admin/returns.date"} />
-              </p>
-            </div>
-            <div className={`flex w-33`}>
-              <p className={styles.tableThParagraph}>
-                <FormattedMessage id={"admin/returns.status"} />
-              </p>
-            </div>
-            <div className={`flex w-33`}>
-              <p className={styles.tableThParagraph}>
-                <FormattedMessage id={"admin/returns.submittedBy"} />
-              </p>
-            </div>
-          </div>
-          {statusHistory.map((status, i) => (
-            <div
-              key={`statusHistoryTable_` + i}
-              className={`flex flex-row items-stretch w-100`}
+                id={"admin/returns.refOrder"}
+                values={{ orderId: " #" + request.orderId }}
+              />
+            </strong>
+            <Link
+              href={"/admin/checkout/#/orders/" + request.orderId}
+              target="_blank"
             >
-              <div className={`flex w-33`}>
-                <p>{returnFormDate(status.dateSubmitted)}</p>
+              view order
+            </Link>
+          </p>
+          <div className={`flex-ns flex-wrap flex-row`}>
+            <div className={`flex-ns flex-wrap flex-auto flex-column pt4 pb4`}>
+              <p>
+                <strong>
+                  <FormattedMessage id={"admin/returns.contactDetails"} />
+                </strong>
+              </p>
+              <div className={"mb5"}>
+                <p className={"ma0 t-small c-on-base "}>
+                  <FormattedMessage id={"admin/returns.name"} />: {request.name}
+                </p>
               </div>
-              <div className={`flex w-33`}>
-                <p>{status.status}</p>
+              <div className={"mb5"}>
+                <p className={"ma0 t-small c-on-base "}>
+                  <FormattedMessage id={"admin/returns.email"} />:{" "}
+                  {request.email}
+                </p>
               </div>
-              <div className={`flex w-33`}>
-                <p>{status.submittedBy}</p>
+              <div className={"mb5"}>
+                <p className={"ma0 t-small c-on-base "}>
+                  <FormattedMessage id={"admin/returns.phone"} />:{" "}
+                  {request.phoneNumber}
+                </p>
               </div>
             </div>
-          ))}
+
+            <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
+              <p>
+                <strong>
+                  <FormattedMessage id={"admin/returns.pickupAddress"} />
+                </strong>
+              </p>
+              <div className={"mb5"}>
+                <p className={"ma0 t-small c-on-base"}>
+                  <FormattedMessage id={"admin/returns.country"} />:{" "}
+                  {request.country}
+                </p>
+              </div>
+              <div className={"mb5"}>
+                <p className={"ma0 t-small c-on-base"}>
+                  <FormattedMessage id={"admin/returns.locality"} />:{" "}
+                  {request.locality}
+                </p>
+              </div>
+              <div className={"mb5"}>
+                <p className={"ma0 t-small c-on-base"}>
+                  <FormattedMessage id={"admin/returns.address"} />:{" "}
+                  {request.address}
+                </p>
+              </div>
+            </div>
+          </div>
+          <p>
+            <strong>
+              <FormattedMessage id={"admin/returns.refundPaymentMethod"} />
+            </strong>
+          </p>
+          {request.paymentMethod === "bank" ? (
+            <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
+              <p className={"ma1 t-small c-on-base "}>
+                <FormattedMessage
+                  id={"store/my-returns.formBankTransferAccount"}
+                />{" "}
+                {request.iban}
+              </p>
+            </div>
+          ) : (
+            <p className={"ma1 t-small c-on-base " + styles.capitalize}>
+              {request.paymentMethod}
+            </p>
+          )}
+
+          <p className={"mt7"}>
+            <strong>
+              <FormattedMessage id={"admin/returns.status"} />
+            </strong>
+          </p>
+
+          <div>
+            {statusHistoryTimeline.map((currentHistory, i) => (
+              <div key={`statusHistoryTimeline_` + i}>
+                <p className={styles.statusLine}>
+                  {currentHistory.active ? (
+                    <span
+                      className={
+                        styles.statusIcon + " " + styles.statusIconChecked
+                      }
+                    >
+                      <IconCheck size={20} color={"#fff"} />
+                    </span>
+                  ) : (
+                    <span className={styles.statusIcon} />
+                  )}
+
+                  {currentHistory.status === "new"
+                    ? "Return form registered on " +
+                      returnFormDate(request.dateSubmitted)
+                    : currentHistory.status}
+                </p>
+                <ul
+                  className={
+                    styles.statusUl +
+                    " " +
+                    (statusHistoryTimeline.length === i + 1
+                      ? styles.statusUlLast
+                      : "")
+                  }
+                >
+                  {currentHistory.comments.map(comment => (
+                    <li key={comment.id}>{comment.comment}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          {this.renderStatusCommentForm()}
+          <p className={"mt7"}>
+            <strong>
+              <FormattedMessage id={"admin/returns.statusHistory"} />
+            </strong>
+          </p>
+          <div className={`flex flex-column items-stretch w-100`}>
+            <div className={`flex flex-row items-stretch w-100`}>
+              <div className={`flex w-33`}>
+                <p className={styles.tableThParagraph}>
+                  <FormattedMessage id={"admin/returns.date"} />
+                </p>
+              </div>
+              <div className={`flex w-33`}>
+                <p className={styles.tableThParagraph}>
+                  <FormattedMessage id={"admin/returns.status"} />
+                </p>
+              </div>
+              <div className={`flex w-33`}>
+                <p className={styles.tableThParagraph}>
+                  <FormattedMessage id={"admin/returns.submittedBy"} />
+                </p>
+              </div>
+            </div>
+            {statusHistory.map((status, i) => (
+              <div
+                key={`statusHistoryTable_` + i}
+                className={`flex flex-row items-stretch w-100`}
+              >
+                <div className={`flex w-33`}>
+                  <p>{returnFormDate(status.dateSubmitted)}</p>
+                </div>
+                <div className={`flex w-33`}>
+                  <p>{status.status}</p>
+                </div>
+                <div className={`flex w-33`}>
+                  <p>{status.submittedBy}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    if (showProductsForm) {
+      return (
+        <div>
+          <div className={`mb4`}>
+            <Button
+              size={"small"}
+              onClick={() => {
+                this.cancelProductsForm();
+              }}
+            >
+              <FormattedMessage id={"admin/returns.back"} />
+            </Button>
+          </div>
+          <table className={styles.table + " " + styles.tableSm + " "}>
+            <thead>
+              <tr>
+                <th>
+                  <FormattedMessage id={"admin/returns.product"} />
+                </th>
+                <th />
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {productsForm.length ? (
+                productsForm.map(currentProduct => (
+                  <tr key={currentProduct.skuId}>
+                    <td className={styles.tableProductColumn}>
+                      {currentProduct.skuName}
+                    </td>
+                    <td>
+                      <Input
+                        suffix={"/" + currentProduct.quantity}
+                        size={"small"}
+                        type={"number"}
+                        value={currentProduct.goodProducts}
+                        onChange={e => {
+                          this.handleQuantity(currentProduct, e.target.value);
+                        }}
+                        max={currentProduct.quantity}
+                        min={0}
+                      />
+                    </td>
+                    <td className={styles.paddingLeft20}>
+                      {this.renderIcon(currentProduct)}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className={styles.textCenter}>
+                    <FormattedMessage id={"admin/returns.noProducts"} />
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          <div className={`mt6`}>
+            <Button
+              size={`small`}
+              variation={`primary`}
+              onClick={() => {
+                this.verifyPackage();
+              }}
+            >
+              <FormattedMessage id={"admin/returns.verifyPackageButton"} />
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
   }
 }
