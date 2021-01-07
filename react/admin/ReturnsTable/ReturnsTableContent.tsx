@@ -9,7 +9,8 @@ import {
   ButtonWithIcon,
   ActionMenu,
   Modal,
-  IconVisibilityOn
+  IconVisibilityOn,
+  IconGrid
 } from "vtex.styleguide";
 import styles from "../../styles.css";
 import { beautifyDate, currentDate, filterDate } from "../../common/utils";
@@ -238,14 +239,24 @@ class ReturnsTableContent extends Component<any, any> {
           title: "View",
           cellRenderer: ({ rowData }) => {
             return (
-              <Button
-                variation={"tertiary"}
-                onClick={() => {
-                  window.open("/admin/returns/" + rowData.id + "/details");
-                }}
-              >
-                <IconVisibilityOn />
-              </Button>
+              <div>
+                <Button
+                  variation={"tertiary"}
+                  onClick={() => {
+                    this.handleViewRequest(rowData.id);
+                  }}
+                >
+                  <IconGrid />
+                </Button>
+                <Button
+                  variation={"tertiary"}
+                  onClick={() => {
+                    window.open("/admin/returns/" + rowData.id + "/details");
+                  }}
+                >
+                  <IconVisibilityOn />
+                </Button>
+              </div>
             );
           }
         }
@@ -353,7 +364,7 @@ class ReturnsTableContent extends Component<any, any> {
     }));
   }
 
-  handleViewRequest(requestId: string) {
+  handleViewRequest = (requestId: string) => {
     fetch(
       "/returns/getDocuments/returnProducts/product/refundId=" + requestId,
       {
@@ -502,9 +513,6 @@ class ReturnsTableContent extends Component<any, any> {
           loading={tableIsLoading}
           items={slicedData}
           schema={this.getTableSchema()}
-          onRowClick={({ rowData }) => {
-            this.handleViewRequest(rowData.id);
-          }}
           pagination={{
             onNextClick: this.handleNextClick,
             onPrevClick: this.handlePrevClick,

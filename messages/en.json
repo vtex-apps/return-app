@@ -26,6 +26,8 @@
   "admin/returns.statusPending": "Pending verification",
   "admin/returns.statusPartiallyApproved": "Partially approved",
   "admin/returns.statusDenied": "Denied",
+  "admin/returns.verifyPackage": "Verify Package",
+  "admin/returns.verifyPackageButton": "Submit",
   "store/my-returns.link": "My Returns",
   "store/my-returns.addReturn": "Add a new return form",
   "store/my-returns.no_returns": "No returns",

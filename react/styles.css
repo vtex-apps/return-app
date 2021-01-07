@@ -260,3 +260,7 @@
 .orderInfoHeader {
     background-color:#f2f4f5;
 }
+
+.paddingLeft20 {
+    padding-left: 20px !important;
+}

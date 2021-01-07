@@ -11,6 +11,7 @@ import {
 } from "vtex.styleguide";
 
 import styles from "../styles.css";
+import { schemaNames, schemaTypes } from "../common/utils";
 
 const categoriesArray: any[] = [];
 
@@ -58,13 +59,20 @@ export default class ReturnsSettings extends Component<{}, any> {
 
   getSettings = () => {
     this.setState({ loading: true });
-    fetch("/returns/getDocuments/returnSettings/settings/1", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
+    fetch(
+      "/returns/getDocuments/" +
+        schemaNames.settings +
+        "/" +
+        schemaTypes.settings +
+        "/1",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
       }
-    })
+    )
       .then(response => {
         return response.json();
       })
@@ -230,7 +238,7 @@ export default class ReturnsSettings extends Component<{}, any> {
   };
 
   createDocument = (postData: any) => {
-    fetch("/returns/saveDocuments/returnSettings/", {
+    fetch("/returns/saveDocuments/" + schemaNames.settings + "/", {
       method: "POST",
       body: JSON.stringify(postData),
       headers: {

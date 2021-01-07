@@ -47,6 +47,14 @@ export function diffDays(date1: string, date2: string) {
   return Math.floor(diff / dayMap);
 }
 
+export const schemaNames = {
+  request: "returnRequests",
+  product: "returnProducts",
+  comment: "returnComments",
+  history: "returnStatusHistory",
+  settings: "returnSettings"
+};
+
 export const schemaTypes = {
   settings: "settings",
   requests: "request",
@@ -63,6 +71,14 @@ export const requestsStatuses = {
   denied: "Denied",
   refunded: "Refunded"
 };
+
+export const productStatuses = {
+  new: "New",
+  pendingVerification: "Pending verification",
+  approved: "Approved",
+  partiallyApproved: "Partially approved",
+  denied: "Denied"
+}
 
 export const statusHistoryTimeline = {
   new: "new",
