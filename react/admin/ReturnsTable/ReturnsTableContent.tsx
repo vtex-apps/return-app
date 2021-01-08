@@ -463,7 +463,7 @@ class ReturnsTableContent extends Component<any, any> {
               }}
               options={[
                 {
-                  label: <FormattedMessage id="admin/returns.allStatuses" />,
+                  label: <FormattedMessage id="admin/returns.statusAllStatuses" />,
                   onClick: () => this.filterStatus("")
                 },
                 {
