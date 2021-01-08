@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export function getCurrentDate() {
   return new Date().toISOString();
 }
@@ -86,3 +88,12 @@ export const statusHistoryTimeline = {
   verified: "Package verified",
   refunded: "Amount refunded"
 };
+
+export function sendMail(jsonData) {
+  axios.post(`/returns/sendMail`, {
+    "TemplateName": "oms-return-request",
+    "applicationName": "email",
+    "logEvidence": false,
+    "jsonData": jsonData
+  });
+}

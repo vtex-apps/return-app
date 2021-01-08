@@ -6,14 +6,14 @@ import {
   schemaTypes,
   requestsStatuses,
   returnFormDate,
-  schemaNames
+  schemaNames,
+  sendMail
 } from "../common/utils";
 import { countries } from "../common/countries";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
 import { getCurrentDate, diffDays, beautifyDate } from "../common/utils";
-import axios from 'axios';
 
 type Errors = {
   name: string;
@@ -634,17 +634,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
               successSubmit: "Your request has been successfully sent"
             });
 
-            axios.post(`/returns/sendMail`, {
-              "TemplateName": "oms-return-request",
-              "applicationName": "email",
-              "logEvidence": false,
-              "jsonData": {
-                data: requestData,
-                products: orderProducts
-              }
-            }).then(() => {
-              // console.log(requestData)
-              // console.log(orderProducts)
+            sendMail({
+              data: requestData,
+              products: orderProducts
             })
 
           })
