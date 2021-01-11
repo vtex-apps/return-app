@@ -81,9 +81,23 @@ class RequestInfo extends Component<Props> {
             </p>
           </div>
         ) : (
-          <p className={"ma1 t-small c-on-base " + styles.capitalize}>
-            {request.paymentMethod}
-          </p>
+          <div>
+            <p className={"ma1 t-small c-on-base " + styles.capitalize}>
+              {request.paymentMethod}{" "}
+            </p>
+            {request.paymentMethod === "voucher" ? (
+              <p className={`ma1 t-small c-on-base`}>
+                <FormattedMessage id={"admin/returns.voucherCode"} />{" "}
+                {request.voucherCode ? (
+                  request.voucherCode
+                ) : (
+                  <FormattedMessage
+                    id={"admin/returns.voucherCodeNotGenerated"}
+                  />
+                )}
+              </p>
+            ) : null}
+          </div>
         )}
       </div>
     );

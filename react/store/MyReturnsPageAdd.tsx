@@ -8,11 +8,16 @@ import {
   returnFormDate,
   schemaNames
 } from "../common/utils";
+import { isValidIBANNumber } from "../common/validations";
 import { countries } from "../common/countries";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
 import { getCurrentDate, diffDays, beautifyDate } from "../common/utils";
+
+function FormattedMessageFixed(props) {
+  return <FormattedMessage {...props} />;
+}
 
 type Errors = {
   name: string;
@@ -51,52 +56,42 @@ type State = {
   loading: boolean;
   settings: {};
   currentProduct: {};
+  submittedRequest: boolean;
 };
 
 const errorMessages = {
   name: {
-    id: "store/my-returns.formErrorName",
-    default: "Your name is required"
+    id: "store/my-returns.formErrorName"
   },
   email: {
-    id: "store/my-returns.formErrorEmail",
-    default: "Email si required"
+    id: "store/my-returns.formErrorEmail"
   },
   emailInvalid: {
-    id: "store/my-returns.formErrorEmailInvalid",
-    default: "Invalid email address"
+    id: "store/my-returns.formErrorEmailInvalid"
   },
   phone: {
-    id: "store/my-returns.formErrorPhone",
-    default: "Phone is required"
+    id: "store/my-returns.formErrorPhone"
   },
   country: {
-    id: "store/my-returns.formErrorCountry",
-    default: "Country is required"
+    id: "store/my-returns.formErrorCountry"
   },
   locality: {
-    id: "store/my-returns.formErrorLocality",
-    default: "Locality is required"
+    id: "store/my-returns.formErrorLocality"
   },
   address: {
-    id: "store/my-returns.formErrorAddress",
-    default: "Address is required"
+    id: "store/my-returns.formErrorAddress"
   },
   paymentMethod: {
-    id: "store/my-returns.formErrorPaymentMethod",
-    default: "Payment method is required"
+    id: "store/my-returns.formErrorPaymentMethod"
   },
   iban: {
-    id: "store/my-returns.formErrorIBAN",
-    default: "IBAN is required"
+    id: "store/my-returns.formErrorIBAN"
   },
   agree: {
-    id: "store/my-returns.formErrorAgree",
-    default: "You must accept our terms and conditions"
+    id: "store/my-returns.formErrorAgree"
   },
   productQuantities: {
-    id: "store/my-returns.formErrorQuantities",
-    default: "You must select at least one product"
+    id: "store/my-returns.formErrorQuantities"
   }
 };
 
@@ -143,7 +138,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       orderProducts: [],
       settings: {},
       loading: false,
-      currentProduct: {}
+      currentProduct: {},
+      submittedRequest: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.selectOrder = this.selectOrder.bind(this);
@@ -206,7 +202,6 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     )
       .then(response => response.json())
       .then(res => {
-        console.log(res);
         return Promise.resolve(res);
       });
   }
@@ -263,23 +258,29 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         order.shippingData.address.number +
         complement;
     }
+
     const promises = order.items.map((product: any) => {
       return new Promise((resolve, reject) => {
+        let categoryCount = 0;
         let eligible = false;
         const excludedCategories = JSON.parse(settings.excludedCategories);
-
         if (excludedCategories.length) {
           const categories = product.additionalInfo.categories;
           if (categories.length) {
             categories.map((category: any) => {
-              if (!settings.excludedCategories.includes(category.id)) {
-                eligible = true;
+              const excludedMatch = excludedCategories.filter(
+                excl => category.id === excl.id
+              );
+              if (excludedMatch.length) {
+                categoryCount++;
               }
             });
           }
         } else {
           eligible = true;
         }
+
+        eligible = !categoryCount;
 
         const where =
           "userId=" +
@@ -311,23 +312,37 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
             if (isEligible) {
               resolve(currentProduct);
               return;
+            } else {
+              resolve(false);
+              return;
             }
           });
       });
     });
-    Promise.all(promises).then(eligibleProducts => {
-      if (eligibleProducts.length) {
-        if (updateEligibleOrders) {
-          const previousOrders = this.state.eligibleOrders;
-          previousOrders.push(thisOrder);
-          this.setState({
-            eligibleOrders: previousOrders
-          });
+    Promise.all(promises)
+      .then(eligibleProducts => {
+        const products = eligibleProducts.filter(product => product);
+        const previousOrders = this.state.eligibleOrders;
+        if (products.length) {
+          if (updateEligibleOrders) {
+            previousOrders.push(thisOrder);
+            this.setState({
+              eligibleOrders: previousOrders
+            });
+          }
         }
-        this.setState({ orderProducts: eligibleProducts });
-      }
-      this.setState({ loading: false });
-    });
+        return { previousOrders, products };
+      })
+      .then(({ previousOrders, products }) => {
+        this.setState({
+          orderProducts: products,
+          eligibleOrders: previousOrders
+        });
+
+        setTimeout(() => {
+          this.setState({ loading: false });
+        }, 500);
+      });
   };
 
   async checkProduct(where: string) {
@@ -425,7 +440,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          name: errorMessages.name.default
+          name: errorMessages.name.id
         }
       }));
       errors = true;
@@ -434,7 +449,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          email: errorMessages.email.default
+          email: errorMessages.email.id
         }
       }));
       errors = true;
@@ -444,7 +459,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          email: errorMessages.emailInvalid.default
+          email: errorMessages.emailInvalid.id
         }
       }));
       errors = true;
@@ -454,7 +469,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          phone: errorMessages.phone.default
+          phone: errorMessages.phone.id
         }
       }));
       errors = true;
@@ -464,7 +479,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          country: errorMessages.country.default
+          country: errorMessages.country.id
         }
       }));
       errors = true;
@@ -474,7 +489,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          locality: errorMessages.locality.default
+          locality: errorMessages.locality.id
         }
       }));
       errors = true;
@@ -484,7 +499,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          address: errorMessages.address.default
+          address: errorMessages.address.id
         }
       }));
       errors = true;
@@ -494,15 +509,18 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          paymentMethod: errorMessages.paymentMethod.default
+          paymentMethod: errorMessages.paymentMethod.id
         }
       }));
       errors = true;
-    } else if (paymentMethod === "bank" && !iban) {
+    } else if (
+      (paymentMethod === "bank" && !iban) ||
+      (paymentMethod === "bank" && !isValidIBANNumber(iban))
+    ) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          iban: errorMessages.iban.default
+          iban: errorMessages.iban.id
         }
       }));
       errors = true;
@@ -512,7 +530,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          agree: errorMessages.agree.default
+          agree: errorMessages.agree.id
         }
       }));
       errors = true;
@@ -528,7 +546,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          productQuantities: errorMessages.productQuantities.default
+          productQuantities: errorMessages.productQuantities.id
         }
       }));
       errors = true;
@@ -631,7 +649,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         this.submitProductRequest(response.DocumentId)
           .then(() => {
             this.setState({
-              successSubmit: "Your request has been successfully sent"
+              successSubmit: "Your request has been successfully sent",
+              submittedRequest: true
             });
           })
           .then(() => {
@@ -639,7 +658,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           });
       } else {
         this.setState({
-          errorSubmit: "An error occured while processing your request."
+          errorSubmit: "An error occured while processing your request.",
+          submittedRequest: true
         });
       }
     });
@@ -746,7 +766,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       loading,
       errorSubmit,
       successSubmit,
-      selectedOrder
+      selectedOrder,
+      submittedRequest
     }: any = this.state;
     return (
       <ContentWrapper {...this.props.headerConfig}>
@@ -754,16 +775,30 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           if (loading) {
             return <div>Loading...</div>;
           }
+
+          if (submittedRequest) {
+            return (
+              <div>
+                {successSubmit ? (
+                  <div>
+                    <p className={styles.successMessage}>{successSubmit}</p>
+                  </div>
+                ) : null}
+                <div className={`flex flex-column items-center`}>
+                  <span className="mb4">
+                    <Button href={"/account#/my-returns"}>
+                      <FormattedMessage id={"store/my-returns.backToOrders"} />
+                    </Button>
+                  </span>
+                </div>
+              </div>
+            );
+          }
           return (
             <div>
               {showOrdersTable ? (
                 <div>
-                  {successSubmit ? (
-                    <div>
-                      <p className={styles.successMessage}>{successSubmit}</p>
-                    </div>
-                  ) : null}
-                  {eligibleOrders.length ? (
+                  {eligibleOrders.length && !loading ? (
                     <div>
                       <table className={styles.table}>
                         <thead>
@@ -901,7 +936,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     </table>
                     {errors.productQuantities ? (
                       <p className={styles.errorMessage}>
-                        {errors.productQuantities}
+                        <FormattedMessageFixed id={errors.productQuantities} />
                       </p>
                     ) : null}
                   </div>
@@ -922,7 +957,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={name}
-                              errorMessage={errors.name}
+                              errorMessage={
+                                errors.name ? (
+                                  <FormattedMessageFixed id={errors.name} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -935,7 +976,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={email}
-                              errorMessage={errors.email}
+                              errorMessage={
+                                errors.email ? (
+                                  <FormattedMessageFixed id={errors.email} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -948,7 +995,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={phone}
-                              errorMessage={errors.phone}
+                              errorMessage={
+                                errors.phone ? (
+                                  <FormattedMessageFixed id={errors.phone} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -971,7 +1024,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={country}
-                              errorMessage={errors.country}
+                              errorMessage={
+                                errors.country ? (
+                                  <FormattedMessageFixed id={errors.country} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -984,7 +1043,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={locality}
-                              errorMessage={errors.locality}
+                              errorMessage={
+                                errors.locality ? (
+                                  <FormattedMessageFixed id={errors.locality} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -997,7 +1062,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={address}
-                              errorMessage={errors.address}
+                              errorMessage={
+                                errors.address ? (
+                                  <FormattedMessageFixed id={errors.address} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -1043,7 +1114,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                         }
                       ]}
                       value={paymentMethod}
-                      errorMessage={errors.paymentMethod}
+                      errorMessage={
+                        errors.paymentMethod ? (
+                          <FormattedMessageFixed id={errors.paymentMethod} />
+                        ) : (
+                          ""
+                        )
+                      }
                       onChange={this.handleInputChange}
                     />
                     {paymentMethod === "bank" ? (
@@ -1059,7 +1136,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               placeholder={msg}
                               onChange={this.handleInputChange}
                               value={iban}
-                              errorMessage={errors.iban}
+                              errorMessage={
+                                errors.iban ? (
+                                  <FormattedMessageFixed id={errors.iban} />
+                                ) : (
+                                  ""
+                                )
+                              }
                             />
                           )}
                         </FormattedMessage>
@@ -1080,7 +1163,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     />
                     {errors.agree ? (
                       <p className={"c-danger t-small mt3 lh-title"}>
-                        {errors.agree}
+                        <FormattedMessageFixed id={errors.agree} />
                       </p>
                     ) : null}
                   </div>
