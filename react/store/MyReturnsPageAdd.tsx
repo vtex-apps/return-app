@@ -206,6 +206,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     )
       .then(response => response.json())
       .then(res => {
+        console.log(res);
         return Promise.resolve(res);
       });
   }
@@ -325,6 +326,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         }
         this.setState({ orderProducts: eligibleProducts });
       }
+      this.setState({ loading: false });
     });
   };
 
@@ -356,28 +358,24 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       if (settings !== null) {
         this.setState({ settings: settings });
         this.getProfile().then(user => {
-          this.getOrders(user.Email)
-            .then(orders => {
-              if ("list" in orders) {
-                if (orders.list.length) {
-                  orders.list.map((order: any) => {
-                    if (
-                      diffDays(currentDate, order.creationDate) <=
-                      settings.maxDays
-                    ) {
-                      this.getOrder(order.orderId, user.Email).then(
-                        currentOrder => {
-                          this.prepareOrderData(currentOrder, settings, true);
-                        }
-                      );
-                    }
-                  });
-                }
+          this.getOrders(user.Email).then(orders => {
+            if ("list" in orders) {
+              if (orders.list.length) {
+                orders.list.map((order: any) => {
+                  if (
+                    diffDays(currentDate, order.creationDate) <=
+                    settings.maxDays
+                  ) {
+                    this.getOrder(order.orderId, user.Email).then(
+                      currentOrder => {
+                        this.prepareOrderData(currentOrder, settings, true);
+                      }
+                    );
+                  }
+                });
               }
-            })
-            .then(() => {
-              this.setState({ loading: false });
-            });
+            }
+          });
         });
       }
     });
@@ -578,7 +576,11 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     this.setState(prevState => ({
       orderProducts: prevState.orderProducts.map(el =>
         el.uniqueId === product.uniqueId
-          ? { ...el, selectedQuantity: quantity }
+          ? {
+              ...el,
+              selectedQuantity:
+                quantity > product.quantity ? product.quantity : quantity
+            }
           : el
       )
     }));
