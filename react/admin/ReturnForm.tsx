@@ -330,12 +330,14 @@ export default class ReturnForm extends Component<{}, any> {
       this.prepareHistoryData(oldComments, requestData);
 
       if (statusInput !== request.status) {
-        const { product, request } = this.state;
-        console.log(this.state);
-        // sendMail({
-        //   data: { ...{ DocumentId: request.id }, ...request },
-        //   products: product
-        // });
+        window.setTimeout(() => {
+          const { product, request, statusHistoryTimeline } = this.state;
+          sendMail({
+            data: { ...{ DocumentId: request.id }, ...request },
+            products: product,
+            timeline: statusHistoryTimeline
+          });
+        }, 2000);
       }
     } else {
       this.setState({
