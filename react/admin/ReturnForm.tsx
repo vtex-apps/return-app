@@ -11,7 +11,6 @@ import {
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
-import { FormattedCurrency } from "vtex.format-currency";
 import {
   IconSuccess,
   IconFailure,
@@ -26,6 +25,9 @@ import {
   Button,
   Input
 } from "vtex.styleguide";
+import ProductsTable from "../components/ProductsTable";
+import RequestInfo from "../components/RequestInfo";
+import StatusHistoryTable from "../components/StatusHistoryTable";
 
 export default class ReturnForm extends Component<{}, any> {
   static propTypes = {
@@ -59,6 +61,56 @@ export default class ReturnForm extends Component<{}, any> {
     this.getProfile().then();
     this.getFullData();
   }
+
+  renderIcon = (product: any) => {
+    if (product.status === requestsStatuses.approved) {
+      return (
+        <div>
+          <span className={styles.statusApproved}>
+            <IconSuccess size={14} /> {product.status}
+          </span>
+        </div>
+      );
+    }
+
+    if (product.status === requestsStatuses.denied) {
+      return (
+        <div>
+          <span className={styles.statusDenied}>
+            <IconFailure size={14} /> {product.status}
+          </span>
+        </div>
+      );
+    }
+
+    if (product.status === requestsStatuses.partiallyApproved) {
+      return (
+        <div>
+          <span className={styles.statusPartiallyApproved}>
+            <IconWarning size={14} /> {product.status}
+          </span>
+        </div>
+      );
+    }
+
+    if (product.status === requestsStatuses.pendingVerification) {
+      return (
+        <div>
+          <span className={styles.statusPendingVerification}>
+            <IconClock size={14} /> {product.status}
+          </span>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <span className={styles.statusNew}>
+          <IconVisibilityOn size={14} /> {product.status}
+        </span>
+      </div>
+    );
+  };
 
   getFullData() {
     const requestId = this.props["data"]["params"]["id"];
@@ -161,56 +213,6 @@ export default class ReturnForm extends Component<{}, any> {
         return json;
       })
       .catch(err => this.setState({ error: err }));
-  }
-
-  renderIcon = (product: any) => {
-    if (product.status === requestsStatuses.approved) {
-      return (
-        <div>
-          <span className={styles.statusApproved}>
-            <IconSuccess size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    if (product.status === requestsStatuses.denied) {
-      return (
-        <div>
-          <span className={styles.statusDenied}>
-            <IconFailure size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    if (product.status === requestsStatuses.partiallyApproved) {
-      return (
-        <div>
-          <span className={styles.statusPartiallyApproved}>
-            <IconWarning size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    if (product.status === requestsStatuses.pendingVerification) {
-      return (
-        <div>
-          <span className={styles.statusPendingVerification}>
-            <IconClock size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        <span className={styles.statusNew}>
-          <IconVisibilityOn size={14} /> {product.status}
-        </span>
-      </div>
-    );
   }
 
   prepareHistoryData(comment: any, request: any) {
@@ -368,27 +370,40 @@ export default class ReturnForm extends Component<{}, any> {
   };
 
   handleQuantity(product: any, quantity: any) {
+    const quantityInput = parseInt(quantity);
     let status = productStatuses.new;
-    if (product.goodProducts === 0) {
+    if (quantityInput == 0) {
       status = productStatuses.denied;
-    } else if (product.goodProducts < product.quantity) {
+    } else if (quantityInput < product.quantity) {
       status = productStatuses.partiallyApproved;
-    } else if (product.goodProducts === product.quantity) {
+    } else if (product.quantity === quantityInput) {
       status = productStatuses.approved;
     }
 
     this.setState(prevState => ({
       productsForm: prevState.productsForm.map(el =>
         el.id === product.id
-          ? { ...el, goodProducts: parseInt(quantity), status: status }
+          ? { ...el, goodProducts: quantityInput, status: status }
           : el
       )
     }));
   }
 
   verifyPackage() {
-    const { product, productsForm } = this.state;
-    console.log(productsForm);
+    const { request, productsForm } = this.state;
+    let refundedAmount = 0;
+    productsForm.map(currentProduct => {
+      refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice;
+      this.updateDocument(currentProduct.id, currentProduct);
+    });
+
+    const updatedRequest = { ...request, refundedAmount: refundedAmount };
+    this.updateDocument(request.id, updatedRequest);
+    this.setState({
+      showMain: true,
+      showProductsForm: false,
+      product: productsForm
+    });
   }
 
   cancelProductsForm() {
@@ -400,6 +415,74 @@ export default class ReturnForm extends Component<{}, any> {
     });
   }
 
+  allowedStatuses(status) {
+    const { product } = this.state;
+    const extractStatuses = {
+      [productStatuses.new]: 0,
+      [productStatuses.pendingVerification]: 0,
+      [productStatuses.partiallyApproved]: 0,
+      [productStatuses.approved]: 0,
+      [productStatuses.denied]: 0
+    };
+    let totalProducts = 0;
+    product.map(currentProduct => {
+      extractStatuses[currentProduct.status] += 1;
+      totalProducts += 1;
+    });
+
+    const currentStatus = status + " (current status)";
+    let allowedStatuses: any = [{ label: currentStatus, value: status }];
+    if (status === requestsStatuses.new) {
+      allowedStatuses.push({
+        label: requestsStatuses.pendingVerification,
+        value: requestsStatuses.pendingVerification
+      });
+    }
+
+    if (status === requestsStatuses.pendingVerification) {
+      if (
+        extractStatuses[productStatuses.new] > 0 ||
+        extractStatuses[productStatuses.pendingVerification] > 0
+      ) {
+        // Caz in care cel putin un produs nu a fost verificat >> Pending Verification. Nu actionam
+      } else if (extractStatuses[productStatuses.approved] === totalProducts) {
+        // Caz in care toate sunt Approved >> Approved
+        allowedStatuses.push({
+          label: requestsStatuses.approved,
+          value: requestsStatuses.approved
+        });
+      } else if (extractStatuses[productStatuses.denied] === totalProducts) {
+        // Caz in care toate produsele sunt denied >> Denied
+        allowedStatuses.push({
+          label: requestsStatuses.denied,
+          value: requestsStatuses.denied
+        });
+      } else if (
+        (extractStatuses[productStatuses.approved] > 0 &&
+          extractStatuses[productStatuses.approved] < totalProducts) ||
+        extractStatuses[productStatuses.partiallyApproved] > 0
+      ) {
+        // Caz in care exista produse approved sau partiallyApproved si sau denied >> Partially Approved
+        allowedStatuses.push({
+          label: requestsStatuses.partiallyApproved,
+          value: requestsStatuses.partiallyApproved
+        });
+      }
+    }
+
+    if (
+      status === requestsStatuses.partiallyApproved ||
+      status === requestsStatuses.approved
+    ) {
+      allowedStatuses = [
+        { label: currentStatus, value: status },
+        { label: requestsStatuses.refunded, value: requestsStatuses.refunded }
+      ];
+    }
+
+    return allowedStatuses;
+  }
+
   renderStatusCommentForm() {
     const {
       request,
@@ -408,16 +491,7 @@ export default class ReturnForm extends Component<{}, any> {
       visibleInput,
       errorCommentMessage
     } = this.state;
-    const statusesOptions: any[] = [];
-    Object.keys(requestsStatuses).map(function(key) {
-      statusesOptions.push({
-        label:
-          requestsStatuses[key] === request.status
-            ? requestsStatuses[key] + " (current status)"
-            : requestsStatuses[key],
-        value: requestsStatuses[key]
-      });
-    });
+    const statusesOptions = this.allowedStatuses(request.status);
 
     return (
       <div>
@@ -525,79 +599,11 @@ export default class ReturnForm extends Component<{}, any> {
             </Button>
           ) : null}
 
-          <table
-            className={
-              styles.table + " " + styles.tableSm + " " + styles.tableProducts
-            }
-          >
-            <thead>
-              <tr>
-                <th>
-                  <FormattedMessage id={"admin/returns.product"} />
-                </th>
-                <th>
-                  <FormattedMessage id={"admin/returns.quantity"} />
-                </th>
-                <th>
-                  <FormattedMessage id={"admin/returns.unitPrice"} />
-                </th>
-                <th>
-                  <FormattedMessage id={"admin/returns.subtotalRefund"} />
-                </th>
-                <th>
-                  <FormattedMessage
-                    id={"admin/returns.productVerificationStatus"}
-                  />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {product.length ? (
-                product.map(currentProduct => (
-                  <tr key={currentProduct.skuId}>
-                    <td className={styles.tableProductColumn}>
-                      {currentProduct.skuName}
-                    </td>
-                    <td className={styles.textCenter}>
-                      {currentProduct.quantity}
-                    </td>
-                    <td className={styles.textCenter}>
-                      <FormattedCurrency
-                        value={currentProduct.unitPrice / 100}
-                      />
-                    </td>
-                    <td>
-                      <FormattedCurrency
-                        value={
-                          (currentProduct.unitPrice * currentProduct.quantity) /
-                          100
-                        }
-                      />
-                    </td>
-                    <td>{this.renderIcon(currentProduct)}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className={styles.textCenter}>
-                    <FormattedMessage id={"admin/returns.noProducts"} />
-                  </td>
-                </tr>
-              )}
-              <tr className={styles.tableProductsRow}>
-                <td colSpan={3}>
-                  <strong>
-                    <FormattedMessage id={"admin/returns.totalRefundAmount"} />
-                  </strong>
-                </td>
-                <td colSpan={2}>
-                  <strong>
-                    <FormattedCurrency value={totalRefundAmount / 100} />
-                  </strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <ProductsTable
+            product={product}
+            intlZone={"admin/returns"}
+            totalRefundAmount={totalRefundAmount}
+          />
           <p className={"mt7"}>
             <strong className={"mr6"}>
               <FormattedMessage
@@ -612,77 +618,8 @@ export default class ReturnForm extends Component<{}, any> {
               view order
             </Link>
           </p>
-          <div className={`flex-ns flex-wrap flex-row`}>
-            <div className={`flex-ns flex-wrap flex-auto flex-column pt4 pb4`}>
-              <p>
-                <strong>
-                  <FormattedMessage id={"admin/returns.contactDetails"} />
-                </strong>
-              </p>
-              <div className={"mb5"}>
-                <p className={"ma0 t-small c-on-base "}>
-                  <FormattedMessage id={"admin/returns.name"} />: {request.name}
-                </p>
-              </div>
-              <div className={"mb5"}>
-                <p className={"ma0 t-small c-on-base "}>
-                  <FormattedMessage id={"admin/returns.email"} />:{" "}
-                  {request.email}
-                </p>
-              </div>
-              <div className={"mb5"}>
-                <p className={"ma0 t-small c-on-base "}>
-                  <FormattedMessage id={"admin/returns.phone"} />:{" "}
-                  {request.phoneNumber}
-                </p>
-              </div>
-            </div>
 
-            <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-              <p>
-                <strong>
-                  <FormattedMessage id={"admin/returns.pickupAddress"} />
-                </strong>
-              </p>
-              <div className={"mb5"}>
-                <p className={"ma0 t-small c-on-base"}>
-                  <FormattedMessage id={"admin/returns.country"} />:{" "}
-                  {request.country}
-                </p>
-              </div>
-              <div className={"mb5"}>
-                <p className={"ma0 t-small c-on-base"}>
-                  <FormattedMessage id={"admin/returns.locality"} />:{" "}
-                  {request.locality}
-                </p>
-              </div>
-              <div className={"mb5"}>
-                <p className={"ma0 t-small c-on-base"}>
-                  <FormattedMessage id={"admin/returns.address"} />:{" "}
-                  {request.address}
-                </p>
-              </div>
-            </div>
-          </div>
-          <p>
-            <strong>
-              <FormattedMessage id={"admin/returns.refundPaymentMethod"} />
-            </strong>
-          </p>
-          {request.paymentMethod === "bank" ? (
-            <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
-              <p className={"ma1 t-small c-on-base "}>
-                <FormattedMessage
-                  id={"store/my-returns.formBankTransferAccount"}
-                />{" "}
-                {request.iban}
-              </p>
-            </div>
-          ) : (
-            <p className={"ma1 t-small c-on-base " + styles.capitalize}>
-              {request.paymentMethod}
-            </p>
-          )}
+          <RequestInfo request={request} />
 
           <p className={"mt7"}>
             <strong>
@@ -728,46 +665,10 @@ export default class ReturnForm extends Component<{}, any> {
             ))}
           </div>
           {this.renderStatusCommentForm()}
-          <p className={"mt7"}>
-            <strong>
-              <FormattedMessage id={"admin/returns.statusHistory"} />
-            </strong>
-          </p>
-          <div className={`flex flex-column items-stretch w-100`}>
-            <div className={`flex flex-row items-stretch w-100`}>
-              <div className={`flex w-33`}>
-                <p className={styles.tableThParagraph}>
-                  <FormattedMessage id={"admin/returns.date"} />
-                </p>
-              </div>
-              <div className={`flex w-33`}>
-                <p className={styles.tableThParagraph}>
-                  <FormattedMessage id={"admin/returns.status"} />
-                </p>
-              </div>
-              <div className={`flex w-33`}>
-                <p className={styles.tableThParagraph}>
-                  <FormattedMessage id={"admin/returns.submittedBy"} />
-                </p>
-              </div>
-            </div>
-            {statusHistory.map((status, i) => (
-              <div
-                key={`statusHistoryTable_` + i}
-                className={`flex flex-row items-stretch w-100`}
-              >
-                <div className={`flex w-33`}>
-                  <p>{returnFormDate(status.dateSubmitted)}</p>
-                </div>
-                <div className={`flex w-33`}>
-                  <p>{status.status}</p>
-                </div>
-                <div className={`flex w-33`}>
-                  <p>{status.submittedBy}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <StatusHistoryTable
+            statusHistory={statusHistory}
+            intlZone={"admin/returns"}
+          />
         </div>
       );
     }
