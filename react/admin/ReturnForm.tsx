@@ -7,7 +7,7 @@ import {
   statusHistoryTimeline,
   getCurrentDate,
   schemaNames,
-  productStatuses
+  productStatuses, sendMail
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
@@ -326,6 +326,15 @@ export default class ReturnForm extends Component<{}, any> {
       }
 
       this.prepareHistoryData(oldComments, requestData);
+
+      if (statusInput !== request.status) {
+        const { product, request } = this.state;
+        console.log(this.state);
+        // sendMail({
+        //   data: { ...{ DocumentId: request.id }, ...request },
+        //   products: product
+        // });
+      }
     } else {
       this.setState({
         errorCommentMessage:

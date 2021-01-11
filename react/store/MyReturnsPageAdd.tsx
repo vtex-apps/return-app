@@ -586,7 +586,6 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   private sendRequest() {
-    console.log(this.state)
     let totalPrice = 0;
     this.setState({ errorSubmit: "" });
     const {
@@ -633,12 +632,10 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
             this.setState({
               successSubmit: "Your request has been successfully sent"
             });
-
             sendMail({
-              data: requestData,
+              data: { ...requestData, ...response },
               products: orderProducts
-            })
-
+            });
           })
           .then(() => {
             this.showTable();
