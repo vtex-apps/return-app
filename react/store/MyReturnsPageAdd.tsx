@@ -6,7 +6,8 @@ import {
   schemaTypes,
   requestsStatuses,
   returnFormDate,
-  schemaNames
+  schemaNames,
+  sendMail
 } from "../common/utils";
 import { isValidIBANNumber } from "../common/validations";
 import { countries } from "../common/countries";
@@ -540,7 +541,11 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     let quantities = 0;
 
     orderProducts.map((product: any) => {
-      quantities += parseInt(product.selectedQuantity);
+      if (product.selectedQuantity === "") {
+        quantities += 0;
+      } else {
+        quantities += parseInt(product.selectedQuantity);
+      }
     });
 
     if (quantities === 0) {
@@ -656,6 +661,10 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                 />
               ),
               submittedRequest: true
+            });
+            sendMail({
+              data: { ...requestData, ...response },
+              products: orderProducts
             });
           })
           .then(() => {

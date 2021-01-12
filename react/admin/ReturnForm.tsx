@@ -10,7 +10,8 @@ import {
   productStatuses,
   renderIcon,
   prepareHistoryData,
-  FormattedMessageFixed
+  FormattedMessageFixed,
+  sendMail
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
@@ -410,6 +411,16 @@ export default class ReturnForm extends Component<{}, any> {
           "admin/returns"
         )
       });
+      if (statusInput !== request.status) {
+        window.setTimeout(() => {
+          const { product, requestData, statusHistoryTimeline } = this.state;
+          sendMail({
+            data: { ...{ DocumentId: requestData.id }, ...requestData },
+            products: product,
+            timeline: statusHistoryTimeline
+          });
+        }, 2000);
+      }
     } else {
       this.setState({
         errorCommentMessage: (
@@ -468,6 +479,7 @@ export default class ReturnForm extends Component<{}, any> {
     const updatedRequest = { ...request, refundedAmount: refundedAmount };
     this.updateDocument(request.id, updatedRequest);
     this.setState({
+      request: updatedRequest,
       showMain: true,
       showProductsForm: false,
       product: productsForm
@@ -633,7 +645,6 @@ export default class ReturnForm extends Component<{}, any> {
       request,
       product,
       productsForm,
-      totalRefundAmount,
       statusHistoryTimeline,
       statusHistory,
       showMain,
@@ -668,7 +679,7 @@ export default class ReturnForm extends Component<{}, any> {
 
           <ProductsTable
             product={product}
-            totalRefundAmount={totalRefundAmount}
+            totalRefundAmount={request.refundedAmount}
             intl={"admin/returns"}
           />
           <p className={"mt7"}>

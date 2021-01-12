@@ -9,6 +9,8 @@ import {
   IconWarning
 } from "vtex.styleguide";
 
+import axios from "axios";
+
 export function getCurrentDate() {
   return new Date().toISOString();
 }
@@ -251,4 +253,15 @@ export function getStatusTranslation(status: string) {
   words = words.join("");
 
   return words;
+}
+
+export function sendMail(jsonData) {
+  axios
+    .post(`/returns/sendMail`, {
+      TemplateName: "oms-return-request",
+      applicationName: "email",
+      logEvidence: false,
+      jsonData: jsonData
+    })
+    .then(r => {});
 }

@@ -170,5 +170,6 @@
   "store/my-returns.timelineVerified": "Package verified",
   "store/my-returns.timelineRefunded": "Amount refunded",
   "store/my-returns.requestSubmitSuccess": "Your request has been successfully sent",
-  "store/my-returns.requestSubmitError": "An error occured while processing your request."
+  "store/my-returns.requestSubmitError": "An error occured while processing your request.",
+  "admin/returns.formBankTransferAccount": "Bank transfer into account:"
 }

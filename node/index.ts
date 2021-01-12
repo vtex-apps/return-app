@@ -9,6 +9,7 @@ import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
 import { updateMasterdataDocuments } from './middlewares/updateMasterdataDocuments'
 import { createPromotion } from './middlewares/createPromotion'
 import { createCoupon } from './middlewares/createCoupon'
+import { sendMail } from './middlewares/sendMail'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -58,6 +59,9 @@ export default new Service({
     }),
     createCoupon: method({
       POST: createCoupon
+    }),
+    sendMail: method({
+      POST: sendMail
     })
   },
 })
