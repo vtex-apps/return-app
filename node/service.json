@@ -44,6 +44,11 @@
       "path": "/returns/createCoupon/",
       "public": true,
       "settingsType": "workspace"
+    },
+    "sendMail": {
+      "path": "/returns/sendMail",
+      "public": true,
+      "settingsType": "workspace"
     }
   }
 }

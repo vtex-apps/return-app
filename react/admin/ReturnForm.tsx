@@ -8,7 +8,7 @@ import {
   getCurrentDate,
   getOneYearLaterDate,
   schemaNames,
-  productStatuses
+  productStatuses, sendMail
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
@@ -513,6 +513,18 @@ export default class ReturnForm extends Component<{}, any> {
       }
 
       this.prepareHistoryData(oldComments, requestData);
+
+      if (statusInput !== request.status) {
+        this.verifyPackage();
+        window.setTimeout(() => {
+          const { product, request, statusHistoryTimeline } = this.state;
+          sendMail({
+            data: { ...{ DocumentId: request.id }, ...request },
+            products: product,
+            timeline: statusHistoryTimeline
+          });
+        }, 2000);
+      }
     } else {
       this.setState({
         errorCommentMessage:

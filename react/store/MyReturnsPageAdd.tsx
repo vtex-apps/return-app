@@ -6,7 +6,8 @@ import {
   schemaTypes,
   requestsStatuses,
   returnFormDate,
-  schemaNames
+  schemaNames,
+  sendMail
 } from "../common/utils";
 import { isValidIBANNumber } from "../common/validations";
 import { countries } from "../common/countries";
@@ -653,6 +654,10 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
             this.setState({
               successSubmit: "Your request has been successfully sent",
               submittedRequest: true
+            });
+            sendMail({
+              data: { ...requestData, ...response },
+              products: orderProducts
             });
           })
           .then(() => {
