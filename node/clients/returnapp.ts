@@ -229,6 +229,10 @@ export default class ReturnApp extends ExternalClient {
 
         baseURL += ')';
 
+        if(type !== 'settings') {
+            baseURL += '&_sort=createdIn DESC';
+        }
+
         return this.http.get(baseURL, {
             headers: {
                 'Cache-Control': 'no-cache',
@@ -297,6 +301,44 @@ export default class ReturnApp extends ExternalClient {
                 'X-VTEX-API-AppToken': settings.storeAppToken
             }
         });
+    }
+
+    public async createPromotion(body: Object): Promise<any> {
+        const settings = await this.apps.getAppSettings(this.appId)
+        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
+            return JSON.stringify({error: this.missing_tokens})
+        }
+
+        return this.http.post(
+            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'X-VTEX-API-AppKey': settings.storeAppKey,
+                    'X-VTEX-API-AppToken': settings.storeAppToken
+                }
+            });
+    }
+
+    public async createCoupon(body: Object): Promise<any> {
+        const settings = await this.apps.getAppSettings(this.appId)
+        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
+            return JSON.stringify({error: this.missing_tokens})
+        }
+
+        return this.http.post(
+            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'X-VTEX-API-AppKey': settings.storeAppKey,
+                    'X-VTEX-API-AppToken': settings.storeAppToken
+                }
+            });
     }
 
 }

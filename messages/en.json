@@ -44,6 +44,8 @@
   "admin/returns.locality": "Locality",
   "admin/returns.address": "Address",
   "admin/returns.refundPaymentMethod": "Refund payment method",
+  "admin/returns.voucherCode": "Voucher code:",
+  "admin/returns.voucherCodeNotGenerated": "Not generated yet",
   "admin/returns.details.returnForm": "Return form {requestId} / {requestDate}",
   "admin/returns.noProducts": "No products",
   "admin/returns.refOrder": "Reference order {orderId}",
@@ -90,9 +92,9 @@
   "store/my-returns.formErrorLocality": "Locality is required",
   "store/my-returns.formErrorAddress": "Address is required",
   "store/my-returns.formErrorPaymentMethod": "Payment method is required",
-  "store/my-returns.formErrorIBAN": "IBAN is required",
+  "store/my-returns.formErrorIBAN": "The IBAN is missing or is invalid",
   "store/my-returns.formErrorAgree": "You must accept our terms and conditions",
-  "store/my-returns.formErrorQuantities": "You must select at least one product",
+  "store/my-returns.formErrorQuantities": "Please select at least one product",
   "store/my-returns.no_eligible_orders": "There aren't any eligible products from your orders for a return request.",
   "store/my-returns.thSelectOrder": "Select order",
   "store/my-returns.backToOrders": "Back to orders",
@@ -125,5 +127,7 @@
   "store/my-returns.status": "Status",
   "store/my-returns.statusHistory": "Status history",
   "store/my-returns.date": "Date",
-  "store/my-returns.submittedBy": "Submitted by"
+  "store/my-returns.submittedBy": "Submitted by",
+  "store/my-returns.voucherCode": "Voucher code:",
+  "store/my-returns.voucherCodeNotGenerated": "Not generated yet"
 }

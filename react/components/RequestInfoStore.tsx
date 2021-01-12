@@ -24,12 +24,14 @@ class RequestInfoStore extends Component<Props> {
             </p>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"store/my-returns.name"} />: {request.name}
+                <FormattedMessage id={"store/my-returns.name"} />:{" "}
+                {request.name}
               </p>
             </div>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"store/my-returns.email"} />: {request.email}
+                <FormattedMessage id={"store/my-returns.email"} />:{" "}
+                {request.email}
               </p>
             </div>
             <div className={"mb5"}>
@@ -81,9 +83,23 @@ class RequestInfoStore extends Component<Props> {
             </p>
           </div>
         ) : (
-          <p className={"ma1 t-small c-on-base " + styles.capitalize}>
-            {request.paymentMethod}
-          </p>
+          <div>
+            <p className={"ma1 t-small c-on-base " + styles.capitalize}>
+              {request.paymentMethod}{" "}
+            </p>
+            {request.paymentMethod === "voucher" ? (
+              <p className={`ma1 t-small c-on-base`}>
+                <FormattedMessage id={"store/my-returns.voucherCode"} />{" "}
+                {request.voucherCode ? (
+                  request.voucherCode
+                ) : (
+                  <FormattedMessage
+                    id={"store/my-returns.voucherCodeNotGenerated"}
+                  />
+                )}
+              </p>
+            ) : null}
+          </div>
         )}
       </div>
     );
