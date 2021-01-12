@@ -7,6 +7,8 @@ import { receiveDocuments } from './middlewares/receiveDocuments'
 import { receiveCategories } from './middlewares/receiveCategories'
 import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
 import { updateMasterdataDocuments } from './middlewares/updateMasterdataDocuments'
+import { createPromotion } from './middlewares/createPromotion'
+import { createCoupon } from './middlewares/createCoupon'
 import { sendMail } from './middlewares/sendMail'
 
 const TIMEOUT_MS = 5000
@@ -52,8 +54,14 @@ export default new Service({
     updateDocuments: method({
       PUT: updateMasterdataDocuments
     }),
+    createPromotion: method({
+      POST: createPromotion
+    }),
+    createCoupon: method({
+      POST: createCoupon
+    }),
     sendMail: method({
       POST: sendMail
-    }),
+    })
   },
 })

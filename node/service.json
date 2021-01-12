@@ -35,6 +35,16 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "createPromotion": {
+      "path": "/returns/createPromotion/",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "createCoupon": {
+      "path": "/returns/createCoupon/",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "sendMail": {
       "path": "/returns/sendMail",
       "public": true,

@@ -4,6 +4,15 @@ export function getCurrentDate() {
   return new Date().toISOString();
 }
 
+export function getOneYearLaterDate() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  const day = d.getDate();
+  const oneYearLater = new Date(year + 1, month, day);
+  return oneYearLater.toISOString();
+}
+
 export function beautifyDate(date: string) {
   return new Date(date).toLocaleString();
 }
