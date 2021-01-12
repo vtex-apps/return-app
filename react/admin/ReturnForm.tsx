@@ -515,6 +515,7 @@ export default class ReturnForm extends Component<{}, any> {
       this.prepareHistoryData(oldComments, requestData);
 
       if (statusInput !== request.status) {
+        this.verifyPackage();
         window.setTimeout(() => {
           const { product, request, statusHistoryTimeline } = this.state;
           sendMail({
