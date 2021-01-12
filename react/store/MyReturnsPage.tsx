@@ -1,14 +1,36 @@
 import React, { Component, useEffect } from "react";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
-import { Button, Link } from "vtex.styleguide";
-import { FormattedCurrency } from "vtex.format-currency";
 import {
+  ActionMenu,
+  Button,
+  ButtonWithIcon,
+  DatePicker,
+  Input,
+  Link,
+  Table
+} from "vtex.styleguide";
+import {
+  beautifyDate,
+  currentDate,
+  filterDate,
   requestsStatuses,
-  returnFormDate,
   schemaNames,
   schemaTypes
 } from "../common/utils";
+
+const tableLength = 15;
+
+const initialFilters = {
+  returnId: "",
+  fromDate: "",
+  toDate: "",
+  status: ""
+};
+
+function FormattedMessageFixed(props) {
+  return <FormattedMessage {...props} />;
+}
 
 class MyReturnsPage extends Component<{}, any> {
   constructor(props: any) {
@@ -23,8 +45,101 @@ class MyReturnsPage extends Component<{}, any> {
         LastName: "",
         UserId: ""
       },
-      requests: {}
+      emptyStateLabel: (
+        <FormattedMessage id={"store/my-returns.nothingToShow"} />
+      ),
+      filters: initialFilters,
+      returns: [],
+      orderedItems: [],
+      slicedData: [],
+      paging: {
+        total: 0,
+        currentPage: 1,
+        perPage: tableLength,
+        currentFrom: 1,
+        currentTo: tableLength
+      },
+      tableIsLoading: true,
+      isFiltered: false,
+      dataSort: {
+        sortedBy: null,
+        sortOrder: null
+      }
     };
+
+    this.sortRequestIdASC = this.sortRequestIdASC.bind(this);
+    this.sortRequestIdDESC = this.sortRequestIdDESC.bind(this);
+    this.sortDateSubmittedASC = this.sortDateSubmittedASC.bind(this);
+    this.sortDateSubmittedDESC = this.sortDateSubmittedDESC.bind(this);
+    this.sortStatusASC = this.sortStatusASC.bind(this);
+    this.sortStatusDESC = this.sortStatusDESC.bind(this);
+    this.handleSort = this.handleSort.bind(this);
+    this.handleNextClick = this.handleNextClick.bind(this);
+    this.handlePrevClick = this.handlePrevClick.bind(this);
+    this.goToPage = this.goToPage.bind(this);
+  }
+
+  sortRequestIdASC(a, b) {
+    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+  }
+  sortRequestIdDESC(a, b) {
+    return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
+  }
+  sortDateSubmittedASC(a, b) {
+    return a.dateSubmitted < b.dateSubmitted
+      ? -1
+      : a.dateSubmitted > b.dateSubmitted
+      ? 1
+      : 0;
+  }
+  sortDateSubmittedDESC(a, b) {
+    return a.dateSubmitted < b.dateSubmitted
+      ? 1
+      : a.dateSubmitted > b.dateSubmitted
+      ? -1
+      : 0;
+  }
+  sortStatusASC(a, b) {
+    return a.status < b.status ? -1 : a.status > b.status ? 1 : 0;
+  }
+  sortStatusDESC(a, b) {
+    return a.status < b.status ? 1 : a.status > b.status ? -1 : 0;
+  }
+
+  handleSort({ sortOrder, sortedBy }) {
+    const { returns } = this.state;
+    let slicedData = [];
+    if (sortedBy === "id") {
+      slicedData =
+        sortOrder === "ASC"
+          ? returns.slice().sort(this.sortRequestIdASC)
+          : returns.slice().sort(this.sortRequestIdDESC);
+    }
+
+    if (sortedBy === "dateSubmitted") {
+      slicedData =
+        sortOrder === "ASC"
+          ? returns.slice().sort(this.sortDateSubmittedASC)
+          : returns.slice().sort(this.sortDateSubmittedDESC);
+    }
+    if (sortedBy === "status") {
+      slicedData =
+        sortOrder === "ASC"
+          ? returns.slice().sort(this.sortStatusASC)
+          : returns.slice().sort(this.sortStatusDESC);
+    }
+
+    this.setState({
+      slicedData,
+      dataSort: {
+        sortedBy,
+        sortOrder
+      }
+    });
+  }
+
+  hasFiltersApplied() {
+    return this.state.isFiltered;
   }
 
   componentDidMount() {
@@ -49,23 +164,213 @@ class MyReturnsPage extends Component<{}, any> {
             }
           }));
 
-          const where = "userId=" + response.UserId;
-
-          fetch(
-            "/returns/getDocuments/" +
-              schemaNames.request +
-              "/" +
-              schemaTypes.requests +
-              "/" +
-              where
-          )
-            .then(response => response.json())
-            .then(async response => {
-              this.setState({ requests: response });
-            });
+          this.getRequests(response.UserId, false);
         }
       });
   };
+
+  getRequests(userId: string, resetFilters: boolean) {
+    const { filters } = this.state;
+    const useFilters = resetFilters ? initialFilters : filters;
+    let where = "__userId=" + userId;
+
+    if (JSON.stringify(useFilters) === JSON.stringify(initialFilters)) {
+      this.setState({ isFiltered: false });
+    } else {
+      this.setState({ isFiltered: true });
+    }
+
+    if (useFilters.returnId !== "") {
+      where += '__id="' + useFilters.returnId + '"';
+    }
+
+    let startDate = "1970-01-01";
+    let endDate = currentDate();
+    if (useFilters.fromDate !== "" || useFilters.toDate !== "") {
+      startDate =
+        useFilters.fromDate !== ""
+          ? filterDate(useFilters.fromDate)
+          : startDate;
+      endDate =
+        useFilters.toDate !== "" ? filterDate(useFilters.toDate) : endDate;
+
+      where += "__dateSubmitted between " + startDate + " AND " + endDate;
+    }
+
+    if (useFilters.status !== "") {
+      where += '__status="' + requestsStatuses[useFilters.status] + '"';
+    }
+
+    if (where.startsWith("__")) {
+      where = where.substring(2);
+    }
+
+    fetch(
+      "/returns/getDocuments/" +
+        schemaNames.request +
+        "/" +
+        schemaTypes.requests +
+        "/" +
+        where,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(returns => {
+        this.setState(prevState => ({
+          returns: returns,
+          orderedItems: returns,
+          slicedData: returns.slice(0, tableLength),
+          tableIsLoading: false,
+          paging: {
+            ...prevState.paging,
+            currentPage: 1,
+            currentTo: tableLength,
+            currentFrom: 1,
+            total: returns.length
+          }
+        }));
+      })
+      .catch(err => this.setState({ error: err }));
+  }
+
+  filterStatus(status: string) {
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        status: status
+      }
+    }));
+  }
+
+  filterReturnId(val: string) {
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        returnId: val
+      }
+    }));
+  }
+
+  filterFromDate(val: string) {
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        fromDate: val
+      }
+    }));
+  }
+  filterToDate(val: string) {
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        toDate: val
+      }
+    }));
+  }
+
+  handleApplyFilters() {
+    const { filters } = this.state;
+    if (
+      filters.dateSubmitted === "" &&
+      filters.returnId === "" &&
+      filters.status === ""
+    ) {
+      this.handleResetFilters();
+    } else {
+      this.getRequests(this.state.profile.UserId, false);
+    }
+  }
+
+  handleResetFilters() {
+    const { profile } = this.state;
+    this.setState({
+      filters: initialFilters,
+      tableIsLoading: true,
+      isFiltered: false
+    });
+    this.getRequests(profile.UserId, true);
+  }
+
+  handleNextClick() {
+    const { paging, orderedItems } = this.state;
+    const newPage = paging.currentPage + 1;
+    const itemFrom = paging.currentTo + 1;
+    const itemTo = paging.perPage * newPage;
+    const data = orderedItems.slice(itemFrom - 1, itemTo);
+    this.goToPage(newPage, itemFrom, itemTo, data);
+  }
+
+  handlePrevClick() {
+    const { paging, orderedItems } = this.state;
+    if (paging.currentPage === 0) return;
+    const newPage = paging.currentPage - 1;
+    const itemFrom = paging.currentFrom - paging.perPage;
+    const itemTo = paging.currentFrom - 1;
+    const data = orderedItems.slice(itemFrom - 1, itemTo);
+    this.goToPage(newPage, itemFrom, itemTo, data);
+  }
+
+  goToPage(currentPage, currentItemFrom, currentItemTo, slicedData) {
+    this.setState(prevState => ({
+      paging: {
+        ...prevState.paging,
+        currentPage: currentPage,
+        currentFrom: currentItemFrom,
+        currentTo: currentItemTo
+      },
+      slicedData
+    }));
+  }
+
+  getTableSchema() {
+    return {
+      properties: {
+        id: {
+          title: <FormattedMessage id={"store/my-returns.thRequestNo"} />,
+          sortable: true,
+          width: 350
+        },
+        dateSubmitted: {
+          title: <FormattedMessage id={"store/my-returns.thDate"} />,
+          cellRenderer: ({ cellData }) => {
+            return beautifyDate(cellData);
+          },
+          sortable: true
+        },
+        status: {
+          title: <FormattedMessage id={"store/my-returns.thStatus"} />,
+          sortable: true,
+          cellRenderer: ({ cellData }) => {
+            return (
+              <div>
+                {this.renderStatusIcon(cellData)} {cellData}
+              </div>
+            );
+          },
+          width: 200
+        },
+        actions: {
+          width: 150,
+          title: <FormattedMessage id={"store/my-returns.actions"} />,
+          cellRenderer: ({ rowData }) => {
+            return (
+              <div>
+                <Link href={`account#/my-returns/details/` + rowData.id}>
+                  <FormattedMessage id={"store/my-returns.view"} />
+                </Link>
+              </div>
+            );
+          }
+        }
+      }
+    };
+  }
 
   renderStatusIcon(status: string) {
     return (
@@ -79,15 +384,43 @@ class MyReturnsPage extends Component<{}, any> {
     );
   }
 
+  getStatusTranslation(status: string) {
+    const s = requestsStatuses[status];
+    let words = s.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+    words = words.join("");
+
+    return words;
+  }
+
   render() {
-    const { requests } = this.state;
+    const {
+      paging,
+      tableIsLoading,
+      filters,
+      slicedData,
+      emptyStateLabel
+    } = this.state;
+    const statusLabel =
+      filters.status !== "" ? (
+        <FormattedMessageFixed
+          id={`store/my-returns.status${this.getStatusTranslation(
+            filters.status
+          )}`}
+        />
+      ) : (
+        <FormattedMessage id={"store/my-returns.statusAllStatuses"} />
+      );
     return (
       <div className={styles.myReturnsHolder}>
         <div>
           <h2 className={`w-auto`}>
             <FormattedMessage id="store/my-returns.pageTitle" />{" "}
             <span className={styles.totalRequestsNumber}>
-              {requests.length} <FormattedMessage id="store/my-returns.total" />
+              {slicedData.length}{" "}
+              <FormattedMessage id="store/my-returns.total" />
             </span>
           </h2>
         </div>
@@ -100,46 +433,137 @@ class MyReturnsPage extends Component<{}, any> {
             <FormattedMessage id="store/my-returns.addReturn" />
           </Button>
         </div>
-        {requests.length ? (
-          <div>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>
-                    <FormattedMessage id={"store/my-returns.thRequestNo"} />
-                  </th>
-                  <th>
-                    <FormattedMessage id={"store/my-returns.thDate"} />
-                  </th>
-                  <th>
-                    <FormattedMessage id={"store/my-returns.thStatus"} />
-                  </th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {requests.map((request: any) => (
-                  <tr key={request.id}>
-                    <td>{request.id}</td>
-                    <td>{returnFormDate(request.dateSubmitted)}</td>
-                    <td>
-                      {this.renderStatusIcon(request.status)} {request.status}
-                    </td>
-                    <td className={styles.textCenter}>
-                      <Link href={`account#/my-returns/details/` + request.id}>
-                        <FormattedMessage id={"store/my-returns.view"} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="flex items-center">
+          <div className={"ma2"}>
+            <FormattedMessage id={"store/my-returns.thRequestNo"}>
+              {msg => (
+                <Input
+                  placeholder={msg}
+                  size={"small"}
+                  onChange={e => this.filterReturnId(e.target.value)}
+                  value={filters.returnId}
+                />
+              )}
+            </FormattedMessage>
           </div>
-        ) : (
-          <h4>
-            <FormattedMessage id="store/my-returns.no_returns" />
-          </h4>
-        )}
+          <div className={"ma2"}>
+            <FormattedMessage id={"store/my-returns.filterFromDate"}>
+              {msg => (
+                <DatePicker
+                  placeholder={msg}
+                  locale={"en-GB"}
+                  size={"small"}
+                  onChange={value => this.filterFromDate(value)}
+                  value={filters.fromDate}
+                />
+              )}
+            </FormattedMessage>
+          </div>
+          <div className={"ma2"}>
+            <FormattedMessage id={"store/my-returns.filterToDate"}>
+              {msg => (
+                <DatePicker
+                  placeholder={msg}
+                  locale={"en-GB"}
+                  size={"small"}
+                  onChange={value => this.filterToDate(value)}
+                  value={filters.toDate}
+                />
+              )}
+            </FormattedMessage>
+          </div>
+          <div className="ma2">
+            <ActionMenu
+              label={statusLabel}
+              align="right"
+              buttonProps={{
+                variation: "secondary",
+                size: "small"
+              }}
+              options={[
+                {
+                  label: (
+                    <FormattedMessage id="store/my-returns.statusAllStatuses" />
+                  ),
+                  onClick: () => this.filterStatus("")
+                },
+                {
+                  label: <FormattedMessage id="store/my-returns.statusNew" />,
+                  onClick: () => this.filterStatus("new")
+                },
+                {
+                  label: (
+                    <FormattedMessage id="store/my-returns.statusApproved" />
+                  ),
+                  onClick: () => this.filterStatus("approved")
+                },
+                {
+                  label: (
+                    <FormattedMessage id="store/my-returns.statusPendingVerification" />
+                  ),
+                  onClick: () => this.filterStatus("pendingVerification")
+                },
+                {
+                  label: (
+                    <FormattedMessage id="store/my-returns.statusPartiallyApproved" />
+                  ),
+                  onClick: () => this.filterStatus("partiallyApproved")
+                },
+                {
+                  label: (
+                    <FormattedMessage id="store/my-returns.statusDenied" />
+                  ),
+                  onClick: () => this.filterStatus("denied")
+                },
+                {
+                  label: (
+                    <FormattedMessage id="store/my-returns.statusRefunded" />
+                  ),
+                  onClick: () => this.filterStatus("refunded")
+                }
+              ]}
+            />
+          </div>
+          <div className={"ma2"}>
+            <Button size={"small"} onClick={() => this.handleApplyFilters()}>
+              <FormattedMessage id={"store/my-returns.filterResults"} />
+            </Button>
+          </div>
+          {this.hasFiltersApplied() ? (
+            <div className={"ma2"}>
+              <ButtonWithIcon
+                variation="secondary"
+                size="small"
+                onClick={() => this.handleResetFilters()}
+              >
+                <FormattedMessage id={"store/my-returns.clearFilters"} />
+              </ButtonWithIcon>
+            </div>
+          ) : null}
+        </div>
+        <Table
+          fullWidth
+          loading={tableIsLoading}
+          items={slicedData}
+          emptyStateLabel={emptyStateLabel}
+          schema={this.getTableSchema()}
+          pagination={{
+            onNextClick: this.handleNextClick,
+            onPrevClick: this.handlePrevClick,
+            textShowRows: (
+              <FormattedMessage id={"store/my-returns.tableShowRows"} />
+            ),
+            textOf: <FormattedMessage id={"store/my-returns.tableOf"} />,
+            currentItemFrom: paging.currentFrom,
+            currentItemTo: paging.currentTo,
+            totalItems: paging.total
+          }}
+          sort={{
+            sortedBy: this.state.dataSort.sortedBy,
+            sortOrder: this.state.dataSort.sortOrder
+          }}
+          onSort={this.handleSort}
+        />
       </div>
     );
   }

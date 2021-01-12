@@ -6,7 +6,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "jsx": "preserve",
-    "lib": ["es2017", "DOM"],
+    "lib": ["es2019", "DOM"],
     "noEmitOnError": false,
     "sourceMap": true,
     "noImplicitAny": false,
