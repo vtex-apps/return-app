@@ -11,7 +11,13 @@ import {
 } from "vtex.styleguide";
 
 import styles from "../styles.css";
-import { schemaNames, schemaTypes } from "../common/utils";
+import {
+  schemaNames,
+  schemaTypes,
+  isInt,
+  FormattedMessageFixed
+} from "../common/utils";
+import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 
 const categoriesArray: any[] = [];
 
@@ -40,12 +46,9 @@ export default class ReturnsSettings extends Component<{}, any> {
 
   getCategories = () => {
     this.setState({ loading: true });
-    fetch("/returns/getCategories", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+    fetch(fetchPath.getCategories, {
+      method: fetchMethod.get,
+      headers: fetchHeaders
     })
       .then(response => response.json())
       .then(json => {
@@ -60,17 +63,14 @@ export default class ReturnsSettings extends Component<{}, any> {
   getSettings = () => {
     this.setState({ loading: true });
     fetch(
-      "/returns/getDocuments/" +
+      fetchPath.getDocuments +
         schemaNames.settings +
         "/" +
         schemaTypes.settings +
         "/1",
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
     )
       .then(response => {
@@ -129,7 +129,11 @@ export default class ReturnsSettings extends Component<{}, any> {
     });
 
     if (query.length && query.length < 3) {
-      this.setState({ categoriesFilterError: "Enter at least 3 characters" });
+      this.setState({
+        categoriesFilterError: (
+          <FormattedMessageFixed id={"admin/returns.settingMin3Chars"} />
+        )
+      });
     }
 
     categories.map((category: any) => {
@@ -178,15 +182,6 @@ export default class ReturnsSettings extends Component<{}, any> {
       categoryFilterQuery: ""
     });
   };
-
-  isInt(value: any) {
-    return (
-      !isNaN(value) &&
-      parseInt(String(Number(value))) == value &&
-      !isNaN(parseInt(String(value), 10))
-    );
-  }
-
   saveSettings = () => {
     this.setState({
       errors: {
@@ -199,11 +194,15 @@ export default class ReturnsSettings extends Component<{}, any> {
     });
     const { maxDays, excludedCategories, termsUrl, documentId } = this.state;
     let hasErrors = false;
-    if (!maxDays || !this.isInt(maxDays)) {
+    if (!maxDays || !isInt(maxDays)) {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,
-          maxDays: "Please provide a numeric number of days"
+          maxDays: (
+            <FormattedMessageFixed
+              id={"admin/returns.settingsErrorDaysNumber"}
+            />
+          )
         }
       }));
       hasErrors = true;
@@ -212,7 +211,9 @@ export default class ReturnsSettings extends Component<{}, any> {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,
-          termsUrl: "This field is required"
+          termsUrl: (
+            <FormattedMessageFixed id={"admin/returns.errorFieldRequired"} />
+          )
         }
       }));
       hasErrors = true;
@@ -227,7 +228,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       maxDays: parseInt(maxDays),
       excludedCategories: JSON.stringify(excludedCategories),
       termsUrl: termsUrl,
-      type: "settings"
+      type: schemaTypes.settings
     };
 
     if (this.state.documentId) {
@@ -238,33 +239,37 @@ export default class ReturnsSettings extends Component<{}, any> {
   };
 
   createDocument = (postData: any) => {
-    fetch("/returns/saveDocuments/" + schemaNames.settings + "/", {
-      method: "POST",
+    fetch(fetchPath.saveDocuments + schemaNames.settings + "/", {
+      method: fetchMethod.post,
       body: JSON.stringify(postData),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     })
       .then(response => response)
       .then(json => {
-        this.setState({ successMessage: "Settings saved!", loading: false });
+        this.setState({
+          successMessage: (
+            <FormattedMessageFixed id={"admin/returns.settingsSaved"} />
+          ),
+          loading: false
+        });
       })
       .catch(err => this.setState({ loading: false, errorMessage: err }));
   };
 
   updateDocument = (documentId: string, postData: any) => {
-    fetch("/returns/updateDocuments/" + documentId, {
-      method: "PUT",
+    fetch(fetchPath.updateDocuments + documentId, {
+      method: fetchMethod.put,
       body: JSON.stringify(postData),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     })
       .then(response => response)
       .then(json => {
-        this.setState({ successMessage: "Settings updated!", loading: false });
+        this.setState({
+          successMessage: (
+            <FormattedMessageFixed id={"admin/returns.settingsSaved"} />
+          ),
+          loading: false
+        });
       })
       .catch(err => this.setState({ errorMessage: err, loading: false }));
   };

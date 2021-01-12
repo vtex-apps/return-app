@@ -17,12 +17,15 @@ import {
   beautifyDate,
   currentDate,
   filterDate,
-  requestsStatuses
+  requestsStatuses,
+  FormattedMessageFixed,
+  sortColumns,
+  order,
+  schemaNames,
+  schemaTypes,
+  getStatusTranslation
 } from "../../common/utils";
-
-function FormattedMessageFixed(props) {
-  return <FormattedMessage {...props} />;
-}
+import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
 
 const initialFilters = {
   orderId: "",
@@ -118,28 +121,28 @@ class ReturnsTableContent extends Component<any, any> {
   handleSort({ sortOrder, sortedBy }) {
     const { returns } = this.state;
     let slicedData = [];
-    if (sortedBy === "orderId") {
+    if (sortedBy === sortColumns.orderId) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortOrderIdASC)
           : returns.slice().sort(this.sortOrderIdDESC);
     }
-    if (sortedBy === "id") {
+    if (sortedBy === sortColumns.id) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortRequestIdASC)
           : returns.slice().sort(this.sortRequestIdDESC);
     }
 
-    if (sortedBy === "dateSubmitted") {
+    if (sortedBy === sortColumns.dateSubmitted) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortDateSubmittedASC)
           : returns.slice().sort(this.sortDateSubmittedDESC);
     }
-    if (sortedBy === "status") {
+    if (sortedBy === sortColumns.status) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortStatusASC)
           : returns.slice().sort(this.sortStatusDESC);
     }
@@ -196,13 +199,18 @@ class ReturnsTableContent extends Component<any, any> {
     if (where.startsWith("__")) {
       where = where.substring(2);
     }
-    fetch("/returns/getDocuments/returnRequests/request/" + where, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
+    fetch(
+      fetchPath.getDocuments +
+        schemaNames.request +
+        "/" +
+        schemaTypes.requests +
+        "/" +
+        where,
+      {
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
-    })
+    )
       .then(response => response.json())
       .then(returns => {
         this.setState(prevState => ({
@@ -378,13 +386,15 @@ class ReturnsTableContent extends Component<any, any> {
 
   handleViewRequest = (requestId: string) => {
     fetch(
-      "/returns/getDocuments/returnProducts/product/refundId=" + requestId,
+      fetchPath.getDocuments +
+        schemaNames.product +
+        "/" +
+        schemaTypes.products +
+        "/refundId=" +
+        requestId,
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
     )
       .then(response => response.json())
@@ -394,17 +404,6 @@ class ReturnsTableContent extends Component<any, any> {
       })
       .catch(err => this.setState({ error: err }));
   };
-
-  getStatusTranslation(status: string) {
-    const s = requestsStatuses[status];
-    let words = s.split(" ");
-    for (let i = 0; i < words.length; i++) {
-      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    }
-    words = words.join("");
-
-    return words;
-  }
 
   render() {
     const {
@@ -419,9 +418,7 @@ class ReturnsTableContent extends Component<any, any> {
     const statusLabel =
       filters.status !== "" ? (
         <FormattedMessageFixed
-          id={`admin/returns.status${this.getStatusTranslation(
-            filters.status
-          )}`}
+          id={`admin/returns.status${getStatusTranslation(filters.status)}`}
         />
       ) : (
         <FormattedMessage id={"admin/returns.statusAllStatuses"} />

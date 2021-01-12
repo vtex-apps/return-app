@@ -1,24 +1,21 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   returnFormDate,
   schemaTypes,
   requestsStatuses,
-  statusHistoryTimeline,
   getCurrentDate,
   getOneYearLaterDate,
   schemaNames,
-  productStatuses
+  productStatuses,
+  renderIcon,
+  prepareHistoryData,
+  FormattedMessageFixed
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import {
-  IconSuccess,
-  IconFailure,
-  IconWarning,
-  IconClock,
   IconCheck,
-  IconVisibilityOn,
   Link,
   Dropdown,
   Checkbox,
@@ -29,6 +26,7 @@ import {
 import ProductsTable from "../components/ProductsTable";
 import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
+import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 
 export default class ReturnForm extends Component<{}, any> {
   static propTypes = {
@@ -97,18 +95,13 @@ export default class ReturnForm extends Component<{}, any> {
       expirationIntervalPerUse: "00:00:00"
     };
 
-    fetch("/returns/createCoupon/", {
-      method: "POST",
+    fetch(fetchPath.createCoupon, {
+      method: fetchMethod.post,
       body: JSON.stringify(couponBody),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     })
       .then(response => response.json())
-      .then(json => {
-        console.log(json);
-      });
+      .then(json => {});
   }
 
   generatePromotion() {
@@ -225,65 +218,12 @@ export default class ReturnForm extends Component<{}, any> {
       utmSource: this.getCouponCode()
     };
 
-    fetch("/returns/createPromotion/", {
-      method: "POST",
+    fetch(fetchPath.createPromotion, {
+      method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     }).then(response => {});
   }
-
-  renderIcon = (product: any) => {
-    if (product.status === requestsStatuses.approved) {
-      return (
-        <div>
-          <span className={styles.statusApproved}>
-            <IconSuccess size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    if (product.status === requestsStatuses.denied) {
-      return (
-        <div>
-          <span className={styles.statusDenied}>
-            <IconFailure size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    if (product.status === requestsStatuses.partiallyApproved) {
-      return (
-        <div>
-          <span className={styles.statusPartiallyApproved}>
-            <IconWarning size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    if (product.status === requestsStatuses.pendingVerification) {
-      return (
-        <div>
-          <span className={styles.statusPendingVerification}>
-            <IconClock size={14} /> {product.status}
-          </span>
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        <span className={styles.statusNew}>
-          <IconVisibilityOn size={14} /> {product.status}
-        </span>
-      </div>
-    );
-  };
 
   getFullData() {
     const requestId = this.props["data"]["params"]["id"];
@@ -314,7 +254,13 @@ export default class ReturnForm extends Component<{}, any> {
             schemaTypes.comments,
             requestId
           ).then(comments => {
-            this.prepareHistoryData(comments, request[0]);
+            this.setState({
+              statusHistoryTimeline: prepareHistoryData(
+                comments,
+                request[0],
+                "admin/returns"
+              )
+            });
             this.getFromMasterData(
               schemaNames.history,
               schemaTypes.history,
@@ -327,7 +273,7 @@ export default class ReturnForm extends Component<{}, any> {
   }
 
   async getProfile() {
-    return await fetch("/no-cache/profileSystem/getProfile")
+    return await fetch(fetchPath.getProfile)
       .then(response => response.json())
       .then(response => {
         if (response.IsUserDefined) {
@@ -343,7 +289,7 @@ export default class ReturnForm extends Component<{}, any> {
     const isRequest = schema === schemaNames.request;
     const whereField = isRequest ? "id" : "refundId";
     return await fetch(
-      "/returns/getDocuments/" +
+      fetchPath.getDocuments +
         schema +
         "/" +
         type +
@@ -352,11 +298,8 @@ export default class ReturnForm extends Component<{}, any> {
         "=" +
         refundId,
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
     )
       .then(response => response.json())
@@ -386,58 +329,6 @@ export default class ReturnForm extends Component<{}, any> {
         return json;
       })
       .catch(err => this.setState({ error: err }));
-  }
-
-  prepareHistoryData(comment: any, request: any) {
-    const history = [
-      {
-        status: statusHistoryTimeline.new,
-        step: 1,
-        comments: comment.filter(item => item.status === requestsStatuses.new),
-        active: 1
-      },
-      {
-        status: statusHistoryTimeline.picked,
-        step: 2,
-        comments: comment.filter(
-          item => item.status === requestsStatuses.pendingVerification
-        ),
-        active:
-          request.status === requestsStatuses.pendingVerification ||
-          request.status === requestsStatuses.partiallyApproved ||
-          request.status === requestsStatuses.approved ||
-          request.status === requestsStatuses.denied ||
-          request.status === requestsStatuses.refunded
-            ? 1
-            : 0
-      },
-      {
-        status: statusHistoryTimeline.verified,
-        step: 3,
-        comments: comment.filter(
-          item =>
-            item.status === requestsStatuses.partiallyApproved ||
-            item.status === requestsStatuses.approved ||
-            item.status === requestsStatuses.denied
-        ),
-        active:
-          request.status === requestsStatuses.partiallyApproved ||
-          request.status === requestsStatuses.approved ||
-          request.status === requestsStatuses.denied ||
-          request.status === requestsStatuses.refunded
-            ? 1
-            : 0
-      },
-      {
-        status: statusHistoryTimeline.refunded,
-        step: 4,
-        comments: comment.filter(
-          item => item.status === requestsStatuses.refunded
-        ),
-        active: request.status === requestsStatuses.refunded ? 1 : 0
-      }
-    ];
-    this.setState({ statusHistoryTimeline: history });
   }
 
   submitStatusCommentForm() {
@@ -512,34 +403,35 @@ export default class ReturnForm extends Component<{}, any> {
         this.saveMasterData(schemaNames.comment, commentData);
       }
 
-      this.prepareHistoryData(oldComments, requestData);
+      this.setState({
+        statusHistoryTimeline: prepareHistoryData(
+          oldComments,
+          requestData,
+          "admin/returns"
+        )
+      });
     } else {
       this.setState({
-        errorCommentMessage:
-          "You need to change the current status or leave a comment"
+        errorCommentMessage: (
+          <FormattedMessageFixed id={"admin/returns.statusCommentError"} />
+        )
       });
     }
   }
 
   saveMasterData = (schema: string, body: any) => {
-    fetch("/returns/saveDocuments/" + schema, {
-      method: "POST",
+    fetch(fetchPath.saveDocuments + schema, {
+      method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     }).then(response => {});
   };
 
   updateDocument = (documentId: string, postData: any) => {
-    fetch("/returns/updateDocuments/" + documentId, {
-      method: "PUT",
+    fetch(fetchPath.updateDocuments + documentId, {
+      method: fetchMethod.put,
       body: JSON.stringify(postData),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     })
       .then(response => {})
       .catch(err => err);
@@ -688,7 +580,9 @@ export default class ReturnForm extends Component<{}, any> {
             </div>
             <div className={`mb6`}>
               <Textarea
-                label="Add comment"
+                label={
+                  <FormattedMessageFixed id={"admin/returns.addComment"} />
+                }
                 value={commentInput}
                 onChange={e => this.setState({ commentInput: e.target.value })}
               />
@@ -697,7 +591,11 @@ export default class ReturnForm extends Component<{}, any> {
               <Checkbox
                 checked={visibleInput}
                 id="visible-input"
-                label="Comment visible to client"
+                label={
+                  <FormattedMessageFixed
+                    id={"admin/returns.commentVisibleToClient"}
+                  />
+                }
                 name="default-checkbox-group"
                 onChange={e =>
                   this.setState({ visibleInput: !this.state.visibleInput })
@@ -748,13 +646,6 @@ export default class ReturnForm extends Component<{}, any> {
     if (showMain) {
       return (
         <div>
-          <Button
-            variation="primary"
-            size="small"
-            href="/admin/returns/requests"
-          >
-            <FormattedMessage id={"admin/returns.back"} />
-          </Button>
           <p>
             <FormattedMessage
               id={"admin/returns.details.returnForm"}
@@ -777,8 +668,8 @@ export default class ReturnForm extends Component<{}, any> {
 
           <ProductsTable
             product={product}
-            intlZone={"admin/returns"}
             totalRefundAmount={totalRefundAmount}
+            intl={"admin/returns"}
           />
           <p className={"mt7"}>
             <strong className={"mr6"}>
@@ -795,7 +686,7 @@ export default class ReturnForm extends Component<{}, any> {
             </Link>
           </p>
 
-          <RequestInfo request={request} />
+          <RequestInfo request={request} intl={"admin/returns"} />
 
           <p className={"mt7"}>
             <strong>
@@ -818,11 +709,7 @@ export default class ReturnForm extends Component<{}, any> {
                   ) : (
                     <span className={styles.statusIcon} />
                   )}
-
-                  {currentHistory.status === "new"
-                    ? "Return form registered on " +
-                      returnFormDate(request.dateSubmitted)
-                    : currentHistory.status}
+                  {currentHistory.text}
                 </p>
                 <ul
                   className={
@@ -893,7 +780,7 @@ export default class ReturnForm extends Component<{}, any> {
                       />
                     </td>
                     <td className={styles.paddingLeft20}>
-                      {this.renderIcon(currentProduct)}
+                      {renderIcon(currentProduct)}
                     </td>
                   </tr>
                 ))

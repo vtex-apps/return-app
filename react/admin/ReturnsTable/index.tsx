@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import schemas from "../../masterdata/schema";
 import GenerateSchema from "../Components/GenerateSchema";
 import ReturnsTableContent from "./ReturnsTableContent";
+import { schemaNames } from "../../common/utils";
+import {fetchHeaders, fetchMethod, fetchPath} from "../../common/fetch";
 
 class ReturnsTable extends Component<any, any> {
   constructor(props: any) {
@@ -14,13 +16,16 @@ class ReturnsTable extends Component<any, any> {
   }
 
   componentDidMount(): void {
-    fetch("/returns/getSchema/" + schemas["schemaEntity"] + "/returnSettings", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
+    fetch(
+      fetchPath.getSchema +
+        schemas["schemaEntity"] +
+        "/" +
+        schemaNames.settings,
+      {
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
-    })
+    )
       .then(response => {
         return response.text();
       })

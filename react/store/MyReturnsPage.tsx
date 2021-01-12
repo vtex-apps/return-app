@@ -16,8 +16,14 @@ import {
   filterDate,
   requestsStatuses,
   schemaNames,
-  schemaTypes
+  schemaTypes,
+  FormattedMessageFixed,
+  sortColumns,
+  order,
+  getStatusTranslation
 } from "../common/utils";
+
+import { fetchPath, fetchHeaders, fetchMethod } from "../common/fetch";
 
 const tableLength = 15;
 
@@ -27,10 +33,6 @@ const initialFilters = {
   toDate: "",
   status: ""
 };
-
-function FormattedMessageFixed(props) {
-  return <FormattedMessage {...props} />;
-}
 
 class MyReturnsPage extends Component<{}, any> {
   constructor(props: any) {
@@ -109,22 +111,22 @@ class MyReturnsPage extends Component<{}, any> {
   handleSort({ sortOrder, sortedBy }) {
     const { returns } = this.state;
     let slicedData = [];
-    if (sortedBy === "id") {
+    if (sortedBy === sortColumns.id) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortRequestIdASC)
           : returns.slice().sort(this.sortRequestIdDESC);
     }
 
-    if (sortedBy === "dateSubmitted") {
+    if (sortedBy === sortColumns.dateSubmitted) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortDateSubmittedASC)
           : returns.slice().sort(this.sortDateSubmittedDESC);
     }
-    if (sortedBy === "status") {
+    if (sortedBy === sortColumns.status) {
       slicedData =
-        sortOrder === "ASC"
+        sortOrder === order.asc
           ? returns.slice().sort(this.sortStatusASC)
           : returns.slice().sort(this.sortStatusDESC);
     }
@@ -147,7 +149,7 @@ class MyReturnsPage extends Component<{}, any> {
   }
 
   getProfile = () => {
-    fetch("/no-cache/profileSystem/getProfile")
+    fetch(fetchPath.getProfile)
       .then(response => response.json())
       .then(async response => {
         if (response.IsUserDefined) {
@@ -206,18 +208,15 @@ class MyReturnsPage extends Component<{}, any> {
     }
 
     fetch(
-      "/returns/getDocuments/" +
+      fetchPath.getDocuments +
         schemaNames.request +
         "/" +
         schemaTypes.requests +
         "/" +
         where,
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
     )
       .then(response => response.json())
@@ -384,17 +383,6 @@ class MyReturnsPage extends Component<{}, any> {
     );
   }
 
-  getStatusTranslation(status: string) {
-    const s = requestsStatuses[status];
-    let words = s.split(" ");
-    for (let i = 0; i < words.length; i++) {
-      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    }
-    words = words.join("");
-
-    return words;
-  }
-
   render() {
     const {
       paging,
@@ -406,9 +394,7 @@ class MyReturnsPage extends Component<{}, any> {
     const statusLabel =
       filters.status !== "" ? (
         <FormattedMessageFixed
-          id={`store/my-returns.status${this.getStatusTranslation(
-            filters.status
-          )}`}
+          id={`store/my-returns.status${getStatusTranslation(filters.status)}`}
         />
       ) : (
         <FormattedMessage id={"store/my-returns.statusAllStatuses"} />

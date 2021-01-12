@@ -1,13 +1,12 @@
 import React, { FC } from "react";
+import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
+import { FormattedMessageFixed } from "../../common/utils";
 
 const GenerateSchema: FC<{}> = () => {
   function generateSchema() {
-    fetch("/returns/generateSchema/", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+    fetch(fetchPath.generateSchema, {
+      method: fetchMethod.put,
+      headers: fetchHeaders
     })
       .then(response => response.text())
       .then(json => console.log(json))
@@ -16,13 +15,15 @@ const GenerateSchema: FC<{}> = () => {
 
   return (
     <div className={`flex flex-column justify-center`}>
-      <p className={`center`}>Masterdata schema missing.</p>
+      <p className={`center`}>
+        <FormattedMessageFixed id={"admin/returns.schemaMissing"} />
+      </p>
       <button
         onClick={() => {
           generateSchema();
         }}
       >
-        Generate Schema
+        <FormattedMessageFixed id={"admin/returns.generateSchema"} />
       </button>
     </div>
   );

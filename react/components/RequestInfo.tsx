@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import styles from "../styles.css";
+import { FormattedMessageFixed } from "../common/utils";
 
 interface Props {
   request: any;
+  intl: string;
 }
 
 class RequestInfo extends Component<Props> {
@@ -12,29 +14,29 @@ class RequestInfo extends Component<Props> {
   }
 
   render() {
-    const { request } = this.props;
+    const { request, intl } = this.props;
     return (
       <div>
         <div className={`flex-ns flex-wrap flex-row`}>
           <div className={`flex-ns flex-wrap flex-auto flex-column pt4 pb4`}>
             <p>
               <strong>
-                <FormattedMessage id={"admin/returns.contactDetails"} />
+                <FormattedMessageFixed id={`${intl}.contactDetails`} />
               </strong>
             </p>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"admin/returns.name"} />: {request.name}
+                <FormattedMessageFixed id={`${intl}.name`} />: {request.name}
               </p>
             </div>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"admin/returns.email"} />: {request.email}
+                <FormattedMessageFixed id={`${intl}.email`} />: {request.email}
               </p>
             </div>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessage id={"admin/returns.phone"} />:{" "}
+                <FormattedMessageFixed id={`${intl}.phone`} />:{" "}
                 {request.phoneNumber}
               </p>
             </div>
@@ -43,24 +45,24 @@ class RequestInfo extends Component<Props> {
           <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
             <p>
               <strong>
-                <FormattedMessage id={"admin/returns.pickupAddress"} />
+                <FormattedMessageFixed id={`${intl}.pickupAddress`} />
               </strong>
             </p>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessage id={"admin/returns.country"} />:{" "}
+                <FormattedMessageFixed id={`${intl}.country`} />:{" "}
                 {request.country}
               </p>
             </div>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessage id={"admin/returns.locality"} />:{" "}
+                <FormattedMessageFixed id={`${intl}.locality`} />:{" "}
                 {request.locality}
               </p>
             </div>
             <div className={"mb5"}>
               <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessage id={"admin/returns.address"} />:{" "}
+                <FormattedMessageFixed id={`${intl}.address`} />:{" "}
                 {request.address}
               </p>
             </div>
@@ -68,15 +70,13 @@ class RequestInfo extends Component<Props> {
         </div>
         <p>
           <strong>
-            <FormattedMessage id={"admin/returns.refundPaymentMethod"} />
+            <FormattedMessageFixed id={`${intl}.refundPaymentMethod`} />
           </strong>
         </p>
         {request.paymentMethod === "bank" ? (
           <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
             <p className={"ma1 t-small c-on-base "}>
-              <FormattedMessage
-                id={"store/my-returns.formBankTransferAccount"}
-              />{" "}
+              <FormattedMessageFixed id={`${intl}.formBankTransferAccount`} />{" "}
               {request.iban}
             </p>
           </div>
@@ -87,12 +87,12 @@ class RequestInfo extends Component<Props> {
             </p>
             {request.paymentMethod === "voucher" ? (
               <p className={`ma1 t-small c-on-base`}>
-                <FormattedMessage id={"admin/returns.voucherCode"} />{" "}
+                <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
                 {request.voucherCode ? (
                   request.voucherCode
                 ) : (
-                  <FormattedMessage
-                    id={"admin/returns.voucherCodeNotGenerated"}
+                  <FormattedMessageFixed
+                    id={`${intl}.voucherCodeNotGenerated`}
                   />
                 )}
               </p>

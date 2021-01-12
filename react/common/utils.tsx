@@ -1,3 +1,14 @@
+import { FormattedMessage } from "react-intl";
+import React from "react";
+import styles from "../styles.css";
+import {
+  IconClock,
+  IconFailure,
+  IconSuccess,
+  IconVisibilityOn,
+  IconWarning
+} from "vtex.styleguide";
+
 export function getCurrentDate() {
   return new Date().toISOString();
 }
@@ -34,6 +45,18 @@ export function returnFormDate(date: string) {
   return d.getDate() + " " + monthNames[d.getMonth()] + " " + d.getFullYear();
 }
 
+export const sortColumns = {
+  id: "id",
+  dateSubmitted: "dateSubmitted",
+  orderId: "orderId",
+  status: "status"
+};
+
+export const order = {
+  asc: "ASC",
+  desc: "DESC"
+};
+
 export function filterDate(date: string, separator = "-") {
   const newDate = new Date(date);
   const day = newDate.getDate();
@@ -54,6 +77,10 @@ export function diffDays(date1: string, date2: string) {
   const dayMap = 24 * 60 * 60 * 1000;
   const diff = Date.parse(date1) - Date.parse(date2);
   return Math.floor(diff / dayMap);
+}
+
+export function FormattedMessageFixed(props) {
+  return <FormattedMessage {...props} />;
 }
 
 export const schemaNames = {
@@ -87,7 +114,7 @@ export const productStatuses = {
   approved: "Approved",
   partiallyApproved: "Partially approved",
   denied: "Denied"
-}
+};
 
 export const statusHistoryTimeline = {
   new: "new",
@@ -95,3 +122,133 @@ export const statusHistoryTimeline = {
   verified: "Package verified",
   refunded: "Amount refunded"
 };
+
+export function renderIcon(product: any) {
+  if (product.status === requestsStatuses.approved) {
+    return (
+      <div>
+        <span className={styles.statusApproved}>
+          <IconSuccess size={14} /> {product.status}
+        </span>
+      </div>
+    );
+  }
+
+  if (product.status === requestsStatuses.denied) {
+    return (
+      <div>
+        <span className={styles.statusDenied}>
+          <IconFailure size={14} /> {product.status}
+        </span>
+      </div>
+    );
+  }
+
+  if (product.status === requestsStatuses.partiallyApproved) {
+    return (
+      <div>
+        <span className={styles.statusPartiallyApproved}>
+          <IconWarning size={14} /> {product.status} {product.goodProducts}/
+          {product.quantity}
+        </span>
+      </div>
+    );
+  }
+
+  if (product.status === requestsStatuses.pendingVerification) {
+    return (
+      <div>
+        <span className={styles.statusPendingVerification}>
+          <IconClock size={14} /> {product.status}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <span className={styles.statusNew}>
+        <IconVisibilityOn size={14} /> {product.status}
+      </span>
+    </div>
+  );
+}
+
+export function isInt(value: any) {
+  return (
+    !isNaN(value) &&
+    parseInt(String(Number(value))) == value &&
+    !isNaN(parseInt(String(value), 10))
+  );
+}
+
+export function prepareHistoryData(comment: any, request: any, intl: string) {
+  return [
+    {
+      status: statusHistoryTimeline.new,
+      text: (
+        <FormattedMessageFixed
+          id={`${intl}.timelineNew`}
+          values={{ date: " " + returnFormDate(request.dateSubmitted) }}
+        />
+      ),
+      step: 1,
+      comments: comment.filter(item => item.status === requestsStatuses.new),
+      active: 1
+    },
+    {
+      status: statusHistoryTimeline.picked,
+      text: <FormattedMessageFixed id={`${intl}.timelinePicked`} />,
+      step: 2,
+      comments: comment.filter(
+        item => item.status === requestsStatuses.pendingVerification
+      ),
+      active:
+        request.status === requestsStatuses.pendingVerification ||
+        request.status === requestsStatuses.partiallyApproved ||
+        request.status === requestsStatuses.approved ||
+        request.status === requestsStatuses.denied ||
+        request.status === requestsStatuses.refunded
+          ? 1
+          : 0
+    },
+    {
+      status: statusHistoryTimeline.verified,
+      text: <FormattedMessageFixed id={`${intl}.timelineVerified`} />,
+      step: 3,
+      comments: comment.filter(
+        item =>
+          item.status === requestsStatuses.partiallyApproved ||
+          item.status === requestsStatuses.approved ||
+          item.status === requestsStatuses.denied
+      ),
+      active:
+        request.status === requestsStatuses.partiallyApproved ||
+        request.status === requestsStatuses.approved ||
+        request.status === requestsStatuses.denied ||
+        request.status === requestsStatuses.refunded
+          ? 1
+          : 0
+    },
+    {
+      status: statusHistoryTimeline.refunded,
+      text: <FormattedMessageFixed id={`${intl}.timelineRefunded`} />,
+      step: 4,
+      comments: comment.filter(
+        item => item.status === requestsStatuses.refunded
+      ),
+      active: request.status === requestsStatuses.refunded ? 1 : 0
+    }
+  ];
+}
+
+export function getStatusTranslation(status: string) {
+  const s = requestsStatuses[status];
+  let words = s.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+  }
+  words = words.join("");
+
+  return words;
+}

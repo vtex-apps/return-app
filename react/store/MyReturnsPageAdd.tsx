@@ -13,11 +13,13 @@ import { countries } from "../common/countries";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
-import { getCurrentDate, diffDays, beautifyDate } from "../common/utils";
-
-function FormattedMessageFixed(props) {
-  return <FormattedMessage {...props} />;
-}
+import {
+  getCurrentDate,
+  diffDays,
+  beautifyDate,
+  FormattedMessageFixed
+} from "../common/utils";
+import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 
 type Errors = {
   name: string;
@@ -46,8 +48,8 @@ type State = {
   paymentMethod: string;
   iban: string;
   agree: boolean;
-  errorSubmit: string;
-  successSubmit: string;
+  errorSubmit: any;
+  successSubmit: any;
   errors: Errors;
   eligibleOrders: string[];
   selectedOrderId: string;
@@ -147,17 +149,14 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
 
   async getSettings() {
     return await fetch(
-      "/returns/getDocuments/" +
+      fetchPath.getDocuments +
         schemaNames.settings +
         "/" +
         schemaTypes.settings +
         "/1",
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
     )
       .then(response => response.json())
@@ -171,7 +170,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async getProfile() {
-    return await fetch("/no-cache/profileSystem/getProfile")
+    return await fetch(fetchPath.getProfile)
       .then(response => response.json())
       .then(response => {
         if (response.IsUserDefined) {
@@ -189,7 +188,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async getOrders(userEmail: string) {
-    return await fetch("/api/oms/user/orders?clientEmail=" + userEmail)
+    return await fetch(fetchPath.getOrders + "?clientEmail=" + userEmail)
       .then(response => response.json())
       .then(res => {
         return Promise.resolve(res);
@@ -198,7 +197,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
 
   async getOrder(orderId: string, userEmail: string) {
     return await fetch(
-      "/api/oms/user/orders/" + orderId + "?clientEmail=" + userEmail
+      fetchPath.getOrders + "/" + orderId + "?clientEmail=" + userEmail
     )
       .then(response => response.json())
       .then(res => {
@@ -347,7 +346,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
 
   async checkProduct(where: string) {
     return await fetch(
-      "/returns/getDocuments/" +
+      fetchPath.getDocuments +
         schemaNames.product +
         "/" +
         schemaTypes.products +
@@ -651,7 +650,11 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         this.submitProductRequest(response.DocumentId)
           .then(() => {
             this.setState({
-              successSubmit: "Your request has been successfully sent",
+              successSubmit: (
+                <FormattedMessageFixed
+                  id={"store/my-returns.requestSubmitSuccess"}
+                />
+              ),
               submittedRequest: true
             });
           })
@@ -660,7 +663,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           });
       } else {
         this.setState({
-          errorSubmit: "An error occured while processing your request.",
+          errorSubmit: (
+            <FormattedMessageFixed id={"store/my-returns.requestSubmitError"} />
+          ),
           submittedRequest: true
         });
       }
@@ -707,13 +712,10 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async sendData(body: any, schema: string) {
-    return await fetch("/returns/saveDocuments/" + schema, {
-      method: "POST",
+    return await fetch(fetchPath.saveDocuments + schema, {
+      method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+      headers: fetchHeaders
     })
       .then(response => response.json())
       .then(json => {

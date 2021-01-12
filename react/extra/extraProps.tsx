@@ -4,6 +4,7 @@ import {useLazyQuery} from 'react-apollo'
 
 import GET_REFUNDS_LIST from '../graphql/userRefunds.graphql'
 import {Profile} from '../typings/utils'
+import {fetchPath} from "../common/fetch";
 
 export {React}
 
@@ -29,7 +30,7 @@ const withExtraProps = (WrappedComponent: any): any => ({...props}) => {
     })
 
     useEffect(() => {
-        fetch('/no-cache/profileSystem/getProfile')
+        fetch(fetchPath.getProfile)
             .then(response => response.json())
             .then(async response => {
                 if (response.IsUserDefined) {
