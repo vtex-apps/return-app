@@ -106,6 +106,10 @@
     padding: 20px 0;
 }
 
+.tableModal th, .tableModal td {
+    padding: 10px;
+}
+
 .tblProducts td, .tblProducts th {
     padding: 20px;
 }

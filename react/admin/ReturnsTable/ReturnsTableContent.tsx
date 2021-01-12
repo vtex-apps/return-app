@@ -13,7 +13,16 @@ import {
   IconGrid
 } from "vtex.styleguide";
 import styles from "../../styles.css";
-import { beautifyDate, currentDate, filterDate } from "../../common/utils";
+import {
+  beautifyDate,
+  currentDate,
+  filterDate,
+  requestsStatuses
+} from "../../common/utils";
+
+function FormattedMessageFixed(props) {
+  return <FormattedMessage {...props} />;
+}
 
 const initialFilters = {
   orderId: "",
@@ -41,7 +50,7 @@ class ReturnsTableContent extends Component<any, any> {
         currentTo: tableLength
       },
       filters: initialFilters,
-      emptyStateLabel: "Nothing to show",
+      emptyStateLabel: <FormattedMessage id={"admin/returns.nothingToShow"} />,
       async: [],
       tableIsLoading: true,
       isFiltered: false,
@@ -155,7 +164,7 @@ class ReturnsTableContent extends Component<any, any> {
   getRequests() {
     const { filters } = this.state;
     let where = "";
-    if (filters === initialFilters) {
+    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
       this.setState({ isFiltered: false });
       where = "1";
     } else {
@@ -181,7 +190,7 @@ class ReturnsTableContent extends Component<any, any> {
     }
 
     if (filters.status !== "") {
-      where += '__status="' + filters.status + '"';
+      where += '__status="' + requestsStatuses[filters.status] + '"';
     }
 
     if (where.startsWith("__")) {
@@ -217,26 +226,29 @@ class ReturnsTableContent extends Component<any, any> {
     return {
       properties: {
         id: {
-          title: "Return id",
-          sortable: true
+          title: <FormattedMessage id={"admin/returns.requestId"} />,
+          sortable: true,
+          width: 350
         },
         orderId: {
-          title: "Order id",
+          title: <FormattedMessage id={"admin/returns.orderId"} />,
           sortable: true
         },
         dateSubmitted: {
-          title: "Request Date",
+          title: <FormattedMessage id={"admin/returns.submittedDate"} />,
           cellRenderer: ({ cellData }) => {
             return beautifyDate(cellData);
           },
           sortable: true
         },
         status: {
-          title: "Status",
-          sortable: true
+          title: <FormattedMessage id={"admin/returns.status"} />,
+          sortable: true,
+          width: 200
         },
         actions: {
-          title: "View",
+          width: 150,
+          title: <FormattedMessage id={"admin/returns.actions"} />,
           cellRenderer: ({ rowData }) => {
             return (
               <div>
@@ -381,6 +393,17 @@ class ReturnsTableContent extends Component<any, any> {
         this.handleModalToggle();
       })
       .catch(err => this.setState({ error: err }));
+  };
+
+  getStatusTranslation(status: string) {
+    const s = requestsStatuses[status];
+    let words = s.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+    words = words.join("");
+
+    return words;
   }
 
   render() {
@@ -390,9 +413,19 @@ class ReturnsTableContent extends Component<any, any> {
       tableIsLoading,
       filters,
       slicedData,
+      emptyStateLabel,
       selectedRequestProducts
     } = this.state;
-    const statusLabel = filters.status !== "" ? filters.status : "All statuses";
+    const statusLabel =
+      filters.status !== "" ? (
+        <FormattedMessageFixed
+          id={`admin/returns.status${this.getStatusTranslation(
+            filters.status
+          )}`}
+        />
+      ) : (
+        <FormattedMessage id={"admin/returns.statusAllStatuses"} />
+      );
     if (error) {
       return (
         <div>
@@ -463,30 +496,38 @@ class ReturnsTableContent extends Component<any, any> {
               }}
               options={[
                 {
-                  label: <FormattedMessage id="admin/returns.statusAllStatuses" />,
+                  label: (
+                    <FormattedMessage id="admin/returns.statusAllStatuses" />
+                  ),
                   onClick: () => this.filterStatus("")
                 },
                 {
                   label: <FormattedMessage id="admin/returns.statusNew" />,
-                  onClick: () => this.filterStatus("New")
+                  onClick: () => this.filterStatus("new")
                 },
                 {
                   label: <FormattedMessage id="admin/returns.statusApproved" />,
-                  onClick: () => this.filterStatus("Approved")
+                  onClick: () => this.filterStatus("approved")
                 },
                 {
-                  label: <FormattedMessage id="admin/returns.statusPending" />,
-                  onClick: () => this.filterStatus("Pending verification")
+                  label: (
+                    <FormattedMessage id="admin/returns.statusPendingVerification" />
+                  ),
+                  onClick: () => this.filterStatus("pendingVerification")
                 },
                 {
                   label: (
                     <FormattedMessage id="admin/returns.statusPartiallyApproved" />
                   ),
-                  onClick: () => this.filterStatus("Partially approved")
+                  onClick: () => this.filterStatus("partiallyApproved")
                 },
                 {
                   label: <FormattedMessage id="admin/returns.statusDenied" />,
-                  onClick: () => this.filterStatus("Denied")
+                  onClick: () => this.filterStatus("denied")
+                },
+                {
+                  label: <FormattedMessage id="admin/returns.statusRefunded" />,
+                  onClick: () => this.filterStatus("refunded")
                 }
               ]}
             />
@@ -512,12 +553,15 @@ class ReturnsTableContent extends Component<any, any> {
           fullWidth
           loading={tableIsLoading}
           items={slicedData}
+          emptyStateLabel={emptyStateLabel}
           schema={this.getTableSchema()}
           pagination={{
             onNextClick: this.handleNextClick,
             onPrevClick: this.handlePrevClick,
-            textShowRows: "Show rows",
-            textOf: "of",
+            textShowRows: (
+              <FormattedMessage id={"admin/returns.tableShowRows"} />
+            ),
+            textOf: <FormattedMessage id={"admin/returns.tableOf"} />,
             currentItemFrom: paging.currentFrom,
             currentItemTo: paging.currentTo,
             totalItems: paging.total
@@ -535,14 +579,24 @@ class ReturnsTableContent extends Component<any, any> {
         >
           <div className="dark-gray">
             {selectedRequestProducts.length ? (
-              <table className={styles.table}>
+              <table className={styles.table + " " + styles.tableModal}>
                 <thead>
                   <tr>
-                    <th>Sku ID</th>
-                    <th>Sku Name</th>
-                    <th>Unit price</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>
+                      <FormattedMessage id={"admin/returns.skuId"} />
+                    </th>
+                    <th>
+                      <FormattedMessage id={"admin/returns.product"} />
+                    </th>
+                    <th>
+                      <FormattedMessage id={"admin/returns.unitPrice"} />
+                    </th>
+                    <th>
+                      <FormattedMessage id={"admin/returns.quantity"} />
+                    </th>
+                    <th>
+                      <FormattedMessage id={"admin/returns.price"} />
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

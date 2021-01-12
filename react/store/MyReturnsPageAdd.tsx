@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
-import { Button, Input, RadioGroup, Checkbox } from "vtex.styleguide";
+import { Button, Input, RadioGroup, Checkbox, Spinner } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
 import {
   schemaTypes,
@@ -383,7 +383,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                   ) {
                     this.getOrder(order.orderId, user.Email).then(
                       currentOrder => {
-                        this.prepareOrderData(currentOrder, settings, true);
+                        if (currentOrder.status === "invoiced") {
+                          this.prepareOrderData(currentOrder, settings, true);
+                        }
                       }
                     );
                   }
@@ -773,7 +775,11 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
           if (loading) {
-            return <div>Loading...</div>;
+            return (
+              <div className={`flex justify-center pt6 pb6`}>
+                <Spinner />
+              </div>
+            );
           }
 
           if (submittedRequest) {
