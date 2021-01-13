@@ -7,7 +7,8 @@ import {
   Input,
   Spinner,
   IconClear,
-  Button
+  Button,
+  IconDeny
 } from "vtex.styleguide";
 
 import styles from "../styles.css";
@@ -303,30 +304,36 @@ export default class ReturnsSettings extends Component<{}, any> {
       >
         <PageBlock variation="full">
           <div className={`flex flex-column`}>
-            <FormattedMessage id={"admin/settings.maxDays_label"}>
-              {msg => (
-                <Input
-                  value={maxDays}
-                  size="regular"
-                  label={msg}
-                  onChange={e => this.setState({ maxDays: e.target.value })}
-                  errorMessage={errors.maxDays}
-                />
-              )}
-            </FormattedMessage>
-          </div>
-          <div className={`flex flex-column mt6`}>
-            <FormattedMessage id={"admin/settings.terms_label"}>
-              {msg => (
-                <Input
-                  value={termsUrl}
-                  size="regular"
-                  label={msg}
-                  onChange={e => this.setState({ termsUrl: e.target.value })}
-                  errorMessage={errors.termsUrl}
-                />
-              )}
-            </FormattedMessage>
+            <div className={`flex flex-row`}>
+              <div className={`w-50`}>
+                <FormattedMessage id={"admin/settings.maxDays_label"}>
+                  {msg => (
+                    <Input
+                      value={maxDays}
+                      size="regular"
+                      label={msg}
+                      onChange={e => this.setState({ maxDays: e.target.value })}
+                      errorMessage={errors.maxDays}
+                    />
+                  )}
+                </FormattedMessage>
+              </div>
+              <div className={`w-50`}>
+                <FormattedMessage id={"admin/settings.terms_label"}>
+                  {msg => (
+                    <Input
+                      value={termsUrl}
+                      size="regular"
+                      label={msg}
+                      onChange={e =>
+                        this.setState({ termsUrl: e.target.value })
+                      }
+                      errorMessage={errors.termsUrl}
+                    />
+                  )}
+                </FormattedMessage>
+              </div>
+            </div>
           </div>
           <div className={`flex flex-column mt6`}>
             <div className={`flex flex-column w-100`}>
@@ -387,13 +394,16 @@ export default class ReturnsSettings extends Component<{}, any> {
                 <div className={`flex flex-column`}>
                   {excludedCategories.map((category: any) => (
                     <button
-                      className={`bn w-100 tl pointer pa4 f6 bg-base ${styles.filteredCategoriesItem}`}
+                      className={`bn w-100 tl pointer pa4 f6 bg-base ${styles.filteredCategoriesItem} ${styles.excludedCategoriesItem}`}
                       key={"removeExcludeCategory-" + category.id}
                       onClick={() => {
                         this.removeExcludedCategory(category);
                       }}
                     >
-                      {category.name}
+                      {category.name}{" "}
+                      <span className={`${styles.statusDenied}`}>
+                        <IconDeny size={12} />
+                      </span>
                     </button>
                   ))}
                 </div>

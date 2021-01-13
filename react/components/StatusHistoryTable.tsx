@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
-import { returnFormDate, FormattedMessageFixed } from "../common/utils";
+import {
+  returnFormDate,
+  FormattedMessageFixed,
+  getProductStatusTranslation
+} from "../common/utils";
 
 interface Props {
   statusHistory: any;
-  intlZone: string;
+  intl: string;
 }
 
 class StatusHistoryTable extends Component<Props> {
@@ -13,12 +17,12 @@ class StatusHistoryTable extends Component<Props> {
   }
 
   render() {
-    const { statusHistory, intlZone } = this.props;
+    const { statusHistory, intl } = this.props;
     const messages = {
-      title: `${intlZone}.statusHistory`,
-      date: `${intlZone}.date`,
-      status: `${intlZone}.status`,
-      submittedBy: `${intlZone}.submittedBy`
+      title: `${intl}.statusHistory`,
+      date: `${intl}.date`,
+      status: `${intl}.status`,
+      submittedBy: `${intl}.submittedBy`
     };
     return (
       <div>
@@ -51,10 +55,17 @@ class StatusHistoryTable extends Component<Props> {
               className={`flex flex-row items-stretch w-100`}
             >
               <div className={`flex w-33`}>
-                <p>{returnFormDate(status.dateSubmitted)}</p>
+                <p>{returnFormDate(status.dateSubmitted, intl)}</p>
               </div>
               <div className={`flex w-33`}>
-                <p>{status.status}</p>
+                <p>
+                  <FormattedMessageFixed
+                    id={
+                      `${intl}.status` +
+                      getProductStatusTranslation(status.status)
+                    }
+                  />
+                </p>
               </div>
               <div className={`flex w-33`}>
                 <p>{status.submittedBy}</p>

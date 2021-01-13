@@ -7,7 +7,9 @@ import {
   returnFormDate,
   schemaNames,
   schemaTypes,
-  prepareHistoryData
+  prepareHistoryData,
+  FormattedMessageFixed,
+  intlArea
 } from "../common/utils";
 import styles from "../styles.css";
 import { IconCheck } from "vtex.styleguide";
@@ -150,7 +152,6 @@ class ReturnsDetails extends Component<PageProps, any> {
     const {
       request,
       product,
-      totalRefundAmount,
       statusHistoryTimeline,
       statusHistory
     } = this.state;
@@ -158,7 +159,13 @@ class ReturnsDetails extends Component<PageProps, any> {
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
           if (!request) {
-            return <div>Not Found</div>;
+            return (
+              <div>
+                <FormattedMessageFixed
+                  id={"store/my-returns.requestNotFound"}
+                />
+              </div>
+            );
           }
           return (
             <div>
@@ -166,15 +173,17 @@ class ReturnsDetails extends Component<PageProps, any> {
                 <FormattedMessage
                   id={"store/my-returns.details.returnForm"}
                   values={{
-                    requestId: " #" + request.id,
-                    requestDate: " " + returnFormDate(request.dateSubmitted)
+                    requestId: " #" + request.id
                   }}
                 />
+                {" / "}
+                {returnFormDate(request.dateSubmitted, "store/my-returns")}
               </p>
               <ProductsTable
                 product={product}
-                intl={"store/my-returns"}
-                totalRefundAmount={totalRefundAmount}
+                intl={intlArea.store}
+                productsValue={request.totalPrice}
+                totalRefundAmount={request.refundedAmount}
               />
               <p className={"mt7"}>
                 <strong className={"mr6"}>
@@ -185,7 +194,7 @@ class ReturnsDetails extends Component<PageProps, any> {
                 </strong>
               </p>
 
-              <RequestInfo intl={"store/my-returns"} request={request} />
+              <RequestInfo intl={intlArea.store} request={request} />
 
               <p className={"mt7"}>
                 <strong>
@@ -221,7 +230,13 @@ class ReturnsDetails extends Component<PageProps, any> {
                       }
                     >
                       {currentHistory.comments.map(comment => (
-                        <li key={comment.id}>{comment.comment}</li>
+                        <li key={comment.id}>
+                          {returnFormDate(
+                            comment.dateSubmitted,
+                            intlArea.store
+                          )}
+                          : {comment.comment}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -229,7 +244,7 @@ class ReturnsDetails extends Component<PageProps, any> {
               </div>
               <StatusHistoryTable
                 statusHistory={statusHistory}
-                intlZone={"store/my-returns"}
+                intl={intlArea.store}
               />
             </div>
           );

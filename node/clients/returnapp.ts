@@ -99,6 +99,7 @@ export default class ReturnApp extends ExternalClient {
                     "refundId": {"type": "string"},
                     "orderId": {"type": "string"},
                     "userId": {"type": "string"},
+                    "imageUrl": {"type": "string"},
                     "skuId": {"type": "string"},
                     "skuName": {"type": "string"},
                     "unitPrice": {"type": "integer"},
@@ -111,13 +112,13 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
-                    "publicWrite": ["refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
-                    "publicFilter": ["refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicRead": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicWrite": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
                 "v-cache": false,
-                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
                 "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "status", "type"]
             }
         },

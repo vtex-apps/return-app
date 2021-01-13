@@ -6,10 +6,12 @@ import {
   IconFailure,
   IconSuccess,
   IconVisibilityOn,
-  IconWarning
+  IconWarning,
+  IconCheck
 } from "vtex.styleguide";
 
 import axios from "axios";
+import { type } from "os";
 
 export function getCurrentDate() {
   return new Date().toISOString();
@@ -24,11 +26,15 @@ export function getOneYearLaterDate() {
   return oneYearLater.toISOString();
 }
 
+export function FormattedMessageFixed(props) {
+  return <FormattedMessage {...props} />;
+}
+
 export function beautifyDate(date: string) {
   return new Date(date).toLocaleString();
 }
 
-export function returnFormDate(date: string) {
+export function returnFormDate(date: string, intl: string) {
   const monthNames = [
     "January",
     "February",
@@ -44,7 +50,25 @@ export function returnFormDate(date: string) {
     "December"
   ];
   const d = new Date(date);
-  return d.getDate() + " " + monthNames[d.getMonth()] + " " + d.getFullYear();
+  const seconds = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
+
+  return (
+    <FormattedMessageFixed id={`${intl}.${monthNames[d.getMonth()]}`}>
+      {monthName =>
+        d.getDate() +
+        " " +
+        monthName +
+        " " +
+        d.getFullYear() +
+        " " +
+        d.getHours() +
+        ":" +
+        d.getMinutes() +
+        ":" +
+        seconds
+      }
+    </FormattedMessageFixed>
+  );
 }
 
 export const sortColumns = {
@@ -79,10 +103,6 @@ export function diffDays(date1: string, date2: string) {
   const dayMap = 24 * 60 * 60 * 1000;
   const diff = Date.parse(date1) - Date.parse(date2);
   return Math.floor(diff / dayMap);
-}
-
-export function FormattedMessageFixed(props) {
-  return <FormattedMessage {...props} />;
 }
 
 export const schemaNames = {
@@ -125,12 +145,47 @@ export const statusHistoryTimeline = {
   refunded: "Amount refunded"
 };
 
-export function renderIcon(product: any) {
+export const intlArea = {
+  admin: "admin/returns",
+  store: "store/my-returns"
+};
+
+export function getStatusTranslation(status: string) {
+  const s = requestsStatuses[status];
+  let words = s.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+  }
+  words = words.join("");
+
+  return words;
+}
+
+export function getProductStatusTranslation(status: string) {
+  if (typeof status !== "undefined") {
+    let words: any = status.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+    words = words.join("");
+
+    return words;
+  }
+  return;
+}
+
+export function renderIcon(product: any, intl: string) {
   if (product.status === requestsStatuses.approved) {
     return (
       <div>
         <span className={styles.statusApproved}>
-          <IconSuccess size={14} /> {product.status}
+          <IconSuccess size={14} />{" "}
+          <FormattedMessageFixed
+            id={
+              `${intl}.productStatus` +
+              getProductStatusTranslation(product.status)
+            }
+          />
         </span>
       </div>
     );
@@ -140,7 +195,13 @@ export function renderIcon(product: any) {
     return (
       <div>
         <span className={styles.statusDenied}>
-          <IconFailure size={14} /> {product.status}
+          <IconFailure size={14} />{" "}
+          <FormattedMessageFixed
+            id={
+              `${intl}.productStatus` +
+              getProductStatusTranslation(product.status)
+            }
+          />
         </span>
       </div>
     );
@@ -150,8 +211,14 @@ export function renderIcon(product: any) {
     return (
       <div>
         <span className={styles.statusPartiallyApproved}>
-          <IconWarning size={14} /> {product.status} {product.goodProducts}/
-          {product.quantity}
+          <IconWarning size={14} />{" "}
+          <FormattedMessageFixed
+            id={
+              `${intl}.productStatus` +
+              getProductStatusTranslation(product.status)
+            }
+          />{" "}
+          {product.goodProducts}/{product.quantity}
         </span>
       </div>
     );
@@ -161,7 +228,13 @@ export function renderIcon(product: any) {
     return (
       <div>
         <span className={styles.statusPendingVerification}>
-          <IconClock size={14} /> {product.status}
+          <IconClock size={14} />{" "}
+          <FormattedMessageFixed
+            id={
+              `${intl}.productStatus` +
+              getProductStatusTranslation(product.status)
+            }
+          />
         </span>
       </div>
     );
@@ -170,7 +243,13 @@ export function renderIcon(product: any) {
   return (
     <div>
       <span className={styles.statusNew}>
-        <IconVisibilityOn size={14} /> {product.status}
+        <IconVisibilityOn size={14} />{" "}
+        <FormattedMessageFixed
+          id={
+            `${intl}.productStatus` +
+            getProductStatusTranslation(product.status)
+          }
+        />
       </span>
     </div>
   );
@@ -189,10 +268,10 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
     {
       status: statusHistoryTimeline.new,
       text: (
-        <FormattedMessageFixed
-          id={`${intl}.timelineNew`}
-          values={{ date: " " + returnFormDate(request.dateSubmitted) }}
-        />
+        <span>
+          <FormattedMessageFixed id={`${intl}.timelineNew`} />{" "}
+          {returnFormDate(request.dateSubmitted, intl)}
+        </span>
       ),
       step: 1,
       comments: comment.filter(item => item.status === requestsStatuses.new),
@@ -234,25 +313,25 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
     },
     {
       status: statusHistoryTimeline.refunded,
-      text: <FormattedMessageFixed id={`${intl}.timelineRefunded`} />,
+      text:
+        request.status === requestsStatuses.refunded ? (
+          <FormattedMessageFixed id={`${intl}.timelineRefunded`} />
+        ) : request.status === requestsStatuses.denied ? (
+          <FormattedMessageFixed id={`${intl}.timelineDenied`} />
+        ) : (
+          <FormattedMessageFixed id={`${intl}.timelineRefunded`} />
+        ),
       step: 4,
       comments: comment.filter(
         item => item.status === requestsStatuses.refunded
       ),
-      active: request.status === requestsStatuses.refunded ? 1 : 0
+      active:
+        request.status === requestsStatuses.refunded ||
+        request.status === requestsStatuses.denied
+          ? 1
+          : 0
     }
   ];
-}
-
-export function getStatusTranslation(status: string) {
-  const s = requestsStatuses[status];
-  let words = s.split(" ");
-  for (let i = 0; i < words.length; i++) {
-    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-  }
-  words = words.join("");
-
-  return words;
 }
 
 export function sendMail(jsonData) {
@@ -264,4 +343,82 @@ export function sendMail(jsonData) {
       jsonData: jsonData
     })
     .then(r => {});
+}
+
+export function renderStatusIcon(request: any, intl: string) {
+  if (request === requestsStatuses.approved) {
+    return (
+      <div>
+        <span className={styles.statusApproved}>
+          <IconSuccess size={14} />{" "}
+          <FormattedMessageFixed
+            id={`${intl}.status` + getProductStatusTranslation(request)}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  if (request === requestsStatuses.denied) {
+    return (
+      <div>
+        <span className={styles.statusDenied}>
+          <IconFailure size={14} />{" "}
+          <FormattedMessageFixed
+            id={`${intl}.status` + getProductStatusTranslation(request)}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  if (request === requestsStatuses.partiallyApproved) {
+    return (
+      <div>
+        <span className={styles.statusPartiallyApproved}>
+          <IconWarning size={14} />{" "}
+          <FormattedMessageFixed
+            id={`${intl}.status` + getProductStatusTranslation(request)}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  if (request === requestsStatuses.pendingVerification) {
+    return (
+      <div>
+        <span className={styles.statusPendingVerification}>
+          <IconClock size={14} />{" "}
+          <FormattedMessageFixed
+            id={`${intl}.status` + getProductStatusTranslation(request)}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  if (request === requestsStatuses.refunded) {
+    return (
+      <div>
+        <span className={styles.statusRefunded}>
+          <IconCheck size={14} />{" "}
+          <FormattedMessageFixed
+            id={`${intl}.status` + getProductStatusTranslation(request)}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <span className={styles.statusNew}>
+        <IconVisibilityOn size={14} />{" "}
+        <FormattedMessageFixed
+          id={`${intl}.status` + getProductStatusTranslation(request)}
+        />
+      </span>
+    </div>
+  );
 }

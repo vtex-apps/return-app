@@ -23,7 +23,9 @@ import {
   order,
   schemaNames,
   schemaTypes,
-  getStatusTranslation
+  getStatusTranslation,
+  renderStatusIcon,
+  getProductStatusTranslation, intlArea
 } from "../../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
 
@@ -175,11 +177,11 @@ class ReturnsTableContent extends Component<any, any> {
     }
 
     if (filters.orderId !== "") {
-      where += 'orderId="' + filters.orderId + '"';
+      where += 'orderId="*' + filters.orderId + '*"';
     }
 
     if (filters.returnId !== "") {
-      where += '__id="' + filters.returnId + '"';
+      where += '__id="*' + filters.returnId + '*"';
     }
 
     let startDate = "1970-01-01";
@@ -187,7 +189,10 @@ class ReturnsTableContent extends Component<any, any> {
     if (filters.fromDate !== "" || filters.toDate !== "") {
       startDate =
         filters.fromDate !== "" ? filterDate(filters.fromDate) : startDate;
-      endDate = filters.toDate !== "" ? filterDate(filters.toDate) : endDate;
+      endDate =
+        filters.toDate !== ""
+          ? filterDate(filters.toDate)
+          : filterDate(filters.fromDate);
 
       where += "__dateSubmitted between " + startDate + " AND " + endDate;
     }
@@ -213,19 +218,23 @@ class ReturnsTableContent extends Component<any, any> {
     )
       .then(response => response.json())
       .then(returns => {
-        this.setState(prevState => ({
-          returns: returns,
-          orderedItems: returns,
-          slicedData: returns.slice(0, tableLength),
-          tableIsLoading: false,
-          paging: {
-            ...prevState.paging,
-            currentPage: 1,
-            currentTo: tableLength,
-            currentFrom: 1,
-            total: returns.length
-          }
-        }));
+        if ("error" in returns) {
+          this.setState({ error: returns.error });
+        } else {
+          this.setState(prevState => ({
+            returns: returns,
+            orderedItems: returns,
+            slicedData: returns.length ? returns.slice(0, tableLength) : [],
+            tableIsLoading: false,
+            paging: {
+              ...prevState.paging,
+              currentPage: 1,
+              currentTo: tableLength,
+              currentFrom: 1,
+              total: returns.length
+            }
+          }));
+        }
       })
       .catch(err => this.setState({ error: err }));
   }
@@ -252,7 +261,14 @@ class ReturnsTableContent extends Component<any, any> {
         status: {
           title: <FormattedMessage id={"admin/returns.status"} />,
           sortable: true,
-          width: 200
+          width: 200,
+          cellRenderer: ({ cellData }) => {
+            return (
+              <div>
+                {renderStatusIcon(cellData, intlArea.admin)}
+              </div>
+            );
+          }
         },
         actions: {
           width: 150,
@@ -318,6 +334,9 @@ class ReturnsTableContent extends Component<any, any> {
         fromDate: val
       }
     }));
+    setTimeout(() => {
+      this.handleApplyFilters();
+    }, 200);
   }
   filterToDate(val: string) {
     this.setState(prevState => ({
@@ -326,16 +345,14 @@ class ReturnsTableContent extends Component<any, any> {
         toDate: val
       }
     }));
+    setTimeout(() => {
+      this.handleApplyFilters();
+    }, 200);
   }
 
   handleApplyFilters() {
     const { filters } = this.state;
-    if (
-      filters.dateSubmitted === "" &&
-      filters.orderId === "" &&
-      filters.returnId === "" &&
-      filters.status === ""
-    ) {
+    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
       this.handleResetFilters();
     } else {
       this.getRequests();
@@ -405,6 +422,12 @@ class ReturnsTableContent extends Component<any, any> {
       .catch(err => this.setState({ error: err }));
   };
 
+  handleKeypress(e) {
+    if (e.key === "Enter") {
+      this.handleApplyFilters();
+    }
+  }
+
   render() {
     const {
       error,
@@ -438,6 +461,9 @@ class ReturnsTableContent extends Component<any, any> {
               {msg => (
                 <Input
                   placeholder={msg}
+                  onKeyPress={e => {
+                    this.handleKeypress(e);
+                  }}
                   size={"small"}
                   onChange={e => this.filterReturnId(e.target.value)}
                   value={filters.returnId}
@@ -450,6 +476,9 @@ class ReturnsTableContent extends Component<any, any> {
               {msg => (
                 <Input
                   placeholder={msg}
+                  onKeyPress={e => {
+                    this.handleKeypress(e);
+                  }}
                   size={"small"}
                   onChange={e => this.filterOrderId(e.target.value)}
                   value={filters.orderId}
