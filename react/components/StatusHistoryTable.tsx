@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
 import styles from "../styles.css";
-import { returnFormDate } from "../common/utils";
+import { returnFormDate, FormattedMessageFixed } from "../common/utils";
 
 interface Props {
   statusHistory: any;
   intlZone: string;
-}
-function FormattedMessageFixed(props) {
-  return <FormattedMessage {...props} />;
 }
 
 class StatusHistoryTable extends Component<Props> {

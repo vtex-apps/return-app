@@ -4,18 +4,18 @@ import { ContentWrapper } from "vtex.my-account-commons";
 import { PageProps } from "../typings/utils";
 import {
   productStatuses,
-  requestsStatuses,
   returnFormDate,
   schemaNames,
   schemaTypes,
-  statusHistoryTimeline
+  prepareHistoryData
 } from "../common/utils";
 import styles from "../styles.css";
 import { IconCheck } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
-import RequestInfoStore from "../components/RequestInfoStore";
+import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
-import ProductsTableStore from "../components/ProductsTableStore";
+import ProductsTable from "../components/ProductsTable";
+import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 
 class ReturnsDetails extends Component<PageProps, any> {
   constructor(props: PageProps) {
@@ -65,7 +65,13 @@ class ReturnsDetails extends Component<PageProps, any> {
             schemaTypes.comments,
             requestId
           ).then(comments => {
-            this.prepareHistoryData(comments, request[0]);
+            this.setState({
+              statusHistoryTimeline: prepareHistoryData(
+                comments,
+                request[0],
+                "store/my-returns"
+              )
+            });
             this.getFromMasterData(
               schemaNames.history,
               schemaTypes.history,
@@ -78,7 +84,7 @@ class ReturnsDetails extends Component<PageProps, any> {
   }
 
   async getProfile() {
-    return await fetch("/no-cache/profileSystem/getProfile")
+    return await fetch(fetchPath.getProfile)
       .then(response => response.json())
       .then(response => {
         if (response.IsUserDefined) {
@@ -98,7 +104,7 @@ class ReturnsDetails extends Component<PageProps, any> {
       refundId += "__visibleForCustomer=1";
     }
     return await fetch(
-      "/returns/getDocuments/" +
+      fetchPath.getDocuments +
         schema +
         "/" +
         type +
@@ -107,11 +113,8 @@ class ReturnsDetails extends Component<PageProps, any> {
         "=" +
         refundId,
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
+        method: fetchMethod.get,
+        headers: fetchHeaders
       }
     )
       .then(response => response.json())
@@ -143,58 +146,6 @@ class ReturnsDetails extends Component<PageProps, any> {
       .catch(err => this.setState({ error: err }));
   }
 
-  prepareHistoryData(comment: any, request: any) {
-    const history = [
-      {
-        status: statusHistoryTimeline.new,
-        step: 1,
-        comments: comment.filter(item => item.status === requestsStatuses.new),
-        active: 1
-      },
-      {
-        status: statusHistoryTimeline.picked,
-        step: 2,
-        comments: comment.filter(
-          item => item.status === requestsStatuses.pendingVerification
-        ),
-        active:
-          request.status === requestsStatuses.pendingVerification ||
-          request.status === requestsStatuses.partiallyApproved ||
-          request.status === requestsStatuses.approved ||
-          request.status === requestsStatuses.denied ||
-          request.status === requestsStatuses.refunded
-            ? 1
-            : 0
-      },
-      {
-        status: statusHistoryTimeline.verified,
-        step: 3,
-        comments: comment.filter(
-          item =>
-            item.status === requestsStatuses.partiallyApproved ||
-            item.status === requestsStatuses.approved ||
-            item.status === requestsStatuses.denied
-        ),
-        active:
-          request.status === requestsStatuses.partiallyApproved ||
-          request.status === requestsStatuses.approved ||
-          request.status === requestsStatuses.denied ||
-          request.status === requestsStatuses.refunded
-            ? 1
-            : 0
-      },
-      {
-        status: statusHistoryTimeline.refunded,
-        step: 4,
-        comments: comment.filter(
-          item => item.status === requestsStatuses.refunded
-        ),
-        active: request.status === requestsStatuses.refunded ? 1 : 0
-      }
-    ];
-    this.setState({ statusHistoryTimeline: history });
-  }
-
   render() {
     const {
       request,
@@ -220,8 +171,9 @@ class ReturnsDetails extends Component<PageProps, any> {
                   }}
                 />
               </p>
-              <ProductsTableStore
+              <ProductsTable
                 product={product}
+                intl={"store/my-returns"}
                 totalRefundAmount={totalRefundAmount}
               />
               <p className={"mt7"}>
@@ -233,7 +185,7 @@ class ReturnsDetails extends Component<PageProps, any> {
                 </strong>
               </p>
 
-              <RequestInfoStore request={request} />
+              <RequestInfo intl={"store/my-returns"} request={request} />
 
               <p className={"mt7"}>
                 <strong>
@@ -257,10 +209,7 @@ class ReturnsDetails extends Component<PageProps, any> {
                         <span className={styles.statusIcon} />
                       )}
 
-                      {currentHistory.status === "new"
-                        ? "Return form registered on " +
-                          returnFormDate(request.dateSubmitted)
-                        : currentHistory.status}
+                      {currentHistory.text}
                     </p>
                     <ul
                       className={
