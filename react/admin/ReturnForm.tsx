@@ -413,9 +413,9 @@ export default class ReturnForm extends Component<{}, any> {
       });
       if (statusInput !== request.status) {
         window.setTimeout(() => {
-          const { product, requestData, statusHistoryTimeline } = this.state;
+          const { product, request, statusHistoryTimeline } = this.state;
           sendMail({
-            data: { ...{ DocumentId: requestData.id }, ...requestData },
+            data: { ...{ DocumentId: request.id }, ...request },
             products: product,
             timeline: statusHistoryTimeline
           });

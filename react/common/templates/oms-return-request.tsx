@@ -235,7 +235,7 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "                                Stare finala</h3>\n" +
     "                            <b>Valoare rambursata</b>\n" +
     "                            {{#eq data.paymentMethod 'voucher'}}\n" +
-    "                            <b> sud forma de voucher in valoare de {{formatCurrency data.refundedAmount}}\n" +
+    "                            <b> sub forma de voucher in valoare de {{formatCurrency data.refundedAmount}}\n" +
     "                                RON</b><br/><br/>\n" +
     "                            <span style=\"background-color: red; padding: 0.3rem 1rem; color: #fff; border-radius: 0.3rem\">\n" +
     "                                        <b>{{data.voucherCode}}</b>\n" +
