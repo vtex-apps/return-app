@@ -11,7 +11,8 @@ import {
   renderIcon,
   prepareHistoryData,
   FormattedMessageFixed,
-  sendMail
+  sendMail,
+  intlArea
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
@@ -156,7 +157,7 @@ export default class ReturnForm extends Component<{}, any> {
       maxNumberOfAffectedItemsGroupKey: "perCart",
       applyToAllShippings: false,
       nominalTax: 0.0,
-      origin: "marketplace",
+      origin: "Marketplace",
       idSellerIsInclusive: true,
       idsSalesChannel: [],
       areSalesChannelIdsExclusive: false,
@@ -207,6 +208,7 @@ export default class ReturnForm extends Component<{}, any> {
       maxInstallment: 0,
       merchants: [],
       clusterExpressions: [],
+      clusterOperator: "all",
       paymentsRules: [],
       giftListTypes: [],
       productsSpecifications: [],
@@ -408,7 +410,7 @@ export default class ReturnForm extends Component<{}, any> {
         statusHistoryTimeline: prepareHistoryData(
           oldComments,
           requestData,
-          "admin/returns"
+          intlArea.admin
         )
       });
       if (statusInput !== request.status) {
@@ -455,14 +457,21 @@ export default class ReturnForm extends Component<{}, any> {
       status = productStatuses.denied;
     } else if (quantityInput < product.quantity) {
       status = productStatuses.partiallyApproved;
-    } else if (product.quantity === quantityInput) {
+    } else if (product.quantity <= quantityInput) {
       status = productStatuses.approved;
     }
 
     this.setState(prevState => ({
       productsForm: prevState.productsForm.map(el =>
         el.id === product.id
-          ? { ...el, goodProducts: quantityInput, status: status }
+          ? {
+              ...el,
+              goodProducts:
+                quantityInput > product.quantity
+                  ? product.quantity
+                  : quantityInput,
+              status: status
+            }
           : el
       )
     }));
@@ -636,7 +645,8 @@ export default class ReturnForm extends Component<{}, any> {
     const { request } = this.state;
     return !(
       request.status === requestsStatuses.new ||
-      request.status === requestsStatuses.refunded
+      request.status === requestsStatuses.refunded ||
+      request.status === requestsStatuses.denied
     );
   }
 
@@ -661,10 +671,11 @@ export default class ReturnForm extends Component<{}, any> {
             <FormattedMessage
               id={"admin/returns.details.returnForm"}
               values={{
-                requestId: " #" + request.id,
-                requestDate: " " + returnFormDate(request.dateSubmitted)
+                requestId: " #" + request.id
               }}
             />
+            {" / "}
+            {returnFormDate(request.dateSubmitted, "admin/returns")}
           </p>
           {this.canVerifyPackage() ? (
             <Button
@@ -680,7 +691,8 @@ export default class ReturnForm extends Component<{}, any> {
           <ProductsTable
             product={product}
             totalRefundAmount={request.refundedAmount}
-            intl={"admin/returns"}
+            productsValue={request.totalPrice}
+            intl={intlArea.admin}
           />
           <p className={"mt7"}>
             <strong className={"mr6"}>
@@ -693,11 +705,11 @@ export default class ReturnForm extends Component<{}, any> {
               href={"/admin/checkout/#/orders/" + request.orderId}
               target="_blank"
             >
-              view order
+              <FormattedMessageFixed id={"admin/returns.viewOrder"} />
             </Link>
           </p>
 
-          <RequestInfo request={request} intl={"admin/returns"} />
+          <RequestInfo request={request} intl={intlArea.admin} />
 
           <p className={"mt7"}>
             <strong>
@@ -732,7 +744,10 @@ export default class ReturnForm extends Component<{}, any> {
                   }
                 >
                   {currentHistory.comments.map(comment => (
-                    <li key={comment.id}>{comment.comment}</li>
+                    <li key={comment.id}>
+                      {returnFormDate(comment.dateSubmitted, intlArea.admin)}:{" "}
+                      {comment.comment} ({comment.submittedBy})
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -741,7 +756,7 @@ export default class ReturnForm extends Component<{}, any> {
           {this.renderStatusCommentForm()}
           <StatusHistoryTable
             statusHistory={statusHistory}
-            intlZone={"admin/returns"}
+            intl={intlArea.admin}
           />
         </div>
       );
@@ -777,7 +792,7 @@ export default class ReturnForm extends Component<{}, any> {
                     <td className={styles.tableProductColumn}>
                       {currentProduct.skuName}
                     </td>
-                    <td>
+                    <td className={styles.smallCell}>
                       <Input
                         suffix={"/" + currentProduct.quantity}
                         size={"small"}
@@ -791,7 +806,7 @@ export default class ReturnForm extends Component<{}, any> {
                       />
                     </td>
                     <td className={styles.paddingLeft20}>
-                      {renderIcon(currentProduct)}
+                      {renderIcon(currentProduct, "admin/returns")}
                     </td>
                   </tr>
                 ))

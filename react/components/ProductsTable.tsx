@@ -6,6 +6,7 @@ import { FormattedMessageFixed, renderIcon } from "../common/utils";
 interface Props {
   product: any;
   totalRefundAmount: any;
+  productsValue: any;
   intl: string;
 }
 
@@ -15,12 +16,13 @@ class ProductsTable extends Component<Props> {
   }
 
   render() {
-    const { product, totalRefundAmount, intl } = this.props;
+    const { product, totalRefundAmount, productsValue, intl } = this.props;
     const messages = {
       product: `${intl}.product`,
       quantity: `${intl}.quantity`,
       unitPrice: `${intl}.unitPrice`,
       subtotalRefund: `${intl}.subtotalRefund`,
+      productsValue: `${intl}.totalProductsValue`,
       productVerificationStatus: `${intl}.productVerificationStatus`,
       noProducts: `${intl}.noProducts`,
       totalRefundAmount: `${intl}.totalRefundAmount`
@@ -33,6 +35,7 @@ class ProductsTable extends Component<Props> {
       >
         <thead>
           <tr>
+            <th />
             <th>
               <FormattedMessageFixed id={messages.product} />
             </th>
@@ -55,6 +58,12 @@ class ProductsTable extends Component<Props> {
             product.map(currentProduct => (
               <tr key={currentProduct.skuId}>
                 <td className={styles.tableProductColumn}>
+                  <img
+                    src={currentProduct.imageUrl}
+                    alt={currentProduct.skuName}
+                  />
+                </td>
+                <td className={styles.tableProductColumn}>
                   {currentProduct.skuName}
                 </td>
                 <td className={styles.textCenter}>{currentProduct.quantity}</td>
@@ -68,7 +77,7 @@ class ProductsTable extends Component<Props> {
                     }
                   />
                 </td>
-                <td>{renderIcon(currentProduct)}</td>
+                <td>{renderIcon(currentProduct, intl)}</td>
               </tr>
             ))
           ) : (
@@ -79,6 +88,20 @@ class ProductsTable extends Component<Props> {
             </tr>
           )}
           <tr className={styles.tableProductsRow}>
+            <td />
+            <td colSpan={3}>
+              <strong>
+                <FormattedMessageFixed id={messages.productsValue} />
+              </strong>
+            </td>
+            <td colSpan={2}>
+              <strong>
+                <FormattedCurrency value={productsValue / 100} />
+              </strong>
+            </td>
+          </tr>
+          <tr className={styles.tableProductsRow}>
+            <td />
             <td colSpan={3}>
               <strong>
                 <FormattedMessageFixed id={messages.totalRefundAmount} />

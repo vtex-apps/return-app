@@ -20,7 +20,10 @@ import {
   FormattedMessageFixed,
   sortColumns,
   order,
-  getStatusTranslation
+  getStatusTranslation,
+  renderStatusIcon,
+  getProductStatusTranslation,
+  intlArea
 } from "../common/utils";
 
 import { fetchPath, fetchHeaders, fetchMethod } from "../common/fetch";
@@ -66,7 +69,8 @@ class MyReturnsPage extends Component<{}, any> {
       dataSort: {
         sortedBy: null,
         sortOrder: null
-      }
+      },
+      error: ""
     };
 
     this.sortRequestIdASC = this.sortRequestIdASC.bind(this);
@@ -110,34 +114,36 @@ class MyReturnsPage extends Component<{}, any> {
 
   handleSort({ sortOrder, sortedBy }) {
     const { returns } = this.state;
-    let slicedData = [];
-    if (sortedBy === sortColumns.id) {
-      slicedData =
-        sortOrder === order.asc
-          ? returns.slice().sort(this.sortRequestIdASC)
-          : returns.slice().sort(this.sortRequestIdDESC);
-    }
-
-    if (sortedBy === sortColumns.dateSubmitted) {
-      slicedData =
-        sortOrder === order.asc
-          ? returns.slice().sort(this.sortDateSubmittedASC)
-          : returns.slice().sort(this.sortDateSubmittedDESC);
-    }
-    if (sortedBy === sortColumns.status) {
-      slicedData =
-        sortOrder === order.asc
-          ? returns.slice().sort(this.sortStatusASC)
-          : returns.slice().sort(this.sortStatusDESC);
-    }
-
-    this.setState({
-      slicedData,
-      dataSort: {
-        sortedBy,
-        sortOrder
+    if (returns && returns.length) {
+      let slicedData = [];
+      if (sortedBy === sortColumns.id) {
+        slicedData =
+          sortOrder === order.asc
+            ? returns.slice().sort(this.sortRequestIdASC)
+            : returns.slice().sort(this.sortRequestIdDESC);
       }
-    });
+
+      if (sortedBy === sortColumns.dateSubmitted) {
+        slicedData =
+          sortOrder === order.asc
+            ? returns.slice().sort(this.sortDateSubmittedASC)
+            : returns.slice().sort(this.sortDateSubmittedDESC);
+      }
+      if (sortedBy === sortColumns.status) {
+        slicedData =
+          sortOrder === order.asc
+            ? returns.slice().sort(this.sortStatusASC)
+            : returns.slice().sort(this.sortStatusDESC);
+      }
+
+      this.setState({
+        slicedData,
+        dataSort: {
+          sortedBy,
+          sortOrder
+        }
+      });
+    }
   }
 
   hasFiltersApplied() {
@@ -183,7 +189,7 @@ class MyReturnsPage extends Component<{}, any> {
     }
 
     if (useFilters.returnId !== "") {
-      where += '__id="' + useFilters.returnId + '"';
+      where += '__id="*' + useFilters.returnId + '*"';
     }
 
     let startDate = "1970-01-01";
@@ -194,7 +200,9 @@ class MyReturnsPage extends Component<{}, any> {
           ? filterDate(useFilters.fromDate)
           : startDate;
       endDate =
-        useFilters.toDate !== "" ? filterDate(useFilters.toDate) : endDate;
+        useFilters.toDate !== ""
+          ? filterDate(useFilters.toDate)
+          : filterDate(useFilters.fromDate);
 
       where += "__dateSubmitted between " + startDate + " AND " + endDate;
     }
@@ -221,19 +229,23 @@ class MyReturnsPage extends Component<{}, any> {
     )
       .then(response => response.json())
       .then(returns => {
-        this.setState(prevState => ({
-          returns: returns,
-          orderedItems: returns,
-          slicedData: returns.slice(0, tableLength),
-          tableIsLoading: false,
-          paging: {
-            ...prevState.paging,
-            currentPage: 1,
-            currentTo: tableLength,
-            currentFrom: 1,
-            total: returns.length
-          }
-        }));
+        if ("error" in returns) {
+          this.setState({ error: returns.error });
+        } else {
+          this.setState(prevState => ({
+            returns: returns,
+            orderedItems: returns,
+            slicedData: returns.length ? returns.slice(0, tableLength) : [],
+            tableIsLoading: false,
+            paging: {
+              ...prevState.paging,
+              currentPage: 1,
+              currentTo: tableLength,
+              currentFrom: 1,
+              total: returns.length
+            }
+          }));
+        }
       })
       .catch(err => this.setState({ error: err }));
   }
@@ -263,6 +275,9 @@ class MyReturnsPage extends Component<{}, any> {
         fromDate: val
       }
     }));
+    setTimeout(() => {
+      this.handleApplyFilters();
+    }, 200);
   }
   filterToDate(val: string) {
     this.setState(prevState => ({
@@ -271,15 +286,14 @@ class MyReturnsPage extends Component<{}, any> {
         toDate: val
       }
     }));
+    setTimeout(() => {
+      this.handleApplyFilters();
+    }, 200);
   }
 
   handleApplyFilters() {
     const { filters } = this.state;
-    if (
-      filters.dateSubmitted === "" &&
-      filters.returnId === "" &&
-      filters.status === ""
-    ) {
+    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
       this.handleResetFilters();
     } else {
       this.getRequests(this.state.profile.UserId, false);
@@ -346,11 +360,7 @@ class MyReturnsPage extends Component<{}, any> {
           title: <FormattedMessage id={"store/my-returns.thStatus"} />,
           sortable: true,
           cellRenderer: ({ cellData }) => {
-            return (
-              <div>
-                {this.renderStatusIcon(cellData)} {cellData}
-              </div>
-            );
+            return <div>{renderStatusIcon(cellData, intlArea.store)}</div>;
           },
           width: 200
         },
@@ -371,16 +381,10 @@ class MyReturnsPage extends Component<{}, any> {
     };
   }
 
-  renderStatusIcon(status: string) {
-    return (
-      <span
-        className={
-          status === requestsStatuses.denied
-            ? styles.iconStatusRed
-            : styles.iconStatusGreen
-        }
-      />
-    );
+  handleKeypress(e) {
+    if (e.key === "Enter") {
+      this.handleApplyFilters();
+    }
   }
 
   render() {
@@ -389,7 +393,8 @@ class MyReturnsPage extends Component<{}, any> {
       tableIsLoading,
       filters,
       slicedData,
-      emptyStateLabel
+      emptyStateLabel,
+      error
     } = this.state;
     const statusLabel =
       filters.status !== "" ? (
@@ -399,6 +404,10 @@ class MyReturnsPage extends Component<{}, any> {
       ) : (
         <FormattedMessage id={"store/my-returns.statusAllStatuses"} />
       );
+
+    if (error) {
+      return <div>{error}</div>;
+    }
     return (
       <div className={styles.myReturnsHolder}>
         <div>
@@ -425,6 +434,9 @@ class MyReturnsPage extends Component<{}, any> {
               {msg => (
                 <Input
                   placeholder={msg}
+                  onKeyPress={e => {
+                    this.handleKeypress(e);
+                  }}
                   size={"small"}
                   onChange={e => this.filterReturnId(e.target.value)}
                   value={filters.returnId}
@@ -437,6 +449,9 @@ class MyReturnsPage extends Component<{}, any> {
               {msg => (
                 <DatePicker
                   placeholder={msg}
+                  onKeyPress={e => {
+                    this.handleKeypress(e);
+                  }}
                   locale={"en-GB"}
                   size={"small"}
                   onChange={value => this.filterFromDate(value)}

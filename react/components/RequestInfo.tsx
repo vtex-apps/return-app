@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import styles from "../styles.css";
 import { FormattedMessageFixed } from "../common/utils";
+import { FormattedCurrency } from "vtex.format-currency";
 
 interface Props {
   request: any;
@@ -86,16 +87,24 @@ class RequestInfo extends Component<Props> {
               {request.paymentMethod}{" "}
             </p>
             {request.paymentMethod === "voucher" ? (
-              <p className={`ma1 t-small c-on-base`}>
-                <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
+              <div>
+                <p className={`ma1 t-small c-on-base`}>
+                  <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
+                  {request.voucherCode ? (
+                    request.voucherCode
+                  ) : (
+                    <FormattedMessageFixed
+                      id={`${intl}.voucherCodeNotGenerated`}
+                    />
+                  )}
+                </p>
                 {request.voucherCode ? (
-                  request.voucherCode
-                ) : (
-                  <FormattedMessageFixed
-                    id={`${intl}.voucherCodeNotGenerated`}
-                  />
-                )}
-              </p>
+                  <p className={`ma1 t-small c-on-base`}>
+                    <FormattedMessageFixed id={`${intl}.voucherValue`} />{" "}
+                    <FormattedCurrency value={request.refundedAmount / 100} />
+                  </p>
+                ) : null}
+              </div>
             ) : null}
           </div>
         )}

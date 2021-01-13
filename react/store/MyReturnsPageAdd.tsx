@@ -682,9 +682,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async addStatusHistory(DocumentId: string) {
-    const { userId } = this.state;
+    const { name } = this.state;
     const bodyData = {
-      submittedBy: userId,
+      submittedBy: name,
       refundId: DocumentId,
       status: requestsStatuses.new,
       dateSubmitted: getCurrentDate(),
@@ -704,6 +704,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           refundId: DocumentId,
           skuId: product.refId,
           skuName: product.name,
+          imageUrl: product.imageUrl,
           unitPrice: parseInt(product.sellingPrice),
           quantity: parseInt(product.selectedQuantity),
           totalPrice: parseInt(
@@ -734,6 +735,32 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           return Promise.resolve(null);
         }
       });
+  }
+
+  paymentMethods() {
+    const { selectedOrder }: any = this.state;
+
+    const output: any[] = [];
+
+    if (
+      selectedOrder.paymentData.transactions[0].payments[0].firstDigits !== null
+    ) {
+      output.push({
+        value: "card",
+        label: <FormattedMessage id={"store/my-returns.formCreditCard"} />
+      });
+    }
+
+    output.push({
+      value: "voucher",
+      label: <FormattedMessage id={"store/my-returns.formVoucher"} />
+    });
+    output.push({
+      value: "bank",
+      label: <FormattedMessage id={"store/my-returns.formBank"} />
+    });
+
+    return output;
   }
 
   renderTermsAndConditions = () => {
@@ -843,8 +870,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                               <tr key={order.orderId}>
                                 <td>{order.orderId}</td>
                                 <td>{beautifyDate(order.creationDate)}</td>
-                                <td className={styles.textCenter}>
+                                <td>
                                   <Button
+                                    size={`small`}
                                     onClick={() => this.selectOrder(order)}
                                   >
                                     <FormattedMessage
@@ -892,7 +920,10 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                           <FormattedMessage id={"store/my-returns.orderDate"} />
                         </div>
                         <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
-                          {returnFormDate(selectedOrder.creationDate)}
+                          {returnFormDate(
+                            selectedOrder.creationDate,
+                            "store/my-returns"
+                          )}
                         </div>
                       </div>
                       <div className={`flex flex-column w-50`}>
@@ -909,6 +940,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     <table className={styles.tblProducts}>
                       <thead>
                         <tr>
+                          <th />
                           <th>
                             <FormattedMessage
                               id={"store/my-returns.thProduct"}
@@ -924,6 +956,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                       <tbody>
                         {orderProducts.map((product: any) => (
                           <tr key={`product` + product.uniqueId}>
+                            <td>
+                              <img src={product.imageUrl} alt={product.name} />
+                            </td>
                             <td>
                               <a
                                 className={styles.productUrl}
@@ -1104,32 +1139,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     <RadioGroup
                       hideBorder
                       name="paymentMethod"
-                      options={[
-                        {
-                          value: "card",
-                          label: (
-                            <FormattedMessage
-                              id={"store/my-returns.formCreditCard"}
-                            />
-                          )
-                        },
-                        {
-                          value: "voucher",
-                          label: (
-                            <FormattedMessage
-                              id={"store/my-returns.formVoucher"}
-                            />
-                          )
-                        },
-                        {
-                          value: "bank",
-                          label: (
-                            <FormattedMessage
-                              id={"store/my-returns.formBank"}
-                            />
-                          )
-                        }
-                      ]}
+                      options={this.paymentMethods()}
                       value={paymentMethod}
                       errorMessage={
                         errors.paymentMethod ? (
@@ -1206,6 +1216,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     <table className={styles.table}>
                       <thead>
                         <tr>
+                          <th />
                           <th>
                             <FormattedMessage
                               id={"store/my-returns.thProduct"}
@@ -1219,14 +1230,22 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                         </tr>
                       </thead>
                       <tbody>
-                        {orderProducts.map((product: any) => (
-                          <tr key={`product` + product.uniqueId}>
-                            <td>{product.name}</td>
-                            <td>
-                              {product.selectedQuantity} / {product.quantity}
-                            </td>
-                          </tr>
-                        ))}
+                        {orderProducts.map((product: any) =>
+                          product.selectedQuantity ? (
+                            <tr key={`product` + product.uniqueId}>
+                              <td>
+                                <img
+                                  src={product.imageUrl}
+                                  alt={product.name}
+                                />
+                              </td>
+                              <td>{product.name}</td>
+                              <td>
+                                {product.selectedQuantity} / {product.quantity}
+                              </td>
+                            </tr>
+                          ) : null
+                        )}
                       </tbody>
                     </table>
                     <div className={`flex-ns flex-wrap flex-row`}>
