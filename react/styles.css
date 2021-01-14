@@ -154,7 +154,7 @@
 .tableProducts td,
 .tableProducts th {
     border: none;
-    padding: 10px 0;
+    padding: 10px 3px;
 }
 
 .tableSm td {
@@ -201,6 +201,10 @@
 
 .smallCell {
     width: 100px;
+}
+
+.mediumCell {
+    width: 300px;
 }
 
 
