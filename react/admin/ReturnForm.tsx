@@ -5,6 +5,7 @@ import {
   schemaTypes,
   requestsStatuses,
   getCurrentDate,
+  getYesterday,
   getOneYearLaterDate,
   schemaNames,
   productStatuses,
@@ -12,10 +13,12 @@ import {
   prepareHistoryData,
   FormattedMessageFixed,
   sendMail,
-  intlArea, isInt
+  intlArea,
+  isInt,
+  getProductStatusTranslation
 } from "../common/utils";
 import styles from "../styles.css";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 import {
   IconCheck,
   Link,
@@ -30,7 +33,7 @@ import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 
-export default class ReturnForm extends Component<{}, any> {
+class ReturnForm extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object
@@ -63,10 +66,9 @@ export default class ReturnForm extends Component<{}, any> {
     this.getFullData();
   }
 
-  getCouponValue() {
+  getCouponValue(request: any) {
     let value = "";
-    const { request } = this.state;
-    const amount = request.totalPrice.toString();
+    const amount = request.refundedAmount.toString();
     if (amount === 0) {
       value = amount.toLocaleString("en-GB", {
         maximumFractionDigits: 2,
@@ -82,16 +84,15 @@ export default class ReturnForm extends Component<{}, any> {
     return parseFloat(value);
   }
 
-  getCouponCode() {
-    const { request } = this.state;
+  getCouponCode(request: any) {
     return "RA" + request.id.split("-")[0];
   }
 
-  generateCoupon() {
+  generateCoupon(request: any) {
     const couponBody = {
-      utmSource: this.getCouponCode(),
+      utmSource: this.getCouponCode(request),
       utmCampaign: null,
-      couponCode: this.getCouponCode(),
+      couponCode: this.getCouponCode(request),
       isArchived: false,
       maxItemsPerClient: 0,
       expirationIntervalPerUse: "00:00:00"
@@ -106,13 +107,12 @@ export default class ReturnForm extends Component<{}, any> {
       .then(json => {});
   }
 
-  generatePromotion() {
-    const { request } = this.state;
+  generatePromotion(request: any) {
     const body = {
       name: "RMA_" + request.id,
-      beginDateUtc: getCurrentDate(),
+      beginDateUtc: getYesterday(),
       endDateUtc: getOneYearLaterDate(),
-      lastModified: getCurrentDate(),
+      lastModified: getYesterday(),
       daysAgoOfPurchases: 0,
       isActive: true,
       isArchived: false,
@@ -124,7 +124,7 @@ export default class ReturnForm extends Component<{}, any> {
       newOffset: -3.0,
       percentualDiscountValueList: [],
       maxPricesPerItems: [],
-      cumulative: false,
+      cumulative: true,
       metadata: {
         scope: {
           componentRepresentation: {
@@ -138,7 +138,7 @@ export default class ReturnForm extends Component<{}, any> {
       discountType: "nominal",
       nominalShippingDiscountValue: 0.0,
       absoluteShippingDiscountValue: 0.0,
-      nominalDiscountValue: this.getCouponValue(),
+      nominalDiscountValue: this.getCouponValue(request),
       maximumUnitPriceDiscount: 0.0,
       percentualDiscountValue: 0.0,
       rebatePercentualDiscountValue: 0.0,
@@ -183,7 +183,7 @@ export default class ReturnForm extends Component<{}, any> {
       enableBuyTogetherPerSku: false,
       listSku1BuyTogether: [],
       listSku2BuyTogether: [],
-      coupon: [this.getCouponCode()],
+      coupon: [this.getCouponCode(request)],
       totalValueFloor: 0.0,
       totalValueCeling: 0.0,
       totalValueIncludeAllItems: false,
@@ -218,7 +218,7 @@ export default class ReturnForm extends Component<{}, any> {
       multipleUsePerClient: false,
       accumulateWithManualPrice: false,
       type: "regular",
-      utmSource: this.getCouponCode()
+      utmSource: this.getCouponCode(request)
     };
 
     fetch(fetchPath.createPromotion, {
@@ -357,11 +357,14 @@ export default class ReturnForm extends Component<{}, any> {
           statusInput === requestsStatuses.refunded &&
           request.paymentMethod === "voucher"
         ) {
-          this.generateCoupon();
+          this.generateCoupon(requestData);
           setTimeout(() => {
-            this.generatePromotion();
+            this.generatePromotion(requestData);
           }, 500);
-          requestData = { ...requestData, voucherCode: this.getCouponCode() };
+          requestData = {
+            ...requestData,
+            voucherCode: this.getCouponCode(requestData)
+          };
         }
 
         const statusHistoryData = {
@@ -374,7 +377,7 @@ export default class ReturnForm extends Component<{}, any> {
         this.updateDocument(requestData.id, requestData);
         this.saveMasterData(schemaNames.history, statusHistoryData);
         if (
-          request.status === requestsStatuses.new &&
+          request.status === requestsStatuses.picked &&
           statusInput === requestsStatuses.pendingVerification
         ) {
           product.map(currentProduct => {
@@ -524,11 +527,32 @@ export default class ReturnForm extends Component<{}, any> {
       totalProducts += 1;
     });
 
-    const currentStatus = status + " (current status)";
+    const { formatMessage } = this.props.intl;
+
+    const currentStatus = formatMessage({
+      id: `${intlArea.admin}.status${getProductStatusTranslation(status)}`
+    });
+
+    // const currentStatus = status + " (current status)";
     let allowedStatuses: any = [{ label: currentStatus, value: status }];
     if (status === requestsStatuses.new) {
       allowedStatuses.push({
-        label: requestsStatuses.pendingVerification,
+        label: formatMessage({
+          id: `${intlArea.admin}.status${getProductStatusTranslation(
+            requestsStatuses.picked
+          )}`
+        }),
+        value: requestsStatuses.picked
+      });
+    }
+
+    if (status === requestsStatuses.picked) {
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `${intlArea.admin}.status${getProductStatusTranslation(
+            requestsStatuses.pendingVerification
+          )}`
+        }),
         value: requestsStatuses.pendingVerification
       });
     }
@@ -542,13 +566,21 @@ export default class ReturnForm extends Component<{}, any> {
       } else if (extractStatuses[productStatuses.approved] === totalProducts) {
         // Caz in care toate sunt Approved >> Approved
         allowedStatuses.push({
-          label: requestsStatuses.approved,
+          label: formatMessage({
+            id: `${intlArea.admin}.status${getProductStatusTranslation(
+              requestsStatuses.approved
+            )}`
+          }),
           value: requestsStatuses.approved
         });
       } else if (extractStatuses[productStatuses.denied] === totalProducts) {
         // Caz in care toate produsele sunt denied >> Denied
         allowedStatuses.push({
-          label: requestsStatuses.denied,
+          label: formatMessage({
+            id: `${intlArea.admin}.status${getProductStatusTranslation(
+              requestsStatuses.denied
+            )}`
+          }),
           value: requestsStatuses.denied
         });
       } else if (
@@ -558,7 +590,11 @@ export default class ReturnForm extends Component<{}, any> {
       ) {
         // Caz in care exista produse approved sau partiallyApproved si sau denied >> Partially Approved
         allowedStatuses.push({
-          label: requestsStatuses.partiallyApproved,
+          label: formatMessage({
+            id: `${intlArea.admin}.status${getProductStatusTranslation(
+              requestsStatuses.partiallyApproved
+            )}`
+          }),
           value: requestsStatuses.partiallyApproved
         });
       }
@@ -570,7 +606,14 @@ export default class ReturnForm extends Component<{}, any> {
     ) {
       allowedStatuses = [
         { label: currentStatus, value: status },
-        { label: requestsStatuses.refunded, value: requestsStatuses.refunded }
+        {
+          label: formatMessage({
+            id: `${intlArea.admin}.status${getProductStatusTranslation(
+              requestsStatuses.refunded
+            )}`
+          }),
+          value: requestsStatuses.refunded
+        }
       ];
     }
 
@@ -648,11 +691,7 @@ export default class ReturnForm extends Component<{}, any> {
 
   canVerifyPackage() {
     const { request } = this.state;
-    return !(
-      request.status === requestsStatuses.new ||
-      request.status === requestsStatuses.refunded ||
-      request.status === requestsStatuses.denied
-    );
+    return request.status === requestsStatuses.pendingVerification;
   }
 
   render() {
@@ -810,7 +849,9 @@ export default class ReturnForm extends Component<{}, any> {
                         min={0}
                       />
                     </td>
-                    <td className={`${styles.paddingLeft20} ${styles.mediumCell}`}>
+                    <td
+                      className={`${styles.paddingLeft20} ${styles.mediumCell}`}
+                    >
                       {renderIcon(currentProduct, "admin/returns")}
                     </td>
                   </tr>
@@ -842,3 +883,5 @@ export default class ReturnForm extends Component<{}, any> {
     return null;
   }
 }
+
+export default injectIntl(ReturnForm);

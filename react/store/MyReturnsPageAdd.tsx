@@ -1231,7 +1231,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                       </thead>
                       <tbody>
                         {orderProducts.map((product: any) =>
-                          product.selectedQuantity ? (
+                          parseInt(product.selectedQuantity) > 0 ? (
                             <tr key={`product` + product.uniqueId}>
                               <td>
                                 <img

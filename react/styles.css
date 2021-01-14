@@ -108,7 +108,7 @@
 .table th,
 .table td {
     border: none;
-    padding: 20px 0;
+    padding: 20px 3px;
 }
 
 .tableModal th, .tableModal td {

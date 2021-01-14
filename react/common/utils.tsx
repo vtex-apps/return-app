@@ -7,14 +7,22 @@ import {
   IconSuccess,
   IconVisibilityOn,
   IconWarning,
-  IconCheck
+  IconCheck,
+  IconExternalLinkMini
 } from "vtex.styleguide";
 
 import axios from "axios";
-import { type } from "os";
 
 export function getCurrentDate() {
   return new Date().toISOString();
+}
+
+export function getYesterday() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  const day = d.getDate() - 1;
+  return new Date(year, month, day).toISOString();
 }
 
 export function getOneYearLaterDate() {
@@ -51,6 +59,7 @@ export function returnFormDate(date: string, intl: string) {
   ];
   const d = new Date(date);
   const seconds = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
+  const minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
 
   return (
     <FormattedMessageFixed id={`${intl}.${monthNames[d.getMonth()]}`}>
@@ -63,7 +72,7 @@ export function returnFormDate(date: string, intl: string) {
         " " +
         d.getHours() +
         ":" +
-        d.getMinutes() +
+        minutes +
         ":" +
         seconds
       }
@@ -123,6 +132,7 @@ export const schemaTypes = {
 
 export const requestsStatuses = {
   new: "New",
+  picked: "Picked up from client",
   pendingVerification: "Pending verification",
   approved: "Approved",
   partiallyApproved: "Partially approved",
@@ -141,6 +151,7 @@ export const productStatuses = {
 export const statusHistoryTimeline = {
   new: "new",
   picked: "Picked up from client",
+  pending: "Pending verification",
   verified: "Package verified",
   refunded: "Amount refunded"
 };
@@ -281,6 +292,21 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
       status: statusHistoryTimeline.picked,
       text: <FormattedMessageFixed id={`${intl}.timelinePicked`} />,
       step: 2,
+      comments: comment.filter(item => item.status === requestsStatuses.picked),
+      active:
+        request.status === requestsStatuses.picked ||
+        request.status === requestsStatuses.pendingVerification ||
+        request.status === requestsStatuses.partiallyApproved ||
+        request.status === requestsStatuses.approved ||
+        request.status === requestsStatuses.denied ||
+        request.status === requestsStatuses.refunded
+          ? 1
+          : 0
+    },
+    {
+      status: statusHistoryTimeline.pending,
+      text: <FormattedMessageFixed id={`${intl}.timelinePending`} />,
+      step: 3,
       comments: comment.filter(
         item => item.status === requestsStatuses.pendingVerification
       ),
@@ -296,7 +322,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
     {
       status: statusHistoryTimeline.verified,
       text: <FormattedMessageFixed id={`${intl}.timelineVerified`} />,
-      step: 3,
+      step: 4,
       comments: comment.filter(
         item =>
           item.status === requestsStatuses.partiallyApproved ||
@@ -321,7 +347,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
         ) : (
           <FormattedMessageFixed id={`${intl}.timelineRefunded`} />
         ),
-      step: 4,
+      step: 5,
       comments: comment.filter(
         item => item.status === requestsStatuses.refunded
       ),
@@ -403,6 +429,19 @@ export function renderStatusIcon(request: any, intl: string) {
       <div>
         <span className={styles.statusRefunded}>
           <IconCheck size={14} />{" "}
+          <FormattedMessageFixed
+            id={`${intl}.status` + getProductStatusTranslation(request)}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  if (request === requestsStatuses.picked) {
+    return (
+      <div>
+        <span className={styles.statusPicked}>
+          <IconExternalLinkMini size={14} />{" "}
           <FormattedMessageFixed
             id={`${intl}.status` + getProductStatusTranslation(request)}
           />
