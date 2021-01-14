@@ -12,7 +12,7 @@ import {
   prepareHistoryData,
   FormattedMessageFixed,
   sendMail,
-  intlArea
+  intlArea, isInt
 } from "../common/utils";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
@@ -451,8 +451,13 @@ export default class ReturnForm extends Component<{}, any> {
   };
 
   handleQuantity(product: any, quantity: any) {
-    const quantityInput = parseInt(quantity);
+    let quantityInput = parseInt(quantity);
     let status = productStatuses.new;
+
+    if (!isInt(quantity)) {
+      quantityInput = 0;
+    }
+
     if (quantityInput == 0) {
       status = productStatuses.denied;
     } else if (quantityInput < product.quantity) {
@@ -805,7 +810,7 @@ export default class ReturnForm extends Component<{}, any> {
                         min={0}
                       />
                     </td>
-                    <td className={styles.paddingLeft20}>
+                    <td className={`${styles.paddingLeft20} ${styles.mediumCell}`}>
                       {renderIcon(currentProduct, "admin/returns")}
                     </td>
                   </tr>

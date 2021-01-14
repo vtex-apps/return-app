@@ -63,11 +63,11 @@ class ProductsTable extends Component<Props> {
                     alt={currentProduct.skuName}
                   />
                 </td>
-                <td className={styles.tableProductColumn}>
+                <td className={`${styles.tableProductColumn}`}>
                   {currentProduct.skuName}
                 </td>
-                <td className={styles.textCenter}>{currentProduct.quantity}</td>
-                <td className={styles.textCenter}>
+                <td>{currentProduct.quantity}</td>
+                <td>
                   <FormattedCurrency value={currentProduct.unitPrice / 100} />
                 </td>
                 <td>
