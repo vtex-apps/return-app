@@ -305,7 +305,7 @@ export default class ReturnsSettings extends Component<{}, any> {
         <PageBlock variation="full">
           <div className={`flex flex-column`}>
             <div className={`flex flex-row`}>
-              <div className={`w-50`}>
+              <div className={`w-50 ph1`}>
                 <FormattedMessage id={"admin/settings.maxDays_label"}>
                   {msg => (
                     <Input
@@ -318,7 +318,7 @@ export default class ReturnsSettings extends Component<{}, any> {
                   )}
                 </FormattedMessage>
               </div>
-              <div className={`w-50`}>
+              <div className={`w-50 ph1`}>
                 <FormattedMessage id={"admin/settings.terms_label"}>
                   {msg => (
                     <Input
