@@ -7,5 +7,8 @@
   },
   "my-account-link.my-returns-page-add": {
     "component": "StoreMyReturnsPageAdd"
+  },
+  "my-account-link.my-returns-page-details": {
+    "component": "StoreMyReturnsDetails"
   }
 }

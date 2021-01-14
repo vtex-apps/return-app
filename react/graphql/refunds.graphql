@@ -1,0 +1,59 @@
+query Refunds(
+    $orderId: String
+    $status: String
+    $from: Int
+    $to: Int
+) {
+    refunds(
+        orderId: $orderId
+        status: $status
+        from: $from
+        to: $to
+    ) {
+        data {
+            id
+            orderId
+            name
+            email
+            phoneNumber
+            country
+            locality
+            address
+            totalPrice
+            paymentMethod
+            refundedAmount
+            iban
+            status
+            dateSubmitted
+            products {
+                id
+                skuId
+                skuName
+                unitPrice
+                quantity
+                totalPrice
+                goodProducts
+                status
+            },
+            historyStatus {
+                id
+                status
+                submittedBy
+                dateSubmitted
+            },
+            comments {
+                id
+                status
+                comment
+                visibleForCustomer
+                submittedBy
+                dateSubmitted
+            }
+        }
+        range {
+            total
+            from
+            to
+        }
+    }
+}

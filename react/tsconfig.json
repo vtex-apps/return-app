@@ -6,9 +6,10 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "jsx": "preserve",
-    "lib": ["es2017", "DOM"],
+    "lib": ["es2019", "DOM"],
     "noEmitOnError": false,
     "sourceMap": true,
+    "noImplicitAny": false,
     "typeRoots": ["node_modules/@types"],
     "types": ["node", "jest", "graphql"]
   },

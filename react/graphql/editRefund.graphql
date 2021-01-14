@@ -1,0 +1,18 @@
+mutation EditRefund($id: ID!, $refund: RefundInput!) {
+    editRefund(id: $id, refund: $refund) {
+        id
+        orderId
+        name
+        email
+        phoneNumber
+        country
+        locality
+        address
+        totalPrice
+        paymentMethod
+        refundedAmount
+        iban
+        status
+        dateSubmitted
+    }
+}

@@ -1,0 +1,13 @@
+mutation EditProduct($id: ID!, $product: ProductInput!) {
+    editProduct(id: $id, product: $product) {
+        id
+        refundId
+        skuId
+        skuName
+        unitPrice
+        quantity
+        totalPrice
+        goodProducts
+        status
+    }
+}

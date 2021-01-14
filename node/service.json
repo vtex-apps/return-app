@@ -1,0 +1,54 @@
+{
+  "memory": 256,
+  "ttl": 10,
+  "timeout": 5000,
+  "minReplicas": 2,
+  "maxReplicas": 4,
+  "routes": {
+    "getSchemas": {
+      "path": "/returns/getSchema/:schemaEntity/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "generateSchema": {
+      "path": "/returns/generateSchema",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "getDocuments": {
+      "path": "/returns/getDocuments/:schemaName/:type/:whereClause",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "saveDocuments": {
+      "path": "/returns/saveDocuments/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "updateDocuments": {
+      "path": "/returns/updateDocuments/:documentId",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "getCategories": {
+      "path": "/returns/getCategories/",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "createPromotion": {
+      "path": "/returns/createPromotion/",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "createCoupon": {
+      "path": "/returns/createCoupon/",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "sendMail": {
+      "path": "/returns/sendMail",
+      "public": true,
+      "settingsType": "workspace"
+    }
+  }
+}

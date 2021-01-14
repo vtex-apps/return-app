@@ -1,0 +1,3 @@
+mutation DeleteRefund($id: ID!) {
+    deleteRefund(id: $id)
+}
