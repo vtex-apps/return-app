@@ -189,7 +189,12 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async getOrders(userEmail: string) {
-    return await fetch(fetchPath.getOrders + "?clientEmail=" + userEmail)
+    return await fetch(
+      fetchPath.getOrders +
+        "?clientEmail=" +
+        userEmail +
+        "&orderBy=creationDate,desc"
+    )
       .then(response => response.json())
       .then(res => {
         return Promise.resolve(res);
@@ -1195,7 +1200,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                     ) : null}
                   </div>
 
-                  <div className={`mt4`}>
+                  <div className={`mt4 ph4`}>
                     <Button
                       type={"submit"}
                       variation="primary"
