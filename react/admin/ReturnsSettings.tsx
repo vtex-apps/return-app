@@ -253,6 +253,9 @@ export default class ReturnsSettings extends Component<{}, any> {
           ),
           loading: false
         });
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       })
       .catch(err => this.setState({ loading: false, errorMessage: err }));
   };
@@ -271,6 +274,9 @@ export default class ReturnsSettings extends Component<{}, any> {
           ),
           loading: false
         });
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       })
       .catch(err => this.setState({ errorMessage: err, loading: false }));
   };
