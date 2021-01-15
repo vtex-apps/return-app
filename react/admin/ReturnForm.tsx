@@ -417,14 +417,16 @@ class ReturnForm extends Component<any, any> {
         )
       });
       if (statusInput !== request.status) {
-        window.setTimeout(() => {
-          const { product, request, statusHistoryTimeline } = this.state;
-          sendMail({
-            data: { ...{ DocumentId: request.id }, ...request },
-            products: product,
-            timeline: statusHistoryTimeline
-          });
-        }, 2000);
+        if (statusInput !== 'Picked up from client') {
+          window.setTimeout(() => {
+            const { product, request, statusHistoryTimeline } = this.state;
+            sendMail({
+              data: { ...{ DocumentId: request.id }, ...request },
+              products: product,
+              timeline: statusHistoryTimeline
+            });
+          }, 2000);
+        }
       }
     } else {
       this.setState({

@@ -13,6 +13,7 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "        <o:OfficeDocumentSettings>\n" +
     "            <o:AllowPNG/>\n" +
     "            <o:PixelsPerInch>96</o:PixelsPerInch>\n" +
+    "\n" +
     "        </o:OfficeDocumentSettings>\n" +
     "    </xml>\n" +
     "    <![endif]-->\n" +
@@ -251,7 +252,7 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "                        </div>\n" +
     "                        <div>\n" +
     "                            {{#each timeline}}\n" +
-    "                            {{#compare step '==' 4}}\n" +
+    "                            {{#compare step '==' 5}}\n" +
     "                            <ul>\n" +
     "                                {{#each comments}}\n" +
     "                                {{#if visibleForCustomer}}\n" +
@@ -278,7 +279,7 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "                        </div>\n" +
     "                        <div>\n" +
     "                            {{#each timeline}}\n" +
-    "                            {{#compare step '==' 3}}\n" +
+    "                            {{#compare step '==' 4}}\n" +
     "                            <ul>\n" +
     "                                {{#each comments}}\n" +
     "                                {{#if visibleForCustomer}}\n" +
@@ -325,7 +326,7 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "                                                            {{status}}\n" +
     "                                                        {{/compare}}\n" +
     "\n" +
-    "                                                        {{#compare step '==' 4}}\n" +
+    "                                                        {{#compare step '==' 5}}\n" +
     "                                            <ul class=\"statusUl statusUlLast\">\n" +
     "                                                {{else}}\n" +
     "                                                <ul class=\"statusUl\">\n" +
