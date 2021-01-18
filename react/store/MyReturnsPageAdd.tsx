@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
 import { Button, Input, RadioGroup, Checkbox, Spinner } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";

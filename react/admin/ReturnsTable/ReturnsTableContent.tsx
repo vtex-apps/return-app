@@ -25,7 +25,7 @@ import {
   schemaTypes,
   getStatusTranslation,
   renderStatusIcon,
-  getProductStatusTranslation, intlArea
+  intlArea
 } from "../../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
 
@@ -263,11 +263,7 @@ class ReturnsTableContent extends Component<any, any> {
           sortable: true,
           width: 200,
           cellRenderer: ({ cellData }) => {
-            return (
-              <div>
-                {renderStatusIcon(cellData, intlArea.admin)}
-              </div>
-            );
+            return <div>{renderStatusIcon(cellData, intlArea.admin)}</div>;
           }
         },
         actions: {

@@ -6,7 +6,6 @@ import { generateReturnsSchema } from './middlewares/generateReturnsSchema'
 import { receiveDocuments } from './middlewares/receiveDocuments'
 import { receiveCategories } from './middlewares/receiveCategories'
 import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
-import { updateMasterdataDocuments } from './middlewares/updateMasterdataDocuments'
 import { createPromotion } from './middlewares/createPromotion'
 import { createCoupon } from './middlewares/createCoupon'
 import { sendMail } from './middlewares/sendMail'
@@ -50,9 +49,6 @@ export default new Service({
     }),
     saveDocuments: method({
       POST: saveMasterdataDocuments
-    }),
-    updateDocuments: method({
-      PUT: updateMasterdataDocuments
     }),
     createPromotion: method({
       POST: createPromotion

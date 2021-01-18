@@ -374,7 +374,7 @@ class ReturnForm extends Component<any, any> {
           dateSubmitted: getCurrentDate(),
           type: schemaTypes.history
         };
-        this.updateDocument(requestData.id, requestData);
+        this.saveMasterData(schemaNames.request, requestData);
         this.saveMasterData(schemaNames.history, statusHistoryData);
         if (
           request.status === requestsStatuses.picked &&
@@ -385,7 +385,7 @@ class ReturnForm extends Component<any, any> {
               ...currentProduct,
               status: productStatuses.pendingVerification
             };
-            this.updateDocument(newProductInfo.id, newProductInfo);
+            this.saveMasterData(schemaNames.product, newProductInfo);
           });
         }
         this.setState({
@@ -416,17 +416,18 @@ class ReturnForm extends Component<any, any> {
           intlArea.admin
         )
       });
-      if (statusInput !== request.status) {
-        if (statusInput !== 'Picked up from client') {
-          window.setTimeout(() => {
-            const { product, request, statusHistoryTimeline } = this.state;
-            sendMail({
-              data: { ...{ DocumentId: request.id }, ...request },
-              products: product,
-              timeline: statusHistoryTimeline
-            });
-          }, 2000);
-        }
+      if (
+        statusInput !== request.status &&
+        statusInput !== requestsStatuses.picked
+      ) {
+        window.setTimeout(() => {
+          const { product, request, statusHistoryTimeline } = this.state;
+          sendMail({
+            data: { ...{ DocumentId: request.id }, ...request },
+            products: product,
+            timeline: statusHistoryTimeline
+          });
+        }, 2000);
       }
     } else {
       this.setState({
@@ -443,16 +444,6 @@ class ReturnForm extends Component<any, any> {
       body: JSON.stringify(body),
       headers: fetchHeaders
     }).then(response => {});
-  };
-
-  updateDocument = (documentId: string, postData: any) => {
-    fetch(fetchPath.updateDocuments + documentId, {
-      method: fetchMethod.put,
-      body: JSON.stringify(postData),
-      headers: fetchHeaders
-    })
-      .then(response => {})
-      .catch(err => err);
   };
 
   handleQuantity(product: any, quantity: any) {
@@ -492,11 +483,11 @@ class ReturnForm extends Component<any, any> {
     let refundedAmount = 0;
     productsForm.map(currentProduct => {
       refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice;
-      this.updateDocument(currentProduct.id, currentProduct);
+      this.saveMasterData(schemaNames.product, currentProduct);
     });
 
     const updatedRequest = { ...request, refundedAmount: refundedAmount };
-    this.updateDocument(request.id, updatedRequest);
+    this.saveMasterData(schemaNames.request, updatedRequest);
     this.setState({
       request: updatedRequest,
       showMain: true,

@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import {
@@ -22,7 +22,6 @@ import {
   order,
   getStatusTranslation,
   renderStatusIcon,
-  getProductStatusTranslation,
   intlArea
 } from "../common/utils";
 

@@ -26,7 +26,7 @@ export default class ReturnsSettings extends Component<{}, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      documentId: "",
+      id: "",
       maxDays: "",
       termsUrl: "",
       categoryFilterQuery: "",
@@ -80,7 +80,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       .then(json => {
         if (json && json[0]) {
           this.setState({
-            documentId: json[0].id,
+            id: json[0].id,
             maxDays: json[0].maxDays,
             termsUrl: json[0].termsUrl,
             excludedCategories: JSON.parse(json[0].excludedCategories),
@@ -193,7 +193,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       errorMessage: "",
       loading: true
     });
-    const { maxDays, excludedCategories, termsUrl, documentId } = this.state;
+    const { maxDays, excludedCategories, termsUrl, id } = this.state;
     let hasErrors = false;
     if (!maxDays || !isInt(maxDays)) {
       this.setState((prevState: any) => ({
@@ -226,20 +226,17 @@ export default class ReturnsSettings extends Component<{}, any> {
     }
 
     const postData = {
+      id: id,
       maxDays: parseInt(maxDays),
       excludedCategories: JSON.stringify(excludedCategories),
       termsUrl: termsUrl,
       type: schemaTypes.settings
     };
 
-    if (this.state.documentId) {
-      this.updateDocument(documentId, postData);
-    } else {
-      this.createDocument(postData);
-    }
+    this.saveMasterData(postData);
   };
 
-  createDocument = (postData: any) => {
+  saveMasterData = (postData: any) => {
     fetch(fetchPath.saveDocuments + schemaNames.settings + "/", {
       method: fetchMethod.post,
       body: JSON.stringify(postData),
@@ -258,27 +255,6 @@ export default class ReturnsSettings extends Component<{}, any> {
         }, 300);
       })
       .catch(err => this.setState({ loading: false, errorMessage: err }));
-  };
-
-  updateDocument = (documentId: string, postData: any) => {
-    fetch(fetchPath.updateDocuments + documentId, {
-      method: fetchMethod.put,
-      body: JSON.stringify(postData),
-      headers: fetchHeaders
-    })
-      .then(response => response)
-      .then(json => {
-        this.setState({
-          successMessage: (
-            <FormattedMessageFixed id={"admin/returns.settingsSaved"} />
-          ),
-          loading: false
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
-      })
-      .catch(err => this.setState({ errorMessage: err, loading: false }));
   };
 
   clearCategoriesSearch = () => {

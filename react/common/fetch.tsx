@@ -2,7 +2,6 @@ export const fetchPath = {
   getDocuments: "/returns/getDocuments/",
   getProfile: "/no-cache/profileSystem/getProfile",
   saveDocuments: "/returns/saveDocuments/",
-  updateDocuments: "/returns/updateDocuments/",
   getCategories: "/returns/getCategories",
   getSchema: "/returns/getSchema/",
   generateSchema: "/returns/generateSchema/",
@@ -14,8 +13,7 @@ export const fetchPath = {
 
 export const fetchMethod = {
   get: "GET",
-  post: "POST",
-  put: "PUT"
+  post: "POST"
 };
 
 export const fetchHeaders = {

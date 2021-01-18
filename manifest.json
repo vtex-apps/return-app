@@ -44,6 +44,16 @@
     },
     {
       "name": "vbase-read-write"
+    },
+    {
+      "name": "ADMIN_DS"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/dataentities/*"
+      }
     }
   ],
   "settingsSchema": {
