@@ -193,7 +193,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       fetchPath.getOrders +
         "?clientEmail=" +
         userEmail +
-        "&orderBy=creationDate,desc"
+        "&orderBy=creationDate,desc&f_status=invoiced"
     )
       .then(response => response.json())
       .then(res => {
@@ -388,13 +388,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                   ) {
                     this.getOrder(order.orderId, user.Email).then(
                       currentOrder => {
-                        if (currentOrder.status === "invoiced") {
-                          this.prepareOrderData(currentOrder, settings, true);
-                        }
+                        this.prepareOrderData(currentOrder, settings, true);
                       }
                     );
                   }
                 });
+              } else {
+                this.setState({ loading: false });
               }
             }
           });
