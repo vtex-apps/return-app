@@ -49,6 +49,12 @@
       "name": "ADMIN_DS"
     },
     {
+      "name": "GerenciarPromocoesETarifas"
+    },
+    {
+      "name": "ADMIN_CRM"
+    },
+    {
       "name": "outbound-access",
       "attrs": {
         "host": "api.vtex.com",

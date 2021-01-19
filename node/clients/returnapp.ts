@@ -225,14 +225,14 @@ export default class ReturnApp extends ExternalClient {
         });
     }
 
-    public async createPromotion(body: Object): Promise<any> {
+    public async createPromotion(ctx: any, body: Object): Promise<any> {
         const settings = await this.apps.getAppSettings(this.appId)
         if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
             return JSON.stringify({error: this.missing_tokens})
         }
 
         return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -244,14 +244,14 @@ export default class ReturnApp extends ExternalClient {
             });
     }
 
-    public async createCoupon(body: Object): Promise<any> {
+    public async createCoupon(ctx: any, body: Object): Promise<any> {
         const settings = await this.apps.getAppSettings(this.appId)
         if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
             return JSON.stringify({error: this.missing_tokens})
         }
 
         return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',
