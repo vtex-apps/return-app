@@ -417,7 +417,7 @@ class ReturnForm extends Component<any, any> {
         )
       });
       if (statusInput !== request.status) {
-        if (statusInput !== 'Picked up from client') {
+        if (statusInput !== requestsStatuses.picked) {
           window.setTimeout(() => {
             const { product, request, statusHistoryTimeline } = this.state;
             sendMail({
