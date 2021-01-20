@@ -89,6 +89,7 @@ class ReturnsTableContent extends Component<any, any> {
   sortOrderIdASC(a, b) {
     return a.orderId < b.orderId ? -1 : a.orderId > b.orderId ? 1 : 0;
   }
+
   sortOrderIdDESC(a, b) {
     return a.orderId < b.orderId ? 1 : a.orderId > b.orderId ? -1 : 0;
   }
@@ -96,9 +97,11 @@ class ReturnsTableContent extends Component<any, any> {
   sortRequestIdASC(a, b) {
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   }
+
   sortRequestIdDESC(a, b) {
     return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
   }
+
   sortDateSubmittedASC(a, b) {
     return a.dateSubmitted < b.dateSubmitted
       ? -1
@@ -106,6 +109,7 @@ class ReturnsTableContent extends Component<any, any> {
       ? 1
       : 0;
   }
+
   sortDateSubmittedDESC(a, b) {
     return a.dateSubmitted < b.dateSubmitted
       ? 1
@@ -113,9 +117,11 @@ class ReturnsTableContent extends Component<any, any> {
       ? -1
       : 0;
   }
+
   sortStatusASC(a, b) {
     return a.status < b.status ? -1 : a.status > b.status ? 1 : 0;
   }
+
   sortStatusDESC(a, b) {
     return a.status < b.status ? 1 : a.status > b.status ? -1 : 0;
   }
@@ -158,10 +164,6 @@ class ReturnsTableContent extends Component<any, any> {
     });
   }
 
-  hasFiltersApplied() {
-    return this.state.isFiltered;
-  }
-
   componentDidMount() {
     this.getRequests();
   }
@@ -174,36 +176,37 @@ class ReturnsTableContent extends Component<any, any> {
       where = "1";
     } else {
       this.setState({ isFiltered: true });
+
+      if (filters.orderId !== "") {
+        where += 'orderId="*' + filters.orderId + '*"';
+      }
+
+      if (filters.returnId !== "") {
+        where += '__id="*' + filters.returnId + '*"';
+      }
+
+      let startDate = "1970-01-01";
+      let endDate = currentDate();
+      if (filters.fromDate !== "" || filters.toDate !== "") {
+        startDate =
+          filters.fromDate !== "" ? filterDate(filters.fromDate) : startDate;
+        endDate =
+          filters.toDate !== ""
+            ? filterDate(filters.toDate)
+            : filterDate(filters.fromDate);
+
+        where += "__dateSubmitted between " + startDate + " AND " + endDate;
+      }
+
+      if (filters.status !== "") {
+        where += '__status="' + requestsStatuses[filters.status] + '"';
+      }
+
+      if (where.startsWith("__")) {
+        where = where.substring(2);
+      }
     }
 
-    if (filters.orderId !== "") {
-      where += 'orderId="*' + filters.orderId + '*"';
-    }
-
-    if (filters.returnId !== "") {
-      where += '__id="*' + filters.returnId + '*"';
-    }
-
-    let startDate = "1970-01-01";
-    let endDate = currentDate();
-    if (filters.fromDate !== "" || filters.toDate !== "") {
-      startDate =
-        filters.fromDate !== "" ? filterDate(filters.fromDate) : startDate;
-      endDate =
-        filters.toDate !== ""
-          ? filterDate(filters.toDate)
-          : filterDate(filters.fromDate);
-
-      where += "__dateSubmitted between " + startDate + " AND " + endDate;
-    }
-
-    if (filters.status !== "") {
-      where += '__status="' + requestsStatuses[filters.status] + '"';
-    }
-
-    if (where.startsWith("__")) {
-      where = where.substring(2);
-    }
     fetch(
       fetchPath.getDocuments +
         schemaNames.request +
@@ -327,18 +330,27 @@ class ReturnsTableContent extends Component<any, any> {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        fromDate: val
+        fromDate: val,
+        toDate:
+          prevState.filters.toDate === "" || prevState.filters.toDate < val
+            ? val
+            : prevState.filters.toDate
       }
     }));
     setTimeout(() => {
       this.handleApplyFilters();
     }, 200);
   }
+
   filterToDate(val: string) {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        toDate: val
+        toDate: val,
+        fromDate:
+          prevState.filters.fromDate === "" || prevState.filters.fromDate > val
+            ? val
+            : prevState.filters.fromDate
       }
     }));
     setTimeout(() => {
@@ -432,6 +444,7 @@ class ReturnsTableContent extends Component<any, any> {
       filters,
       slicedData,
       emptyStateLabel,
+      isFiltered,
       selectedRequestProducts
     } = this.state;
     const statusLabel =
@@ -559,7 +572,7 @@ class ReturnsTableContent extends Component<any, any> {
               <FormattedMessage id={"admin/returns.filterResults"} />
             </Button>
           </div>
-          {this.hasFiltersApplied() ? (
+          {isFiltered ? (
             <div className={"ma2"}>
               <ButtonWithIcon
                 variation="secondary"

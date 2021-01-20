@@ -1,11 +1,7 @@
-import {Apps, ExternalClient, InstanceOptions, IOContext} from '@vtex/api'
+import {ExternalClient, InstanceOptions, IOContext} from '@vtex/api'
 
 
 export default class ReturnApp extends ExternalClient {
-
-    public missing_tokens = 'Some settings are missing. Please check the Apps > Return App page'
-    public apps = new Apps(this.context)
-    public appId = process.env.VTEX_APP_ID as string
 
     public schemas = {
         schemaEntity: "ReturnApp",
@@ -226,11 +222,6 @@ export default class ReturnApp extends ExternalClient {
     }
 
     public async createPromotion(ctx: any, body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
         return this.http.post(
             `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
             body, {
@@ -238,18 +229,12 @@ export default class ReturnApp extends ExternalClient {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
+                    'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
     }
 
     public async createCoupon(ctx: any, body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
         return this.http.post(
             `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
             body, {
@@ -257,27 +242,20 @@ export default class ReturnApp extends ExternalClient {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
+                    'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
     }
 
-    public async sendMail(body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
+    public async sendMail(ctx: any, body: Object): Promise<any> {
         return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
+                    'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
     }

@@ -1,7 +1,0 @@
-query AppSettings {
-    settings @context(provider: "vtex.return-app") {
-        maxDays
-        excludedCategories
-        termsUrl
-    }
-}

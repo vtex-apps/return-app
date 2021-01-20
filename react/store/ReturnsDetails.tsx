@@ -11,18 +11,19 @@ import {
   FormattedMessageFixed,
   intlArea
 } from "../common/utils";
-import styles from "../styles.css";
-import { IconCheck } from "vtex.styleguide";
+import { Spinner } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
 import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
 import ProductsTable from "../components/ProductsTable";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
+import StatusHistoryTimeline from "../components/StatusHistoryTimeline";
 
 class ReturnsDetails extends Component<PageProps, any> {
   constructor(props: PageProps) {
     super(props);
     this.state = {
+      loading: true,
       request: {},
       comment: [],
       product: [],
@@ -78,7 +79,9 @@ class ReturnsDetails extends Component<PageProps, any> {
               schemaNames.history,
               schemaTypes.history,
               requestId
-            ).then();
+            ).then(() => {
+              this.setState({ loading: false });
+            });
           });
         }
       });
@@ -153,11 +156,20 @@ class ReturnsDetails extends Component<PageProps, any> {
       request,
       product,
       statusHistoryTimeline,
-      statusHistory
+      statusHistory,
+      loading
     } = this.state;
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
+          if (loading) {
+            return (
+              <div className={`flex justify-center pt6 pb6`}>
+                <Spinner />
+              </div>
+            );
+          }
+
           if (!request) {
             return (
               <div>
@@ -202,46 +214,10 @@ class ReturnsDetails extends Component<PageProps, any> {
                 </strong>
               </p>
 
-              <div>
-                {statusHistoryTimeline.map((currentHistory, i) => (
-                  <div key={`statusHistoryTimeline_` + i}>
-                    <p className={styles.statusLine}>
-                      {currentHistory.active ? (
-                        <span
-                          className={
-                            styles.statusIcon + " " + styles.statusIconChecked
-                          }
-                        >
-                          <IconCheck size={20} color={"#fff"} />
-                        </span>
-                      ) : (
-                        <span className={styles.statusIcon} />
-                      )}
-
-                      {currentHistory.text}
-                    </p>
-                    <ul
-                      className={
-                        styles.statusUl +
-                        " " +
-                        (statusHistoryTimeline.length === i + 1
-                          ? styles.statusUlLast
-                          : "")
-                      }
-                    >
-                      {currentHistory.comments.map(comment => (
-                        <li key={comment.id}>
-                          {returnFormDate(
-                            comment.dateSubmitted,
-                            intlArea.store
-                          )}
-                          : {comment.comment}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+              <StatusHistoryTimeline
+                statusHistoryTimeline={statusHistoryTimeline}
+                intl={intlArea.store}
+              />
               <StatusHistoryTable
                 statusHistory={statusHistory}
                 intl={intlArea.store}

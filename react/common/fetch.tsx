@@ -7,7 +7,7 @@ export const fetchPath = {
   generateSchema: "/returns/generateSchema/",
   createCoupon: "/returns/createCoupon/",
   createPromotion: "/returns/createPromotion/",
-  getOrders: "/api/oms/user/orders",
+  getOrders: "/api/oms/pvt/orders",
   renderTemplates: "/api/template-render/pvt/templates"
 };
 

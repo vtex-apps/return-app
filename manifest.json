@@ -49,9 +49,6 @@
       "name": "ADMIN_DS"
     },
     {
-      "name": "GerenciarPromocoesETarifas"
-    },
-    {
       "name": "ADMIN_CRM"
     },
     {
@@ -62,26 +59,5 @@
       }
     }
   ],
-  "settingsSchema": {
-    "title": "ReturnApp",
-    "type": "object",
-    "properties": {
-      "storeVendorName": {
-        "title": "Vendor name",
-        "description": "Enter the vendor name here",
-        "type": "string"
-      },
-      "storeAppKey": {
-        "title": "Main store X-VTEX-API-AppKey",
-        "description": "Enter main store X-VTEX-API-AppKey",
-        "type": "string"
-      },
-      "storeAppToken": {
-        "title": "Main store X-VTEX-API-AppToken",
-        "description": "Enter main store X-VTEX-API-AppToken",
-        "type": "string"
-      }
-    }
-  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

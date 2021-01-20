@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 
-import schemas from "../../masterdata/schema";
 import ReturnsTableContent from "./ReturnsTableContent";
-import { schemaNames } from "../../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
 import { omsReturnRequest } from "../../common/templates/oms-return-request";
 
@@ -69,7 +67,7 @@ class ReturnsTable extends Component<any, any> {
           })
             .then(response => response.text())
             .then(json => console.log(json))
-            .catch(err => console.log(err));
+            .catch(err => this.setState({ error: err }));
         } else {
           const json = JSON.parse(text);
           if ("error" in json) {

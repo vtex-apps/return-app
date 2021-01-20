@@ -145,10 +145,6 @@ class MyReturnsPage extends Component<{}, any> {
     }
   }
 
-  hasFiltersApplied() {
-    return this.state.isFiltered;
-  }
-
   componentDidMount() {
     this.getProfile();
   }
@@ -185,29 +181,29 @@ class MyReturnsPage extends Component<{}, any> {
       this.setState({ isFiltered: false });
     } else {
       this.setState({ isFiltered: true });
-    }
 
-    if (useFilters.returnId !== "") {
-      where += '__id="*' + useFilters.returnId + '*"';
-    }
+      if (useFilters.returnId !== "") {
+        where += '__id="*' + useFilters.returnId + '*"';
+      }
 
-    let startDate = "1970-01-01";
-    let endDate = currentDate();
-    if (useFilters.fromDate !== "" || useFilters.toDate !== "") {
-      startDate =
-        useFilters.fromDate !== ""
-          ? filterDate(useFilters.fromDate)
-          : startDate;
-      endDate =
-        useFilters.toDate !== ""
-          ? filterDate(useFilters.toDate)
-          : filterDate(useFilters.fromDate);
+      let startDate = "1970-01-01";
+      let endDate = currentDate();
+      if (useFilters.fromDate !== "" || useFilters.toDate !== "") {
+        startDate =
+          useFilters.fromDate !== ""
+            ? filterDate(useFilters.fromDate)
+            : startDate;
+        endDate =
+          useFilters.toDate !== ""
+            ? filterDate(useFilters.toDate)
+            : filterDate(useFilters.fromDate);
 
-      where += "__dateSubmitted between " + startDate + " AND " + endDate;
-    }
+        where += "__dateSubmitted between " + startDate + " AND " + endDate;
+      }
 
-    if (useFilters.status !== "") {
-      where += '__status="' + requestsStatuses[useFilters.status] + '"';
+      if (useFilters.status !== "") {
+        where += '__status="' + requestsStatuses[useFilters.status] + '"';
+      }
     }
 
     if (where.startsWith("__")) {
@@ -271,18 +267,27 @@ class MyReturnsPage extends Component<{}, any> {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        fromDate: val
+        fromDate: val,
+        toDate:
+          prevState.filters.toDate === "" || prevState.filters.toDate < val
+            ? val
+            : prevState.filters.toDate
       }
     }));
     setTimeout(() => {
       this.handleApplyFilters();
     }, 200);
   }
+
   filterToDate(val: string) {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        toDate: val
+        toDate: val,
+        fromDate:
+          prevState.filters.fromDate === "" || prevState.filters.fromDate > val
+            ? val
+            : prevState.filters.fromDate
       }
     }));
     setTimeout(() => {
@@ -393,6 +398,7 @@ class MyReturnsPage extends Component<{}, any> {
       filters,
       slicedData,
       emptyStateLabel,
+      isFiltered,
       error
     } = this.state;
     const statusLabel =
@@ -529,7 +535,7 @@ class MyReturnsPage extends Component<{}, any> {
               <FormattedMessage id={"store/my-returns.filterResults"} />
             </Button>
           </div>
-          {this.hasFiltersApplied() ? (
+          {isFiltered ? (
             <div className={"ma2"}>
               <ButtonWithIcon
                 variation="secondary"
