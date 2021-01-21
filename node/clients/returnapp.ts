@@ -149,27 +149,27 @@ export default class ReturnApp extends ExternalClient {
     }
 
     public async generateSchema(ctx: any): Promise<any> {
-        await ctx.masterdata.createOrUpdateSchema({
+        await ctx.clients.masterdata.createOrUpdateSchema({
             dataEntity: this.schemas.schemaEntity,
             schemaName: this.schemas.settingsSchema.name,
             schemaBody: this.schemas.settingsSchema.schema
         });
-        await ctx.masterdata.createOrUpdateSchema({
+        await ctx.clients.masterdata.createOrUpdateSchema({
             dataEntity: this.schemas.schemaEntity,
             schemaName: this.schemas.returnSchema.name,
             schemaBody: this.schemas.returnSchema.schema
         });
-        await ctx.masterdata.createOrUpdateSchema({
+        await ctx.clients.masterdata.createOrUpdateSchema({
             dataEntity: this.schemas.schemaEntity,
             schemaName: this.schemas.productsSchema.name,
             schemaBody: this.schemas.productsSchema.schema
         });
-        await ctx.masterdata.createOrUpdateSchema({
+        await ctx.clients.masterdata.createOrUpdateSchema({
             dataEntity: this.schemas.schemaEntity,
             schemaName: this.schemas.commentsSchema.name,
             schemaBody: this.schemas.commentsSchema.schema
         });
-        await ctx.masterdata.createOrUpdateSchema({
+        await ctx.clients.masterdata.createOrUpdateSchema({
             dataEntity: this.schemas.schemaEntity,
             schemaName: this.schemas.statusHistorySchema.name,
             schemaBody: this.schemas.statusHistorySchema.schema
@@ -194,7 +194,7 @@ export default class ReturnApp extends ExternalClient {
             fields: [],
             pagination: {
                 page: 1,
-                pageSize: 100,
+                pageSize: 5000,
             },
             schema: schemaName,
             where: whereCls,

@@ -62,7 +62,7 @@ class ReturnsTable extends Component<any, any> {
           });
 
           fetch(fetchPath.generateSchema, {
-            method: fetchMethod.post,
+            method: fetchMethod.put,
             headers: fetchHeaders
           })
             .then(response => response.text())

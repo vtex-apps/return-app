@@ -13,7 +13,8 @@ export const fetchPath = {
 
 export const fetchMethod = {
   get: "GET",
-  post: "POST"
+  post: "POST",
+  put: "PUT"
 };
 
 export const fetchHeaders = {
