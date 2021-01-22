@@ -16,8 +16,6 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["maxDays", "excludedCategories", "termsUrl", "type"],
-                    "publicWrite": ["maxDays", "excludedCategories", "termsUrl", "type"],
                     "publicFilter": ["maxDays", "excludedCategories", "termsUrl", "type"],
                     "publicJsonSchema": true
                 },
@@ -49,8 +47,6 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
-                    "publicWrite": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
                     "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
@@ -73,8 +69,6 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
-                    "publicWrite": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
                     "publicFilter": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
@@ -103,8 +97,6 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
-                    "publicWrite": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
                     "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
@@ -125,8 +117,6 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicRead": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
-                    "publicWrite": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
                     "publicFilter": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
