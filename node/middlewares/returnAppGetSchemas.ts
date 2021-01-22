@@ -4,8 +4,7 @@ export async function returnAppGetSchemas(ctx: Context, next: () => Promise<any>
     clients: { returnApp: returnAppClient }
   } = ctx
 
-  const { schemaEntity, schemaName } = ctx.vtex.route.params
-  const response = await returnAppClient.getSchema(schemaEntity, schemaName)
+  const response = await returnAppClient.getSchema(ctx)
 
   ctx.status = 200
   ctx.body = response

@@ -441,7 +441,7 @@ export function renderStatusIcon(request: any, intl: string) {
     return (
       <div>
         <span className={styles.statusPicked}>
-          <IconExternalLinkMini size={14} />{" "}
+          <IconExternalLinkMini size={11} />{" "}
           <FormattedMessageFixed
             id={`${intl}.status` + getProductStatusTranslation(request)}
           />

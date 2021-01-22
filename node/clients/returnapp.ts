@@ -1,16 +1,7 @@
-import {
-    ExternalClient,
-    InstanceOptions,
-    IOContext,
-    Apps
-} from '@vtex/api'
+import {ExternalClient, InstanceOptions, IOContext} from '@vtex/api'
 
 
 export default class ReturnApp extends ExternalClient {
-
-    public missing_tokens = 'Some settings are missing. Please check the Apps > Return App page'
-    public apps = new Apps(this.context)
-    public appId = process.env.VTEX_APP_ID as string
 
     public schemas = {
         schemaEntity: "ReturnApp",
@@ -150,213 +141,121 @@ export default class ReturnApp extends ExternalClient {
         super('', context, options)
     }
 
-    public async getSchema(schemaEntity: any, schemaName: any): Promise<any> {
-
-        const settings = await this.apps.getAppSettings(this.appId)
-
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
-        return this.http.get(`http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${schemaEntity}/schemas/${schemaName}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Vtex-Use-Https': true,
-                'X-VTEX-API-AppKey': settings.storeAppKey,
-                'X-VTEX-API-AppToken': settings.storeAppToken
-            }
-        });
+    public async getSchema(ctx: any): Promise<any> {
+        return ctx.clients.masterdata.getSchema({
+            dataEntity: this.schemas.schemaEntity,
+            schema: this.schemas.settingsSchema.name
+        })
     }
 
-    public async generateSchema(): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify(this.missing_tokens)
-        }
-
-        const url = `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/schemas/`;
-        const headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Vtex-Use-Https': true,
-            'X-VTEX-API-AppKey': settings.storeAppKey,
-            'X-VTEX-API-AppToken': settings.storeAppToken
-        };
-
-        await this.http.put(
-            url + this.schemas.settingsSchema.name,
-            JSON.stringify(this.schemas.settingsSchema.schema),
-            {headers: headers}
-        );
-        await this.http.put(
-            url + this.schemas.returnSchema.name,
-            JSON.stringify(this.schemas.returnSchema.schema),
-            {headers: headers});
-        await this.http.put(
-            url + this.schemas.productsSchema.name,
-            JSON.stringify(this.schemas.productsSchema.schema),
-            {headers: headers});
-        await this.http.put(
-            url + this.schemas.commentsSchema.name,
-            JSON.stringify(this.schemas.commentsSchema.schema),
-            {headers: headers});
-        await this.http.put(
-            url + this.schemas.statusHistorySchema.name,
-            JSON.stringify(this.schemas.statusHistorySchema.schema),
-            {headers: headers});
+    public async generateSchema(ctx: any): Promise<any> {
+        await ctx.clients.masterdata.createOrUpdateSchema({
+            dataEntity: this.schemas.schemaEntity,
+            schemaName: this.schemas.settingsSchema.name,
+            schemaBody: this.schemas.settingsSchema.schema
+        });
+        await ctx.clients.masterdata.createOrUpdateSchema({
+            dataEntity: this.schemas.schemaEntity,
+            schemaName: this.schemas.returnSchema.name,
+            schemaBody: this.schemas.returnSchema.schema
+        });
+        await ctx.clients.masterdata.createOrUpdateSchema({
+            dataEntity: this.schemas.schemaEntity,
+            schemaName: this.schemas.productsSchema.name,
+            schemaBody: this.schemas.productsSchema.schema
+        });
+        await ctx.clients.masterdata.createOrUpdateSchema({
+            dataEntity: this.schemas.schemaEntity,
+            schemaName: this.schemas.commentsSchema.name,
+            schemaBody: this.schemas.commentsSchema.schema
+        });
+        await ctx.clients.masterdata.createOrUpdateSchema({
+            dataEntity: this.schemas.schemaEntity,
+            schemaName: this.schemas.statusHistorySchema.name,
+            schemaBody: this.schemas.statusHistorySchema.schema
+        });
         return true;
 
     }
 
 
-    public async getDocuments(schemaName: any, type: any, whereClause: any = ''): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
-        let baseURL = `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/search?_schema=` + schemaName;
-
-        baseURL += '&rand='+Date.now()+'&_where=(type="' + type + '"';
-
+    public async getDocuments(ctx: any, schemaName: any, type: any, whereClause: any = ''): Promise<any> {
+        let whereCls = '(type="' + type + '"';
         if (whereClause !== "1") {
             const where = whereClause.split('__');
-            where.map((clause:any) => {
-                baseURL += ' AND ' + clause
+            where.map((clause: any) => {
+                whereCls += ' AND ' + clause
             })
         }
+        whereCls += ')';
 
-        baseURL += ')';
-
-        if(type !== 'settings') {
-            baseURL += '&_sort=createdIn DESC';
-        }
-
-        return this.http.get(baseURL, {
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Vtex-Use-Https': true,
-                'REST-Range': 'resources=0-100',
-                'X-VTEX-API-AppKey': settings.storeAppKey,
-                'X-VTEX-API-AppToken': settings.storeAppToken
-            }
-        });
-
+        return await ctx.clients.masterdata.searchDocuments({
+            dataEntity: this.schemas.schemaEntity,
+            fields: [],
+            pagination: {
+                page: 1,
+                pageSize: 5000,
+            },
+            schema: schemaName,
+            where: whereCls,
+            sort: type !== "settings" ? "createdIn DESC" : ""
+        })
     }
 
-    public async saveDocuments(schemaName: any, body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
-        return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/documents?_schema=` + schemaName,
-            body, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
-                }
-            });
+    public async saveDocuments(ctx: any, schemaName: any, body: any): Promise<any> {
+        return await ctx.clients.masterdata.createOrUpdateEntireDocument({
+            dataEntity: this.schemas.schemaEntity,
+            fields: body,
+            schema: schemaName,
+            id: body.hasOwnProperty('id') ? body.id : ""
+        })
     }
 
-    public async updateDocuments(documentId: any, body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
-        return this.http.put(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/dataentities/${this.schemas.schemaEntity}/documents/` + documentId,
-            body, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
-                }
-            });
-    }
-
-    public async getCategories(): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
-
-        return this.http.get(`http://${settings.storeVendorName}.vtexcommercestable.com.br/api/catalog_system/pub/category/tree/100`, {
+    public async getCategories(ctx: any): Promise<any> {
+        return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog_system/pub/category/tree/100`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'X-Vtex-Use-Https': true,
-                'X-VTEX-API-AppKey': settings.storeAppKey,
-                'X-VTEX-API-AppToken': settings.storeAppToken
+                'X-Vtex-Use-Https': true
             }
         });
     }
 
-    public async createPromotion(body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
+    public async createPromotion(ctx: any, body: Object): Promise<any> {
         return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
+                    'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
     }
 
-    public async createCoupon(body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
+    public async createCoupon(ctx: any, body: Object): Promise<any> {
         return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
+                    'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
     }
 
-    public async sendMail(body: Object): Promise<any> {
-        const settings = await this.apps.getAppSettings(this.appId)
-        if (!settings.storeAppKey || !settings.storeAppToken || !settings.storeVendorName) {
-            return JSON.stringify({error: this.missing_tokens})
-        }
-
+    public async sendMail(ctx: any, body: Object): Promise<any> {
         return this.http.post(
-            `http://${settings.storeVendorName}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Vtex-Use-Https': true,
-                    'X-VTEX-API-AppKey': settings.storeAppKey,
-                    'X-VTEX-API-AppToken': settings.storeAppToken
+                    'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
     }

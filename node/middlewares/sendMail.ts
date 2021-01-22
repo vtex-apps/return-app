@@ -6,7 +6,7 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
         clients: {returnApp: returnAppClient}
     } = ctx
 
-    const response = await returnAppClient.sendMail(body)
+    const response = await returnAppClient.sendMail(ctx, body)
 
     ctx.status = 200
     ctx.body = response

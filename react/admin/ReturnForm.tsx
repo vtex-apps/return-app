@@ -20,7 +20,6 @@ import {
 import styles from "../styles.css";
 import { FormattedMessage, injectIntl } from "react-intl";
 import {
-  IconCheck,
   Link,
   Dropdown,
   Checkbox,
@@ -32,6 +31,7 @@ import ProductsTable from "../components/ProductsTable";
 import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
+import StatusHistoryTimeline from "../components/StatusHistoryTimeline";
 
 class ReturnForm extends Component<any, any> {
   static propTypes = {
@@ -374,7 +374,7 @@ class ReturnForm extends Component<any, any> {
           dateSubmitted: getCurrentDate(),
           type: schemaTypes.history
         };
-        this.updateDocument(requestData.id, requestData);
+        this.saveMasterData(schemaNames.request, requestData);
         this.saveMasterData(schemaNames.history, statusHistoryData);
         if (
           request.status === requestsStatuses.picked &&
@@ -385,7 +385,7 @@ class ReturnForm extends Component<any, any> {
               ...currentProduct,
               status: productStatuses.pendingVerification
             };
-            this.updateDocument(newProductInfo.id, newProductInfo);
+            this.saveMasterData(schemaNames.product, newProductInfo);
           });
         }
         this.setState({
@@ -416,17 +416,18 @@ class ReturnForm extends Component<any, any> {
           intlArea.admin
         )
       });
-      if (statusInput !== request.status) {
-        if (statusInput !== requestsStatuses.picked) {
-          window.setTimeout(() => {
-            const { product, request, statusHistoryTimeline } = this.state;
-            sendMail({
-              data: { ...{ DocumentId: request.id }, ...request },
-              products: product,
-              timeline: statusHistoryTimeline
-            });
-          }, 2000);
-        }
+      if (
+        statusInput !== request.status &&
+        statusInput !== requestsStatuses.picked
+      ) {
+        window.setTimeout(() => {
+          const { product, request, statusHistoryTimeline } = this.state;
+          sendMail({
+            data: { ...{ DocumentId: request.id }, ...request },
+            products: product,
+            timeline: statusHistoryTimeline
+          });
+        }, 2000);
       }
     } else {
       this.setState({
@@ -443,16 +444,6 @@ class ReturnForm extends Component<any, any> {
       body: JSON.stringify(body),
       headers: fetchHeaders
     }).then(response => {});
-  };
-
-  updateDocument = (documentId: string, postData: any) => {
-    fetch(fetchPath.updateDocuments + documentId, {
-      method: fetchMethod.put,
-      body: JSON.stringify(postData),
-      headers: fetchHeaders
-    })
-      .then(response => {})
-      .catch(err => err);
   };
 
   handleQuantity(product: any, quantity: any) {
@@ -492,11 +483,11 @@ class ReturnForm extends Component<any, any> {
     let refundedAmount = 0;
     productsForm.map(currentProduct => {
       refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice;
-      this.updateDocument(currentProduct.id, currentProduct);
+      this.saveMasterData(schemaNames.product, currentProduct);
     });
 
     const updatedRequest = { ...request, refundedAmount: refundedAmount };
-    this.updateDocument(request.id, updatedRequest);
+    this.saveMasterData(schemaNames.request, updatedRequest);
     this.setState({
       request: updatedRequest,
       showMain: true,
@@ -763,42 +754,10 @@ class ReturnForm extends Component<any, any> {
             </strong>
           </p>
 
-          <div>
-            {statusHistoryTimeline.map((currentHistory, i) => (
-              <div key={`statusHistoryTimeline_` + i}>
-                <p className={styles.statusLine}>
-                  {currentHistory.active ? (
-                    <span
-                      className={
-                        styles.statusIcon + " " + styles.statusIconChecked
-                      }
-                    >
-                      <IconCheck size={20} color={"#fff"} />
-                    </span>
-                  ) : (
-                    <span className={styles.statusIcon} />
-                  )}
-                  {currentHistory.text}
-                </p>
-                <ul
-                  className={
-                    styles.statusUl +
-                    " " +
-                    (statusHistoryTimeline.length === i + 1
-                      ? styles.statusUlLast
-                      : "")
-                  }
-                >
-                  {currentHistory.comments.map(comment => (
-                    <li key={comment.id}>
-                      {returnFormDate(comment.dateSubmitted, intlArea.admin)}:{" "}
-                      {comment.comment} ({comment.submittedBy})
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <StatusHistoryTimeline
+            statusHistoryTimeline={statusHistoryTimeline}
+            intl={intlArea.admin}
+          />
           {this.renderStatusCommentForm()}
           <StatusHistoryTable
             statusHistory={statusHistory}
