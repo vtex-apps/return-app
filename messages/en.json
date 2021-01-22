@@ -121,7 +121,7 @@
   "store/my-returns.product": "Product",
   "store/my-returns.quantity": "Quantity",
   "store/my-returns.unitPrice": "Unit price",
-  "store/my-returns.price": "Subtotal refund amount",
+  "store/my-returns.subtotalRefund": "Total price",
   "store/my-returns.totalProductsValue": "Products value",
   "store/my-returns.productVerificationStatus": "Product verification status",
   "store/my-returns.totalRefundAmount": "Total refund amount",

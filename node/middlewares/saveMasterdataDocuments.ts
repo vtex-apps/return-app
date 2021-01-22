@@ -6,7 +6,7 @@ export async function saveMasterdataDocuments(ctx: Context, next: () => Promise<
         clients: {returnApp: returnAppClient}
     } = ctx
     const { schemaName } = ctx.vtex.route.params
-    const response = await returnAppClient.saveDocuments(schemaName, body)
+    const response = await returnAppClient.saveDocuments(ctx, schemaName, body)
 
     ctx.status = 200
     ctx.body = response

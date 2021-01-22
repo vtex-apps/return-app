@@ -6,7 +6,7 @@
   "maxReplicas": 4,
   "routes": {
     "getSchemas": {
-      "path": "/returns/getSchema/:schemaEntity/:schemaName",
+      "path": "/returns/getSchema",
       "public": true,
       "settingsType": "workspace"
     },
@@ -22,11 +22,6 @@
     },
     "saveDocuments": {
       "path": "/returns/saveDocuments/:schemaName",
-      "public": true,
-      "settingsType": "workspace"
-    },
-    "updateDocuments": {
-      "path": "/returns/updateDocuments/:documentId",
       "public": true,
       "settingsType": "workspace"
     },

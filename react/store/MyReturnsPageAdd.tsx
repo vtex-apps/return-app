@@ -1,11 +1,10 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
-import { Button, Input, RadioGroup, Checkbox, Spinner } from "vtex.styleguide";
+import { Button, Spinner } from "vtex.styleguide";
 import { FormattedMessage } from "react-intl";
 import {
   schemaTypes,
   requestsStatuses,
-  returnFormDate,
   schemaNames,
   sendMail
 } from "../common/utils";
@@ -17,10 +16,12 @@ import styles from "../styles.css";
 import {
   getCurrentDate,
   diffDays,
-  beautifyDate,
   FormattedMessageFixed
 } from "../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
+import EligibleOrdersTable from "../components/EligibleOrdersTable";
+import RequestInformation from "../components/RequestInformation";
+import RequestForm from "../components/RequestForm";
 
 type Errors = {
   name: string;
@@ -193,7 +194,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       fetchPath.getOrders +
         "?clientEmail=" +
         userEmail +
-        "&orderBy=creationDate,desc"
+        "&orderBy=creationDate,desc&f_status=invoiced"
     )
       .then(response => response.json())
       .then(res => {
@@ -388,13 +389,16 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                   ) {
                     this.getOrder(order.orderId, user.Email).then(
                       currentOrder => {
-                        if (currentOrder.status === "invoiced") {
-                          this.prepareOrderData(currentOrder, settings, true);
-                        }
+                        this.prepareOrderData(currentOrder, settings, true);
                       }
                     );
                   }
                 });
+                setTimeout(() => {
+                  this.setState({ loading: false });
+                }, 1000);
+              } else {
+                this.setState({ loading: false });
               }
             }
           });
@@ -407,7 +411,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     this.prepareData();
   }
 
-  private resetErrors() {
+  resetErrors() {
     this.setState({
       errors: {
         name: "",
@@ -426,7 +430,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     });
   }
 
-  private validateForm() {
+  validateForm() {
     let errors = false;
     this.resetErrors();
 
@@ -566,7 +570,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     return !errors;
   }
 
-  private handleInputChange(event: any) {
+  handleInputChange(event: any) {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
@@ -574,7 +578,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     this.setState({ ...this.state, [name]: value });
   }
 
-  private submit() {
+  submit() {
     if (this.validateForm()) {
       this.setState({
         showOrdersTable: false,
@@ -584,7 +588,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     }
   }
 
-  private showTable() {
+  showTable() {
     this.setState({
       showOrdersTable: true,
       showForm: false,
@@ -592,7 +596,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     });
   }
 
-  private showForm() {
+  showForm() {
     this.resetErrors();
     this.setState({
       showOrdersTable: false,
@@ -615,7 +619,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     }));
   }
 
-  private sendRequest() {
+  sendRequest() {
     let totalPrice = 0;
     this.setState({ errorSubmit: "" });
     const {
@@ -741,56 +745,6 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         }
       });
   }
-
-  paymentMethods() {
-    const { selectedOrder }: any = this.state;
-
-    const output: any[] = [];
-
-    if (
-      selectedOrder.paymentData.transactions[0].payments[0].firstDigits !== null
-    ) {
-      output.push({
-        value: "card",
-        label: <FormattedMessage id={"store/my-returns.formCreditCard"} />
-      });
-    }
-
-    output.push({
-      value: "voucher",
-      label: <FormattedMessage id={"store/my-returns.formVoucher"} />
-    });
-    output.push({
-      value: "bank",
-      label: <FormattedMessage id={"store/my-returns.formBank"} />
-    });
-
-    return output;
-  }
-
-  renderTermsAndConditions = () => {
-    const { settings }: any = this.state;
-    return (
-      <FormattedMessage
-        id="store/my-returns.formAgree"
-        values={{
-          link: (
-            <span>
-              {" "}
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-                href={settings.termsUrl}
-              >
-                <FormattedMessage id="store/my-returns.TermsConditions" />
-              </a>
-            </span>
-          )
-        }}
-      />
-    );
-  };
-
   render() {
     const {
       showOrdersTable,
@@ -812,7 +766,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       errorSubmit,
       successSubmit,
       selectedOrder,
-      submittedRequest
+      submittedRequest,
+      settings
     }: any = this.state;
     return (
       <ContentWrapper {...this.props.headerConfig}>
@@ -846,542 +801,62 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           return (
             <div>
               {showOrdersTable ? (
-                <div>
-                  {eligibleOrders.length && !loading ? (
-                    <div>
-                      <table className={styles.table}>
-                        <thead>
-                          <tr>
-                            <th>
-                              <FormattedMessage
-                                id={"store/my-returns.thOrderId"}
-                              />
-                            </th>
-                            <th>
-                              <FormattedMessage
-                                id={"store/my-returns.thCreationDate"}
-                              />
-                            </th>
-                            <th>
-                              <FormattedMessage
-                                id={"store/my-returns.thSelectOrder"}
-                              />
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {eligibleOrders.map(order => {
-                            return (
-                              <tr key={order.orderId}>
-                                <td>{order.orderId}</td>
-                                <td>{beautifyDate(order.creationDate)}</td>
-                                <td>
-                                  <Button
-                                    size={`small`}
-                                    onClick={() => this.selectOrder(order)}
-                                  >
-                                    <FormattedMessage
-                                      id={"store/my-returns.thSelectOrder"}
-                                    />
-                                  </Button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  ) : (
-                    <div>
-                      <FormattedMessage
-                        id={"store/my-returns.no_eligible_orders"}
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <></>
-              )}
+                <EligibleOrdersTable
+                  eligibleOrders={eligibleOrders}
+                  selectOrder={order => this.selectOrder(order)}
+                />
+              ) : null}
               {showForm ? (
-                <div>
-                  <div className={`mb6 mt4`}>
-                    <Button
-                      variation={"secondary"}
-                      size={"small"}
-                      onClick={() => this.showTable()}
-                    >
-                      <FormattedMessage id={"store/my-returns.backToOrders"} />
-                    </Button>
-                  </div>
-                  <div
-                    className={
-                      `cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ` +
-                      styles.orderInfoHeader
-                    }
-                  >
-                    <div className={`flex flex-row`}>
-                      <div className={`flex flex-column w-50`}>
-                        <div className={`w-100 f7 f6-xl fw4 c-muted-1 ttu`}>
-                          <FormattedMessage id={"store/my-returns.orderDate"} />
-                        </div>
-                        <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
-                          {returnFormDate(
-                            selectedOrder.creationDate,
-                            "store/my-returns"
-                          )}
-                        </div>
-                      </div>
-                      <div className={`flex flex-column w-50`}>
-                        <div className={`w-100 f7 f6-xl fw4 c-muted-1 ttu`}>
-                          <FormattedMessage id={"store/my-returns.thOrderId"} />
-                        </div>
-                        <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
-                          {selectedOrder.orderId}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <table className={styles.tblProducts}>
-                      <thead>
-                        <tr>
-                          <th />
-                          <th>
-                            <FormattedMessage
-                              id={"store/my-returns.thProduct"}
-                            />
-                          </th>
-                          <th>
-                            <FormattedMessage
-                              id={"store/my-returns.thQuantity"}
-                            />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {orderProducts.map((product: any) => (
-                          <tr key={`product` + product.uniqueId}>
-                            <td>
-                              <img src={product.imageUrl} alt={product.name} />
-                            </td>
-                            <td>
-                              <a
-                                className={styles.productUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                href={product.detailUrl}
-                              >
-                                {product.name}
-                              </a>
-                            </td>
-                            <td>
-                              <Input
-                                suffix={"/" + product.quantity}
-                                size={"small"}
-                                type={"number"}
-                                value={product.selectedQuantity}
-                                onChange={e => {
-                                  this.handleQuantity(product, e.target.value);
-                                }}
-                                max={product.quantity}
-                                min={0}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {errors.productQuantities ? (
-                      <p className={styles.errorMessage}>
-                        <FormattedMessageFixed id={errors.productQuantities} />
-                      </p>
-                    ) : null}
-                  </div>
-                  <div className={`flex-ns flex-wrap flex-row`}>
-                    <div
-                      className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                    >
-                      <p>
-                        <FormattedMessage
-                          id={"store/my-returns.formContactDetails"}
-                        />
-                      </p>
-                      <div className={"mb4"}>
-                        <FormattedMessage id={"store/my-returns.formName"}>
-                          {msg => (
-                            <Input
-                              name={"name"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={name}
-                              errorMessage={
-                                errors.name ? (
-                                  <FormattedMessageFixed id={errors.name} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                      <div className={"mb4"}>
-                        <FormattedMessage id={"store/my-returns.formEmail"}>
-                          {msg => (
-                            <Input
-                              name={"email"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={email}
-                              errorMessage={
-                                errors.email ? (
-                                  <FormattedMessageFixed id={errors.email} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                      <div className={"mb4"}>
-                        <FormattedMessage id={"store/my-returns.formPhone"}>
-                          {msg => (
-                            <Input
-                              name={"phone"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={phone}
-                              errorMessage={
-                                errors.phone ? (
-                                  <FormattedMessageFixed id={errors.phone} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                    >
-                      <p>
-                        <FormattedMessage
-                          id={"store/my-returns.formPickupAddress"}
-                        />
-                      </p>
-                      <div className={"mb4"}>
-                        <FormattedMessage id={"store/my-returns.formCountry"}>
-                          {msg => (
-                            <Input
-                              name={"country"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={country}
-                              errorMessage={
-                                errors.country ? (
-                                  <FormattedMessageFixed id={errors.country} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                      <div className={"mb4"}>
-                        <FormattedMessage id={"store/my-returns.formLocality"}>
-                          {msg => (
-                            <Input
-                              name={"locality"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={locality}
-                              errorMessage={
-                                errors.locality ? (
-                                  <FormattedMessageFixed id={errors.locality} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                      <div className={"mb4"}>
-                        <FormattedMessage id={"store/my-returns.formAddress"}>
-                          {msg => (
-                            <Input
-                              name={"address"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={address}
-                              errorMessage={
-                                errors.address ? (
-                                  <FormattedMessageFixed id={errors.address} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                  >
-                    <p>
-                      <FormattedMessage
-                        id={"store/my-returns.formPaymentMethod"}
-                      />
-                    </p>
-                    <RadioGroup
-                      hideBorder
-                      name="paymentMethod"
-                      options={this.paymentMethods()}
-                      value={paymentMethod}
-                      errorMessage={
-                        errors.paymentMethod ? (
-                          <FormattedMessageFixed id={errors.paymentMethod} />
-                        ) : (
-                          ""
-                        )
-                      }
-                      onChange={this.handleInputChange}
-                    />
-                    {paymentMethod === "bank" ? (
-                      <div
-                        className={
-                          "flex-ns flex-wrap flex-auto flex-column mt4"
-                        }
-                      >
-                        <FormattedMessage id={"store/my-returns.formIBAN"}>
-                          {msg => (
-                            <Input
-                              name={"iban"}
-                              placeholder={msg}
-                              onChange={this.handleInputChange}
-                              value={iban}
-                              errorMessage={
-                                errors.iban ? (
-                                  <FormattedMessageFixed id={errors.iban} />
-                                ) : (
-                                  ""
-                                )
-                              }
-                            />
-                          )}
-                        </FormattedMessage>
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <div
-                    className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                  >
-                    <Checkbox
-                      checked={agree}
-                      id="agree"
-                      label={this.renderTermsAndConditions()}
-                      name="agree"
-                      onChange={this.handleInputChange}
-                      value={agree}
-                    />
-                    {errors.agree ? (
-                      <p className={"c-danger t-small mt3 lh-title"}>
-                        <FormattedMessageFixed id={errors.agree} />
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div className={`mt4 ph4`}>
-                    <Button
-                      type={"submit"}
-                      variation="primary"
-                      onClick={() => {
-                        this.submit();
-                      }}
-                    >
-                      <FormattedMessage id={"store/my-returns.formNextStep"} />
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <></>
-              )}
+                <RequestForm
+                  settings={settings}
+                  showTable={() => {
+                    this.showTable();
+                  }}
+                  selectedOrder={selectedOrder}
+                  orderProducts={orderProducts}
+                  handleQuantity={(product, value) => {
+                    this.handleQuantity(product, value);
+                  }}
+                  errors={errors}
+                  handleInputChange={e => this.handleInputChange(e)}
+                  formInputs={{
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    country: country,
+                    locality: locality,
+                    address: address,
+                    paymentMethod: paymentMethod,
+                    iban: iban,
+                    agree: agree
+                  }}
+                  submit={() => {
+                    this.submit();
+                  }}
+                />
+              ) : null}
               {showInfo ? (
-                <div>
-                  <div>
-                    <table className={styles.table}>
-                      <thead>
-                        <tr>
-                          <th />
-                          <th>
-                            <FormattedMessage
-                              id={"store/my-returns.thProduct"}
-                            />
-                          </th>
-                          <th>
-                            <FormattedMessage
-                              id={"store/my-returns.thQuantity"}
-                            />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {orderProducts.map((product: any) =>
-                          parseInt(product.selectedQuantity) > 0 ? (
-                            <tr key={`product` + product.uniqueId}>
-                              <td>
-                                <img
-                                  src={product.imageUrl}
-                                  alt={product.name}
-                                />
-                              </td>
-                              <td>{product.name}</td>
-                              <td>
-                                {product.selectedQuantity} / {product.quantity}
-                              </td>
-                            </tr>
-                          ) : null
-                        )}
-                      </tbody>
-                    </table>
-                    <div className={`flex-ns flex-wrap flex-row`}>
-                      <div
-                        className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                      >
-                        <p>
-                          <FormattedMessage
-                            id={"store/my-returns.formContactDetails"}
-                          />
-                        </p>
-                        <div className={"mb2"}>
-                          <p className={"ma1 t-small c-on-base "}>
-                            <FormattedMessage
-                              id={"store/my-returns.formName"}
-                            />
-                            : {name}
-                          </p>
-                        </div>
-                        <div className={"mb2"}>
-                          <p className={"ma1 t-small c-on-base "}>
-                            <FormattedMessage
-                              id={"store/my-returns.formEmail"}
-                            />
-                            : {email}
-                          </p>
-                        </div>
-                        <div className={"mb2"}>
-                          <p className={"ma1 t-small c-on-base "}>
-                            <FormattedMessage
-                              id={"store/my-returns.formPhone"}
-                            />
-                            : {phone}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div
-                        className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                      >
-                        <p>
-                          <FormattedMessage
-                            id={"store/my-returns.formPickupAddress"}
-                          />
-                        </p>
-                        <div className={"mb2"}>
-                          <p className={"ma1 t-small c-on-base"}>
-                            <FormattedMessage
-                              id={"store/my-returns.formCountry"}
-                            />
-                            : {country}
-                          </p>
-                        </div>
-                        <div className={"mb2"}>
-                          <p className={"ma1 t-small c-on-base"}>
-                            <FormattedMessage
-                              id={"store/my-returns.formLocality"}
-                            />
-                            : {locality}
-                          </p>
-                        </div>
-                        <div className={"mb2"}>
-                          <p className={"ma1 t-small c-on-base"}>
-                            <FormattedMessage
-                              id={"store/my-returns.formAddress"}
-                            />
-                            : {address}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className={`flex-ns flex-wrap flex-auto flex-column pa4`}
-                    >
-                      <p>
-                        <FormattedMessage
-                          id={"store/my-returns.formPaymentMethod"}
-                        />
-                      </p>
-                      {paymentMethod === "bank" ? (
-                        <div
-                          className={
-                            "flex-ns flex-wrap flex-auto flex-column mt4"
-                          }
-                        >
-                          <p className={"ma1 t-small c-on-base "}>
-                            <FormattedMessage
-                              id={"store/my-returns.formBankTransferAccount"}
-                            />{" "}
-                            {iban}
-                          </p>
-                        </div>
-                      ) : (
-                        <p className={"ma1 t-small c-on-base "}>
-                          {paymentMethod}
-                        </p>
-                      )}
-                    </div>
-                    <div
-                      className={
-                        "flex-ns flex-wrap flex-auto flex-row justify-between"
-                      }
-                    >
-                      <Button
-                        type={"submit"}
-                        onClick={() => {
-                          this.showForm();
-                        }}
-                      >
-                        <FormattedMessage id={"store/my-returns.goBack"} />
-                      </Button>
-                      <Button
-                        type={"submit"}
-                        variation="primary"
-                        onClick={() => {
-                          this.sendRequest();
-                        }}
-                      >
-                        <FormattedMessage id={"store/my-returns.formSubmit"} />
-                      </Button>
-                    </div>
-                    {errorSubmit ? (
-                      <div>
-                        <p className={styles.errorMessage}>{errorSubmit}</p>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              ) : (
-                <></>
-              )}
+                <RequestInformation
+                  info={{
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    country: country,
+                    locality: locality,
+                    address: address,
+                    paymentMethod: paymentMethod,
+                    iban: iban
+                  }}
+                  orderProducts={orderProducts}
+                  showForm={() => {
+                    this.showForm();
+                  }}
+                  sendRequest={() => {
+                    this.sendRequest();
+                  }}
+                  errorSubmit={errorSubmit}
+                />
+              ) : null}
             </div>
           );
         }}
