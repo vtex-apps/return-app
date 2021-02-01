@@ -36,24 +36,26 @@ class EligibleOrdersTable extends Component<Props> {
                 </tr>
               </thead>
               <tbody>
-                {eligibleOrders.map(order => {
-                  return (
-                    <tr key={order.orderId}>
-                      <td>{order.orderId}</td>
-                      <td>{beautifyDate(order.creationDate)}</td>
-                      <td>
-                        <Button
-                          size={`small`}
-                          onClick={() => selectOrder(order)}
-                        >
-                          <FormattedMessage
-                            id={"store/my-returns.thSelectOrder"}
-                          />
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {eligibleOrders
+                  .sort((a, b) => (a.creationDate < b.creationDate ? 1 : -1))
+                  .map(order => {
+                    return (
+                      <tr key={order.orderId}>
+                        <td>{order.orderId}</td>
+                        <td>{beautifyDate(order.creationDate)}</td>
+                        <td>
+                          <Button
+                            size={`small`}
+                            onClick={() => selectOrder(order)}
+                          >
+                            <FormattedMessage
+                              id={"store/my-returns.thSelectOrder"}
+                            />
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
