@@ -77,36 +77,32 @@ class RequestInfo extends Component<Props> {
         {request.paymentMethod === "bank" ? (
           <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
             <p className={"ma1 t-small c-on-base "}>
-              <FormattedMessageFixed id={`${intl}.formBankTransferAccount`} />{" "}
+              <FormattedMessage id={`${intl}.formBankTransferAccount`} />{" "}
               {request.iban}
             </p>
           </div>
-        ) : (
+        ) : request.paymentMethod === "giftCard" ? (
           <div>
-            <p className={"ma1 t-small c-on-base " + styles.capitalize}>
-              {request.paymentMethod}{" "}
+            <p className={"ma1 t-small c-on-base "}>
+              <FormattedMessage id={`${intl}.formVoucher`} />
             </p>
-            {request.paymentMethod === "voucher" ? (
-              <div>
-                <p className={`ma1 t-small c-on-base`}>
-                  <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
-                  {request.voucherCode ? (
-                    request.voucherCode
-                  ) : (
-                    <FormattedMessageFixed
-                      id={`${intl}.voucherCodeNotGenerated`}
-                    />
-                  )}
-                </p>
-                {request.voucherCode ? (
-                  <p className={`ma1 t-small c-on-base`}>
-                    <FormattedMessageFixed id={`${intl}.voucherValue`} />{" "}
-                    <FormattedCurrency value={request.refundedAmount / 100} />
-                  </p>
-                ) : null}
-              </div>
+            <p className={`ma1 t-small c-on-base`}>
+              <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
+              {request.voucherCode ? (
+                request.voucherCode
+              ) : (
+                <FormattedMessageFixed id={`${intl}.voucherCodeNotGenerated`} />
+              )}
+            </p>
+            {request.voucherCode ? (
+              <p className={`ma1 t-small c-on-base`}>
+                <FormattedMessageFixed id={`${intl}.voucherValue`} />{" "}
+                <FormattedCurrency value={request.refundedAmount / 100} />
+              </p>
             ) : null}
           </div>
+        ) : (
+          <p className={"ma1 t-small c-on-base "}>{request.paymentMethod}</p>
         )}
       </div>
     );
