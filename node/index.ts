@@ -6,8 +6,9 @@ import { generateReturnsSchema } from './middlewares/generateReturnsSchema'
 import { receiveDocuments } from './middlewares/receiveDocuments'
 import { receiveCategories } from './middlewares/receiveCategories'
 import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
-import { createPromotion } from './middlewares/createPromotion'
-import { createCoupon } from './middlewares/createCoupon'
+import { saveMasterdataPartialDocuments } from './middlewares/saveMasterdataPartialDocuments'
+import { createGiftCard } from './middlewares/createGiftCard'
+import { getGiftCard } from './middlewares/getGiftCard'
 import { sendMail } from './middlewares/sendMail'
 
 const TIMEOUT_MS = 5000
@@ -50,11 +51,14 @@ export default new Service({
     saveDocuments: method({
       POST: saveMasterdataDocuments
     }),
-    createPromotion: method({
-      POST: createPromotion
+    savePartialDocument: method({
+      POST: saveMasterdataPartialDocuments
     }),
-    createCoupon: method({
-      POST: createCoupon
+    createGiftCard: method({
+      POST: createGiftCard
+    }),
+    getGiftCard: method({
+      GET: getGiftCard
     }),
     sendMail: method({
       POST: sendMail

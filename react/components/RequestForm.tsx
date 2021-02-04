@@ -369,6 +369,7 @@ class RequestForm extends Component<Props> {
               <FormattedMessage id={"store/my-returns.formEmail"}>
                 {msg => (
                   <Input
+                    disabled
                     name={"email"}
                     placeholder={msg}
                     onChange={handleInputChange}
