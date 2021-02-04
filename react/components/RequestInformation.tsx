@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styles from "../styles.css";
 import { FormattedMessage } from "react-intl";
 import { Button } from "vtex.styleguide";
+import { FormattedMessageFixed } from "../common/utils";
 
 interface Props {
   orderProducts: any;
@@ -47,7 +48,23 @@ class RequestInformation extends Component<Props> {
                     <td>
                       <img src={product.imageUrl} alt={product.name} />
                     </td>
-                    <td>{product.name}</td>
+                    <td>
+                      {product.name}
+                      <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                        <span className={styles.strongText}>
+                          <FormattedMessageFixed
+                            id={"store/my-returns.thReason"}
+                          />
+                          {": "}
+                        </span>
+                        <FormattedMessageFixed
+                          id={`store/my-returns.${product.reasonCode}`}
+                        />{" "}
+                        {product.reasonCode === "reasonOther"
+                          ? "( " + product.reason + " )"
+                          : null}
+                      </div>
+                    </td>
                     <td>
                       {product.selectedQuantity} / {product.quantity}
                     </td>
@@ -118,6 +135,10 @@ class RequestInformation extends Component<Props> {
                   {info.iban}
                 </p>
               </div>
+            ) : info.paymentMethod === "giftCard" ? (
+              <p className={"ma1 t-small c-on-base "}>
+                <FormattedMessage id={"store/my-returns.formVoucher"} />
+              </p>
             ) : (
               <p className={"ma1 t-small c-on-base "}>{info.paymentMethod}</p>
             )}

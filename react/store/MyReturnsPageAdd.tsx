@@ -34,6 +34,7 @@ type Errors = {
   iban: string;
   agree: string;
   productQuantities: string;
+  reasonMissing: string;
 };
 
 type State = {
@@ -96,6 +97,9 @@ const errorMessages = {
   },
   productQuantities: {
     id: "store/my-returns.formErrorQuantities"
+  },
+  reasonMissing: {
+    id: "store/my-returns.formErrorReasonMissing"
   }
 };
 
@@ -134,7 +138,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         paymentMethod: "",
         iban: "",
         agree: "",
-        productQuantities: ""
+        productQuantities: "",
+        reasonMissing: ""
       },
       eligibleOrders: [],
       selectedOrderId: "",
@@ -309,7 +314,9 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
             } else {
               currentProduct = {
                 ...currentProduct,
-                quantity: currentProduct.quantity - response
+                quantity: currentProduct.quantity - response,
+                reasonCode: "",
+                reason: ""
               };
               return eligible;
             }
@@ -403,6 +410,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
             }
           });
         });
+      } else {
+        this.setState({ loading: false });
       }
     });
   };
@@ -423,7 +432,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
         paymentMethod: "",
         iban: "",
         agree: "",
-        productQuantities: ""
+        productQuantities: "",
+        reasonMissing: ""
       },
       errorSubmit: "",
       successSubmit: ""
@@ -555,6 +565,17 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       } else {
         quantities += parseInt(product.selectedQuantity);
       }
+
+      const reason = product.reason;
+
+      if (
+        parseInt(product.selectedQuantity) > 0 &&
+        (product.reasonCode === "" ||
+          (product.reasonCode === "reasonOther" &&
+            (product.reason === "" || !reason.replace(/\s/g, "").length)))
+      ) {
+        errors = true;
+      }
     });
 
     if (quantities === 0) {
@@ -613,6 +634,33 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
               ...el,
               selectedQuantity:
                 quantity > product.quantity ? product.quantity : quantity
+            }
+          : el
+      )
+    }));
+  }
+
+  handleReasonCode(product: any, value: any) {
+    this.setState(prevState => ({
+      orderProducts: prevState.orderProducts.map(el =>
+        el.uniqueId === product.uniqueId
+          ? {
+              ...el,
+              reasonCode: value,
+              reason: ""
+            }
+          : el
+      )
+    }));
+  }
+
+  handleReason(product: any, value: any) {
+    this.setState(prevState => ({
+      orderProducts: prevState.orderProducts.map(el =>
+        el.uniqueId === product.uniqueId
+          ? {
+              ...el,
+              reason: value
             }
           : el
       )
@@ -714,6 +762,8 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           skuId: product.refId,
           skuName: product.name,
           imageUrl: product.imageUrl,
+          reasonCode: product.reasonCode,
+          reason: product.reason,
           unitPrice: parseInt(product.sellingPrice),
           quantity: parseInt(product.selectedQuantity),
           totalPrice: parseInt(
@@ -816,6 +866,12 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                   orderProducts={orderProducts}
                   handleQuantity={(product, value) => {
                     this.handleQuantity(product, value);
+                  }}
+                  handleReasonCode={(product, value) => {
+                    this.handleReasonCode(product, value);
+                  }}
+                  handleReason={(product, value) => {
+                    this.handleReason(product, value);
                   }}
                   errors={errors}
                   handleInputChange={e => this.handleInputChange(e)}

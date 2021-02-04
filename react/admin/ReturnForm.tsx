@@ -355,7 +355,7 @@ class ReturnForm extends Component<any, any> {
 
         if (
           statusInput === requestsStatuses.refunded &&
-          request.paymentMethod === "voucher"
+          request.paymentMethod === "giftCard"
         ) {
           this.generateCoupon(requestData);
           setTimeout(() => {

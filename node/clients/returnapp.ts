@@ -91,17 +91,19 @@ export default class ReturnApp extends ExternalClient {
                     "quantity": {"type": "integer"},
                     "totalPrice": {"type": "integer"},
                     "goodProducts": {"type": "integer"},
+                    "reasonCode": {"type": "string"},
+                    "reason": {"type": "string"},
                     "status": {"type": "string"},
                     "dateSubmitted": {"type": "string", "format": "date-time"},
                     "type": {"type": "string"}
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
                 "v-cache": false,
-                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "status", "dateSubmitted", "type"],
+                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
                 "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "status", "type"]
             }
         },

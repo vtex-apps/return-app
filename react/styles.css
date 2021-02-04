@@ -283,3 +283,21 @@
 .paddingLeft20 {
     padding-left: 20px !important;
 }
+
+.reasonHolder {
+    width: 200px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.w350 {
+    width: 350px;
+}
+.reasonStyle {
+    font-size: 90%;
+}
+.strongText {
+    font-weight: bold;
+}
