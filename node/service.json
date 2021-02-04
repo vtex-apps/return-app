@@ -25,18 +25,23 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "savePartialDocument": {
+      "path": "/returns/savePartialDocument/:schemaName",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "getCategories": {
       "path": "/returns/getCategories/",
       "public": true,
       "settingsType": "workspace"
     },
-    "createPromotion": {
-      "path": "/returns/createPromotion/",
+    "createGiftCard": {
+      "path": "/returns/giftCard/",
       "public": true,
       "settingsType": "workspace"
     },
-    "createCoupon": {
-      "path": "/returns/createCoupon/",
+    "getGiftCard": {
+      "path": "/returns/getGiftCard/:id",
       "public": true,
       "settingsType": "workspace"
     },

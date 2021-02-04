@@ -252,7 +252,7 @@ export default class ReturnsSettings extends Component<{}, any> {
         });
         setTimeout(() => {
           window.location.reload();
-        }, 300);
+        }, 2500);
       })
       .catch(err => this.setState({ loading: false, errorMessage: err }));
   };

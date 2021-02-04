@@ -38,7 +38,8 @@ export default class ReturnApp extends ExternalClient {
                     "address": {"type": "string"},
                     "totalPrice": {"type": "integer"},
                     "paymentMethod": {"type": "string", "maxLength": 25},
-                    "voucherCode": {"type": "string"},
+                    "giftCardCode": {"type": "string"},
+                    "giftCardId": {"type": "string"},
                     "refundedAmount": {"type": "integer"},
                     "iban": {"type": "string"},
                     "status": {"type": "string"},
@@ -47,12 +48,12 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "giftCardCode", "giftCardId", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": true
                 },
                 "v-cache": false,
-                "v-default-fields": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
-                "v-indexed": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "voucherCode", "refundedAmount", "iban", "status", "dateSubmitted", "type"]
+                "v-default-fields": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "giftCardCode", "giftCardId", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "giftCardCode", "giftCardId", "refundedAmount", "iban", "status", "dateSubmitted", "type"]
             }
         },
         commentsSchema: {
@@ -203,6 +204,15 @@ export default class ReturnApp extends ExternalClient {
         })
     }
 
+    public async savePartial(ctx: any, schemaName: any, body: any): Promise<any> {
+        return await ctx.clients.masterdata.createOrUpdatePartialDocument({
+            dataEntity: this.schemas.schemaEntity,
+            fields: body,
+            schema: schemaName,
+            id: body.hasOwnProperty('id') ? body.id : ""
+        })
+    }
+
     public async getCategories(ctx: any): Promise<any> {
         return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog_system/pub/category/tree/100`, {
             headers: {
@@ -213,22 +223,20 @@ export default class ReturnApp extends ExternalClient {
         });
     }
 
-    public async createPromotion(ctx: any, body: Object): Promise<any> {
-        return this.http.post(
-            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/calculatorconfiguration`,
-            body, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Vtex-Use-Https': true,
-                    'VtexIdclientAutCookie': ctx.vtex.authToken
-                }
-            });
+    public async getGiftCard(ctx: any, id: any): Promise<any> {
+        return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/giftcards/` + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'VtexIdclientAutCookie': ctx.vtex.authToken
+            }
+        });
     }
 
-    public async createCoupon(ctx: any, body: Object): Promise<any> {
+    public async createGiftCard(ctx: any, body: Object): Promise<any> {
         return this.http.post(
-            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/rnb/pvt/coupon/`,
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/giftcards/`,
             body, {
                 headers: {
                     'Content-Type': 'application/json',

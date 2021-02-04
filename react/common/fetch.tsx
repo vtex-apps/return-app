@@ -2,11 +2,12 @@ export const fetchPath = {
   getDocuments: "/returns/getDocuments/",
   getProfile: "/no-cache/profileSystem/getProfile",
   saveDocuments: "/returns/saveDocuments/",
+  savePartialDocument: "/returns/savePartialDocument/",
   getCategories: "/returns/getCategories",
   getSchema: "/returns/getSchema/",
   generateSchema: "/returns/generateSchema/",
-  createCoupon: "/returns/createCoupon/",
-  createPromotion: "/returns/createPromotion/",
+  createGiftCard: "/returns/giftCard/",
+  getGiftCard: "/returns/getGiftCard/",
   getOrders: "/api/oms/pvt/orders",
   renderTemplates: "/api/template-render/pvt/templates"
 };

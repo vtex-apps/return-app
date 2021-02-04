@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
-import styles from "../styles.css";
-import { FormattedMessageFixed } from "../common/utils";
+import { FormattedMessageFixed, intlArea } from "../common/utils";
 import { FormattedCurrency } from "vtex.format-currency";
 
 interface Props {
   request: any;
+  giftCardValue: any;
   intl: string;
 }
 
@@ -14,8 +14,20 @@ class RequestInfo extends Component<Props> {
     super(props);
   }
 
+  generateEditGiftCardLink = () => {
+    const { request }: any = this.props;
+    const url = `/admin/Site/ValeForm.aspx?id=${request.giftCardId}`
+    return (
+      <>
+        <a rel="noopener noreferrer" target="_blank" href={url}>
+          <FormattedMessage id="admin/returns.chargeGiftCard" />
+        </a>
+      </>
+    );
+  };
+
   render() {
-    const { request, intl } = this.props;
+    const { request, intl, giftCardValue } = this.props;
     return (
       <div>
         <div className={`flex-ns flex-wrap flex-row`}>
@@ -88,16 +100,19 @@ class RequestInfo extends Component<Props> {
             </p>
             <p className={`ma1 t-small c-on-base`}>
               <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
-              {request.voucherCode ? (
-                request.voucherCode
+              {request.giftCardCode ? (
+                request.giftCardCode
               ) : (
                 <FormattedMessageFixed id={`${intl}.voucherCodeNotGenerated`} />
               )}
             </p>
-            {request.voucherCode ? (
+            {request.giftCardCode ? (
               <p className={`ma1 t-small c-on-base`}>
                 <FormattedMessageFixed id={`${intl}.voucherValue`} />{" "}
-                <FormattedCurrency value={request.refundedAmount / 100} />
+                <FormattedCurrency value={giftCardValue} />{" "}
+                {intl === intlArea.admin
+                  ? this.generateEditGiftCardLink()
+                  : null}
               </p>
             ) : null}
           </div>
