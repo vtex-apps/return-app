@@ -1,7 +1,7 @@
 {
   "vendor": "vtexeurope",
   "name": "return-app",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -58,5 +58,12 @@
       }
     }
   ],
+  "billingOptions": {
+    "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
+    "support": {
+      "url": "https://support.vtex.com/hc/requests"
+    },
+    "free": true
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
