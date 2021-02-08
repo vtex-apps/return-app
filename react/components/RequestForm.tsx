@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
-import { FormattedMessage } from "react-intl";
-import { Button, Checkbox, Input, RadioGroup } from "vtex.styleguide";
+import { FormattedMessage, injectIntl } from "react-intl";
+import {
+  Button,
+  Checkbox,
+  Input,
+  RadioGroup,
+  Dropdown,
+  Textarea
+} from "vtex.styleguide";
 import { FormattedMessageFixed, returnFormDate } from "../common/utils";
+import PropTypes from "prop-types";
 
 interface FormInputs {
   name: string;
@@ -21,14 +29,22 @@ interface Props {
   selectedOrder: any;
   orderProducts: any;
   handleQuantity: any;
+  handleReasonCode: any;
+  handleReason: any;
   errors: any;
   handleInputChange: any;
   formInputs: FormInputs;
   submit: any;
   settings: any;
+  intl: any;
 }
 
 class RequestForm extends Component<Props> {
+  static propTypes = {
+    data: PropTypes.object,
+    intl: PropTypes.object
+  };
+
   constructor(props) {
     super(props);
   }
@@ -48,7 +64,7 @@ class RequestForm extends Component<Props> {
     }
 
     output.push({
-      value: "voucher",
+      value: "giftCard",
       label: <FormattedMessage id={"store/my-returns.formVoucher"} />
     });
     output.push({
@@ -81,6 +97,145 @@ class RequestForm extends Component<Props> {
       />
     );
   };
+
+  renderReasonsDropdown(product: any) {
+    const { formatMessage } = this.props.intl;
+    const options = [
+      {
+        value: "reasonAccidentalOrder",
+        label: formatMessage({
+          id: `store/my-returns.reasonAccidentalOrder`
+        })
+      },
+      {
+        value: "reasonBetterPrice",
+        label: formatMessage({
+          id: `store/my-returns.reasonBetterPrice`
+        })
+      },
+      {
+        value: "reasonPerformance",
+        label: formatMessage({
+          id: `store/my-returns.reasonPerformance`
+        })
+      },
+      {
+        value: "reasonIncompatible",
+        label: formatMessage({
+          id: `store/my-returns.reasonIncompatible`
+        })
+      },
+      {
+        value: "reasonItemDamaged",
+        label: formatMessage({
+          id: `store/my-returns.reasonItemDamaged`
+        })
+      },
+      {
+        value: "reasonMissedDelivery",
+        label: formatMessage({
+          id: `store/my-returns.reasonMissedDelivery`
+        })
+      },
+      {
+        value: "reasonMissingParts",
+        label: formatMessage({
+          id: `store/my-returns.reasonMissingParts`
+        })
+      },
+      {
+        value: "reasonBoxDamaged",
+        label: formatMessage({
+          id: `store/my-returns.reasonBoxDamaged`
+        })
+      },
+      {
+        value: "reasonDifferentProduct",
+        label: formatMessage({
+          id: `store/my-returns.reasonDifferentProduct`
+        })
+      },
+      {
+        value: "reasonDefective",
+        label: formatMessage({
+          id: `store/my-returns.reasonDefective`
+        })
+      },
+      {
+        value: "reasonArrivedInAddition",
+        label: formatMessage({
+          id: `store/my-returns.reasonArrivedInAddition`
+        })
+      },
+      {
+        value: "reasonNoLongerNeeded",
+        label: formatMessage({
+          id: `store/my-returns.reasonNoLongerNeeded`
+        })
+      },
+      {
+        value: "reasonUnauthorizedPurchase",
+        label: formatMessage({
+          id: `store/my-returns.reasonUnauthorizedPurchase`
+        })
+      },
+      {
+        value: "reasonDifferentFromWebsite",
+        label: formatMessage({
+          id: `store/my-returns.reasonDifferentFromWebsite`
+        })
+      },
+      {
+        value: "reasonOther",
+        label: formatMessage({
+          id: `store/my-returns.reasonOther`
+        })
+      }
+    ];
+
+    return (
+      <div className={styles.reasonHolder}>
+        <Dropdown
+          label=""
+          size="small"
+          options={options}
+          value={product.reasonCode}
+          errorMessage={
+            product.reasonCode === "" && product.selectedQuantity > 0
+              ? formatMessage({
+                  id: "store/my-returns.formErrorReasonMissing"
+                })
+              : ""
+          }
+          onChange={e => {
+            this.props.handleReasonCode(product, e.target.value);
+          }}
+        />
+        {product.reasonCode === "reasonOther" ? (
+          <div className={styles.mt10}>
+            <Textarea
+              resize={"none"}
+              label=""
+              value={product.reason}
+              onChange={e => {
+                this.props.handleReason(product, e.target.value);
+              }}
+              errorMessage={
+                product.selectedQuantity > 0 &&
+                (product.reasonCode === "reasonOther" &&
+                  (product.reason === "" ||
+                    !product.reason.replace(/\s/g, "").length))
+                  ? formatMessage({
+                      id: "store/my-returns.formErrorReasonMissing"
+                    })
+                  : ""
+              }
+            />
+          </div>
+        ) : null}
+      </div>
+    );
+  }
 
   render() {
     const {
@@ -141,6 +296,9 @@ class RequestForm extends Component<Props> {
                 <th>
                   <FormattedMessage id={"store/my-returns.thQuantity"} />
                 </th>
+                <th>
+                  <FormattedMessage id={"store/my-returns.thReason"} />
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -149,7 +307,7 @@ class RequestForm extends Component<Props> {
                   <td>
                     <img src={product.imageUrl} alt={product.name} />
                   </td>
-                  <td>
+                  <td className={styles.w350}>
                     <a
                       className={styles.productUrl}
                       target="_blank"
@@ -172,6 +330,7 @@ class RequestForm extends Component<Props> {
                       min={0}
                     />
                   </td>
+                  <td>{this.renderReasonsDropdown(product)}</td>
                 </tr>
               ))}
             </tbody>
@@ -210,6 +369,7 @@ class RequestForm extends Component<Props> {
               <FormattedMessage id={"store/my-returns.formEmail"}>
                 {msg => (
                   <Input
+                    disabled
                     name={"email"}
                     placeholder={msg}
                     onChange={handleInputChange}
@@ -377,4 +537,4 @@ class RequestForm extends Component<Props> {
   }
 }
 
-export default RequestForm;
+export default injectIntl(RequestForm);

@@ -5,7 +5,6 @@ import {
   schemaTypes,
   requestsStatuses,
   getCurrentDate,
-  getYesterday,
   getOneYearLaterDate,
   schemaNames,
   productStatuses,
@@ -56,6 +55,7 @@ class ReturnForm extends Component<any, any> {
       visibleInput: false,
       registeredUser: "",
       errorCommentMessage: "",
+      giftCardValue: 0,
       showMain: true,
       showProductsForm: false
     };
@@ -66,166 +66,43 @@ class ReturnForm extends Component<any, any> {
     this.getFullData();
   }
 
-  getCouponValue(request: any) {
-    let value = "";
-    const amount = request.refundedAmount.toString();
-    if (amount === 0) {
-      value = amount.toLocaleString("en-GB", {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-        useGrouping: false
-      });
-    } else {
-      const firstPart = amount.substring(0, amount.length - 2);
-      const lastPart = amount.substring(firstPart.length, amount.length);
-      value = firstPart + "." + lastPart;
-    }
-
-    return parseFloat(value);
-  }
-
-  getCouponCode(request: any) {
+  getGiftCardInfo(request: any) {
     return "RA" + request.id.split("-")[0];
   }
 
-  generateCoupon(request: any) {
-    const couponBody = {
-      utmSource: this.getCouponCode(request),
-      utmCampaign: null,
-      couponCode: this.getCouponCode(request),
-      isArchived: false,
-      maxItemsPerClient: 0,
-      expirationIntervalPerUse: "00:00:00"
-    };
-
-    fetch(fetchPath.createCoupon, {
-      method: fetchMethod.post,
-      body: JSON.stringify(couponBody),
-      headers: fetchHeaders
-    })
-      .then(response => response.json())
-      .then(json => {});
-  }
-
-  generatePromotion(request: any) {
+  async generateGiftCard(request: any) {
     const body = {
-      name: "RMA_" + request.id,
-      beginDateUtc: getYesterday(),
-      endDateUtc: getOneYearLaterDate(),
-      lastModified: getYesterday(),
-      daysAgoOfPurchases: 0,
-      isActive: true,
-      isArchived: false,
-      isFeatured: false,
-      disableDeal: false,
-      activeDaysOfWeek: [],
-      offset: -3,
-      activateGiftsMultiplier: false,
-      newOffset: -3.0,
-      percentualDiscountValueList: [],
-      maxPricesPerItems: [],
-      cumulative: true,
-      metadata: {
-        scope: {
-          componentRepresentation: {
-            allProducts: true,
-            operator: "all",
-            statements: "[]"
-          }
-        }
-      },
-      effectType: "price",
-      discountType: "nominal",
-      nominalShippingDiscountValue: 0.0,
-      absoluteShippingDiscountValue: 0.0,
-      nominalDiscountValue: this.getCouponValue(request),
-      maximumUnitPriceDiscount: 0.0,
-      percentualDiscountValue: 0.0,
-      rebatePercentualDiscountValue: 0.0,
-      percentualShippingDiscountValue: 0.0,
-      percentualTax: 0.0,
-      shippingPercentualTax: 0.0,
-      percentualDiscountValueList1: 0.0,
-      percentualDiscountValueList2: 0.0,
-      skusGift: {
-        quantitySelectable: 0
-      },
-      nominalRewardValue: 0.0,
-      percentualRewardValue: 0.0,
-      orderStatusRewardValue: "invoiced",
-      maxNumberOfAffectedItems: 0,
-      maxNumberOfAffectedItemsGroupKey: "perCart",
-      applyToAllShippings: false,
-      nominalTax: 0.0,
-      origin: "Marketplace",
-      idSellerIsInclusive: true,
-      idsSalesChannel: [],
-      areSalesChannelIdsExclusive: false,
-      marketingTags: [],
-      marketingTagsAreNotInclusive: false,
-      paymentsMethods: [],
-      stores: [],
-      campaigns: [],
-      conditionsIds: [],
-      storesAreInclusive: false,
-      categories: [],
-      categoriesAreInclusive: false,
-      brands: [],
-      brandsAreInclusive: false,
-      products: [],
-      productsAreInclusive: false,
-      skusAreInclusive: true,
-      utmCampaign: null,
-      collections1BuyTogether: [],
-      collections2BuyTogether: [],
-      minimumQuantityBuyTogether: 0,
-      quantityToAffectBuyTogether: 0,
-      enableBuyTogetherPerSku: false,
-      listSku1BuyTogether: [],
-      listSku2BuyTogether: [],
-      coupon: [this.getCouponCode(request)],
-      totalValueFloor: 0.0,
-      totalValueCeling: 0.0,
-      totalValueIncludeAllItems: false,
-      totalValueMode: "IncludeMatchedItems",
-      collections: [],
-      collectionsIsInclusive: false,
-      restrictionsBins: [],
-      cardIssuers: [],
-      totalValuePurchase: 0.0,
-      slasIds: [],
-      isSlaSelected: false,
-      isFirstBuy: false,
-      firstBuyIsProfileOptimistic: false,
-      compareListPriceAndPrice: false,
-      isDifferentListPriceAndPrice: false,
-      zipCodeRanges: [],
-      itemMaxPrice: 0.0,
-      itemMinPrice: 0.0,
-      installment: 0,
-      isMinMaxInstallments: false,
-      minInstallment: 0,
-      maxInstallment: 0,
-      merchants: [],
-      clusterExpressions: [],
-      clusterOperator: "all",
-      paymentsRules: [],
-      giftListTypes: [],
-      productsSpecifications: [],
-      affiliates: [],
-      maxUsage: 1,
-      maxUsagePerClient: 1,
-      multipleUsePerClient: false,
-      accumulateWithManualPrice: false,
-      type: "regular",
-      utmSource: this.getCouponCode(request)
+      relationName: this.getGiftCardInfo(request),
+      caption: this.getGiftCardInfo(request),
+      expiringDate: getOneYearLaterDate(),
+      balance: 0,
+      profileId: request.email,
+      discount: true
     };
 
-    fetch(fetchPath.createPromotion, {
+    return await fetch(fetchPath.createGiftCard, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
       headers: fetchHeaders
-    }).then(response => {});
+    })
+      .then(response => response.json())
+      .then(json => {
+        return json;
+      });
+  }
+
+  async getGiftCard(id: any) {
+    return await fetch(fetchPath.getGiftCard + id, {
+      method: fetchMethod.get,
+      headers: fetchHeaders
+    })
+      .then(response => response.json())
+      .then(json => {
+        if ("balance" in json) {
+          this.setState({ giftCardValue: json.balance });
+        }
+      })
+      .catch(err => this.setState({ error: err }));
   }
 
   getFullData() {
@@ -308,6 +185,11 @@ class ReturnForm extends Component<any, any> {
       .then(response => response.json())
       .then(json => {
         this.setState({ [type]: isRequest ? json[0] : json });
+        if (isRequest) {
+          if (json[0].giftCardId !== "") {
+            this.getGiftCard(json[0].giftCardId).then();
+          }
+        }
         if (type === schemaTypes.products) {
           const productsForm: any = [];
           json.map(currentProduct => {
@@ -355,16 +237,25 @@ class ReturnForm extends Component<any, any> {
 
         if (
           statusInput === requestsStatuses.refunded &&
-          request.paymentMethod === "voucher"
+          request.paymentMethod === "giftCard"
         ) {
-          this.generateCoupon(requestData);
-          setTimeout(() => {
-            this.generatePromotion(requestData);
-          }, 500);
-          requestData = {
-            ...requestData,
-            voucherCode: this.getCouponCode(requestData)
-          };
+          this.generateGiftCard(requestData).then((json: any) => {
+            const giftCardId = json.id;
+            const exploded = giftCardId.split("_");
+            this.savePartial(schemaNames.request, {
+              id: requestData.id,
+              giftCardCode: json.redemptionCode,
+              giftCardId: exploded[exploded.length - 1]
+            });
+            this.setState(prevState => ({
+              request: {
+                ...prevState.request,
+                giftCardCode: json.redemptionCode,
+                giftCardId: exploded[exploded.length - 1]
+              },
+              giftCardValue: json.balance
+            }));
+          });
         }
 
         const statusHistoryData = {
@@ -374,7 +265,10 @@ class ReturnForm extends Component<any, any> {
           dateSubmitted: getCurrentDate(),
           type: schemaTypes.history
         };
-        this.saveMasterData(schemaNames.request, requestData);
+        const requestBody = requestData;
+        delete requestBody.giftCardCode;
+        delete requestBody.giftCardId;
+        this.savePartial(schemaNames.request, requestBody);
         this.saveMasterData(schemaNames.history, statusHistoryData);
         if (
           request.status === requestsStatuses.picked &&
@@ -388,8 +282,13 @@ class ReturnForm extends Component<any, any> {
             this.saveMasterData(schemaNames.product, newProductInfo);
           });
         }
+        this.setState(prevState => ({
+          request: {
+            ...prevState.request,
+            ...requestData
+          }
+        }));
         this.setState({
-          request: requestData,
           statusHistory: [...this.state.statusHistory, statusHistoryData]
         });
       }
@@ -440,6 +339,14 @@ class ReturnForm extends Component<any, any> {
 
   saveMasterData = (schema: string, body: any) => {
     fetch(fetchPath.saveDocuments + schema, {
+      method: fetchMethod.post,
+      body: JSON.stringify(body),
+      headers: fetchHeaders
+    }).then(response => {});
+  };
+
+  savePartial = (schema: string, body: any) => {
+    fetch(fetchPath.savePartialDocument + schema, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
       headers: fetchHeaders
@@ -695,7 +602,8 @@ class ReturnForm extends Component<any, any> {
       statusHistoryTimeline,
       statusHistory,
       showMain,
-      showProductsForm
+      showProductsForm,
+      giftCardValue
     } = this.state;
     if (!request) {
       return <div>Not Found</div>;
@@ -746,7 +654,11 @@ class ReturnForm extends Component<any, any> {
             </Link>
           </p>
 
-          <RequestInfo request={request} intl={intlArea.admin} />
+          <RequestInfo
+            request={request}
+            giftCardValue={giftCardValue}
+            intl={intlArea.admin}
+          />
 
           <p className={"mt7"}>
             <strong>

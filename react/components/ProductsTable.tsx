@@ -22,6 +22,7 @@ class ProductsTable extends Component<Props> {
       quantity: `${intl}.quantity`,
       unitPrice: `${intl}.unitPrice`,
       subtotalRefund: `${intl}.subtotalRefund`,
+      reason: `${intl}.thReason`,
       productsValue: `${intl}.totalProductsValue`,
       productVerificationStatus: `${intl}.productVerificationStatus`,
       noProducts: `${intl}.noProducts`,
@@ -65,6 +66,18 @@ class ProductsTable extends Component<Props> {
                 </td>
                 <td className={`${styles.tableProductColumn}`}>
                   {currentProduct.skuName}
+                  <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                    <span className={styles.strongText}>
+                      <FormattedMessageFixed id={messages.reason} />
+                      {": "}
+                    </span>
+                    <FormattedMessageFixed
+                      id={`${intl}.${currentProduct.reasonCode}`}
+                    />{" "}
+                    {currentProduct.reasonCode === "reasonOther"
+                      ? "( " + currentProduct.reason + " )"
+                      : null}
+                  </div>
                 </td>
                 <td>{currentProduct.quantity}</td>
                 <td>

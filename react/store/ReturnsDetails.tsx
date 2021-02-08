@@ -30,7 +30,8 @@ class ReturnsDetails extends Component<PageProps, any> {
       statusHistory: [],
       statusHistoryTimeline: [],
       error: "",
-      totalRefundAmount: 0
+      totalRefundAmount: 0,
+      giftCardValue: 0
     };
   }
 
@@ -46,6 +47,9 @@ class ReturnsDetails extends Component<PageProps, any> {
       schemaTypes.requests,
       requestId
     ).then(request => {
+      if (request[0].giftCardId !== "") {
+        this.getGiftCard(request[0].giftCardId).then();
+      }
       this.setState({
         statusInput: request[0].status,
         commentInput: "",
@@ -99,6 +103,20 @@ class ReturnsDetails extends Component<PageProps, any> {
         }
         return Promise.resolve(response);
       });
+  }
+
+  async getGiftCard(id: any) {
+    return await fetch(fetchPath.getGiftCard + id, {
+      method: fetchMethod.get,
+      headers: fetchHeaders
+    })
+      .then(response => response.json())
+      .then(json => {
+        if ("balance" in json) {
+          this.setState({ giftCardValue: json.balance });
+        }
+      })
+      .catch(err => this.setState({ error: err }));
   }
 
   async getFromMasterData(schema: string, type: string, refundId: string) {
@@ -157,7 +175,8 @@ class ReturnsDetails extends Component<PageProps, any> {
       product,
       statusHistoryTimeline,
       statusHistory,
-      loading
+      loading,
+      giftCardValue
     } = this.state;
     return (
       <ContentWrapper {...this.props.headerConfig}>
@@ -206,7 +225,11 @@ class ReturnsDetails extends Component<PageProps, any> {
                 </strong>
               </p>
 
-              <RequestInfo intl={intlArea.store} request={request} />
+              <RequestInfo
+                intl={intlArea.store}
+                giftCardValue={giftCardValue}
+                request={request}
+              />
 
               <p className={"mt7"}>
                 <strong>
