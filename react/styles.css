@@ -117,6 +117,7 @@
 
 .tblProducts td, .tblProducts th {
     padding: 20px;
+    vertical-align: top;
 }
 
 .table tbody tr,
