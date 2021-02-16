@@ -40,6 +40,11 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "updateGiftCard": {
+      "path": "/returns/updateGiftCard/:id",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "getGiftCard": {
       "path": "/returns/getGiftCard/:id",
       "public": true,

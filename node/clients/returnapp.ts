@@ -247,6 +247,19 @@ export default class ReturnApp extends ExternalClient {
             });
     }
 
+    public async updateGiftCard(ctx: any, giftCardId: any, body: Object): Promise<any> {
+        return this.http.post(
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/gift-card-system/pvt/giftCards/${giftCardId}/credit`,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'VtexIdclientAutCookie': ctx.vtex.adminUserAuthToken
+                }
+            });
+    }
+
     public async sendMail(ctx: any, body: Object): Promise<any> {
         return this.http.post(
             `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,

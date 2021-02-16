@@ -8,6 +8,7 @@ import { receiveCategories } from './middlewares/receiveCategories'
 import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
 import { saveMasterdataPartialDocuments } from './middlewares/saveMasterdataPartialDocuments'
 import { createGiftCard } from './middlewares/createGiftCard'
+import { updateGiftCard } from './middlewares/updateGiftCard'
 import { getGiftCard } from './middlewares/getGiftCard'
 import { sendMail } from './middlewares/sendMail'
 
@@ -56,6 +57,9 @@ export default new Service({
     }),
     createGiftCard: method({
       POST: createGiftCard
+    }),
+    updateGiftCard: method({
+      POST: updateGiftCard
     }),
     getGiftCard: method({
       GET: getGiftCard

@@ -91,6 +91,25 @@ class ReturnForm extends Component<any, any> {
       });
   }
 
+  async updateGiftCard(giftCardId: string, req: any) {
+    const body = {
+      description: "Initial Charge",
+      value: req.refundedAmount
+    };
+
+    return await fetch(fetchPath.updateGiftCard + giftCardId, {
+      method: fetchMethod.post,
+      body: JSON.stringify(body),
+      headers: fetchHeaders
+    }).then(response =>
+      response.json().then(json => {
+        if ("balance" in json) {
+          this.setState({ giftCardValue: json.balance / 100 });
+        }
+      })
+    );
+  }
+
   async getGiftCard(id: any) {
     return await fetch(fetchPath.getGiftCard + id, {
       method: fetchMethod.get,
@@ -240,20 +259,23 @@ class ReturnForm extends Component<any, any> {
           request.paymentMethod === "giftCard"
         ) {
           this.generateGiftCard(requestData).then((json: any) => {
-            const giftCardId = json.id;
-            const exploded = giftCardId.split("_");
+            const returnedId = json.id;
+            const exploded = returnedId.split("_");
+            const giftCardId = exploded[exploded.length - 1];
+
+            this.updateGiftCard(giftCardId, requestData).then();
             this.savePartial(schemaNames.request, {
               id: requestData.id,
               giftCardCode: json.redemptionCode,
-              giftCardId: exploded[exploded.length - 1]
+              giftCardId: giftCardId
             });
+
             this.setState(prevState => ({
               request: {
                 ...prevState.request,
                 giftCardCode: json.redemptionCode,
-                giftCardId: exploded[exploded.length - 1]
-              },
-              giftCardValue: json.balance
+                giftCardId: giftCardId
+              }
             }));
           });
         }
@@ -335,6 +357,10 @@ class ReturnForm extends Component<any, any> {
         )
       });
     }
+  }
+
+  textUpdate() {
+    this.updateGiftCard("21", { refundedAmount: 10000 }).then();
   }
 
   saveMasterData = (schema: string, body: any) => {
