@@ -7,6 +7,7 @@ export const fetchPath = {
   getSchema: "/returns/getSchema/",
   generateSchema: "/returns/generateSchema/",
   createGiftCard: "/returns/giftCard/",
+  updateGiftCard: "/returns/updateGiftCard/",
   getGiftCard: "/returns/getGiftCard/",
   getOrders: "/api/oms/pvt/orders",
   renderTemplates: "/api/template-render/pvt/templates"
