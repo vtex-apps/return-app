@@ -17,7 +17,7 @@ export default class ReturnApp extends ExternalClient {
                 "v-security": {
                     "allowGetAll": true,
                     "publicFilter": ["maxDays", "excludedCategories", "termsUrl", "type"],
-                    "publicJsonSchema": true
+                    "publicJsonSchema": false
                 },
                 "v-cache": false,
                 "v-default-fields": ["id", "createdIn", "maxDays", "excludedCategories", "termsUrl", "type"],
@@ -49,7 +49,7 @@ export default class ReturnApp extends ExternalClient {
                 "v-security": {
                     "allowGetAll": true,
                     "publicFilter": ["userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "giftCardCode", "giftCardId", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
-                    "publicJsonSchema": true
+                    "publicJsonSchema": false
                 },
                 "v-cache": false,
                 "v-default-fields": ["id", "createdIn", "userId", "orderId", "name", "email", "phoneNumber", "country", "locality", "address", "totalPrice", "paymentMethod", "giftCardCode", "giftCardId", "refundedAmount", "iban", "status", "dateSubmitted", "type"],
@@ -71,7 +71,7 @@ export default class ReturnApp extends ExternalClient {
                 "v-security": {
                     "allowGetAll": true,
                     "publicFilter": ["refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
-                    "publicJsonSchema": true
+                    "publicJsonSchema": false
                 },
                 "v-cache": false,
                 "v-default-fields": ["id", "createdIn", "refundId", "status", "comment", "visibleForCustomer", "submittedBy", "dateSubmitted", "type"],
@@ -101,7 +101,7 @@ export default class ReturnApp extends ExternalClient {
                 "v-security": {
                     "allowGetAll": true,
                     "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
-                    "publicJsonSchema": true
+                    "publicJsonSchema": false
                 },
                 "v-cache": false,
                 "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
@@ -121,7 +121,7 @@ export default class ReturnApp extends ExternalClient {
                 "v-security": {
                     "allowGetAll": true,
                     "publicFilter": ["refundId", "status", "submittedBy", "dateSubmitted", "type"],
-                    "publicJsonSchema": true
+                    "publicJsonSchema": false
                 },
                 "v-cache": false,
                 "v-default-fields": ["id", "createdIn", "refundId", "status", "submittedBy", "dateSubmitted", "type"],
