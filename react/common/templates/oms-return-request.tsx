@@ -219,8 +219,8 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "                        Transfer bancar<br/>\n" +
     "                        IBAN: {{data.iban}}\n" +
     "                        {{/eq}}\n" +
-    "                        {{#eq data.paymentMethod 'voucher'}}\n" +
-    "                        Bon voucher\n" +
+    "                        {{#eq data.paymentMethod 'giftCard'}}\n" +
+    "                        Card cadou\n" +
     "                        {{/eq}}\n" +
     "                    </td>\n" +
     "                </tr>\n" +
@@ -235,11 +235,11 @@ export const omsReturnRequest = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 T
     "                            <h3 style=\"margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;\">\n" +
     "                                Stare finala</h3>\n" +
     "                            <b>Valoare rambursata</b>\n" +
-    "                            {{#eq data.paymentMethod 'voucher'}}\n" +
-    "                            <b> sub forma de voucher in valoare de {{formatCurrency data.refundedAmount}}\n" +
+    "                            {{#eq data.paymentMethod 'giftCard'}}\n" +
+    "                            <b> sub forma de card cadou in valoare de {{formatCurrency data.refundedAmount}}\n" +
     "                                RON</b><br/><br/>\n" +
     "                            <span style=\"background-color: red; padding: 0.3rem 1rem; color: #fff; border-radius: 0.3rem\">\n" +
-    "                                        <b>{{data.voucherCode}}</b>\n" +
+    "                                        <b>{{data.giftCardCode}}</b>\n" +
     "                                    </span>\n" +
     "                            {{/eq}}\n" +
     "                            {{#eq data.paymentMethod 'card'}}\n" +

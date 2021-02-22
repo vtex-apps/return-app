@@ -198,7 +198,7 @@ class MyReturnsPage extends Component<{}, any> {
             ? filterDate(useFilters.toDate)
             : filterDate(useFilters.fromDate);
 
-        where += "__dateSubmitted between " + startDate + " AND " + endDate;
+        where += "__createdIn between " + startDate + " AND " + endDate;
       }
 
       if (useFilters.status !== "") {
