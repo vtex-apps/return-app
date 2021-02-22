@@ -190,7 +190,7 @@ export default class ReturnApp extends ExternalClient {
                 pageSize: 5000,
             },
             schema: schemaName,
-            where: whereCls,
+            where: decodeURI(whereCls),
             sort: type !== "settings" ? "createdIn DESC" : ""
         })
     }
