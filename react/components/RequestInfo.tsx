@@ -14,18 +14,6 @@ class RequestInfo extends Component<Props> {
     super(props);
   }
 
-  generateEditGiftCardLink = () => {
-    const { request }: any = this.props;
-    const url = `/admin/Site/ValeForm.aspx?id=${request.giftCardId}`
-    return (
-      <>
-        <a rel="noopener noreferrer" target="_blank" href={url}>
-          <FormattedMessage id="admin/returns.chargeGiftCard" />
-        </a>
-      </>
-    );
-  };
-
   render() {
     const { request, intl, giftCardValue } = this.props;
     return (
@@ -103,22 +91,19 @@ class RequestInfo extends Component<Props> {
               {request.giftCardCode ? (
                 request.giftCardCode
               ) : (
-                <FormattedMessageFixed id={`${intl}.voucherCodeNotGenerated`} />
-              )}
+                  <FormattedMessageFixed id={`${intl}.voucherCodeNotGenerated`} />
+                )}
             </p>
             {request.giftCardCode ? (
               <p className={`ma1 t-small c-on-base`}>
                 <FormattedMessageFixed id={`${intl}.voucherValue`} />{" "}
                 <FormattedCurrency value={giftCardValue} />{" "}
-                {intl === intlArea.admin
-                  ? this.generateEditGiftCardLink()
-                  : null}
               </p>
             ) : null}
           </div>
         ) : (
-          <p className={"ma1 t-small c-on-base "}>{request.paymentMethod}</p>
-        )}
+              <p className={"ma1 t-small c-on-base "}>{request.paymentMethod}</p>
+            )}
       </div>
     );
   }
