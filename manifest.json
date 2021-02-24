@@ -1,7 +1,7 @@
 {
   "vendor": "vtexeurope",
   "name": "return-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
