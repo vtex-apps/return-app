@@ -6,18 +6,15 @@ import {
   schemaTypes,
   requestsStatuses,
   schemaNames,
-  sendMail
+  sendMail,
+  substractDays
 } from "../common/utils";
 import { isValidIBANNumber } from "../common/validations";
 import { countries } from "../common/countries";
 
 import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
-import {
-  getCurrentDate,
-  diffDays,
-  FormattedMessageFixed
-} from "../common/utils";
+import { getCurrentDate, FormattedMessageFixed } from "../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 import EligibleOrdersTable from "../components/EligibleOrdersTable";
 import RequestInformation from "../components/RequestInformation";
@@ -194,12 +191,17 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       });
   }
 
-  async getOrders(userEmail: string) {
+  async getOrders(userEmail: string, maxDays: any) {
+    const currentDate = getCurrentDate();
     return await fetch(
       fetchPath.getOrders +
         "?clientEmail=" +
         userEmail +
-        "&orderBy=creationDate,desc&f_status=invoiced"
+        "&orderBy=creationDate,desc&f_status=invoiced&f_creationDate=creationDate:[" +
+        substractDays(maxDays) +
+        " TO " +
+        currentDate +
+        "]"
     )
       .then(response => response.json())
       .then(res => {
@@ -381,25 +383,19 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
 
   prepareData = () => {
     this.setState({ loading: true });
-    const currentDate = getCurrentDate();
     this.getSettings().then(settings => {
       if (settings !== null) {
         this.setState({ settings: settings });
         this.getProfile().then(user => {
-          this.getOrders(user.Email).then(orders => {
+          this.getOrders(user.Email, settings.maxDays).then(orders => {
             if ("list" in orders) {
               if (orders.list.length) {
                 orders.list.map((order: any) => {
-                  if (
-                    diffDays(currentDate, order.creationDate) <=
-                    settings.maxDays
-                  ) {
-                    this.getOrder(order.orderId, user.Email).then(
-                      currentOrder => {
-                        this.prepareOrderData(currentOrder, settings, true);
-                      }
-                    );
-                  }
+                  this.getOrder(order.orderId, user.Email).then(
+                    currentOrder => {
+                      this.prepareOrderData(currentOrder, settings, true);
+                    }
+                  );
                 });
                 setTimeout(() => {
                   this.setState({ loading: false });
