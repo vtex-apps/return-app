@@ -17,12 +17,12 @@ export function getCurrentDate() {
   return new Date().toISOString();
 }
 
-export function getYesterday() {
+export function substractDays(days: any) {
   const d = new Date();
-  const year = d.getFullYear();
-  const month = d.getMonth();
-  const day = d.getDate() - 1;
-  return new Date(year, month, day).toISOString();
+  d.setDate(d.getDate() - days);
+  d.setUTCHours(0, 0, 0);
+
+  return d.toISOString();
 }
 
 export function getOneYearLaterDate() {
@@ -106,12 +106,6 @@ export function filterDate(date: string, separator = "-") {
 export function currentDate() {
   const d = new Date();
   return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-}
-
-export function diffDays(date1: string, date2: string) {
-  const dayMap = 24 * 60 * 60 * 1000;
-  const diff = Date.parse(date1) - Date.parse(date2);
-  return Math.floor(diff / dayMap);
 }
 
 export const schemaNames = {
