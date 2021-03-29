@@ -302,3 +302,24 @@
 .strongText {
     font-weight: bold;
 }
+
+.filterList {
+    display: flex;
+    align-items: center;
+}
+
+.tableTh {}
+
+.tableColButton {}
+
+.imageCol {}
+
+.tableAddColButton {}
+
+.tableEligibleOrders {}
+
+@media screen and (max-width: 759px) {
+    .filterList {
+        display: block;
+    }
+}

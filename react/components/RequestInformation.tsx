@@ -144,7 +144,10 @@ class RequestInformation extends Component<Props> {
             )}
           </div>
           <div
-            className={"flex-ns flex-wrap flex-auto flex-row justify-between"}
+            className={
+              styles.tableAddColButton +
+              " flex-ns flex-wrap flex-auto flex-row justify-between"
+            }
           >
             <Button
               type={"submit"}
