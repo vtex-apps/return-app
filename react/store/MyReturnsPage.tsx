@@ -433,7 +433,7 @@ class MyReturnsPage extends Component<{}, any> {
             <FormattedMessage id="store/my-returns.addReturn" />
           </Button>
         </div>
-        <div className="flex items-center">
+        <div className={styles.filterList}>
           <div className={"ma2"}>
             <FormattedMessage id={"store/my-returns.thRequestNo"}>
               {msg => (
