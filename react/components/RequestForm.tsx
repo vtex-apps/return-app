@@ -290,13 +290,13 @@ class RequestForm extends Component<Props> {
             <thead>
               <tr>
                 <th />
-                <th>
+                <th className={styles.tableTh}>
                   <FormattedMessage id={"store/my-returns.thProduct"} />
                 </th>
-                <th>
+                <th className={styles.tableTh}>
                   <FormattedMessage id={"store/my-returns.thQuantity"} />
                 </th>
-                <th>
+                <th className={styles.tableTh}>
                   <FormattedMessage id={"store/my-returns.thReason"} />
                 </th>
               </tr>
@@ -305,7 +305,11 @@ class RequestForm extends Component<Props> {
               {orderProducts.map((product: any) => (
                 <tr key={`product` + product.uniqueId}>
                   <td>
-                    <img src={product.imageUrl} alt={product.name} />
+                    <img
+                      className={styles.imageCol}
+                      src={product.imageUrl}
+                      alt={product.name}
+                    />
                   </td>
                   <td className={styles.w350}>
                     <a
