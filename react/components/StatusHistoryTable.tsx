@@ -25,25 +25,35 @@ class StatusHistoryTable extends Component<Props> {
       submittedBy: `${intl}.submittedBy`
     };
     return (
-      <div>
-        <p className={"mt7"}>
-          <strong>
+      <div className={`${styles.requestInfoHistoryContainer}`}>
+        <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
+          <strong className={`${styles.requestInfoSectionTitleStrong}`}>
             <FormattedMessageFixed id={messages.title} />
           </strong>
         </p>
-        <div className={`flex flex-column items-stretch w-100`}>
-          <div className={`flex flex-row items-stretch w-100`}>
-            <div className={`flex w-33`}>
+        <div
+          className={`flex flex-column items-stretch w-100 ${styles.requestInfoHistoryContent}`}
+        >
+          <div
+            className={`flex flex-row items-stretch w-100 ${styles.requestInfoHistoryRow}`}
+          >
+            <div
+              className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnHeader}`}
+            >
               <p className={styles.tableThParagraph}>
                 <FormattedMessageFixed id={messages.date} />
               </p>
             </div>
-            <div className={`flex w-33`}>
+            <div
+              className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnHeader}`}
+            >
               <p className={styles.tableThParagraph}>
                 <FormattedMessageFixed id={messages.status} />
               </p>
             </div>
-            <div className={`flex w-33`}>
+            <div
+              className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnHeader}`}
+            >
               <p className={styles.tableThParagraph}>
                 <FormattedMessageFixed id={messages.submittedBy} />
               </p>
@@ -52,13 +62,23 @@ class StatusHistoryTable extends Component<Props> {
           {statusHistory.map((status, i) => (
             <div
               key={`statusHistoryTable_` + i}
-              className={`flex flex-row items-stretch w-100`}
+              className={`flex flex-row items-stretch w-100 ${styles.requestInfoHistoryRow}`}
             >
-              <div className={`flex w-33`}>
-                <p>{returnFormDate(status.dateSubmitted, intl)}</p>
+              <div
+                className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnDate}`}
+              >
+                <p
+                  className={`${styles.requestInfoHistoryText} ${styles.requestInfoHistoryTextDate}`}
+                >
+                  {returnFormDate(status.dateSubmitted, intl)}
+                </p>
               </div>
-              <div className={`flex w-33`}>
-                <p>
+              <div
+                className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnStatus}`}
+              >
+                <p
+                  className={`${styles.requestInfoHistoryText} ${styles.requestInfoHistoryTextStatus}`}
+                >
                   <FormattedMessageFixed
                     id={
                       `${intl}.status` +
@@ -67,8 +87,14 @@ class StatusHistoryTable extends Component<Props> {
                   />
                 </p>
               </div>
-              <div className={`flex w-33`}>
-                <p>{status.submittedBy}</p>
+              <div
+                className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnUpdated}`}
+              >
+                <p
+                  className={`${styles.requestInfoHistoryText} ${styles.requestInfoHistoryTextUpdated}`}
+                >
+                  {status.submittedBy}
+                </p>
               </div>
             </div>
           ))}
