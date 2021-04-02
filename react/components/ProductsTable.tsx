@@ -30,41 +30,43 @@ class ProductsTable extends Component<Props> {
     };
     return (
       <table
-        className={
-          styles.table + " " + styles.tableSm + " " + styles.tableProducts
-        }
+        className={`${styles.table} ${styles.tableSm} ${styles.tableProducts}`}
       >
-        <thead>
-          <tr>
-            <th />
-            <th>
+        <thead className={`${styles.tableThead}`}>
+          <tr className={`${styles.tableTr}`}>
+            <th className={`${styles.tableTh}`} />
+            <th className={`${styles.tableTh}`}>
               <FormattedMessageFixed id={messages.product} />
             </th>
-            <th>
+            <th className={`${styles.tableTh}`}>
               <FormattedMessageFixed id={messages.quantity} />
             </th>
-            <th>
+            <th className={`${styles.tableTh}`}>
               <FormattedMessageFixed id={messages.unitPrice} />
             </th>
-            <th>
+            <th className={`${styles.tableTh}`}>
               <FormattedMessageFixed id={messages.subtotalRefund} />
             </th>
-            <th>
+            <th className={`${styles.tableTh}`}>
               <FormattedMessageFixed id={messages.productVerificationStatus} />
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={`${styles.tableTbody}`}>
           {product.length ? (
             product.map(currentProduct => (
-              <tr key={currentProduct.skuId}>
-                <td className={styles.tableProductColumn}>
+              <tr key={currentProduct.skuId} className={`${styles.tableTr}`}>
+                <td
+                  className={`${styles.tableTd} ${styles.tableProductColumn}`}
+                >
                   <img
                     src={currentProduct.imageUrl}
                     alt={currentProduct.skuName}
                   />
                 </td>
-                <td className={`${styles.tableProductColumn}`}>
+                <td
+                  className={`${styles.tableTd} ${styles.tableProductColumn}`}
+                >
                   {currentProduct.skuName}
                   <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                     <span className={styles.strongText}>
@@ -79,48 +81,52 @@ class ProductsTable extends Component<Props> {
                       : null}
                   </div>
                 </td>
-                <td>{currentProduct.quantity}</td>
-                <td>
+                <td className={`${styles.tableTd}`}>
+                  {currentProduct.quantity}
+                </td>
+                <td className={`${styles.tableTd}`}>
                   <FormattedCurrency value={currentProduct.unitPrice / 100} />
                 </td>
-                <td>
+                <td className={`${styles.tableTd}`}>
                   <FormattedCurrency
                     value={
                       (currentProduct.unitPrice * currentProduct.quantity) / 100
                     }
                   />
                 </td>
-                <td>{renderIcon(currentProduct, intl)}</td>
+                <td className={`${styles.tableTd}`}>
+                  {renderIcon(currentProduct, intl)}
+                </td>
               </tr>
             ))
           ) : (
-            <tr>
+            <tr className={`${styles.tableTr} ${styles.tableTrNoProducts}`}>
               <td colSpan={5} className={styles.textCenter}>
                 <FormattedMessageFixed id={messages.noProducts} />
               </td>
             </tr>
           )}
-          <tr className={styles.tableProductsRow}>
-            <td />
-            <td colSpan={3}>
+          <tr className={`${styles.tableTr} ${styles.tableProductsRow}`}>
+            <td className={`${styles.tableTd}`} />
+            <td className={`${styles.tableTd}`} colSpan={3}>
               <strong>
                 <FormattedMessageFixed id={messages.productsValue} />
               </strong>
             </td>
-            <td colSpan={2}>
+            <td className={`${styles.tableTd}`} colSpan={2}>
               <strong>
                 <FormattedCurrency value={productsValue / 100} />
               </strong>
             </td>
           </tr>
-          <tr className={styles.tableProductsRow}>
-            <td />
-            <td colSpan={3}>
+          <tr className={`${styles.tableTr} ${styles.tableProductsRow}`}>
+            <td className={`${styles.tableTd}`} />
+            <td className={`${styles.tableTd}`} colSpan={3}>
               <strong>
                 <FormattedMessageFixed id={messages.totalRefundAmount} />
               </strong>
             </td>
-            <td colSpan={2}>
+            <td className={`${styles.tableTd}`} colSpan={2}>
               <strong>
                 <FormattedCurrency value={totalRefundAmount / 100} />
               </strong>

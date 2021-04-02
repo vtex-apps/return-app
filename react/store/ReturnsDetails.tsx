@@ -19,6 +19,8 @@ import ProductsTable from "../components/ProductsTable";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 import StatusHistoryTimeline from "../components/StatusHistoryTimeline";
 
+import styles from "../styles.css";
+
 class ReturnsDetails extends Component<PageProps, any> {
   constructor(props: PageProps) {
     super(props);
@@ -200,15 +202,22 @@ class ReturnsDetails extends Component<PageProps, any> {
           }
           return (
             <div>
-              <p>
-                <FormattedMessage
-                  id={"store/my-returns.details.returnForm"}
-                  values={{
-                    requestId: " #" + request.id
-                  }}
-                />
-                {" / "}
-                {returnFormDate(request.dateSubmitted, "store/my-returns")}
+              <p className={`${styles.requestInfoTitle}`}>
+                <span className={`${styles.requestInfoTitleText}`}>
+                  <FormattedMessage
+                    id={"store/my-returns.details.returnForm"}
+                    values={{
+                      requestId: " #" + request.id
+                    }}
+                  />
+                </span>
+                <span className={`${styles.requestInfoTitleSeparator}`}>
+                  {" "}
+                  /{" "}
+                </span>
+                <span className={`${styles.requestInfoTitleDate}`}>
+                  {returnFormDate(request.dateSubmitted, "store/my-returns")}
+                </span>
               </p>
               <ProductsTable
                 product={product}
@@ -216,8 +225,8 @@ class ReturnsDetails extends Component<PageProps, any> {
                 productsValue={request.totalPrice}
                 totalRefundAmount={request.refundedAmount}
               />
-              <p className={"mt7"}>
-                <strong className={"mr6"}>
+              <p className={`mt7 ${styles.requestInfoOrder}`}>
+                <strong className={`mr6 ${styles.requestInfoOrderText}`}>
                   <FormattedMessage
                     id={"store/my-returns.refOrder"}
                     values={{ orderId: " #" + request.orderId }}
@@ -231,8 +240,8 @@ class ReturnsDetails extends Component<PageProps, any> {
                 request={request}
               />
 
-              <p className={"mt7"}>
-                <strong>
+              <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
+                <strong className={`${styles.requestInfoSectionTitleStrong}`}>
                   <FormattedMessage id={"store/my-returns.status"} />
                 </strong>
               </p>
