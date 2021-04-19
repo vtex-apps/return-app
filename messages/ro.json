@@ -251,6 +251,8 @@
   "store/my-returns.reasonDifferentFromWebsite": "Diferit de descrierea de pe site",
   "store/my-returns.reasonOther": "Alt motiv",
   "store/my-returns.thReason": "Motiv",
+  "store/my-returns.thRefId": "Ref ID",
+  "admin/returns.thRefId": "Ref ID",
   "admin/returns.thReason": "Motiv",
   "admin/returns.chargeGiftCard": "Alimenteaza"
 }
