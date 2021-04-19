@@ -126,7 +126,7 @@ class RequestInfo extends Component<Props> {
               className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
             >
               <span className={`${styles.requestInfoPaymentLabel}`}>
-                <FormattedMessage id={`${intl}.formBankTransferAccount`} />
+                <FormattedMessageFixed id={`${intl}.formBankTransferAccount`} />
               </span>{" "}
               <span className={`${styles.requestInfoIbanText}`}>
                 {request.iban}
@@ -138,7 +138,7 @@ class RequestInfo extends Component<Props> {
             <p
               className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
             >
-              <FormattedMessage id={`${intl}.formVoucher`} />
+              <FormattedMessageFixed id={`${intl}.formVoucher`} />
             </p>
             <p
               className={`ma1 t-small c-on-base ${styles.requestInfoGiftCardCode}`}

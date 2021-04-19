@@ -189,13 +189,13 @@ class ReturnForm extends Component<any, any> {
     const whereField = isRequest ? "id" : "refundId";
     return await fetch(
       fetchPath.getDocuments +
-      schema +
-      "/" +
-      type +
-      "/" +
-      whereField +
-      "=" +
-      refundId,
+        schema +
+        "/" +
+        type +
+        "/" +
+        whereField +
+        "=" +
+        refundId,
       {
         method: fetchMethod.get,
         headers: fetchHeaders
@@ -364,7 +364,7 @@ class ReturnForm extends Component<any, any> {
       method: fetchMethod.post,
       body: JSON.stringify(body),
       headers: fetchHeaders
-    }).then(response => { });
+    }).then(response => {});
   };
 
   savePartial = (schema: string, body: any) => {
@@ -372,7 +372,7 @@ class ReturnForm extends Component<any, any> {
       method: fetchMethod.post,
       body: JSON.stringify(body),
       headers: fetchHeaders
-    }).then(response => { });
+    }).then(response => {});
   };
 
   handleQuantity(product: any, quantity: any) {
@@ -395,13 +395,13 @@ class ReturnForm extends Component<any, any> {
       productsForm: prevState.productsForm.map(el =>
         el.id === product.id
           ? {
-            ...el,
-            goodProducts:
-              quantityInput > product.quantity
-                ? product.quantity
-                : quantityInput,
-            status: status
-          }
+              ...el,
+              goodProducts:
+                quantityInput > product.quantity
+                  ? product.quantity
+                  : quantityInput,
+              status: status
+            }
           : el
       )
     }));
@@ -752,12 +752,12 @@ class ReturnForm extends Component<any, any> {
                   </tr>
                 ))
               ) : (
-                  <tr>
-                    <td colSpan={5} className={styles.textCenter}>
-                      <FormattedMessage id={"admin/returns.noProducts"} />
-                    </td>
-                  </tr>
-                )}
+                <tr>
+                  <td colSpan={5} className={styles.textCenter}>
+                    <FormattedMessage id={"admin/returns.noProducts"} />
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
           <div className={`mt6`}>
