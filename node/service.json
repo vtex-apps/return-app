@@ -54,6 +54,10 @@
       "path": "/returns/sendMail",
       "public": true,
       "settingsType": "workspace"
+    },
+    "apiGetRequest": {
+      "path": "/returns/api/get-request/:request_id",
+      "public": true
     }
   }
 }
