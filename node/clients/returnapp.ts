@@ -1,4 +1,5 @@
 import {ExternalClient, InstanceOptions, IOContext} from '@vtex/api'
+import {dateFilter, currentDate} from "../utils/utils";
 
 
 export default class ReturnApp extends ExternalClient {
@@ -271,5 +272,42 @@ export default class ReturnApp extends ExternalClient {
                     'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
+    }
+
+    public async getList(ctx: any, schemaName: any, type: any, filterData: any): Promise<any> {
+        let whereCls = '(type="' + type + '"';
+        if (filterData.status) {
+            whereCls += ' AND status=' + filterData.status
+        }
+
+        let startDate = "1970-01-01";
+        let endDate = currentDate();
+        if (filterData.dateStart !== "" || filterData.dateEnd !== "") {
+            startDate =
+                filterData.dateStart !== ""
+                    ? dateFilter(filterData.dateStart)
+                    : startDate;
+            endDate =
+                filterData.dateEnd !== ""
+                    ? dateFilter(filterData.dateEnd)
+                    : endDate;
+
+            whereCls += "AND dateSubmitted between " + startDate + " AND " + endDate;
+        }
+
+        whereCls += ')';
+
+
+        return await ctx.clients.masterdata.searchDocuments({
+            dataEntity: this.schemas.schemaEntity,
+            fields: [],
+            pagination: {
+                page: filterData.page,
+                pageSize: filterData.limit,
+            },
+            schema: schemaName,
+            where: decodeURI(whereCls),
+            sort: "dateSubmitted DESC"
+        })
     }
 }

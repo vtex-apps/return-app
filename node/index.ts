@@ -12,6 +12,7 @@ import { updateGiftCard } from './middlewares/updateGiftCard'
 import { getGiftCard } from './middlewares/getGiftCard'
 import { sendMail } from './middlewares/sendMail'
 import { getRequest } from "./middlewares/api/getRequest";
+import { getList } from "./middlewares/api/getList";
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -70,6 +71,9 @@ export default new Service({
     }),
     apiGetRequest: method({
       GET: getRequest
+    }),
+    apiGetList: method({
+      GET: getList
     }),
   },
 })

@@ -57,7 +57,13 @@
     },
     "apiGetRequest": {
       "path": "/returns/api/get-request/:request_id",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "apiGetList": {
+      "path": "/returns/api/get-requests",
+      "public": true,
+      "settingsType": "workspace"
     }
   }
 }
