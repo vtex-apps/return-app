@@ -198,7 +198,7 @@ class MyReturnsPage extends Component<{}, any> {
             ? filterDate(useFilters.toDate)
             : filterDate(useFilters.fromDate);
 
-        where += "__dateSubmitted between " + startDate + " AND " + endDate;
+        where += "__createdIn between " + startDate + " AND " + endDate;
       }
 
       if (useFilters.status !== "") {
@@ -415,8 +415,8 @@ class MyReturnsPage extends Component<{}, any> {
     }
     return (
       <div className={styles.myReturnsHolder}>
-        <div>
-          <h2 className={`w-auto`}>
+        <div className={`${styles.listTitle}`}>
+          <h2 className={`w-auto ${styles.listTitleText}`}>
             <FormattedMessage id="store/my-returns.pageTitle" />{" "}
             <span className={styles.totalRequestsNumber}>
               {slicedData.length}{" "}
@@ -424,7 +424,7 @@ class MyReturnsPage extends Component<{}, any> {
             </span>
           </h2>
         </div>
-        <div className={`flex justify-end mb3`}>
+        <div className={`flex justify-end mb3 ${styles.addNewList}`}>
           <Button
             variation="primary"
             size="small"
@@ -433,8 +433,10 @@ class MyReturnsPage extends Component<{}, any> {
             <FormattedMessage id="store/my-returns.addReturn" />
           </Button>
         </div>
-        <div className="flex items-center">
-          <div className={"ma2"}>
+        <div className={`flex items-center ${styles.filterList}`}>
+          <div
+            className={`ma2 ${styles.filterColumn} ${styles.filterColumnReturnId}`}
+          >
             <FormattedMessage id={"store/my-returns.thRequestNo"}>
               {msg => (
                 <Input
@@ -449,7 +451,9 @@ class MyReturnsPage extends Component<{}, any> {
               )}
             </FormattedMessage>
           </div>
-          <div className={"ma2"}>
+          <div
+            className={`ma2 ${styles.filterColumn} ${styles.filterColumnFromDate}`}
+          >
             <FormattedMessage id={"store/my-returns.filterFromDate"}>
               {msg => (
                 <DatePicker
@@ -465,7 +469,9 @@ class MyReturnsPage extends Component<{}, any> {
               )}
             </FormattedMessage>
           </div>
-          <div className={"ma2"}>
+          <div
+            className={`ma2 ${styles.filterColumn} ${styles.filterColumnToDate}`}
+          >
             <FormattedMessage id={"store/my-returns.filterToDate"}>
               {msg => (
                 <DatePicker
@@ -478,7 +484,9 @@ class MyReturnsPage extends Component<{}, any> {
               )}
             </FormattedMessage>
           </div>
-          <div className="ma2">
+          <div
+            className={`ma2 ${styles.filterColumn} ${styles.filterColumnStatus}`}
+          >
             <ActionMenu
               label={statusLabel}
               align="right"
@@ -530,13 +538,17 @@ class MyReturnsPage extends Component<{}, any> {
               ]}
             />
           </div>
-          <div className={"ma2"}>
+          <div
+            className={`ma2 ${styles.filterColumn} ${styles.filterColumnActionApply}`}
+          >
             <Button size={"small"} onClick={() => this.handleApplyFilters()}>
               <FormattedMessage id={"store/my-returns.filterResults"} />
             </Button>
           </div>
           {isFiltered ? (
-            <div className={"ma2"}>
+            <div
+              className={`ma2 ${styles.filterColumn} ${styles.filterColumnActionReset}`}
+            >
               <ButtonWithIcon
                 variation="secondary"
                 size="small"

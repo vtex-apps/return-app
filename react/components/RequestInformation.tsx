@@ -29,26 +29,33 @@ class RequestInformation extends Component<Props> {
     return (
       <div>
         <div>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th />
-                <th>
+          <table className={`${styles.table} ${styles.tableInformation}`}>
+            <thead className={`${styles.tableThead}`}>
+              <tr className={`${styles.tableTr}`}>
+                <th className={`${styles.tableTh}`} />
+                <th className={`${styles.tableTh}`}>
                   <FormattedMessage id={"store/my-returns.thProduct"} />
                 </th>
-                <th>
+                <th className={`${styles.tableTh}`}>
                   <FormattedMessage id={"store/my-returns.thQuantity"} />
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={`${styles.tableTbody}`}>
               {orderProducts.map((product: any) =>
                 parseInt(product.selectedQuantity) > 0 ? (
-                  <tr key={`product` + product.uniqueId}>
-                    <td>
-                      <img src={product.imageUrl} alt={product.name} />
+                  <tr
+                    key={`product` + product.uniqueId}
+                    className={`${styles.tableTr}`}
+                  >
+                    <td className={`${styles.tableTd} ${styles.tableTdImage}`}>
+                      <img
+                        className={`${styles.requestInformationImage}`}
+                        src={product.imageUrl}
+                        alt={product.name}
+                      />
                     </td>
-                    <td>
+                    <td className={`${styles.tableTd}`}>
                       {product.name}
                       <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                         <span className={styles.strongText}>
@@ -65,7 +72,7 @@ class RequestInformation extends Component<Props> {
                           : null}
                       </div>
                     </td>
-                    <td>
+                    <td className={`${styles.tableTd}`}>
                       {product.selectedQuantity} / {product.quantity}
                     </td>
                   </tr>
@@ -73,62 +80,86 @@ class RequestInformation extends Component<Props> {
               )}
             </tbody>
           </table>
-          <div className={`flex-ns flex-wrap flex-row`}>
-            <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-              <p>
+          <div
+            className={`flex-ns flex-wrap flex-row ${styles.returnFormInputs}`}
+          >
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
+            >
+              <p className={`${styles.returnFormInputsHeader}`}>
                 <FormattedMessage id={"store/my-returns.formContactDetails"} />
               </p>
-              <div className={"mb2"}>
-                <p className={"ma1 t-small c-on-base "}>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
                   <FormattedMessage id={"store/my-returns.formName"} />:{" "}
                   {info.name}
                 </p>
               </div>
-              <div className={"mb2"}>
-                <p className={"ma1 t-small c-on-base "}>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
                   <FormattedMessage id={"store/my-returns.formEmail"} />:{" "}
                   {info.email}
                 </p>
               </div>
-              <div className={"mb2"}>
-                <p className={"ma1 t-small c-on-base "}>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
                   <FormattedMessage id={"store/my-returns.formPhone"} />:{" "}
                   {info.phone}
                 </p>
               </div>
             </div>
 
-            <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-              <p>
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+            >
+              <p className={`${styles.returnFormInputsHeader}`}>
                 <FormattedMessage id={"store/my-returns.formPickupAddress"} />
               </p>
-              <div className={"mb2"}>
-                <p className={"ma1 t-small c-on-base"}>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
                   <FormattedMessage id={"store/my-returns.formCountry"} />:{" "}
                   {info.country}
                 </p>
               </div>
-              <div className={"mb2"}>
-                <p className={"ma1 t-small c-on-base"}>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
                   <FormattedMessage id={"store/my-returns.formLocality"} />:{" "}
                   {info.locality}
                 </p>
               </div>
-              <div className={"mb2"}>
-                <p className={"ma1 t-small c-on-base"}>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
                   <FormattedMessage id={"store/my-returns.formAddress"} />:{" "}
                   {info.address}
                 </p>
               </div>
             </div>
           </div>
-          <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-            <p>
+          <div
+            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsPayment}`}
+          >
+            <p className={`${styles.returnFormInputsHeader}`}>
               <FormattedMessage id={"store/my-returns.formPaymentMethod"} />
             </p>
             {info.paymentMethod === "bank" ? (
-              <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
-                <p className={"ma1 t-small c-on-base "}>
+              <div
+                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
+              >
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
+                >
                   <FormattedMessage
                     id={"store/my-returns.formBankTransferAccount"}
                   />{" "}
@@ -136,33 +167,47 @@ class RequestInformation extends Component<Props> {
                 </p>
               </div>
             ) : info.paymentMethod === "giftCard" ? (
-              <p className={"ma1 t-small c-on-base "}>
+              <p
+                className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
+              >
                 <FormattedMessage id={"store/my-returns.formVoucher"} />
               </p>
             ) : (
-              <p className={"ma1 t-small c-on-base "}>{info.paymentMethod}</p>
+              <p
+                className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
+              >
+                {info.paymentMethod}
+              </p>
             )}
           </div>
           <div
-            className={"flex-ns flex-wrap flex-auto flex-row justify-between"}
+            className={`flex-ns flex-wrap flex-auto flex-row justify-between ${styles.tableAddColButton} ${styles.returnFormInfoActions}`}
           >
-            <Button
-              type={"submit"}
-              onClick={() => {
-                showForm();
-              }}
+            <div
+              className={`${styles.requestInformationActionColumn} ${styles.requestInformationActionBack}`}
             >
-              <FormattedMessage id={"store/my-returns.goBack"} />
-            </Button>
-            <Button
-              type={"submit"}
-              variation="primary"
-              onClick={() => {
-                sendRequest();
-              }}
+              <Button
+                type={"submit"}
+                onClick={() => {
+                  showForm();
+                }}
+              >
+                <FormattedMessage id={"store/my-returns.goBack"} />
+              </Button>
+            </div>
+            <div
+              className={`${styles.requestInformationActionColumn} ${styles.requestInformationActionSubmit}`}
             >
-              <FormattedMessage id={"store/my-returns.formSubmit"} />
-            </Button>
+              <Button
+                type={"submit"}
+                variation="primary"
+                onClick={() => {
+                  sendRequest();
+                }}
+              >
+                <FormattedMessage id={"store/my-returns.formSubmit"} />
+              </Button>
+            </div>
           </div>
           {errorSubmit ? (
             <div>

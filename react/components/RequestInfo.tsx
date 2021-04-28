@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { FormattedMessageFixed, intlArea } from "../common/utils";
 import { FormattedCurrency } from "vtex.format-currency";
-
+import styles from "../styles.css";
 interface Props {
   request: any;
   giftCardValue: any;
@@ -14,110 +14,169 @@ class RequestInfo extends Component<Props> {
     super(props);
   }
 
-  generateEditGiftCardLink = () => {
-    const { request }: any = this.props;
-    const url = `/admin/Site/ValeForm.aspx?id=${request.giftCardId}`
-    return (
-      <>
-        <a rel="noopener noreferrer" target="_blank" href={url}>
-          <FormattedMessage id="admin/returns.chargeGiftCard" />
-        </a>
-      </>
-    );
-  };
-
   render() {
     const { request, intl, giftCardValue } = this.props;
     return (
-      <div>
-        <div className={`flex-ns flex-wrap flex-row`}>
-          <div className={`flex-ns flex-wrap flex-auto flex-column pt4 pb4`}>
-            <p>
-              <strong>
+      <div className={`${styles.requestInfoMainContent}`}>
+        <div
+          className={`flex-ns flex-wrap flex-row ${styles.requestInfoContentRow}`}
+        >
+          <div
+            className={`flex-ns flex-wrap flex-auto flex-column pt4 pb4 ${styles.requestInfoContentColumn} ${styles.requestInfoContentColumnLeft}`}
+          >
+            <p className={`${styles.requestInfoSectionTitle}`}>
+              <strong className={`${styles.requestInfoSectionTitleStrong}`}>
                 <FormattedMessageFixed id={`${intl}.contactDetails`} />
               </strong>
             </p>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessageFixed id={`${intl}.name`} />: {request.name}
+            <div className={`mb5 ${styles.requestInfoTextContainer}`}>
+              <p
+                className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
+              >
+                <span className={`${styles.requestInfoTextLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.name`} />:
+                </span>{" "}
+                <span className={`${styles.requestInfoText}`}>
+                  {request.name}
+                </span>
               </p>
             </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessageFixed id={`${intl}.email`} />: {request.email}
+            <div className={`mb5 ${styles.requestInfoTextContainer}`}>
+              <p
+                className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
+              >
+                <span className={`${styles.requestInfoTextLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.email`} />:
+                </span>{" "}
+                <span className={`${styles.requestInfoText}`}>
+                  {request.email}
+                </span>
               </p>
             </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base "}>
-                <FormattedMessageFixed id={`${intl}.phone`} />:{" "}
-                {request.phoneNumber}
+            <div className={`mb5 ${styles.requestInfoTextContainer}`}>
+              <p
+                className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
+              >
+                <span className={`${styles.requestInfoTextLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.phone`} />:
+                </span>{" "}
+                <span className={`${styles.requestInfoText}`}>
+                  {request.phoneNumber}
+                </span>
               </p>
             </div>
           </div>
 
-          <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-            <p>
-              <strong>
+          <div
+            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.requestInfoContentColumn} ${styles.requestInfoContentColumnRight}`}
+          >
+            <p className={`${styles.requestInfoSectionTitle}`}>
+              <strong className={`${styles.requestInfoSectionTitleStrong}`}>
                 <FormattedMessageFixed id={`${intl}.pickupAddress`} />
               </strong>
             </p>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessageFixed id={`${intl}.country`} />:{" "}
-                {request.country}
+            <div className={`mb5 ${styles.requestInfoTextContainer}`}>
+              <p
+                className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
+              >
+                <span className={`${styles.requestInfoTextLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.country`} />:
+                </span>{" "}
+                <span className={`${styles.requestInfoText}`}>
+                  {request.country}
+                </span>
               </p>
             </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessageFixed id={`${intl}.locality`} />:{" "}
-                {request.locality}
+            <div className={`mb5 ${styles.requestInfoTextContainer}`}>
+              <p
+                className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
+              >
+                <span className={`${styles.requestInfoTextLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.locality`} />:
+                </span>{" "}
+                <span className={`${styles.requestInfoText}`}>
+                  {request.locality}
+                </span>
               </p>
             </div>
-            <div className={"mb5"}>
-              <p className={"ma0 t-small c-on-base"}>
-                <FormattedMessageFixed id={`${intl}.address`} />:{" "}
-                {request.address}
+            <div className={`mb5 ${styles.requestInfoTextContainer}`}>
+              <p
+                className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
+              >
+                <span className={`${styles.requestInfoTextLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.address`} />:
+                </span>{" "}
+                <span className={`${styles.requestInfoText}`}>
+                  {request.address}
+                </span>
               </p>
             </div>
           </div>
         </div>
-        <p>
-          <strong>
+        <p
+          className={`${styles.requestInfoSectionTitle} ${styles.requestInfoPaymentTitle}`}
+        >
+          <strong className={`${styles.requestInfoPaymentTitleStrong}`}>
             <FormattedMessageFixed id={`${intl}.refundPaymentMethod`} />
           </strong>
         </p>
         {request.paymentMethod === "bank" ? (
-          <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
-            <p className={"ma1 t-small c-on-base "}>
-              <FormattedMessage id={`${intl}.formBankTransferAccount`} />{" "}
-              {request.iban}
+          <div className={`flex-ns flex-wrap flex-auto flex-column mt4`}>
+            <p
+              className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
+            >
+              <span className={`${styles.requestInfoPaymentLabel}`}>
+                <FormattedMessageFixed id={`${intl}.formBankTransferAccount`} />
+              </span>{" "}
+              <span className={`${styles.requestInfoIbanText}`}>
+                {request.iban}
+              </span>
             </p>
           </div>
         ) : request.paymentMethod === "giftCard" ? (
           <div>
-            <p className={"ma1 t-small c-on-base "}>
-              <FormattedMessage id={`${intl}.formVoucher`} />
+            <p
+              className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
+            >
+              <FormattedMessageFixed id={`${intl}.formVoucher`} />
             </p>
-            <p className={`ma1 t-small c-on-base`}>
-              <FormattedMessageFixed id={`${intl}.voucherCode`} />{" "}
+            <p
+              className={`ma1 t-small c-on-base ${styles.requestInfoGiftCardCode}`}
+            >
+              <span className={`${styles.requestInfoGiftCardCodeLabel}`}>
+                <FormattedMessageFixed id={`${intl}.voucherCode`} />
+              </span>{" "}
               {request.giftCardCode ? (
-                request.giftCardCode
+                <span className={`${styles.requestInfoGiftCardCodeText}`}>
+                  {request.giftCardCode}
+                </span>
               ) : (
-                <FormattedMessageFixed id={`${intl}.voucherCodeNotGenerated`} />
+                <span className={`${styles.requestInfoGiftCardNotGenerated}`}>
+                  <FormattedMessageFixed
+                    id={`${intl}.voucherCodeNotGenerated`}
+                  />
+                </span>
               )}
             </p>
             {request.giftCardCode ? (
-              <p className={`ma1 t-small c-on-base`}>
-                <FormattedMessageFixed id={`${intl}.voucherValue`} />{" "}
-                <FormattedCurrency value={giftCardValue} />{" "}
-                {intl === intlArea.admin
-                  ? this.generateEditGiftCardLink()
-                  : null}
+              <p
+                className={`ma1 t-small c-on-base ${styles.requestInfoGiftCardValue}`}
+              >
+                <span className={`${styles.requestInfoGiftCardValueLabel}`}>
+                  <FormattedMessageFixed id={`${intl}.voucherValue`} />
+                </span>{" "}
+                <span className={`${styles.requestInfoGiftCardValueText}`}>
+                  <FormattedCurrency value={giftCardValue} />
+                </span>
               </p>
             ) : null}
           </div>
         ) : (
-          <p className={"ma1 t-small c-on-base "}>{request.paymentMethod}</p>
+          <p
+            className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
+          >
+            {request.paymentMethod}
+          </p>
         )}
       </div>
     );

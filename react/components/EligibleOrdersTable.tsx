@@ -21,16 +21,16 @@ class EligibleOrdersTable extends Component<Props> {
       <div>
         {eligibleOrders.length ? (
           <div>
-            <table className={styles.table}>
+            <table className={styles.table + " " + styles.tableEligibleOrders}>
               <thead>
                 <tr>
-                  <th>
+                  <th className={styles.tableTh}>
                     <FormattedMessage id={"store/my-returns.thOrderId"} />
                   </th>
-                  <th>
+                  <th className={styles.tableTh}>
                     <FormattedMessage id={"store/my-returns.thCreationDate"} />
                   </th>
-                  <th>
+                  <th className={styles.tableTh}>
                     <FormattedMessage id={"store/my-returns.thSelectOrder"} />
                   </th>
                 </tr>
@@ -43,7 +43,7 @@ class EligibleOrdersTable extends Component<Props> {
                       <tr key={order.orderId}>
                         <td>{order.orderId}</td>
                         <td>{beautifyDate(order.creationDate)}</td>
-                        <td>
+                        <td className={styles.tableColButton}>
                           <Button
                             size={`small`}
                             onClick={() => selectOrder(order)}

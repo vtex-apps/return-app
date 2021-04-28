@@ -195,7 +195,7 @@ class ReturnsTableContent extends Component<any, any> {
             ? filterDate(filters.toDate)
             : filterDate(filters.fromDate);
 
-        where += "__dateSubmitted between " + startDate + " AND " + endDate;
+        where += "__createdIn between " + startDate + " AND " + endDate;
       }
 
       if (filters.status !== "") {

@@ -261,25 +261,34 @@ class RequestForm extends Component<Props> {
           </Button>
         </div>
         <div
-          className={
-            `cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ` +
-            styles.orderInfoHeader
-          }
+          className={`cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ${styles.orderInfoHeader}`}
         >
-          <div className={`flex flex-row`}>
-            <div className={`flex flex-column w-50`}>
-              <div className={`w-100 f7 f6-xl fw4 c-muted-1 ttu`}>
+          <div className={`flex flex-row ${styles.orderInfoHeaderRow}`}>
+            <div
+              className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
+            >
+              <div
+                className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderDateLabel}`}
+              >
                 <FormattedMessage id={"store/my-returns.orderDate"} />
               </div>
-              <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
+              <div
+                className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderDate}`}
+              >
                 {returnFormDate(selectedOrder.creationDate, "store/my-returns")}
               </div>
             </div>
-            <div className={`flex flex-column w-50`}>
-              <div className={`w-100 f7 f6-xl fw4 c-muted-1 ttu`}>
+            <div
+              className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
+            >
+              <div
+                className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderIdLabel}`}
+              >
                 <FormattedMessage id={"store/my-returns.thOrderId"} />
               </div>
-              <div className={`db pv0 f6 fw5 c-on-base f5-l`}>
+              <div
+                className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderId}`}
+              >
                 {selectedOrder.orderId}
               </div>
             </div>
@@ -287,27 +296,34 @@ class RequestForm extends Component<Props> {
         </div>
         <div>
           <table className={styles.tblProducts}>
-            <thead>
-              <tr>
-                <th />
-                <th>
+            <thead className={styles.tableThead}>
+              <tr className={styles.tableTr}>
+                <th className={styles.tableTh} />
+                <th className={styles.tableTh}>
                   <FormattedMessage id={"store/my-returns.thProduct"} />
                 </th>
-                <th>
+                <th className={styles.tableTh}>
                   <FormattedMessage id={"store/my-returns.thQuantity"} />
                 </th>
-                <th>
+                <th className={styles.tableTh}>
                   <FormattedMessage id={"store/my-returns.thReason"} />
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={styles.tableTbody}>
               {orderProducts.map((product: any) => (
-                <tr key={`product` + product.uniqueId}>
-                  <td>
-                    <img src={product.imageUrl} alt={product.name} />
+                <tr
+                  key={`product` + product.uniqueId}
+                  className={styles.tableTr}
+                >
+                  <td className={`${styles.tableTd} ${styles.tableTdImage}`}>
+                    <img
+                      className={styles.imageCol}
+                      src={product.imageUrl}
+                      alt={product.name}
+                    />
                   </td>
-                  <td className={styles.w350}>
+                  <td className={`${styles.tableTd} ${styles.w350}`}>
                     <a
                       className={styles.productUrl}
                       target="_blank"
@@ -317,7 +333,7 @@ class RequestForm extends Component<Props> {
                       {product.name}
                     </a>
                   </td>
-                  <td>
+                  <td className={`${styles.tableTd} ${styles.tableTdQuantity}`}>
                     <Input
                       suffix={"/" + product.quantity}
                       size={"small"}
@@ -330,7 +346,9 @@ class RequestForm extends Component<Props> {
                       min={0}
                     />
                   </td>
-                  <td>{this.renderReasonsDropdown(product)}</td>
+                  <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
+                    {this.renderReasonsDropdown(product)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -341,12 +359,16 @@ class RequestForm extends Component<Props> {
             </p>
           ) : null}
         </div>
-        <div className={`flex-ns flex-wrap flex-row`}>
-          <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-            <p>
+        <div
+          className={`flex-ns flex-wrap flex-row ${styles.returnFormInputs}`}
+        >
+          <div
+            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
+          >
+            <p className={`${styles.returnFormInputsHeader}`}>
               <FormattedMessage id={"store/my-returns.formContactDetails"} />
             </p>
-            <div className={"mb4"}>
+            <div className={`mb4 ${styles.returnFormInput}`}>
               <FormattedMessage id={"store/my-returns.formName"}>
                 {msg => (
                   <Input
@@ -365,7 +387,7 @@ class RequestForm extends Component<Props> {
                 )}
               </FormattedMessage>
             </div>
-            <div className={"mb4"}>
+            <div className={`mb4 ${styles.returnFormInput}`}>
               <FormattedMessage id={"store/my-returns.formEmail"}>
                 {msg => (
                   <Input
@@ -385,7 +407,7 @@ class RequestForm extends Component<Props> {
                 )}
               </FormattedMessage>
             </div>
-            <div className={"mb4"}>
+            <div className={`mb4 ${styles.returnFormInput}`}>
               <FormattedMessage id={"store/my-returns.formPhone"}>
                 {msg => (
                   <Input
@@ -406,11 +428,13 @@ class RequestForm extends Component<Props> {
             </div>
           </div>
 
-          <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-            <p>
+          <div
+            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+          >
+            <p className={`${styles.returnFormInputsHeader}`}>
               <FormattedMessage id={"store/my-returns.formPickupAddress"} />
             </p>
-            <div className={"mb4"}>
+            <div className={`mb4 ${styles.returnFormInput}`}>
               <FormattedMessage id={"store/my-returns.formCountry"}>
                 {msg => (
                   <Input
@@ -429,7 +453,7 @@ class RequestForm extends Component<Props> {
                 )}
               </FormattedMessage>
             </div>
-            <div className={"mb4"}>
+            <div className={`mb4 ${styles.returnFormInput}`}>
               <FormattedMessage id={"store/my-returns.formLocality"}>
                 {msg => (
                   <Input
@@ -448,7 +472,7 @@ class RequestForm extends Component<Props> {
                 )}
               </FormattedMessage>
             </div>
-            <div className={"mb4"}>
+            <div className={`mb4 ${styles.returnFormInput}`}>
               <FormattedMessage id={"store/my-returns.formAddress"}>
                 {msg => (
                   <Input
@@ -470,8 +494,10 @@ class RequestForm extends Component<Props> {
           </div>
         </div>
 
-        <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
-          <p>
+        <div
+          className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsPayment}`}
+        >
+          <p className={`${styles.returnFormInputsHeader}`}>
             <FormattedMessage id={"store/my-returns.formPaymentMethod"} />
           </p>
           <RadioGroup
@@ -489,7 +515,9 @@ class RequestForm extends Component<Props> {
             onChange={handleInputChange}
           />
           {formInputs.paymentMethod === "bank" ? (
-            <div className={"flex-ns flex-wrap flex-auto flex-column mt4"}>
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
+            >
               <FormattedMessage id={"store/my-returns.formIBAN"}>
                 {msg => (
                   <Input
@@ -511,7 +539,9 @@ class RequestForm extends Component<Props> {
           ) : null}
         </div>
 
-        <div className={`flex-ns flex-wrap flex-auto flex-column pa4`}>
+        <div
+          className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormTerms}`}
+        >
           <Checkbox
             checked={formInputs.agree}
             id="agree"
@@ -527,7 +557,9 @@ class RequestForm extends Component<Props> {
           ) : null}
         </div>
 
-        <div className={`mt4 ph4`}>
+        <div
+          className={`mt4 ph4 ${styles.returnFormActions}`}
+        >
           <Button type={"submit"} variation="primary" onClick={submit}>
             <FormattedMessage id={"store/my-returns.formNextStep"} />
           </Button>

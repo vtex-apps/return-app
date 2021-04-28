@@ -281,6 +281,13 @@
     background-color:#f2f4f5;
 }
 
+.orderInfoHeaderRow {}
+.orderInfoHeaderColumn {}
+.orderInfoHeaderOrderDateLabel {}
+.orderInfoHeaderOrderIdLabel {}
+.orderInfoHeaderOrderDate {}
+.orderInfoHeaderOrderId {}
+
 .paddingLeft20 {
     padding-left: 20px !important;
 }
@@ -301,4 +308,104 @@
 }
 .strongText {
     font-weight: bold;
+}
+
+.listTitle {}
+.listTitleText {}
+.filterList {}
+.addNewList {}
+.tableInformation {}
+.tableThead {}
+.tableTh {}
+.tableTr {}
+.tableTd {}
+.tableTdImage {}
+.tableTdReason {}
+.tableTdQuantity {}
+.tableTbody {}
+.tableTrNoProducts {}
+.filterColumn {}
+.filterColumnReturnId {}
+.filterColumnFromDate {}
+.filterColumnToDate {}
+.filterColumnStatus {}
+.filterColumnActionApply {}
+.filterColumnActionReset {}
+
+.returnFormInputs {}
+.returnFormInputsColumn {}
+.returnFormInputsColumnLeft {}
+.returnFormInputsColumnRight {}
+.returnFormInputsHeader {}
+.returnFormInputsPayment {}
+.returnFormInputIban {}
+.returnFormTerms {}
+.returnFormActions {}
+.returnFormInfoActions {}
+.returnFormInput {}
+.tableColButton {}
+.requestInformationImage {}
+.requestInformationField {}
+.requestInformationText {}
+.requestInformationSelectedPayment {}
+.requestInformationActionColumn {}
+.requestInformationActionSubmit {}
+.requestInformationActionBack {}
+.imageCol {}
+
+.requestInfoTitle {}
+.requestInfoTitleText {}
+.requestInfoTitleSeparator {}
+.requestInfoTitleDate {}
+.requestInfoOrder {}
+.requestInfoOrderText {}
+.requestInfoMainContent {}
+.requestInfoContentRow {}
+.requestInfoContentColumn {}
+.requestInfoContentColumnLeft {}
+.requestInfoContentColumnRight {}
+.requestInfoSectionTitle {}
+.requestInfoSectionTitleStrong {}
+.requestInfoTextContainer {}
+.requestInfoTextHolder {}
+.requestInfoText {}
+.requestInfoTextLabel {}
+.requestInfoPaymentTitle {}
+.requestInfoPaymentTitleStrong {}
+.requestInfoPaymentMethod {}
+.requestInfoPaymentLabel {}
+.requestInfoIbanText {}
+.requestInfoGiftCardCode {}
+.requestInfoGiftCardCodeLabel {}
+.requestInfoGiftCardCodeText {}
+.requestInfoGiftCardNotGenerated {}
+.requestInfoGiftCardValue {}
+.requestInfoGiftCardValueLabel {}
+.requestInfoGiftCardValueText {}
+.requestInfoTimelineContainer {}
+.requestInfoTimelineStep {}
+.requestInfoTimelineText {}
+.requestInfoHistoryContainer {}
+.requestInfoHistoryContent {}
+.requestInfoHistoryRow {}
+.requestInfoHistoryColumn {}
+.requestInfoHistoryColumnHeader {}
+.requestInfoHistoryColumnDate {}
+.requestInfoHistoryColumnStatus {}
+.requestInfoHistoryColumnUpdated {}
+.requestInfoHistoryText {}
+.requestInfoHistoryTextDate {}
+.requestInfoHistoryTextStatus {}
+.requestInfoHistoryTextUpdated {}
+
+
+
+.tableAddColButton {}
+
+.tableEligibleOrders {}
+
+@media screen and (max-width: 759px) {
+    .filterList {
+        display: block;
+    }
 }

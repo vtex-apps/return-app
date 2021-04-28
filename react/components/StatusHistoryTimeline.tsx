@@ -24,21 +24,23 @@ class StatusHistoryTimeline extends Component<Props> {
   render() {
     const { statusHistoryTimeline, intl } = this.props;
     return (
-      <div>
+      <div className={`${styles.requestInfoTimelineContainer}`}>
         {statusHistoryTimeline.map((currentHistory, i) => (
-          <div key={`statusHistoryTimeline_` + i}>
+          <div
+            className={`${styles.requestInfoTimelineStep}`}
+            key={`statusHistoryTimeline_` + i}
+          >
             <p className={styles.statusLine}>
               {currentHistory.active ? (
                 <span
-                  className={styles.statusIcon + " " + styles.statusIconChecked}
+                  className={`${styles.statusIcon} ${styles.statusIconChecked}`}
                 >
                   <IconCheck size={20} color={"#fff"} />
                 </span>
               ) : (
-                <span className={styles.statusIcon} />
+                <span className={`${styles.statusIcon}`} />
               )}
-
-              {currentHistory.text}
+              <span className={`${styles.requestInfoTimelineText}`}>{currentHistory.text}</span>
             </p>
             <ul
               className={

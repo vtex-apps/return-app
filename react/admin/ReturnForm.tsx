@@ -359,10 +359,6 @@ class ReturnForm extends Component<any, any> {
     }
   }
 
-  textUpdate() {
-    this.updateGiftCard("21", { refundedAmount: 10000 }).then();
-  }
-
   saveMasterData = (schema: string, body: any) => {
     fetch(fetchPath.saveDocuments + schema, {
       method: fetchMethod.post,
