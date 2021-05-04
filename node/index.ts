@@ -10,6 +10,7 @@ import { saveMasterdataPartialDocuments } from './middlewares/saveMasterdataPart
 import { createGiftCard } from './middlewares/createGiftCard'
 import { updateGiftCard } from './middlewares/updateGiftCard'
 import { getGiftCard } from './middlewares/getGiftCard'
+import { getSkuById } from './middlewares/getSkuById'
 import { sendMail } from './middlewares/sendMail'
 
 const TIMEOUT_MS = 5000
@@ -63,6 +64,9 @@ export default new Service({
     }),
     getGiftCard: method({
       GET: getGiftCard
+    }),
+    getSkuById: method({
+      GET: getSkuById
     }),
     sendMail: method({
       POST: sendMail
