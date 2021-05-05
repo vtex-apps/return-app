@@ -2,20 +2,18 @@ import {formatComment, formatHistory, formatProduct, formatRequest} from "../../
 
 export async function getList(ctx: Context, next: () => Promise<any>) {
 
-
     const {
         clients: {returnApp: returnAppClient}
     } = ctx
 
-    const {page, limit, status, dateStart, dateEnd, sortOrder} = ctx.query;
+    const {page, limit, status, dateStart, dateEnd} = ctx.query;
 
     const filterData = {
         page: (page && !isNaN(page)) ? page : 1,
         limit: (limit && !isNaN(limit)) ? limit : 10,
         status: status ? status : "",
         dateStart: dateStart ? dateStart : "",
-        dateEnd: dateEnd ? dateEnd : "",
-        sortOrder: (sortOrder && (sortOrder === "ASC" || sortOrder === "DESC")) ? sortOrder : "DESC"
+        dateEnd: dateEnd ? dateEnd : ""
     }
 
     const requestResponse = await returnAppClient.getList(ctx, 'returnRequests', 'request', filterData)

@@ -56,14 +56,24 @@
       "settingsType": "workspace"
     },
     "apiGetRequest": {
-      "path": "/returns/api/get-request/:request_id",
-      "public": true,
-      "settingsType": "workspace"
+      "path": "/no-cache/returns/api/get-request/:request_id",
+      "public": true
     },
     "apiGetList": {
-      "path": "/returns/api/get-requests",
-      "public": true,
-      "settingsType": "workspace"
+      "path": "/no-cache/returns/api/get-requests",
+      "public": true
+    },
+    "apiAddComment": {
+      "path": "/no-cache/returns/api/add-comment/:request_id",
+      "public": true
+    },
+    "apiChangeProductStatus": {
+      "path": "/no-cache/returns/api/change-product-status/:request_id",
+      "public": true
+    },
+    "apiCheckStatus": {
+      "path": "/no-cache/returns/api/check-status/:request_id",
+      "public": true
     }
   }
 }

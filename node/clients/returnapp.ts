@@ -307,7 +307,7 @@ export default class ReturnApp extends ExternalClient {
             },
             schema: schemaName,
             where: decodeURI(whereCls),
-            sort: "dateSubmitted DESC"
+            sort: "createdIn DESC"
         })
     }
 }

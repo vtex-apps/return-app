@@ -27,6 +27,11 @@ export function formatProduct(product: any) {
     return {
         image: product.imageUrl,
         refId: product.skuId,
+        skuId: product.sku,
+        brandName: product.brandName,
+        brandId: product.brandId,
+        manufacturerCode: product.manufacturerCode,
+        productId: product.productId,
         name: product.skuName,
         unitPrice: product.unitPrice,
         quantity: product.quantity,
@@ -63,6 +68,10 @@ export function currentDate() {
     }-${d.getDate() < 10 ? `0${d.getDate()}` : `${d.getDate()}`}`;
 }
 
+export function getCurrentDate() {
+    return new Date().toISOString();
+}
+
 export function dateFilter(date: string, separator = "-") {
     const newDate = new Date(date);
     const day = newDate.getDate();
@@ -73,3 +82,21 @@ export function dateFilter(date: string, separator = "-") {
         month < 10 ? `0${month}` : `${month}`
     }${separator}${day < 10 ? `0${day}` : `${day}`}`;
 }
+
+export const productStatuses = {
+    new: "New",
+    pendingVerification: "Pending verification",
+    approved: "Approved",
+    partiallyApproved: "Partially approved",
+    denied: "Denied"
+};
+
+export const requestsStatuses = {
+    new: "New",
+    picked: "Picked up from client",
+    pendingVerification: "Pending verification",
+    approved: "Approved",
+    partiallyApproved: "Partially approved",
+    denied: "Denied",
+    refunded: "Refunded"
+};

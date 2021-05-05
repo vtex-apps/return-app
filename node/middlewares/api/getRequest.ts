@@ -12,7 +12,7 @@ export async function getRequest(ctx: Context, next: () => Promise<any>) {
 
     let output = {
         success: false,
-        message: 'Not Found',
+        errorMessage: 'Not Found',
         data: {}
     }
 
@@ -55,7 +55,7 @@ export async function getRequest(ctx: Context, next: () => Promise<any>) {
         output = {
             ...output,
             success: true,
-            message: '',
+            errorMessage: '',
             data: requestOutput
         }
     }
