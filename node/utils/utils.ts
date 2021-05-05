@@ -72,6 +72,15 @@ export function getCurrentDate() {
     return new Date().toISOString();
 }
 
+export function getOneYearLaterDate() {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    const day = d.getDate();
+    const oneYearLater = new Date(year + 1, month, day);
+    return oneYearLater.toISOString();
+}
+
 export function dateFilter(date: string, separator = "-") {
     const newDate = new Date(date);
     const day = newDate.getDate();

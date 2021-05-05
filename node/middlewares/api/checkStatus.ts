@@ -1,4 +1,4 @@
-import {requestsStatuses} from "../../utils/utils";
+import {productStatuses, requestsStatuses} from "../../utils/utils";
 
 export async function checkStatus(ctx: Context, next: () => Promise<any>) {
 
@@ -22,7 +22,7 @@ export async function checkStatus(ctx: Context, next: () => Promise<any>) {
         const request = requestResponse[0];
         let nextPossibleStatuses = ''
 
-        if(request.status === requestsStatuses.new) {
+        if (request.status === requestsStatuses.new) {
             nextPossibleStatuses = requestsStatuses.picked
         } else if (request.status === requestsStatuses.picked) {
             nextPossibleStatuses = requestsStatuses.pendingVerification
@@ -30,6 +30,30 @@ export async function checkStatus(ctx: Context, next: () => Promise<any>) {
             nextPossibleStatuses = `${requestsStatuses.approved}, ${requestsStatuses.partiallyApproved}, ${requestsStatuses.denied}`
         } else if (request.status === requestsStatuses.approved || request.status === requestsStatuses.partiallyApproved) {
             nextPossibleStatuses = requestsStatuses.refunded
+        }
+
+        if (request.status === requestsStatuses.pendingVerification) {
+            // verifica si adauga in requiredSteps
+            let thisProductStep: any[] = []
+
+            const productsResponse = await returnAppClient.getDocuments(ctx, 'returnProducts', 'product', `refundId=${request_id}`)
+            if (productsResponse.length) {
+                productsResponse.map((product: any) => {
+                    if (product.status === productStatuses.pendingVerification) {
+                        thisProductStep.push({
+                            skuId: product.sku,
+                            skuRefId: product.skuId,
+                            name: product.skuName,
+                            info: "Verification required",
+                            status: product.status
+                        })
+                    }
+                })
+            }
+            output = {
+                ...output,
+                requiredSteps: thisProductStep
+            }
         }
 
         output = {

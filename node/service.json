@@ -79,6 +79,10 @@
     "apiCheckStatus": {
       "path": "/no-cache/returns/api/check-status/:request_id",
       "public": true
+    },
+    "apiUpdateStatus": {
+      "path": "/no-cache/returns/api/update-status/:request_id",
+      "public": true
     }
   }
 }
