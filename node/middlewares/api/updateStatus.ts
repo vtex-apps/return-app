@@ -1,5 +1,12 @@
 import {json} from "co-body";
-import {getCurrentDate, productStatuses, requestsStatuses, getOneYearLaterDate} from "../../utils/utils";
+import {
+    getCurrentDate,
+    productStatuses,
+    requestsStatuses,
+    getOneYearLaterDate,
+    statusHistoryTimelines
+} from "../../utils/utils";
+
 
 export async function updateStatus(ctx: Context, next: () => Promise<any>) {
     const headers = ctx.request.headers;
@@ -13,7 +20,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
         errorMessage: ""
     }
 
-    if(!body.submittedBy) {
+    if (!body.submittedBy) {
         output = {
             ...output,
             success: false,
@@ -21,8 +28,8 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
         }
     }
 
-    if(output.success) {
-        const { request_id } = ctx.vtex.route.params
+    if (output.success) {
+        const {request_id} = ctx.vtex.route.params
         const requestResponse = await returnAppClient.getDocuments(ctx, 'returnRequests', 'request', `id=${request_id}`)
 
         if (requestResponse.length) {
@@ -30,7 +37,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             const productsResponse = await returnAppClient.getDocuments(ctx, 'returnProducts', 'product', `refundId=${request_id}`)
 
             let nextStatus = '';
-            if(request.status === requestsStatuses.new) {
+            if (request.status === requestsStatuses.new) {
                 nextStatus = requestsStatuses.picked
             } else if (request.status === requestsStatuses.picked) {
                 nextStatus = requestsStatuses.pendingVerification
@@ -92,7 +99,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             }
 
 
-            if(output.success && nextStatus) {
+            if (output.success && nextStatus) {
                 // update request
                 const newRequestBody = {
                     ...request,
@@ -110,7 +117,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
                 }
                 await returnAppClient.saveDocuments(ctx, 'returnStatusHistory', historyBody)
 
-                if(nextStatus === requestsStatuses.pendingVerification) {
+                if (nextStatus === requestsStatuses.pendingVerification) {
                     // update all products to pendingVerification
                     if (productsResponse.length) {
                         productsResponse.map(async (product: any) => {
@@ -155,6 +162,93 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
 
                     await returnAppClient.saveDocuments(ctx, 'returnRequests', reqBody)
                 }
+
+
+                // Get all info and prepare for mail
+                const commentsResponse = await returnAppClient.getDocuments(ctx, 'returnComments', 'comment', `refundId=${request_id}`)
+                const newProductResponse = await returnAppClient.getDocuments(ctx, 'returnProducts', 'product', `refundId=${request_id}`)
+                const updatedRequestResponse = await returnAppClient.getDocuments(ctx, 'returnRequests', 'request', `id=${request_id}`)
+                const timelineHistory = [
+                    {
+                        status: statusHistoryTimelines.new,
+                        step: 1,
+                        comments: commentsResponse.filter((item: any) => item.status === requestsStatuses.new),
+                        active: 1
+                    },
+                    {
+                        status: statusHistoryTimelines.picked,
+
+                        step: 2,
+                        comments: commentsResponse.filter((item: any) => item.status === requestsStatuses.picked),
+                        active:
+                            newRequestBody.status === requestsStatuses.picked ||
+                            newRequestBody.status === requestsStatuses.pendingVerification ||
+                            newRequestBody.status === requestsStatuses.partiallyApproved ||
+                            newRequestBody.status === requestsStatuses.approved ||
+                            newRequestBody.status === requestsStatuses.denied ||
+                            newRequestBody.status === requestsStatuses.refunded
+                                ? 1
+                                : 0
+                    },
+                    {
+                        status: statusHistoryTimelines.pending,
+                        step: 3,
+                        comments: commentsResponse.filter(
+                            (item: any) => item.status === requestsStatuses.pendingVerification
+                        ),
+                        active:
+                            newRequestBody.status === requestsStatuses.pendingVerification ||
+                            newRequestBody.status === requestsStatuses.partiallyApproved ||
+                            newRequestBody.status === requestsStatuses.approved ||
+                            newRequestBody.status === requestsStatuses.denied ||
+                            newRequestBody.status === requestsStatuses.refunded
+                                ? 1
+                                : 0
+                    },
+                    {
+                        status: statusHistoryTimelines.verified,
+                        step: 4,
+                        comments: commentsResponse.filter(
+                            (item: any) =>
+                                item.status === requestsStatuses.partiallyApproved ||
+                                item.status === requestsStatuses.approved ||
+                                item.status === requestsStatuses.denied
+                        ),
+                        active:
+                            newRequestBody.status === requestsStatuses.partiallyApproved ||
+                            newRequestBody.status === requestsStatuses.approved ||
+                            newRequestBody.status === requestsStatuses.denied ||
+                            newRequestBody.status === requestsStatuses.refunded
+                                ? 1
+                                : 0
+                    },
+                    {
+                        status: statusHistoryTimelines.refunded,
+                        step: 5,
+                        comments: commentsResponse.filter(
+                            (item: any) => item.status === requestsStatuses.refunded
+                        ),
+                        active:
+                            newRequestBody.status === requestsStatuses.refunded ||
+                            newRequestBody.status === requestsStatuses.denied
+                                ? 1
+                                : 0
+                    }
+                ]
+
+                const jsonDataMail = {
+                    data: { ...{ DocumentId: request_id }, ...updatedRequestResponse[0] },
+                    products: newProductResponse,
+                    timeline: timelineHistory
+                }
+                // Get Data for Send Email
+                const mailBody = {
+                    TemplateName: "oms-return-request",
+                    applicationName: "email",
+                    logEvidence: false,
+                    jsonData: jsonDataMail
+                }
+                await returnAppClient.sendMail(ctx, mailBody)
             }
         } else {
             output = {
@@ -164,7 +258,6 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             }
         }
     }
-
 
 
     ctx.status = 200

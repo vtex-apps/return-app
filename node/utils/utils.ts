@@ -1,3 +1,4 @@
+
 export function formatRequest(request: any) {
     return {
         id: request.id,
@@ -108,4 +109,12 @@ export const requestsStatuses = {
     partiallyApproved: "Partially approved",
     denied: "Denied",
     refunded: "Refunded"
+};
+
+export const statusHistoryTimelines = {
+    new: "new",
+    picked: "Picked up from client",
+    pending: "Pending verification",
+    verified: "Package verified",
+    refunded: "Amount refunded"
 };
