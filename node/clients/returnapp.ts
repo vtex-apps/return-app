@@ -88,7 +88,13 @@ export default class ReturnApp extends ExternalClient {
                     "userId": {"type": "string"},
                     "imageUrl": {"type": "string"},
                     "skuId": {"type": "string"},
+                    "sku": {"type": "string"},
+                    "productId": {"type": "string"},
+                    "ean": {"type": "string"},
+                    "brandId": {"type": "string"},
+                    "brandName": {"type": "string"},
                     "skuName": {"type": "string"},
+                    "manufacturerCode": {"type": "string"},
                     "unitPrice": {"type": "integer"},
                     "quantity": {"type": "integer"},
                     "totalPrice": {"type": "integer"},
@@ -101,12 +107,12 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "sku", "productId", "ean", "brandId", "brandName", "skuName", "manufacturerCode", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": false
                 },
                 "v-cache": false,
-                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
-                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "status", "type"]
+                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "sku", "skuId", "productId", "ean", "brandId", "brandName", "skuName", "manufacturerCode", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "sku", "productId", "ean", "brandId", "brandName", "skuName", "manufacturerCode", "status", "type"]
             }
         },
         statusHistorySchema: {
@@ -220,6 +226,17 @@ export default class ReturnApp extends ExternalClient {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Vtex-Use-Https': true
+            }
+        });
+    }
+
+    public async getSkuById(ctx: any, id: any): Promise<any> {
+        return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog/pvt/stockkeepingunit/` + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'VtexIdclientAutCookie': ctx.vtex.authToken
             }
         });
     }

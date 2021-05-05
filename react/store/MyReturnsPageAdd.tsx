@@ -191,6 +191,13 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       });
   }
 
+  async getSkuById(id: string) {
+    return await fetch(fetchPath.getSkuById + id, {
+      method: fetchMethod.get,
+      headers: fetchHeaders
+    });
+  }
+
   async getOrders(userEmail: string, maxDays: any) {
     const currentDate = getCurrentDate();
     return await fetch(
@@ -746,27 +753,39 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
     const { orderProducts, userId, selectedOrderId } = this.state;
     orderProducts.map((product: any) => {
       if (parseInt(product.selectedQuantity) > 0) {
-        const productData = {
-          userId: userId,
-          orderId: selectedOrderId,
-          refundId: DocumentId,
-          skuId: product.refId,
-          skuName: product.name,
-          imageUrl: product.imageUrl,
-          reasonCode: product.reasonCode,
-          reason: product.reason,
-          unitPrice: parseInt(product.sellingPrice),
-          quantity: parseInt(product.selectedQuantity),
-          totalPrice: parseInt(
-            String(product.sellingPrice * product.selectedQuantity)
-          ),
-          goodProducts: 0,
-          status: requestsStatuses.new,
-          dateSubmitted: getCurrentDate(),
-          type: schemaTypes.products
-        };
+        this.getSkuById(product.id)
+          .then(response => response.json())
+          .then(skuResponse => {
+            const productData = {
+              userId: userId,
+              orderId: selectedOrderId,
+              refundId: DocumentId,
+              skuId: product.refId,
+              productId: product.productId,
+              sku: product.id,
+              manufacturerCode: skuResponse.ManufacturerCode
+                ? skuResponse.ManufacturerCode
+                : "",
+              ean: product.ean ? product.ean : "",
+              brandId: product.additionalInfo.brandId,
+              brandName: product.additionalInfo.brandName,
+              skuName: product.name,
+              imageUrl: product.imageUrl,
+              reasonCode: product.reasonCode,
+              reason: product.reason,
+              unitPrice: parseInt(product.sellingPrice),
+              quantity: parseInt(product.selectedQuantity),
+              totalPrice: parseInt(
+                String(product.sellingPrice * product.selectedQuantity)
+              ),
+              goodProducts: 0,
+              status: requestsStatuses.new,
+              dateSubmitted: getCurrentDate(),
+              type: schemaTypes.products
+            };
 
-        this.sendData(productData, schemaNames.product).then();
+            this.sendData(productData, schemaNames.product).then();
+          });
       }
     });
   }

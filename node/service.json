@@ -50,6 +50,11 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "getSkuById": {
+      "path": "/returns/getSkuById/:id",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "sendMail": {
       "path": "/returns/sendMail",
       "public": true,
