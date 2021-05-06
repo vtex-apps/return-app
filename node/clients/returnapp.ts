@@ -1,4 +1,5 @@
 import {ExternalClient, InstanceOptions, IOContext} from '@vtex/api'
+import {dateFilter, currentDate} from "../utils/utils";
 
 
 export default class ReturnApp extends ExternalClient {
@@ -87,7 +88,13 @@ export default class ReturnApp extends ExternalClient {
                     "userId": {"type": "string"},
                     "imageUrl": {"type": "string"},
                     "skuId": {"type": "string"},
+                    "sku": {"type": "string"},
+                    "productId": {"type": "string"},
+                    "ean": {"type": "string"},
+                    "brandId": {"type": "string"},
+                    "brandName": {"type": "string"},
                     "skuName": {"type": "string"},
+                    "manufacturerCode": {"type": "string"},
                     "unitPrice": {"type": "integer"},
                     "quantity": {"type": "integer"},
                     "totalPrice": {"type": "integer"},
@@ -100,12 +107,12 @@ export default class ReturnApp extends ExternalClient {
                 },
                 "v-security": {
                     "allowGetAll": true,
-                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
+                    "publicFilter": ["refundId", "orderId", "userId", "imageUrl", "skuId", "sku", "productId", "ean", "brandId", "brandName", "skuName", "manufacturerCode", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
                     "publicJsonSchema": false
                 },
                 "v-cache": false,
-                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "skuId", "skuName", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
-                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "skuName", "status", "type"]
+                "v-default-fields": ["id", "createdIn", "refundId", "orderId", "userId", "imageUrl", "sku", "skuId", "productId", "ean", "brandId", "brandName", "skuName", "manufacturerCode", "unitPrice", "quantity", "totalPrice", "goodProducts", "reasonCode", "reason", "status", "dateSubmitted", "type"],
+                "v-indexed": ["id", "createdIn", "refundId", "orderId", "userId", "skuId", "sku", "productId", "ean", "brandId", "brandName", "skuName", "manufacturerCode", "status", "type"]
             }
         },
         statusHistorySchema: {
@@ -223,6 +230,17 @@ export default class ReturnApp extends ExternalClient {
         });
     }
 
+    public async getSkuById(ctx: any, id: any): Promise<any> {
+        return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog/pvt/stockkeepingunit/` + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'VtexIdclientAutCookie': ctx.vtex.authToken
+            }
+        });
+    }
+
     public async getGiftCard(ctx: any, id: any): Promise<any> {
         return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/giftcards/` + id, {
             headers: {
@@ -260,6 +278,20 @@ export default class ReturnApp extends ExternalClient {
             });
     }
 
+    public async updateGiftCardApi(ctx: any, giftCardId: any, body: Object, headers: any): Promise<any> {
+        return this.http.post(
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/gift-card-system/pvt/giftCards/${giftCardId}/credit`,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'x-vtex-api-apptoken': headers['x-vtex-api-apptoken'],
+                    'X-VTEX-API-AppKey': headers['x-vtex-api-appkey']
+                }
+            });
+    }
+
     public async sendMail(ctx: any, body: Object): Promise<any> {
         return this.http.post(
             `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,
@@ -271,5 +303,42 @@ export default class ReturnApp extends ExternalClient {
                     'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
+    }
+
+    public async getList(ctx: any, schemaName: any, type: any, filterData: any): Promise<any> {
+        let whereCls = '(type="' + type + '"';
+        if (filterData.status) {
+            whereCls += ' AND status=' + filterData.status
+        }
+
+        let startDate = "1970-01-01";
+        let endDate = currentDate();
+        if (filterData.dateStart !== "" || filterData.dateEnd !== "") {
+            startDate =
+                filterData.dateStart !== ""
+                    ? dateFilter(filterData.dateStart)
+                    : startDate;
+            endDate =
+                filterData.dateEnd !== ""
+                    ? dateFilter(filterData.dateEnd)
+                    : endDate;
+
+            whereCls += "AND dateSubmitted between " + startDate + " AND " + endDate;
+        }
+
+        whereCls += ')';
+
+
+        return await ctx.clients.masterdata.searchDocuments({
+            dataEntity: this.schemas.schemaEntity,
+            fields: [],
+            pagination: {
+                page: filterData.page,
+                pageSize: filterData.limit,
+            },
+            schema: schemaName,
+            where: decodeURI(whereCls),
+            sort: "createdIn DESC"
+        })
     }
 }

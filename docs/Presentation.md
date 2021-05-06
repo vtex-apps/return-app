@@ -17,7 +17,7 @@ There are 5 schemas in masterdata:
 | --------------- | --------------- | ---------------- |
 | `returnSettings` | `maxDays`<br>`excludedCategories`<br>`termsUrl`<br>`type` | `settings` |
 | `returnRequests` | `userId`<br>`orderId`<br>`name`<br>`email`<br>`phoneNumber`<br>`country`<br>`locality`<br>`address`<br>`totalPrice`<br>`paymentMethod`<br>`voucherCode`<br>`refundedAmount`<br>`iban`<br>`status`<br>`dateSubmitted`<br>`type` | `request` |
-| `returnProducts` | `refundId`<br>`orderId`<br>`userId`<br>`imageUrl`<br>`skuId`<br>`skuName`<br>`unitPrice`<br>`quantity`<br>`totalPrice`<br>`goodProducts`<br>`status`<br>`dateSubmitted`<br>`type` | `product` |
+| `returnProducts` | `refundId`<br>`orderId`<br>`userId`<br>`imageUrl`<br>`skuId`<br>`sku`<br>`manufacturerCode`<br>`productId`<br>`ean`<br>`brandId`<br>`brandName`<br>`skuName`<br>`unitPrice`<br>`quantity`<br>`totalPrice`<br>`goodProducts`<br>`status`<br>`dateSubmitted`<br>`type` | `product` |
 | `returnComments` | `refundId`<br>`status`<br>`comment`<br>`visibleForCustomer`<br>`submittedBy`<br>`dateSubmitted`<br>`type` | `comment` |
 | `returnStatusHistory` | `refundId`<br>`status`<br>`submittedBy`<br>`dateSubmitted`<br>`type` | `statusHistory` |
 
