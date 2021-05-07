@@ -13,7 +13,7 @@
 |dateStart|date YYYY-MM-DD|no|-| |
 |dateEnd|date YYYY-MM-DD|no|-| |
 
-#####Response body example:
+##### Response body example:
 ```
 [
     {
@@ -130,7 +130,7 @@
 #### Get request by id
 ![Generic badge](https://img.shields.io/badge/GET-green.svg)  `https://{accountName}.{environment}.com.br/no-cache/returns/api/get-request/{request_id}`  
 
-#####Response body example:
+##### Response body example:
 ```
 {
     "success": true,
@@ -224,7 +224,7 @@ Body example:
 * If `goodQuantity` is equal with quantity from request, the product status will be "`approved`".
 
 
-#####Response body example:
+##### Response body example:
 ```
 {
     "success": true,
@@ -237,7 +237,7 @@ Body example:
 ![Generic badge](https://img.shields.io/badge/GET-green.svg)  `https://{accountName}.{environment}.com.br/no-cache/returns/api/check-status/{request_id}`  
 
 
-#####Response body example:
+##### Response body example:
 ```
 {
     "success": true,
@@ -264,7 +264,7 @@ Body example:
 | --- | --- |--- | --- |
 |submittedBy|string|yes| -|
 
-#####Response body example:
+##### Response body example:
 ```
 {
     "success": true,
