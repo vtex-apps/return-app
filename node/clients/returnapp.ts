@@ -1,4 +1,5 @@
 import {ExternalClient, InstanceOptions, IOContext} from '@vtex/api'
+import {dateFilter, currentDate} from "../utils/utils";
 
 
 export default class ReturnApp extends ExternalClient {
@@ -277,6 +278,20 @@ export default class ReturnApp extends ExternalClient {
             });
     }
 
+    public async updateGiftCardApi(ctx: any, giftCardId: any, body: Object, headers: any): Promise<any> {
+        return this.http.post(
+            `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/gift-card-system/pvt/giftCards/${giftCardId}/credit`,
+            body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Vtex-Use-Https': true,
+                    'x-vtex-api-apptoken': headers['x-vtex-api-apptoken'],
+                    'X-VTEX-API-AppKey': headers['x-vtex-api-appkey']
+                }
+            });
+    }
+
     public async sendMail(ctx: any, body: Object): Promise<any> {
         return this.http.post(
             `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/mail-service/pvt/sendmail`,
@@ -288,5 +303,42 @@ export default class ReturnApp extends ExternalClient {
                     'VtexIdclientAutCookie': ctx.vtex.authToken
                 }
             });
+    }
+
+    public async getList(ctx: any, schemaName: any, type: any, filterData: any): Promise<any> {
+        let whereCls = '(type="' + type + '"';
+        if (filterData.status) {
+            whereCls += ' AND status=' + filterData.status
+        }
+
+        let startDate = "1970-01-01";
+        let endDate = currentDate();
+        if (filterData.dateStart !== "" || filterData.dateEnd !== "") {
+            startDate =
+                filterData.dateStart !== ""
+                    ? dateFilter(filterData.dateStart)
+                    : startDate;
+            endDate =
+                filterData.dateEnd !== ""
+                    ? dateFilter(filterData.dateEnd)
+                    : endDate;
+
+            whereCls += "AND dateSubmitted between " + startDate + " AND " + endDate;
+        }
+
+        whereCls += ')';
+
+
+        return await ctx.clients.masterdata.searchDocuments({
+            dataEntity: this.schemas.schemaEntity,
+            fields: [],
+            pagination: {
+                page: filterData.page,
+                pageSize: filterData.limit,
+            },
+            schema: schemaName,
+            where: decodeURI(whereCls),
+            sort: "createdIn DESC"
+        })
     }
 }
