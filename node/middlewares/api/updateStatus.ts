@@ -167,7 +167,6 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
                 // Get all info and prepare for mail
                 const commentsResponse = await returnAppClient.getDocuments(ctx, 'returnComments', 'comment', `refundId=${request_id}`)
                 const newProductResponse = await returnAppClient.getDocuments(ctx, 'returnProducts', 'product', `refundId=${request_id}`)
-                const updatedRequestResponse = await returnAppClient.getDocuments(ctx, 'returnRequests', 'request', `id=${request_id}`)
                 const timelineHistory = [
                     {
                         status: statusHistoryTimelines.new,
@@ -237,7 +236,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
                 ]
 
                 const jsonDataMail = {
-                    data: { ...{ DocumentId: request_id }, ...updatedRequestResponse[0] },
+                    data: { ...{ DocumentId: request_id }, ...newRequestBody },
                     products: newProductResponse,
                     timeline: timelineHistory
                 }
