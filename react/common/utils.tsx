@@ -34,7 +34,7 @@ export function getOneYearLaterDate() {
   return oneYearLater.toISOString();
 }
 
-export function FormattedMessageFixed(props) {
+export function FormattedMessageFixed(props: any) {
   return <FormattedMessage {...props} />;
 }
 
@@ -63,7 +63,7 @@ export function returnFormDate(date: string, intl: string) {
 
   return (
     <FormattedMessageFixed id={`${intl}.${monthNames[d.getMonth()]}`}>
-      {monthName =>
+      {(monthName: string) =>
         d.getDate() +
         " " +
         monthName +
@@ -156,7 +156,7 @@ export const intlArea = {
 };
 
 export function getStatusTranslation(status: string) {
-  const s = requestsStatuses[status];
+  const s: any = requestsStatuses[status];
   let words = s.split(" ");
   for (let i = 0; i < words.length; i++) {
     words[i] = words[i][0].toUpperCase() + words[i].substr(1);
@@ -279,14 +279,18 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
         </span>
       ),
       step: 1,
-      comments: comment.filter(item => item.status === requestsStatuses.new),
+      comments: comment.filter(
+        (item: any) => item.status === requestsStatuses.new
+      ),
       active: 1
     },
     {
       status: statusHistoryTimeline.picked,
       text: <FormattedMessageFixed id={`${intl}.timelinePicked`} />,
       step: 2,
-      comments: comment.filter(item => item.status === requestsStatuses.picked),
+      comments: comment.filter(
+        (item: any) => item.status === requestsStatuses.picked
+      ),
       active:
         request.status === requestsStatuses.picked ||
         request.status === requestsStatuses.pendingVerification ||
@@ -302,7 +306,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
       text: <FormattedMessageFixed id={`${intl}.timelinePending`} />,
       step: 3,
       comments: comment.filter(
-        item => item.status === requestsStatuses.pendingVerification
+        (item: any) => item.status === requestsStatuses.pendingVerification
       ),
       active:
         request.status === requestsStatuses.pendingVerification ||
@@ -318,7 +322,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
       text: <FormattedMessageFixed id={`${intl}.timelineVerified`} />,
       step: 4,
       comments: comment.filter(
-        item =>
+        (item: any) =>
           item.status === requestsStatuses.partiallyApproved ||
           item.status === requestsStatuses.approved ||
           item.status === requestsStatuses.denied
@@ -343,7 +347,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
         ),
       step: 5,
       comments: comment.filter(
-        item => item.status === requestsStatuses.refunded
+        (item: any) => item.status === requestsStatuses.refunded
       ),
       active:
         request.status === requestsStatuses.refunded ||
@@ -354,7 +358,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
   ];
 }
 
-export function sendMail(jsonData) {
+export function sendMail(jsonData: any) {
   axios
     .post(`/returns/sendMail`, {
       TemplateName: "oms-return-request",
