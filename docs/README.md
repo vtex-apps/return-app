@@ -6,7 +6,7 @@ VTEX Return App
 
 - Open the VTEX App Store and install this app on your store, or run the following command on VTEX toolbelt:
 
-> vtex install vtex.return-app@0.x
+> vtex install vtex.return-app@1.x
 
 - From the left side access the `Returns > Requests` page. The first time you access it, the application creates the masterdata schema and settings it needs automatically.
 
