@@ -252,6 +252,28 @@ export default class ReturnApp extends ExternalClient {
         });
     }
 
+    public async getOrders(ctx: any, where: any): Promise<any> {
+        return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/oms/pvt/orders?${where}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'VtexIdclientAutCookie': ctx.vtex.authToken
+            }
+        });
+    }
+
+    public async getOrder(ctx: any, orderId: any): Promise<any> {
+        return this.http.get(`http://${ctx.vtex.account}.vtexcommercestable.com.br/api/oms/pvt/orders/${orderId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Vtex-Use-Https': true,
+                'VtexIdclientAutCookie': ctx.vtex.authToken
+            }
+        });
+    }
+
     public async createGiftCard(ctx: any, body: Object): Promise<any> {
         return this.http.post(
             `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/giftcards/`,

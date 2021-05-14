@@ -50,6 +50,16 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "getOrders": {
+      "path": "/returns/getOrders/:where",
+      "public": true,
+      "settingsType": "workspace"
+    },
+    "getOrder": {
+      "path": "/returns/getOrder/:orderId",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "getSkuById": {
       "path": "/returns/getSkuById/:id",
       "public": true,
