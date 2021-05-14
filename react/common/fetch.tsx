@@ -10,7 +10,8 @@ export const fetchPath = {
   updateGiftCard: "/returns/updateGiftCard/",
   getGiftCard: "/returns/getGiftCard/",
   getSkuById: "/returns/getSkuById/",
-  getOrders: "/api/oms/pvt/orders",
+  getOrders: "/returns/getOrders/",
+  getOrder: "/returns/getOrder/",
   renderTemplates: "/api/template-render/pvt/templates"
 };
 

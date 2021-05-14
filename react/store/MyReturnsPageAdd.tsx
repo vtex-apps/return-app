@@ -201,14 +201,11 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   async getOrders(userEmail: string, maxDays: any) {
     const currentDate = getCurrentDate();
     return await fetch(
-      fetchPath.getOrders +
-        "?clientEmail=" +
-        userEmail +
-        "&orderBy=creationDate,desc&f_status=invoiced&f_creationDate=creationDate:[" +
-        substractDays(maxDays) +
-        " TO " +
-        currentDate +
-        "]"
+      `${
+        fetchPath.getOrders
+      }clientEmail=${userEmail}&orderBy=creationDate,desc&f_status=invoiced&f_creationDate=creationDate:[${substractDays(
+        maxDays
+      )} TO ${currentDate}]`
     )
       .then(response => response.json())
       .then(res => {
@@ -217,9 +214,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 
   async getOrder(orderId: string, userEmail: string) {
-    return await fetch(
-      fetchPath.getOrders + "/" + orderId + "?clientEmail=" + userEmail
-    )
+    return await fetch(`${fetchPath.getOrder}${orderId}`)
       .then(response => response.json())
       .then(res => {
         return Promise.resolve(res);
