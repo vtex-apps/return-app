@@ -9,6 +9,8 @@ import {saveMasterdataDocuments} from './middlewares/saveMasterdataDocuments'
 import {saveMasterdataPartialDocuments} from './middlewares/saveMasterdataPartialDocuments'
 import {createGiftCard} from './middlewares/createGiftCard'
 import {updateGiftCard} from './middlewares/updateGiftCard'
+import {getOrders} from './middlewares/getOrders'
+import {getOrder} from './middlewares/getOrder'
 import {getGiftCard} from './middlewares/getGiftCard'
 import {getSkuById} from './middlewares/getSkuById'
 import {sendMail} from './middlewares/sendMail'
@@ -56,6 +58,12 @@ export default new Service({
         }),
         getCategories: method({
             GET: receiveCategories
+        }),
+        getOrders: method({
+            GET: getOrders
+        }),
+        getOrder: method({
+            GET: getOrder
         }),
         saveDocuments: method({
             POST: saveMasterdataDocuments
