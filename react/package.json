@@ -47,5 +47,6 @@
     "vtex.store-session": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-session@0.3.0/public/_types/react",
     "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.128.1/public/@types/vtex.styleguide",
     "vtex.telemarketing": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.telemarketing@2.10.2/public/@types/vtex.telemarketing"
-  }
+  },
+  "version": "1.0.7"
 }
