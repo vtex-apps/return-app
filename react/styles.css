@@ -52,10 +52,11 @@
 .errorMessage {
     margin: 0;
     font-size: 14px;
-    color: #ff0000;
+    color: red;
     font-weight: bold;
     text-align: right;
 }
+
 
 .hasError {
     box-shadow: 0 0 3px #ff0000
@@ -67,9 +68,6 @@
     text-align: center;
 }
 
-.errorMessage {
-    color: red;
-}
 
 .successMessage {
     color: green;

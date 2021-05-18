@@ -1,13 +1,17 @@
-export async function returnAppGetSchemas(ctx: Context, next: () => Promise<any>) {
-
+export async function returnAppGetSchemas(
+  ctx: Context,
+  next: () => Promise<any>
+) {
   const {
     clients: { returnApp: returnAppClient }
-  } = ctx
+  } = ctx;
 
-  const response = await returnAppClient.getSchema(ctx)
+  const { schema } = ctx.vtex.route.params;
 
-  ctx.status = 200
-  ctx.body = response
+  const response = await returnAppClient.getSchema(ctx, schema.toString());
 
-  await next()
+  ctx.status = 200;
+  ctx.body = response;
+
+  await next();
 }

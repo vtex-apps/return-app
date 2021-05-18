@@ -6,7 +6,7 @@
   "maxReplicas": 4,
   "routes": {
     "getSchemas": {
-      "path": "/returns/getSchema",
+      "path": "/returns/getSchema/:schema",
       "public": true,
       "settingsType": "workspace"
     },

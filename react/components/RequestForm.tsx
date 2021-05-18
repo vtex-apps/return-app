@@ -50,12 +50,14 @@ class RequestForm extends Component<Props> {
   }
 
   paymentMethods() {
-    const { selectedOrder }: any = this.props;
+    const { selectedOrder, settings }: any = this.props;
 
     const output: any[] = [];
 
     if (
-      selectedOrder.paymentData.transactions[0].payments[0].firstDigits !== null
+      selectedOrder.paymentData.transactions[0].payments[0].firstDigits !==
+        null &&
+      settings.paymentsCard
     ) {
       output.push({
         value: "card",
@@ -63,14 +65,18 @@ class RequestForm extends Component<Props> {
       });
     }
 
-    output.push({
-      value: "giftCard",
-      label: <FormattedMessage id={"store/my-returns.formVoucher"} />
-    });
-    output.push({
-      value: "bank",
-      label: <FormattedMessage id={"store/my-returns.formBank"} />
-    });
+    if (settings.paymentVoucher) {
+      output.push({
+        value: "giftCard",
+        label: <FormattedMessage id={"store/my-returns.formVoucher"} />
+      });
+    }
+    if (settings.paymentBank) {
+      output.push({
+        value: "bank",
+        label: <FormattedMessage id={"store/my-returns.formBank"} />
+      });
+    }
 
     return output;
   }
@@ -557,9 +563,7 @@ class RequestForm extends Component<Props> {
           ) : null}
         </div>
 
-        <div
-          className={`mt4 ph4 ${styles.returnFormActions}`}
-        >
+        <div className={`mt4 ph4 ${styles.returnFormActions}`}>
           <Button type={"submit"} variation="primary" onClick={submit}>
             <FormattedMessage id={"store/my-returns.formNextStep"} />
           </Button>

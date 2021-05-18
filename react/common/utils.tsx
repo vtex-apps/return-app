@@ -12,6 +12,14 @@ import {
 } from "vtex.styleguide";
 
 import axios from "axios";
+import { fetchPath } from "./fetch";
+import {
+  COMMENTS_SCHEMA,
+  HISTORY_SCHEMA,
+  PRODUCTS_SCHEMA,
+  RETURNS_SCHEMA,
+  SETTINGS_SCHEMA
+} from "../../common/constants";
 
 export function getCurrentDate() {
   return new Date().toISOString();
@@ -457,5 +465,36 @@ export function renderStatusIcon(request: any, intl: string) {
         />
       </span>
     </div>
+  );
+}
+
+export async function verifySchemas() {
+  const settingsSchemaResponse = await fetch(
+    `${fetchPath.getSchema}${schemaNames.settings}`
+  );
+  const requestSchemaResponse = await fetch(
+    `${fetchPath.getSchema}${schemaNames.request}`
+  );
+  const commentsSchemaResponse = await fetch(
+    `${fetchPath.getSchema}${schemaNames.comment}`
+  );
+  const historySchemaResponse = await fetch(
+    `${fetchPath.getSchema}${schemaNames.history}`
+  );
+  const productsSchemaResponse = await fetch(
+    `${fetchPath.getSchema}${schemaNames.product}`
+  );
+  const settingsSchema = await settingsSchemaResponse.json();
+  const requestsSchema = await requestSchemaResponse.json();
+  const commentsSchema = await commentsSchemaResponse.json();
+  const historySchema = await historySchemaResponse.json();
+  const productsSchema = await productsSchemaResponse.json();
+
+  return (
+    JSON.stringify(settingsSchema) !== JSON.stringify(SETTINGS_SCHEMA) ||
+    JSON.stringify(requestsSchema) !== JSON.stringify(RETURNS_SCHEMA) ||
+    JSON.stringify(commentsSchema) !== JSON.stringify(COMMENTS_SCHEMA) ||
+    JSON.stringify(historySchema) !== JSON.stringify(HISTORY_SCHEMA) ||
+    JSON.stringify(productsSchema) !== JSON.stringify(PRODUCTS_SCHEMA)
   );
 }
