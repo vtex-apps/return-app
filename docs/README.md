@@ -17,6 +17,7 @@ VTEX Return App
     - `Terms and conditions URL:` The URL of the page with the return terms and conditions. The customer can access this URL from the form they fill out to request a return.
         - If you have the terms on conditions page on `http://example.com/terms-and-conditions` it's enough for you to type just `/terms-and-conditions`
     - `Excluded categories:` Products that are in those categories will not be eligible for return
+    - `Payment methods:` Display or hide payment methods. *You should have at least one option selected.*
 
 ## Short description
 The return application serves the necessary functionalities for requesting returns from customers, and their processing by the administrators of the online store.

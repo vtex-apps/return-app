@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ReturnsTableContent from "./ReturnsTableContent";
 import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
 import { omsReturnRequest } from "../../common/templates/oms-return-request";
+import { schemaNames } from "../../common/utils";
 
 class ReturnsTable extends Component<any, any> {
   constructor(props: any) {
@@ -13,7 +14,7 @@ class ReturnsTable extends Component<any, any> {
   }
 
   componentDidMount(): void {
-    fetch(fetchPath.getSchema, {
+    fetch(`${fetchPath.getSchema}${schemaNames.settings}`, {
       method: fetchMethod.get,
       headers: fetchHeaders
     })
