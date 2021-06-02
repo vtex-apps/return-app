@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
-import { FormattedMessage } from "react-intl";
+import { injectIntl, defineMessages } from "react-intl";
 import { Button } from "vtex.styleguide";
-import { FormattedMessageFixed } from "../common/utils";
 
 interface Props {
   orderProducts: any;
@@ -10,7 +9,27 @@ interface Props {
   sendRequest: any;
   errorSubmit: string;
   info: any;
+  intl: any;
 }
+
+const messages = defineMessages({
+  thProduct: { id: "returns.thProduct" },
+  thQuantity: { id: "returns.thQuantity" },
+  thReason: { id: "returns.thReason" },
+  formContactDetails: { id: "returns.formContactDetails" },
+  formName: { id: "returns.formName" },
+  formEmail: { id: "returns.formEmail" },
+  formPhone: { id: "returns.formPhone" },
+  formPickupAddress: { id: "returns.formPickupAddress" },
+  formCountry: { id: "returns.formCountry" },
+  formLocality: { id: "returns.formLocality" },
+  formAddress: { id: "returns.formAddress" },
+  formPaymentMethod: { id: "returns.formPaymentMethod" },
+  formBankTransferAccount: { id: "returns.formBankTransferAccount" },
+  formVoucher: { id: "returns.formVoucher" },
+  formSubmit: { id: "returns.formSubmit" },
+  goBack: { id: "returns.goBack" }
+});
 
 class RequestInformation extends Component<Props> {
   constructor(props) {
@@ -23,7 +42,8 @@ class RequestInformation extends Component<Props> {
       info,
       showForm,
       sendRequest,
-      errorSubmit
+      errorSubmit,
+      intl: { formatMessage }
     } = this.props;
 
     return (
@@ -34,10 +54,10 @@ class RequestInformation extends Component<Props> {
               <tr className={`${styles.tableTr}`}>
                 <th className={`${styles.tableTh}`} />
                 <th className={`${styles.tableTh}`}>
-                  <FormattedMessage id={"store/my-returns.thProduct"} />
+                  {formatMessage({ id: messages.thProduct.id })}
                 </th>
                 <th className={`${styles.tableTh}`}>
-                  <FormattedMessage id={"store/my-returns.thQuantity"} />
+                  {formatMessage({ id: messages.thQuantity.id })}
                 </th>
               </tr>
             </thead>
@@ -59,14 +79,13 @@ class RequestInformation extends Component<Props> {
                       {product.name}
                       <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                         <span className={styles.strongText}>
-                          <FormattedMessageFixed
-                            id={"store/my-returns.thReason"}
-                          />
+                          {formatMessage({ id: messages.thReason.id })}
                           {": "}
                         </span>
-                        <FormattedMessageFixed
-                          id={`store/my-returns.${product.reasonCode}`}
-                        />{" "}
+                        {formatMessage({
+                          id: `returns.${product.reasonCode}`
+                        })}
+
                         {product.reasonCode === "reasonOther"
                           ? "( " + product.reason + " )"
                           : null}
@@ -87,30 +106,27 @@ class RequestInformation extends Component<Props> {
               className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
             >
               <p className={`${styles.returnFormInputsHeader}`}>
-                <FormattedMessage id={"store/my-returns.formContactDetails"} />
+                {formatMessage({ id: messages.formContactDetails.id })}
               </p>
               <div className={`mb2 ${styles.requestInformationField}`}>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  <FormattedMessage id={"store/my-returns.formName"} />:{" "}
-                  {info.name}
+                  {formatMessage({ id: messages.formName.id })}: {info.name}
                 </p>
               </div>
               <div className={`mb2 ${styles.requestInformationField}`}>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  <FormattedMessage id={"store/my-returns.formEmail"} />:{" "}
-                  {info.email}
+                  {formatMessage({ id: messages.formEmail.id })}: {info.email}
                 </p>
               </div>
               <div className={`mb2 ${styles.requestInformationField}`}>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  <FormattedMessage id={"store/my-returns.formPhone"} />:{" "}
-                  {info.phone}
+                  {formatMessage({ id: messages.formPhone.id })}: {info.phone}
                 </p>
               </div>
             </div>
@@ -119,13 +135,13 @@ class RequestInformation extends Component<Props> {
               className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
             >
               <p className={`${styles.returnFormInputsHeader}`}>
-                <FormattedMessage id={"store/my-returns.formPickupAddress"} />
+                {formatMessage({ id: messages.formPickupAddress.id })}
               </p>
               <div className={`mb2 ${styles.requestInformationField}`}>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  <FormattedMessage id={"store/my-returns.formCountry"} />:{" "}
+                  {formatMessage({ id: messages.formCountry.id })}:{" "}
                   {info.country}
                 </p>
               </div>
@@ -133,7 +149,7 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  <FormattedMessage id={"store/my-returns.formLocality"} />:{" "}
+                  {formatMessage({ id: messages.formLocality.id })}:{" "}
                   {info.locality}
                 </p>
               </div>
@@ -141,7 +157,7 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  <FormattedMessage id={"store/my-returns.formAddress"} />:{" "}
+                  {formatMessage({ id: messages.formAddress.id })}:{" "}
                   {info.address}
                 </p>
               </div>
@@ -151,7 +167,7 @@ class RequestInformation extends Component<Props> {
             className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsPayment}`}
           >
             <p className={`${styles.returnFormInputsHeader}`}>
-              <FormattedMessage id={"store/my-returns.formPaymentMethod"} />
+              {formatMessage({ id: messages.formPaymentMethod.id })}
             </p>
             {info.paymentMethod === "bank" ? (
               <div
@@ -160,9 +176,7 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
                 >
-                  <FormattedMessage
-                    id={"store/my-returns.formBankTransferAccount"}
-                  />{" "}
+                  {formatMessage({ id: messages.formBankTransferAccount.id })}{" "}
                   {info.iban}
                 </p>
               </div>
@@ -170,7 +184,7 @@ class RequestInformation extends Component<Props> {
               <p
                 className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
               >
-                <FormattedMessage id={"store/my-returns.formVoucher"} />
+                {formatMessage({ id: messages.formVoucher.id })}
               </p>
             ) : (
               <p
@@ -192,7 +206,7 @@ class RequestInformation extends Component<Props> {
                   showForm();
                 }}
               >
-                <FormattedMessage id={"store/my-returns.goBack"} />
+                {formatMessage({ id: messages.goBack.id })}
               </Button>
             </div>
             <div
@@ -205,7 +219,7 @@ class RequestInformation extends Component<Props> {
                   sendRequest();
                 }}
               >
-                <FormattedMessage id={"store/my-returns.formSubmit"} />
+                {formatMessage({ id: messages.formSubmit.id })}
               </Button>
             </div>
           </div>
@@ -220,4 +234,4 @@ class RequestInformation extends Component<Props> {
   }
 }
 
-export default RequestInformation;
+export default injectIntl(RequestInformation);

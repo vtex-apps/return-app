@@ -10,14 +10,13 @@ import {
   productStatuses,
   renderIcon,
   prepareHistoryData,
-  FormattedMessageFixed,
   sendMail,
   intlArea,
   isInt,
   getProductStatusTranslation
 } from "../common/utils";
 import styles from "../styles.css";
-import { FormattedMessage, injectIntl } from "react-intl";
+import { injectIntl, defineMessages } from "react-intl";
 import {
   Link,
   Dropdown,
@@ -31,6 +30,23 @@ import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 import StatusHistoryTimeline from "../components/StatusHistoryTimeline";
+
+const messages = defineMessages({
+  statusCommentError: { id: "returns.statusCommentError" },
+  changeStatusComment: { id: "returns.changeStatusComment" },
+  addComment: { id: "returns.addComment" },
+  commentVisibleToClient: { id: "returns.commentVisibleToClient" },
+  addCommentButton: { id: "returns.addCommentButton" },
+  returnForm: { id: "returns.details.returnForm" },
+  verifyPackage: { id: "returns.verifyPackage" },
+  refOrder: { id: "returns.refOrder" },
+  viewOrder: { id: "returns.viewOrder" },
+  status: { id: "returns.status" },
+  verifyPackageButton: { id: "returns.verifyPackageButton" },
+  back: { id: "returns.back" },
+  product: { id: "returns.product" },
+  noProducts: { id: "returns.noProducts" }
+});
 
 class ReturnForm extends Component<any, any> {
   static propTypes = {
@@ -154,11 +170,7 @@ class ReturnForm extends Component<any, any> {
             requestId
           ).then(comments => {
             this.setState({
-              statusHistoryTimeline: prepareHistoryData(
-                comments,
-                request[0],
-                "admin/returns"
-              )
+              statusHistoryTimeline: prepareHistoryData(comments, request[0])
             });
             this.getFromMasterData(
               schemaNames.history,
@@ -237,6 +249,7 @@ class ReturnForm extends Component<any, any> {
 
   submitStatusCommentForm() {
     this.setState({ errorCommentMessage: "" });
+    const { formatMessage } = this.props.intl;
     const {
       commentInput,
       visibleInput,
@@ -331,11 +344,7 @@ class ReturnForm extends Component<any, any> {
       }
 
       this.setState({
-        statusHistoryTimeline: prepareHistoryData(
-          oldComments,
-          requestData,
-          intlArea.admin
-        )
+        statusHistoryTimeline: prepareHistoryData(oldComments, requestData)
       });
       if (
         statusInput !== request.status &&
@@ -352,9 +361,9 @@ class ReturnForm extends Component<any, any> {
       }
     } else {
       this.setState({
-        errorCommentMessage: (
-          <FormattedMessageFixed id={"admin/returns.statusCommentError"} />
-        )
+        errorCommentMessage: formatMessage({
+          id: messages.statusCommentError.id
+        })
       });
     }
   }
@@ -452,7 +461,7 @@ class ReturnForm extends Component<any, any> {
     const { formatMessage } = this.props.intl;
 
     const currentStatus = formatMessage({
-      id: `${intlArea.admin}.status${getProductStatusTranslation(status)}`
+      id: `returns.status${getProductStatusTranslation(status)}`
     });
 
     // const currentStatus = status + " (current status)";
@@ -460,7 +469,7 @@ class ReturnForm extends Component<any, any> {
     if (status === requestsStatuses.new) {
       allowedStatuses.push({
         label: formatMessage({
-          id: `${intlArea.admin}.status${getProductStatusTranslation(
+          id: `returns.status${getProductStatusTranslation(
             requestsStatuses.picked
           )}`
         }),
@@ -471,7 +480,7 @@ class ReturnForm extends Component<any, any> {
     if (status === requestsStatuses.picked) {
       allowedStatuses.push({
         label: formatMessage({
-          id: `${intlArea.admin}.status${getProductStatusTranslation(
+          id: `returns.status${getProductStatusTranslation(
             requestsStatuses.pendingVerification
           )}`
         }),
@@ -489,7 +498,7 @@ class ReturnForm extends Component<any, any> {
         // Caz in care toate sunt Approved >> Approved
         allowedStatuses.push({
           label: formatMessage({
-            id: `${intlArea.admin}.status${getProductStatusTranslation(
+            id: `returns.status${getProductStatusTranslation(
               requestsStatuses.approved
             )}`
           }),
@@ -499,7 +508,7 @@ class ReturnForm extends Component<any, any> {
         // Caz in care toate produsele sunt denied >> Denied
         allowedStatuses.push({
           label: formatMessage({
-            id: `${intlArea.admin}.status${getProductStatusTranslation(
+            id: `returns.status${getProductStatusTranslation(
               requestsStatuses.denied
             )}`
           }),
@@ -513,7 +522,7 @@ class ReturnForm extends Component<any, any> {
         // Caz in care exista produse approved sau partiallyApproved si sau denied >> Partially Approved
         allowedStatuses.push({
           label: formatMessage({
-            id: `${intlArea.admin}.status${getProductStatusTranslation(
+            id: `returns.status${getProductStatusTranslation(
               requestsStatuses.partiallyApproved
             )}`
           }),
@@ -530,7 +539,7 @@ class ReturnForm extends Component<any, any> {
         { label: currentStatus, value: status },
         {
           label: formatMessage({
-            id: `${intlArea.admin}.status${getProductStatusTranslation(
+            id: `returns.status${getProductStatusTranslation(
               requestsStatuses.refunded
             )}`
           }),
@@ -550,13 +559,14 @@ class ReturnForm extends Component<any, any> {
       visibleInput,
       errorCommentMessage
     } = this.state;
+    const { formatMessage } = this.props.intl;
     const statusesOptions = this.allowedStatuses(request.status);
 
     return (
       <div>
         <p className={"mt7"}>
           <strong className={"mr6"}>
-            <FormattedMessage id={"admin/returns.changeStatusComment"} />
+            {formatMessage({ id: messages.changeStatusComment.id })}
           </strong>
         </p>
         <div className={`flex flex-row items-stretch`}>
@@ -571,9 +581,7 @@ class ReturnForm extends Component<any, any> {
             </div>
             <div className={`mb6`}>
               <Textarea
-                label={
-                  <FormattedMessageFixed id={"admin/returns.addComment"} />
-                }
+                label={formatMessage({ id: messages.addComment.id })}
                 value={commentInput}
                 onChange={e => this.setState({ commentInput: e.target.value })}
               />
@@ -582,11 +590,9 @@ class ReturnForm extends Component<any, any> {
               <Checkbox
                 checked={visibleInput}
                 id="visible-input"
-                label={
-                  <FormattedMessageFixed
-                    id={"admin/returns.commentVisibleToClient"}
-                  />
-                }
+                label={formatMessage({
+                  id: messages.commentVisibleToClient.id
+                })}
                 name="default-checkbox-group"
                 onChange={e =>
                   this.setState({ visibleInput: !this.state.visibleInput })
@@ -601,7 +607,9 @@ class ReturnForm extends Component<any, any> {
                 </div>
               ) : null}
               <Button onClick={() => this.submitStatusCommentForm()}>
-                <FormattedMessage id={"admin/returns.addCommentButton"} />
+                {formatMessage({
+                  id: messages.addCommentButton.id
+                })}
               </Button>
             </div>
           </div>
@@ -627,6 +635,7 @@ class ReturnForm extends Component<any, any> {
       showProductsForm,
       giftCardValue
     } = this.state;
+    const { formatMessage } = this.props.intl;
     if (!request) {
       return <div>Not Found</div>;
     }
@@ -635,14 +644,13 @@ class ReturnForm extends Component<any, any> {
       return (
         <div>
           <p>
-            <FormattedMessage
-              id={"admin/returns.details.returnForm"}
-              values={{
-                requestId: " #" + request.id
-              }}
-            />
+            {formatMessage(
+              { id: messages.returnForm.id },
+              { requestId: " #" + request.id }
+            )}
+
             {" / "}
-            {returnFormDate(request.dateSubmitted, "admin/returns")}
+            {returnFormDate(request.dateSubmitted)}
           </p>
           {this.canVerifyPackage() ? (
             <Button
@@ -651,7 +659,7 @@ class ReturnForm extends Component<any, any> {
                 this.setState({ showMain: false, showProductsForm: true });
               }}
             >
-              <FormattedMessage id={"admin/returns.verifyPackage"} />
+              {formatMessage({ id: messages.verifyPackage.id })}
             </Button>
           ) : null}
 
@@ -659,44 +667,34 @@ class ReturnForm extends Component<any, any> {
             product={product}
             totalRefundAmount={request.refundedAmount}
             productsValue={request.totalPrice}
-            intl={intlArea.admin}
           />
           <p className={"mt7"}>
             <strong className={"mr6"}>
-              <FormattedMessage
-                id={"admin/returns.refOrder"}
-                values={{ orderId: " #" + request.orderId }}
-              />
+              {formatMessage(
+                { id: messages.refOrder.id },
+                { orderId: " #" + request.orderId }
+              )}
             </strong>
             <Link
               href={"/admin/checkout/#/orders/" + request.orderId}
               target="_blank"
             >
-              <FormattedMessageFixed id={"admin/returns.viewOrder"} />
+              {formatMessage({ id: messages.viewOrder.id })}
             </Link>
           </p>
 
-          <RequestInfo
-            request={request}
-            giftCardValue={giftCardValue}
-            intl={intlArea.admin}
-          />
+          <RequestInfo request={request} giftCardValue={giftCardValue} />
 
           <p className={"mt7"}>
-            <strong>
-              <FormattedMessage id={"admin/returns.status"} />
-            </strong>
+            <strong>{formatMessage({ id: messages.status.id })}</strong>
           </p>
 
           <StatusHistoryTimeline
             statusHistoryTimeline={statusHistoryTimeline}
-            intl={intlArea.admin}
+            intlZone={intlArea.admin}
           />
           {this.renderStatusCommentForm()}
-          <StatusHistoryTable
-            statusHistory={statusHistory}
-            intl={intlArea.admin}
-          />
+          <StatusHistoryTable statusHistory={statusHistory} />
         </div>
       );
     }
@@ -711,15 +709,13 @@ class ReturnForm extends Component<any, any> {
                 this.cancelProductsForm();
               }}
             >
-              <FormattedMessage id={"admin/returns.back"} />
+              {formatMessage({ id: messages.back.id })}
             </Button>
           </div>
           <table className={styles.table + " " + styles.tableSm + " "}>
             <thead>
               <tr>
-                <th>
-                  <FormattedMessage id={"admin/returns.product"} />
-                </th>
+                <th>{formatMessage({ id: messages.product.id })}</th>
                 <th />
                 <th />
               </tr>
@@ -747,14 +743,14 @@ class ReturnForm extends Component<any, any> {
                     <td
                       className={`${styles.paddingLeft20} ${styles.mediumCell}`}
                     >
-                      {renderIcon(currentProduct, "admin/returns")}
+                      {renderIcon(currentProduct)}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan={5} className={styles.textCenter}>
-                    <FormattedMessage id={"admin/returns.noProducts"} />
+                    {formatMessage({ id: messages.noProducts.id })}
                   </td>
                 </tr>
               )}
@@ -768,7 +764,7 @@ class ReturnForm extends Component<any, any> {
                 this.verifyPackage();
               }}
             >
-              <FormattedMessage id={"admin/returns.verifyPackageButton"} />
+              {formatMessage({ id: messages.verifyPackageButton.id })}
             </Button>
           </div>
         </div>

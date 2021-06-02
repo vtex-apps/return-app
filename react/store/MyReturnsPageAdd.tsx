@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
 import { Button, Spinner } from "vtex.styleguide";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, injectIntl } from "react-intl";
 import {
   schemaTypes,
   requestsStatuses,
@@ -12,9 +12,8 @@ import {
 import { isValidIBANNumber } from "../common/validations";
 import { countries } from "../common/countries";
 
-import { PageProps } from "../typings/utils";
 import styles from "../styles.css";
-import { getCurrentDate, FormattedMessageFixed } from "../common/utils";
+import { getCurrentDate } from "../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 import EligibleOrdersTable from "../components/EligibleOrdersTable";
 import RequestInformation from "../components/RequestInformation";
@@ -61,44 +60,26 @@ type State = {
   submittedRequest: boolean;
 };
 
-const errorMessages = {
-  name: {
-    id: "store/my-returns.formErrorName"
-  },
-  email: {
-    id: "store/my-returns.formErrorEmail"
-  },
-  emailInvalid: {
-    id: "store/my-returns.formErrorEmailInvalid"
-  },
-  phone: {
-    id: "store/my-returns.formErrorPhone"
-  },
-  country: {
-    id: "store/my-returns.formErrorCountry"
-  },
-  locality: {
-    id: "store/my-returns.formErrorLocality"
-  },
-  address: {
-    id: "store/my-returns.formErrorAddress"
-  },
-  paymentMethod: {
-    id: "store/my-returns.formErrorPaymentMethod"
-  },
-  iban: {
-    id: "store/my-returns.formErrorIBAN"
-  },
-  agree: {
-    id: "store/my-returns.formErrorAgree"
-  },
-  productQuantities: {
-    id: "store/my-returns.formErrorQuantities"
-  },
-  reasonMissing: {
-    id: "store/my-returns.formErrorReasonMissing"
-  }
-};
+const errorMessages = defineMessages({
+  name: { id: "returns.formErrorName" },
+  email: { id: "returns.formErrorEmail" },
+  emailInvalid: { id: "returns.formErrorEmailInvalid" },
+  phone: { id: "returns.formErrorPhone" },
+  country: { id: "returns.formErrorCountry" },
+  locality: { id: "returns.formErrorLocality" },
+  address: { id: "returns.formErrorAddress" },
+  paymentMethod: { id: "returns.formErrorPaymentMethod" },
+  iban: { id: "returns.formErrorIBAN" },
+  agree: { id: "returns.formErrorAgree" },
+  productQuantities: { id: "returns.formErrorQuantities" },
+  reasonMissing: { id: "returns.formErrorReasonMissing" }
+});
+
+const messages = defineMessages({
+  submitSuccess: { id: "returns.requestSubmitSuccess" },
+  submitError: { id: "returns.requestSubmitError" },
+  backToOrders: { id: "returns.backToOrders" }
+});
 
 const emailValidation = (email: string) => {
   return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -106,8 +87,8 @@ const emailValidation = (email: string) => {
   );
 };
 
-class MyReturnsPageAdd extends Component<PageProps, State> {
-  constructor(props: PageProps & State) {
+class MyReturnsPageAdd extends Component<any, State> {
+  constructor(props: any & State) {
     super(props);
     this.state = {
       showOrdersTable: true,
@@ -699,17 +680,15 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       type: schemaTypes.requests
     };
 
+    const { formatMessage } = this.props.intl;
+
     this.sendData(requestData, schemaNames.request).then(response => {
       if ("DocumentId" in response) {
         this.addStatusHistory(response.DocumentId).then();
         this.submitProductRequest(response.DocumentId)
           .then(() => {
             this.setState({
-              successSubmit: (
-                <FormattedMessageFixed
-                  id={"store/my-returns.requestSubmitSuccess"}
-                />
-              ),
+              successSubmit: formatMessage({ id: messages.submitSuccess.id }),
               submittedRequest: true
             });
             sendMail({
@@ -722,9 +701,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
           });
       } else {
         this.setState({
-          errorSubmit: (
-            <FormattedMessageFixed id={"store/my-returns.requestSubmitError"} />
-          ),
+          errorSubmit: formatMessage({ id: messages.submitError.id }),
           submittedRequest: true
         });
       }
@@ -824,6 +801,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
       submittedRequest,
       settings
     }: any = this.state;
+    const { formatMessage } = this.props.intl;
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
@@ -846,7 +824,7 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
                 <div className={`flex flex-column items-center`}>
                   <span className="mb4">
                     <Button href={"/account#/my-returns"}>
-                      <FormattedMessage id={"store/my-returns.backToOrders"} />
+                      {formatMessage({ id: messages.backToOrders.id })}
                     </Button>
                   </span>
                 </div>
@@ -926,4 +904,4 @@ class MyReturnsPageAdd extends Component<PageProps, State> {
   }
 }
 
-export default MyReturnsPageAdd;
+export default injectIntl(MyReturnsPageAdd);

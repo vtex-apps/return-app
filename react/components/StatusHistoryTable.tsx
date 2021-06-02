@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
-import {
-  returnFormDate,
-  FormattedMessageFixed,
-  getProductStatusTranslation
-} from "../common/utils";
+import { returnFormDate, getProductStatusTranslation } from "../common/utils";
+
+import { injectIntl, defineMessages } from "react-intl";
 
 interface Props {
   statusHistory: any;
-  intl: string;
+  intl: any;
 }
 
 class StatusHistoryTable extends Component<Props> {
@@ -17,18 +15,21 @@ class StatusHistoryTable extends Component<Props> {
   }
 
   render() {
-    const { statusHistory, intl } = this.props;
-    const messages = {
-      title: `${intl}.statusHistory`,
-      date: `${intl}.date`,
-      status: `${intl}.status`,
-      submittedBy: `${intl}.submittedBy`
-    };
+    const {
+      statusHistory,
+      intl: { formatMessage }
+    } = this.props;
+    const messages = defineMessages({
+      title: { id: `returns.statusHistory` },
+      date: { id: `returns.date` },
+      status: { id: `returns.status` },
+      submittedBy: { id: `returns.submittedBy` }
+    });
     return (
       <div className={`${styles.requestInfoHistoryContainer}`}>
         <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
           <strong className={`${styles.requestInfoSectionTitleStrong}`}>
-            <FormattedMessageFixed id={messages.title} />
+            {formatMessage({ id: messages.title.id })}
           </strong>
         </p>
         <div
@@ -41,21 +42,21 @@ class StatusHistoryTable extends Component<Props> {
               className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnHeader}`}
             >
               <p className={styles.tableThParagraph}>
-                <FormattedMessageFixed id={messages.date} />
+                {formatMessage({ id: messages.date.id })}
               </p>
             </div>
             <div
               className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnHeader}`}
             >
               <p className={styles.tableThParagraph}>
-                <FormattedMessageFixed id={messages.status} />
+                {formatMessage({ id: messages.status.id })}
               </p>
             </div>
             <div
               className={`flex w-33 ${styles.requestInfoHistoryColumn} ${styles.requestInfoHistoryColumnHeader}`}
             >
               <p className={styles.tableThParagraph}>
-                <FormattedMessageFixed id={messages.submittedBy} />
+                {formatMessage({ id: messages.submittedBy.id })}
               </p>
             </div>
           </div>
@@ -70,7 +71,7 @@ class StatusHistoryTable extends Component<Props> {
                 <p
                   className={`${styles.requestInfoHistoryText} ${styles.requestInfoHistoryTextDate}`}
                 >
-                  {returnFormDate(status.dateSubmitted, intl)}
+                  {returnFormDate(status.dateSubmitted)}
                 </p>
               </div>
               <div
@@ -79,12 +80,11 @@ class StatusHistoryTable extends Component<Props> {
                 <p
                   className={`${styles.requestInfoHistoryText} ${styles.requestInfoHistoryTextStatus}`}
                 >
-                  <FormattedMessageFixed
-                    id={
-                      `${intl}.status` +
-                      getProductStatusTranslation(status.status)
-                    }
-                  />
+                  {formatMessage({
+                    id: `returns.status${getProductStatusTranslation(
+                      status.status
+                    )}`
+                  })}
                 </p>
               </div>
               <div
@@ -104,4 +104,4 @@ class StatusHistoryTable extends Component<Props> {
   }
 }
 
-export default StatusHistoryTable;
+export default injectIntl(StatusHistoryTable);

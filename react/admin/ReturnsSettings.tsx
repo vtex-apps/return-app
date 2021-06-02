@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, injectIntl } from "react-intl";
 import {
   Layout,
   PageBlock,
@@ -17,16 +17,36 @@ import {
   schemaNames,
   schemaTypes,
   isInt,
-  FormattedMessageFixed,
   verifySchemas
 } from "../common/utils";
 import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
 
 const categoriesArray: any[] = [];
 
-export default class ReturnsSettings extends Component<{}, any> {
+const messages = defineMessages({
+  formBank: { id: "returns.formBank" },
+  formCreditCard: { id: "returns.formCreditCard" },
+  formVoucher: { id: "returns.formVoucher" },
+  settingMin3Chars: { id: "returns.settingMin3Chars" },
+  settingsErrorDaysNumber: { id: "returns.settingsErrorDaysNumber" },
+  errorFieldRequired: { id: "returns.errorFieldRequired" },
+  paymentsFieldRequired: { id: "returns.paymentsFieldRequired" },
+  settingsSaved: { id: "returns.settingsSaved" },
+  labelSettings: { id: "navigation.labelSettings" },
+  updateSchema: { id: "settings.updateSchema" },
+  maxDaysLabel: { id: "settings.maxDays_label" },
+  termsLabel: { id: "settings.terms_label" },
+  searchCategories: { id: "settings.searchCategories" },
+  excludedCategories: { id: "settings.excludedCategories" },
+  paymentMethodsLabel: { id: "settings.paymentMethods_label" },
+  all: { id: "returns.all" },
+  saveSettings: { id: "settings.saveSettings" }
+});
+
+class ReturnsSettings extends Component<any, any> {
   constructor(props: any) {
     super(props);
+    const { formatMessage } = this.props.intl;
     this.state = {
       id: "",
       updatingSchema: false,
@@ -49,15 +69,15 @@ export default class ReturnsSettings extends Component<{}, any> {
       errorMessage: "",
       payments: {
         paymentBank: {
-          label: <FormattedMessage id={`admin/returns.formBank`} />,
+          label: formatMessage({ id: messages.formBank.id }),
           checked: true
         },
         paymentCard: {
-          label: <FormattedMessage id={`admin/returns.formCreditCard`} />,
+          label: formatMessage({ id: messages.formCreditCard.id }),
           checked: true
         },
         paymentVoucher: {
-          label: <FormattedMessage id={`admin/returns.formVoucher`} />,
+          label: formatMessage({ id: messages.formVoucher.id }),
           checked: true
         }
       },
@@ -174,19 +194,24 @@ export default class ReturnsSettings extends Component<{}, any> {
 
     if (check) {
       this.setState({ updatingSchema: check });
-      await fetch(fetchPath.generateSchema, {
-        method: fetchMethod.put,
-        headers: fetchHeaders
-      });
+      try {
+        await fetch(fetchPath.generateSchema, {
+          method: fetchMethod.put,
+          headers: fetchHeaders
+        });
+      } catch (error) {
+        console.error(error);
+      }
 
       setTimeout(() => {
         window.location.reload();
-      }, 3000);
+      }, 5000);
     }
   }
 
   filterCategories = (query: string) => {
     const { categories, excludedCategories } = this.state;
+    const { formatMessage } = this.props.intl;
     const matches: any[] = [];
     this.setState({
       categoriesFilterError: "",
@@ -196,9 +221,9 @@ export default class ReturnsSettings extends Component<{}, any> {
 
     if (query.length && query.length < 3) {
       this.setState({
-        categoriesFilterError: (
-          <FormattedMessageFixed id={"admin/returns.settingMin3Chars"} />
-        )
+        categoriesFilterError: formatMessage({
+          id: messages.settingMin3Chars.id
+        })
       });
     }
 
@@ -249,6 +274,7 @@ export default class ReturnsSettings extends Component<{}, any> {
     });
   };
   saveSettings = () => {
+    const { formatMessage } = this.props.intl;
     this.setState({
       errors: {
         maxDays: "",
@@ -265,11 +291,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,
-          maxDays: (
-            <FormattedMessageFixed
-              id={"admin/returns.settingsErrorDaysNumber"}
-            />
-          )
+          maxDays: formatMessage({ id: messages.settingsErrorDaysNumber.id })
         }
       }));
       hasErrors = true;
@@ -278,9 +300,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,
-          termsUrl: (
-            <FormattedMessageFixed id={"admin/returns.errorFieldRequired"} />
-          )
+          termsUrl: formatMessage({ id: messages.errorFieldRequired.id })
         }
       }));
       hasErrors = true;
@@ -293,9 +313,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,
-          payments: (
-            <FormattedMessageFixed id={"admin/returns.paymentsFieldRequired"} />
-          )
+          payments: formatMessage({ id: messages.paymentsFieldRequired.id })
         }
       }));
       hasErrors = true;
@@ -321,6 +339,7 @@ export default class ReturnsSettings extends Component<{}, any> {
   };
 
   saveMasterData = (postData: any) => {
+    const { formatMessage } = this.props.intl;
     fetch(fetchPath.saveDocuments + schemaNames.settings + "/", {
       method: fetchMethod.post,
       body: JSON.stringify(postData),
@@ -329,9 +348,7 @@ export default class ReturnsSettings extends Component<{}, any> {
       .then(response => response)
       .then(json => {
         this.setState({
-          successMessage: (
-            <FormattedMessageFixed id={"admin/returns.settingsSaved"} />
-          ),
+          successMessage: formatMessage({ id: messages.settingsSaved.id }),
           loading: false
         });
         setTimeout(() => {
@@ -361,19 +378,20 @@ export default class ReturnsSettings extends Component<{}, any> {
       updatingSchema,
       payments
     } = this.state;
+    const { formatMessage } = this.props.intl;
 
     return (
       <Layout
         pageHeader={
           <PageHeader
-            title={<FormattedMessage id="admin/navigation.labelSettings" />}
+            title={formatMessage({ id: messages.labelSettings.id })}
           />
         }
       >
         <PageBlock variation="full">
           {updatingSchema ? (
             <div className={`flex flex-column justify-center items-center`}>
-              <FormattedMessage id={"admin/settings.updateSchema"} />
+              {formatMessage({ id: messages.updateSchema.id })}
               <div className={`pt6 pb6`}>
                 <Spinner />
               </div>
@@ -383,64 +401,51 @@ export default class ReturnsSettings extends Component<{}, any> {
               <div className={`flex flex-column`}>
                 <div className={`flex flex-row`}>
                   <div className={`w-50 ph1`}>
-                    <FormattedMessage id={"admin/settings.maxDays_label"}>
-                      {msg => (
-                        <Input
-                          value={maxDays}
-                          size="regular"
-                          label={msg}
-                          onChange={e =>
-                            this.setState({ maxDays: e.target.value })
-                          }
-                          errorMessage={errors.maxDays}
-                        />
-                      )}
-                    </FormattedMessage>
+                    <Input
+                      value={maxDays}
+                      size="regular"
+                      label={formatMessage({ id: messages.maxDaysLabel.id })}
+                      onChange={e => this.setState({ maxDays: e.target.value })}
+                      errorMessage={errors.maxDays}
+                    />
                   </div>
                   <div className={`w-50 ph1`}>
-                    <FormattedMessage id={"admin/settings.terms_label"}>
-                      {msg => (
-                        <Input
-                          value={termsUrl}
-                          size="regular"
-                          label={msg}
-                          onChange={e =>
-                            this.setState({ termsUrl: e.target.value })
-                          }
-                          errorMessage={errors.termsUrl}
-                        />
-                      )}
-                    </FormattedMessage>
+                    <Input
+                      value={termsUrl}
+                      size="regular"
+                      label={formatMessage({ id: messages.termsLabel.id })}
+                      onChange={e =>
+                        this.setState({ termsUrl: e.target.value })
+                      }
+                      errorMessage={errors.termsUrl}
+                    />
                   </div>
                 </div>
               </div>
               <div className={`flex flex-column mt6`}>
                 <div className={`flex flex-column w-100`}>
-                  <FormattedMessage id={"admin/settings.searchCategories"}>
-                    {msg => (
-                      <Input
-                        value={categoryFilterQuery}
-                        size="regular"
-                        label={msg}
-                        onChange={e => {
-                          this.filterCategories(e.target.value);
-                        }}
-                        errorMessage={categoriesFilterError}
-                        suffix={
-                          categoryFilterQuery ? (
-                            <button
-                              className={styles.transparentButton}
-                              onClick={() => {
-                                this.clearCategoriesSearch();
-                              }}
-                            >
-                              <IconClear />
-                            </button>
-                          ) : null
-                        }
-                      />
-                    )}
-                  </FormattedMessage>
+                  <Input
+                    value={categoryFilterQuery}
+                    size="regular"
+                    label={formatMessage({ id: messages.searchCategories.id })}
+                    onChange={e => {
+                      this.filterCategories(e.target.value);
+                    }}
+                    errorMessage={categoriesFilterError}
+                    suffix={
+                      categoryFilterQuery ? (
+                        <button
+                          className={styles.transparentButton}
+                          onClick={() => {
+                            this.clearCategoriesSearch();
+                          }}
+                        >
+                          <IconClear />
+                        </button>
+                      ) : null
+                    }
+                  />
+
                   {filteredCategories.length ? (
                     <div
                       className={`${styles.filteredCategoriesContainer} br--bottom br2 bb bl br bw1 b--muted-3 bg-base w-100 z-1 shadow-5`}
@@ -466,11 +471,7 @@ export default class ReturnsSettings extends Component<{}, any> {
                   ) : null}
                 </div>
                 <div className={`flex flex-column w-100`}>
-                  <p>
-                    <FormattedMessage
-                      id={"admin/settings.excludedCategories"}
-                    />
-                  </p>
+                  <p>{formatMessage({ id: messages.excludedCategories.id })}</p>
                   {excludedCategories.length ? (
                     <div className={`flex flex-column`}>
                       {excludedCategories.map((category: any) => (
@@ -492,24 +493,19 @@ export default class ReturnsSettings extends Component<{}, any> {
                 </div>
                 <div className={`flex flex-column w-100`}>
                   <p>
-                    <FormattedMessage
-                      id={"admin/settings.paymentMethods_label"}
-                    />
+                    {formatMessage({ id: messages.paymentMethodsLabel.id })}
                   </p>
-                  <FormattedMessage id={"admin/returns.all"}>
-                    {msg => (
-                      <CheckboxGroup
-                        name="simpleCheckboxGroup"
-                        label={msg}
-                        id="simple"
-                        value="simple"
-                        checkedMap={payments}
-                        onGroupChange={newCheckedMap => {
-                          this.setState({ payments: newCheckedMap });
-                        }}
-                      />
-                    )}
-                  </FormattedMessage>
+                  <CheckboxGroup
+                    name="simpleCheckboxGroup"
+                    label={formatMessage({ id: messages.all.id })}
+                    id="simple"
+                    value="simple"
+                    checkedMap={payments}
+                    onGroupChange={newCheckedMap => {
+                      this.setState({ payments: newCheckedMap });
+                    }}
+                  />
+
                   {errors.payments && (
                     <p className={`${styles.errorMessage}`}>
                       {errors.payments}
@@ -537,7 +533,7 @@ export default class ReturnsSettings extends Component<{}, any> {
                       this.saveSettings();
                     }}
                   >
-                    <FormattedMessage id={"admin/settings.saveSettings"} />
+                    {formatMessage({ id: messages.saveSettings.id })}
                   </Button>
                 </div>
               ) : null}
@@ -548,3 +544,5 @@ export default class ReturnsSettings extends Component<{}, any> {
     );
   }
 }
+
+export default injectIntl(ReturnsSettings);

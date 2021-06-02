@@ -7,7 +7,7 @@ import ReturnsPage from "./store/MyReturnsPage";
 
 const headerConfig = {
   namespace: "vtex-account__returns-list",
-  title: <FormattedMessage id="store/my-returns.link" />,
+  title: <FormattedMessage id="returns.link" />,
   headerContent: (
     <Button
       variation="primary"
@@ -15,7 +15,7 @@ const headerConfig = {
       size="small"
       href="/account#/my-returns/add"
     >
-      <FormattedMessage id="store/my-returns.addReturn" />
+      <FormattedMessage id="returns.addReturn" />
     </Button>
   )
 };

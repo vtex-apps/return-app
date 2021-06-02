@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import { defineMessages, FormattedMessage } from "react-intl";
 import React from "react";
 import styles from "../styles.css";
 import {
@@ -50,27 +50,91 @@ export function beautifyDate(date: string) {
   return new Date(date).toLocaleString();
 }
 
-export function returnFormDate(date: string, intl: string) {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
+export function returnFormDate(date: string) {
   const d = new Date(date);
   const seconds = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
   const minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
+  let message = defineMessages({
+    month: {
+      id: "returns.January"
+    }
+  });
+  if (d.getMonth() === 0) {
+    message = defineMessages({
+      month: {
+        id: "returns.January"
+      }
+    });
+  } else if (d.getMonth() === 1) {
+    message = defineMessages({
+      month: {
+        id: "returns.February"
+      }
+    });
+  } else if (d.getMonth() === 2) {
+    message = defineMessages({
+      month: {
+        id: "returns.March"
+      }
+    });
+  } else if (d.getMonth() === 3) {
+    message = defineMessages({
+      month: {
+        id: "returns.April"
+      }
+    });
+  } else if (d.getMonth() === 4) {
+    message = defineMessages({
+      month: {
+        id: "returns.May"
+      }
+    });
+  } else if (d.getMonth() === 5) {
+    message = defineMessages({
+      month: {
+        id: "returns.June"
+      }
+    });
+  } else if (d.getMonth() === 6) {
+    message = defineMessages({
+      month: {
+        id: "returns.July"
+      }
+    });
+  } else if (d.getMonth() === 7) {
+    message = defineMessages({
+      month: {
+        id: "returns.August"
+      }
+    });
+  } else if (d.getMonth() === 8) {
+    message = defineMessages({
+      month: {
+        id: "returns.September"
+      }
+    });
+  } else if (d.getMonth() === 9) {
+    message = defineMessages({
+      month: {
+        id: "returns.October"
+      }
+    });
+  } else if (d.getMonth() === 10) {
+    message = defineMessages({
+      month: {
+        id: "returns.November"
+      }
+    });
+  } else if (d.getMonth() === 11) {
+    message = defineMessages({
+      month: {
+        id: "returns.December"
+      }
+    });
+  }
 
   return (
-    <FormattedMessageFixed id={`${intl}.${monthNames[d.getMonth()]}`}>
+    <FormattedMessageFixed id={message.month.id}>
       {(monthName: string) =>
         d.getDate() +
         " " +
@@ -187,18 +251,48 @@ export function getProductStatusTranslation(status: string) {
   return;
 }
 
-export function renderIcon(product: any, intl: string) {
+export function renderIcon(product: any) {
+  let messages = defineMessages({
+    status: {
+      id: `returns.productStatusNew`
+    }
+  });
+  if (getProductStatusTranslation(product.status) === "Approved") {
+    messages = defineMessages({
+      status: {
+        id: "returns.productStatusApproved"
+      }
+    });
+  } else if (
+    getProductStatusTranslation(product.status) === "Pending verification"
+  ) {
+    messages = defineMessages({
+      status: {
+        id: "returns.productStatusPendingVerification"
+      }
+    });
+  } else if (
+    getProductStatusTranslation(product.status) === "Partially approved"
+  ) {
+    messages = defineMessages({
+      status: {
+        id: "returns.productStatusPartiallyApproved"
+      }
+    });
+  } else if (getProductStatusTranslation(product.status) === "Denied") {
+    messages = defineMessages({
+      status: {
+        id: "returns.productStatusDenied"
+      }
+    });
+  }
+
   if (product.status === requestsStatuses.approved) {
     return (
       <div>
         <span className={styles.statusApproved}>
           <IconSuccess size={14} />{" "}
-          <FormattedMessageFixed
-            id={
-              `${intl}.productStatus` +
-              getProductStatusTranslation(product.status)
-            }
-          />
+          <FormattedMessageFixed id={messages.status.id} />
         </span>
       </div>
     );
@@ -209,12 +303,7 @@ export function renderIcon(product: any, intl: string) {
       <div>
         <span className={styles.statusDenied}>
           <IconFailure size={14} />{" "}
-          <FormattedMessageFixed
-            id={
-              `${intl}.productStatus` +
-              getProductStatusTranslation(product.status)
-            }
-          />
+          <FormattedMessageFixed id={messages.status.id} />
         </span>
       </div>
     );
@@ -225,12 +314,7 @@ export function renderIcon(product: any, intl: string) {
       <div>
         <span className={styles.statusPartiallyApproved}>
           <IconWarning size={14} />{" "}
-          <FormattedMessageFixed
-            id={
-              `${intl}.productStatus` +
-              getProductStatusTranslation(product.status)
-            }
-          />{" "}
+          <FormattedMessageFixed id={messages.status.id} />{" "}
           {product.goodProducts}/{product.quantity}
         </span>
       </div>
@@ -242,12 +326,7 @@ export function renderIcon(product: any, intl: string) {
       <div>
         <span className={styles.statusPendingVerification}>
           <IconClock size={14} />{" "}
-          <FormattedMessageFixed
-            id={
-              `${intl}.productStatus` +
-              getProductStatusTranslation(product.status)
-            }
-          />
+          <FormattedMessageFixed id={messages.status.id} />
         </span>
       </div>
     );
@@ -257,12 +336,7 @@ export function renderIcon(product: any, intl: string) {
     <div>
       <span className={styles.statusNew}>
         <IconVisibilityOn size={14} />{" "}
-        <FormattedMessageFixed
-          id={
-            `${intl}.productStatus` +
-            getProductStatusTranslation(product.status)
-          }
-        />
+        <FormattedMessageFixed id={messages.status.id} />
       </span>
     </div>
   );
@@ -276,14 +350,34 @@ export function isInt(value: any) {
   );
 }
 
-export function prepareHistoryData(comment: any, request: any, intl: string) {
+export function prepareHistoryData(comment: any, request: any) {
+  const messages = defineMessages({
+    new: {
+      id: "returns.timelineNew"
+    },
+    picked: {
+      id: "returns.timelinePicked"
+    },
+    pending: {
+      id: "returns.timelinePending"
+    },
+    verified: {
+      id: "returns.timelineVerified"
+    },
+    refunded: {
+      id: "returns.timelineRefunded"
+    },
+    denied: {
+      id: "returns.timelineDenied"
+    }
+  });
   return [
     {
       status: statusHistoryTimeline.new,
       text: (
         <span>
-          <FormattedMessageFixed id={`${intl}.timelineNew`} />{" "}
-          {returnFormDate(request.dateSubmitted, intl)}
+          <FormattedMessageFixed id={messages.new.id} />{" "}
+          {returnFormDate(request.dateSubmitted)}
         </span>
       ),
       step: 1,
@@ -294,7 +388,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
     },
     {
       status: statusHistoryTimeline.picked,
-      text: <FormattedMessageFixed id={`${intl}.timelinePicked`} />,
+      text: <FormattedMessageFixed id={messages.picked.id} />,
       step: 2,
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.picked
@@ -311,7 +405,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
     },
     {
       status: statusHistoryTimeline.pending,
-      text: <FormattedMessageFixed id={`${intl}.timelinePending`} />,
+      text: <FormattedMessageFixed id={messages.pending.id} />,
       step: 3,
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.pendingVerification
@@ -327,7 +421,7 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
     },
     {
       status: statusHistoryTimeline.verified,
-      text: <FormattedMessageFixed id={`${intl}.timelineVerified`} />,
+      text: <FormattedMessageFixed id={messages.verified.id} />,
       step: 4,
       comments: comment.filter(
         (item: any) =>
@@ -347,11 +441,11 @@ export function prepareHistoryData(comment: any, request: any, intl: string) {
       status: statusHistoryTimeline.refunded,
       text:
         request.status === requestsStatuses.refunded ? (
-          <FormattedMessageFixed id={`${intl}.timelineRefunded`} />
+          <FormattedMessageFixed id={messages.refunded.id} />
         ) : request.status === requestsStatuses.denied ? (
-          <FormattedMessageFixed id={`${intl}.timelineDenied`} />
+          <FormattedMessageFixed id={messages.denied.id} />
         ) : (
-          <FormattedMessageFixed id={`${intl}.timelineRefunded`} />
+          <FormattedMessageFixed id={messages.refunded.id} />
         ),
       step: 5,
       comments: comment.filter(
@@ -377,14 +471,14 @@ export function sendMail(jsonData: any) {
     .then(r => {});
 }
 
-export function renderStatusIcon(request: any, intl: string) {
+export function renderStatusIcon(request: any) {
   if (request === requestsStatuses.approved) {
     return (
       <div>
         <span className={styles.statusApproved}>
           <IconSuccess size={14} />{" "}
           <FormattedMessageFixed
-            id={`${intl}.status` + getProductStatusTranslation(request)}
+            id={`returns.status` + getProductStatusTranslation(request)}
           />
         </span>
       </div>
@@ -397,7 +491,7 @@ export function renderStatusIcon(request: any, intl: string) {
         <span className={styles.statusDenied}>
           <IconFailure size={14} />{" "}
           <FormattedMessageFixed
-            id={`${intl}.status` + getProductStatusTranslation(request)}
+            id={`returns.status` + getProductStatusTranslation(request)}
           />
         </span>
       </div>
@@ -410,7 +504,7 @@ export function renderStatusIcon(request: any, intl: string) {
         <span className={styles.statusPartiallyApproved}>
           <IconWarning size={14} />{" "}
           <FormattedMessageFixed
-            id={`${intl}.status` + getProductStatusTranslation(request)}
+            id={`returns.status` + getProductStatusTranslation(request)}
           />
         </span>
       </div>
@@ -423,7 +517,7 @@ export function renderStatusIcon(request: any, intl: string) {
         <span className={styles.statusPendingVerification}>
           <IconClock size={14} />{" "}
           <FormattedMessageFixed
-            id={`${intl}.status` + getProductStatusTranslation(request)}
+            id={`returns.status` + getProductStatusTranslation(request)}
           />
         </span>
       </div>
@@ -436,7 +530,7 @@ export function renderStatusIcon(request: any, intl: string) {
         <span className={styles.statusRefunded}>
           <IconCheck size={14} />{" "}
           <FormattedMessageFixed
-            id={`${intl}.status` + getProductStatusTranslation(request)}
+            id={`returns.status` + getProductStatusTranslation(request)}
           />
         </span>
       </div>
@@ -449,7 +543,7 @@ export function renderStatusIcon(request: any, intl: string) {
         <span className={styles.statusPicked}>
           <IconExternalLinkMini size={11} />{" "}
           <FormattedMessageFixed
-            id={`${intl}.status` + getProductStatusTranslation(request)}
+            id={`returns.status` + getProductStatusTranslation(request)}
           />
         </span>
       </div>
@@ -461,7 +555,7 @@ export function renderStatusIcon(request: any, intl: string) {
       <span className={styles.statusNew}>
         <IconVisibilityOn size={14} />{" "}
         <FormattedMessageFixed
-          id={`${intl}.status` + getProductStatusTranslation(request)}
+          id={`returns.status` + getProductStatusTranslation(request)}
         />
       </span>
     </div>

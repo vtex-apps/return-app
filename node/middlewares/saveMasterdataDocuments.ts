@@ -1,15 +1,18 @@
-import { json } from 'co-body'
-export async function saveMasterdataDocuments(ctx: Context, next: () => Promise<any>) {
+import { json } from "co-body";
 
-    const body = await json(ctx.req)
-    const {
-        clients: {returnApp: returnAppClient}
-    } = ctx
-    const { schemaName } = ctx.vtex.route.params
-    const response = await returnAppClient.saveDocuments(ctx, schemaName, body)
+export async function saveMasterdataDocuments(
+  ctx: Context,
+  next: () => Promise<any>
+) {
+  const body = await json(ctx.req);
+  const {
+    clients: { masterData: masterDataClient }
+  } = ctx;
+  const { schemaName } = ctx.vtex.route.params;
+  const response = await masterDataClient.saveDocuments(ctx, schemaName, body);
 
-    ctx.status = 200
-    ctx.body = response
+  ctx.status = 200;
+  ctx.body = response;
 
-    await next()
+  await next();
 }

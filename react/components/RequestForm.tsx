@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
-import { FormattedMessage, injectIntl } from "react-intl";
+import { defineMessages, injectIntl } from "react-intl";
 import {
   Button,
   Checkbox,
@@ -9,7 +9,7 @@ import {
   Dropdown,
   Textarea
 } from "vtex.styleguide";
-import { FormattedMessageFixed, returnFormDate } from "../common/utils";
+import { returnFormDate } from "../common/utils";
 import PropTypes from "prop-types";
 
 interface FormInputs {
@@ -39,6 +39,51 @@ interface Props {
   intl: any;
 }
 
+const messages = defineMessages({
+  formCreditCard: { id: "returns.formCreditCard" },
+  formVoucher: { id: "returns.formVoucher" },
+  formBank: { id: "returns.formBank" },
+  formAgree: { id: "returns.formAgree" },
+  termsAndConditions: { id: "returns.TermsConditions" },
+  reasonAccidentalOrder: { id: "returns.reasonAccidentalOrder" },
+  reasonBetterPrice: { id: "returns.reasonBetterPrice" },
+  reasonPerformance: { id: "returns.reasonPerformance" },
+  reasonIncompatible: { id: "returns.reasonIncompatible" },
+  reasonItemDamaged: { id: "returns.reasonItemDamaged" },
+  reasonMissedDelivery: { id: "returns.reasonMissedDelivery" },
+  reasonMissingParts: { id: "returns.reasonMissingParts" },
+  reasonBoxDamaged: { id: "returns.reasonBoxDamaged" },
+  reasonDifferentProduct: { id: "returns.reasonDifferentProduct" },
+  reasonDefective: { id: "returns.reasonDefective" },
+  reasonArrivedInAddition: { id: "returns.reasonArrivedInAddition" },
+  reasonNoLongerNeeded: { id: "returns.reasonNoLongerNeeded" },
+  reasonUnauthorizedPurchase: {
+    id: "returns.reasonUnauthorizedPurchase"
+  },
+  reasonDifferentFromWebsite: {
+    id: "returns.reasonDifferentFromWebsite"
+  },
+  reasonOther: { id: "returns.reasonOther" },
+  formContactDetails: { id: "returns.formContactDetails" },
+  formName: { id: "returns.formName" },
+  formEmail: { id: "returns.formEmail" },
+  formPhone: { id: "returns.formPhone" },
+  formPickupAddress: { id: "returns.formPickupAddress" },
+  formCountry: { id: "returns.formCountry" },
+  formLocality: { id: "returns.formLocality" },
+  formAddress: { id: "returns.formAddress" },
+  formPaymentMethod: { id: "returns.formPaymentMethod" },
+  formIBAN: { id: "returns.formIBAN" },
+  formNextStep: { id: "returns.formNextStep" },
+  formErrorReasonMissing: { id: "returns.formErrorReasonMissing" },
+  backToOrders: { id: "returns.backToOrders" },
+  orderDate: { id: "returns.orderDate" },
+  thOrderId: { id: "returns.thOrderId" },
+  thProduct: { id: "returns.thProduct" },
+  thQuantity: { id: "returns.thQuantity" },
+  thReason: { id: "returns.thReason" }
+});
+
 class RequestForm extends Component<Props> {
   static propTypes = {
     data: PropTypes.object,
@@ -50,7 +95,11 @@ class RequestForm extends Component<Props> {
   }
 
   paymentMethods() {
-    const { selectedOrder, settings }: any = this.props;
+    const {
+      selectedOrder,
+      settings,
+      intl: { formatMessage }
+    }: any = this.props;
 
     const output: any[] = [];
 
@@ -61,20 +110,20 @@ class RequestForm extends Component<Props> {
     ) {
       output.push({
         value: "card",
-        label: <FormattedMessage id={"store/my-returns.formCreditCard"} />
+        label: formatMessage({ id: messages.formCreditCard.id })
       });
     }
 
     if (settings.paymentVoucher) {
       output.push({
         value: "giftCard",
-        label: <FormattedMessage id={"store/my-returns.formVoucher"} />
+        label: formatMessage({ id: messages.formVoucher.id })
       });
     }
     if (settings.paymentBank) {
       output.push({
         value: "bank",
-        label: <FormattedMessage id={"store/my-returns.formBank"} />
+        label: formatMessage({ id: messages.formBank.id })
       });
     }
 
@@ -83,24 +132,25 @@ class RequestForm extends Component<Props> {
 
   renderTermsAndConditions = () => {
     const { settings }: any = this.props;
-    return (
-      <FormattedMessage
-        id="store/my-returns.formAgree"
-        values={{
-          link: (
-            <span>
-              {" "}
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-                href={settings.termsUrl}
-              >
-                <FormattedMessage id="store/my-returns.TermsConditions" />
-              </a>
-            </span>
-          )
-        }}
-      />
+    const { formatMessage } = this.props.intl;
+    return formatMessage(
+      {
+        id: messages.formAgree.id
+      },
+      {
+        link: (
+          <span>
+            {" "}
+            <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href={settings.termsUrl}
+            >
+              {formatMessage({ id: messages.termsAndConditions.id })}
+            </a>
+          </span>
+        )
+      }
     );
   };
 
@@ -109,93 +159,63 @@ class RequestForm extends Component<Props> {
     const options = [
       {
         value: "reasonAccidentalOrder",
-        label: formatMessage({
-          id: `store/my-returns.reasonAccidentalOrder`
-        })
+        label: formatMessage({ id: messages.reasonAccidentalOrder.id })
       },
       {
         value: "reasonBetterPrice",
-        label: formatMessage({
-          id: `store/my-returns.reasonBetterPrice`
-        })
+        label: formatMessage({ id: messages.reasonBetterPrice.id })
       },
       {
         value: "reasonPerformance",
-        label: formatMessage({
-          id: `store/my-returns.reasonPerformance`
-        })
+        label: formatMessage({ id: messages.reasonPerformance.id })
       },
       {
         value: "reasonIncompatible",
-        label: formatMessage({
-          id: `store/my-returns.reasonIncompatible`
-        })
+        label: formatMessage({ id: messages.reasonIncompatible.id })
       },
       {
         value: "reasonItemDamaged",
-        label: formatMessage({
-          id: `store/my-returns.reasonItemDamaged`
-        })
+        label: formatMessage({ id: messages.reasonItemDamaged.id })
       },
       {
         value: "reasonMissedDelivery",
-        label: formatMessage({
-          id: `store/my-returns.reasonMissedDelivery`
-        })
+        label: formatMessage({ id: messages.reasonMissedDelivery.id })
       },
       {
         value: "reasonMissingParts",
-        label: formatMessage({
-          id: `store/my-returns.reasonMissingParts`
-        })
+        label: formatMessage({ id: messages.reasonMissingParts.id })
       },
       {
         value: "reasonBoxDamaged",
-        label: formatMessage({
-          id: `store/my-returns.reasonBoxDamaged`
-        })
+        label: formatMessage({ id: messages.reasonBoxDamaged.id })
       },
       {
         value: "reasonDifferentProduct",
-        label: formatMessage({
-          id: `store/my-returns.reasonDifferentProduct`
-        })
+        label: formatMessage({ id: messages.reasonDifferentProduct.id })
       },
       {
         value: "reasonDefective",
-        label: formatMessage({
-          id: `store/my-returns.reasonDefective`
-        })
+        label: formatMessage({ id: messages.reasonDefective.id })
       },
       {
         value: "reasonArrivedInAddition",
-        label: formatMessage({
-          id: `store/my-returns.reasonArrivedInAddition`
-        })
+        label: formatMessage({ id: messages.reasonArrivedInAddition.id })
       },
       {
         value: "reasonNoLongerNeeded",
-        label: formatMessage({
-          id: `store/my-returns.reasonNoLongerNeeded`
-        })
+        label: formatMessage({ id: messages.reasonNoLongerNeeded.id })
       },
       {
         value: "reasonUnauthorizedPurchase",
-        label: formatMessage({
-          id: `store/my-returns.reasonUnauthorizedPurchase`
-        })
+        label: formatMessage({ id: messages.reasonUnauthorizedPurchase.id })
       },
       {
         value: "reasonDifferentFromWebsite",
-        label: formatMessage({
-          id: `store/my-returns.reasonDifferentFromWebsite`
-        })
+        label: formatMessage({ id: messages.reasonDifferentFromWebsite.id })
       },
       {
         value: "reasonOther",
-        label: formatMessage({
-          id: `store/my-returns.reasonOther`
-        })
+        label: formatMessage({ id: messages.reasonOther.id })
       }
     ];
 
@@ -209,7 +229,7 @@ class RequestForm extends Component<Props> {
           errorMessage={
             product.reasonCode === "" && product.selectedQuantity > 0
               ? formatMessage({
-                  id: "store/my-returns.formErrorReasonMissing"
+                  id: messages.formErrorReasonMissing.id
                 })
               : ""
           }
@@ -232,7 +252,7 @@ class RequestForm extends Component<Props> {
                   (product.reason === "" ||
                     !product.reason.replace(/\s/g, "").length))
                   ? formatMessage({
-                      id: "store/my-returns.formErrorReasonMissing"
+                      id: messages.formErrorReasonMissing.id
                     })
                   : ""
               }
@@ -252,7 +272,8 @@ class RequestForm extends Component<Props> {
       errors,
       handleInputChange,
       formInputs,
-      submit
+      submit,
+      intl: { formatMessage }
     } = this.props;
 
     return (
@@ -263,7 +284,7 @@ class RequestForm extends Component<Props> {
             size={"small"}
             onClick={() => showTable()}
           >
-            <FormattedMessage id={"store/my-returns.backToOrders"} />
+            {formatMessage({ id: messages.backToOrders.id })}
           </Button>
         </div>
         <div
@@ -276,12 +297,12 @@ class RequestForm extends Component<Props> {
               <div
                 className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderDateLabel}`}
               >
-                <FormattedMessage id={"store/my-returns.orderDate"} />
+                {formatMessage({ id: messages.orderDate.id })}
               </div>
               <div
                 className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderDate}`}
               >
-                {returnFormDate(selectedOrder.creationDate, "store/my-returns")}
+                {returnFormDate(selectedOrder.creationDate)}
               </div>
             </div>
             <div
@@ -290,7 +311,7 @@ class RequestForm extends Component<Props> {
               <div
                 className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderIdLabel}`}
               >
-                <FormattedMessage id={"store/my-returns.thOrderId"} />
+                {formatMessage({ id: messages.thOrderId.id })}
               </div>
               <div
                 className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderId}`}
@@ -306,13 +327,13 @@ class RequestForm extends Component<Props> {
               <tr className={styles.tableTr}>
                 <th className={styles.tableTh} />
                 <th className={styles.tableTh}>
-                  <FormattedMessage id={"store/my-returns.thProduct"} />
+                  {formatMessage({ id: messages.thProduct.id })}
                 </th>
                 <th className={styles.tableTh}>
-                  <FormattedMessage id={"store/my-returns.thQuantity"} />
+                  {formatMessage({ id: messages.thQuantity.id })}
                 </th>
                 <th className={styles.tableTh}>
-                  <FormattedMessage id={"store/my-returns.thReason"} />
+                  {formatMessage({ id: messages.thReason.id })}
                 </th>
               </tr>
             </thead>
@@ -361,7 +382,7 @@ class RequestForm extends Component<Props> {
           </table>
           {errors.productQuantities ? (
             <p className={styles.errorMessage}>
-              <FormattedMessageFixed id={errors.productQuantities} />
+              {formatMessage({ id: errors.productQuantities })}
             </p>
           ) : null}
         </div>
@@ -372,65 +393,43 @@ class RequestForm extends Component<Props> {
             className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
           >
             <p className={`${styles.returnFormInputsHeader}`}>
-              <FormattedMessage id={"store/my-returns.formContactDetails"} />
+              {formatMessage({ id: messages.formContactDetails.id })}
             </p>
             <div className={`mb4 ${styles.returnFormInput}`}>
-              <FormattedMessage id={"store/my-returns.formName"}>
-                {msg => (
-                  <Input
-                    name={"name"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.name}
-                    errorMessage={
-                      errors.name ? (
-                        <FormattedMessageFixed id={errors.name} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                name={"name"}
+                placeholder={formatMessage({ id: messages.formName.id })}
+                onChange={handleInputChange}
+                value={formInputs.name}
+                errorMessage={
+                  errors.name ? formatMessage({ id: errors.name }) : ""
+                }
+              />
             </div>
             <div className={`mb4 ${styles.returnFormInput}`}>
-              <FormattedMessage id={"store/my-returns.formEmail"}>
-                {msg => (
-                  <Input
-                    disabled
-                    name={"email"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.email}
-                    errorMessage={
-                      errors.email ? (
-                        <FormattedMessageFixed id={errors.email} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                disabled
+                name={"email"}
+                placeholder={formatMessage({
+                  id: messages.formEmail.id
+                })}
+                onChange={handleInputChange}
+                value={formInputs.email}
+                errorMessage={
+                  errors.email ? formatMessage({ id: errors.email }) : ""
+                }
+              />
             </div>
             <div className={`mb4 ${styles.returnFormInput}`}>
-              <FormattedMessage id={"store/my-returns.formPhone"}>
-                {msg => (
-                  <Input
-                    name={"phone"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.phone}
-                    errorMessage={
-                      errors.phone ? (
-                        <FormattedMessageFixed id={errors.phone} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                name={"phone"}
+                placeholder={formatMessage({ id: messages.formPhone.id })}
+                onChange={handleInputChange}
+                value={formInputs.phone}
+                errorMessage={
+                  errors.phone ? formatMessage({ id: errors.phone }) : ""
+                }
+              />
             </div>
           </div>
 
@@ -438,64 +437,40 @@ class RequestForm extends Component<Props> {
             className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
           >
             <p className={`${styles.returnFormInputsHeader}`}>
-              <FormattedMessage id={"store/my-returns.formPickupAddress"} />
+              {formatMessage({ id: messages.formPickupAddress.id })}
             </p>
             <div className={`mb4 ${styles.returnFormInput}`}>
-              <FormattedMessage id={"store/my-returns.formCountry"}>
-                {msg => (
-                  <Input
-                    name={"country"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.country}
-                    errorMessage={
-                      errors.country ? (
-                        <FormattedMessageFixed id={errors.country} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                name={"country"}
+                placeholder={formatMessage({ id: messages.formCountry.id })}
+                onChange={handleInputChange}
+                value={formInputs.country}
+                errorMessage={
+                  errors.country ? formatMessage({ id: errors.country }) : ""
+                }
+              />
             </div>
             <div className={`mb4 ${styles.returnFormInput}`}>
-              <FormattedMessage id={"store/my-returns.formLocality"}>
-                {msg => (
-                  <Input
-                    name={"locality"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.locality}
-                    errorMessage={
-                      errors.locality ? (
-                        <FormattedMessageFixed id={errors.locality} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                name={"locality"}
+                placeholder={formatMessage({ id: messages.formLocality.id })}
+                onChange={handleInputChange}
+                value={formInputs.locality}
+                errorMessage={
+                  errors.locality ? formatMessage({ id: errors.locality }) : ""
+                }
+              />
             </div>
             <div className={`mb4 ${styles.returnFormInput}`}>
-              <FormattedMessage id={"store/my-returns.formAddress"}>
-                {msg => (
-                  <Input
-                    name={"address"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.address}
-                    errorMessage={
-                      errors.address ? (
-                        <FormattedMessageFixed id={errors.address} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                name={"address"}
+                placeholder={formatMessage({ id: messages.formAddress.id })}
+                onChange={handleInputChange}
+                value={formInputs.address}
+                errorMessage={
+                  errors.address ? formatMessage({ id: errors.address }) : ""
+                }
+              />
             </div>
           </div>
         </div>
@@ -504,7 +479,7 @@ class RequestForm extends Component<Props> {
           className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsPayment}`}
         >
           <p className={`${styles.returnFormInputsHeader}`}>
-            <FormattedMessage id={"store/my-returns.formPaymentMethod"} />
+            {formatMessage({ id: messages.formPaymentMethod.id })}
           </p>
           <RadioGroup
             hideBorder
@@ -512,11 +487,9 @@ class RequestForm extends Component<Props> {
             options={this.paymentMethods()}
             value={formInputs.paymentMethod}
             errorMessage={
-              errors.paymentMethod ? (
-                <FormattedMessageFixed id={errors.paymentMethod} />
-              ) : (
-                ""
-              )
+              errors.paymentMethod
+                ? formatMessage({ id: errors.paymentMethod })
+                : ""
             }
             onChange={handleInputChange}
           />
@@ -524,23 +497,15 @@ class RequestForm extends Component<Props> {
             <div
               className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
             >
-              <FormattedMessage id={"store/my-returns.formIBAN"}>
-                {msg => (
-                  <Input
-                    name={"iban"}
-                    placeholder={msg}
-                    onChange={handleInputChange}
-                    value={formInputs.iban}
-                    errorMessage={
-                      errors.iban ? (
-                        <FormattedMessageFixed id={errors.iban} />
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
+              <Input
+                name={"iban"}
+                placeholder={formatMessage({ id: messages.formIBAN.id })}
+                onChange={handleInputChange}
+                value={formInputs.iban}
+                errorMessage={
+                  errors.iban ? formatMessage({ id: errors.iban }) : ""
+                }
+              />
             </div>
           ) : null}
         </div>
@@ -551,6 +516,7 @@ class RequestForm extends Component<Props> {
           <Checkbox
             checked={formInputs.agree}
             id="agree"
+            key={"formAgreeCheckbox"}
             label={this.renderTermsAndConditions()}
             name="agree"
             onChange={handleInputChange}
@@ -558,14 +524,14 @@ class RequestForm extends Component<Props> {
           />
           {errors.agree ? (
             <p className={"c-danger t-small mt3 lh-title"}>
-              <FormattedMessageFixed id={errors.agree} />
+              {formatMessage({ id: errors.agree })}
             </p>
           ) : null}
         </div>
 
         <div className={`mt4 ph4 ${styles.returnFormActions}`}>
           <Button type={"submit"} variation="primary" onClick={submit}>
-            <FormattedMessage id={"store/my-returns.formNextStep"} />
+            {formatMessage({ id: messages.formNextStep.id })}
           </Button>
         </div>
       </div>

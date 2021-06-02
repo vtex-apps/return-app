@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
 import { beautifyDate } from "../common/utils";
-import { FormattedMessage } from "react-intl";
+import { injectIntl, defineMessages } from "react-intl";
 import { Button } from "vtex.styleguide";
 
 interface Props {
   eligibleOrders: any;
   selectOrder: any;
+  intl: any;
 }
+
+const messages = defineMessages({
+  thOrderId: { id: "returns.thOrderId" },
+  thCreationDate: { id: "returns.thCreationDate" },
+  thSelectOrder: { id: "returns.thSelectOrder" },
+  noOrders: { id: "returns.no_eligible_orders" }
+});
 
 class EligibleOrdersTable extends Component<Props> {
   constructor(props) {
@@ -15,7 +23,11 @@ class EligibleOrdersTable extends Component<Props> {
   }
 
   render() {
-    const { eligibleOrders, selectOrder } = this.props;
+    const {
+      eligibleOrders,
+      selectOrder,
+      intl: { formatMessage }
+    } = this.props;
 
     return (
       <div>
@@ -25,13 +37,13 @@ class EligibleOrdersTable extends Component<Props> {
               <thead>
                 <tr>
                   <th className={styles.tableTh}>
-                    <FormattedMessage id={"store/my-returns.thOrderId"} />
+                    {formatMessage({ id: messages.thOrderId.id })}
                   </th>
                   <th className={styles.tableTh}>
-                    <FormattedMessage id={"store/my-returns.thCreationDate"} />
+                    {formatMessage({ id: messages.thCreationDate.id })}
                   </th>
                   <th className={styles.tableTh}>
-                    <FormattedMessage id={"store/my-returns.thSelectOrder"} />
+                    {formatMessage({ id: messages.thSelectOrder.id })}
                   </th>
                 </tr>
               </thead>
@@ -48,9 +60,7 @@ class EligibleOrdersTable extends Component<Props> {
                             size={`small`}
                             onClick={() => selectOrder(order)}
                           >
-                            <FormattedMessage
-                              id={"store/my-returns.thSelectOrder"}
-                            />
+                            {formatMessage({ id: messages.thSelectOrder.id })}
                           </Button>
                         </td>
                       </tr>
@@ -60,13 +70,11 @@ class EligibleOrdersTable extends Component<Props> {
             </table>
           </div>
         ) : (
-          <div>
-            <FormattedMessage id={"store/my-returns.no_eligible_orders"} />
-          </div>
+          <div>{formatMessage({ id: messages.noOrders.id })}</div>
         )}
       </div>
     );
   }
 }
 
-export default EligibleOrdersTable;
+export default injectIntl(EligibleOrdersTable);
