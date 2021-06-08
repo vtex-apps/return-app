@@ -14,7 +14,7 @@ interface Props {
 const StoreMyReturnsLink: FC<Props> = ({ render, intl }: Props) => {
   return render([
     {
-      name: intl.formatMessage({ id: "store/my-returns.link" }),
+      name: intl.formatMessage({ id: "returns.link" }),
       path: "/my-returns"
     }
   ]);

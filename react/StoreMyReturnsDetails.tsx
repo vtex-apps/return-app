@@ -6,9 +6,9 @@ import ReturnsDetails from "./store/ReturnsDetails";
 
 const headerConfig = {
   namespace: "vtex-account__returns-list",
-  title: <FormattedMessage id="store/my-returns.link" />,
+  title: <FormattedMessage id="returns.link" />,
   backButton: {
-    titleId: "store/my-returns.link",
+    titleId: "returns.link",
     path: "/my-returns"
   }
 };

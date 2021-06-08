@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
-import { FormattedMessage } from "react-intl";
+import { injectIntl, defineMessages } from "react-intl";
 import {
   ActionMenu,
   Button,
@@ -17,17 +17,39 @@ import {
   requestsStatuses,
   schemaNames,
   schemaTypes,
-  FormattedMessageFixed,
   sortColumns,
   order,
   getStatusTranslation,
-  renderStatusIcon,
-  intlArea
+  renderStatusIcon
 } from "../common/utils";
 
 import { fetchPath, fetchHeaders, fetchMethod } from "../common/fetch";
 
 const tableLength = 15;
+
+const messages = defineMessages({
+  thRequestNo: { id: "returns.thRequestNo" },
+  thDate: { id: "returns.thDate" },
+  thStatus: { id: "returns.thStatus" },
+  actions: { id: "returns.actions" },
+  view: { id: "returns.view" },
+  statusAllStatuses: { id: "returns.statusAllStatuses" },
+  pageTitle: { id: "returns.pageTitle" },
+  total: { id: "returns.total" },
+  addReturn: { id: "returns.addReturn" },
+  filterFromDate: { id: "returns.filterFromDate" },
+  filterToDate: { id: "returns.filterToDate" },
+  statusNew: { id: "returns.statusNew" },
+  statusApproved: { id: "returns.statusApproved" },
+  statusPendingVerification: { id: "returns.statusPendingVerification" },
+  statusPartiallyApproved: { id: "returns.statusPartiallyApproved" },
+  statusDenied: { id: "returns.statusDenied" },
+  statusRefunded: { id: "returns.statusRefunded" },
+  filterResults: { id: "returns.filterResults" },
+  clearFilters: { id: "returns.clearFilters" },
+  tableShowRows: { id: "returns.tableShowRows" },
+  tableOf: { id: "returns.tableOf" }
+});
 
 const initialFilters = {
   returnId: "",
@@ -36,7 +58,7 @@ const initialFilters = {
   status: ""
 };
 
-class MyReturnsPage extends Component<{}, any> {
+class MyReturnsPage extends Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -49,9 +71,7 @@ class MyReturnsPage extends Component<{}, any> {
         LastName: "",
         UserId: ""
       },
-      emptyStateLabel: (
-        <FormattedMessage id={"store/my-returns.nothingToShow"} />
-      ),
+      emptyStateLabel: "returns.nothingToShow",
       filters: initialFilters,
       returns: [],
       orderedItems: [],
@@ -346,36 +366,37 @@ class MyReturnsPage extends Component<{}, any> {
   }
 
   getTableSchema() {
+    const { formatMessage } = this.props.intl;
     return {
       properties: {
         id: {
-          title: <FormattedMessage id={"store/my-returns.thRequestNo"} />,
+          title: formatMessage({ id: messages.thRequestNo.id }),
           sortable: true,
           width: 350
         },
         dateSubmitted: {
-          title: <FormattedMessage id={"store/my-returns.thDate"} />,
+          title: formatMessage({ id: messages.thDate.id }),
           cellRenderer: ({ cellData }) => {
             return beautifyDate(cellData);
           },
           sortable: true
         },
         status: {
-          title: <FormattedMessage id={"store/my-returns.thStatus"} />,
+          title: formatMessage({ id: messages.thStatus.id }),
           sortable: true,
           cellRenderer: ({ cellData }) => {
-            return <div>{renderStatusIcon(cellData, intlArea.store)}</div>;
+            return <div>{renderStatusIcon(cellData)}</div>;
           },
           width: 200
         },
         actions: {
           width: 150,
-          title: <FormattedMessage id={"store/my-returns.actions"} />,
+          title: formatMessage({ id: messages.actions.id }),
           cellRenderer: ({ rowData }) => {
             return (
               <div>
                 <Link href={`account#/my-returns/details/` + rowData.id}>
-                  <FormattedMessage id={"store/my-returns.view"} />
+                  {formatMessage({ id: messages.view.id })}
                 </Link>
               </div>
             );
@@ -392,6 +413,7 @@ class MyReturnsPage extends Component<{}, any> {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
       paging,
       tableIsLoading,
@@ -402,13 +424,11 @@ class MyReturnsPage extends Component<{}, any> {
       error
     } = this.state;
     const statusLabel =
-      filters.status !== "" ? (
-        <FormattedMessageFixed
-          id={`store/my-returns.status${getStatusTranslation(filters.status)}`}
-        />
-      ) : (
-        <FormattedMessage id={"store/my-returns.statusAllStatuses"} />
-      );
+      filters.status !== ""
+        ? formatMessage({
+            id: `returns.status${getStatusTranslation(filters.status)}`
+          })
+        : formatMessage({ id: messages.statusAllStatuses.id });
 
     if (error) {
       return <div>{error}</div>;
@@ -417,10 +437,9 @@ class MyReturnsPage extends Component<{}, any> {
       <div className={styles.myReturnsHolder}>
         <div className={`${styles.listTitle}`}>
           <h2 className={`w-auto ${styles.listTitleText}`}>
-            <FormattedMessage id="store/my-returns.pageTitle" />{" "}
+            {formatMessage({ id: messages.pageTitle.id })}{" "}
             <span className={styles.totalRequestsNumber}>
-              {slicedData.length}{" "}
-              <FormattedMessage id="store/my-returns.total" />
+              {slicedData.length} {formatMessage({ id: messages.total.id })}
             </span>
           </h2>
         </div>
@@ -430,59 +449,53 @@ class MyReturnsPage extends Component<{}, any> {
             size="small"
             href="/account#/my-returns/add"
           >
-            <FormattedMessage id="store/my-returns.addReturn" />
+            {formatMessage({ id: messages.addReturn.id })}
           </Button>
         </div>
         <div className={`flex items-center ${styles.filterList}`}>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnReturnId}`}
           >
-            <FormattedMessage id={"store/my-returns.thRequestNo"}>
-              {msg => (
-                <Input
-                  placeholder={msg}
-                  onKeyPress={e => {
-                    this.handleKeypress(e);
-                  }}
-                  size={"small"}
-                  onChange={e => this.filterReturnId(e.target.value)}
-                  value={filters.returnId}
-                />
-              )}
-            </FormattedMessage>
+            <Input
+              placeholder={formatMessage({
+                id: messages.thRequestNo.id
+              })}
+              onKeyPress={e => {
+                this.handleKeypress(e);
+              }}
+              size={"small"}
+              onChange={e => this.filterReturnId(e.target.value)}
+              value={filters.returnId}
+            />
           </div>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnFromDate}`}
           >
-            <FormattedMessage id={"store/my-returns.filterFromDate"}>
-              {msg => (
-                <DatePicker
-                  placeholder={msg}
-                  onKeyPress={e => {
-                    this.handleKeypress(e);
-                  }}
-                  locale={"en-GB"}
-                  size={"small"}
-                  onChange={value => this.filterFromDate(value)}
-                  value={filters.fromDate}
-                />
-              )}
-            </FormattedMessage>
+            <DatePicker
+              placeholder={formatMessage({
+                id: messages.filterFromDate.id
+              })}
+              onKeyPress={e => {
+                this.handleKeypress(e);
+              }}
+              locale={"en-GB"}
+              size={"small"}
+              onChange={value => this.filterFromDate(value)}
+              value={filters.fromDate}
+            />
           </div>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnToDate}`}
           >
-            <FormattedMessage id={"store/my-returns.filterToDate"}>
-              {msg => (
-                <DatePicker
-                  placeholder={msg}
-                  locale={"en-GB"}
-                  size={"small"}
-                  onChange={value => this.filterToDate(value)}
-                  value={filters.toDate}
-                />
-              )}
-            </FormattedMessage>
+            <DatePicker
+              placeholder={formatMessage({
+                id: messages.filterToDate.id
+              })}
+              locale={"en-GB"}
+              size={"small"}
+              onChange={value => this.filterToDate(value)}
+              value={filters.toDate}
+            />
           </div>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnStatus}`}
@@ -496,43 +509,45 @@ class MyReturnsPage extends Component<{}, any> {
               }}
               options={[
                 {
-                  label: (
-                    <FormattedMessage id="store/my-returns.statusAllStatuses" />
-                  ),
+                  label: formatMessage({
+                    id: messages.statusAllStatuses.id
+                  }),
                   onClick: () => this.filterStatus("")
                 },
                 {
-                  label: <FormattedMessage id="store/my-returns.statusNew" />,
+                  label: formatMessage({
+                    id: messages.statusNew.id
+                  }),
                   onClick: () => this.filterStatus("new")
                 },
                 {
-                  label: (
-                    <FormattedMessage id="store/my-returns.statusApproved" />
-                  ),
+                  label: formatMessage({
+                    id: messages.statusApproved.id
+                  }),
                   onClick: () => this.filterStatus("approved")
                 },
                 {
-                  label: (
-                    <FormattedMessage id="store/my-returns.statusPendingVerification" />
-                  ),
+                  label: formatMessage({
+                    id: messages.statusPendingVerification.id
+                  }),
                   onClick: () => this.filterStatus("pendingVerification")
                 },
                 {
-                  label: (
-                    <FormattedMessage id="store/my-returns.statusPartiallyApproved" />
-                  ),
+                  label: formatMessage({
+                    id: messages.statusPartiallyApproved.id
+                  }),
                   onClick: () => this.filterStatus("partiallyApproved")
                 },
                 {
-                  label: (
-                    <FormattedMessage id="store/my-returns.statusDenied" />
-                  ),
+                  label: formatMessage({
+                    id: messages.statusDenied.id
+                  }),
                   onClick: () => this.filterStatus("denied")
                 },
                 {
-                  label: (
-                    <FormattedMessage id="store/my-returns.statusRefunded" />
-                  ),
+                  label: formatMessage({
+                    id: messages.statusRefunded.id
+                  }),
                   onClick: () => this.filterStatus("refunded")
                 }
               ]}
@@ -542,7 +557,9 @@ class MyReturnsPage extends Component<{}, any> {
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnActionApply}`}
           >
             <Button size={"small"} onClick={() => this.handleApplyFilters()}>
-              <FormattedMessage id={"store/my-returns.filterResults"} />
+              {formatMessage({
+                id: messages.filterResults.id
+              })}
             </Button>
           </div>
           {isFiltered ? (
@@ -554,7 +571,9 @@ class MyReturnsPage extends Component<{}, any> {
                 size="small"
                 onClick={() => this.handleResetFilters()}
               >
-                <FormattedMessage id={"store/my-returns.clearFilters"} />
+                {formatMessage({
+                  id: messages.clearFilters.id
+                })}
               </ButtonWithIcon>
             </div>
           ) : null}
@@ -563,15 +582,17 @@ class MyReturnsPage extends Component<{}, any> {
           fullWidth
           loading={tableIsLoading}
           items={slicedData}
-          emptyStateLabel={emptyStateLabel}
+          emptyStateLabel={formatMessage({ id: emptyStateLabel })}
           schema={this.getTableSchema()}
           pagination={{
             onNextClick: this.handleNextClick,
             onPrevClick: this.handlePrevClick,
-            textShowRows: (
-              <FormattedMessage id={"store/my-returns.tableShowRows"} />
-            ),
-            textOf: <FormattedMessage id={"store/my-returns.tableOf"} />,
+            textShowRows: formatMessage({
+              id: messages.tableShowRows.id
+            }),
+            textOf: formatMessage({
+              id: messages.tableOf.id
+            }),
             currentItemFrom: paging.currentFrom,
             currentItemTo: paging.currentTo,
             totalItems: paging.total
@@ -587,4 +608,4 @@ class MyReturnsPage extends Component<{}, any> {
   }
 }
 
-export default MyReturnsPage;
+export default injectIntl(MyReturnsPage);

@@ -11,7 +11,7 @@ export default class ReturnsRequests extends Component<{}, any> {
         fullWidth
         pageHeader={
           <PageHeader
-            title={<FormattedMessage id="admin/navigation.label" />}
+            title={<FormattedMessage id="navigation.label" />}
           />
         }
       >

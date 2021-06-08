@@ -100,7 +100,7 @@ export const PRODUCTS_SCHEMA = {
     },
     'v-cache': false,
     'v-default-fields': ['id', 'createdIn', 'refundId', 'orderId', 'userId', 'imageUrl', 'sku', 'skuId', 'productId', 'ean', 'brandId', 'brandName', 'skuName', 'manufacturerCode', 'unitPrice', 'quantity', 'totalPrice', 'goodProducts', 'reasonCode', 'reason', 'status', 'dateSubmitted', 'type'],
-    'v-indexed': ['id', 'createdIn', 'refundId', 'orderId', 'userId', 'skuId', 'sku', 'productId', 'ean', 'brandId', 'brandName', 'skuName', 'manufacturerCode', 'status', 'type'],
+    'v-indexed': ['id', 'createdIn', 'refundId', 'orderId', 'userId', 'sku', 'skuId', 'skuName', 'status', 'type'],
 }
 
 export const HISTORY_SCHEMA = {

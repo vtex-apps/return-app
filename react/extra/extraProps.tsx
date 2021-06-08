@@ -6,6 +6,8 @@ import GET_REFUNDS_LIST from '../graphql/userRefunds.graphql'
 import {Profile} from '../typings/utils'
 import {fetchPath} from "../common/fetch";
 
+import { injectIntl} from "react-intl";
+
 export {React}
 
 const headerConfig = {
@@ -69,4 +71,4 @@ const withExtraProps = (WrappedComponent: any): any => ({...props}) => {
     )
 }
 
-export default withExtraProps
+export default injectIntl(withExtraProps)

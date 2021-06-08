@@ -1,12 +1,14 @@
-export async function generateReturnsSchema(ctx: Context, next: () => Promise<any>) {
+export async function generateReturnsSchema(
+  ctx: Context,
+  next: () => Promise<any>
+) {
+  const {
+    clients: { masterData: masterDataClient }
+  } = ctx;
+  const response = await masterDataClient.generateSchema(ctx);
 
-    const {
-        clients: {returnApp: returnAppClient}
-    } = ctx
-    const response = await returnAppClient.generateSchema(ctx)
+  ctx.status = 200;
+  ctx.body = response;
 
-    ctx.status = 200
-    ctx.body = response
-
-    await next()
+  await next();
 }

@@ -55,7 +55,7 @@ class ReturnsTableContent extends Component<any, any> {
         currentTo: tableLength
       },
       filters: initialFilters,
-      emptyStateLabel: <FormattedMessage id={"admin/returns.nothingToShow"} />,
+      emptyStateLabel: <FormattedMessage id={"returns.nothingToShow"} />,
       async: [],
       tableIsLoading: true,
       isFiltered: false,
@@ -246,32 +246,32 @@ class ReturnsTableContent extends Component<any, any> {
     return {
       properties: {
         id: {
-          title: <FormattedMessage id={"admin/returns.requestId"} />,
+          title: <FormattedMessage id={"returns.requestId"} />,
           sortable: true,
           width: 350
         },
         orderId: {
-          title: <FormattedMessage id={"admin/returns.orderId"} />,
+          title: <FormattedMessage id={"returns.orderId"} />,
           sortable: true
         },
         dateSubmitted: {
-          title: <FormattedMessage id={"admin/returns.submittedDate"} />,
+          title: <FormattedMessage id={"returns.submittedDate"} />,
           cellRenderer: ({ cellData }) => {
             return beautifyDate(cellData);
           },
           sortable: true
         },
         status: {
-          title: <FormattedMessage id={"admin/returns.status"} />,
+          title: <FormattedMessage id={"returns.status"} />,
           sortable: true,
           width: 200,
           cellRenderer: ({ cellData }) => {
-            return <div>{renderStatusIcon(cellData, intlArea.admin)}</div>;
+            return <div>{renderStatusIcon(cellData)}</div>;
           }
         },
         actions: {
           width: 150,
-          title: <FormattedMessage id={"admin/returns.actions"} />,
+          title: <FormattedMessage id={"returns.actions"} />,
           cellRenderer: ({ rowData }) => {
             return (
               <div>
@@ -450,10 +450,10 @@ class ReturnsTableContent extends Component<any, any> {
     const statusLabel =
       filters.status !== "" ? (
         <FormattedMessageFixed
-          id={`admin/returns.status${getStatusTranslation(filters.status)}`}
+          id={`returns.status${getStatusTranslation(filters.status)}`}
         />
       ) : (
-        <FormattedMessage id={"admin/returns.statusAllStatuses"} />
+        <FormattedMessage id={"returns.statusAllStatuses"} />
       );
     if (error) {
       return (
@@ -466,7 +466,7 @@ class ReturnsTableContent extends Component<any, any> {
       <div>
         <div className="flex items-center">
           <div className={"ma2"}>
-            <FormattedMessage id={"admin/returns.requestId"}>
+            <FormattedMessage id={"returns.requestId"}>
               {msg => (
                 <Input
                   placeholder={msg}
@@ -481,7 +481,7 @@ class ReturnsTableContent extends Component<any, any> {
             </FormattedMessage>
           </div>
           <div className={"ma2"}>
-            <FormattedMessage id={"admin/returns.orderId"}>
+            <FormattedMessage id={"returns.orderId"}>
               {msg => (
                 <Input
                   placeholder={msg}
@@ -496,7 +496,7 @@ class ReturnsTableContent extends Component<any, any> {
             </FormattedMessage>
           </div>
           <div className={"ma2"}>
-            <FormattedMessage id={"admin/returns.filterFromDate"}>
+            <FormattedMessage id={"returns.filterFromDate"}>
               {msg => (
                 <DatePicker
                   placeholder={msg}
@@ -509,7 +509,7 @@ class ReturnsTableContent extends Component<any, any> {
             </FormattedMessage>
           </div>
           <div className={"ma2"}>
-            <FormattedMessage id={"admin/returns.filterToDate"}>
+            <FormattedMessage id={"returns.filterToDate"}>
               {msg => (
                 <DatePicker
                   placeholder={msg}
@@ -531,37 +531,35 @@ class ReturnsTableContent extends Component<any, any> {
               }}
               options={[
                 {
-                  label: (
-                    <FormattedMessage id="admin/returns.statusAllStatuses" />
-                  ),
+                  label: <FormattedMessage id="returns.statusAllStatuses" />,
                   onClick: () => this.filterStatus("")
                 },
                 {
-                  label: <FormattedMessage id="admin/returns.statusNew" />,
+                  label: <FormattedMessage id="returns.statusNew" />,
                   onClick: () => this.filterStatus("new")
                 },
                 {
-                  label: <FormattedMessage id="admin/returns.statusApproved" />,
+                  label: <FormattedMessage id="returns.statusApproved" />,
                   onClick: () => this.filterStatus("approved")
                 },
                 {
                   label: (
-                    <FormattedMessage id="admin/returns.statusPendingVerification" />
+                    <FormattedMessage id="returns.statusPendingVerification" />
                   ),
                   onClick: () => this.filterStatus("pendingVerification")
                 },
                 {
                   label: (
-                    <FormattedMessage id="admin/returns.statusPartiallyApproved" />
+                    <FormattedMessage id="returns.statusPartiallyApproved" />
                   ),
                   onClick: () => this.filterStatus("partiallyApproved")
                 },
                 {
-                  label: <FormattedMessage id="admin/returns.statusDenied" />,
+                  label: <FormattedMessage id="returns.statusDenied" />,
                   onClick: () => this.filterStatus("denied")
                 },
                 {
-                  label: <FormattedMessage id="admin/returns.statusRefunded" />,
+                  label: <FormattedMessage id="returns.statusRefunded" />,
                   onClick: () => this.filterStatus("refunded")
                 }
               ]}
@@ -569,7 +567,7 @@ class ReturnsTableContent extends Component<any, any> {
           </div>
           <div className={"ma2"}>
             <Button size={"small"} onClick={() => this.handleApplyFilters()}>
-              <FormattedMessage id={"admin/returns.filterResults"} />
+              <FormattedMessage id={"returns.filterResults"} />
             </Button>
           </div>
           {isFiltered ? (
@@ -579,7 +577,7 @@ class ReturnsTableContent extends Component<any, any> {
                 size="small"
                 onClick={() => this.handleResetFilters()}
               >
-                <FormattedMessage id={"admin/returns.clearFilters"} />
+                <FormattedMessage id={"returns.clearFilters"} />
               </ButtonWithIcon>
             </div>
           ) : null}
@@ -593,10 +591,8 @@ class ReturnsTableContent extends Component<any, any> {
           pagination={{
             onNextClick: this.handleNextClick,
             onPrevClick: this.handlePrevClick,
-            textShowRows: (
-              <FormattedMessage id={"admin/returns.tableShowRows"} />
-            ),
-            textOf: <FormattedMessage id={"admin/returns.tableOf"} />,
+            textShowRows: <FormattedMessage id={"returns.tableShowRows"} />,
+            textOf: <FormattedMessage id={"returns.tableOf"} />,
             currentItemFrom: paging.currentFrom,
             currentItemTo: paging.currentTo,
             totalItems: paging.total
@@ -618,19 +614,19 @@ class ReturnsTableContent extends Component<any, any> {
                 <thead>
                   <tr>
                     <th>
-                      <FormattedMessage id={"admin/returns.skuId"} />
+                      <FormattedMessage id={"returns.skuId"} />
                     </th>
                     <th>
-                      <FormattedMessage id={"admin/returns.product"} />
+                      <FormattedMessage id={"returns.product"} />
                     </th>
                     <th>
-                      <FormattedMessage id={"admin/returns.unitPrice"} />
+                      <FormattedMessage id={"returns.unitPrice"} />
                     </th>
                     <th>
-                      <FormattedMessage id={"admin/returns.quantity"} />
+                      <FormattedMessage id={"returns.quantity"} />
                     </th>
                     <th>
-                      <FormattedMessage id={"admin/returns.price"} />
+                      <FormattedMessage id={"returns.price"} />
                     </th>
                   </tr>
                 </thead>

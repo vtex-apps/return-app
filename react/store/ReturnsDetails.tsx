@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import { ContentWrapper } from "vtex.my-account-commons";
 
-import { PageProps } from "../typings/utils";
 import {
   productStatuses,
   returnFormDate,
   schemaNames,
   schemaTypes,
   prepareHistoryData,
-  FormattedMessageFixed,
   intlArea
 } from "../common/utils";
 import { Spinner } from "vtex.styleguide";
-import { FormattedMessage } from "react-intl";
+import { injectIntl, defineMessages } from "react-intl";
 import RequestInfo from "../components/RequestInfo";
 import StatusHistoryTable from "../components/StatusHistoryTable";
 import ProductsTable from "../components/ProductsTable";
@@ -21,8 +19,15 @@ import StatusHistoryTimeline from "../components/StatusHistoryTimeline";
 
 import styles from "../styles.css";
 
-class ReturnsDetails extends Component<PageProps, any> {
-  constructor(props: PageProps) {
+const messages = defineMessages({
+  notFound: { id: "returns.requestNotFound" },
+  returnForm: { id: "returns.details.returnForm" },
+  refOrder: { id: "returns.refOrder" },
+  status: { id: "returns.status" }
+});
+
+class ReturnsDetails extends Component<any, any> {
+  constructor(props: any) {
     super(props);
     this.state = {
       loading: true,
@@ -55,7 +60,8 @@ class ReturnsDetails extends Component<PageProps, any> {
       this.setState({
         statusInput: request[0].status,
         commentInput: "",
-        visibleInput: false
+        visibleInput: false,
+        loading: false
       });
       this.getFromMasterData(
         schemaNames.product,
@@ -75,11 +81,7 @@ class ReturnsDetails extends Component<PageProps, any> {
             requestId
           ).then(comments => {
             this.setState({
-              statusHistoryTimeline: prepareHistoryData(
-                comments,
-                request[0],
-                "store/my-returns"
-              )
+              statusHistoryTimeline: prepareHistoryData(comments, request[0])
             });
             this.getFromMasterData(
               schemaNames.history,
@@ -180,6 +182,7 @@ class ReturnsDetails extends Component<PageProps, any> {
       loading,
       giftCardValue
     } = this.state;
+    const { formatMessage } = this.props.intl;
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
@@ -192,68 +195,52 @@ class ReturnsDetails extends Component<PageProps, any> {
           }
 
           if (!request) {
-            return (
-              <div>
-                <FormattedMessageFixed
-                  id={"store/my-returns.requestNotFound"}
-                />
-              </div>
-            );
+            return <div>{formatMessage({ id: messages.notFound.id })}</div>;
           }
           return (
             <div>
               <p className={`${styles.requestInfoTitle}`}>
                 <span className={`${styles.requestInfoTitleText}`}>
-                  <FormattedMessage
-                    id={"store/my-returns.details.returnForm"}
-                    values={{
-                      requestId: " #" + request.id
-                    }}
-                  />
+                  {formatMessage(
+                    { id: messages.returnForm.id },
+                    { requestId: " #" + request.id }
+                  )}
                 </span>
                 <span className={`${styles.requestInfoTitleSeparator}`}>
                   {" "}
                   /{" "}
                 </span>
                 <span className={`${styles.requestInfoTitleDate}`}>
-                  {returnFormDate(request.dateSubmitted, "store/my-returns")}
+                  {returnFormDate(request.dateSubmitted)}
                 </span>
               </p>
               <ProductsTable
                 product={product}
-                intl={intlArea.store}
                 productsValue={request.totalPrice}
                 totalRefundAmount={request.refundedAmount}
               />
               <p className={`mt7 ${styles.requestInfoOrder}`}>
                 <strong className={`mr6 ${styles.requestInfoOrderText}`}>
-                  <FormattedMessage
-                    id={"store/my-returns.refOrder"}
-                    values={{ orderId: " #" + request.orderId }}
-                  />
+                  {formatMessage(
+                    { id: messages.refOrder.id },
+                    { orderId: " #" + request.orderId }
+                  )}
                 </strong>
               </p>
 
-              <RequestInfo
-                intl={intlArea.store}
-                giftCardValue={giftCardValue}
-                request={request}
-              />
+              <RequestInfo giftCardValue={giftCardValue} request={request} />
 
               <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
                 <strong className={`${styles.requestInfoSectionTitleStrong}`}>
-                  <FormattedMessage id={"store/my-returns.status"} />
+                  {formatMessage({ id: messages.status.id })}
                 </strong>
               </p>
 
               <StatusHistoryTimeline
                 statusHistoryTimeline={statusHistoryTimeline}
-                intl={intlArea.store}
+                intlZone={intlArea.store}
               />
-              <StatusHistoryTable
-                statusHistory={statusHistory}
-                intl={intlArea.store}
-              />
+              <StatusHistoryTable statusHistory={statusHistory} />
             </div>
           );
         }}
@@ -262,4 +249,4 @@ class ReturnsDetails extends Component<PageProps, any> {
   }
 }
 
-export default ReturnsDetails;
+export default injectIntl(ReturnsDetails);

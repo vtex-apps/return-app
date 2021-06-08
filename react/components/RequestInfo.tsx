@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
-import { FormattedMessageFixed, intlArea } from "../common/utils";
 import { FormattedCurrency } from "vtex.format-currency";
 import styles from "../styles.css";
+import { defineMessages, injectIntl } from "react-intl";
+
 interface Props {
   request: any;
   giftCardValue: any;
-  intl: string;
+  intl: any;
 }
 
 class RequestInfo extends Component<Props> {
@@ -15,7 +15,27 @@ class RequestInfo extends Component<Props> {
   }
 
   render() {
-    const { request, intl, giftCardValue } = this.props;
+    const {
+      request,
+      giftCardValue,
+      intl: { formatMessage }
+    } = this.props;
+    const messages = defineMessages({
+      contactDetails: { id: `returns.contactDetails` },
+      name: { id: `returns.name` },
+      email: { id: `returns.email` },
+      phone: { id: `returns.phone` },
+      pickupAddress: { id: `returns.pickupAddress` },
+      country: { id: `returns.country` },
+      locality: { id: `returns.locality` },
+      address: { id: `returns.address` },
+      refundPaymentMethod: { id: `returns.refundPaymentMethod` },
+      formBankTransferAccount: { id: `returns.formBankTransferAccount` },
+      formVoucher: { id: `returns.formVoucher` },
+      voucherCode: { id: `returns.voucherCode` },
+      voucherCodeNotGenerated: { id: `returns.voucherCodeNotGenerated` },
+      voucherValue: { id: `returns.voucherValue` }
+    });
     return (
       <div className={`${styles.requestInfoMainContent}`}>
         <div
@@ -26,7 +46,7 @@ class RequestInfo extends Component<Props> {
           >
             <p className={`${styles.requestInfoSectionTitle}`}>
               <strong className={`${styles.requestInfoSectionTitleStrong}`}>
-                <FormattedMessageFixed id={`${intl}.contactDetails`} />
+                {formatMessage({ id: messages.contactDetails.id })}
               </strong>
             </p>
             <div className={`mb5 ${styles.requestInfoTextContainer}`}>
@@ -34,7 +54,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
               >
                 <span className={`${styles.requestInfoTextLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.name`} />:
+                  {formatMessage({ id: messages.name.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
                   {request.name}
@@ -46,7 +66,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
               >
                 <span className={`${styles.requestInfoTextLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.email`} />:
+                  {formatMessage({ id: messages.email.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
                   {request.email}
@@ -58,7 +78,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
               >
                 <span className={`${styles.requestInfoTextLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.phone`} />:
+                  {formatMessage({ id: messages.phone.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
                   {request.phoneNumber}
@@ -72,7 +92,7 @@ class RequestInfo extends Component<Props> {
           >
             <p className={`${styles.requestInfoSectionTitle}`}>
               <strong className={`${styles.requestInfoSectionTitleStrong}`}>
-                <FormattedMessageFixed id={`${intl}.pickupAddress`} />
+                {formatMessage({ id: messages.pickupAddress.id })}
               </strong>
             </p>
             <div className={`mb5 ${styles.requestInfoTextContainer}`}>
@@ -80,7 +100,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
               >
                 <span className={`${styles.requestInfoTextLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.country`} />:
+                  {formatMessage({ id: messages.country.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
                   {request.country}
@@ -92,7 +112,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
               >
                 <span className={`${styles.requestInfoTextLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.locality`} />:
+                  {formatMessage({ id: messages.locality.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
                   {request.locality}
@@ -104,7 +124,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
               >
                 <span className={`${styles.requestInfoTextLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.address`} />:
+                  {formatMessage({ id: messages.address.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
                   {request.address}
@@ -117,7 +137,7 @@ class RequestInfo extends Component<Props> {
           className={`${styles.requestInfoSectionTitle} ${styles.requestInfoPaymentTitle}`}
         >
           <strong className={`${styles.requestInfoPaymentTitleStrong}`}>
-            <FormattedMessageFixed id={`${intl}.refundPaymentMethod`} />
+            {formatMessage({ id: messages.refundPaymentMethod.id })}
           </strong>
         </p>
         {request.paymentMethod === "bank" ? (
@@ -126,7 +146,7 @@ class RequestInfo extends Component<Props> {
               className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
             >
               <span className={`${styles.requestInfoPaymentLabel}`}>
-                <FormattedMessageFixed id={`${intl}.formBankTransferAccount`} />
+                {formatMessage({ id: messages.formBankTransferAccount.id })}
               </span>{" "}
               <span className={`${styles.requestInfoIbanText}`}>
                 {request.iban}
@@ -138,13 +158,13 @@ class RequestInfo extends Component<Props> {
             <p
               className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
             >
-              <FormattedMessageFixed id={`${intl}.formVoucher`} />
+              {formatMessage({ id: messages.formVoucher.id })}
             </p>
             <p
               className={`ma1 t-small c-on-base ${styles.requestInfoGiftCardCode}`}
             >
               <span className={`${styles.requestInfoGiftCardCodeLabel}`}>
-                <FormattedMessageFixed id={`${intl}.voucherCode`} />
+                {formatMessage({ id: messages.voucherCode.id })}
               </span>{" "}
               {request.giftCardCode ? (
                 <span className={`${styles.requestInfoGiftCardCodeText}`}>
@@ -152,9 +172,7 @@ class RequestInfo extends Component<Props> {
                 </span>
               ) : (
                 <span className={`${styles.requestInfoGiftCardNotGenerated}`}>
-                  <FormattedMessageFixed
-                    id={`${intl}.voucherCodeNotGenerated`}
-                  />
+                  {formatMessage({ id: messages.voucherCodeNotGenerated.id })}
                 </span>
               )}
             </p>
@@ -163,7 +181,7 @@ class RequestInfo extends Component<Props> {
                 className={`ma1 t-small c-on-base ${styles.requestInfoGiftCardValue}`}
               >
                 <span className={`${styles.requestInfoGiftCardValueLabel}`}>
-                  <FormattedMessageFixed id={`${intl}.voucherValue`} />
+                  {formatMessage({ id: messages.voucherValue.id })}
                 </span>{" "}
                 <span className={`${styles.requestInfoGiftCardValueText}`}>
                   <FormattedCurrency value={giftCardValue} />
@@ -183,4 +201,4 @@ class RequestInfo extends Component<Props> {
   }
 }
 
-export default RequestInfo;
+export default injectIntl(RequestInfo);

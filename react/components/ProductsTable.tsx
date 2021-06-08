@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import styles from "../styles.css";
 import { FormattedCurrency } from "vtex.format-currency";
-import { FormattedMessageFixed, renderIcon } from "../common/utils";
+import { renderIcon } from "../common/utils";
+import { injectIntl, defineMessages } from "react-intl";
 
 interface Props {
   product: any;
   totalRefundAmount: any;
   productsValue: any;
-  intl: string;
+  intl: any;
 }
 
 class ProductsTable extends Component<Props> {
@@ -16,19 +17,26 @@ class ProductsTable extends Component<Props> {
   }
 
   render() {
-    const { product, totalRefundAmount, productsValue, intl } = this.props;
-    const messages = {
-      product: `${intl}.product`,
-      quantity: `${intl}.quantity`,
-      unitPrice: `${intl}.unitPrice`,
-      subtotalRefund: `${intl}.subtotalRefund`,
-      reason: `${intl}.thReason`,
-      refId: `${intl}.thRefId`,
-      productsValue: `${intl}.totalProductsValue`,
-      productVerificationStatus: `${intl}.productVerificationStatus`,
-      noProducts: `${intl}.noProducts`,
-      totalRefundAmount: `${intl}.totalRefundAmount`
-    };
+    const {
+      product,
+      totalRefundAmount,
+      productsValue,
+      intl: { formatMessage }
+    } = this.props;
+    const messages = defineMessages({
+      product: { id: `returns.product` },
+      quantity: { id: `returns.quantity` },
+      unitPrice: { id: `returns.unitPrice` },
+      subtotalRefund: { id: `returns.subtotalRefund` },
+      reason: { id: `returns.thReason` },
+      refId: { id: `returns.thRefId` },
+      productsValue: { id: `returns.totalProductsValue` },
+      productVerificationStatus: {
+        id: `returns.productVerificationStatus`
+      },
+      noProducts: { id: `returns.noProducts` },
+      totalRefundAmount: { id: `returns.totalRefundAmount` }
+    });
     return (
       <table
         className={`${styles.table} ${styles.tableSm} ${styles.tableProducts}`}
@@ -37,19 +45,19 @@ class ProductsTable extends Component<Props> {
           <tr className={`${styles.tableTr}`}>
             <th className={`${styles.tableTh}`} />
             <th className={`${styles.tableTh}`}>
-              <FormattedMessageFixed id={messages.product} />
+              {formatMessage({ id: messages.product.id })}
             </th>
             <th className={`${styles.tableTh}`}>
-              <FormattedMessageFixed id={messages.quantity} />
+              {formatMessage({ id: messages.quantity.id })}
             </th>
             <th className={`${styles.tableTh}`}>
-              <FormattedMessageFixed id={messages.unitPrice} />
+              {formatMessage({ id: messages.unitPrice.id })}
             </th>
             <th className={`${styles.tableTh}`}>
-              <FormattedMessageFixed id={messages.subtotalRefund} />
+              {formatMessage({ id: messages.subtotalRefund.id })}
             </th>
             <th className={`${styles.tableTh}`}>
-              <FormattedMessageFixed id={messages.productVerificationStatus} />
+              {formatMessage({ id: messages.productVerificationStatus.id })}
             </th>
           </tr>
         </thead>
@@ -72,7 +80,7 @@ class ProductsTable extends Component<Props> {
 
                   <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                     <span className={styles.strongText}>
-                      <FormattedMessageFixed id={messages.refId} />
+                      {formatMessage({ id: messages.refId.id })}
                       {": "}
                     </span>
                     {currentProduct.skuId}
@@ -80,12 +88,12 @@ class ProductsTable extends Component<Props> {
 
                   <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                     <span className={styles.strongText}>
-                      <FormattedMessageFixed id={messages.reason} />
+                      {formatMessage({ id: messages.reason.id })}
                       {": "}
                     </span>
-                    <FormattedMessageFixed
-                      id={`${intl}.${currentProduct.reasonCode}`}
-                    />{" "}
+                    {formatMessage({
+                      id: `returns.${currentProduct.reasonCode}`
+                    })}{" "}
                     {currentProduct.reasonCode === "reasonOther"
                       ? "( " + currentProduct.reason + " )"
                       : null}
@@ -105,14 +113,14 @@ class ProductsTable extends Component<Props> {
                   />
                 </td>
                 <td className={`${styles.tableTd}`}>
-                  {renderIcon(currentProduct, intl)}
+                  {renderIcon(currentProduct)}
                 </td>
               </tr>
             ))
           ) : (
             <tr className={`${styles.tableTr} ${styles.tableTrNoProducts}`}>
               <td colSpan={5} className={styles.textCenter}>
-                <FormattedMessageFixed id={messages.noProducts} />
+                {formatMessage({ id: messages.noProducts.id })}
               </td>
             </tr>
           )}
@@ -120,7 +128,7 @@ class ProductsTable extends Component<Props> {
             <td className={`${styles.tableTd}`} />
             <td className={`${styles.tableTd}`} colSpan={3}>
               <strong>
-                <FormattedMessageFixed id={messages.productsValue} />
+                {formatMessage({ id: messages.productsValue.id })}
               </strong>
             </td>
             <td className={`${styles.tableTd}`} colSpan={2}>
@@ -133,7 +141,7 @@ class ProductsTable extends Component<Props> {
             <td className={`${styles.tableTd}`} />
             <td className={`${styles.tableTd}`} colSpan={3}>
               <strong>
-                <FormattedMessageFixed id={messages.totalRefundAmount} />
+                {formatMessage({ id: messages.totalRefundAmount.id })}
               </strong>
             </td>
             <td className={`${styles.tableTd}`} colSpan={2}>
@@ -148,4 +156,4 @@ class ProductsTable extends Component<Props> {
   }
 }
 
-export default ProductsTable;
+export default injectIntl(ProductsTable);

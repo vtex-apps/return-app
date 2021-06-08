@@ -1,14 +1,14 @@
 {
   "section": "orders",
-  "titleId": "admin/navigation.label",
+  "titleId": "navigation.label",
   "path": "/admin/returns/requests",
   "subSectionItems": [
     {
-      "labelId": "admin/navigation.labelRequests",
+      "labelId": "navigation.labelRequests",
       "path": "/admin/returns/requests"
     },
     {
-      "labelId": "admin/navigation.labelSettings",
+      "labelId": "navigation.labelSettings",
       "path": "/admin/returns/settings"
     }
   ]
