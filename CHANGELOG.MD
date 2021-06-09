@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-* Fix messages warn 
-* Code improvement
-* Improve loading time
-* Different client for masterdata
-* Fix products schema for older versions
-
+## [1.0.10] - 2017-06-20
 
 ### Added
-* Auto-update schemas
-* Payment method settings - display or hide payment methods
+
+- Fix messages warn
+- Code improvement
+- Improve loading time
+- Different client for masterdata
+- Fix products schema for older versions
+
+### Added
+
+- Auto-update schemas
+- Payment method settings - display or hide payment methods
