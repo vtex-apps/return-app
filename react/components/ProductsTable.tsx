@@ -69,6 +69,7 @@ class ProductsTable extends Component<Props> {
                   className={`${styles.tableTd} ${styles.tableProductColumn}`}
                 >
                   <img
+                  className={`${styles.tableProductImage}`}
                     src={currentProduct.imageUrl}
                     alt={currentProduct.skuName}
                   />
@@ -99,7 +100,7 @@ class ProductsTable extends Component<Props> {
                       : null}
                   </div>
                 </td>
-                <td className={`${styles.tableTd}`}>
+                <td className={`${styles.tableTd} ${styles.tableReasonQty}`}>
                   {currentProduct.quantity}
                 </td>
                 <td className={`${styles.tableTd}`}>
