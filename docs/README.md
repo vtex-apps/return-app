@@ -353,3 +353,8 @@ Body example:
     "errorMessage": ""
 }
 ```
+
+
+**Upcoming documentation:**
+
+ - [New CSS Handles](https://github.com/vtex-apps/return-app/pull/6)
