@@ -817,7 +817,7 @@ class MyReturnsPageAdd extends Component<any, State> {
             return (
               <div>
                 {successSubmit ? (
-                  <div>
+                  <div className={styles.successContainer}>
                     <p className={styles.successMessage}>{successSubmit}</p>
                   </div>
                 ) : null}

@@ -341,6 +341,7 @@
 .returnFormActions {}
 .returnFormInfoActions {}
 .returnFormInput {}
+.returnFormErrorAgree {}
 .tableColButton {}
 .requestInformationImage {}
 .requestInformationField {}
@@ -396,11 +397,22 @@
 .requestInfoHistoryTextStatus {}
 .requestInfoHistoryTextUpdated {}
 
-
-
+.tableProductImage {}
 .tableAddColButton {}
+.tableReasonQty {}
 
 .tableEligibleOrders {}
+.eligibleOrder {}
+.thEligibleOrderId {}
+.thEligibleCreationDate {}
+.thEligibleSelectOrder {}
+.tdEligibleOrderId {}
+.tdEligibleCreationDate {}
+.noEligibleOrders {}
+
+.backToOrders {}
+
+.successContainer {}
 
 @media screen and (max-width: 759px) {
     .filterList {

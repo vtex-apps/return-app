@@ -278,7 +278,7 @@ class RequestForm extends Component<Props> {
 
     return (
       <div>
-        <div className={`mb6 mt4`}>
+        <div className={`mb6 mt4 ${styles.backToOrders}`}>
           <Button
             variation={"secondary"}
             size={"small"}
@@ -523,7 +523,7 @@ class RequestForm extends Component<Props> {
             value={formInputs.agree}
           />
           {errors.agree ? (
-            <p className={"c-danger t-small mt3 lh-title"}>
+            <p className={`c-danger t-small mt3 lh-title ${styles.returnFormErrorAgree}`}>
               {formatMessage({ id: errors.agree })}
             </p>
           ) : null}

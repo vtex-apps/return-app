@@ -34,27 +34,27 @@ class EligibleOrdersTable extends Component<Props> {
         {eligibleOrders.length ? (
           <div>
             <table className={styles.table + " " + styles.tableEligibleOrders}>
-              <thead>
-                <tr>
-                  <th className={styles.tableTh}>
+              <thead className={styles.tableThead}>
+                <tr className={styles.tableTr}>
+                  <th className={styles.tableTh + " " + styles.thEligibleOrderId}>
                     {formatMessage({ id: messages.thOrderId.id })}
                   </th>
-                  <th className={styles.tableTh}>
+                  <th className={styles.tableTh + " " + styles.thEligibleCreationDate}>
                     {formatMessage({ id: messages.thCreationDate.id })}
                   </th>
-                  <th className={styles.tableTh}>
+                  <th className={styles.tableTh + " " + styles.thEligibleSelectOrder}>
                     {formatMessage({ id: messages.thSelectOrder.id })}
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className={styles.tableTbody}>
                 {eligibleOrders
                   .sort((a, b) => (a.creationDate < b.creationDate ? 1 : -1))
                   .map(order => {
                     return (
-                      <tr key={order.orderId}>
-                        <td>{order.orderId}</td>
-                        <td>{beautifyDate(order.creationDate)}</td>
+                      <tr key={order.orderId} className={styles.eligibleOrder}>
+                        <td className={styles.tdEligibleOrderId}>{order.orderId}</td>
+                        <td className={styles.tdEligibleCreationDate}>{beautifyDate(order.creationDate)}</td>
                         <td className={styles.tableColButton}>
                           <Button
                             size={`small`}
@@ -70,7 +70,7 @@ class EligibleOrdersTable extends Component<Props> {
             </table>
           </div>
         ) : (
-          <div>{formatMessage({ id: messages.noOrders.id })}</div>
+          <div className={styles.noEligibleOrders}>{formatMessage({ id: messages.noOrders.id })}</div>
         )}
       </div>
     );
