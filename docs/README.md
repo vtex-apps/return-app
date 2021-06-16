@@ -18,6 +18,7 @@ VTEX Return App
         - If you have the terms on conditions page on `http://example.com/terms-and-conditions` it's enough for you to type just `/terms-and-conditions`
     - `Excluded categories:` Products that are in those categories will not be eligible for return
     - `Payment methods:` Display or hide payment methods. *You should have at least one option selected.*
+    - `Custom return options (OPTIONAL):` This table allows to create custom reasons as return options, with the addition to have custom max allowed dates for each one. *If none added, the default reasons will be used*
 
 ## Short description
 The return application serves the necessary functionalities for requesting returns from customers, and their processing by the administrators of the online store.
@@ -34,8 +35,8 @@ There are 5 schemas in masterdata:
 
 | Schema name       | Fields            | Type field      |
 | --------------- | --------------- | ---------------- |
-| `returnSettings` | `maxDays`<br>`excludedCategories`<br>`termsUrl`<br>`type` | `settings` |
-| `returnRequests` | `userId`<br>`orderId`<br>`name`<br>`email`<br>`phoneNumber`<br>`country`<br>`locality`<br>`address`<br>`totalPrice`<br>`paymentMethod`<br>`voucherCode`<br>`refundedAmount`<br>`iban`<br>`status`<br>`dateSubmitted`<br>`type` | `request` |
+| `returnSettings` | `maxDays`<br>`excludedCategories`<br>`termsUrl`<br>`options`<br>`type` | `settings` |
+| `returnRequests` | `userId`<br>`orderId`<br>`name`<br>`email`<br>`phoneNumber`<br>`country`<br>`locality`<br>`address`<br>`totalPrice`<br>`paymentMethod`<br> `extraComment`<br>`voucherCode`<br>`refundedAmount`<br>`iban`<br>`status`<br>`dateSubmitted`<br>`type` | `request` |
 | `returnProducts` | `refundId`<br>`orderId`<br>`userId`<br>`imageUrl`<br>`skuId`<br>`sku`<br>`manufacturerCode`<br>`productId`<br>`ean`<br>`brandId`<br>`brandName`<br>`skuName`<br>`unitPrice`<br>`quantity`<br>`totalPrice`<br>`goodProducts`<br>`status`<br>`dateSubmitted`<br>`type` | `product` |
 | `returnComments` | `refundId`<br>`status`<br>`comment`<br>`visibleForCustomer`<br>`submittedBy`<br>`dateSubmitted`<br>`type` | `comment` |
 | `returnStatusHistory` | `refundId`<br>`status`<br>`submittedBy`<br>`dateSubmitted`<br>`type` | `statusHistory` |
@@ -105,6 +106,7 @@ The application use 6 routes. 3 routes for admins and 3 for customers
         "refundedAmount": 0,
         "status": "New",
         "dateSubmitted": "2021-05-07T10:02:06.983Z",
+        "extraComment": "Extra request comment with a max span of 250 chars"
         "customerInfo": {
             "name": "Customer Name",
             "email": "customer_email@domain.com",
@@ -154,6 +156,7 @@ The application use 6 routes. 3 routes for admins and 3 for customers
         "refundedAmount": 0,
         "status": "Pending verification",
         "dateSubmitted": "2021-05-07T10:02:06.983Z",
+        "extraComment": ""
         "customerInfo": {
             "name": "Customer Name",
             "email": "customer_email@domain.com",
@@ -224,6 +227,7 @@ The application use 6 routes. 3 routes for admins and 3 for customers
         "refundedAmount": 0,
         "status": "Denied",
         "dateSubmitted": "2021-05-05T07:44:50.443Z",
+        "extraComment": "Extra request comment with a max span of 250 chars"
         "customerInfo": {
             "name": "Customer fullname",
             "email": "customer_email@domain.com",

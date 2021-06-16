@@ -17,6 +17,7 @@ const messages = defineMessages({
   thQuantity: { id: "returns.thQuantity" },
   thReason: { id: "returns.thReason" },
   formContactDetails: { id: "returns.formContactDetails" },
+  formExtraComment: { id: "returns.formExtraComment" },
   formName: { id: "returns.formName" },
   formEmail: { id: "returns.formEmail" },
   formPhone: { id: "returns.formPhone" },
@@ -34,6 +35,10 @@ const messages = defineMessages({
 class RequestInformation extends Component<Props> {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount(): void {
+    window.scrollTo(0, 0);
   }
 
   render() {
@@ -82,10 +87,11 @@ class RequestInformation extends Component<Props> {
                           {formatMessage({ id: messages.thReason.id })}
                           {": "}
                         </span>
-                        {formatMessage({
-                          id: `returns.${product.reasonCode}`
-                        })}
-
+                        {product.reasonCode.substring(0, 6) === "reason"
+                          ? formatMessage({
+                              id: `returns.${product.reasonCode}`
+                            })
+                          : product.reasonCode}{" "}
                         {product.reasonCode === "reasonOther"
                           ? "( " + product.reason + " )"
                           : null}
@@ -194,6 +200,20 @@ class RequestInformation extends Component<Props> {
               </p>
             )}
           </div>
+          {info.extraComment && info.extraComment !== "" && (
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column w-70 pa4 mb6 ${styles.returnFormInputsExtraComment}`}
+            >
+              <p className={`${styles.returnFormInputsHeader}`}>
+                {formatMessage({ id: messages.formExtraComment.id })}
+              </p>
+              <p
+                className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+              >
+                {info.extraComment}
+              </p>
+            </div>
+          )}
           <div
             className={`flex-ns flex-wrap flex-auto flex-row justify-between ${styles.tableAddColButton} ${styles.returnFormInfoActions}`}
           >

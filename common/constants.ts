@@ -1,21 +1,39 @@
 export const SETTINGS_SCHEMA = {
     'properties': {
-        'maxDays': {'type': 'integer'},
-        'excludedCategories': {'type': 'string'},
-        'paymentBank': {'type': 'boolean'},
-        'paymentCard': {'type': 'boolean'},
-        'paymentVoucher': {'type': 'boolean'},
-        'termsUrl': {'type': 'string'},
-        'type': {'type': 'string'},
+        'maxDays': { 'type': 'integer' },
+        'excludedCategories': { 'type': 'string' },
+        'paymentBank': { 'type': 'boolean' },
+        'paymentCard': { 'type': 'boolean' },
+        'paymentVoucher': { 'type': 'boolean' },
+        'termsUrl': { 'type': 'string' },
+        'options': {
+            'type': 'array',
+            'items': { '$ref': '#/$defs/options' }
+        },
+        'type': { 'type': 'string' },
+    },
+    '$defs': {
+        'options': {
+            'type': 'object',
+            'required': ['optionName', 'maxOptionDay'],
+            'properties': {
+                'optionName': {
+                    'type': 'string'
+                },
+                'maxOptionDay': {
+                    'type': 'integer'
+                }
+            }
+        }
     },
     'v-security': {
         'allowGetAll': true,
-        'publicFilter': ['maxDays', 'excludedCategories', 'paymentBank', 'paymentCard', 'paymentVoucher', 'termsUrl', 'type'],
+        'publicFilter': ['maxDays', 'excludedCategories', 'paymentBank', 'paymentCard', 'paymentVoucher', 'termsUrl', 'options', 'type'],
         'publicJsonSchema': false,
     },
     'v-cache': false,
-    'v-default-fields': ['id', 'createdIn', 'maxDays', 'excludedCategories', 'paymentBank', 'paymentCard', 'paymentVoucher', 'termsUrl', 'type'],
-    'v-indexed': ['id', 'createdIn', 'maxDays', 'excludedCategories', 'paymentBank', 'paymentCard', 'paymentVoucher', 'termsUrl', 'type'],
+    'v-default-fields': ['id', 'createdIn', 'maxDays', 'excludedCategories', 'paymentBank', 'paymentCard', 'paymentVoucher', 'termsUrl', 'options', 'type'],
+    'v-indexed': ['id', 'createdIn', 'maxDays', 'excludedCategories', 'paymentBank', 'paymentCard', 'paymentVoucher', 'termsUrl', 'options', 'type'],
 }
 
 export const RETURNS_SCHEMA = {
@@ -30,6 +48,7 @@ export const RETURNS_SCHEMA = {
         'address': {'type': 'string'},
         'totalPrice': {'type': 'integer'},
         'paymentMethod': {'type': 'string', 'maxLength': 25},
+        'extraComment': { 'type': 'string', 'maxLength': 250 },
         'giftCardCode': {'type': 'string'},
         'giftCardId': {'type': 'string'},
         'refundedAmount': {'type': 'integer'},
@@ -40,12 +59,12 @@ export const RETURNS_SCHEMA = {
     },
     'v-security': {
         'allowGetAll': true,
-        'publicFilter': ['userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
+        'publicFilter': ['userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
         'publicJsonSchema': false,
     },
     'v-cache': false,
-    'v-default-fields': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
-    'v-indexed': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
+    'v-default-fields': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
+    'v-indexed': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
 }
 
 

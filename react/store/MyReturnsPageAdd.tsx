@@ -47,6 +47,7 @@ type State = {
   paymentMethod: string;
   iban: string;
   agree: boolean;
+  extraComment: string;
   errorSubmit: any;
   successSubmit: any;
   errors: Errors;
@@ -104,6 +105,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       paymentMethod: "",
       iban: "",
       agree: false,
+      extraComment: "",
       successSubmit: "",
       errorSubmit: "",
       errors: {
@@ -653,6 +655,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       locality,
       address,
       paymentMethod,
+      extraComment,
       iban,
       orderProducts
     } = this.state;
@@ -668,8 +671,9 @@ class MyReturnsPageAdd extends Component<any, State> {
       phoneNumber: phone,
       country: country,
       locality: locality,
-      address: address,
+      address: address.replace("null", " "),
       paymentMethod: paymentMethod,
+      extraComment: encodeURIComponent(extraComment),
       totalPrice: totalPrice,
       refundedAmount: 0,
       giftCardCode: "",
@@ -790,6 +794,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       address,
       paymentMethod,
       iban,
+      extraComment,
       agree,
       errors,
       eligibleOrders,
@@ -802,6 +807,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       settings
     }: any = this.state;
     const { formatMessage } = this.props.intl;
+    const cleanedAddress = address && address.replace("null", " ");
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
@@ -864,7 +870,8 @@ class MyReturnsPageAdd extends Component<any, State> {
                     phone: phone,
                     country: country,
                     locality: locality,
-                    address: address,
+                    address: cleanedAddress,
+                    extraComment: extraComment,
                     paymentMethod: paymentMethod,
                     iban: iban,
                     agree: agree
@@ -884,7 +891,8 @@ class MyReturnsPageAdd extends Component<any, State> {
                     locality: locality,
                     address: address,
                     paymentMethod: paymentMethod,
-                    iban: iban
+                    iban: iban,
+                    extraComment: extraComment
                   }}
                   orderProducts={orderProducts}
                   showForm={() => {
