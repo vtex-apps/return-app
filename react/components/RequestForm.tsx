@@ -97,7 +97,7 @@ class RequestForm extends Component<Props> {
   }
 
   componentDidMount(): void {
-    window.scrollTo(0, 0);
+    typeof window !== "undefined" && window.scrollTo(0, 0);
   }
 
   paymentMethods() {
