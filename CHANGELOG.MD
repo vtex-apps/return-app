@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - New custom return options
 - New extra request comment
 - New CSS Handles for the My account section
-- Fix 'null' user's address number
-- Scroll to top when navigatin My account section
-- Fix admin settings layout
+- New scroll to top when navigating My account section
+- Fixed 'null' user's address number
+- Fixed admin settings layout
+- Fixed outstanding requests with missing products
+- Fixed cross checking outstanding requests with eligible orders
+
 ## [1.0.10] - 2017-06-20
 
 ### Added

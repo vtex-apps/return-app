@@ -48,7 +48,7 @@ export const RETURNS_SCHEMA = {
         'address': {'type': 'string'},
         'totalPrice': {'type': 'integer'},
         'paymentMethod': {'type': 'string', 'maxLength': 25},
-        'extraComment': { 'type': 'string', 'maxLength': 250 },
+        'extraComment': { 'type': 'string', 'maxLength': 300 },
         'giftCardCode': {'type': 'string'},
         'giftCardId': {'type': 'string'},
         'refundedAmount': {'type': 'integer'},
@@ -139,3 +139,4 @@ export const HISTORY_SCHEMA = {
     'v-default-fields': ['id', 'createdIn', 'refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
     'v-indexed': ['id', 'createdIn', 'refundId', 'status', 'submittedBy', 'dateSubmitted', 'type'],
 }
+

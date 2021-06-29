@@ -50,7 +50,6 @@ const messages = defineMessages({
   deleteCustomOption: { id: "settings.deleteCustomOption" },
   addCustomOptionHeader: { id: "settings.addCustomOption_Header" },
   addCustomOptionRequired: { id: "settings.addCustomOption_Required" },
-  addCustomOptionOptional: { id: "settings.addCustomOption_Optional" },
   addCustomOptionName: { id: "settings.addCustomOption_Name" },
   addCustomOptionDays: { id: "settings.addCustomOption_Days" },
   addCustomOptionSubmit: { id: "settings.addCustomOption_Submit" },
@@ -210,7 +209,7 @@ class ReturnsSettings extends Component<any, any> {
 
   async checkSchemas() {
     const check = await verifySchemas();
-
+    
     if (check) {
       this.setState({ updatingSchema: check });
       try {
@@ -663,7 +662,7 @@ class ReturnsSettings extends Component<any, any> {
                           <div className="w-100 mt3 mb6">
                             <Input
                               placeholder={formatMessage({
-                                id: messages.addCustomOptionOptional.id
+                                id: messages.addCustomOptionRequired.id
                               })}
                               label={formatMessage({
                                 id: messages.addCustomOptionDays.id

@@ -17,7 +17,6 @@
   "settings.deleteCustomOption" : "DELETE OPTION",
   "settings.addCustomOption_Header": "ADD A NEW RETURN OPTION",
   "settings.addCustomOption_Required": "Required",
-  "settings.addCustomOption_Optional": "Optional",
   "settings.addCustomOption_Name": "Return option name",
   "settings.addCustomOption_Days": "Maximum return days",
   "settings.addCustomOption_Submit": "ADD OPTION",

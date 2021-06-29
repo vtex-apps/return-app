@@ -280,7 +280,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
         eligible = !categoryCount;
 
-        const where = `userId=${this.state.userId}__orderId=${order.orderId}__skuId="${product.refId}"`;
+        const where = `orderId=${order.orderId}__skuId="${product.refId}"`;
 
         let currentProduct = {
           ...product,
