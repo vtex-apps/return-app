@@ -209,21 +209,16 @@ class ReturnsSettings extends Component<any, any> {
 
   async checkSchemas() {
     const check = await verifySchemas();
-    
     if (check) {
       this.setState({ updatingSchema: check });
       try {
         await fetch(fetchPath.generateSchema, {
           method: fetchMethod.put,
           headers: fetchHeaders
-        });
+        }).then(() => window.location.reload());
       } catch (error) {
         console.error(error);
       }
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 5000);
     }
   }
 
