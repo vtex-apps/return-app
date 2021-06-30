@@ -280,14 +280,14 @@ class MyReturnsPageAdd extends Component<any, State> {
 
         eligible = !categoryCount;
 
-        const where = `orderId=${order.orderId}__skuId="${product.refId}"`;
+        const where = `orderId=${order.orderId}`;
 
         let currentProduct = {
           ...product,
           selectedQuantity: 0
         };
 
-        this.checkProduct(where)
+        this.checkProduct(where, product.refId)
           .then(response => {
             if (response >= product.quantity) {
               eligible = false;
@@ -339,7 +339,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       });
   };
 
-  async checkProduct(where: string) {
+  async checkProduct(where: string, productSkuId: string) {
     return await fetch(
       fetchPath.getDocuments +
         schemaNames.product +
@@ -353,7 +353,8 @@ class MyReturnsPageAdd extends Component<any, State> {
         let thisQuantity = 0;
         if (response) {
           response.map((receivedProduct: any) => {
-            thisQuantity += receivedProduct.quantity;
+            receivedProduct.skuId === productSkuId &&
+              (thisQuantity += receivedProduct.quantity);
           });
         }
         return Promise.resolve(thisQuantity);
