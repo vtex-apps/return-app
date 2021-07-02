@@ -330,6 +330,10 @@
 .filterColumnActionApply {}
 .filterColumnActionReset {}
 
+.returnFormExtraComment {}
+.returnFormExtraCommentHeader {}
+.returnFormExtraCommentInput {}
+.returnFormInputsExtraComment {}
 .returnFormInputs {}
 .returnFormInputsColumn {}
 .returnFormInputsColumnLeft {}

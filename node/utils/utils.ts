@@ -6,6 +6,7 @@ export function formatRequest(request: any) {
     refundedAmount: request.refundedAmount,
     status: request.status,
     dateSubmitted: request.dateSubmitted,
+    extraComment: request.extraComment,
     customerInfo: {
       name: request.name,
       email: request.email,

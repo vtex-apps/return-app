@@ -29,6 +29,7 @@ class RequestInfo extends Component<Props> {
       country: { id: `returns.country` },
       locality: { id: `returns.locality` },
       address: { id: `returns.address` },
+      formExtraComment: { id: "returns.formExtraComment" },
       refundPaymentMethod: { id: `returns.refundPaymentMethod` },
       formBankTransferAccount: { id: `returns.formBankTransferAccount` },
       formVoucher: { id: `returns.formVoucher` },
@@ -36,6 +37,8 @@ class RequestInfo extends Component<Props> {
       voucherCodeNotGenerated: { id: `returns.voucherCodeNotGenerated` },
       voucherValue: { id: `returns.voucherValue` }
     });
+    const cleanedAddress =
+      request.address && request.address.replace("null", " ");
     return (
       <div className={`${styles.requestInfoMainContent}`}>
         <div
@@ -127,7 +130,7 @@ class RequestInfo extends Component<Props> {
                   {formatMessage({ id: messages.address.id })}:
                 </span>{" "}
                 <span className={`${styles.requestInfoText}`}>
-                  {request.address}
+                  {cleanedAddress}
                 </span>
               </p>
             </div>
@@ -195,6 +198,22 @@ class RequestInfo extends Component<Props> {
           >
             {request.paymentMethod}
           </p>
+        )}
+        {request.extraComment && request.extraComment !== "" && (
+          <div
+            className={`flex-ns flex-wrap flex-auto flex-column w-70 mb4 ${styles.returnFormInputsExtraComment}`}
+          >
+            <p className={`${styles.returnFormInputsHeader}`}>
+              <strong>
+                {formatMessage({ id: messages.formExtraComment.id })}
+              </strong>
+            </p>
+            <p
+              className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+            >
+              {decodeURIComponent(request.extraComment)}
+            </p>
+          </div>
         )}
       </div>
     );

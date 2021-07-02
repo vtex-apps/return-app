@@ -20,6 +20,7 @@ interface FormInputs {
   locality: string;
   address: string;
   paymentMethod: string;
+  extraComment: string;
   iban: string;
   agree: boolean;
 }
@@ -76,6 +77,7 @@ const messages = defineMessages({
   formIBAN: { id: "returns.formIBAN" },
   formNextStep: { id: "returns.formNextStep" },
   formErrorReasonMissing: { id: "returns.formErrorReasonMissing" },
+  formExtraComment: { id: "returns.formExtraComment" },
   backToOrders: { id: "returns.backToOrders" },
   orderDate: { id: "returns.orderDate" },
   thOrderId: { id: "returns.thOrderId" },
@@ -92,6 +94,10 @@ class RequestForm extends Component<Props> {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount(): void {
+    typeof window !== "undefined" && window.scrollTo(0, 0);
   }
 
   paymentMethods() {
@@ -155,8 +161,13 @@ class RequestForm extends Component<Props> {
   };
 
   renderReasonsDropdown(product: any) {
-    const { formatMessage } = this.props.intl;
-    const options = [
+    const {
+      selectedOrder,
+      settings: { options },
+      intl: { formatMessage }
+    }: any = this.props;
+
+    let returnOptions = [
       {
         value: "reasonAccidentalOrder",
         label: formatMessage({ id: messages.reasonAccidentalOrder.id })
@@ -219,12 +230,38 @@ class RequestForm extends Component<Props> {
       }
     ];
 
+    if (options.length !== 0) {
+      const orderDate = new Date(selectedOrder.creationDate).getTime();
+      const today = new Date().getTime();
+      const difference = ((today - orderDate) / (1000 * 60 * 60 * 24)).toFixed(0);
+
+      returnOptions = options.reduce(function(
+        filteredOptions: any,
+        option: any
+      ) {
+        if (difference <= option.maxOptionDay) {
+          const newOption = {
+            value: option.optionName,
+            label: option.optionName
+          };
+          filteredOptions.push(newOption);
+        }
+        return filteredOptions;
+      },
+      []);
+
+      returnOptions.push({
+        value: "reasonOther",
+        label: formatMessage({ id: messages.reasonOther.id })
+      });
+    }
+
     return (
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
           size="small"
-          options={options}
+          options={returnOptions}
           value={product.reasonCode}
           errorMessage={
             product.reasonCode === "" && product.selectedQuantity > 0
@@ -472,6 +509,21 @@ class RequestForm extends Component<Props> {
                 }
               />
             </div>
+          </div>
+        </div>
+
+        <div className={`mt4 ph4 ${styles.returnFormExtraComment}`}>
+          <p className={`${styles.returnFormExtraCommentHeader}`}>
+            {formatMessage({ id: messages.formExtraComment.id })}
+          </p>
+          <div className={`${styles.returnFormExtraCommentInput}`}>
+            <Textarea
+              name={"extraComment"}
+              resize={"none"}
+              onChange={handleInputChange}
+              maxLength="250"
+              value={formInputs.extraComment}
+            />
           </div>
         </div>
 
