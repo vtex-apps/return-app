@@ -27,7 +27,7 @@ const messages = defineMessages({
   formAddress: { id: "returns.formAddress" },
   formPaymentMethod: { id: "returns.formPaymentMethod" },
   formBankTransferAccount: { id: "returns.formBankTransferAccount" },
-  formCardHolder: { id: "returns.formCardHolder" },
+  formAccountHolder: { id: "returns.formAccountHolder" },
   formVoucher: { id: "returns.formVoucher" },
   formSubmit: { id: "returns.formSubmit" },
   goBack: { id: "returns.goBack" }
@@ -183,9 +183,9 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
                 >
-                  {formatMessage({ id: messages.formCardHolder.id })}
+                  {formatMessage({ id: messages.formAccountHolder.id })}
                   {": "}
-                  {info.cardHolder}
+                  {info.accountHolder}
                 </p>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}

@@ -22,7 +22,7 @@ interface FormInputs {
   paymentMethod: string;
   extraComment: string;
   iban: string;
-  cardHolder: string;
+  accountHolder: string;
   agree: boolean;
 }
 
@@ -76,7 +76,7 @@ const messages = defineMessages({
   formAddress: { id: "returns.formAddress" },
   formPaymentMethod: { id: "returns.formPaymentMethod" },
   formIBAN: { id: "returns.formIBAN" },
-  formCardHolder: { id: "returns.formCardHolder" },
+  formAccountHolder: { id: "returns.formAccountHolder" },
   formNextStep: { id: "returns.formNextStep" },
   formErrorReasonMissing: { id: "returns.formErrorReasonMissing" },
   formExtraComment: { id: "returns.formExtraComment" },
@@ -555,15 +555,15 @@ class RequestForm extends Component<Props> {
                 className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
               >
                 <Input
-                  name={"cardHolder"}
+                  name={"accountHolder"}
                   placeholder={formatMessage({
-                    id: messages.formCardHolder.id
+                    id: messages.formAccountHolder.id
                   })}
                   onChange={handleInputChange}
-                  value={formInputs.cardHolder}
+                  value={formInputs.accountHolder}
                   errorMessage={
-                    errors.cardHolder
-                      ? formatMessage({ id: errors.cardHolder })
+                    errors.accountHolder
+                      ? formatMessage({ id: errors.accountHolder })
                       : ""
                   }
                 />

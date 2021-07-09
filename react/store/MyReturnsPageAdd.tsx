@@ -28,7 +28,7 @@ type Errors = {
   address: string;
   paymentMethod: string;
   iban: string;
-  cardHolder: string;
+  accountHolder: string;
   agree: string;
   productQuantities: string;
   reasonMissing: string;
@@ -47,7 +47,7 @@ type State = {
   address: string;
   paymentMethod: string;
   iban: string;
-  cardHolder: string;
+  accountHolder: string;
   agree: boolean;
   extraComment: string;
   errorSubmit: any;
@@ -72,7 +72,7 @@ const initialErrors = {
   address: "",
   paymentMethod: "",
   iban: "",
-  cardHolder: "",
+  accountHolder: "",
   agree: "",
   productQuantities: "",
   reasonMissing: ""
@@ -88,7 +88,7 @@ const errorMessages = defineMessages({
   address: { id: "returns.formErrorAddress" },
   paymentMethod: { id: "returns.formErrorPaymentMethod" },
   iban: { id: "returns.formErrorIBAN" },
-  cardHolder: { id: "returns.formErrorCardHolder" },
+  accountHolder: { id: "returns.formErroraccountHolder" },
   agree: { id: "returns.formErrorAgree" },
   productQuantities: { id: "returns.formErrorQuantities" },
   reasonMissing: { id: "returns.formErrorReasonMissing" }
@@ -122,7 +122,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       address: "",
       paymentMethod: "",
       iban: "",
-      cardHolder: "",
+      accountHolder: "",
       agree: false,
       extraComment: "",
       successSubmit: "",
@@ -422,7 +422,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       address,
       paymentMethod,
       iban,
-      cardHolder,
+      accountHolder,
       agree,
       orderProducts
     } = this.state;
@@ -515,11 +515,11 @@ class MyReturnsPageAdd extends Component<any, State> {
         errors = true;
       }
 
-      if (!cardHolder) {
+      if (!accountHolder) {
         this.setState(prevState => ({
           errors: {
             ...prevState.errors,
-            cardHolder: errorMessages.cardHolder.id
+            accountHolder: errorMessages.accountHolder.id
           }
         }));
         errors = true;
@@ -661,7 +661,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       paymentMethod,
       extraComment,
       iban,
-      cardHolder,
+      accountHolder,
       orderProducts
     } = this.state;
     orderProducts.map((product: any) => {
@@ -684,7 +684,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       giftCardCode: "",
       giftCardId: "",
       iban,
-      cardHolder,
+      accountHolder,
       status: requestsStatuses.new,
       dateSubmitted: getCurrentDate(),
       type: schemaTypes.requests
@@ -800,7 +800,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       address,
       paymentMethod,
       iban,
-      cardHolder,
+      accountHolder,
       extraComment,
       agree,
       errors,
@@ -881,7 +881,7 @@ class MyReturnsPageAdd extends Component<any, State> {
                     extraComment,
                     paymentMethod,
                     iban,
-                    cardHolder,
+                    accountHolder,
                     agree
                   }}
                   submit={() => {
@@ -900,7 +900,7 @@ class MyReturnsPageAdd extends Component<any, State> {
                     address,
                     paymentMethod,
                     iban,
-                    cardHolder,
+                    accountHolder,
                     extraComment
                   }}
                   orderProducts={orderProducts}

@@ -31,7 +31,7 @@ class RequestInfo extends Component<Props> {
       address: { id: `returns.address` },
       formExtraComment: { id: "returns.formExtraComment" },
       refundPaymentMethod: { id: `returns.refundPaymentMethod` },
-      formCardHolder: { id: `returns.formCardHolder` },
+      formAccountHolder: { id: `returns.formAccountHolder` },
       formBankTransferAccount: { id: `returns.formBankTransferAccount` },
       formVoucher: { id: `returns.formVoucher` },
       voucherCode: { id: `returns.voucherCode` },
@@ -150,10 +150,10 @@ class RequestInfo extends Component<Props> {
                 className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
             >
               <span className={`${styles.requestInfoPaymentLabel}`}>
-                {formatMessage({ id: messages.formCardHolder.id })}
+                {formatMessage({ id: messages.formAccountHolder.id })}
               </span>{": "}
               <span className={`${styles.requestInfoIbanText}`}>
-                {request.cardHolder}
+                {request.accountHolder}
               </span>
             </p>
             <p
