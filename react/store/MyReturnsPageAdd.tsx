@@ -28,6 +28,7 @@ type Errors = {
   address: string;
   paymentMethod: string;
   iban: string;
+  cardHolder: string;
   agree: string;
   productQuantities: string;
   reasonMissing: string;
@@ -46,6 +47,7 @@ type State = {
   address: string;
   paymentMethod: string;
   iban: string;
+  cardHolder: string;
   agree: boolean;
   extraComment: string;
   errorSubmit: any;
@@ -61,6 +63,21 @@ type State = {
   submittedRequest: boolean;
 };
 
+const initialErrors = {
+  name: "",
+  email: "",
+  phone: "",
+  country: "",
+  locality: "",
+  address: "",
+  paymentMethod: "",
+  iban: "",
+  cardHolder: "",
+  agree: "",
+  productQuantities: "",
+  reasonMissing: ""
+};
+
 const errorMessages = defineMessages({
   name: { id: "returns.formErrorName" },
   email: { id: "returns.formErrorEmail" },
@@ -71,6 +88,7 @@ const errorMessages = defineMessages({
   address: { id: "returns.formErrorAddress" },
   paymentMethod: { id: "returns.formErrorPaymentMethod" },
   iban: { id: "returns.formErrorIBAN" },
+  cardHolder: { id: "returns.formErrorCardHolder" },
   agree: { id: "returns.formErrorAgree" },
   productQuantities: { id: "returns.formErrorQuantities" },
   reasonMissing: { id: "returns.formErrorReasonMissing" }
@@ -104,23 +122,12 @@ class MyReturnsPageAdd extends Component<any, State> {
       address: "",
       paymentMethod: "",
       iban: "",
+      cardHolder: "",
       agree: false,
       extraComment: "",
       successSubmit: "",
       errorSubmit: "",
-      errors: {
-        name: "",
-        email: "",
-        phone: "",
-        country: "",
-        locality: "",
-        address: "",
-        paymentMethod: "",
-        iban: "",
-        agree: "",
-        productQuantities: "",
-        reasonMissing: ""
-      },
+      errors: initialErrors,
       eligibleOrders: [],
       selectedOrderId: "",
       selectedOrder: [],
@@ -398,21 +405,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
   resetErrors() {
     this.setState({
-      errors: {
-        name: "",
-        email: "",
-        phone: "",
-        country: "",
-        locality: "",
-        address: "",
-        paymentMethod: "",
-        iban: "",
-        agree: "",
-        productQuantities: "",
-        reasonMissing: ""
-      },
-      errorSubmit: "",
-      successSubmit: ""
+      errors: initialErrors
     });
   }
 
@@ -429,6 +422,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       address,
       paymentMethod,
       iban,
+      cardHolder,
       agree,
       orderProducts
     } = this.state;
@@ -510,17 +504,26 @@ class MyReturnsPageAdd extends Component<any, State> {
         }
       }));
       errors = true;
-    } else if (
-      (paymentMethod === "bank" && !iban) ||
-      (paymentMethod === "bank" && !isValidIBANNumber(iban))
-    ) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          iban: errorMessages.iban.id
-        }
-      }));
-      errors = true;
+    } else if (paymentMethod === "bank") {
+      if (!iban || !isValidIBANNumber(iban)) {
+        this.setState(prevState => ({
+          errors: {
+            ...prevState.errors,
+            iban: errorMessages.iban.id
+          }
+        }));
+        errors = true;
+      }
+
+      if (!cardHolder) {
+        this.setState(prevState => ({
+          errors: {
+            ...prevState.errors,
+            cardHolder: errorMessages.cardHolder.id
+          }
+        }));
+        errors = true;
+      }
     }
 
     if (!agree) {
@@ -658,6 +661,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       paymentMethod,
       extraComment,
       iban,
+      cardHolder,
       orderProducts
     } = this.state;
     orderProducts.map((product: any) => {
@@ -679,7 +683,8 @@ class MyReturnsPageAdd extends Component<any, State> {
       refundedAmount: 0,
       giftCardCode: "",
       giftCardId: "",
-      iban: iban,
+      iban,
+      cardHolder,
       status: requestsStatuses.new,
       dateSubmitted: getCurrentDate(),
       type: schemaTypes.requests
@@ -795,6 +800,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       address,
       paymentMethod,
       iban,
+      cardHolder,
       extraComment,
       agree,
       errors,
@@ -866,16 +872,17 @@ class MyReturnsPageAdd extends Component<any, State> {
                   errors={errors}
                   handleInputChange={e => this.handleInputChange(e)}
                   formInputs={{
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    country: country,
-                    locality: locality,
+                    name,
+                    email,
+                    phone,
+                    country,
+                    locality,
                     address: cleanedAddress,
-                    extraComment: extraComment,
-                    paymentMethod: paymentMethod,
-                    iban: iban,
-                    agree: agree
+                    extraComment,
+                    paymentMethod,
+                    iban,
+                    cardHolder,
+                    agree
                   }}
                   submit={() => {
                     this.submit();
@@ -885,15 +892,16 @@ class MyReturnsPageAdd extends Component<any, State> {
               {showInfo ? (
                 <RequestInformation
                   info={{
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    country: country,
-                    locality: locality,
-                    address: address,
-                    paymentMethod: paymentMethod,
-                    iban: iban,
-                    extraComment: extraComment
+                    name,
+                    email,
+                    phone,
+                    country,
+                    locality,
+                    address,
+                    paymentMethod,
+                    iban,
+                    cardHolder,
+                    extraComment
                   }}
                   orderProducts={orderProducts}
                   showForm={() => {

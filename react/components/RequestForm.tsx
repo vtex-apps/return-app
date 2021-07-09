@@ -22,6 +22,7 @@ interface FormInputs {
   paymentMethod: string;
   extraComment: string;
   iban: string;
+  cardHolder: string;
   agree: boolean;
 }
 
@@ -75,6 +76,7 @@ const messages = defineMessages({
   formAddress: { id: "returns.formAddress" },
   formPaymentMethod: { id: "returns.formPaymentMethod" },
   formIBAN: { id: "returns.formIBAN" },
+  formCardHolder: { id: "returns.formCardHolder" },
   formNextStep: { id: "returns.formNextStep" },
   formErrorReasonMissing: { id: "returns.formErrorReasonMissing" },
   formExtraComment: { id: "returns.formExtraComment" },
@@ -233,7 +235,9 @@ class RequestForm extends Component<Props> {
     if (options.length !== 0) {
       const orderDate = new Date(selectedOrder.creationDate).getTime();
       const today = new Date().getTime();
-      const difference = ((today - orderDate) / (1000 * 60 * 60 * 24)).toFixed(0);
+      const difference = ((today - orderDate) / (1000 * 60 * 60 * 24)).toFixed(
+        0
+      );
 
       returnOptions = options.reduce(function(
         filteredOptions: any,
@@ -546,18 +550,37 @@ class RequestForm extends Component<Props> {
             onChange={handleInputChange}
           />
           {formInputs.paymentMethod === "bank" ? (
-            <div
-              className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
-            >
-              <Input
-                name={"iban"}
-                placeholder={formatMessage({ id: messages.formIBAN.id })}
-                onChange={handleInputChange}
-                value={formInputs.iban}
-                errorMessage={
-                  errors.iban ? formatMessage({ id: errors.iban }) : ""
-                }
-              />
+            <div>
+              <div
+                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
+              >
+                <Input
+                  name={"cardHolder"}
+                  placeholder={formatMessage({
+                    id: messages.formCardHolder.id
+                  })}
+                  onChange={handleInputChange}
+                  value={formInputs.cardHolder}
+                  errorMessage={
+                    errors.cardHolder
+                      ? formatMessage({ id: errors.cardHolder })
+                      : ""
+                  }
+                />
+              </div>
+              <div
+                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
+              >
+                <Input
+                  name={"iban"}
+                  placeholder={formatMessage({ id: messages.formIBAN.id })}
+                  onChange={handleInputChange}
+                  value={formInputs.iban}
+                  errorMessage={
+                    errors.iban ? formatMessage({ id: errors.iban }) : ""
+                  }
+                />
+              </div>
             </div>
           ) : null}
         </div>
@@ -575,7 +598,9 @@ class RequestForm extends Component<Props> {
             value={formInputs.agree}
           />
           {errors.agree ? (
-            <p className={`c-danger t-small mt3 lh-title ${styles.returnFormErrorAgree}`}>
+            <p
+              className={`c-danger t-small mt3 lh-title ${styles.returnFormErrorAgree}`}
+            >
               {formatMessage({ id: errors.agree })}
             </p>
           ) : null}
