@@ -93,6 +93,10 @@
     "apiUpdateStatus": {
       "path": "/no-cache/returns/api/update-status/:request_id",
       "public": true
+    },
+    "apiCreateRequest": {
+      "path": "/no-cache/returns/api/create-request",
+      "public": true
     }
   }
 }
