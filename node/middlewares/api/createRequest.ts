@@ -76,33 +76,55 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                         products.map(async (product: any) => {
                             await returnAppClient.getSkuById(ctx, product.skuId)
                                 .then(async (skuResponse: any) => {
-                                    const productData = {
-                                        userId: order.clientProfileData.userProfileId,
-                                        orderId: orderId.toString(),
-                                        refundId: requestResponse.DocumentId,
-                                        skuId: product.refId.toString(),
-                                        productId: skuResponse.ProductId.toString(),
-                                        sku: product.skuId.toString(),
-                                        skuName: skuResponse.Name,
-                                        // manufacturerCode: "",
-                                        ean: productPrices[product.skuId].ean,
-                                        brandId: productPrices[product.skuId].brandId,
-                                        brandName: productPrices[product.skuId].brandName,
-                                        imageUrl: productPrices[product.skuId].imageUrl,
-                                        reasonCode: product.reasonCode,
-                                        reason: product.reasonText,
-                                        unitPrice: parseInt(productPrices[product.skuId].sellingPrice),
-                                        quantity: parseInt(product.quantity),
-                                        totalPrice: parseInt(
-                                            String(productPrices[product.skuId].sellingPrice * parseInt(product.quantity))
-                                        ),
-                                        goodProducts: 0,
-                                        status: requestsStatuses.new,
-                                        dateSubmitted: getCurrentDate(),
-                                        type: 'products'
-                                    }
 
-                                    await masterDataClient.saveDocuments(ctx, 'returnProducts', productData)
+                                    await masterDataClient.getDocuments(ctx, 'returnSettings', 'settings', '1')
+                                        .then(async settings => {
+
+                                            if (settings.length) {
+                                                let options = settings[0].options
+                                                let newReasonOption = true
+                                                options.map((option: any) => {
+                                                    if (product.reasonText === ""
+                                                        || option.optionName.toLowerCase() === product.reasonText.toLowerCase()
+                                                    ) {
+                                                        newReasonOption = false
+                                                    }
+                                                })
+
+                                                if (newReasonOption) {
+                                                    settings[0].options.push({ optionName: product.reasonText, maxOptionDay: settings[0].maxDays })
+                                                    await masterDataClient.saveDocuments(ctx, 'returnSettings', settings[0])
+                                                }
+
+                                                const productData = {
+                                                    userId: order.clientProfileData.userProfileId,
+                                                    orderId: orderId.toString(),
+                                                    refundId: requestResponse.DocumentId,
+                                                    skuId: product.refId.toString(),
+                                                    productId: skuResponse.ProductId.toString(),
+                                                    sku: product.skuId.toString(),
+                                                    skuName: skuResponse.Name,
+                                                    // manufacturerCode: "",
+                                                    ean: productPrices[product.skuId].ean,
+                                                    brandId: productPrices[product.skuId].brandId,
+                                                    brandName: productPrices[product.skuId].brandName,
+                                                    imageUrl: productPrices[product.skuId].imageUrl,
+                                                    reasonCode: product.reasonCode,
+                                                    reason: product.reasonText,
+                                                    unitPrice: parseInt(productPrices[product.skuId].sellingPrice),
+                                                    quantity: parseInt(product.quantity),
+                                                    totalPrice: parseInt(
+                                                        String(productPrices[product.skuId].sellingPrice * parseInt(product.quantity))
+                                                    ),
+                                                    goodProducts: 0,
+                                                    status: requestsStatuses.new,
+                                                    dateSubmitted: getCurrentDate(),
+                                                    type: 'products'
+                                                }
+
+                                                await masterDataClient.saveDocuments(ctx, 'returnProducts', productData)
+                                            }
+                                        })
                                 })
                         })
 
