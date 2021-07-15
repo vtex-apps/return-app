@@ -552,7 +552,7 @@ class RequestForm extends Component<Props> {
           {formInputs.paymentMethod === "bank" ? (
             <div>
               <div
-                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
+                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputAccountHolder}`}
               >
                 <Input
                   name={"accountHolder"}
