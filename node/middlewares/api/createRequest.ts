@@ -119,7 +119,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                                                     goodProducts: 0,
                                                     status: requestsStatuses.new,
                                                     dateSubmitted: getCurrentDate(),
-                                                    type: 'products'
+                                                    type: 'product'
                                                 }
 
                                                 await masterDataClient.saveDocuments(ctx, 'returnProducts', productData)
@@ -131,7 +131,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                         response = {
                             success: true,
                             data: {
-                                request_id: requestResponse.Id
+                                request_id: requestResponse.DocumentId
                             },
                             errorMessage: ""
                         }
