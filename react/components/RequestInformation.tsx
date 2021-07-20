@@ -1,44 +1,46 @@
-import React, { Component } from "react";
-import styles from "../styles.css";
-import { injectIntl, defineMessages } from "react-intl";
-import { Button } from "vtex.styleguide";
+import React, { Component } from 'react'
+import styles from '../styles.css'
+import { injectIntl, defineMessages } from 'react-intl'
+import { Button } from 'vtex.styleguide'
 
 interface Props {
-  orderProducts: any;
-  showForm: any;
-  sendRequest: any;
-  errorSubmit: string;
-  info: any;
-  intl: any;
+  orderProducts: any
+  showForm: any
+  sendRequest: any
+  errorSubmit: string
+  info: any
+  intl: any
 }
 
 const messages = defineMessages({
-  thProduct: { id: "returns.thProduct" },
-  thQuantity: { id: "returns.thQuantity" },
-  thReason: { id: "returns.thReason" },
-  formContactDetails: { id: "returns.formContactDetails" },
-  formExtraComment: { id: "returns.formExtraComment" },
-  formName: { id: "returns.formName" },
-  formEmail: { id: "returns.formEmail" },
-  formPhone: { id: "returns.formPhone" },
-  formPickupAddress: { id: "returns.formPickupAddress" },
-  formCountry: { id: "returns.formCountry" },
-  formLocality: { id: "returns.formLocality" },
-  formAddress: { id: "returns.formAddress" },
-  formPaymentMethod: { id: "returns.formPaymentMethod" },
-  formBankTransferAccount: { id: "returns.formBankTransferAccount" },
-  formVoucher: { id: "returns.formVoucher" },
-  formSubmit: { id: "returns.formSubmit" },
-  goBack: { id: "returns.goBack" }
-});
+  thProduct: { id: 'returns.thProduct' },
+  thQuantity: { id: 'returns.thQuantity' },
+  thReason: { id: 'returns.thReason' },
+  formContactDetails: { id: 'returns.formContactDetails' },
+  formName: { id: 'returns.formName' },
+  formEmail: { id: 'returns.formEmail' },
+  formPhone: { id: 'returns.formPhone' },
+  formPickupAddress: { id: 'returns.formPickupAddress' },
+  formCountry: { id: 'returns.formCountry' },
+  formLocality: { id: 'returns.formLocality' },
+  formAddress: { id: 'returns.formAddress' },
+  formState: { id: 'returns.formState' },
+  formZip: { id: 'returns.formZip' },
+  formHeight: { id: 'returns.formHeight' },
+  formWidth: { id: 'returns.formWidth' },
+  formLength: { id: 'returns.formLength' },
+  formWeight: { id: 'returns.formWeight' },
+  formParcel: { id: 'returns.formParcel' },
+  formPaymentMethod: { id: 'returns.formPaymentMethod' },
+  formBankTransferAccount: { id: 'returns.formBankTransferAccount' },
+  formVoucher: { id: 'returns.formVoucher' },
+  formSubmit: { id: 'returns.formSubmit' },
+  goBack: { id: 'returns.goBack' },
+})
 
 class RequestInformation extends Component<Props> {
   constructor(props) {
-    super(props);
-  }
-
-  componentDidMount(): void {
-    typeof window !== "undefined" && window.scrollTo(0, 0);
+    super(props)
   }
 
   render() {
@@ -48,8 +50,8 @@ class RequestInformation extends Component<Props> {
       showForm,
       sendRequest,
       errorSubmit,
-      intl: { formatMessage }
-    } = this.props;
+      intl: { formatMessage },
+    } = this.props
 
     return (
       <div>
@@ -85,15 +87,14 @@ class RequestInformation extends Component<Props> {
                       <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                         <span className={styles.strongText}>
                           {formatMessage({ id: messages.thReason.id })}
-                          {": "}
+                          {': '}
                         </span>
-                        {product.reasonCode.substring(0, 6) === "reason"
-                          ? formatMessage({
-                              id: `returns.${product.reasonCode}`
-                            })
-                          : product.reasonCode}{" "}
-                        {product.reasonCode === "reasonOther"
-                          ? "( " + product.reason + " )"
+                        {formatMessage({
+                          id: `returns.${product.reasonCode}`,
+                        })}
+
+                        {product.reasonCode === 'reasonOther'
+                          ? '( ' + product.reason + ' )'
                           : null}
                       </div>
                     </td>
@@ -147,7 +148,7 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  {formatMessage({ id: messages.formCountry.id })}:{" "}
+                  {formatMessage({ id: messages.formCountry.id })}:{' '}
                   {info.country}
                 </p>
               </div>
@@ -155,7 +156,7 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  {formatMessage({ id: messages.formLocality.id })}:{" "}
+                  {formatMessage({ id: messages.formLocality.id })}:{' '}
                   {info.locality}
                 </p>
               </div>
@@ -163,8 +164,58 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  {formatMessage({ id: messages.formAddress.id })}:{" "}
+                  {formatMessage({ id: messages.formAddress.id })}:{' '}
                   {info.address}
+                </p>
+              </div>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
+                  {formatMessage({ id: messages.formState.id })}: {info.state}
+                </p>
+              </div>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
+                  {formatMessage({ id: messages.formZip.id })}: {info.zip}
+                </p>
+              </div>
+            </div>
+
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+            >
+              <p className={`${styles.returnFormInputsHeader}`}>
+                {formatMessage({ id: messages.formParcel.id })}
+              </p>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
+                  {formatMessage({ id: messages.formWeight.id })}: {info.weight}
+                </p>
+              </div>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
+                  {formatMessage({ id: messages.formLength.id })}: {info.length}
+                </p>
+              </div>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
+                  {formatMessage({ id: messages.formWidth.id })}: {info.width}
+                </p>
+              </div>
+              <div className={`mb2 ${styles.requestInformationField}`}>
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
+                >
+                  {formatMessage({ id: messages.formHeight.id })}: {info.height}
                 </p>
               </div>
             </div>
@@ -175,18 +226,18 @@ class RequestInformation extends Component<Props> {
             <p className={`${styles.returnFormInputsHeader}`}>
               {formatMessage({ id: messages.formPaymentMethod.id })}
             </p>
-            {info.paymentMethod === "bank" ? (
+            {info.paymentMethod === 'bank' ? (
               <div
                 className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
               >
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
                 >
-                  {formatMessage({ id: messages.formBankTransferAccount.id })}{" "}
+                  {formatMessage({ id: messages.formBankTransferAccount.id })}{' '}
                   {info.iban}
                 </p>
               </div>
-            ) : info.paymentMethod === "giftCard" ? (
+            ) : info.paymentMethod === 'giftCard' ? (
               <p
                 className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
               >
@@ -200,20 +251,6 @@ class RequestInformation extends Component<Props> {
               </p>
             )}
           </div>
-          {info.extraComment && info.extraComment !== "" && (
-            <div
-              className={`flex-ns flex-wrap flex-auto flex-column w-70 pa4 mb6 ${styles.returnFormInputsExtraComment}`}
-            >
-              <p className={`${styles.returnFormInputsHeader}`}>
-                {formatMessage({ id: messages.formExtraComment.id })}
-              </p>
-              <p
-                className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
-              >
-                {info.extraComment}
-              </p>
-            </div>
-          )}
           <div
             className={`flex-ns flex-wrap flex-auto flex-row justify-between ${styles.tableAddColButton} ${styles.returnFormInfoActions}`}
           >
@@ -221,9 +258,9 @@ class RequestInformation extends Component<Props> {
               className={`${styles.requestInformationActionColumn} ${styles.requestInformationActionBack}`}
             >
               <Button
-                type={"submit"}
+                type={'submit'}
                 onClick={() => {
-                  showForm();
+                  showForm()
                 }}
               >
                 {formatMessage({ id: messages.goBack.id })}
@@ -233,10 +270,10 @@ class RequestInformation extends Component<Props> {
               className={`${styles.requestInformationActionColumn} ${styles.requestInformationActionSubmit}`}
             >
               <Button
-                type={"submit"}
+                type={'submit'}
                 variation="primary"
                 onClick={() => {
-                  sendRequest();
+                  sendRequest()
                 }}
               >
                 {formatMessage({ id: messages.formSubmit.id })}
@@ -250,8 +287,8 @@ class RequestInformation extends Component<Props> {
           ) : null}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default injectIntl(RequestInformation);
+export default injectIntl(RequestInformation)

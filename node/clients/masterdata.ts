@@ -60,45 +60,36 @@ export default class Masterdata extends ExternalClient {
         schemaName: this.schemas.settingsSchema.name,
         schemaBody: this.schemas.settingsSchema.schema
       });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
+
     try {
       await ctx.clients.masterdata.createOrUpdateSchema({
         dataEntity: this.schemas.schemaEntity,
         schemaName: this.schemas.returnSchema.name,
         schemaBody: this.schemas.returnSchema.schema
       });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
     try {
       await ctx.clients.masterdata.createOrUpdateSchema({
         dataEntity: this.schemas.schemaEntity,
         schemaName: this.schemas.productsSchema.name,
         schemaBody: this.schemas.productsSchema.schema
       });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
     try {
       await ctx.clients.masterdata.createOrUpdateSchema({
         dataEntity: this.schemas.schemaEntity,
         schemaName: this.schemas.commentsSchema.name,
         schemaBody: this.schemas.commentsSchema.schema
       });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
     try {
       await ctx.clients.masterdata.createOrUpdateSchema({
         dataEntity: this.schemas.schemaEntity,
         schemaName: this.schemas.statusHistorySchema.name,
         schemaBody: this.schemas.statusHistorySchema.schema
       });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
     return true;
   }
 

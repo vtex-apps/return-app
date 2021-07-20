@@ -92,11 +92,9 @@ class ProductsTable extends Component<Props> {
                       {formatMessage({ id: messages.reason.id })}
                       {": "}
                     </span>
-                    {currentProduct.reasonCode.substring(0, 6) === "reason"
-                      ? formatMessage({
-                          id: `returns.${currentProduct.reasonCode}`
-                        })
-                      : currentProduct.reasonCode}{" "}
+                    {formatMessage({
+                      id: `returns.${currentProduct.reasonCode}`
+                    })}{" "}
                     {currentProduct.reasonCode === "reasonOther"
                       ? "( " + currentProduct.reason + " )"
                       : null}

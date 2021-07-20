@@ -6,14 +6,25 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "jsx": "preserve",
-    "lib": ["es2019", "DOM"],
+    "lib": [
+      "es2019",
+      "DOM"
+    ],
     "noEmitOnError": false,
     "sourceMap": true,
     "noImplicitAny": false,
-    "typeRoots": ["node_modules/@types"],
-    "types": ["node", "jest", "graphql"]
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "jest",
+      "graphql"
+    ]
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "./typings/*.d.ts",
     "./**/*.tsx",
@@ -22,6 +33,8 @@
     "./**/*.ts",
     "./**/*.d.ts"
   ],
-  "typeAcquisition": { "enable": false },
+  "typeAcquisition": {
+    "enable": false
+  },
   "extends": "@vtex/tsconfig"
 }

@@ -6,6 +6,11 @@
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\""
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
       "eslint --fix",
@@ -15,10 +20,8 @@
       "prettier --write"
     ]
   },
-  "dependencies": {
-    "axios": "^0.20.0"
-  },
   "devDependencies": {
+    "@types/node": "^12.12.21",
     "@vtex/prettier-config": "^0.2.0",
     "eslint": "^6.8.0",
     "eslint-config-vtex": "^12.4.0",
@@ -27,5 +30,11 @@
     "lint-staged": "^10.2.2",
     "prettier": "^2.0.5",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.21",
+    "axios": "^0.20.0",
+    "eslint-plugin-lodash": "^7.2.0",
+    "graphql": "^15.5.1"
   }
 }

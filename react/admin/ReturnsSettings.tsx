@@ -9,10 +9,7 @@ import {
   IconClear,
   Button,
   CheckboxGroup,
-  IconDeny,
-  Table,
-  Modal,
-  Divider
+  IconDeny
 } from "vtex.styleguide";
 
 import styles from "../styles.css";
@@ -42,17 +39,6 @@ const messages = defineMessages({
   searchCategories: { id: "settings.searchCategories" },
   excludedCategories: { id: "settings.excludedCategories" },
   paymentMethodsLabel: { id: "settings.paymentMethods_label" },
-  returnOptionsLabel: { id: "settings.returnOptions_label" },
-  noCustomOptions: { id: "settings.noCustomOptions" },
-  noCustomOptionsHowTo: { id: "settings.noCustomOptions_HowTo" },
-  noCustomOptionsDisclaimer: { id: "settings.noCustomOptions_Disclaimer" },
-  addCustomOption: { id: "settings.addCustomOption" },
-  deleteCustomOption: { id: "settings.deleteCustomOption" },
-  addCustomOptionHeader: { id: "settings.addCustomOption_Header" },
-  addCustomOptionRequired: { id: "settings.addCustomOption_Required" },
-  addCustomOptionName: { id: "settings.addCustomOption_Name" },
-  addCustomOptionDays: { id: "settings.addCustomOption_Days" },
-  addCustomOptionSubmit: { id: "settings.addCustomOption_Submit" },
   all: { id: "returns.all" },
   saveSettings: { id: "settings.saveSettings" }
 });
@@ -74,8 +60,7 @@ class ReturnsSettings extends Component<any, any> {
       errors: {
         maxDays: "",
         termsUrl: "",
-        payments: "",
-        options: ""
+        payments: ""
       },
       paymentBank: false,
       paymentCard: false,
@@ -96,10 +81,8 @@ class ReturnsSettings extends Component<any, any> {
           checked: true
         }
       },
-      options: [],
       loading: false,
-      categorySearchLoading: false,
-      isModalOpen: false
+      categorySearchLoading: false
     };
   }
 
@@ -168,7 +151,6 @@ class ReturnsSettings extends Component<any, any> {
             paymentCard,
             paymentVoucher,
             payments: updatedPayments,
-            options: json[0].options,
             excludedCategories: JSON.parse(json[0].excludedCategories),
             loading: false
           });
@@ -209,16 +191,21 @@ class ReturnsSettings extends Component<any, any> {
 
   async checkSchemas() {
     const check = await verifySchemas();
+
     if (check) {
       this.setState({ updatingSchema: check });
       try {
         await fetch(fetchPath.generateSchema, {
           method: fetchMethod.put,
           headers: fetchHeaders
-        }).then(() => window.location.reload());
+        });
       } catch (error) {
         console.error(error);
       }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     }
   }
 
@@ -286,7 +273,6 @@ class ReturnsSettings extends Component<any, any> {
       categoryFilterQuery: ""
     });
   };
-
   saveSettings = () => {
     const { formatMessage } = this.props.intl;
     this.setState({
@@ -299,14 +285,7 @@ class ReturnsSettings extends Component<any, any> {
       errorMessage: "",
       loading: true
     });
-    const {
-      maxDays,
-      excludedCategories,
-      termsUrl,
-      id,
-      payments,
-      options
-    } = this.state;
+    const { maxDays, excludedCategories, termsUrl, id, payments } = this.state;
     let hasErrors = false;
     if (!maxDays || !isInt(maxDays)) {
       this.setState((prevState: any) => ({
@@ -353,7 +332,6 @@ class ReturnsSettings extends Component<any, any> {
       paymentCard: payments.paymentCard.checked,
       paymentBank: payments.paymentBank.checked,
       paymentVoucher: payments.paymentVoucher.checked,
-      options: options,
       type: schemaTypes.settings
     };
 
@@ -384,36 +362,6 @@ class ReturnsSettings extends Component<any, any> {
     this.setState({ categoryFilterQuery: "", filteredCategories: [] });
   };
 
-  removeOption = (reference: any) => {
-    const filteredOptions = this.state.options.filter(
-      (item: any) =>
-        item.optionName !== reference.optionName ||
-        item.maxOptionDay !== reference.maxOptionDay
-    );
-    this.setState({ options: filteredOptions });
-  };
-
-  handleModalToggle = () => {
-    this.setState({ isModalOpen: !this.state.isModalOpen });
-  };
-
-  handleSubmitOption = (e: any) => {
-    e.preventDefault();
-    const { optionName, maxOptionDay } = e.target.elements;
-    this.setState((prevState: any) => ({
-      options: [
-        ...prevState.options,
-        {
-          optionName: optionName.value,
-          maxOptionDay: maxOptionDay.value
-            ? Number(maxOptionDay.value)
-            : Number(this.state.maxDays)
-        }
-      ]
-    }));
-    this.handleModalToggle();
-  };
-
   render() {
     const {
       maxDays,
@@ -428,26 +376,9 @@ class ReturnsSettings extends Component<any, any> {
       loading,
       categorySearchLoading,
       updatingSchema,
-      payments,
-      options,
-      isModalOpen
+      payments
     } = this.state;
     const { formatMessage } = this.props.intl;
-    const optionsTableSchema = {
-      properties: {
-        optionName: {
-          title: formatMessage({
-            id: messages.addCustomOptionName.id
-          }),
-          width: 350
-        },
-        maxOptionDay: {
-          title: formatMessage({
-            id: messages.addCustomOptionDays.id
-          })
-        }
-      }
-    };
 
     return (
       <Layout
@@ -539,7 +470,7 @@ class ReturnsSettings extends Component<any, any> {
                     </div>
                   ) : null}
                 </div>
-                <div className={`flex flex-column w-100 mb6`}>
+                <div className={`flex flex-column w-100`}>
                   <p>{formatMessage({ id: messages.excludedCategories.id })}</p>
                   {excludedCategories.length ? (
                     <div className={`flex flex-column`}>
@@ -560,9 +491,8 @@ class ReturnsSettings extends Component<any, any> {
                     </div>
                   ) : null}
                 </div>
-                <Divider orientation="horizontal" />
                 <div className={`flex flex-column w-100`}>
-                  <p className="f4 mb6">
+                  <p>
                     {formatMessage({ id: messages.paymentMethodsLabel.id })}
                   </p>
                   <CheckboxGroup
@@ -582,108 +512,7 @@ class ReturnsSettings extends Component<any, any> {
                     </p>
                   )}
                 </div>
-                <Divider orientation="horizontal" />
-                <div className={`flex flex-column w-100 mb7`}>
-                  <p className="f4 mb0">
-                    {formatMessage({ id: messages.returnOptionsLabel.id })}
-                  </p>
-                  <Table
-                    fullWidth
-                    schema={optionsTableSchema}
-                    items={options}
-                    emptyStateLabel={formatMessage({
-                      id: messages.noCustomOptions.id
-                    })}
-                    emptyStateChildren={
-                      <React.Fragment>
-                        <p>
-                          {formatMessage({
-                            id: messages.noCustomOptionsHowTo.id
-                          })}
-                        </p>
-                        <p>
-                          {formatMessage({
-                            id: messages.noCustomOptionsDisclaimer.id
-                          })}
-                        </p>
-                      </React.Fragment>
-                    }
-                    toolbar={{
-                      newLine: {
-                        label: formatMessage({
-                          id: messages.addCustomOption.id
-                        }),
-                        handleCallback: this.handleModalToggle
-                      }
-                    }}
-                    lineActions={[
-                      {
-                        isDangerous: true,
-                        label: () =>
-                          formatMessage({
-                            id: messages.deleteCustomOption.id
-                          }),
-                        onClick: ({ rowData }) => this.removeOption(rowData)
-                      }
-                    ]}
-                  />
-                  <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
-                    <div className="flex flex-column">
-                      <div className="w-100">
-                        <p className="f3 fw3 gray mt6 mb2">
-                          {formatMessage({
-                            id: messages.addCustomOptionHeader.id
-                          })}
-                        </p>
-                      </div>
-                      <div className="w-100 mv4">
-                        <form
-                          onSubmit={this.handleSubmitOption}
-                          className="flex flex-column items-baseline"
-                        >
-                          <div className="w-100 mv3">
-                            <Input
-                              placeholder={formatMessage({
-                                id: messages.addCustomOptionRequired.id
-                              })}
-                              label={formatMessage({
-                                id: messages.addCustomOptionName.id
-                              })}
-                              name="optionName"
-                              size="large"
-                              required
-                            />
-                          </div>
-                          <div className="w-100 mt3 mb6">
-                            <Input
-                              placeholder={formatMessage({
-                                id: messages.addCustomOptionRequired.id
-                              })}
-                              label={formatMessage({
-                                id: messages.addCustomOptionDays.id
-                              })}
-                              name="maxOptionDay"
-                              size="large"
-                              type="number"
-                              min="1"
-                              max={maxDays}
-                            />
-                          </div>
-                          <Button type="submit">
-                            {formatMessage({
-                              id: messages.addCustomOptionSubmit.id
-                            })}
-                          </Button>
-                        </form>
-                      </div>
-                    </div>
-                  </Modal>
-                  {errors.options && (
-                    <p className={`${styles.errorMessage}`}>{errors.options}</p>
-                  )}
-                </div>
               </div>
-              <Divider orientation="horizontal" />
               {successMessage ? (
                 <div className={`flex flex-column mt6`}>
                   <p className={styles.successMessage}>{successMessage}</p>

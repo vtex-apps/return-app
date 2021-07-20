@@ -63,35 +63,36 @@ class ReturnsDetails extends Component<any, any> {
         visibleInput: false,
         loading: false
       });
+      this.getFromMasterData(
+        schemaNames.product,
+        schemaTypes.products,
+        requestId
+      ).then(response => {
+        let total = 0;
+        if (response.length) {
+          response.map(currentProduct => {
+            total += currentProduct.quantity * currentProduct.unitPrice;
+          });
+          this.setState({ totalRefundAmount: total });
 
-      this.getProductsFromMasterData(request[0].orderId, requestId).then(
-        response => {
-          let total = 0;
-          if (response.length) {
-            response.map(currentProduct => {
-              total += currentProduct.quantity * currentProduct.unitPrice;
+          this.getFromMasterData(
+            schemaNames.comment,
+            schemaTypes.comments,
+            requestId
+          ).then(comments => {
+            this.setState({
+              statusHistoryTimeline: prepareHistoryData(comments, request[0])
             });
-            this.setState({ totalRefundAmount: total });
-
             this.getFromMasterData(
-              schemaNames.comment,
-              schemaTypes.comments,
+              schemaNames.history,
+              schemaTypes.history,
               requestId
-            ).then(comments => {
-              this.setState({
-                statusHistoryTimeline: prepareHistoryData(comments, request[0])
-              });
-              this.getFromMasterData(
-                schemaNames.history,
-                schemaTypes.history,
-                requestId
-              ).then(() => {
-                this.setState({ loading: false });
-              });
+            ).then(() => {
+              this.setState({ loading: false });
             });
-          }
+          });
         }
-      );
+      });
     });
   }
 
@@ -167,51 +168,6 @@ class ReturnsDetails extends Component<any, any> {
             initialProductsForm: productsForm
           });
         }
-        return json;
-      })
-      .catch(err => this.setState({ error: err }));
-  }
-
-  async getProductsFromMasterData(orderId: string, returnId: string) {
-    return await fetch(
-      fetchPath.getDocuments +
-        schemaNames.product +
-        "/" +
-        schemaTypes.products +
-        "/orderId=" +
-        orderId,
-      {
-        method: fetchMethod.get,
-        headers: fetchHeaders
-      }
-    )
-      .then(response => response.json())
-      .then(json => {
-        const refundableProducts = json.filter(
-          product => product.refundId === returnId
-        );
-        this.setState({
-          [schemaTypes.products]: refundableProducts
-        });
-        const productsForm: any = [];
-        refundableProducts.map(currentProduct => {
-          let status = productStatuses.new;
-          if (currentProduct.goodProducts === 0) {
-            status = productStatuses.denied;
-          } else if (currentProduct.goodProducts < currentProduct.quantity) {
-            status = productStatuses.partiallyApproved;
-          } else if (currentProduct.goodProducts === currentProduct.quantity) {
-            status = productStatuses.approved;
-          }
-          const updatedProduct = { ...currentProduct, status: status };
-          productsForm.push(updatedProduct);
-        });
-
-        this.setState({
-          productsForm: productsForm,
-          initialProductsForm: productsForm
-        });
-
         return json;
       })
       .catch(err => this.setState({ error: err }));

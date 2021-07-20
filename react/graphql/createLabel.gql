@@ -1,0 +1,31 @@
+mutation CreateLabel(
+  $street1: String
+  $street2: String
+  $city: String
+  $state: String
+  $zip: String
+  $country: String
+  $name: String
+  $phone: String
+  $height: Float
+  $length: Float
+  $width: Float
+  $weight: Float
+) {
+  createLabel(
+    street1: $street1
+    street2: $street2
+    city: $city
+    state: $state
+    zip: $zip
+    country: $country
+    name: $name
+    phone: $phone
+    height: $height
+    length: $length
+    width: $width
+    weight: $weight
+  ) @context(provider: "vtex.easypost") {
+    labelUrl
+  }
+}

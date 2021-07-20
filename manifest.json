@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "return-app",
-  "version": "1.1.0",
+  "version": "1.0.11",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -19,7 +19,8 @@
     "vtex.react-portal": "0.x",
     "vtex.store-icons": "0.x",
     "vtex.device-detector": "0.x",
-    "vtex.css-handles": "0.x"
+    "vtex.css-handles": "0.x",
+    "vtex.easypost": "0.x"
   },
   "builders": {
     "admin": "0.x",
@@ -27,7 +28,8 @@
     "messages": "1.x",
     "docs": "0.x",
     "store": "0.x",
-    "node": "6.x"
+    "node": "6.x",
+    "graphql": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
