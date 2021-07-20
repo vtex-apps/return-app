@@ -81,7 +81,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                                         .then(async settings => {
 
                                             if (settings.length) {
-                                                let options = settings[0].options
+                                                let options = settings[0].options??[]
                                                 let newReasonOption = true
                                                 options.map((option: any) => {
                                                     if (product.reasonText === ""
@@ -92,7 +92,8 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                                                 })
 
                                                 if (newReasonOption) {
-                                                    settings[0].options.push({ optionName: product.reasonText, maxOptionDay: settings[0].maxDays })
+                                                    options.push({ optionName: product.reasonText, maxOptionDay: settings[0].maxDays })
+                                                    settings[0].options = options
                                                     await masterDataClient.saveDocuments(ctx, 'returnSettings', settings[0])
                                                 }
 
