@@ -46,7 +46,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                             sellingPrice: data[0].sellingPrice,
                             quantity: parseInt(product.quantity),
                             imageUrl: data[0].imageUrl,
-                            ean: data[0].ean,
+                            ean: data[0].ean??"",
                             brandName: data[0].additionalInfo.brandName,
                             brandId: data[0].additionalInfo.brandId
                         }
@@ -113,7 +113,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                                                         userId: order.clientProfileData.userProfileId,
                                                         orderId: orderId.toString(),
                                                         refundId: requestResponse.DocumentId,
-                                                        skuId: product.refId.toString(),
+                                                        skuId: skuResponse.RefId.toString(),
                                                         productId: skuResponse.ProductId.toString(),
                                                         sku: product.skuId.toString(),
                                                         skuName: skuResponse.Name,
