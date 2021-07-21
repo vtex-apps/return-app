@@ -94,7 +94,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                                                     let newReasonOption = true
                                                     options.map((option: any) => {
                                                         if (product.reasonText === ""
-                                                            || option.optionName.toLowerCase() === product.reasonText.toLowerCase()
+                                                            || option.optionCode.toLowerCase() === product.reasonCode.toLowerCase()
                                                         ) {
                                                             newReasonOption = false
                                                         }
@@ -102,6 +102,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
 
                                                     if (newReasonOption) {
                                                         options.push({
+                                                            optionCode: product.reasonCode,
                                                             optionName: product.reasonText,
                                                             maxOptionDay: settings[0].maxDays
                                                         })

@@ -15,8 +15,11 @@ export const SETTINGS_SCHEMA = {
     '$defs': {
         'options': {
             'type': 'object',
-            'required': ['optionName', 'maxOptionDay'],
+            'required': ['optionCode', 'optionName', 'maxOptionDay'],
             'properties': {
+                'optionCode': {
+                    'type': 'string'
+                },
                 'optionName': {
                     'type': 'string'
                 },

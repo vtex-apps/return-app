@@ -241,7 +241,7 @@ class RequestForm extends Component<Props> {
       ) {
         if (difference <= option.maxOptionDay) {
           const newOption = {
-            value: option.optionName,
+            value: option.optionCode,
             label: option.optionName
           };
           filteredOptions.push(newOption);

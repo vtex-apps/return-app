@@ -172,5 +172,6 @@
   "returns.reasonDifferentFromWebsite": "Diferit de descrierea de pe site",
   "returns.thRefId": "Ref ID",
   "returns.thReason": "Motiv",
-  "returns.changeStatusComment": "Schimba statusul sau adauga comentariu"
+  "returns.changeStatusComment": "Schimba statusul sau adauga comentariu",
+  "settings.addCustomOption_Code": "Cod opțiune de returnare"
 }

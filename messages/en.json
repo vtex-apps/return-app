@@ -172,5 +172,6 @@
   "returns.reasonNoLongerNeeded": "No longer needed/wanted",
   "returns.reasonUnauthorizedPurchase": "Unauthorized purchase",
   "returns.reasonDifferentFromWebsite": "Different from website description",
-  "returns.reasonOther": "Other"
+  "returns.reasonOther": "Other",
+  "settings.addCustomOption_Code": "Return option code"
 }

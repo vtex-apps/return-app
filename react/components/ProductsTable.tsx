@@ -96,7 +96,7 @@ class ProductsTable extends Component<Props> {
                       ? formatMessage({
                           id: `returns.${currentProduct.reasonCode}`
                         })
-                      : currentProduct.reasonCode}{" "}
+                      : currentProduct.reason}{" "}
                     {currentProduct.reasonCode === "reasonOther"
                       ? "( " + currentProduct.reason + " )"
                       : null}

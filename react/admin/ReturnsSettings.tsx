@@ -54,7 +54,8 @@ const messages = defineMessages({
   addCustomOptionDays: { id: "settings.addCustomOption_Days" },
   addCustomOptionSubmit: { id: "settings.addCustomOption_Submit" },
   all: { id: "returns.all" },
-  saveSettings: { id: "settings.saveSettings" }
+  saveSettings: { id: "settings.saveSettings" },
+  addCustomOptionCode: { id: "settings.addCustomOption_Code" },
 });
 
 class ReturnsSettings extends Component<any, any> {
@@ -387,6 +388,7 @@ class ReturnsSettings extends Component<any, any> {
   removeOption = (reference: any) => {
     const filteredOptions = this.state.options.filter(
       (item: any) =>
+        item.optionCode !== reference.optionCode ||
         item.optionName !== reference.optionName ||
         item.maxOptionDay !== reference.maxOptionDay
     );
@@ -399,11 +401,12 @@ class ReturnsSettings extends Component<any, any> {
 
   handleSubmitOption = (e: any) => {
     e.preventDefault();
-    const { optionName, maxOptionDay } = e.target.elements;
+    const { optionName, maxOptionDay, optionCode } = e.target.elements;
     this.setState((prevState: any) => ({
       options: [
         ...prevState.options,
         {
+          optionCode: optionCode.value,
           optionName: optionName.value,
           maxOptionDay: maxOptionDay.value
             ? Number(maxOptionDay.value)
@@ -435,6 +438,12 @@ class ReturnsSettings extends Component<any, any> {
     const { formatMessage } = this.props.intl;
     const optionsTableSchema = {
       properties: {
+        optionCode: {
+          title: formatMessage({
+            id: messages.addCustomOptionCode.id
+          }),
+          width: 250
+        },
         optionName: {
           title: formatMessage({
             id: messages.addCustomOptionName.id
@@ -641,6 +650,19 @@ class ReturnsSettings extends Component<any, any> {
                           onSubmit={this.handleSubmitOption}
                           className="flex flex-column items-baseline"
                         >
+                          <div className="w-100 mv3">
+                            <Input
+                                placeholder={formatMessage({
+                                  id: messages.addCustomOptionRequired.id
+                                })}
+                                label={formatMessage({
+                                  id: messages.addCustomOptionCode.id
+                                })}
+                                name="optionCode"
+                                size="large"
+                                required
+                            />
+                          </div>
                           <div className="w-100 mv3">
                             <Input
                               placeholder={formatMessage({

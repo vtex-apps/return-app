@@ -617,13 +617,23 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 
   handleReasonCode(product: any, value: any) {
+    const { settings } = this.state
+    let reason = ""
+    if (settings['options'] && settings['options'].length) {
+      const data = settings['options'].filter(function (item: any) {
+        return item.optionCode === value
+      })
+      if (data.length) {
+        reason = data[0].optionName
+      }
+    }
     this.setState(prevState => ({
       orderProducts: prevState.orderProducts.map(el =>
         el.uniqueId === product.uniqueId
           ? {
               ...el,
               reasonCode: value,
-              reason: ""
+              reason: reason
             }
           : el
       )
