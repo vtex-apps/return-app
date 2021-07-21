@@ -57,7 +57,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                 await Promise.all(products.map(async (item: any) => {
                     if (!productPrices.hasOwnProperty(item.skuId)) {
                         success = false;
-                        message = `Invalid order SKU`;
+                        message = `Invalid order SKU ${item.skuId}`;
                     }
                 }))
 
