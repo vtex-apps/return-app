@@ -38,7 +38,7 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
 
                 await Promise.all(products.map(async (product: any) => {
                     const data = order.items.filter(function (item: any) {
-                        return item.sellerSku === product.skuId
+                        return item.id === product.skuId
                     })
 
                     if (data.length) {
@@ -54,98 +54,119 @@ export async function createRequest(ctx: Context, next: () => Promise<any>) {
                     }
                 }))
 
-                let requestData = {
-                    "userId": order.clientProfileData.userProfileId,
-                    "orderId": orderId,
-                    "name": customerInfo.name,
-                    "email": customerInfo.email,
-                    "phoneNumber": customerInfo.phoneNumber,
-                    "country": customerInfo.country,
-                    "locality": customerInfo.locality,
-                    "address": customerInfo.address,
-                    "paymentMethod": paymentInfo.paymentMethod,
-                    "totalPrice": totalPrice,
-                    "iban": paymentInfo.iban,
-                    "status": requestsStatuses.new,
-                    "dateSubmitted": dateSubmitted,
-                    "type": "request"
-                }
+                await Promise.all(order.items.map(async (item: any) => {
+                    if (!productPrices.hasOwnProperty(item.id)) {
+                        success = false;
+                        message = `Invalid order SKU`;
+                    }
+                }))
 
-                await masterDataClient.saveDocuments(ctx, 'returnRequests', requestData)
-                    .then(async requestResponse => {
-                        products.map(async (product: any) => {
-                            await returnAppClient.getSkuById(ctx, product.skuId)
-                                .then(async (skuResponse: any) => {
+                if (success) {
 
-                                    await masterDataClient.getDocuments(ctx, 'returnSettings', 'settings', '1')
-                                        .then(async settings => {
+                    let requestData = {
+                        "userId": order.clientProfileData.userProfileId,
+                        "orderId": orderId,
+                        "name": customerInfo.name,
+                        "email": customerInfo.email,
+                        "phoneNumber": customerInfo.phoneNumber,
+                        "country": customerInfo.country,
+                        "locality": customerInfo.locality,
+                        "address": customerInfo.address,
+                        "paymentMethod": paymentInfo.paymentMethod,
+                        "totalPrice": totalPrice,
+                        "iban": paymentInfo.iban,
+                        "status": requestsStatuses.new,
+                        "dateSubmitted": dateSubmitted,
+                        "type": "request"
+                    }
 
-                                            if (settings.length) {
-                                                let options = settings[0].options??[]
-                                                let newReasonOption = true
-                                                options.map((option: any) => {
-                                                    if (product.reasonText === ""
-                                                        || option.optionName.toLowerCase() === product.reasonText.toLowerCase()
-                                                    ) {
-                                                        newReasonOption = false
+                    await masterDataClient.saveDocuments(ctx, 'returnRequests', requestData)
+                        .then(async requestResponse => {
+                            products.map(async (product: any) => {
+                                await returnAppClient.getSkuById(ctx, product.skuId)
+                                    .then(async (skuResponse: any) => {
+
+                                        await masterDataClient.getDocuments(ctx, 'returnSettings', 'settings', '1')
+                                            .then(async settings => {
+
+                                                if (settings.length) {
+                                                    let options = settings[0].options ?? []
+                                                    let newReasonOption = true
+                                                    options.map((option: any) => {
+                                                        if (product.reasonText === ""
+                                                            || option.optionName.toLowerCase() === product.reasonText.toLowerCase()
+                                                        ) {
+                                                            newReasonOption = false
+                                                        }
+                                                    })
+
+                                                    if (newReasonOption) {
+                                                        options.push({
+                                                            optionName: product.reasonText,
+                                                            maxOptionDay: settings[0].maxDays
+                                                        })
+                                                        settings[0].options = options
+                                                        await masterDataClient.saveDocuments(ctx, 'returnSettings', settings[0])
                                                     }
-                                                })
 
-                                                if (newReasonOption) {
-                                                    options.push({ optionName: product.reasonText, maxOptionDay: settings[0].maxDays })
-                                                    settings[0].options = options
-                                                    await masterDataClient.saveDocuments(ctx, 'returnSettings', settings[0])
+                                                    const productData = {
+                                                        userId: order.clientProfileData.userProfileId,
+                                                        orderId: orderId.toString(),
+                                                        refundId: requestResponse.DocumentId,
+                                                        skuId: product.refId.toString(),
+                                                        productId: skuResponse.ProductId.toString(),
+                                                        sku: product.skuId.toString(),
+                                                        skuName: skuResponse.Name,
+                                                        // manufacturerCode: "",
+                                                        ean: productPrices[product.skuId].ean,
+                                                        brandId: productPrices[product.skuId].brandId,
+                                                        brandName: productPrices[product.skuId].brandName,
+                                                        imageUrl: productPrices[product.skuId].imageUrl,
+                                                        reasonCode: product.reasonCode,
+                                                        reason: product.reasonText,
+                                                        unitPrice: parseInt(productPrices[product.skuId].sellingPrice),
+                                                        quantity: parseInt(product.quantity),
+                                                        totalPrice: parseInt(
+                                                            String(productPrices[product.skuId].sellingPrice * parseInt(product.quantity))
+                                                        ),
+                                                        goodProducts: 0,
+                                                        status: requestsStatuses.new,
+                                                        dateSubmitted: getCurrentDate(),
+                                                        type: 'product'
+                                                    }
+
+                                                    await masterDataClient.saveDocuments(ctx, 'returnProducts', productData)
                                                 }
+                                            })
+                                    })
+                            })
 
-                                                const productData = {
-                                                    userId: order.clientProfileData.userProfileId,
-                                                    orderId: orderId.toString(),
-                                                    refundId: requestResponse.DocumentId,
-                                                    skuId: product.refId.toString(),
-                                                    productId: skuResponse.ProductId.toString(),
-                                                    sku: product.skuId.toString(),
-                                                    skuName: skuResponse.Name,
-                                                    // manufacturerCode: "",
-                                                    ean: productPrices[product.skuId].ean,
-                                                    brandId: productPrices[product.skuId].brandId,
-                                                    brandName: productPrices[product.skuId].brandName,
-                                                    imageUrl: productPrices[product.skuId].imageUrl,
-                                                    reasonCode: product.reasonCode,
-                                                    reason: product.reasonText,
-                                                    unitPrice: parseInt(productPrices[product.skuId].sellingPrice),
-                                                    quantity: parseInt(product.quantity),
-                                                    totalPrice: parseInt(
-                                                        String(productPrices[product.skuId].sellingPrice * parseInt(product.quantity))
-                                                    ),
-                                                    goodProducts: 0,
-                                                    status: requestsStatuses.new,
-                                                    dateSubmitted: getCurrentDate(),
-                                                    type: 'product'
-                                                }
-
-                                                await masterDataClient.saveDocuments(ctx, 'returnProducts', productData)
-                                            }
-                                        })
-                                })
+                            response = {
+                                success: true,
+                                data: {
+                                    request_id: requestResponse.DocumentId
+                                },
+                                errorMessage: ""
+                            }
                         })
-
-                        response = {
-                            success: true,
-                            data: {
-                                request_id: requestResponse.DocumentId
-                            },
-                            errorMessage: ""
-                        }
-                    })
-                    .catch(() => {
-                        response = {
-                            success: false,
-                            data: {
-                                request_id: null
-                            },
-                            errorMessage: "Could not create return request!"
-                        }
-                    })
+                        .catch(() => {
+                            response = {
+                                success: false,
+                                data: {
+                                    request_id: null
+                                },
+                                errorMessage: "Could not create return request!"
+                            }
+                        })
+                } else {
+                    response = {
+                        success: success,
+                        data: {
+                            request_id: null
+                        },
+                        errorMessage: message
+                    }
+                }
             } else {
                 response = {
                     success: success,
