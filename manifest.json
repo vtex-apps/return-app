@@ -44,6 +44,9 @@
       }
     },
     {
+      "name": "POWER_USER_DS"
+    },
+    {
       "name": "vbase-read-write"
     },
     {

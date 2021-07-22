@@ -302,6 +302,44 @@ class ReturnForm extends Component<any, any> {
               },
             }))
           })
+        } else if (
+          statusInput === requestsStatuses.refunded &&
+          request.paymentMethod === 'card'
+        ) {
+          const items: any = []
+          for (const item of this.state.product) {
+            const invoiceItem = {
+              id: item.sku,
+              price: item.unitPrice,
+              quantity: item.quantity,
+            }
+
+            items.push(invoiceItem)
+          }
+
+          const issuanceDate = new Date().toISOString().slice(0, 10)
+          const invoiceNumber = this.state.request.id
+          const invoiceValue = this.state.request.refundedAmount.toString()
+
+          const body = {
+            items,
+            type: 'Input',
+            issuanceDate,
+            invoiceNumber,
+            invoiceValue,
+          }
+
+          try {
+            fetch(fetchPath.createRefund + this.state.request.orderId, {
+              method: fetchMethod.post,
+              body: JSON.stringify(body),
+              headers: fetchHeaders,
+            }).then((response) => {
+              console.log(response)
+            })
+          } catch (e) {
+            console.log(e)
+          }
         }
 
         const statusHistoryData = {
@@ -653,7 +691,7 @@ class ReturnForm extends Component<any, any> {
           <div className={`flex flex-column items-stretch w-50`}>
             <div className={`mb6`}>
               <Dropdown
-                size="small"
+                size='small'
                 options={statusesOptions}
                 value={statusInput}
                 onChange={(_, v) => this.setState({ statusInput: v })}
@@ -671,15 +709,15 @@ class ReturnForm extends Component<any, any> {
             <div className={`mb6`}>
               <Checkbox
                 checked={visibleInput}
-                id="visible-input"
+                id='visible-input'
                 label={formatMessage({
                   id: messages.commentVisibleToClient.id,
                 })}
-                name="default-checkbox-group"
+                name='default-checkbox-group'
                 onChange={(e) =>
                   this.setState({ visibleInput: !this.state.visibleInput })
                 }
-                value="1"
+                value='1'
               />
             </div>
             <div>
@@ -712,14 +750,14 @@ class ReturnForm extends Component<any, any> {
             </div>
             <div className={`mt6`}>
               {this.state.showLabelSuccess && (
-                <Alert type="success">
+                <Alert type='success'>
                   {formatMessage({
                     id: messages.shippingLabelSuccess.id,
                   })}
                 </Alert>
               )}
               {this.state.showLabelError && (
-                <Alert type="error">
+                <Alert type='error'>
                   {formatMessage({
                     id: messages.shippingLabelError.id,
                   })}
@@ -791,7 +829,7 @@ class ReturnForm extends Component<any, any> {
             </strong>
             <Link
               href={'/admin/checkout/#/orders/' + request.orderId}
-              target="_blank"
+              target='_blank'
             >
               {formatMessage({ id: messages.viewOrder.id })}
             </Link>

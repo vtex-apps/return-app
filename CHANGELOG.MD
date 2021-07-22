@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- New CSS Handles for the My account section
+
 ### Added
 
 - Add Easypost integration to create shipping labels
-
-- New CSS Handles for the My account section
+- Add refund method with credit cards
 
 ## [1.0.10] - 2017-06-20
 

@@ -155,8 +155,8 @@ class RequestForm extends Component<Props> {
           <span>
             {' '}
             <a
-              rel="noopener noreferrer"
-              target="_blank"
+              rel='noopener noreferrer'
+              target='_blank'
               href={settings.termsUrl}
             >
               {formatMessage({ id: messages.termsAndConditions.id })}
@@ -235,8 +235,8 @@ class RequestForm extends Component<Props> {
     return (
       <div className={styles.reasonHolder}>
         <Dropdown
-          label=""
-          size="small"
+          label=''
+          size='small'
           options={options}
           value={product.reasonCode}
           errorMessage={
@@ -254,7 +254,7 @@ class RequestForm extends Component<Props> {
           <div className={styles.mt10}>
             <Textarea
               resize={'none'}
-              label=""
+              label=''
               value={product.reason}
               onChange={(e) => {
                 this.props.handleReason(product, e.target.value)
@@ -289,6 +289,8 @@ class RequestForm extends Component<Props> {
       intl: { formatMessage },
     } = this.props
 
+    // eslint-disable-next-line no-console
+    console.log('formInputs', formInputs)
     return (
       <div>
         <div className={`mb6 mt4 ${styles.backToOrders}`}>
@@ -366,8 +368,8 @@ class RequestForm extends Component<Props> {
                   <td className={`${styles.tableTd} ${styles.w350}`}>
                     <a
                       className={styles.productUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target='_blank'
+                      rel='noopener noreferrer'
                       href={product.detailUrl}
                     >
                       {product.name}
@@ -569,7 +571,7 @@ class RequestForm extends Component<Props> {
           </p>
           <RadioGroup
             hideBorder
-            name="paymentMethod"
+            name='paymentMethod'
             options={this.paymentMethods()}
             value={formInputs.paymentMethod}
             errorMessage={
@@ -601,10 +603,10 @@ class RequestForm extends Component<Props> {
         >
           <Checkbox
             checked={formInputs.agree}
-            id="agree"
+            id='agree'
             key={'formAgreeCheckbox'}
             label={this.renderTermsAndConditions()}
-            name="agree"
+            name='agree'
             onChange={handleInputChange}
             value={formInputs.agree}
           />
@@ -618,7 +620,7 @@ class RequestForm extends Component<Props> {
         </div>
 
         <div className={`mt4 ph4 ${styles.returnFormActions}`}>
-          <Button type={'submit'} variation="primary" onClick={submit}>
+          <Button type={'submit'} variation='primary' onClick={submit}>
             {formatMessage({ id: messages.formNextStep.id })}
           </Button>
         </div>

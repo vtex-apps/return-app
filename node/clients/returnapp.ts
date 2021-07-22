@@ -1,22 +1,22 @@
-import { ExternalClient, InstanceOptions, IOContext } from "@vtex/api";
+import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
 
 export default class ReturnApp extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
-    super("", context, {
+    super('', context, {
       ...options,
       headers: {
         ...(options?.headers ?? {}),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Vtex-Use-Https": "true"
-      }
-    });
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-Vtex-Use-Https': 'true',
+      },
+    })
   }
 
   public async getCategories(ctx: any): Promise<any> {
     return this.http.get(
       `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog_system/pub/category/tree/100`
-    );
+    )
   }
 
   public async getSkuById(ctx: any, id: any): Promise<any> {
@@ -25,10 +25,10 @@ export default class ReturnApp extends ExternalClient {
         id,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
       }
-    );
+    )
   }
 
   public async getGiftCard(ctx: any, id: any): Promise<any> {
@@ -37,10 +37,10 @@ export default class ReturnApp extends ExternalClient {
         id,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
       }
-    );
+    )
   }
 
   public async getOrders(ctx: any, where: any): Promise<any> {
@@ -48,10 +48,10 @@ export default class ReturnApp extends ExternalClient {
       `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/oms/pvt/orders?${where}`,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
       }
-    );
+    )
   }
 
   public async getOrder(ctx: any, orderId: any): Promise<any> {
@@ -59,10 +59,10 @@ export default class ReturnApp extends ExternalClient {
       `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/oms/pvt/orders/${orderId}`,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
       }
-    );
+    )
   }
 
   public async createGiftCard(
@@ -74,10 +74,10 @@ export default class ReturnApp extends ExternalClient {
       body,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
       }
-    );
+    )
   }
 
   public async updateGiftCard(
@@ -90,10 +90,10 @@ export default class ReturnApp extends ExternalClient {
       body,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.adminUserAuthToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.adminUserAuthToken,
+        },
       }
-    );
+    )
   }
 
   public async updateGiftCardApi(
@@ -107,11 +107,11 @@ export default class ReturnApp extends ExternalClient {
       body,
       {
         headers: {
-          "x-vtex-api-apptoken": headers["x-vtex-api-apptoken"],
-          "X-VTEX-API-AppKey": headers["x-vtex-api-appkey"]
-        }
+          'x-vtex-api-apptoken': headers['x-vtex-api-apptoken'],
+          'X-VTEX-API-AppKey': headers['x-vtex-api-appkey'],
+        },
       }
-    );
+    )
   }
 
   public async sendMail(ctx: any, body: Record<string, any>): Promise<any> {
@@ -120,9 +120,21 @@ export default class ReturnApp extends ExternalClient {
       body,
       {
         headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken
-        }
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
       }
-    );
+    )
+  }
+
+  public async createRefund(ctx: any, orderId: any, body: any): Promise<any> {
+    return this.http.post(
+      `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/oms/pvt/orders/${orderId}/invoice`,
+      body,
+      {
+        headers: {
+          VtexIdclientAutCookie: ctx.vtex.adminUserAuthToken,
+        },
+      }
+    )
   }
 }
