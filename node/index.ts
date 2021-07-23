@@ -29,6 +29,8 @@ import { checkStatus } from "./middlewares/api/checkStatus";
 import { updateStatus } from "./middlewares/api/updateStatus";
 import {createRequest} from "./middlewares/api/createRequest";
 
+import { isAuthenticated } from "./middlewares/auth";
+
 const TIMEOUT_MS = 5000;
 const memoryCache = new LRUCache<string, any>({ max: 5000 });
 
@@ -55,61 +57,61 @@ export default new Service({
   clients,
   routes: {
     getSchemas: method({
-      GET: returnAppGetSchemas
+      GET: [isAuthenticated, returnAppGetSchemas]
     }),
     generateSchema: method({
-      PUT: generateReturnsSchema
+      PUT: [isAuthenticated, generateReturnsSchema]
     }),
     getDocuments: method({
-      GET: receiveDocuments
+      GET: [isAuthenticated, receiveDocuments]
     }),
     getCategories: method({
-      GET: receiveCategories
+      GET: [isAuthenticated, receiveCategories]
     }),
     getOrders: method({
-      GET: getOrders
+      GET: [isAuthenticated, getOrders]
     }),
     getOrder: method({
-      GET: getOrder
+      GET: [isAuthenticated, getOrder]
     }),
     saveDocuments: method({
-      POST: saveMasterdataDocuments
+      POST: [isAuthenticated, saveMasterdataDocuments]
     }),
     savePartialDocument: method({
-      POST: saveMasterdataPartialDocuments
+      POST: [isAuthenticated, saveMasterdataPartialDocuments]
     }),
     createGiftCard: method({
-      POST: createGiftCard
+      POST: [isAuthenticated, createGiftCard]
     }),
     updateGiftCard: method({
-      POST: updateGiftCard
+      POST: [isAuthenticated, updateGiftCard]
     }),
     getGiftCard: method({
-      GET: getGiftCard
+      GET: [isAuthenticated, getGiftCard]
     }),
     getSkuById: method({
-      GET: getSkuById
+      GET: [isAuthenticated, getSkuById]
     }),
     sendMail: method({
-      POST: sendMail
+      POST: [isAuthenticated, sendMail]
     }),
     apiGetRequest: method({
-      GET: getRequest
+      GET: [isAuthenticated, getRequest]
     }),
     apiGetList: method({
-      GET: getList
+      GET: [isAuthenticated, getList]
     }),
     apiAddComment: method({
-      POST: addComment
+      POST: [isAuthenticated, addComment]
     }),
     apiChangeProductStatus: method({
-      POST: changeProductStatus
+      POST: [isAuthenticated, changeProductStatus]
     }),
     apiCheckStatus: method({
-      GET: checkStatus
+      GET: [isAuthenticated, checkStatus]
     }),
     apiUpdateStatus: method({
-      POST: updateStatus
+      POST: [isAuthenticated, updateStatus]
     }),
     apiCreateRequest: method({
       POST: createRequest
