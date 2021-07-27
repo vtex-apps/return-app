@@ -96,7 +96,15 @@
     },
     "apiCreateRequest": {
       "path": "/no-cache/returns/api/create-request",
-      "public": true
+      "public": false,
+      "access": "authorized",
+      "policies": [{
+        "effect": "allow",
+        "actions": ["post"],
+        "principals": [
+          "vrn:apps:*:*:*:app/vtex.admin-example@*"
+        ]
+      }]
     }
   }
 }
