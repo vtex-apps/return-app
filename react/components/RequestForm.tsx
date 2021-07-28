@@ -230,7 +230,7 @@ class RequestForm extends Component<Props> {
       }
     ];
 
-    if (options && options.length !== 0) {
+    if (options?.length !== 0) {
       const orderDate = new Date(selectedOrder.creationDate).getTime();
       const today = new Date().getTime();
       const difference = ((today - orderDate) / (1000 * 60 * 60 * 24)).toFixed(0);
