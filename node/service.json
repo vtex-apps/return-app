@@ -102,7 +102,7 @@
         "effect": "allow",
         "actions": ["post"],
         "principals": [
-          "vrn:apps:*:*:*:app/vtex.admin-example@*"
+          "vrn:apps:*:*:*:app/elefantdev.rma-proxy@*"
         ]
       }]
     }
