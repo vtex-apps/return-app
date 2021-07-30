@@ -358,6 +358,75 @@ Body example:
 }
 ```
 
+#### Create request
+![Generic badge](https://img.shields.io/badge/POST-blue.svg)   `http://app.io.vtex.com/vtex.return-app/v1/{accountName}/master/no-cache/returns/api/create-request`
+
+![Important badge](https://img.shields.io/badge/-Important-orange)  For security reasons, at this point, the endpoint is accessible only to the `elefantdev.rma-proxy` app via vrn policies.
+
+*Body Parameters:*
+
+| Param | Type | Required | Default |
+| --- | --- |--- | --- |
+|orderId|string|yes| -|
+|dateSubmitted|string|yes| -|
+|comment|string|no| -|
+|`customerInfo`|`name`<br>`email`<br>`phoneNumber`<br>`country`<br>`locality`<br>`address`|yes| -|
+|`paymentInfo`|`paymentMethod`<br>`iban`<br>`bank`<br>`accountHolder`|yes| -|
+|`products`|[<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;`paymentMethod`<br>&nbsp;&nbsp;&nbsp;&nbsp;`iban`<br>&nbsp;&nbsp;&nbsp;&nbsp;`bank`<br>&nbsp;&nbsp;&nbsp;&nbsp;`accountHolder`<br>&nbsp;&nbsp;}<br>]|yes| -|
+
+##### Request body example:
+```
+{
+  "orderId": "1000000000000",
+  "dateSubmitted": "2021-05-07T10:02:06.983Z",
+  "customerInfo": {
+    "name": "John Doe",
+    "email": "customer_email@domain.com",
+    "phoneNumber": "0720000000",
+    "country": "Romania",
+    "locality": "Constanta",
+    "address": "Str. mea 1, bl.1, sc.2, ap.3"
+  },
+  "paymentInfo": {
+    "paymentMethod": "giftCard",
+    "iban": "RO98TREZ70220010101XXXXX",
+    "bank": "INGB",
+    "accountHolder": "John Doe"
+  },
+  "products": [
+    {
+      "refId": "sku reference code",
+      "skuId": "sku id",
+      "name": "Product Name",
+      "quantity": 2,
+      "reasonCode": "reasonBetterPrice",
+      "reasonText": ""
+    },
+    {
+      "refId": "sku reference code 2",
+      "skuId": "sku id 2",
+      "name": "Product Name 2",
+      "quantity": 5,
+      "reasonCode": "reasonBetterPrice",
+      "reasonText": ""
+    }
+  ],
+  "comment": ""
+}
+
+```
+
+##### Response body example:
+```
+{
+  "success": true,
+  "data": {
+      "request_id": "request_id_1"
+  },
+  "errorMessage": ""
+}
+```
+
 
 **Upcoming documentation:**
 
