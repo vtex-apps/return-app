@@ -83,6 +83,8 @@ The application use 6 routes. 3 routes for admins and 3 for customers
 
 # API
 
+![Important badge](https://img.shields.io/badge/-Important-orange) All api endpoints are secured and callable only form inside de app.
+
 #### Get requests list
 ![Generic badge](https://img.shields.io/badge/GET-green.svg)  `https://{accountName}.{environment}.com.br/no-cache/no-cache/returns/api/get-requests`  
 
