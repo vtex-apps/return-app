@@ -52,6 +52,7 @@ export const RETURNS_SCHEMA = {
         'giftCardCode': {'type': 'string'},
         'giftCardId': {'type': 'string'},
         'refundedAmount': {'type': 'integer'},
+        'accountHolder': {'type': 'string'},
         'iban': {'type': 'string'},
         'status': {'type': 'string'},
         'dateSubmitted': {'type': 'string', 'format': 'date-time'},
@@ -63,8 +64,8 @@ export const RETURNS_SCHEMA = {
         'publicJsonSchema': false,
     },
     'v-cache': false,
-    'v-default-fields': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
-    'v-indexed': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'iban', 'status', 'dateSubmitted', 'type'],
+    'v-default-fields': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'accountHolder', 'iban', 'status', 'dateSubmitted', 'type'],
+    'v-indexed': ['id', 'createdIn', 'userId', 'orderId', 'name', 'email', 'phoneNumber', 'country', 'locality', 'address', 'totalPrice', 'paymentMethod', 'extraComment', 'giftCardCode', 'giftCardId', 'refundedAmount', 'accountHolder', 'iban', 'status', 'dateSubmitted', 'type'],
 }
 
 

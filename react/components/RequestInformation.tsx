@@ -27,6 +27,7 @@ const messages = defineMessages({
   formAddress: { id: "returns.formAddress" },
   formPaymentMethod: { id: "returns.formPaymentMethod" },
   formBankTransferAccount: { id: "returns.formBankTransferAccount" },
+  formAccountHolder: { id: "returns.formAccountHolder" },
   formVoucher: { id: "returns.formVoucher" },
   formSubmit: { id: "returns.formSubmit" },
   goBack: { id: "returns.goBack" }
@@ -179,6 +180,13 @@ class RequestInformation extends Component<Props> {
               <div
                 className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
               >
+                <p
+                  className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
+                >
+                  {formatMessage({ id: messages.formAccountHolder.id })}
+                  {": "}
+                  {info.accountHolder}
+                </p>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
                 >
