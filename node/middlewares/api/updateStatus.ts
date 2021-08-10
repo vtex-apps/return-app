@@ -1,86 +1,92 @@
-import { json } from "co-body";
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+import { json } from 'co-body'
 
 import {
   getCurrentDate,
   productStatuses,
   requestsStatuses,
   getOneYearLaterDate,
-  statusHistoryTimelines
-} from "../../utils/utils";
+  statusHistoryTimelines,
+} from '../../utils/utils'
 
 export async function updateStatus(ctx: Context, next: () => Promise<any>) {
-  const headers = ctx.request.headers;
+  const { headers } = ctx.request
   const {
-    clients: { returnApp: returnAppClient, masterData: masterDataClient }
-  } = ctx;
-  const body = await json(ctx.req);
+    clients: { returnApp: returnAppClient, masterData: masterDataClient },
+  } = ctx
+
+  const body = await json(ctx.req)
 
   let output = {
     success: true,
-    errorMessage: ""
-  };
+    errorMessage: '',
+  }
 
   if (!body.submittedBy) {
     output = {
       ...output,
       success: false,
-      errorMessage: '"submittedBy" field is missing'
-    };
+      errorMessage: '"submittedBy" field is missing',
+    }
   }
 
   if (output.success) {
-    const { request_id } = ctx.vtex.route.params;
+    const { request_id } = ctx.vtex.route.params
     const requestResponse = await masterDataClient.getDocuments(
       ctx,
-      "returnRequests",
-      "request",
+      'returnRequests',
+      'request',
       `id=${request_id}`
-    );
+    )
 
     if (requestResponse.length) {
-      const request = requestResponse[0];
+      const [request] = requestResponse
       const productsResponse = await masterDataClient.getDocuments(
         ctx,
-        "returnProducts",
-        "product",
+        'returnProducts',
+        'product',
         `refundId=${request_id}`
-      );
+      )
 
-      let nextStatus = "";
+      let nextStatus = ''
+
       if (request.status === requestsStatuses.new) {
-        nextStatus = requestsStatuses.picked;
+        nextStatus = requestsStatuses.picked
       } else if (request.status === requestsStatuses.picked) {
-        nextStatus = requestsStatuses.pendingVerification;
+        nextStatus = requestsStatuses.pendingVerification
       } else if (
         request.status === requestsStatuses.approved ||
         request.status === requestsStatuses.partiallyApproved
       ) {
-        nextStatus = requestsStatuses.refunded;
+        nextStatus = requestsStatuses.refunded
       } else if (request.status === requestsStatuses.refunded) {
         output = {
           ...output,
           success: false,
-          errorMessage: `This request has been updated already refunded`
-        };
+          errorMessage: `This request has been updated already refunded`,
+        }
       } else if (request.status === requestsStatuses.denied) {
         output = {
           ...output,
           success: false,
-          errorMessage: `This request has been denied`
-        };
+          errorMessage: `This request has been denied`,
+        }
       } else if (request.status === requestsStatuses.pendingVerification) {
         const extractStatuses = {
           [productStatuses.new]: 0,
           [productStatuses.pendingVerification]: 0,
           [productStatuses.partiallyApproved]: 0,
           [productStatuses.approved]: 0,
-          [productStatuses.denied]: 0
-        };
-        let totalProducts = 0;
-        productsResponse.map((currentProduct: any) => {
-          extractStatuses[currentProduct.status] += 1;
-          totalProducts += 1;
-        });
+          [productStatuses.denied]: 0,
+        }
+
+        let totalProducts = 0
+
+        productsResponse.forEach((currentProduct: any) => {
+          extractStatuses[currentProduct.status] += 1
+          totalProducts += 1
+        })
 
         if (
           extractStatuses[productStatuses.new] > 0 ||
@@ -91,40 +97,41 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             success: false,
             errorMessage: `You can't update this request. ${
               extractStatuses[productStatuses.pendingVerification]
-            } products hasn't been verified yet. For more information use the check-status route`
-          };
+            } products hasn't been verified yet. For more information use the check-status route`,
+          }
         } else if (
           extractStatuses[productStatuses.approved] === totalProducts
         ) {
-          nextStatus = requestsStatuses.approved;
+          nextStatus = requestsStatuses.approved
         } else if (extractStatuses[productStatuses.denied] === totalProducts) {
-          nextStatus = requestsStatuses.denied;
+          nextStatus = requestsStatuses.denied
         } else if (
           (extractStatuses[productStatuses.approved] > 0 &&
             extractStatuses[productStatuses.approved] < totalProducts) ||
           extractStatuses[productStatuses.partiallyApproved] > 0
         ) {
-          nextStatus = requestsStatuses.partiallyApproved;
+          nextStatus = requestsStatuses.partiallyApproved
         }
       } else {
         output = {
           ...output,
           success: false,
-          errorMessage: `Invalid status`
-        };
+          errorMessage: `Invalid status`,
+        }
       }
 
       if (output.success && nextStatus) {
         // update request
         const newRequestBody = {
           ...request,
-          status: nextStatus
-        };
+          status: nextStatus,
+        }
+
         await masterDataClient.saveDocuments(
           ctx,
-          "returnRequests",
+          'returnRequests',
           newRequestBody
-        );
+        )
 
         // add history
         const historyBody = {
@@ -132,13 +139,14 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
           status: nextStatus,
           submittedBy: body.submittedBy,
           dateSubmitted: getCurrentDate(),
-          type: "statusHistory"
-        };
+          type: 'statusHistory',
+        }
+
         await masterDataClient.saveDocuments(
           ctx,
-          "returnStatusHistory",
+          'returnStatusHistory',
           historyBody
-        );
+        )
 
         if (nextStatus === requestsStatuses.pendingVerification) {
           // update all products to pendingVerification
@@ -146,71 +154,77 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             productsResponse.map(async (product: any) => {
               const newProductBody = {
                 ...product,
-                status: nextStatus
-              };
+                status: nextStatus,
+              }
+
               await masterDataClient.saveDocuments(
                 ctx,
-                "returnProducts",
+                'returnProducts',
                 newProductBody
-              );
-            });
+              )
+            })
           }
         }
 
         if (
           nextStatus === requestsStatuses.refunded &&
-          request.paymentMethod === "giftCard"
+          request.paymentMethod === 'giftCard'
         ) {
           const giftCardBody = {
-            relationName: "RA" + request_id.toString().split("-")[0],
-            caption: "RA" + request_id.toString().split("-")[0],
+            relationName: `RA${request_id.toString().split('-')[0]}`,
+            caption: `RA${request_id.toString().split('-')[0]}`,
             expiringDate: getOneYearLaterDate(),
             balance: 0,
             profileId: newRequestBody.email,
-            discount: true
-          };
+            discount: true,
+          }
+
           const response = await returnAppClient.createGiftCard(
             ctx,
             giftCardBody
-          );
+          )
 
-          const giftCardIdResponse = response.id;
-          const exploded = giftCardIdResponse.split("_");
-          const giftCardId = exploded[exploded.length - 1];
+          const giftCardIdResponse = response.id
+          const exploded = giftCardIdResponse.split('_')
+          const giftCardId = exploded[exploded.length - 1]
 
           const updateGiftCardBody = {
-            description: "Initial Charge",
-            value: newRequestBody.refundedAmount
-          };
-          const updateGiftCardResponse = await returnAppClient.updateGiftCardApi(
-            ctx,
-            giftCardId,
-            updateGiftCardBody,
-            headers
-          );
+            description: 'Initial Charge',
+            value: newRequestBody.refundedAmount,
+          }
+
+          const updateGiftCardResponse =
+            await returnAppClient.updateGiftCardApi(
+              ctx,
+              giftCardId,
+              updateGiftCardBody,
+              headers
+            )
 
           const reqBody = {
             ...newRequestBody,
             giftCardCode: updateGiftCardResponse.redemptionCode,
-            giftCardId: giftCardId
-          };
+            giftCardId,
+          }
 
-          await masterDataClient.saveDocuments(ctx, "returnRequests", reqBody);
+          await masterDataClient.saveDocuments(ctx, 'returnRequests', reqBody)
         }
 
         // Get all info and prepare for mail
         const commentsResponse = await masterDataClient.getDocuments(
           ctx,
-          "returnComments",
-          "comment",
+          'returnComments',
+          'comment',
           `refundId=${request_id}`
-        );
+        )
+
         const newProductResponse = await masterDataClient.getDocuments(
           ctx,
-          "returnProducts",
-          "product",
+          'returnProducts',
+          'product',
           `refundId=${request_id}`
-        );
+        )
+
         const timelineHistory = [
           {
             status: statusHistoryTimelines.new,
@@ -218,7 +232,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             comments: commentsResponse.filter(
               (item: any) => item.status === requestsStatuses.new
             ),
-            active: 1
+            active: 1,
           },
           {
             status: statusHistoryTimelines.picked,
@@ -235,7 +249,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
               newRequestBody.status === requestsStatuses.denied ||
               newRequestBody.status === requestsStatuses.refunded
                 ? 1
-                : 0
+                : 0,
           },
           {
             status: statusHistoryTimelines.pending,
@@ -251,7 +265,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
               newRequestBody.status === requestsStatuses.denied ||
               newRequestBody.status === requestsStatuses.refunded
                 ? 1
-                : 0
+                : 0,
           },
           {
             status: statusHistoryTimelines.verified,
@@ -268,7 +282,7 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
               newRequestBody.status === requestsStatuses.denied ||
               newRequestBody.status === requestsStatuses.refunded
                 ? 1
-                : 0
+                : 0,
           },
           {
             status: statusHistoryTimelines.refunded,
@@ -280,36 +294,38 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
               newRequestBody.status === requestsStatuses.refunded ||
               newRequestBody.status === requestsStatuses.denied
                 ? 1
-                : 0
-          }
-        ];
+                : 0,
+          },
+        ]
 
         const jsonDataMail = {
           data: { ...{ DocumentId: request_id }, ...newRequestBody },
           products: newProductResponse,
-          timeline: timelineHistory
-        };
+          timeline: timelineHistory,
+        }
+
         // Get Data for Send Email
         const mailBody = {
-          TemplateName: "oms-return-request",
-          applicationName: "email",
+          TemplateName: 'oms-return-request',
+          applicationName: 'email',
           logEvidence: false,
-          jsonData: jsonDataMail
-        };
-        await returnAppClient.sendMail(ctx, mailBody);
+          jsonData: jsonDataMail,
+        }
+
+        await returnAppClient.sendMail(ctx, mailBody)
       }
     } else {
       output = {
         ...output,
         success: false,
-        errorMessage: "Request not found"
-      };
+        errorMessage: 'Request not found',
+      }
     }
   }
 
-  ctx.status = 200;
-  ctx.set("Cache-Control", "no-cache");
-  ctx.body = output;
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = output
 
-  await next();
+  await next()
 }

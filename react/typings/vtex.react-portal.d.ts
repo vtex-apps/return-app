@@ -1,3 +1,3 @@
-declare module "vtex.react-portal" {
-  export const Overlay;
+declare module 'vtex.react-portal' {
+  export const Overlay
 }

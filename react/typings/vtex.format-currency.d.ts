@@ -1,1 +1,1 @@
-declare module "vtex.format-currency";
+declare module 'vtex.format-currency'

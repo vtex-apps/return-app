@@ -1,14 +1,15 @@
-import { json } from "co-body";
+import { json } from 'co-body'
 
 export async function createGiftCard(ctx: Context, next: () => Promise<any>) {
-  const body = await json(ctx.req);
+  const body = await json(ctx.req)
   const {
-    clients: { returnApp: returnAppClient }
-  } = ctx;
-  const response = await returnAppClient.createGiftCard(ctx, body);
+    clients: { returnApp: returnAppClient },
+  } = ctx
 
-  ctx.status = 200;
-  ctx.body = response;
+  const response = await returnAppClient.createGiftCard(ctx, body)
 
-  await next();
+  ctx.status = 200
+  ctx.body = response
+
+  await next()
 }

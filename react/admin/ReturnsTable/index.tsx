@@ -1,33 +1,34 @@
-import React, { Component } from "react";
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import React, { Component } from 'react'
 
-import ReturnsTableContent from "./ReturnsTableContent";
-import { fetchHeaders, fetchMethod, fetchPath } from "../../common/fetch";
-import { omsReturnRequest } from "../../common/templates/oms-return-request";
-import { schemaNames } from "../../common/utils";
+import ReturnsTableContent from './ReturnsTableContent'
+import { fetchHeaders, fetchMethod, fetchPath } from '../../common/fetch'
+import { omsReturnRequest } from '../../common/templates/oms-return-request'
+import { schemaNames } from '../../common/utils'
 
 class ReturnsTable extends Component<any, any> {
   constructor(props: any) {
-    super(props);
+    super(props)
     this.state = {
-      error: ""
-    };
+      error: '',
+    }
   }
 
   componentDidMount(): void {
     fetch(`${fetchPath.getSchema}${schemaNames.settings}`, {
       method: fetchMethod.get,
-      headers: fetchHeaders
+      headers: fetchHeaders,
     })
-      .then(response => {
-        return response.text();
+      .then((response) => {
+        return response.text()
       })
       .then((text: string) => {
-        if (text === "") {
+        if (text === '') {
           fetch(fetchPath.renderTemplates, {
             method: fetchMethod.post,
             body: JSON.stringify({
-              Name: "oms-return-request",
-              FriendlyName: "[OMS] Return Request",
+              Name: 'oms-return-request',
+              FriendlyName: '[OMS] Return Request',
               Description: null,
               IsDefaultTemplate: false,
               AccountId: null,
@@ -35,58 +36,61 @@ class ReturnsTable extends Component<any, any> {
               ApplicationId: null,
               IsPersisted: true,
               IsRemoved: false,
-              Type: "",
+              Type: '',
               Templates: {
                 email: {
-                  To: "{{data.email}}",
+                  To: '{{data.email}}',
                   CC: null,
-                  BCC: "{{#compare data.status \"==\" 'New'}}{{/compare}}",
-                  Subject: "Formular de returnare {{data.DocumentId}}",
+                  BCC: '{{#compare data.status "==" \'New\'}}{{/compare}}',
+                  Subject: 'Formular de returnare {{data.DocumentId}}',
                   Message: omsReturnRequest,
-                  Type: "E",
-                  ProviderId: "00000000-0000-0000-0000-000000000000",
+                  Type: 'E',
+                  ProviderId: '00000000-0000-0000-0000-000000000000',
                   ProviderName: null,
                   IsActive: true,
-                  withError: false
+                  withError: false,
                 },
                 sms: {
-                  Type: "S",
+                  Type: 'S',
                   ProviderId: null,
                   ProviderName: null,
                   IsActive: false,
                   withError: false,
-                  Parameters: []
-                }
-              }
+                  Parameters: [],
+                },
+              },
             }),
-            headers: fetchHeaders
-          });
+            headers: fetchHeaders,
+          })
 
           fetch(fetchPath.generateSchema, {
             method: fetchMethod.put,
-            headers: fetchHeaders
+            headers: fetchHeaders,
           })
-            .then(response => response.text())
-            .then(json => console.log(json))
-            .catch(err => this.setState({ error: err }));
+            .then((response) => response.text())
+            // eslint-disable-next-line no-console
+            .then((json) => console.log(json))
+            .catch((err) => this.setState({ error: err }))
         } else {
-          const json = JSON.parse(text);
-          if ("error" in json) {
-            this.setState({ error: json.error });
+          const json = JSON.parse(text)
+
+          if ('error' in json) {
+            this.setState({ error: json.error })
           }
         }
       })
-      .catch(err => this.setState({ error: err }));
+      .catch((err) => this.setState({ error: err }))
   }
 
   render() {
-    const { error } = this.state;
+    const { error } = this.state
+
     if (error) {
-      return <div>{error}</div>;
+      return <div>{error}</div>
     }
 
-    return <ReturnsTableContent />;
+    return <ReturnsTableContent />
   }
 }
 
-export default ReturnsTable;
+export default ReturnsTable

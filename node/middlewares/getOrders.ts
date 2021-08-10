@@ -1,12 +1,13 @@
 export async function getOrders(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { returnApp: returnAppClient }
-  } = ctx;
-  const { where } = ctx.vtex.route.params;
-  const response = await returnAppClient.getOrders(ctx, where);
+    clients: { returnApp: returnAppClient },
+  } = ctx
 
-  ctx.status = 200;
-  ctx.body = response;
+  const { where } = ctx.vtex.route.params
+  const response = await returnAppClient.getOrders(ctx, where)
 
-  await next();
+  ctx.status = 200
+  ctx.body = response
+
+  await next()
 }

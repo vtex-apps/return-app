@@ -13,15 +13,21 @@ export function formatRequest(request: any) {
       phoneNumber: request.phoneNumber,
       country: request.country,
       locality: request.locality,
-      address: request.address
+      address: request.address,
+      state: request.state,
+      zip: request.zip,
+      height: request.height,
+      width: request.width,
+      length: request.length,
+      weight: request.weight,
     },
     paymentInfo: {
       paymentMethod: request.paymentMethod,
       iban: request.iban,
       giftCardCode: request.giftCardCode,
-      giftCardId: request.giftCardId
-    }
-  };
+      giftCardId: request.giftCardId,
+    },
+  }
 }
 
 export function formatProduct(product: any) {
@@ -40,16 +46,16 @@ export function formatProduct(product: any) {
     goodProducts: product.goodProducts,
     reasonCode: product.reasonCode,
     reasonText: product.reason,
-    status: product.status
-  };
+    status: product.status,
+  }
 }
 
 export function formatHistory(history: any) {
   return {
     status: history.status,
     dateSubmitted: history.dateSubmitted,
-    submittedBy: history.submittedBy
-  };
+    submittedBy: history.submittedBy,
+  }
 }
 
 export function formatComment(comment: any) {
@@ -58,63 +64,65 @@ export function formatComment(comment: any) {
     visibleForCustomer: comment.visibleForCustomer,
     status: comment.status,
     dateSubmitted: comment.dateSubmitted,
-    submittedBy: comment.submittedBy
-  };
+    submittedBy: comment.submittedBy,
+  }
 }
 
 export function currentDate() {
-  const d = new Date();
+  const d = new Date()
+
   return `${d.getFullYear()}-${
     d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : `${d.getMonth() + 1}`
-  }-${d.getDate() < 10 ? `0${d.getDate()}` : `${d.getDate()}`}`;
+  }-${d.getDate() < 10 ? `0${d.getDate()}` : `${d.getDate()}`}`
 }
 
 export function getCurrentDate() {
-  return new Date().toISOString();
+  return new Date().toISOString()
 }
 
 export function getOneYearLaterDate() {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = d.getMonth();
-  const day = d.getDate();
-  const oneYearLater = new Date(year + 1, month, day);
-  return oneYearLater.toISOString();
+  const d = new Date()
+  const year = d.getFullYear()
+  const month = d.getMonth()
+  const day = d.getDate()
+  const oneYearLater = new Date(year + 1, month, day)
+
+  return oneYearLater.toISOString()
 }
 
-export function dateFilter(date: string, separator = "-") {
-  const newDate = new Date(date);
-  const day = newDate.getDate();
-  const month = newDate.getMonth() + 1;
-  const year = newDate.getFullYear();
+export function dateFilter(date: string, separator = '-') {
+  const newDate = new Date(date)
+  const day = newDate.getDate()
+  const month = newDate.getMonth() + 1
+  const year = newDate.getFullYear()
 
   return `${year}${separator}${
     month < 10 ? `0${month}` : `${month}`
-  }${separator}${day < 10 ? `0${day}` : `${day}`}`;
+  }${separator}${day < 10 ? `0${day}` : `${day}`}`
 }
 
 export const productStatuses = {
-  new: "New",
-  pendingVerification: "Pending verification",
-  approved: "Approved",
-  partiallyApproved: "Partially approved",
-  denied: "Denied"
-};
+  new: 'New',
+  pendingVerification: 'Pending verification',
+  approved: 'Approved',
+  partiallyApproved: 'Partially approved',
+  denied: 'Denied',
+}
 
 export const requestsStatuses = {
-  new: "New",
-  picked: "Picked up from client",
-  pendingVerification: "Pending verification",
-  approved: "Approved",
-  partiallyApproved: "Partially approved",
-  denied: "Denied",
-  refunded: "Refunded"
-};
+  new: 'New',
+  picked: 'Picked up from client',
+  pendingVerification: 'Pending verification',
+  approved: 'Approved',
+  partiallyApproved: 'Partially approved',
+  denied: 'Denied',
+  refunded: 'Refunded',
+}
 
 export const statusHistoryTimelines = {
-  new: "new",
-  picked: "Picked up from client",
-  pending: "Pending verification",
-  verified: "Package verified",
-  refunded: "Amount refunded"
-};
+  new: 'new',
+  picked: 'Picked up from client',
+  pending: 'Pending verification',
+  verified: 'Package verified',
+  refunded: 'Amount refunded',
+}

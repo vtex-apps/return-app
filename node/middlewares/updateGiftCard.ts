@@ -1,15 +1,16 @@
-import { json } from "co-body";
+import { json } from 'co-body'
 
 export async function updateGiftCard(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { returnApp: returnAppClient }
-  } = ctx;
-  const { id } = ctx.vtex.route.params;
-  const body = await json(ctx.req);
-  const response = await returnAppClient.updateGiftCard(ctx, id, body);
+    clients: { returnApp: returnAppClient },
+  } = ctx
 
-  ctx.status = 200;
-  ctx.body = response;
+  const { id } = ctx.vtex.route.params
+  const body = await json(ctx.req)
+  const response = await returnAppClient.updateGiftCard(ctx, id, body)
 
-  await next();
+  ctx.status = 200
+  ctx.body = response
+
+  await next()
 }

@@ -3,12 +3,13 @@ export async function receiveCategories(
   next: () => Promise<any>
 ) {
   const {
-    clients: { returnApp: returnAppClient }
-  } = ctx;
-  const response = await returnAppClient.getCategories(ctx);
+    clients: { returnApp: returnAppClient },
+  } = ctx
 
-  ctx.status = 200;
-  ctx.body = response;
+  const response = await returnAppClient.getCategories(ctx)
 
-  await next();
+  ctx.status = 200
+  ctx.body = response
+
+  await next()
 }

@@ -1,3 +1,3 @@
-import ReturnsRequests from "./admin";
+import ReturnsRequests from './admin'
 
-export default ReturnsRequests;
+export default ReturnsRequests
