@@ -168,7 +168,7 @@ class ReturnsSettings extends Component<any, any> {
             paymentCard,
             paymentVoucher,
             payments: updatedPayments,
-            options: json[0].options,
+            options: json?.[0]?.options ?? [],
             excludedCategories: JSON.parse(json[0].excludedCategories),
             loading: false
           });
