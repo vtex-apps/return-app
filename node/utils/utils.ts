@@ -16,10 +16,6 @@ export function formatRequest(request: any) {
       address: request.address,
       state: request.state,
       zip: request.zip,
-      height: request.height,
-      width: request.width,
-      length: request.length,
-      weight: request.weight,
     },
     paymentInfo: {
       paymentMethod: request.paymentMethod,

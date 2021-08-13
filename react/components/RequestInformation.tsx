@@ -29,11 +29,6 @@ const messages = defineMessages({
   formAddress: { id: 'returns.formAddress' },
   formState: { id: 'returns.formState' },
   formZip: { id: 'returns.formZip' },
-  formHeight: { id: 'returns.formHeight' },
-  formWidth: { id: 'returns.formWidth' },
-  formLength: { id: 'returns.formLength' },
-  formWeight: { id: 'returns.formWeight' },
-  formParcel: { id: 'returns.formParcel' },
   formPaymentMethod: { id: 'returns.formPaymentMethod' },
   formBankTransferAccount: { id: 'returns.formBankTransferAccount' },
   formAccountHolder: { id: "returns.formAccountHolder" },
@@ -185,42 +180,6 @@ class RequestInformation extends Component<Props> {
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
                   {formatMessage({ id: messages.formZip.id })}: {info.zip}
-                </p>
-              </div>
-            </div>
-
-            <div
-              className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
-            >
-              <p className={`${styles.returnFormInputsHeader}`}>
-                {formatMessage({ id: messages.formParcel.id })}
-              </p>
-              <div className={`mb2 ${styles.requestInformationField}`}>
-                <p
-                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
-                >
-                  {formatMessage({ id: messages.formWeight.id })}: {info.weight}
-                </p>
-              </div>
-              <div className={`mb2 ${styles.requestInformationField}`}>
-                <p
-                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
-                >
-                  {formatMessage({ id: messages.formLength.id })}: {info.length}
-                </p>
-              </div>
-              <div className={`mb2 ${styles.requestInformationField}`}>
-                <p
-                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
-                >
-                  {formatMessage({ id: messages.formWidth.id })}: {info.width}
-                </p>
-              </div>
-              <div className={`mb2 ${styles.requestInformationField}`}>
-                <p
-                  className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
-                >
-                  {formatMessage({ id: messages.formHeight.id })}: {info.height}
                 </p>
               </div>
             </div>

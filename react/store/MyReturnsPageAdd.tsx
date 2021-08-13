@@ -29,10 +29,6 @@ type Errors = {
   address: string
   state: string
   zip: string
-  weight: string
-  length: string
-  width: string
-  height: string
   paymentMethod: string
   iban: string
   accountHolder: string
@@ -54,10 +50,6 @@ type State = {
   locality: string
   address: string
   zip: string
-  weight: string
-  length: string
-  width: string
-  height: string
   paymentMethod: string
   iban: string
   accountHolder: string
@@ -88,7 +80,9 @@ const initialErrors = {
   accountHolder: "",
   agree: "",
   productQuantities: "",
-  reasonMissing: ""
+  reasonMissing: "",
+  state: "",
+  zip: ""
 }
 
 const errorMessages = defineMessages({
@@ -101,10 +95,6 @@ const errorMessages = defineMessages({
   state: { id: 'returns.formErrorState' },
   address: { id: 'returns.formErrorAddress' },
   zip: { id: 'returns.formErrorZip' },
-  weight: { id: 'returns.formErrorWeight' },
-  length: { id: 'returns.formErrorLength' },
-  width: { id: 'returns.formErrorWidth' },
-  height: { id: 'returns.formErrorHeight' },
   paymentMethod: { id: 'returns.formErrorPaymentMethod' },
   iban: { id: 'returns.formErrorIBAN' },
   accountHolder: { id: "returns.formErroraccountHolder" },
@@ -141,10 +131,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       address: '',
       state: '',
       zip: '',
-      weight: '',
-      length: '',
-      width: '',
-      height: '',
       paymentMethod: '',
       iban: '',
       accountHolder: "",
@@ -249,7 +235,7 @@ class MyReturnsPageAdd extends Component<any, State> {
           ? countries[order.shippingData.address.country]
           : order.shippingData.address.country,
         locality: order.shippingData.address.city,
-        address: `${order.shippingData.address.street} ${order.shippingData.address.number}${complement}`,
+        address: `${order.shippingData.address.street} ${order.shippingData.address.number || ''}${complement}`,
         state: order.shippingData.address.state,
         zip: order.shippingData.address.postalCode,
       })
@@ -446,10 +432,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       state,
       address,
       zip,
-      weight,
-      length,
-      width,
-      height,
       paymentMethod,
       iban,
       accountHolder,
@@ -542,46 +524,6 @@ class MyReturnsPageAdd extends Component<any, State> {
         errors: {
           ...prevState.errors,
           zip: errorMessages.zip.id,
-        },
-      }))
-      errors = true
-    }
-
-    if (!weight) {
-      this.setState((prevState) => ({
-        errors: {
-          ...prevState.errors,
-          weight: errorMessages.weight.id,
-        },
-      }))
-      errors = true
-    }
-
-    if (!length) {
-      this.setState((prevState) => ({
-        errors: {
-          ...prevState.errors,
-          length: errorMessages.length.id,
-        },
-      }))
-      errors = true
-    }
-
-    if (!width) {
-      this.setState((prevState) => ({
-        errors: {
-          ...prevState.errors,
-          width: errorMessages.width.id,
-        },
-      }))
-      errors = true
-    }
-
-    if (!height) {
-      this.setState((prevState) => ({
-        errors: {
-          ...prevState.errors,
-          height: errorMessages.height.id,
         },
       }))
       errors = true
@@ -752,10 +694,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       locality,
       address,
       zip,
-      weight,
-      length,
-      width,
-      height,
       paymentMethod,
       extraComment,
       iban,
@@ -778,10 +716,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       state,
       address,
       zip,
-      weight,
-      length,
-      width,
-      height,
       paymentMethod,
       extraComment: encodeURIComponent(extraComment),
       totalPrice,
@@ -908,10 +842,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       state,
       address,
       zip,
-      weight,
-      length,
-      width,
-      height,
       paymentMethod,
       iban,
       accountHolder,
@@ -996,10 +926,6 @@ class MyReturnsPageAdd extends Component<any, State> {
                     state,
                     address,
                     zip,
-                    weight,
-                    length,
-                    width,
-                    height,
                     extraComment,
                     paymentMethod,
                     iban,
@@ -1022,10 +948,6 @@ class MyReturnsPageAdd extends Component<any, State> {
                     locality,
                     address,
                     zip,
-                    weight,
-                    length,
-                    width,
-                    height,
                     paymentMethod,
                     iban,
                     accountHolder,

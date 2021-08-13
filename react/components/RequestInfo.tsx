@@ -30,11 +30,6 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
     formExtraComment: { id: 'returns.formExtraComment' },
     state: { id: `returns.state` },
     zip: { id: `returns.zip` },
-    parcelDetails: { id: `returns.formParcel` },
-    weight: { id: `returns.weight` },
-    length: { id: `returns.length` },
-    width: { id: `returns.width` },
-    height: { id: `returns.height` },
     refundPaymentMethod: {
       id: `returns.refundPaymentMethod`,
       paymentMethod: 'bank',
@@ -162,63 +157,6 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
                 {formatMessage({ id: messages.zip.id })}:
               </span>{' '}
               <span className={`${styles.requestInfoText}`}>{request.zip}</span>
-            </p>
-          </div>
-        </div>
-        <div
-          className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.requestInfoContentColumn} ${styles.requestInfoContentColumnRight}`}
-        >
-          <p className={`${styles.requestInfoSectionTitle}`}>
-            <strong className={`${styles.requestInfoSectionTitleStrong}`}>
-              {formatMessage({ id: messages.parcelDetails.id })}
-            </strong>
-          </p>
-          <div className={`mb5 ${styles.requestInfoTextContainer}`}>
-            <p
-              className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
-            >
-              <span className={`${styles.requestInfoTextLabel}`}>
-                {formatMessage({ id: messages.weight.id })}:
-              </span>{' '}
-              <span className={`${styles.requestInfoText}`}>
-                {request.weight}
-              </span>
-            </p>
-          </div>
-          <div className={`mb5 ${styles.requestInfoTextContainer}`}>
-            <p
-              className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
-            >
-              <span className={`${styles.requestInfoTextLabel}`}>
-                {formatMessage({ id: messages.length.id })}:
-              </span>{' '}
-              <span className={`${styles.requestInfoText}`}>
-                {request.length}
-              </span>
-            </p>
-          </div>
-          <div className={`mb5 ${styles.requestInfoTextContainer}`}>
-            <p
-              className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
-            >
-              <span className={`${styles.requestInfoTextLabel}`}>
-                {formatMessage({ id: messages.width.id })}:
-              </span>{' '}
-              <span className={`${styles.requestInfoText}`}>
-                {request.width}
-              </span>
-            </p>
-          </div>
-          <div className={`mb5 ${styles.requestInfoTextContainer}`}>
-            <p
-              className={`ma0 t-small c-on-base ${styles.requestInfoTextHolder}`}
-            >
-              <span className={`${styles.requestInfoTextLabel}`}>
-                {formatMessage({ id: messages.height.id })}:
-              </span>{' '}
-              <span className={`${styles.requestInfoText}`}>
-                {request.height}
-              </span>
             </p>
           </div>
         </div>

@@ -679,10 +679,6 @@ class ReturnForm extends Component<any, any> {
       country: request.country,
       name: request.name,
       phone: request.phoneNumber,
-      height: request.height,
-      length: request.length,
-      width: request.width,
-      weight: request.weight,
     }
 
     let label: any
@@ -698,10 +694,6 @@ class ReturnForm extends Component<any, any> {
           country: variables.country,
           name: variables.name,
           phone: variables.phone,
-          height: parseFloat(variables.height),
-          length: parseFloat(variables.length),
-          width: parseFloat(variables.width),
-          weight: parseFloat(variables.weight),
         },
       })
       const { labelUrl } = label.data.createLabel

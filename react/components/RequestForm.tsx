@@ -23,10 +23,6 @@ interface FormInputs {
   state: string
   address: string
   zip: string
-  height: string
-  length: string
-  width: string
-  weight: string
   paymentMethod: string
   extraComment: string
   iban: string
@@ -85,10 +81,6 @@ const messages = defineMessages({
   formAddress: { id: 'returns.formAddress' },
   formState: { id: 'returns.formState' },
   formZip: { id: 'returns.formZip' },
-  formHeight: { id: 'returns.formHeight' },
-  formWidth: { id: 'returns.formWidth' },
-  formLength: { id: 'returns.formLength' },
-  formWeight: { id: 'returns.formWeight' },
   formPaymentMethod: { id: 'returns.formPaymentMethod' },
   formIBAN: { id: 'returns.formIBAN' },
   formAccountHolder: { id: "returns.formAccountHolder" },
@@ -122,11 +114,7 @@ class RequestForm extends Component<Props> {
 
     const output: any[] = []
 
-    if (
-      selectedOrder.paymentData.transactions[0].payments[0].firstDigits !==
-        null &&
-      settings.paymentsCard
-    ) {
+    if (settings.paymentCard) {
       output.push({
         value: 'card',
         label: formatMessage({ id: messages.formCreditCard.id }),
@@ -245,7 +233,7 @@ class RequestForm extends Component<Props> {
       },
     ]
 
-    if (options.length !== 0) {
+    if (options && options.length !== 0) {
       const orderDate = new Date(selectedOrder.creationDate).getTime()
       const today = new Date().getTime()
       const difference = ((today - orderDate) / (1000 * 60 * 60 * 24)).toFixed(
@@ -543,57 +531,6 @@ class RequestForm extends Component<Props> {
                 value={formInputs.country}
                 errorMessage={
                   errors.country ? formatMessage({ id: errors.country }) : ''
-                }
-              />
-            </div>
-          </div>
-          <div
-            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
-          >
-            <p className={`${styles.returnFormInputsHeader}`}>
-              {formatMessage({ id: messages.formParcel.id })}
-            </p>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="weight"
-                placeholder={formatMessage({ id: messages.formWeight.id })}
-                onChange={handleInputChange}
-                value={formInputs.weight}
-                errorMessage={
-                  errors.weight ? formatMessage({ id: errors.weight }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="length"
-                placeholder={formatMessage({ id: messages.formLength.id })}
-                onChange={handleInputChange}
-                value={formInputs.length}
-                errorMessage={
-                  errors.length ? formatMessage({ id: errors.length }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="width"
-                placeholder={formatMessage({ id: messages.formWidth.id })}
-                onChange={handleInputChange}
-                value={formInputs.width}
-                errorMessage={
-                  errors.width ? formatMessage({ id: errors.width }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="height"
-                placeholder={formatMessage({ id: messages.formHeight.id })}
-                onChange={handleInputChange}
-                value={formInputs.height}
-                errorMessage={
-                  errors.height ? formatMessage({ id: errors.height }) : ''
                 }
               />
             </div>
