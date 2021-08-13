@@ -5996,9 +5996,9 @@ verror@1.10.0:
   version "0.2.6"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.device-detector@0.2.6/public/@types/vtex.device-detector#3219242fa5c2f14023d33c3549c2d8de93c76d1f"
 
-"vtex.easypost@https://tony1--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.easypost@0.0.2+build1628790124/public/@types/vtex.easypost":
+"vtex.easypost@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.0.2/public/@types/vtex.easypost":
   version "0.0.2"
-  resolved "https://tony1--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.easypost@0.0.2+build1628790124/public/@types/vtex.easypost#acf8caf1b62399b8561f78ce77ce7f894e0ead23"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.0.2/public/@types/vtex.easypost#723c8e41f0cdd324b209b49d4b8cffe13a097364"
 
 "vtex.format-currency@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.3.0/public/@types/vtex.format-currency":
   version "0.3.0"
