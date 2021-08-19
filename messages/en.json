@@ -184,5 +184,5 @@
   "returns.reasonOther": "Other",
   "returns.sendLabel": "Send Shipping Label",
   "returns.labelSuccess": "Shipping label successfully sent.",
-  "returns.labelError": "Error sending label. Please retry in a few minutes."
+  "returns.labelError": "Error sending label."
 }
