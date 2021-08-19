@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-/* eslint-disable no-console */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { injectIntl, defineMessages } from 'react-intl'
@@ -383,11 +382,12 @@ class ReturnForm extends Component<any, any> {
               method: fetchMethod.post,
               body: JSON.stringify(body),
               headers: fetchHeaders,
-            }).then((response) => {
-              console.log(response)
             })
-          } catch (e) {
-            console.log(e)
+            // .then((response) => {
+            //   console.log(response)
+            // })
+          } catch {
+            // console.log(e)
           }
         }
 
@@ -710,7 +710,7 @@ class ReturnForm extends Component<any, any> {
           products: product,
           timeline: statusHistoryTimeline,
         })
-        console.log(request)
+        // console.log(request)
       }, 2000)
 
       this.setState({

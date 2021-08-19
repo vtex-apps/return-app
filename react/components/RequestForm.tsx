@@ -83,7 +83,7 @@ const messages = defineMessages({
   formZip: { id: 'returns.formZip' },
   formPaymentMethod: { id: 'returns.formPaymentMethod' },
   formIBAN: { id: 'returns.formIBAN' },
-  formAccountHolder: { id: "returns.formAccountHolder" },
+  formAccountHolder: { id: 'returns.formAccountHolder' },
   formNextStep: { id: 'returns.formNextStep' },
   formErrorReasonMissing: { id: 'returns.formErrorReasonMissing' },
   formExtraComment: { id: 'returns.formExtraComment' },
@@ -107,7 +107,6 @@ class RequestForm extends Component<Props> {
 
   paymentMethods() {
     const {
-      selectedOrder,
       settings,
       intl: { formatMessage },
     }: any = this.props
@@ -575,16 +574,16 @@ class RequestForm extends Component<Props> {
                 className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputAccountHolder}`}
               >
                 <Input
-                  name={"accountHolder"}
+                  name="accountHolder"
                   placeholder={formatMessage({
-                    id: messages.formAccountHolder.id
+                    id: messages.formAccountHolder.id,
                   })}
                   onChange={handleInputChange}
                   value={formInputs.accountHolder}
                   errorMessage={
                     errors.accountHolder
                       ? formatMessage({ id: errors.accountHolder })
-                      : ""
+                      : ''
                   }
                 />
               </div>
