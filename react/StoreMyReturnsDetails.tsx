@@ -1,17 +1,17 @@
-import React from "react";
-import { Route } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import React from 'react'
+import { Route } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
 
-import ReturnsDetails from "./store/ReturnsDetails";
+import ReturnsDetails from './store/ReturnsDetails'
 
 const headerConfig = {
-  namespace: "vtex-account__returns-list",
+  namespace: 'vtex-account__returns-list',
   title: <FormattedMessage id="returns.link" />,
   backButton: {
-    titleId: "returns.link",
-    path: "/my-returns"
-  }
-};
+    titleId: 'returns.link',
+    path: '/my-returns',
+  },
+}
 
 const StoreMyReturnsDetails = () => {
   return (
@@ -22,7 +22,7 @@ const StoreMyReturnsDetails = () => {
         <ReturnsDetails {...props} headerConfig={headerConfig} />
       )}
     />
-  );
-};
+  )
+}
 
-export default StoreMyReturnsDetails;
+export default StoreMyReturnsDetails

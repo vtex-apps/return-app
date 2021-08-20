@@ -1,11 +1,13 @@
 function mod97(string) {
-  let checksum = string.slice(0, 2),
-    fragment;
+  let checksum = string.slice(0, 2)
+  let fragment
+
   for (let offset = 2; offset < string.length; offset += 7) {
-    fragment = String(checksum) + string.substring(offset, offset + 7);
-    checksum = parseInt(fragment, 10) % 97;
+    fragment = `${String(checksum)}${string.substring(offset, offset + 7)}`
+    checksum = parseInt(fragment, 10) % 97
   }
-  return checksum;
+
+  return checksum
 }
 
 export function isValidIBANNumber(input) {
@@ -86,22 +88,25 @@ export function isValidIBANNumber(input) {
     UA: 29,
     VA: 22,
     VG: 24,
-    XK: 20
-  };
-  const iban = String(input)
-      .toUpperCase()
-      .replace(/[^A-Z0-9]/g, ""),
-    code = iban.match(/^([A-Z]{2})(\d{2})([A-Z\d]+)$/);
-
-  if (!code || iban.length !== CODE_LENGTHS[code[1]]) {
-    return false;
+    XK: 20,
   }
 
-  const dig = code[3] + code[1] + code[2];
-  const digits = dig.replace(/[A-Z]/g, function(letter) {
-    const returnVar = letter.charCodeAt(0) - 55;
-    return returnVar.toString();
-  });
+  const iban = String(input)
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, '')
 
-  return mod97(digits);
+  const code = iban.match(/^([A-Z]{2})(\d{2})([A-Z\d]+)$/)
+
+  if (!code || iban.length !== CODE_LENGTHS[code[1]]) {
+    return false
+  }
+
+  const dig = code[3] + code[1] + code[2]
+  const digits = dig.replace(/[A-Z]/g, (letter) => {
+    const returnVar = letter.charCodeAt(0) - 55
+
+    return returnVar.toString()
+  })
+
+  return mod97(digits)
 }

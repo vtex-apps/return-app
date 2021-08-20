@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import styles from "../styles.css";
-import { injectIntl, defineMessages } from "react-intl";
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import React, { Component } from 'react'
+import { injectIntl, defineMessages } from 'react-intl'
 import {
   ActionMenu,
   Button,
@@ -8,8 +8,10 @@ import {
   DatePicker,
   Input,
   Link,
-  Table
-} from "vtex.styleguide";
+  Table,
+} from 'vtex.styleguide'
+
+import styles from '../styles.css'
 import {
   beautifyDate,
   currentDate,
@@ -20,58 +22,57 @@ import {
   sortColumns,
   order,
   getStatusTranslation,
-  renderStatusIcon
-} from "../common/utils";
+  renderStatusIcon,
+} from '../common/utils'
+import { fetchPath, fetchHeaders, fetchMethod } from '../common/fetch'
 
-import { fetchPath, fetchHeaders, fetchMethod } from "../common/fetch";
-
-const tableLength = 15;
+const tableLength = 15
 
 const messages = defineMessages({
-  thRequestNo: { id: "returns.thRequestNo" },
-  thDate: { id: "returns.thDate" },
-  thStatus: { id: "returns.thStatus" },
-  actions: { id: "returns.actions" },
-  view: { id: "returns.view" },
-  statusAllStatuses: { id: "returns.statusAllStatuses" },
-  pageTitle: { id: "returns.pageTitle" },
-  total: { id: "returns.total" },
-  addReturn: { id: "returns.addReturn" },
-  filterFromDate: { id: "returns.filterFromDate" },
-  filterToDate: { id: "returns.filterToDate" },
-  statusNew: { id: "returns.statusNew" },
-  statusApproved: { id: "returns.statusApproved" },
-  statusPendingVerification: { id: "returns.statusPendingVerification" },
-  statusPartiallyApproved: { id: "returns.statusPartiallyApproved" },
-  statusDenied: { id: "returns.statusDenied" },
-  statusRefunded: { id: "returns.statusRefunded" },
-  filterResults: { id: "returns.filterResults" },
-  clearFilters: { id: "returns.clearFilters" },
-  tableShowRows: { id: "returns.tableShowRows" },
-  tableOf: { id: "returns.tableOf" }
-});
+  thRequestNo: { id: 'returns.thRequestNo' },
+  thDate: { id: 'returns.thDate' },
+  thStatus: { id: 'returns.thStatus' },
+  actions: { id: 'returns.actions' },
+  view: { id: 'returns.view' },
+  statusAllStatuses: { id: 'returns.statusAllStatuses' },
+  pageTitle: { id: 'returns.pageTitle' },
+  total: { id: 'returns.total' },
+  addReturn: { id: 'returns.addReturn' },
+  filterFromDate: { id: 'returns.filterFromDate' },
+  filterToDate: { id: 'returns.filterToDate' },
+  statusNew: { id: 'returns.statusNew' },
+  statusApproved: { id: 'returns.statusApproved' },
+  statusPendingVerification: { id: 'returns.statusPendingVerification' },
+  statusPartiallyApproved: { id: 'returns.statusPartiallyApproved' },
+  statusDenied: { id: 'returns.statusDenied' },
+  statusRefunded: { id: 'returns.statusRefunded' },
+  filterResults: { id: 'returns.filterResults' },
+  clearFilters: { id: 'returns.clearFilters' },
+  tableShowRows: { id: 'returns.tableShowRows' },
+  tableOf: { id: 'returns.tableOf' },
+})
 
 const initialFilters = {
-  returnId: "",
-  fromDate: "",
-  toDate: "",
-  status: ""
-};
+  returnId: '',
+  fromDate: '',
+  toDate: '',
+  status: '',
+}
 
 class MyReturnsPage extends Component<any, any> {
   constructor(props: any) {
-    super(props);
+    super(props)
     this.state = {
       profile: {
-        Email: "",
-        FirstName: "",
-        Gender: "",
+        Email: '',
+        FirstName: '',
+        Gender: '',
         IsReturningUser: false,
         IsUserDefined: false,
-        LastName: "",
-        UserId: ""
+        LastName: '',
+        UserId: '',
       },
-      emptyStateLabel: "returns.nothingToShow",
+      emptyStateLabel: 'returns.nothingToShow',
       filters: initialFilters,
       returns: [],
       orderedItems: [],
@@ -81,98 +82,105 @@ class MyReturnsPage extends Component<any, any> {
         currentPage: 1,
         perPage: tableLength,
         currentFrom: 1,
-        currentTo: tableLength
+        currentTo: tableLength,
       },
       tableIsLoading: true,
       isFiltered: false,
       dataSort: {
         sortedBy: null,
-        sortOrder: null
+        sortOrder: null,
       },
-      error: ""
-    };
+      error: '',
+    }
 
-    this.sortRequestIdASC = this.sortRequestIdASC.bind(this);
-    this.sortRequestIdDESC = this.sortRequestIdDESC.bind(this);
-    this.sortDateSubmittedASC = this.sortDateSubmittedASC.bind(this);
-    this.sortDateSubmittedDESC = this.sortDateSubmittedDESC.bind(this);
-    this.sortStatusASC = this.sortStatusASC.bind(this);
-    this.sortStatusDESC = this.sortStatusDESC.bind(this);
-    this.handleSort = this.handleSort.bind(this);
-    this.handleNextClick = this.handleNextClick.bind(this);
-    this.handlePrevClick = this.handlePrevClick.bind(this);
-    this.goToPage = this.goToPage.bind(this);
+    this.sortRequestIdASC = this.sortRequestIdASC.bind(this)
+    this.sortRequestIdDESC = this.sortRequestIdDESC.bind(this)
+    this.sortDateSubmittedASC = this.sortDateSubmittedASC.bind(this)
+    this.sortDateSubmittedDESC = this.sortDateSubmittedDESC.bind(this)
+    this.sortStatusASC = this.sortStatusASC.bind(this)
+    this.sortStatusDESC = this.sortStatusDESC.bind(this)
+    this.handleSort = this.handleSort.bind(this)
+    this.handleNextClick = this.handleNextClick.bind(this)
+    this.handlePrevClick = this.handlePrevClick.bind(this)
+    this.goToPage = this.goToPage.bind(this)
   }
 
   sortRequestIdASC(a, b) {
-    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
   }
+
   sortRequestIdDESC(a, b) {
-    return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
+    return a.id < b.id ? 1 : a.id > b.id ? -1 : 0
   }
+
   sortDateSubmittedASC(a, b) {
     return a.dateSubmitted < b.dateSubmitted
       ? -1
       : a.dateSubmitted > b.dateSubmitted
       ? 1
-      : 0;
+      : 0
   }
+
   sortDateSubmittedDESC(a, b) {
     return a.dateSubmitted < b.dateSubmitted
       ? 1
       : a.dateSubmitted > b.dateSubmitted
       ? -1
-      : 0;
+      : 0
   }
+
   sortStatusASC(a, b) {
-    return a.status < b.status ? -1 : a.status > b.status ? 1 : 0;
+    return a.status < b.status ? -1 : a.status > b.status ? 1 : 0
   }
+
   sortStatusDESC(a, b) {
-    return a.status < b.status ? 1 : a.status > b.status ? -1 : 0;
+    return a.status < b.status ? 1 : a.status > b.status ? -1 : 0
   }
 
   handleSort({ sortOrder, sortedBy }) {
-    const { returns } = this.state;
-    if (returns && returns.length) {
-      let slicedData = [];
-      if (sortedBy === sortColumns.id) {
-        slicedData =
-          sortOrder === order.asc
-            ? returns.slice().sort(this.sortRequestIdASC)
-            : returns.slice().sort(this.sortRequestIdDESC);
-      }
+    const { returns } = this.state
 
-      if (sortedBy === sortColumns.dateSubmitted) {
-        slicedData =
-          sortOrder === order.asc
-            ? returns.slice().sort(this.sortDateSubmittedASC)
-            : returns.slice().sort(this.sortDateSubmittedDESC);
-      }
-      if (sortedBy === sortColumns.status) {
-        slicedData =
-          sortOrder === order.asc
-            ? returns.slice().sort(this.sortStatusASC)
-            : returns.slice().sort(this.sortStatusDESC);
-      }
+    if (!returns?.length) return
+    let slicedData = []
 
-      this.setState({
-        slicedData,
-        dataSort: {
-          sortedBy,
-          sortOrder
-        }
-      });
+    if (sortedBy === sortColumns.id) {
+      slicedData =
+        sortOrder === order.asc
+          ? returns.slice().sort(this.sortRequestIdASC)
+          : returns.slice().sort(this.sortRequestIdDESC)
     }
+
+    if (sortedBy === sortColumns.dateSubmitted) {
+      slicedData =
+        sortOrder === order.asc
+          ? returns.slice().sort(this.sortDateSubmittedASC)
+          : returns.slice().sort(this.sortDateSubmittedDESC)
+    }
+
+    if (sortedBy === sortColumns.status) {
+      slicedData =
+        sortOrder === order.asc
+          ? returns.slice().sort(this.sortStatusASC)
+          : returns.slice().sort(this.sortStatusDESC)
+    }
+
+    this.setState({
+      slicedData,
+      dataSort: {
+        sortedBy,
+        sortOrder,
+      },
+    })
   }
 
   componentDidMount() {
-    this.getProfile();
+    this.getProfile()
   }
 
   getProfile = () => {
     fetch(fetchPath.getProfile)
-      .then(response => response.json())
-      .then(async response => {
+      .then((response) => response.json())
+      .then(async (response) => {
         if (response.IsUserDefined) {
           this.setState((prevState: any) => ({
             profile: {
@@ -183,72 +191,70 @@ class MyReturnsPage extends Component<any, any> {
               IsReturningUser: response.IsReturningUser,
               IsUserDefined: response.IsUserDefined,
               LastName: response.LastName,
-              UserId: response.UserId
-            }
-          }));
+              UserId: response.UserId,
+            },
+          }))
 
-          this.getRequests(response.UserId, false);
+          this.getRequests(response.UserId, false)
         }
-      });
-  };
+      })
+  }
 
   getRequests(userId: string, resetFilters: boolean) {
-    const { filters } = this.state;
-    const useFilters = resetFilters ? initialFilters : filters;
-    let where = "__userId=" + userId;
+    const { filters } = this.state
+    const useFilters = resetFilters ? initialFilters : filters
+    let where = `__userId=${userId}`
 
     if (JSON.stringify(useFilters) === JSON.stringify(initialFilters)) {
-      this.setState({ isFiltered: false });
+      this.setState({ isFiltered: false })
     } else {
-      this.setState({ isFiltered: true });
+      this.setState({ isFiltered: true })
 
-      if (useFilters.returnId !== "") {
-        where += '__id="*' + useFilters.returnId + '*"';
+      if (useFilters.returnId !== '') {
+        where += `__id="*${useFilters.returnId}*"`
       }
 
-      let startDate = "1970-01-01";
-      let endDate = currentDate();
-      if (useFilters.fromDate !== "" || useFilters.toDate !== "") {
+      let startDate = '1970-01-01'
+      let endDate = currentDate()
+
+      if (useFilters.fromDate !== '' || useFilters.toDate !== '') {
         startDate =
-          useFilters.fromDate !== ""
+          useFilters.fromDate !== ''
             ? filterDate(useFilters.fromDate)
-            : startDate;
+            : startDate
         endDate =
-          useFilters.toDate !== ""
+          useFilters.toDate !== ''
             ? filterDate(useFilters.toDate)
-            : filterDate(useFilters.fromDate);
+            : filterDate(useFilters.fromDate)
 
-        where += "__createdIn between " + startDate + " AND " + endDate;
+        where += `__createdIn between ${startDate} AND ${endDate}`
       }
 
-      if (useFilters.status !== "") {
-        where += '__status="' + requestsStatuses[useFilters.status] + '"';
+      if (useFilters.status !== '') {
+        where += `__status="${requestsStatuses[useFilters.status]}"`
       }
     }
 
-    if (where.startsWith("__")) {
-      where = where.substring(2);
+    if (where.startsWith('__')) {
+      where = where.substring(2)
     }
 
     fetch(
-      fetchPath.getDocuments +
-        schemaNames.request +
-        "/" +
-        schemaTypes.requests +
-        "/" +
-        where,
+      `${fetchPath.getDocuments + schemaNames.request}/${
+        schemaTypes.requests
+      }/${where}`,
       {
         method: fetchMethod.get,
-        headers: fetchHeaders
+        headers: fetchHeaders,
       }
     )
-      .then(response => response.json())
-      .then(returns => {
-        if ("error" in returns) {
-          this.setState({ error: returns.error });
+      .then((response) => response.json())
+      .then((returns) => {
+        if ('error' in returns) {
+          this.setState({ error: returns.error })
         } else {
-          this.setState(prevState => ({
-            returns: returns,
+          this.setState((prevState) => ({
+            returns,
             orderedItems: returns,
             slicedData: returns.length ? returns.slice(0, tableLength) : [],
             tableIsLoading: false,
@@ -257,137 +263,144 @@ class MyReturnsPage extends Component<any, any> {
               currentPage: 1,
               currentTo: tableLength,
               currentFrom: 1,
-              total: returns.length
-            }
-          }));
+              total: returns.length,
+            },
+          }))
         }
       })
-      .catch(err => this.setState({ error: err }));
+      .catch((err) => this.setState({ error: err }))
   }
 
   filterStatus(status: string) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       filters: {
         ...prevState.filters,
-        status: status
-      }
-    }));
+        status,
+      },
+    }))
   }
 
   filterReturnId(val: string) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       filters: {
         ...prevState.filters,
-        returnId: val
-      }
-    }));
+        returnId: val,
+      },
+    }))
   }
 
   filterFromDate(val: string) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       filters: {
         ...prevState.filters,
         fromDate: val,
         toDate:
-          prevState.filters.toDate === "" || prevState.filters.toDate < val
+          prevState.filters.toDate === '' || prevState.filters.toDate < val
             ? val
-            : prevState.filters.toDate
-      }
-    }));
+            : prevState.filters.toDate,
+      },
+    }))
     setTimeout(() => {
-      this.handleApplyFilters();
-    }, 200);
+      this.handleApplyFilters()
+    }, 200)
   }
 
   filterToDate(val: string) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       filters: {
         ...prevState.filters,
         toDate: val,
         fromDate:
-          prevState.filters.fromDate === "" || prevState.filters.fromDate > val
+          prevState.filters.fromDate === '' || prevState.filters.fromDate > val
             ? val
-            : prevState.filters.fromDate
-      }
-    }));
+            : prevState.filters.fromDate,
+      },
+    }))
     setTimeout(() => {
-      this.handleApplyFilters();
-    }, 200);
+      this.handleApplyFilters()
+    }, 200)
   }
 
   handleApplyFilters() {
-    const { filters } = this.state;
+    const { filters } = this.state
+
     if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
-      this.handleResetFilters();
+      this.handleResetFilters()
     } else {
-      this.getRequests(this.state.profile.UserId, false);
+      this.getRequests(this.state.profile.UserId, false)
     }
   }
 
   handleResetFilters() {
-    const { profile } = this.state;
+    const { profile } = this.state
+
     this.setState({
       filters: initialFilters,
       tableIsLoading: true,
-      isFiltered: false
-    });
-    this.getRequests(profile.UserId, true);
+      isFiltered: false,
+    })
+    this.getRequests(profile.UserId, true)
   }
 
   handleNextClick() {
-    const { paging, orderedItems } = this.state;
-    const newPage = paging.currentPage + 1;
-    const itemFrom = paging.currentTo + 1;
-    const itemTo = paging.perPage * newPage;
-    const data = orderedItems.slice(itemFrom - 1, itemTo);
-    this.goToPage(newPage, itemFrom, itemTo, data);
+    const { paging, orderedItems } = this.state
+    const newPage = +paging.currentPage + 1
+    const itemFrom = +paging.currentTo + 1
+    const itemTo = paging.perPage * newPage
+    const data = orderedItems.slice(itemFrom - 1, itemTo)
+
+    this.goToPage(newPage, itemFrom, itemTo, data)
   }
 
   handlePrevClick() {
-    const { paging, orderedItems } = this.state;
-    if (paging.currentPage === 0) return;
-    const newPage = paging.currentPage - 1;
-    const itemFrom = paging.currentFrom - paging.perPage;
-    const itemTo = paging.currentFrom - 1;
-    const data = orderedItems.slice(itemFrom - 1, itemTo);
-    this.goToPage(newPage, itemFrom, itemTo, data);
+    const { paging, orderedItems } = this.state
+
+    if (paging.currentPage === 0) return
+    const newPage = paging.currentPage - 1
+    const itemFrom = paging.currentFrom - paging.perPage
+    const itemTo = paging.currentFrom - 1
+    const data = orderedItems.slice(itemFrom - 1, itemTo)
+
+    this.goToPage(newPage, itemFrom, itemTo, data)
   }
 
+  // eslint-disable-next-line max-params
   goToPage(currentPage, currentItemFrom, currentItemTo, slicedData) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       paging: {
         ...prevState.paging,
-        currentPage: currentPage,
+        currentPage,
         currentFrom: currentItemFrom,
-        currentTo: currentItemTo
+        currentTo: currentItemTo,
       },
-      slicedData
-    }));
+      slicedData,
+    }))
   }
 
   getTableSchema() {
-    const { formatMessage } = this.props.intl;
+    const { formatMessage } = this.props.intl
+
     return {
       properties: {
         id: {
           title: formatMessage({ id: messages.thRequestNo.id }),
           sortable: true,
-          width: 350
+          width: 350,
         },
         dateSubmitted: {
           title: formatMessage({ id: messages.thDate.id }),
           cellRenderer: ({ cellData }) => {
-            return beautifyDate(cellData);
+            return beautifyDate(cellData)
           },
-          sortable: true
+          sortable: true,
         },
         status: {
           title: formatMessage({ id: messages.thStatus.id }),
           sortable: true,
           cellRenderer: ({ cellData }) => {
-            return <div>{renderStatusIcon(cellData)}</div>;
+            return <div>{renderStatusIcon(cellData)}</div>
           },
-          width: 200
+          width: 200,
         },
         actions: {
           width: 150,
@@ -395,25 +408,25 @@ class MyReturnsPage extends Component<any, any> {
           cellRenderer: ({ rowData }) => {
             return (
               <div>
-                <Link href={`account#/my-returns/details/` + rowData.id}>
+                <Link href={`account#/my-returns/details/${rowData.id}`}>
                   {formatMessage({ id: messages.view.id })}
                 </Link>
               </div>
-            );
-          }
-        }
-      }
-    };
+            )
+          },
+        },
+      },
+    }
   }
 
   handleKeypress(e) {
-    if (e.key === "Enter") {
-      this.handleApplyFilters();
+    if (e.key === 'Enter') {
+      this.handleApplyFilters()
     }
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
+    const { formatMessage } = this.props.intl
     const {
       paging,
       tableIsLoading,
@@ -421,23 +434,25 @@ class MyReturnsPage extends Component<any, any> {
       slicedData,
       emptyStateLabel,
       isFiltered,
-      error
-    } = this.state;
+      error,
+    } = this.state
+
     const statusLabel =
-      filters.status !== ""
+      filters.status !== ''
         ? formatMessage({
-            id: `returns.status${getStatusTranslation(filters.status)}`
+            id: `returns.status${getStatusTranslation(filters.status)}`,
           })
-        : formatMessage({ id: messages.statusAllStatuses.id });
+        : formatMessage({ id: messages.statusAllStatuses.id })
 
     if (error) {
-      return <div>{error}</div>;
+      return <div>{error}</div>
     }
+
     return (
       <div className={styles.myReturnsHolder}>
         <div className={`${styles.listTitle}`}>
           <h2 className={`w-auto ${styles.listTitleText}`}>
-            {formatMessage({ id: messages.pageTitle.id })}{" "}
+            {formatMessage({ id: messages.pageTitle.id })}{' '}
             <span className={styles.totalRequestsNumber}>
               {slicedData.length} {formatMessage({ id: messages.total.id })}
             </span>
@@ -458,13 +473,13 @@ class MyReturnsPage extends Component<any, any> {
           >
             <Input
               placeholder={formatMessage({
-                id: messages.thRequestNo.id
+                id: messages.thRequestNo.id,
               })}
-              onKeyPress={e => {
-                this.handleKeypress(e);
+              onKeyPress={(e) => {
+                this.handleKeypress(e)
               }}
-              size={"small"}
-              onChange={e => this.filterReturnId(e.target.value)}
+              size="small"
+              onChange={(e) => this.filterReturnId(e.target.value)}
               value={filters.returnId}
             />
           </div>
@@ -473,14 +488,14 @@ class MyReturnsPage extends Component<any, any> {
           >
             <DatePicker
               placeholder={formatMessage({
-                id: messages.filterFromDate.id
+                id: messages.filterFromDate.id,
               })}
-              onKeyPress={e => {
-                this.handleKeypress(e);
+              onKeyPress={(e) => {
+                this.handleKeypress(e)
               }}
-              locale={"en-GB"}
-              size={"small"}
-              onChange={value => this.filterFromDate(value)}
+              locale="en-GB"
+              size="small"
+              onChange={(value) => this.filterFromDate(value)}
               value={filters.fromDate}
             />
           </div>
@@ -489,11 +504,11 @@ class MyReturnsPage extends Component<any, any> {
           >
             <DatePicker
               placeholder={formatMessage({
-                id: messages.filterToDate.id
+                id: messages.filterToDate.id,
               })}
-              locale={"en-GB"}
-              size={"small"}
-              onChange={value => this.filterToDate(value)}
+              locale="en-GB"
+              size="small"
+              onChange={(value) => this.filterToDate(value)}
               value={filters.toDate}
             />
           </div>
@@ -504,61 +519,61 @@ class MyReturnsPage extends Component<any, any> {
               label={statusLabel}
               align="right"
               buttonProps={{
-                variation: "secondary",
-                size: "small"
+                variation: 'secondary',
+                size: 'small',
               }}
               options={[
                 {
                   label: formatMessage({
-                    id: messages.statusAllStatuses.id
+                    id: messages.statusAllStatuses.id,
                   }),
-                  onClick: () => this.filterStatus("")
+                  onClick: () => this.filterStatus(''),
                 },
                 {
                   label: formatMessage({
-                    id: messages.statusNew.id
+                    id: messages.statusNew.id,
                   }),
-                  onClick: () => this.filterStatus("new")
+                  onClick: () => this.filterStatus('new'),
                 },
                 {
                   label: formatMessage({
-                    id: messages.statusApproved.id
+                    id: messages.statusApproved.id,
                   }),
-                  onClick: () => this.filterStatus("approved")
+                  onClick: () => this.filterStatus('approved'),
                 },
                 {
                   label: formatMessage({
-                    id: messages.statusPendingVerification.id
+                    id: messages.statusPendingVerification.id,
                   }),
-                  onClick: () => this.filterStatus("pendingVerification")
+                  onClick: () => this.filterStatus('pendingVerification'),
                 },
                 {
                   label: formatMessage({
-                    id: messages.statusPartiallyApproved.id
+                    id: messages.statusPartiallyApproved.id,
                   }),
-                  onClick: () => this.filterStatus("partiallyApproved")
+                  onClick: () => this.filterStatus('partiallyApproved'),
                 },
                 {
                   label: formatMessage({
-                    id: messages.statusDenied.id
+                    id: messages.statusDenied.id,
                   }),
-                  onClick: () => this.filterStatus("denied")
+                  onClick: () => this.filterStatus('denied'),
                 },
                 {
                   label: formatMessage({
-                    id: messages.statusRefunded.id
+                    id: messages.statusRefunded.id,
                   }),
-                  onClick: () => this.filterStatus("refunded")
-                }
+                  onClick: () => this.filterStatus('refunded'),
+                },
               ]}
             />
           </div>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnActionApply}`}
           >
-            <Button size={"small"} onClick={() => this.handleApplyFilters()}>
+            <Button size="small" onClick={() => this.handleApplyFilters()}>
               {formatMessage({
-                id: messages.filterResults.id
+                id: messages.filterResults.id,
               })}
             </Button>
           </div>
@@ -572,7 +587,7 @@ class MyReturnsPage extends Component<any, any> {
                 onClick={() => this.handleResetFilters()}
               >
                 {formatMessage({
-                  id: messages.clearFilters.id
+                  id: messages.clearFilters.id,
                 })}
               </ButtonWithIcon>
             </div>
@@ -588,24 +603,24 @@ class MyReturnsPage extends Component<any, any> {
             onNextClick: this.handleNextClick,
             onPrevClick: this.handlePrevClick,
             textShowRows: formatMessage({
-              id: messages.tableShowRows.id
+              id: messages.tableShowRows.id,
             }),
             textOf: formatMessage({
-              id: messages.tableOf.id
+              id: messages.tableOf.id,
             }),
             currentItemFrom: paging.currentFrom,
             currentItemTo: paging.currentTo,
-            totalItems: paging.total
+            totalItems: paging.total,
           }}
           sort={{
             sortedBy: this.state.dataSort.sortedBy,
-            sortOrder: this.state.dataSort.sortOrder
+            sortOrder: this.state.dataSort.sortOrder,
           }}
           onSort={this.handleSort}
         />
       </div>
-    );
+    )
   }
 }
 
-export default injectIntl(MyReturnsPage);
+export default injectIntl(MyReturnsPage)

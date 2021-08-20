@@ -1,3 +1,3 @@
-import ReturnsSettings from "./admin/ReturnsSettings";
+import ReturnsSettings from './admin/ReturnsSettings'
 
-export default ReturnsSettings;
+export default ReturnsSettings

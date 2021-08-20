@@ -1,1 +1,2 @@
-declare module "*.graphql";
+declare module '*.graphql'
+declare module '*.gql'

@@ -19,7 +19,8 @@
     "vtex.react-portal": "0.x",
     "vtex.store-icons": "0.x",
     "vtex.device-detector": "0.x",
-    "vtex.css-handles": "0.x"
+    "vtex.css-handles": "0.x",
+    "vtex.easypost": "0.x"
   },
   "builders": {
     "admin": "0.x",
@@ -46,6 +47,9 @@
     },
     {
       "name": "ADMIN_DS"
+    },
+    {
+      "name": "POWER_USER_DS"
     },
     {
       "name": "OMSViewer"

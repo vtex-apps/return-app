@@ -3,12 +3,13 @@ export async function generateReturnsSchema(
   next: () => Promise<any>
 ) {
   const {
-    clients: { masterData: masterDataClient }
-  } = ctx;
-  const response = await masterDataClient.generateSchema(ctx);
+    clients: { masterData: masterDataClient },
+  } = ctx
 
-  ctx.status = 200;
-  ctx.body = response;
+  const response = await masterDataClient.generateSchema(ctx)
 
-  await next();
+  ctx.status = 200
+  ctx.body = response
+
+  await next()
 }

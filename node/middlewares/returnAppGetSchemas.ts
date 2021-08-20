@@ -3,15 +3,15 @@ export async function returnAppGetSchemas(
   next: () => Promise<any>
 ) {
   const {
-    clients: { masterData: masterDataClient }
-  } = ctx;
+    clients: { masterData: masterDataClient },
+  } = ctx
 
-  const { schema } = ctx.vtex.route.params;
+  const { schema } = ctx.vtex.route.params
 
-  const response = await masterDataClient.getSchema(ctx, schema.toString());
+  const response = await masterDataClient.getSchema(ctx, schema.toString())
 
-  ctx.status = 200;
-  ctx.body = response;
+  ctx.status = 200
+  ctx.body = response
 
-  await next();
+  await next()
 }
