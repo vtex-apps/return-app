@@ -303,7 +303,7 @@ class ReturnsSettings extends Component<any, any> {
 
     let hasErrors = false
 
-    if (!maxDays || !isInt(maxDays)) {
+    if (!maxDays ) {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,

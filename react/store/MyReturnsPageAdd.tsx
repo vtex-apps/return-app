@@ -66,6 +66,7 @@ type State = {
   settings: any
   currentProduct: any
   submittedRequest: boolean
+  submitLoading: boolean
 }
 
 const initialErrors = {
@@ -147,6 +148,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       loading: false,
       currentProduct: {},
       submittedRequest: false,
+      submitLoading: false,
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
@@ -617,6 +619,7 @@ class MyReturnsPageAdd extends Component<any, State> {
         showOrdersTable: false,
         showForm: false,
         showInfo: true,
+        submitLoading: true,
       })
     }
   }
@@ -856,6 +859,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       selectedOrder,
       submittedRequest,
       settings,
+      submitLoading,
     }: any = this.state
 
     const { formatMessage } = this.props.intl
@@ -935,6 +939,7 @@ class MyReturnsPageAdd extends Component<any, State> {
                   submit={() => {
                     this.submit()
                   }}
+                  submitLoading={submitLoading}
                 />
               ) : null}
               {showInfo ? (
