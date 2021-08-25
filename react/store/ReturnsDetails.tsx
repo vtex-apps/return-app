@@ -265,7 +265,7 @@ class ReturnsDetails extends Component<any, any> {
         },
       })
       const { labelUrl } = label.data.createLabel
-      
+
       window.setTimeout(() => {
         const { product, statusHistoryTimeline } = this.state
 
@@ -278,7 +278,6 @@ class ReturnsDetails extends Component<any, any> {
           products: product,
           timeline: statusHistoryTimeline,
         })
-        console.log(request)
       }, 2000)
 
       this.setState({

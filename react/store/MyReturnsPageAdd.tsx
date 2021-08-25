@@ -804,7 +804,7 @@ class MyReturnsPageAdd extends Component<any, State> {
                 String(product.sellingPrice * product.selectedQuantity),
                 10
               ),
-              goodProducts: 0,
+              goodProducts: parseInt(product.selectedQuantity),
               status: requestsStatuses.new,
               dateSubmitted: getCurrentDate(),
               type: schemaTypes.products,

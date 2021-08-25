@@ -484,20 +484,20 @@ class ReturnForm extends Component<any, any> {
   }
 
   savePartial = (schema: string, body: any) => {
-    fetch(fetchPath.savePartialDocument + schema, {
-      method: fetchMethod.post,
-      body: JSON.stringify(body),
-      headers: fetchHeaders,
-    }).then(() => {})
+    try {
+      fetch(fetchPath.savePartialDocument + schema, {
+        method: fetchMethod.post,
+        body: JSON.stringify(body),
+        headers: fetchHeaders,
+      }).then(() => {})
+    } catch (e) {
+      console.log('error', e)
+    }
   }
 
   handleQuantity(product: any, quantity: any) {
     let quantityInput = parseInt(quantity, 10)
     let status = productStatuses.new
-
-    if (!isInt(quantity)) {
-      quantityInput = 0
-    }
 
     if (quantityInput === 0) {
       status = productStatuses.denied
@@ -710,7 +710,6 @@ class ReturnForm extends Component<any, any> {
           products: product,
           timeline: statusHistoryTimeline,
         })
-        console.log(request)
       }, 2000)
 
       this.setState({
