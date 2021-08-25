@@ -484,15 +484,11 @@ class ReturnForm extends Component<any, any> {
   }
 
   savePartial = (schema: string, body: any) => {
-    try {
-      fetch(fetchPath.savePartialDocument + schema, {
-        method: fetchMethod.post,
-        body: JSON.stringify(body),
-        headers: fetchHeaders,
-      }).then(() => {})
-    } catch (e) {
-      console.log('error', e)
-    }
+    fetch(fetchPath.savePartialDocument + schema, {
+      method: fetchMethod.post,
+      body: JSON.stringify(body),
+      headers: fetchHeaders,
+    }).then(() => {})
   }
 
   handleQuantity(product: any, quantity: any) {

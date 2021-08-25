@@ -152,19 +152,12 @@ export default class Masterdata extends ExternalClient {
   }
 
   public async savePartial(ctx: any, schemaName: any, body: any): Promise<any> {
-    let response
-    try {
-      response = ctx.clients.masterdata.createOrUpdatePartialDocument({
-        dataEntity: this.schemas.schemaEntity,
-        fields: body,
-        schema: schemaName,
-        id: body.id ?? '',
-      })
-    } catch (e) {
-      console.log(e)
-    }
-
-    return response
+    return ctx.clients.masterdata.createOrUpdatePartialDocument({
+      dataEntity: this.schemas.schemaEntity,
+      fields: body,
+      schema: schemaName,
+      id: body.id ?? '',
+    })
   }
 
   // eslint-disable-next-line max-params

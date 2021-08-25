@@ -43,7 +43,6 @@ interface Props {
   submit: any
   settings: any
   intl: any
-  submitLoading: boolean
 }
 
 const messages = defineMessages({
@@ -313,7 +312,6 @@ class RequestForm extends Component<Props> {
       handleInputChange,
       formInputs,
       submit,
-      submitLoading,
       intl: { formatMessage },
     } = this.props
 
@@ -628,11 +626,10 @@ class RequestForm extends Component<Props> {
         </div>
 
         <div className={`mt4 ph4 ${styles.returnFormActions}`}>
-          <Button type="submit" variation="primary" onClick={submit} isLoading={submitLoading}>
+          <Button type="submit" variation="primary" onClick={submit}>
             {formatMessage({ id: messages.formNextStep.id })}
           </Button>
         </div>
-
       </div>
     )
   }
