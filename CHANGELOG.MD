@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Added ability to deny a return request in the request status dropdown
+
+### Fixed
+
+- Fix return requests being automatically denied
+- Fix inability to save max days in settings
+
+## [2.0.0] - 2021-08-25
+
+### Added
+
 - Add Easypost integration to create shipping labels
 - Add refund method with credit cards
 
