@@ -31,7 +31,7 @@ const messages = defineMessages({
   formZip: { id: 'returns.formZip' },
   formPaymentMethod: { id: 'returns.formPaymentMethod' },
   formBankTransferAccount: { id: 'returns.formBankTransferAccount' },
-  formAccountHolder: { id: "returns.formAccountHolder" },
+  formAccountHolder: { id: 'returns.formAccountHolder' },
   formVoucher: { id: 'returns.formVoucher' },
   formSubmit: { id: 'returns.formSubmit' },
   goBack: { id: 'returns.goBack' },
@@ -198,7 +198,7 @@ class RequestInformation extends Component<Props> {
                   className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
                 >
                   {formatMessage({ id: messages.formAccountHolder.id })}
-                  {": "}
+                  {': '}
                   {info.accountHolder}
                 </p>
                 <p

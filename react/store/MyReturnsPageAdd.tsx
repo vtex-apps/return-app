@@ -70,20 +70,20 @@ type State = {
 }
 
 const initialErrors = {
-  name: "",
-  email: "",
-  phone: "",
-  country: "",
-  locality: "",
-  address: "",
-  paymentMethod: "",
-  iban: "",
-  accountHolder: "",
-  agree: "",
-  productQuantities: "",
-  reasonMissing: "",
-  state: "",
-  zip: ""
+  name: '',
+  email: '',
+  phone: '',
+  country: '',
+  locality: '',
+  address: '',
+  paymentMethod: '',
+  iban: '',
+  accountHolder: '',
+  agree: '',
+  productQuantities: '',
+  reasonMissing: '',
+  state: '',
+  zip: '',
 }
 
 const errorMessages = defineMessages({
@@ -98,7 +98,7 @@ const errorMessages = defineMessages({
   zip: { id: 'returns.formErrorZip' },
   paymentMethod: { id: 'returns.formErrorPaymentMethod' },
   iban: { id: 'returns.formErrorIBAN' },
-  accountHolder: { id: "returns.formErroraccountHolder" },
+  accountHolder: { id: 'returns.formErroraccountHolder' },
   agree: { id: 'returns.formErrorAgree' },
   productQuantities: { id: 'returns.formErrorQuantities' },
   reasonMissing: { id: 'returns.formErrorReasonMissing' },
@@ -134,7 +134,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       zip: '',
       paymentMethod: '',
       iban: '',
-      accountHolder: "",
+      accountHolder: '',
       agree: false,
       extraComment: '',
       successSubmit: '',
@@ -237,7 +237,9 @@ class MyReturnsPageAdd extends Component<any, State> {
           ? countries[order.shippingData.address.country]
           : order.shippingData.address.country,
         locality: order.shippingData.address.city,
-        address: `${order.shippingData.address.street} ${order.shippingData.address.number || ''}${complement}`,
+        address: `${order.shippingData.address.street} ${
+          order.shippingData.address.number || ''
+        }${complement}`,
         state: order.shippingData.address.state,
         zip: order.shippingData.address.postalCode,
       })
@@ -539,23 +541,23 @@ class MyReturnsPageAdd extends Component<any, State> {
         },
       }))
       errors = true
-    } else if (paymentMethod === "bank") {
+    } else if (paymentMethod === 'bank') {
       if (!iban || !isValidIBANNumber(iban)) {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           errors: {
             ...prevState.errors,
-            iban: errorMessages.iban.id
-          }
+            iban: errorMessages.iban.id,
+          },
         }))
         errors = true
       }
 
       if (!accountHolder) {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           errors: {
             ...prevState.errors,
-            accountHolder: errorMessages.accountHolder.id
-          }
+            accountHolder: errorMessages.accountHolder.id,
+          },
         }))
         errors = true
       }

@@ -171,11 +171,12 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
       {request.paymentMethod === 'bank' ? (
         <div className="flex-ns flex-wrap flex-auto flex-column mt4">
           <p
-              className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
+            className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
           >
             <span className={`${styles.requestInfoPaymentLabel}`}>
               {formatMessage({ id: messages.formAccountHolder.id })}
-            </span>{": "}
+            </span>
+            {': '}
             <span className={`${styles.requestInfoIbanText}`}>
               {request.accountHolder}
             </span>

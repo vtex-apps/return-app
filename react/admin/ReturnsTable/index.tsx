@@ -68,8 +68,7 @@ class ReturnsTable extends Component<any, any> {
             headers: fetchHeaders,
           })
             .then((response) => response.text())
-            // eslint-disable-next-line no-console
-            .then((json) => console.log(json))
+            // .then((json) => console.log(json))
             .catch((err) => this.setState({ error: err }))
         } else {
           const json = JSON.parse(text)

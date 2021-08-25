@@ -48,7 +48,7 @@ class ReturnsDetails extends Component<any, any> {
       showLabelSuccess: false,
       showLabelError: false,
       labelDisabled: false,
-      shippingLabel: ''
+      shippingLabel: '',
     }
   }
 
@@ -282,9 +282,9 @@ class ReturnsDetails extends Component<any, any> {
 
       this.setState({
         showLabelSuccess: true,
-        shippingLabel: labelUrl
+        shippingLabel: labelUrl,
       })
-    } catch(e) {
+    } catch (e) {
       this.setState({
         showLabelError: true,
       })
@@ -352,44 +352,50 @@ class ReturnsDetails extends Component<any, any> {
               <RequestInfo giftCardValue={giftCardValue} request={request} />
 
               <div className="mt8">
-              <Mutation mutation={CREATE_LABEL}>
-                {(doMutation) => (
-                  <Button
-                    onClick={() => {
-                      this.createLabel(doMutation)
-                    }}
-                    disabled={this.state.labelDisabled}
-                  >
-                    {formatMessage({
-                      id: messages.sendLabel.id,
-                    })}
-                  </Button>
-                )}
-              </Mutation>
-            </div>
-            <div className="mt6">
-              {this.state.showLabelSuccess && (
-                <div>
-                  <div className="mt6">
-                    <Button variation="primary" href={this.state.shippingLabel} target="_blank">Print Label</Button>
-                  </ div>
-                  <div className="mt6">
-                    <Alert type="success">
+                <Mutation mutation={CREATE_LABEL}>
+                  {(doMutation) => (
+                    <Button
+                      onClick={() => {
+                        this.createLabel(doMutation)
+                      }}
+                      disabled={this.state.labelDisabled}
+                    >
                       {formatMessage({
-                        id: messages.shippingLabelSuccess.id,
+                        id: messages.sendLabel.id,
                       })}
-                    </Alert>
-                  </ div>
-                </ div>
-              )}
-              {this.state.showLabelError && (
-                <Alert type="error">
-                  {formatMessage({
-                    id: messages.shippingLabelError.id,
-                  })}
-                </Alert>
-              )}
-            </div>
+                    </Button>
+                  )}
+                </Mutation>
+              </div>
+              <div className="mt6">
+                {this.state.showLabelSuccess && (
+                  <div>
+                    <div className="mt6">
+                      <Button
+                        variation="primary"
+                        href={this.state.shippingLabel}
+                        target="_blank"
+                      >
+                        Print Label
+                      </Button>
+                    </div>
+                    <div className="mt6">
+                      <Alert type="success">
+                        {formatMessage({
+                          id: messages.shippingLabelSuccess.id,
+                        })}
+                      </Alert>
+                    </div>
+                  </div>
+                )}
+                {this.state.showLabelError && (
+                  <Alert type="error">
+                    {formatMessage({
+                      id: messages.shippingLabelError.id,
+                    })}
+                  </Alert>
+                )}
+              </div>
 
               <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
                 <strong className={`${styles.requestInfoSectionTitleStrong}`}>
