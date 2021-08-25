@@ -601,6 +601,17 @@ class ReturnForm extends Component<any, any> {
       })
     }
 
+    if (status === requestsStatuses.new || status === requestsStatuses.picked) {
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `returns.status${getProductStatusTranslation(
+            requestsStatuses.denied
+          )}`,
+        }),
+        value: requestsStatuses.denied,
+      })
+    }
+
     if (status === requestsStatuses.pendingVerification) {
       if (
         extractStatuses[productStatuses.new] > 0 ||
