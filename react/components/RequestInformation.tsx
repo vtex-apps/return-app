@@ -52,6 +52,8 @@ class RequestInformation extends Component<Props> {
       intl: { formatMessage },
     } = this.props
 
+    console.log('info', info)
+
     return (
       <div>
         <div>
