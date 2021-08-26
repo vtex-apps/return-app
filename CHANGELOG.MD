@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fix return requests being automatically denied
 - Fix inability to save max days in settings
+- Fix missing Beneficiary Name on request page
 
 ## [2.0.0] - 2021-08-25
 
