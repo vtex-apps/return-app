@@ -372,9 +372,6 @@ class ReturnsSettings extends Component<any, any> {
           successMessage: formatMessage({ id: messages.settingsSaved.id }),
           loading: false,
         })
-        setTimeout(() => {
-          window.location.reload()
-        }, 2500)
       })
       .catch((err) => this.setState({ loading: false, errorMessage: err }))
   }
