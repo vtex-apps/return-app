@@ -495,10 +495,6 @@ class ReturnForm extends Component<any, any> {
     let quantityInput = parseInt(quantity, 10)
     let status = productStatuses.new
 
-    if (!isInt(quantity)) {
-      quantityInput = 0
-    }
-
     if (quantityInput === 0) {
       status = productStatuses.denied
     } else if (quantityInput < product.quantity) {
@@ -598,6 +594,17 @@ class ReturnForm extends Component<any, any> {
           )}`,
         }),
         value: requestsStatuses.pendingVerification,
+      })
+    }
+
+    if (status === requestsStatuses.new || status === requestsStatuses.picked) {
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `returns.status${getProductStatusTranslation(
+            requestsStatuses.denied
+          )}`,
+        }),
+        value: requestsStatuses.denied,
       })
     }
 

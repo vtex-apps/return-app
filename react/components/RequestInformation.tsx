@@ -172,14 +172,14 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  {formatMessage({ id: messages.formState.id })}: {info.state}
+                  {formatMessage({ id: messages.formState.id })}: {info.state || ''}
                 </p>
               </div>
               <div className={`mb2 ${styles.requestInformationField}`}>
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  {formatMessage({ id: messages.formZip.id })}: {info.zip}
+                  {formatMessage({ id: messages.formZip.id })}: {info.zip || ''}
                 </p>
               </div>
             </div>

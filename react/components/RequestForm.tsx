@@ -505,7 +505,7 @@ class RequestForm extends Component<Props> {
                 name="state"
                 placeholder={formatMessage({ id: messages.formState.id })}
                 onChange={handleInputChange}
-                value={formInputs.state}
+                value={formInputs.state || ''}
                 errorMessage={
                   errors.state ? formatMessage({ id: errors.state }) : ''
                 }
@@ -516,7 +516,7 @@ class RequestForm extends Component<Props> {
                 name="zip"
                 placeholder={formatMessage({ id: messages.formZip.id })}
                 onChange={handleInputChange}
-                value={formInputs.zip}
+                value={formInputs.zip || ''}
                 errorMessage={
                   errors.zip ? formatMessage({ id: errors.zip }) : ''
                 }

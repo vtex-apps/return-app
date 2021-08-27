@@ -238,8 +238,8 @@ class MyReturnsPageAdd extends Component<any, State> {
         address: `${order.shippingData.address.street} ${
           order.shippingData.address.number || ''
         }${complement}`,
-        state: order.shippingData.address.state,
-        zip: order.shippingData.address.postalCode,
+        state: order.shippingData.address.state || '',
+        zip: order.shippingData.address.postalCode || '',
       })
     }
 
@@ -268,8 +268,8 @@ class MyReturnsPageAdd extends Component<any, State> {
           : ''
 
       thisOrder.address = `${order.shippingData.address.street} ${order.shippingData.address.number}${complement}`
-      thisOrder.state = order.shippingData.address.state
-      thisOrder.zip = order.shippingData.address.postalCode
+      thisOrder.state = order.shippingData.address.state || ''
+      thisOrder.zip = order.shippingData.address.postalCode || ''
     }
 
     const promises = order.items.map((product: any) => {
@@ -506,26 +506,6 @@ class MyReturnsPageAdd extends Component<any, State> {
         errors: {
           ...prevState.errors,
           address: errorMessages.address.id,
-        },
-      }))
-      errors = true
-    }
-
-    if (!state) {
-      this.setState((prevState) => ({
-        errors: {
-          ...prevState.errors,
-          state: errorMessages.state.id,
-        },
-      }))
-      errors = true
-    }
-
-    if (!zip) {
-      this.setState((prevState) => ({
-        errors: {
-          ...prevState.errors,
-          zip: errorMessages.zip.id,
         },
       }))
       errors = true

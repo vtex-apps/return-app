@@ -117,9 +117,9 @@ class ReturnsSettings extends Component<any, any> {
       .catch((err) => this.setState({ error: err }))
   }
 
-  getSettings = () => {
-    this.setState({ loading: true })
-    fetch(
+  getSettings = async () => {
+    this.setState({ ...this.state, loading: true })
+    await fetch(
       `${fetchPath.getDocuments + schemaNames.settings}/${
         schemaTypes.settings
       }/1`,
@@ -303,7 +303,7 @@ class ReturnsSettings extends Component<any, any> {
 
     let hasErrors = false
 
-    if (!maxDays || !isInt(maxDays)) {
+    if (!maxDays) {
       this.setState((prevState: any) => ({
         errors: {
           ...prevState.errors,
@@ -372,9 +372,6 @@ class ReturnsSettings extends Component<any, any> {
           successMessage: formatMessage({ id: messages.settingsSaved.id }),
           loading: false,
         })
-        setTimeout(() => {
-          window.location.reload()
-        }, 2500)
       })
       .catch((err) => this.setState({ loading: false, errorMessage: err }))
   }

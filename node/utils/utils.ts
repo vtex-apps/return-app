@@ -20,6 +20,7 @@ export function formatRequest(request: any) {
     paymentInfo: {
       paymentMethod: request.paymentMethod,
       iban: request.iban,
+      accountHolder: request.accountHolder,
       giftCardCode: request.giftCardCode,
       giftCardId: request.giftCardId,
     },
