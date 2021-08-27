@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix return requests being automatically denied
 - Fix inability to save max days in settings
 - Fix missing Beneficiary Name on request page
+- Changed zip and state fields to be optional for international returns
 
 ## [2.0.0] - 2021-08-25
 
