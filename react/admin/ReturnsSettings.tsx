@@ -117,9 +117,10 @@ class ReturnsSettings extends Component<any, any> {
       .catch((err) => this.setState({ error: err }))
   }
 
-  getSettings = () => {
-    this.setState({ loading: true })
-    fetch(
+  getSettings = async () => {
+    this.setState({ ...this.state, loading: true })
+    console.log('getting settings')
+    await fetch(
       `${fetchPath.getDocuments + schemaNames.settings}/${
         schemaTypes.settings
       }/1`,
@@ -172,6 +173,8 @@ class ReturnsSettings extends Component<any, any> {
         })
       })
       .catch((err) => this.setState({ error: err }))
+
+      console.log('state', this.state)
   }
 
   renderCategories(categories: any, parent: string | null = null) {
