@@ -42,6 +42,7 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
     voucherValue: { id: `returns.voucherValue` },
   })
 
+  console.log('request', request)
   return (
     <div className={`${styles.requestInfoMainContent}`}>
       <div

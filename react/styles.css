@@ -329,10 +329,12 @@
 .tableTd {
 }
 .tableTdImage {
+  width: 200px;
 }
 .tableTdReason {
 }
 .tableTdQuantity {
+  width: 170px;
 }
 .tableTbody {
 }
