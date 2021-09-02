@@ -1,3 +1,3 @@
 export default {
-  schemaEntity: "ReturnApp"
-};
+  schemaEntity: 'ReturnApp',
+}

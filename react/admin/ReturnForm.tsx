@@ -1,5 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { injectIntl, defineMessages } from 'react-intl'
+import { Mutation } from 'react-apollo'
+import {
+  Link,
+  Dropdown,
+  Checkbox,
+  Textarea,
+  Button,
+  Input,
+  Alert,
+} from 'vtex.styleguide'
+
 import {
   returnFormDate,
   schemaTypes,
@@ -13,49 +26,44 @@ import {
   sendMail,
   intlArea,
   isInt,
-  getProductStatusTranslation
-} from "../common/utils";
-import styles from "../styles.css";
-import { injectIntl, defineMessages } from "react-intl";
-import {
-  Link,
-  Dropdown,
-  Checkbox,
-  Textarea,
-  Button,
-  Input
-} from "vtex.styleguide";
-import ProductsTable from "../components/ProductsTable";
-import RequestInfo from "../components/RequestInfo";
-import StatusHistoryTable from "../components/StatusHistoryTable";
-import { fetchHeaders, fetchMethod, fetchPath } from "../common/fetch";
-import StatusHistoryTimeline from "../components/StatusHistoryTimeline";
+  getProductStatusTranslation,
+} from '../common/utils'
+import styles from '../styles.css'
+import ProductsTable from '../components/ProductsTable'
+import RequestInfo from '../components/RequestInfo'
+import StatusHistoryTable from '../components/StatusHistoryTable'
+import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
+import StatusHistoryTimeline from '../components/StatusHistoryTimeline'
+import CREATE_LABEL from '../graphql/createLabel.gql'
 
 const messages = defineMessages({
-  statusCommentError: { id: "returns.statusCommentError" },
-  changeStatusComment: { id: "returns.changeStatusComment" },
-  addComment: { id: "returns.addComment" },
-  commentVisibleToClient: { id: "returns.commentVisibleToClient" },
-  addCommentButton: { id: "returns.addCommentButton" },
-  returnForm: { id: "returns.details.returnForm" },
-  verifyPackage: { id: "returns.verifyPackage" },
-  refOrder: { id: "returns.refOrder" },
-  viewOrder: { id: "returns.viewOrder" },
-  status: { id: "returns.status" },
-  verifyPackageButton: { id: "returns.verifyPackageButton" },
-  back: { id: "returns.back" },
-  product: { id: "returns.product" },
-  noProducts: { id: "returns.noProducts" }
-});
+  statusCommentError: { id: 'returns.statusCommentError' },
+  changeStatusComment: { id: 'returns.changeStatusComment' },
+  addComment: { id: 'returns.addComment' },
+  commentVisibleToClient: { id: 'returns.commentVisibleToClient' },
+  addCommentButton: { id: 'returns.addCommentButton' },
+  returnForm: { id: 'returns.details.returnForm' },
+  verifyPackage: { id: 'returns.verifyPackage' },
+  refOrder: { id: 'returns.refOrder' },
+  viewOrder: { id: 'returns.viewOrder' },
+  status: { id: 'returns.status' },
+  verifyPackageButton: { id: 'returns.verifyPackageButton' },
+  back: { id: 'returns.back' },
+  product: { id: 'returns.product' },
+  noProducts: { id: 'returns.noProducts' },
+  sendLabel: { id: 'returns.sendLabel' },
+  shippingLabelSuccess: { id: 'returns.labelSuccess' },
+  shippingLabelError: { id: 'returns.labelError' },
+})
 
 class ReturnForm extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object,
-    intl: PropTypes.object
-  };
+    intl: PropTypes.object,
+  }
 
   constructor(props: any) {
-    super(props);
+    super(props)
     this.state = {
       request: {},
       comment: [],
@@ -64,26 +72,29 @@ class ReturnForm extends Component<any, any> {
       initialProductsForm: [],
       statusHistory: [],
       statusHistoryTimeline: [],
-      error: "",
+      error: '',
       totalRefundAmount: 0,
-      statusInput: "",
-      commentInput: "",
+      statusInput: '',
+      commentInput: '',
       visibleInput: false,
-      registeredUser: "",
-      errorCommentMessage: "",
+      registeredUser: '',
+      errorCommentMessage: '',
       giftCardValue: 0,
       showMain: true,
-      showProductsForm: false
-    };
+      showProductsForm: false,
+      showLabelSuccess: false,
+      showLabelError: false,
+      labelDisabled: false,
+    }
   }
 
   componentDidMount(): void {
-    this.getProfile().then();
-    this.getFullData();
+    this.getProfile().then()
+    this.getFullData()
   }
 
   getGiftCardInfo(request: any) {
-    return "RA" + request.id.split("-")[0];
+    return `RA${request.id.split('-')[0]}`
   }
 
   async generateGiftCard(request: any) {
@@ -93,206 +104,210 @@ class ReturnForm extends Component<any, any> {
       expiringDate: getOneYearLaterDate(),
       balance: 0,
       profileId: request.email,
-      discount: true
-    };
+      discount: true,
+    }
 
-    return await fetch(fetchPath.createGiftCard, {
+    return fetch(fetchPath.createGiftCard, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: fetchHeaders
+      headers: fetchHeaders,
     })
-      .then(response => response.json())
-      .then(json => {
-        return json;
-      });
+      .then((response) => response.json())
+      .then((json) => {
+        return json
+      })
   }
 
   async updateGiftCard(giftCardId: string, req: any) {
     const body = {
-      description: "Initial Charge",
-      value: req.refundedAmount
-    };
+      description: 'Initial Charge',
+      value: req.refundedAmount,
+    }
 
-    return await fetch(fetchPath.updateGiftCard + giftCardId, {
+    return fetch(fetchPath.updateGiftCard + giftCardId, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: fetchHeaders
-    }).then(response =>
-      response.json().then(json => {
-        if ("balance" in json) {
-          this.setState({ giftCardValue: json.balance / 100 });
+      headers: fetchHeaders,
+    }).then((response) =>
+      response.json().then((json) => {
+        if ('balance' in json) {
+          this.setState({ giftCardValue: json.balance / 100 })
         }
       })
-    );
+    )
   }
 
   async getGiftCard(id: any) {
-    return await fetch(fetchPath.getGiftCard + id, {
+    return fetch(`${fetchPath.getGiftCard}${id}`, {
       method: fetchMethod.get,
-      headers: fetchHeaders
+      headers: fetchHeaders,
     })
-      .then(response => response.json())
-      .then(json => {
-        if ("balance" in json) {
-          this.setState({ giftCardValue: json.balance });
+      .then((response) => response.json())
+      .then((json) => {
+        if ('balance' in json) {
+          this.setState({ giftCardValue: json.balance })
         }
       })
-      .catch(err => this.setState({ error: err }));
+      .catch((err) => this.setState({ error: err }))
   }
 
   getFullData() {
-    const requestId = this.props["data"]["params"]["id"];
+    const requestId = this.props.data.params.id
+
     this.getFromMasterData(
       schemaNames.request,
       schemaTypes.requests,
       requestId
-    ).then(request => {
+    ).then((request) => {
       this.setState({
         statusInput: request[0].status,
-        commentInput: "",
-        visibleInput: false
-      });
+        commentInput: '',
+        visibleInput: false,
+      })
       this.getProductsFromMasterData(request[0].orderId, requestId).then(
-        response => {
-          let total = 0;
-          if (response.length) {
-            response.map(currentProduct => {
-              total += currentProduct.quantity * currentProduct.unitPrice;
-            });
-            this.setState({ totalRefundAmount: total });
+        (response) => {
+          let total = 0
 
+          if (!response.length) return
+          response.forEach((currentProduct) => {
+            total += currentProduct.quantity * currentProduct.unitPrice
+          })
+          this.setState({ totalRefundAmount: total })
+
+          this.getFromMasterData(
+            schemaNames.comment,
+            schemaTypes.comments,
+            requestId
+          ).then((comments) => {
+            this.setState({
+              statusHistoryTimeline: prepareHistoryData(comments, request[0]),
+            })
             this.getFromMasterData(
-              schemaNames.comment,
-              schemaTypes.comments,
+              schemaNames.history,
+              schemaTypes.history,
               requestId
-            ).then(comments => {
-              this.setState({
-                statusHistoryTimeline: prepareHistoryData(comments, request[0])
-              });
-              this.getFromMasterData(
-                schemaNames.history,
-                schemaTypes.history,
-                requestId
-              ).then();
-            });
-          }
+            ).then()
+          })
         }
-      );
-    });
+      )
+    })
   }
 
   async getProfile() {
-    return await fetch(fetchPath.getProfile)
-      .then(response => response.json())
-      .then(response => {
+    return fetch(fetchPath.getProfile)
+      .then((response) => response.json())
+      .then((response) => {
         if (response.IsUserDefined) {
           this.setState({
-            registeredUser: response.FirstName + " " + response.LastName
-          });
+            registeredUser: `${response.FirstName} ${response.LastName}`,
+          })
         }
-        return Promise.resolve(response);
-      });
+
+        return Promise.resolve(response)
+      })
   }
 
   async getFromMasterData(schema: string, type: string, refundId: string) {
-    const isRequest = schema === schemaNames.request;
-    const whereField = isRequest ? "id" : "refundId";
-    return await fetch(
-      fetchPath.getDocuments +
-        schema +
-        "/" +
-        type +
-        "/" +
-        whereField +
-        "=" +
-        refundId,
+    const isRequest = schema === schemaNames.request
+    const whereField = isRequest ? 'id' : 'refundId'
+
+    return fetch(
+      `${fetchPath.getDocuments + schema}/${type}/${whereField}=${refundId}`,
       {
         method: fetchMethod.get,
-        headers: fetchHeaders
+        headers: fetchHeaders,
       }
     )
-      .then(response => response.json())
-      .then(json => {
-        this.setState({ [type]: isRequest ? json[0] : json });
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ [type]: isRequest ? json[0] : json })
         if (isRequest) {
-          if (json[0].giftCardId !== "") {
-            this.getGiftCard(json[0].giftCardId).then();
+          if (json[0].giftCardId !== '') {
+            this.getGiftCard(json[0].giftCardId).then()
           }
         }
+
         if (type === schemaTypes.products) {
-          const productsForm: any = [];
-          json.map(currentProduct => {
-            let status = productStatuses.new;
+          const productsForm: any = []
+
+          json.forEach((currentProduct) => {
+            let status = productStatuses.new
+
             if (currentProduct.goodProducts === 0) {
-              status = productStatuses.denied;
+              status = productStatuses.denied
             } else if (currentProduct.goodProducts < currentProduct.quantity) {
-              status = productStatuses.partiallyApproved;
+              status = productStatuses.partiallyApproved
             } else if (
               currentProduct.goodProducts === currentProduct.quantity
             ) {
-              status = productStatuses.approved;
+              status = productStatuses.approved
             }
-            const updatedProduct = { ...currentProduct, status: status };
-            productsForm.push(updatedProduct);
-          });
+
+            const updatedProduct = { ...currentProduct, status }
+
+            productsForm.push(updatedProduct)
+          })
           this.setState({
-            productsForm: productsForm,
-            initialProductsForm: productsForm
-          });
+            productsForm,
+            initialProductsForm: productsForm,
+          })
         }
-        return json;
+
+        return json
       })
-      .catch(err => this.setState({ error: err }));
+      .catch((err) => this.setState({ error: err }))
   }
 
   async getProductsFromMasterData(orderId: string, returnId: string) {
-    return await fetch(
-      fetchPath.getDocuments +
-        schemaNames.product +
-        "/" +
-        schemaTypes.products +
-        "/orderId=" +
-        orderId,
+    return fetch(
+      `${fetchPath.getDocuments + schemaNames.product}/${
+        schemaTypes.products
+      }/orderId=${orderId}`,
       {
         method: fetchMethod.get,
-        headers: fetchHeaders
+        headers: fetchHeaders,
       }
     )
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         const refundableProducts = json.filter(
-          product => product.refundId === returnId
-        );
+          (product) => product.refundId === returnId
+        )
+
         this.setState({
-          [schemaTypes.products]: refundableProducts
-        });
-        const productsForm: any = [];
-        refundableProducts.map(currentProduct => {
-          let status = productStatuses.new;
+          [schemaTypes.products]: refundableProducts,
+        })
+        const productsForm: any = []
+
+        refundableProducts.forEach((currentProduct) => {
+          let status = productStatuses.new
+
           if (currentProduct.goodProducts === 0) {
-            status = productStatuses.denied;
+            status = productStatuses.denied
           } else if (currentProduct.goodProducts < currentProduct.quantity) {
-            status = productStatuses.partiallyApproved;
+            status = productStatuses.partiallyApproved
           } else if (currentProduct.goodProducts === currentProduct.quantity) {
-            status = productStatuses.approved;
+            status = productStatuses.approved
           }
-          const updatedProduct = { ...currentProduct, status: status };
-          productsForm.push(updatedProduct);
-        });
+
+          const updatedProduct = { ...currentProduct, status }
+
+          productsForm.push(updatedProduct)
+        })
 
         this.setState({
-          productsForm: productsForm,
-          initialProductsForm: productsForm
-        });
+          productsForm,
+          initialProductsForm: productsForm,
+        })
 
-        return json;
+        return json
       })
-      .catch(err => this.setState({ error: err }));
+      .catch((err) => this.setState({ error: err }))
   }
 
   submitStatusCommentForm() {
-    this.setState({ errorCommentMessage: "" });
-    const { formatMessage } = this.props.intl;
+    this.setState({ errorCommentMessage: '' })
+    const { formatMessage } = this.props.intl
     const {
       commentInput,
       visibleInput,
@@ -300,40 +315,80 @@ class ReturnForm extends Component<any, any> {
       request,
       product,
       registeredUser,
-      comment
-    } = this.state;
+      comment,
+    } = this.state
 
-    let requestData = request;
-    let oldComments = comment;
+    let requestData = request
+    let oldComments = comment
 
-    if (statusInput !== request.status || commentInput !== "") {
+    if (statusInput !== request.status || commentInput !== '') {
       if (statusInput !== request.status) {
-        requestData = { ...requestData, status: statusInput };
+        requestData = { ...requestData, status: statusInput }
 
         if (
           statusInput === requestsStatuses.refunded &&
-          request.paymentMethod === "giftCard"
+          request.paymentMethod === 'giftCard'
         ) {
           this.generateGiftCard(requestData).then((json: any) => {
-            const returnedId = json.id;
-            const exploded = returnedId.split("_");
-            const giftCardId = exploded[exploded.length - 1];
+            const returnedId = json.id
+            const exploded = returnedId.split('_')
+            const giftCardId = exploded[exploded.length - 1]
 
-            this.updateGiftCard(giftCardId, requestData).then();
+            this.updateGiftCard(giftCardId, requestData).then()
             this.savePartial(schemaNames.request, {
               id: requestData.id,
               giftCardCode: json.redemptionCode,
-              giftCardId: giftCardId
-            });
+              giftCardId,
+            })
 
-            this.setState(prevState => ({
+            this.setState((prevState) => ({
               request: {
                 ...prevState.request,
                 giftCardCode: json.redemptionCode,
-                giftCardId: giftCardId
-              }
-            }));
-          });
+                giftCardId,
+              },
+            }))
+          })
+        } else if (
+          statusInput === requestsStatuses.refunded &&
+          request.paymentMethod === 'card'
+        ) {
+          const items: any = []
+
+          for (const item of this.state.product) {
+            const invoiceItem = {
+              id: item.sku,
+              price: item.unitPrice,
+              quantity: item.quantity,
+            }
+
+            items.push(invoiceItem)
+          }
+
+          const issuanceDate = new Date().toISOString().slice(0, 10)
+          const invoiceNumber = this.state.request.id
+          const invoiceValue = this.state.request.refundedAmount.toString()
+
+          const body = {
+            items,
+            type: 'Input',
+            issuanceDate,
+            invoiceNumber,
+            invoiceValue,
+          }
+
+          try {
+            fetch(`${fetchPath.createRefund}${this.state.request.orderId}`, {
+              method: fetchMethod.post,
+              body: JSON.stringify(body),
+              headers: fetchHeaders,
+            })
+            // .then((response) => {
+            //   console.log(response)
+            // })
+          } catch {
+            // console.log(e)
+          }
         }
 
         const statusHistoryData = {
@@ -341,37 +396,41 @@ class ReturnForm extends Component<any, any> {
           status: statusInput,
           submittedBy: registeredUser,
           dateSubmitted: getCurrentDate(),
-          type: schemaTypes.history
-        };
-        const requestBody = requestData;
-        delete requestBody.giftCardCode;
-        delete requestBody.giftCardId;
-        this.savePartial(schemaNames.request, requestBody);
-        this.saveMasterData(schemaNames.history, statusHistoryData);
+          type: schemaTypes.history,
+        }
+
+        const requestBody = requestData
+
+        delete requestBody.giftCardCode
+        delete requestBody.giftCardId
+        this.savePartial(schemaNames.request, requestBody)
+        this.saveMasterData(schemaNames.history, statusHistoryData)
         if (
           request.status === requestsStatuses.picked &&
           statusInput === requestsStatuses.pendingVerification
         ) {
-          product.map(currentProduct => {
+          product.forEach((currentProduct) => {
             const newProductInfo = {
               ...currentProduct,
-              status: productStatuses.pendingVerification
-            };
-            this.saveMasterData(schemaNames.product, newProductInfo);
-          });
+              status: productStatuses.pendingVerification,
+            }
+
+            this.saveMasterData(schemaNames.product, newProductInfo)
+          })
         }
-        this.setState(prevState => ({
+
+        this.setState((prevState) => ({
           request: {
             ...prevState.request,
-            ...requestData
-          }
-        }));
-        this.setState({
-          statusHistory: [...this.state.statusHistory, statusHistoryData]
-        });
+            ...requestData,
+          },
+        }))
+        this.setState((prevState) => ({
+          statusHistory: [...prevState.statusHistory, statusHistoryData],
+        }))
       }
 
-      if (commentInput !== "") {
+      if (commentInput !== '') {
         const commentData = {
           refundId: request.id,
           status: statusInput,
@@ -379,35 +438,40 @@ class ReturnForm extends Component<any, any> {
           visibleForCustomer: visibleInput,
           submittedBy: registeredUser,
           dateSubmitted: getCurrentDate(),
-          type: schemaTypes.comments
-        };
-        oldComments = [...oldComments, commentData];
-        this.setState({ comment: oldComments, commentInput: "" });
-        this.saveMasterData(schemaNames.comment, commentData);
+          type: schemaTypes.comments,
+        }
+
+        oldComments = [...oldComments, commentData]
+        this.setState({ comment: oldComments, commentInput: '' })
+        this.saveMasterData(schemaNames.comment, commentData)
       }
 
       this.setState({
-        statusHistoryTimeline: prepareHistoryData(oldComments, requestData)
-      });
+        statusHistoryTimeline: prepareHistoryData(oldComments, requestData),
+      })
       if (
         statusInput !== request.status &&
         statusInput !== requestsStatuses.picked
       ) {
         window.setTimeout(() => {
-          const { product, request, statusHistoryTimeline } = this.state;
+          const { statusHistoryTimeline } = this.state
+
           sendMail({
-            data: { ...{ DocumentId: request.id }, ...request },
+            data: {
+              ...{ DocumentId: request.id },
+              ...request,
+            },
             products: product,
-            timeline: statusHistoryTimeline
-          });
-        }, 2000);
+            timeline: statusHistoryTimeline,
+          })
+        }, 2000)
       }
     } else {
       this.setState({
         errorCommentMessage: formatMessage({
-          id: messages.statusCommentError.id
-        })
-      });
+          id: messages.statusCommentError.id,
+        }),
+      })
     }
   }
 
@@ -415,36 +479,32 @@ class ReturnForm extends Component<any, any> {
     fetch(fetchPath.saveDocuments + schema, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: fetchHeaders
-    }).then(response => {});
-  };
+      headers: fetchHeaders,
+    }).then(() => {})
+  }
 
   savePartial = (schema: string, body: any) => {
     fetch(fetchPath.savePartialDocument + schema, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
-      headers: fetchHeaders
-    }).then(response => {});
-  };
+      headers: fetchHeaders,
+    }).then(() => {})
+  }
 
   handleQuantity(product: any, quantity: any) {
-    let quantityInput = parseInt(quantity);
-    let status = productStatuses.new;
+    let quantityInput = parseInt(quantity, 10)
+    let status = productStatuses.new
 
-    if (!isInt(quantity)) {
-      quantityInput = 0;
-    }
-
-    if (quantityInput == 0) {
-      status = productStatuses.denied;
+    if (quantityInput === 0) {
+      status = productStatuses.denied
     } else if (quantityInput < product.quantity) {
-      status = productStatuses.partiallyApproved;
+      status = productStatuses.partiallyApproved
     } else if (product.quantity <= quantityInput) {
-      status = productStatuses.approved;
+      status = productStatuses.approved
     }
 
-    this.setState(prevState => ({
-      productsForm: prevState.productsForm.map(el =>
+    this.setState((prevState) => ({
+      productsForm: prevState.productsForm.map((el) =>
         el.id === product.id
           ? {
               ...el,
@@ -452,72 +512,78 @@ class ReturnForm extends Component<any, any> {
                 quantityInput > product.quantity
                   ? product.quantity
                   : quantityInput,
-              status: status
+              status,
             }
           : el
-      )
-    }));
+      ),
+    }))
   }
 
   verifyPackage() {
-    const { request, productsForm } = this.state;
-    let refundedAmount = 0;
-    productsForm.map(currentProduct => {
-      refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice;
-      this.saveMasterData(schemaNames.product, currentProduct);
-    });
+    const { request, productsForm } = this.state
+    let refundedAmount = 0
 
-    const updatedRequest = { ...request, refundedAmount: refundedAmount };
-    this.saveMasterData(schemaNames.request, updatedRequest);
+    productsForm.forEach((currentProduct) => {
+      refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice
+      this.saveMasterData(schemaNames.product, currentProduct)
+    })
+
+    const updatedRequest = { ...request, refundedAmount }
+
+    this.saveMasterData(schemaNames.request, updatedRequest)
     this.setState({
       request: updatedRequest,
       showMain: true,
       showProductsForm: false,
-      product: productsForm
-    });
+      product: productsForm,
+    })
   }
 
   cancelProductsForm() {
-    const { initialProductsForm } = this.state;
+    const { initialProductsForm } = this.state
+
     this.setState({
       showMain: true,
       showProductsForm: false,
-      productsForm: initialProductsForm
-    });
+      productsForm: initialProductsForm,
+    })
   }
 
   allowedStatuses(status) {
-    const { product } = this.state;
+    const { product } = this.state
     const extractStatuses = {
       [productStatuses.new]: 0,
       [productStatuses.pendingVerification]: 0,
       [productStatuses.partiallyApproved]: 0,
       [productStatuses.approved]: 0,
-      [productStatuses.denied]: 0
-    };
-    let totalProducts = 0;
-    product.map(currentProduct => {
-      extractStatuses[currentProduct.status] += 1;
-      totalProducts += 1;
-    });
+      [productStatuses.denied]: 0,
+    }
 
-    const { formatMessage } = this.props.intl;
+    let totalProducts = 0
+
+    product.forEach((currentProduct) => {
+      extractStatuses[currentProduct.status] += 1
+      totalProducts += 1
+    })
+
+    const { formatMessage } = this.props.intl
 
     const currentStatus = formatMessage({
-      id: `returns.status${getProductStatusTranslation(status)}`
-    });
+      id: `returns.status${getProductStatusTranslation(status)}`,
+    })
 
     // const currentStatus = status + " (current status)";
-    let allowedStatuses: any = [{ label: currentStatus, value: status }];
+    let allowedStatuses: any = [{ label: currentStatus, value: status }]
+
     if (status === requestsStatuses.new) {
       allowedStatuses.push({
         label: formatMessage({
           id: `returns.status${getProductStatusTranslation(
             requestsStatuses.picked
-          )}`
+          )}`,
         }),
-        value: requestsStatuses.picked
-      });
+        value: requestsStatuses.picked,
+      })
     }
 
     if (status === requestsStatuses.picked) {
@@ -525,10 +591,21 @@ class ReturnForm extends Component<any, any> {
         label: formatMessage({
           id: `returns.status${getProductStatusTranslation(
             requestsStatuses.pendingVerification
-          )}`
+          )}`,
         }),
-        value: requestsStatuses.pendingVerification
-      });
+        value: requestsStatuses.pendingVerification,
+      })
+    }
+
+    if (status === requestsStatuses.new || status === requestsStatuses.picked) {
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `returns.status${getProductStatusTranslation(
+            requestsStatuses.denied
+          )}`,
+        }),
+        value: requestsStatuses.denied,
+      })
     }
 
     if (status === requestsStatuses.pendingVerification) {
@@ -543,20 +620,20 @@ class ReturnForm extends Component<any, any> {
           label: formatMessage({
             id: `returns.status${getProductStatusTranslation(
               requestsStatuses.approved
-            )}`
+            )}`,
           }),
-          value: requestsStatuses.approved
-        });
+          value: requestsStatuses.approved,
+        })
       } else if (extractStatuses[productStatuses.denied] === totalProducts) {
         // Caz in care toate produsele sunt denied >> Denied
         allowedStatuses.push({
           label: formatMessage({
             id: `returns.status${getProductStatusTranslation(
               requestsStatuses.denied
-            )}`
+            )}`,
           }),
-          value: requestsStatuses.denied
-        });
+          value: requestsStatuses.denied,
+        })
       } else if (
         (extractStatuses[productStatuses.approved] > 0 &&
           extractStatuses[productStatuses.approved] < totalProducts) ||
@@ -567,10 +644,10 @@ class ReturnForm extends Component<any, any> {
           label: formatMessage({
             id: `returns.status${getProductStatusTranslation(
               requestsStatuses.partiallyApproved
-            )}`
+            )}`,
           }),
-          value: requestsStatuses.partiallyApproved
-        });
+          value: requestsStatuses.partiallyApproved,
+        })
       }
     }
 
@@ -584,14 +661,77 @@ class ReturnForm extends Component<any, any> {
           label: formatMessage({
             id: `returns.status${getProductStatusTranslation(
               requestsStatuses.refunded
-            )}`
+            )}`,
           }),
-          value: requestsStatuses.refunded
-        }
-      ];
+          value: requestsStatuses.refunded,
+        },
+      ]
     }
 
-    return allowedStatuses;
+    return allowedStatuses
+  }
+
+  createLabel = async (doMutation) => {
+    this.setState({
+      labelDisabled: true,
+    })
+
+    const { request } = this.state
+    const variables = {
+      street1: request.address,
+      street2: '',
+      city: request.locality,
+      state: request.state,
+      zip: request.zip,
+      country: request.country,
+      name: request.name,
+      phone: request.phoneNumber,
+    }
+
+    let label: any
+
+    try {
+      label = await doMutation({
+        variables: {
+          street1: variables.street1,
+          street2: variables.street2,
+          city: variables.city,
+          state: variables.state,
+          zip: variables.zip,
+          country: variables.country,
+          name: variables.name,
+          phone: variables.phone,
+        },
+      })
+      const { labelUrl } = label.data.createLabel
+
+      window.setTimeout(() => {
+        const { product, statusHistoryTimeline } = this.state
+
+        request.returnLabel = labelUrl
+        sendMail({
+          data: {
+            ...{ DocumentId: request.id },
+            ...request,
+          },
+          products: product,
+          timeline: statusHistoryTimeline,
+        })
+        // console.log(request)
+      }, 2000)
+
+      this.setState({
+        showLabelSuccess: true,
+      })
+    } catch {
+      this.setState({
+        showLabelError: true,
+      })
+    }
+
+    this.setState({
+      labelDisabled: false,
+    })
   }
 
   renderStatusCommentForm() {
@@ -600,71 +740,109 @@ class ReturnForm extends Component<any, any> {
       statusInput,
       commentInput,
       visibleInput,
-      errorCommentMessage
-    } = this.state;
-    const { formatMessage } = this.props.intl;
-    const statusesOptions = this.allowedStatuses(request.status);
+      errorCommentMessage,
+    } = this.state
+
+    const { formatMessage } = this.props.intl
+    const statusesOptions = this.allowedStatuses(request.status)
 
     return (
       <div>
-        <p className={"mt7"}>
-          <strong className={"mr6"}>
+        <p className="mt7">
+          <strong className="mr6">
             {formatMessage({ id: messages.changeStatusComment.id })}
           </strong>
         </p>
-        <div className={`flex flex-row items-stretch`}>
-          <div className={`flex flex-column items-stretch w-50`}>
-            <div className={`mb6`}>
+        <div className="flex flex-row items-stretch">
+          <div className="flex flex-column items-stretch w-50">
+            <div className="mb6">
               <Dropdown
                 size="small"
                 options={statusesOptions}
                 value={statusInput}
-                onChange={(_, v) => this.setState({ statusInput: v })}
+                onChange={(_, v: any) => this.setState({ statusInput: v })}
               />
             </div>
-            <div className={`mb6`}>
+            <div className="mb6">
               <Textarea
                 label={formatMessage({ id: messages.addComment.id })}
                 value={commentInput}
-                onChange={e => this.setState({ commentInput: e.target.value })}
+                onChange={(e: any) =>
+                  this.setState({ commentInput: e.target.value })
+                }
               />
             </div>
-            <div className={`mb6`}>
+            <div className="mb6">
               <Checkbox
                 checked={visibleInput}
                 id="visible-input"
                 label={formatMessage({
-                  id: messages.commentVisibleToClient.id
+                  id: messages.commentVisibleToClient.id,
                 })}
                 name="default-checkbox-group"
-                onChange={e =>
-                  this.setState({ visibleInput: !this.state.visibleInput })
+                onChange={() =>
+                  this.setState((prevState) => ({
+                    visibleInput: !prevState.visibleInput,
+                  }))
                 }
                 value="1"
               />
             </div>
             <div>
               {errorCommentMessage ? (
-                <div className={`mb6`}>
+                <div className="mb6">
                   <p className={styles.errorMessage}>{errorCommentMessage}</p>
                 </div>
               ) : null}
               <Button onClick={() => this.submitStatusCommentForm()}>
                 {formatMessage({
-                  id: messages.addCommentButton.id
+                  id: messages.addCommentButton.id,
                 })}
               </Button>
             </div>
+            <div className="mt6">
+              <Mutation mutation={CREATE_LABEL}>
+                {(doMutation) => (
+                  <Button
+                    onClick={() => {
+                      this.createLabel(doMutation)
+                    }}
+                    disabled={this.state.labelDisabled}
+                  >
+                    {formatMessage({
+                      id: messages.sendLabel.id,
+                    })}
+                  </Button>
+                )}
+              </Mutation>
+            </div>
+            <div className="mt6">
+              {this.state.showLabelSuccess && (
+                <Alert type="success">
+                  {formatMessage({
+                    id: messages.shippingLabelSuccess.id,
+                  })}
+                </Alert>
+              )}
+              {this.state.showLabelError && (
+                <Alert type="error">
+                  {formatMessage({
+                    id: messages.shippingLabelError.id,
+                  })}
+                </Alert>
+              )}
+            </div>
           </div>
-          <div className={`flex flex-column items-stretch w-50`} />
+          <div className="flex flex-column items-stretch w-50" />
         </div>
       </div>
-    );
+    )
   }
 
   canVerifyPackage() {
-    const { request } = this.state;
-    return request.status === requestsStatuses.pendingVerification;
+    const { request } = this.state
+
+    return request.status === requestsStatuses.pendingVerification
   }
 
   render() {
@@ -676,11 +854,13 @@ class ReturnForm extends Component<any, any> {
       statusHistory,
       showMain,
       showProductsForm,
-      giftCardValue
-    } = this.state;
-    const { formatMessage } = this.props.intl;
+      giftCardValue,
+    } = this.state
+
+    const { formatMessage } = this.props.intl
+
     if (!request) {
-      return <div>Not Found</div>;
+      return <div>Not Found</div>
     }
 
     if (showMain) {
@@ -689,17 +869,17 @@ class ReturnForm extends Component<any, any> {
           <p>
             {formatMessage(
               { id: messages.returnForm.id },
-              { requestId: " #" + request.id }
+              { requestId: ` #${request.id}` }
             )}
 
-            {" / "}
+            {' / '}
             {returnFormDate(request.dateSubmitted)}
           </p>
           {this.canVerifyPackage() ? (
             <Button
-              size={"small"}
+              size="small"
               onClick={() => {
-                this.setState({ showMain: false, showProductsForm: true });
+                this.setState({ showMain: false, showProductsForm: true })
               }}
             >
               {formatMessage({ id: messages.verifyPackage.id })}
@@ -711,15 +891,15 @@ class ReturnForm extends Component<any, any> {
             totalRefundAmount={request.refundedAmount}
             productsValue={request.totalPrice}
           />
-          <p className={"mt7"}>
-            <strong className={"mr6"}>
+          <p className="mt7">
+            <strong className="mr6">
               {formatMessage(
                 { id: messages.refOrder.id },
-                { orderId: " #" + request.orderId }
+                { orderId: ` #${request.orderId}` }
               )}
             </strong>
             <Link
-              href={"/admin/checkout/#/orders/" + request.orderId}
+              href={`/admin/checkout/#/orders/${request.orderId}`}
               target="_blank"
             >
               {formatMessage({ id: messages.viewOrder.id })}
@@ -728,7 +908,7 @@ class ReturnForm extends Component<any, any> {
 
           <RequestInfo request={request} giftCardValue={giftCardValue} />
 
-          <p className={"mt7"}>
+          <p className="mt7">
             <strong>{formatMessage({ id: messages.status.id })}</strong>
           </p>
 
@@ -739,23 +919,23 @@ class ReturnForm extends Component<any, any> {
           {this.renderStatusCommentForm()}
           <StatusHistoryTable statusHistory={statusHistory} />
         </div>
-      );
+      )
     }
 
     if (showProductsForm) {
       return (
         <div>
-          <div className={`mb4`}>
+          <div className="mb4">
             <Button
-              size={"small"}
+              size="small"
               onClick={() => {
-                this.cancelProductsForm();
+                this.cancelProductsForm()
               }}
             >
               {formatMessage({ id: messages.back.id })}
             </Button>
           </div>
-          <table className={styles.table + " " + styles.tableSm + " "}>
+          <table className={`${styles.table} ${styles.tableSm} `}>
             <thead>
               <tr>
                 <th>{formatMessage({ id: messages.product.id })}</th>
@@ -765,19 +945,19 @@ class ReturnForm extends Component<any, any> {
             </thead>
             <tbody>
               {productsForm.length ? (
-                productsForm.map(currentProduct => (
+                productsForm.map((currentProduct) => (
                   <tr key={currentProduct.skuId}>
                     <td className={styles.tableProductColumn}>
                       {currentProduct.skuName}
                     </td>
                     <td className={styles.smallCell}>
                       <Input
-                        suffix={"/" + currentProduct.quantity}
-                        size={"small"}
-                        type={"number"}
+                        suffix={`/${currentProduct.quantity}`}
+                        size="small"
+                        type="number"
                         value={currentProduct.goodProducts}
-                        onChange={e => {
-                          this.handleQuantity(currentProduct, e.target.value);
+                        onChange={(e) => {
+                          this.handleQuantity(currentProduct, e.target.value)
                         }}
                         max={currentProduct.quantity}
                         min={0}
@@ -799,23 +979,23 @@ class ReturnForm extends Component<any, any> {
               )}
             </tbody>
           </table>
-          <div className={`mt6`}>
+          <div className="mt6">
             <Button
-              size={`small`}
-              variation={`primary`}
+              size="small"
+              variation="primary"
               onClick={() => {
-                this.verifyPackage();
+                this.verifyPackage()
               }}
             >
               {formatMessage({ id: messages.verifyPackageButton.id })}
             </Button>
           </div>
         </div>
-      );
+      )
     }
 
-    return null;
+    return null
   }
 }
 
-export default injectIntl(ReturnForm);
+export default injectIntl(ReturnForm)

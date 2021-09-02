@@ -1,12 +1,13 @@
 export async function getGiftCard(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { returnApp: returnAppClient }
-  } = ctx;
-  const { id } = ctx.vtex.route.params;
-  const response = await returnAppClient.getGiftCard(ctx, id);
+    clients: { returnApp: returnAppClient },
+  } = ctx
 
-  ctx.status = 200;
-  ctx.body = response;
+  const { id } = ctx.vtex.route.params
+  const response = await returnAppClient.getGiftCard(ctx, id)
 
-  await next();
+  ctx.status = 200
+  ctx.body = response
+
+  await next()
 }

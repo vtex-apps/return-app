@@ -1,12 +1,12 @@
-import React from "react";
-import { Route } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
-import { Button } from "vtex.styleguide";
+import React from 'react'
+import { Route } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
+import { Button } from 'vtex.styleguide'
 
-import ReturnsPage from "./store/MyReturnsPage";
+import ReturnsPage from './store/MyReturnsPage'
 
 const headerConfig = {
-  namespace: "vtex-account__returns-list",
+  namespace: 'vtex-account__returns-list',
   title: <FormattedMessage id="returns.link" />,
   headerContent: (
     <Button
@@ -17,8 +17,8 @@ const headerConfig = {
     >
       <FormattedMessage id="returns.addReturn" />
     </Button>
-  )
-};
+  ),
+}
 
 const StoreMyReturnsPage = () => {
   return (
@@ -29,7 +29,7 @@ const StoreMyReturnsPage = () => {
         <ReturnsPage {...props} headerConfig={headerConfig} />
       )}
     />
-  );
-};
+  )
+}
 
-export default StoreMyReturnsPage;
+export default StoreMyReturnsPage

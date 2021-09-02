@@ -22,6 +22,8 @@
     "./**/*.ts",
     "./**/*.d.ts"
   ],
-  "typeAcquisition": { "enable": false },
+  "typeAcquisition": {
+    "enable": false
+  },
   "extends": "@vtex/tsconfig"
 }

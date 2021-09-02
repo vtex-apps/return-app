@@ -1,426 +1,530 @@
 .filteredCategoriesContainer {
-    max-height: 250px;
-    overflow-y: auto;
-
+  max-height: 250px;
+  overflow-y: auto;
 }
 .excludeCategoriesContainer {
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .excludeCategoriesContainer::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .excludeCategoriesContainer {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .transparentButton {
-    background: transparent;
-    border: none;
-    color: inherit;
+  background: transparent;
+  border: none;
+  color: inherit;
 }
 
 .filteredCategoriesItem:hover {
-    background-color: #f2f4f5;
+  background-color: #f2f4f5;
 }
 
 .filteredCategoriesItem {
-    padding: 10px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    display: block;
-    background: none;
-    text-align: left;
-    cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  display: block;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 .excludedCategoriesItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .filteredCategoriesItem:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .errorMessage {
-    margin: 0;
-    font-size: 14px;
-    color: red;
-    font-weight: bold;
-    text-align: right;
+  margin: 0;
+  font-size: 14px;
+  color: red;
+  font-weight: bold;
+  text-align: right;
 }
-
 
 .hasError {
-    box-shadow: 0 0 3px #ff0000
+  box-shadow: 0 0 3px #ff0000;
 }
 
-.successMessage, .errorMessage {
-    font-weight: bold;
-    font-size: 15px;
-    text-align: center;
+.successMessage,
+.errorMessage {
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
 }
-
 
 .successMessage {
-    color: green;
+  color: green;
 }
 
 .myReturnsHolder {
-    border: 2px solid #f2f2f2;
-    width: 1170px;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 10px;
+  border: 2px solid #f2f2f2;
+  width: 1170px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .totalRequestsNumber {
-    font-size: 15px;
-    display: inline-block;
-    color: #888;
-    margin-left: 20px;
+  font-size: 15px;
+  display: inline-block;
+  color: #888;
+  margin-left: 20px;
 }
 
 .table {
-    border-collapse: collapse;
-    width: 100%;
+  border-collapse: collapse;
+  width: 100%;
 }
-
-
 
 .table th,
 .tblProducts th {
-    text-align: left;
-    font-size: 15px;
-    padding-bottom: 10px;
+  text-align: left;
+  font-size: 15px;
+  padding-bottom: 10px;
 }
 
 .table th,
 .table td {
-    border: none;
-    padding: 20px 3px;
+  border: none;
+  padding: 20px 3px;
 }
 
-.tableModal th, .tableModal td {
-    padding: 10px;
+.tableModal th,
+.tableModal td {
+  padding: 10px;
 }
 
-.tblProducts td, .tblProducts th {
-    padding: 20px;
-    vertical-align: top;
+.tblProducts td,
+.tblProducts th {
+  padding: 20px;
+  vertical-align: top;
 }
 
 .table tbody tr,
 .table thead {
-    border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid #f2f2f2;
 }
 
 .tblProducts {
-    border-collapse: collapse;
-    border: 3px solid #f2f4f5;
-    border-top: none;
-    width: 100%;
+  border-collapse: collapse;
+  border: 3px solid #f2f4f5;
+  border-top: none;
+  width: 100%;
 }
 
 .tblProducts th {
-    text-align: left;
-    font-size: 15px;
-    padding-bottom: 10px;
+  text-align: left;
+  font-size: 15px;
+  padding-bottom: 10px;
 }
 
 .tableProducts th {
-    background-color: transparent;
-    padding: 8px 0;
+  background-color: transparent;
+  padding: 8px 0;
 }
 
 .tableProducts tbody tr,
 .tableProducts thead {
-    border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid #f2f2f2;
 }
 
 .tableProducts tbody tr:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .tableProducts td,
 .tableProducts th {
-    border: none;
-    padding: 10px 3px;
+  border: none;
+  padding: 10px 3px;
 }
 
 .tableSm td {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .textCenter {
-    text-align: center;
+  text-align: center;
 }
 
 .statusPendingVerification {
-    color: #ffb100;
+  color: #ffb100;
 }
 
 .statusDenied {
-    color: #ff0000;
+  color: #ff0000;
 }
 
 .statusPartiallyApproved {
-    color: #f86d3a;
+  color: #f86d3a;
 }
 
-.statusApproved, .statusRefunded {
-    color: green;
+.statusApproved,
+.statusRefunded {
+  color: green;
 }
-
-
 
 .statusNew {
-    color: navy;
+  color: navy;
 }
 
 .tableProductColumn {
-    max-width: 200px;
+  max-width: 200px;
 }
 
 .tableProductsRow td {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .capitalize {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .smallCell {
-    width: 100px;
+  width: 100px;
 }
 
 .mediumCell {
-    width: 300px;
+  width: 300px;
 }
 
-
 .iconStatusGreen {
-    display: inline-block;
-    background: green;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+  display: inline-block;
+  background: green;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 
 .iconStatusRed {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: red;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: red;
 }
 
 .statusIcon {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #134cd8;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    padding-top: 3px;
-    padding-left: 3px;
-    background: #fff;
-    margin-right: 20px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #134cd8;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  padding-top: 3px;
+  padding-left: 3px;
+  background: #fff;
+  margin-right: 20px;
 }
 
 .statusIconChecked {
-    background: #134cd8;
+  background: #134cd8;
 }
 
 .statusLine {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .statusUl {
-    background-image: linear-gradient(gray 33%, rgba(255, 255, 255, 0) 0%);
-    background-position: left;
-    background-size: 2px 6px;
-    background-repeat: repeat-y;
-    list-style-type: none;
-    margin-left: 15px;
-    min-height: 20px;
-    padding-top: 0;
-    padding-bottom: 0;
+  background-image: linear-gradient(gray 33%, rgba(255, 255, 255, 0) 0%);
+  background-position: left;
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+  list-style-type: none;
+  margin-left: 15px;
+  min-height: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .statusUl li {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .statusUlLast {
-    background-image: none;
+  background-image: none;
 }
 
 .tableThParagraph {
-    margin-bottom: 5px;
-    font-weight: bold;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .productUrl {
-    text-decoration: none;
-    color: #0F3E99;
+  text-decoration: none;
+  color: #0f3e99;
 }
 
 .orderInfoHeader {
-    background-color:#f2f4f5;
+  background-color: #f2f4f5;
 }
 
-.orderInfoHeaderRow {}
-.orderInfoHeaderColumn {}
-.orderInfoHeaderOrderDateLabel {}
-.orderInfoHeaderOrderIdLabel {}
-.orderInfoHeaderOrderDate {}
-.orderInfoHeaderOrderId {}
+.orderInfoHeaderRow {
+}
+.orderInfoHeaderColumn {
+}
+.orderInfoHeaderOrderDateLabel {
+}
+.orderInfoHeaderOrderIdLabel {
+}
+.orderInfoHeaderOrderDate {
+}
+.orderInfoHeaderOrderId {
+}
 
 .paddingLeft20 {
-    padding-left: 20px !important;
+  padding-left: 20px !important;
 }
 
 .reasonHolder {
-    width: 200px;
+  width: 200px;
 }
 
 .mt10 {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .w350 {
-    width: 350px;
+  width: 350px;
 }
 .reasonStyle {
-    font-size: 90%;
+  font-size: 90%;
 }
 .strongText {
-    font-weight: bold;
+  font-weight: bold;
 }
 
-.listTitle {}
-.listTitleText {}
-.filterList {}
-.addNewList {}
-.tableInformation {}
-.tableThead {}
-.tableTh {}
-.tableTr {}
-.tableTd {}
-.tableTdImage {}
-.tableTdReason {}
-.tableTdQuantity {}
-.tableTbody {}
-.tableTrNoProducts {}
-.filterColumn {}
-.filterColumnReturnId {}
-.filterColumnFromDate {}
-.filterColumnToDate {}
-.filterColumnStatus {}
-.filterColumnActionApply {}
-.filterColumnActionReset {}
+.listTitle {
+}
+.listTitleText {
+}
+.filterList {
+}
+.addNewList {
+}
+.tableInformation {
+}
+.tableThead {
+}
+.tableTh {
+}
+.tableTr {
+}
+.tableTd {
+}
+.tableTdImage {
+}
+.tableTdReason {
+}
+.tableTdQuantity {
+}
+.tableTbody {
+}
+.tableTrNoProducts {
+}
+.filterColumn {
+}
+.filterColumnReturnId {
+}
+.filterColumnFromDate {
+}
+.filterColumnToDate {
+}
+.filterColumnStatus {
+}
+.filterColumnActionApply {
+}
+.filterColumnActionReset {
+}
 
-.returnFormExtraComment {}
-.returnFormExtraCommentHeader {}
-.returnFormExtraCommentInput {}
-.returnFormInputsExtraComment {}
-.returnFormInputs {}
-.returnFormInputsColumn {}
-.returnFormInputsColumnLeft {}
-.returnFormInputsColumnRight {}
-.returnFormInputsHeader {}
-.returnFormInputsPayment {}
-.returnFormInputIban {}
-.returnFormInputAccountHolder {}
-.returnFormTerms {}
-.returnFormActions {}
-.returnFormInfoActions {}
-.returnFormInput {}
-.returnFormErrorAgree {}
-.tableColButton {}
-.requestInformationImage {}
-.requestInformationField {}
-.requestInformationText {}
-.requestInformationSelectedPayment {}
-.requestInformationActionColumn {}
-.requestInformationActionSubmit {}
-.requestInformationActionBack {}
-.imageCol {}
+.returnFormExtraComment {
+}
+.returnFormExtraCommentHeader {
+}
+.returnFormExtraCommentInput {
+}
+.returnFormInputsExtraComment {
+}
+.returnFormInputs {
+}
+.returnFormInputsColumn {
+}
+.returnFormInputsColumnLeft {
+}
+.returnFormInputsColumnRight {
+}
+.returnFormInputsHeader {
+}
+.returnFormInputsPayment {
+}
+.returnFormInputIban {
+}
+.returnFormTerms {
+}
+.returnFormActions {
+}
+.returnFormInfoActions {
+}
+.returnFormInput {
+}
+.returnFormErrorAgree {
+}
+.tableColButton {
+}
+.requestInformationImage {
+}
+.requestInformationField {
+}
+.requestInformationText {
+}
+.requestInformationSelectedPayment {
+}
+.requestInformationActionColumn {
+}
+.requestInformationActionSubmit {
+}
+.requestInformationActionBack {
+}
+.imageCol {
+}
 
-.requestInfoTitle {}
-.requestInfoTitleText {}
-.requestInfoTitleSeparator {}
-.requestInfoTitleDate {}
-.requestInfoOrder {}
-.requestInfoOrderText {}
-.requestInfoMainContent {}
-.requestInfoContentRow {}
-.requestInfoContentColumn {}
-.requestInfoContentColumnLeft {}
-.requestInfoContentColumnRight {}
-.requestInfoSectionTitle {}
-.requestInfoSectionTitleStrong {}
-.requestInfoTextContainer {}
-.requestInfoTextHolder {}
-.requestInfoText {}
-.requestInfoTextLabel {}
-.requestInfoPaymentTitle {}
-.requestInfoPaymentTitleStrong {}
-.requestInfoPaymentMethod {}
-.requestInfoPaymentLabel {}
-.requestInfoIbanText {}
-.requestInfoGiftCardCode {}
-.requestInfoGiftCardCodeLabel {}
-.requestInfoGiftCardCodeText {}
-.requestInfoGiftCardNotGenerated {}
-.requestInfoGiftCardValue {}
-.requestInfoGiftCardValueLabel {}
-.requestInfoGiftCardValueText {}
-.requestInfoTimelineContainer {}
-.requestInfoTimelineStep {}
-.requestInfoTimelineText {}
-.requestInfoHistoryContainer {}
-.requestInfoHistoryContent {}
-.requestInfoHistoryRow {}
-.requestInfoHistoryColumn {}
-.requestInfoHistoryColumnHeader {}
-.requestInfoHistoryColumnDate {}
-.requestInfoHistoryColumnStatus {}
-.requestInfoHistoryColumnUpdated {}
-.requestInfoHistoryText {}
-.requestInfoHistoryTextDate {}
-.requestInfoHistoryTextStatus {}
-.requestInfoHistoryTextUpdated {}
+.requestInfoTitle {
+}
+.requestInfoTitleText {
+}
+.requestInfoTitleSeparator {
+}
+.requestInfoTitleDate {
+}
+.requestInfoOrder {
+}
+.requestInfoOrderText {
+}
+.requestInfoMainContent {
+}
+.requestInfoContentRow {
+}
+.requestInfoContentColumn {
+}
+.requestInfoContentColumnLeft {
+}
+.requestInfoContentColumnRight {
+}
+.requestInfoSectionTitle {
+}
+.requestInfoSectionTitleStrong {
+}
+.requestInfoTextContainer {
+}
+.requestInfoTextHolder {
+}
+.requestInfoText {
+}
+.requestInfoTextLabel {
+}
+.requestInfoPaymentTitle {
+}
+.requestInfoPaymentTitleStrong {
+}
+.requestInfoPaymentMethod {
+}
+.requestInfoPaymentLabel {
+}
+.requestInfoIbanText {
+}
+.requestInfoGiftCardCode {
+}
+.requestInfoGiftCardCodeLabel {
+}
+.requestInfoGiftCardCodeText {
+}
+.requestInfoGiftCardNotGenerated {
+}
+.requestInfoGiftCardValue {
+}
+.requestInfoGiftCardValueLabel {
+}
+.requestInfoGiftCardValueText {
+}
+.requestInfoTimelineContainer {
+}
+.requestInfoTimelineStep {
+}
+.requestInfoTimelineText {
+}
+.requestInfoHistoryContainer {
+}
+.requestInfoHistoryContent {
+}
+.requestInfoHistoryRow {
+}
+.requestInfoHistoryColumn {
+}
+.requestInfoHistoryColumnHeader {
+}
+.requestInfoHistoryColumnDate {
+}
+.requestInfoHistoryColumnStatus {
+}
+.requestInfoHistoryColumnUpdated {
+}
+.requestInfoHistoryText {
+}
+.requestInfoHistoryTextDate {
+}
+.requestInfoHistoryTextStatus {
+}
+.requestInfoHistoryTextUpdated {
+}
 
-.tableProductImage {}
-.tableAddColButton {}
-.tableReasonQty {}
+.tableProductImage {
+}
+.tableAddColButton {
+}
+.tableReasonQty {
+}
 
-.tableEligibleOrders {}
-.eligibleOrder {}
-.thEligibleOrderId {}
-.thEligibleCreationDate {}
-.thEligibleSelectOrder {}
-.tdEligibleOrderId {}
-.tdEligibleCreationDate {}
-.noEligibleOrders {}
+.tableEligibleOrders {
+}
+.eligibleOrder {
+}
+.thEligibleOrderId {
+}
+.thEligibleCreationDate {
+}
+.thEligibleSelectOrder {
+}
+.tdEligibleOrderId {
+}
+.tdEligibleCreationDate {
+}
+.noEligibleOrders {
+}
 
-.backToOrders {}
+.backToOrders {
+}
 
-.successContainer {}
+.successContainer {
+}
 
 @media screen and (max-width: 759px) {
-    .filterList {
-        display: block;
-    }
+  .filterList {
+    display: block;
+  }
 }

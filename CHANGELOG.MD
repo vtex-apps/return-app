@@ -6,15 +6,43 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Beneficiary name for bank transfers
+
+### Added
+
+- Added ability to deny a return request in the request status dropdown
+
+### Fixed
+
+- Fix return requests being automatically denied
+- Fix inability to save max days in settings
+- Fix missing Beneficiary Name on request page
+- Changed zip and state fields to be optional for international returns
+- Fix re-rendering on initial install
+
+## [2.0.0] - 2021-08-25
+
+### Added
+
+- Add Easypost integration to create shipping labels
+- Add refund method with credit cards
+
+## [1.1.0] - 2017-07-02
+
+### Added
+
 - New custom return options
 - New extra request comment
-- New CSS Handles for the My account section
 - New scroll to top when navigating My account section
 - Fixed 'null' user's address number
 - Fixed admin settings layout
 - Fixed outstanding requests with missing products
 - Fixed cross checking outstanding requests with eligible orders
+
+## [1.0.11] - 2021-06-12
+
+### Added
+
+- New CSS Handles for the My account section
 
 ## [1.0.10] - 2017-06-20
 

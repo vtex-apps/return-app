@@ -93,6 +93,11 @@
     "apiUpdateStatus": {
       "path": "/no-cache/returns/api/update-status/:request_id",
       "public": true
+    },
+    "createRefund": {
+      "path": "/returns/createRefund/:orderId",
+      "public": true,
+      "settingsType": "workspace"
     }
   }
 }

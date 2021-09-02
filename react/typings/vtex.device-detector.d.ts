@@ -1,8 +1,8 @@
-declare module "vtex.device-detector/useDevice" {
+declare module 'vtex.device-detector/useDevice' {
   interface Device {
-    device: "phone" | "tablet" | "desktop";
-    isMobile: boolean;
+    device: 'phone' | 'tablet' | 'desktop'
+    isMobile: boolean
   }
 
-  export default function useDevice(): Device;
+  export default function useDevice(): Device
 }

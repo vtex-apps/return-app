@@ -1,43 +1,44 @@
-import React, { Component } from "react";
-import styles from "../styles.css";
-import { returnFormDate, intlArea } from "../common/utils";
-import { IconCheck } from "vtex.styleguide";
-import { injectIntl } from "react-intl";
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import React, { Component } from 'react'
+import { IconCheck } from 'vtex.styleguide'
+import { injectIntl } from 'react-intl'
+
+import styles from '../styles.css'
+import { returnFormDate, intlArea } from '../common/utils'
 
 interface Props {
-  statusHistoryTimeline: any;
-  intlZone: string;
-  intl: any;
+  statusHistoryTimeline: any[]
+  intlZone: string
+  intl: any
 }
 
 class StatusHistoryTimeline extends Component<Props> {
-  constructor(props) {
-    super(props);
-  }
-
   renderComment(comment: any) {
-    const { intlZone } = this.props;
+    const { intlZone } = this.props
+
     if (intlZone === intlArea.admin) {
-      return comment.comment + " (" + comment.submittedBy + ") ";
+      return `${comment.comment} (${comment.submittedBy}) `
     }
-    return comment.comment;
+
+    return comment.comment
   }
 
   render() {
-    const { statusHistoryTimeline } = this.props;
+    const { statusHistoryTimeline } = this.props
+
     return (
       <div className={`${styles.requestInfoTimelineContainer}`}>
         {statusHistoryTimeline.map((currentHistory, i) => (
           <div
             className={`${styles.requestInfoTimelineStep}`}
-            key={`statusHistoryTimeline_` + i}
+            key={`statusHistoryTimeline_${i}`}
           >
             <p className={styles.statusLine}>
               {currentHistory.active ? (
                 <span
                   className={`${styles.statusIcon} ${styles.statusIconChecked}`}
                 >
-                  <IconCheck size={20} color={"#fff"} />
+                  <IconCheck size={20} color="#fff" />
                 </span>
               ) : (
                 <span className={`${styles.statusIcon}`} />
@@ -47,17 +48,15 @@ class StatusHistoryTimeline extends Component<Props> {
               </span>
             </p>
             <ul
-              className={
-                styles.statusUl +
-                " " +
-                (statusHistoryTimeline.length === i + 1
+              className={`${styles.statusUl} ${
+                statusHistoryTimeline.length === i + 1
                   ? styles.statusUlLast
-                  : "")
-              }
+                  : ''
+              }`}
             >
-              {currentHistory.comments.map(comment => (
+              {currentHistory.comments.map((comment) => (
                 <li key={comment.id}>
-                  {returnFormDate(comment.dateSubmitted)}:{" "}
+                  {returnFormDate(comment.dateSubmitted)}:{' '}
                   {this.renderComment(comment)}
                 </li>
               ))}
@@ -65,8 +64,8 @@ class StatusHistoryTimeline extends Component<Props> {
           </div>
         ))}
       </div>
-    );
+    )
   }
 }
 
-export default injectIntl(StatusHistoryTimeline);
+export default injectIntl(StatusHistoryTimeline)
