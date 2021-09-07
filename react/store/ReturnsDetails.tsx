@@ -45,9 +45,6 @@ class ReturnsDetails extends Component<any, any> {
       error: '',
       totalRefundAmount: 0,
       giftCardValue: 0,
-      showLabelSuccess: false,
-      showLabelError: false,
-      labelDisabled: false,
       shippingLabel: '',
     }
   }
@@ -232,65 +229,6 @@ class ReturnsDetails extends Component<any, any> {
       .catch((err) => this.setState({ error: err }))
   }
 
-  createLabel = async (doMutation) => {
-    this.setState({
-      labelDisabled: true,
-    })
-
-    const { request } = this.state
-    const variables = {
-      street1: request.address,
-      street2: '',
-      city: request.locality,
-      state: request.state,
-      zip: request.zip,
-      country: request.country,
-      name: request.name,
-      phone: request.phoneNumber,
-    }
-
-    let label: any
-
-    try {
-      label = await doMutation({
-        variables: {
-          street1: variables.street1,
-          street2: variables.street2,
-          city: variables.city,
-          state: variables.state,
-          zip: variables.zip,
-          country: variables.country,
-          name: variables.name,
-          phone: variables.phone,
-        },
-      })
-      const { labelUrl } = label.data.createLabel
-
-      window.setTimeout(() => {
-        const { product, statusHistoryTimeline } = this.state
-
-        request.returnLabel = labelUrl
-        sendMail({
-          data: {
-            ...{ DocumentId: request.id },
-            ...request,
-          },
-          products: product,
-          timeline: statusHistoryTimeline,
-        })
-      }, 2000)
-
-      this.setState({
-        showLabelSuccess: true,
-        shippingLabel: labelUrl,
-      })
-    } catch (e) {
-      this.setState({
-        showLabelError: true,
-      })
-    }
-  }
-
   render() {
     const {
       request,
@@ -350,52 +288,6 @@ class ReturnsDetails extends Component<any, any> {
               </p>
 
               <RequestInfo giftCardValue={giftCardValue} request={request} />
-
-              <div className="mt8">
-                <Mutation mutation={CREATE_LABEL}>
-                  {(doMutation) => (
-                    <Button
-                      onClick={() => {
-                        this.createLabel(doMutation)
-                      }}
-                      disabled={this.state.labelDisabled}
-                    >
-                      {formatMessage({
-                        id: messages.sendLabel.id,
-                      })}
-                    </Button>
-                  )}
-                </Mutation>
-              </div>
-              <div className="mt6">
-                {this.state.showLabelSuccess && (
-                  <div>
-                    <div className="mt6">
-                      <Button
-                        variation="primary"
-                        href={this.state.shippingLabel}
-                        target="_blank"
-                      >
-                        Print Label
-                      </Button>
-                    </div>
-                    <div className="mt6">
-                      <Alert type="success">
-                        {formatMessage({
-                          id: messages.shippingLabelSuccess.id,
-                        })}
-                      </Alert>
-                    </div>
-                  </div>
-                )}
-                {this.state.showLabelError && (
-                  <Alert type="error">
-                    {formatMessage({
-                      id: messages.shippingLabelError.id,
-                    })}
-                  </Alert>
-                )}
-              </div>
 
               <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
                 <strong className={`${styles.requestInfoSectionTitleStrong}`}>
