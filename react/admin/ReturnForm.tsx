@@ -758,6 +758,7 @@ class ReturnForm extends Component<any, any> {
             <div className="mb6">
               <Dropdown
                 size="small"
+                placeholder="Select Status"
                 options={statusesOptions}
                 value={statusInput}
                 onChange={(_, v: any) => this.setState({ statusInput: v })}

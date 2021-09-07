@@ -35,6 +35,7 @@ type Errors = {
   agree: string
   productQuantities: string
   reasonMissing: string
+  condition: string
 }
 
 type State = {
@@ -81,6 +82,7 @@ const initialErrors = {
   agree: '',
   productQuantities: '',
   reasonMissing: '',
+  condition: '',
   state: '',
   zip: '',
 }
@@ -101,6 +103,7 @@ const errorMessages = defineMessages({
   agree: { id: 'returns.formErrorAgree' },
   productQuantities: { id: 'returns.formErrorQuantities' },
   reasonMissing: { id: 'returns.formErrorReasonMissing' },
+  condition: { id: 'returns.formErrorConditionMissing' }
 })
 
 const messages = defineMessages({
@@ -318,6 +321,7 @@ class MyReturnsPageAdd extends Component<any, State> {
               quantity: currentProduct.quantity - response,
               reasonCode: '',
               reason: '',
+              condition: '',
             }
 
             return eligible
@@ -569,6 +573,11 @@ class MyReturnsPageAdd extends Component<any, State> {
             (product.reason === '' || !reason.replace(/\s/g, '').length)))
       ) {
         errors = true
+      } else if (
+        parseInt(product.selectedQuantity, 10) > 0 &&
+        (product.condition === '')
+      ) {
+        errors = true
       }
     })
 
@@ -655,6 +664,19 @@ class MyReturnsPageAdd extends Component<any, State> {
           ? {
               ...el,
               reason: value,
+            }
+          : el
+      ),
+    }))
+  }
+
+  handleCondition(product: any, value: any) {
+    this.setState((prevState) => ({
+      orderProducts: prevState.orderProducts.map((el) =>
+        el.uniqueId === product.uniqueId
+          ? {
+              ...el,
+              condition: value,
             }
           : el
       ),
@@ -777,6 +799,7 @@ class MyReturnsPageAdd extends Component<any, State> {
               imageUrl: product.imageUrl,
               reasonCode: product.reasonCode,
               reason: product.reason,
+              condition: product.condition,
               unitPrice: parseInt(product.sellingPrice, 10),
               quantity: parseInt(product.selectedQuantity, 10),
               totalPrice: parseInt(
@@ -896,6 +919,9 @@ class MyReturnsPageAdd extends Component<any, State> {
                   }}
                   handleReason={(product, value) => {
                     this.handleReason(product, value)
+                  }}
+                  handleCondition={(product, value) => {
+                    this.handleCondition(product, value)
                   }}
                   errors={errors}
                   handleInputChange={(e) => this.handleInputChange(e)}

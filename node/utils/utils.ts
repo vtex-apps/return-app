@@ -43,6 +43,7 @@ export function formatProduct(product: any) {
     goodProducts: product.goodProducts,
     reasonCode: product.reasonCode,
     reasonText: product.reason,
+    condition: product.condition,
     status: product.status,
   }
 }

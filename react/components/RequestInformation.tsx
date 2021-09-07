@@ -35,6 +35,7 @@ const messages = defineMessages({
   formVoucher: { id: 'returns.formVoucher' },
   formSubmit: { id: 'returns.formSubmit' },
   goBack: { id: 'returns.goBack' },
+  condition: { id: 'returns.condition.label' }
 })
 
 class RequestInformation extends Component<Props> {
@@ -96,6 +97,14 @@ class RequestInformation extends Component<Props> {
                         {product.reasonCode === 'reasonOther'
                           ? `( ${product.reason} )`
                           : null}
+                      </div>
+
+                      <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                        <span className={styles.strongText}>
+                          {formatMessage({ id: messages.condition.id })}
+                          {': '}
+                        </span>
+                        {product.condition}{' '}
                       </div>
                     </td>
                     <td className={`${styles.tableTd}`}>

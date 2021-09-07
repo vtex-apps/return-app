@@ -34,6 +34,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
     },
     noProducts: { id: `returns.noProducts` },
     totalRefundAmount: { id: `returns.totalRefundAmount` },
+    condition: { id: `returns.condition.label` }
   })
 
   return (
@@ -95,6 +96,15 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                   {currentProduct.reasonCode === 'reasonOther'
                     ? `( ${currentProduct.reason} )`
                     : null}
+                </div>
+
+                
+                <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                  <span className={styles.strongText}>
+                    {formatMessage({ id: messages.condition.id })}
+                    {': '}
+                  </span>
+                  {currentProduct.condition}{' '}
                 </div>
               </td>
               <td className={`${styles.tableTd} ${styles.tableReasonQty}`}>
