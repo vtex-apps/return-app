@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Add tax logic to credit card returns
+
+### Removed
+
+- Removed label creation button from customer side
+
+### Added
+
 - Added dropdown for customers to specify condition of the product they are returning
 
 ## [2.1.0] - 2021-08-27
