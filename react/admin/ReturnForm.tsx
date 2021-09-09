@@ -334,7 +334,7 @@ class ReturnForm extends Component<any, any> {
 
       if (taxItem.tax) {
         totalTax = Number((taxItem.tax / 100).toFixed(2))
-      } else {
+      } else if (taxItem.priceTags) {
         for (const pricetag of taxItem.priceTags) {
           if (pricetag.name.includes('TAXHUB')) {
             totalTax += pricetag.rawValue

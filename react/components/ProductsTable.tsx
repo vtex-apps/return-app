@@ -37,8 +37,6 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
     condition: { id: `returns.condition.label` }
   })
 
-  console.log('product 2', product)
-
   return (
     <table
       className={`${styles.table} ${styles.tableSm} ${styles.tableProducts}`}
