@@ -54,6 +54,9 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
             {formatMessage({ id: messages.unitPrice.id })}
           </th>
           <th className={`${styles.tableTh}`}>
+            Tax
+          </th>
+          <th className={`${styles.tableTh}`}>
             {formatMessage({ id: messages.subtotalRefund.id })}
           </th>
           <th className={`${styles.tableTh}`}>
@@ -114,9 +117,12 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                 <FormattedCurrency value={currentProduct.unitPrice / 100} />
               </td>
               <td className={`${styles.tableTd}`}>
+                <FormattedCurrency value={currentProduct.tax} />
+              </td>
+              <td className={`${styles.tableTd}`}>
                 <FormattedCurrency
                   value={
-                    (currentProduct.unitPrice * currentProduct.quantity) / 100
+                    (((currentProduct.unitPrice / 100) + parseFloat(currentProduct.tax)) * currentProduct.quantity)
                   }
                 />
               </td>
@@ -139,7 +145,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
           </td>
           <td className={`${styles.tableTd}`} colSpan={2}>
             <strong>
-              <FormattedCurrency value={productsValue / 100} />
+              <FormattedCurrency value={productsValue} />
             </strong>
           </td>
         </tr>

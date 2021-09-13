@@ -85,6 +85,7 @@ class ReturnForm extends Component<any, any> {
       showLabelSuccess: false,
       showLabelError: false,
       labelDisabled: false,
+      totalAmount: 0,
     }
   }
 
@@ -300,9 +301,71 @@ class ReturnForm extends Component<any, any> {
           initialProductsForm: productsForm,
         })
 
+        this.handleTaxes()
+
         return json
       })
       .catch((err) => this.setState({ error: err }))
+  }
+
+  handleTaxes = async () => {
+    const {
+      request,
+      product,
+    } = this.state
+
+    let taxItems: any
+    if (request) {
+      try {
+        await fetch(`${fetchPath.getOrder}${request.orderId}`)
+        .then((response) => response.json())
+        .then((res) => {
+          taxItems = res.items
+          return Promise.resolve(res)
+        })
+      } catch (e) {
+        // console.log(e)
+      }
+    }
+
+    const taxCalculations: any = []
+    for (const taxItem of taxItems) {
+      let totalTax = 0
+
+      if (taxItem.tax) {
+        totalTax = Number((taxItem.tax / 100).toFixed(2))
+      } else if (taxItem.priceTags) {
+        for (const pricetag of taxItem.priceTags) {
+          if (pricetag.name.includes('TAXHUB')) {
+            totalTax += pricetag.rawValue
+          }
+        }
+
+        const individualTax = (totalTax / taxItem.quantity).toFixed(2)
+        taxCalculations.push({
+          tax: individualTax,
+          sellerSku: taxItem.sellerSku,
+        })
+      }
+    }
+
+    let totalAmount = 0
+    const newProducts = product
+    for (const taxItem of taxCalculations) {
+      for (const productItem of newProducts) {
+        if (!productItem.tax && taxItem.sellerSku === productItem.sku) {
+          productItem['tax'] = taxItem.tax
+          totalAmount += (productItem.totalPrice / 100 + parseFloat(taxItem.tax) * productItem.quantity)
+        }
+      }
+    }
+
+    this.setState((prevState) => ({
+      ...prevState,
+      product: newProducts,
+      productsForm: newProducts,
+      totalAmount,
+    }))
   }
 
   submitStatusCommentForm() {
@@ -358,7 +421,7 @@ class ReturnForm extends Component<any, any> {
           for (const item of this.state.product) {
             const invoiceItem = {
               id: item.sku,
-              price: item.unitPrice,
+              price: item.unitPrice + parseFloat(item.tax) * 100,
               quantity: item.quantity,
             }
 
@@ -524,7 +587,7 @@ class ReturnForm extends Component<any, any> {
     let refundedAmount = 0
 
     productsForm.forEach((currentProduct) => {
-      refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice
+      refundedAmount += currentProduct.goodProducts * (currentProduct.unitPrice + (parseFloat(currentProduct.tax) * 100))
       this.saveMasterData(schemaNames.product, currentProduct)
     })
 
@@ -856,6 +919,7 @@ class ReturnForm extends Component<any, any> {
       showMain,
       showProductsForm,
       giftCardValue,
+      totalAmount,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -890,7 +954,7 @@ class ReturnForm extends Component<any, any> {
           <ProductsTable
             product={product}
             totalRefundAmount={request.refundedAmount}
-            productsValue={request.totalPrice}
+            productsValue={totalAmount}
           />
           <p className="mt7">
             <strong className="mr6">
