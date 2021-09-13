@@ -388,10 +388,6 @@ class ReturnForm extends Component<any, any> {
       if (statusInput !== request.status) {
         requestData = { ...requestData, status: statusInput }
 
-        if (statusInput === requestsStatuses.refunded) {
-
-        }
-
         if (
           statusInput === requestsStatuses.refunded &&
           request.paymentMethod === 'giftCard'
