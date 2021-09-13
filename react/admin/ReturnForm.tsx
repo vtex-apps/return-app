@@ -341,7 +341,7 @@ class ReturnForm extends Component<any, any> {
           }
         }
 
-        const individualTax = ((totalTax / taxItem.quantity).toFixed(2) || 0)
+        const individualTax = parseFloat((totalTax / parseInt(taxItem.quantity)).toFixed(2))
         taxCalculations.push({
           tax: individualTax,
           sellerSku: taxItem.sellerSku,
@@ -446,9 +446,6 @@ class ReturnForm extends Component<any, any> {
               body: JSON.stringify(body),
               headers: fetchHeaders,
             })
-            // .then((response) => {
-            //   console.log(response)
-            // })
           } catch {
             // console.log(e)
           }
@@ -466,8 +463,14 @@ class ReturnForm extends Component<any, any> {
 
         delete requestBody.giftCardCode
         delete requestBody.giftCardId
+        delete requestBody.sellerId
+        delete requestBody.sellerRequestId
+        delete requestBody.marketplaceId
+        delete requestBody.marketplaceRequestId
+
         this.savePartial(schemaNames.request, requestBody)
         this.saveMasterData(schemaNames.history, statusHistoryData)
+
         if (
           request.status === requestsStatuses.picked &&
           statusInput === requestsStatuses.pendingVerification

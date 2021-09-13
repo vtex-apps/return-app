@@ -26,7 +26,6 @@ class StatusHistoryTimeline extends Component<Props> {
 
   render() {
     const { statusHistoryTimeline } = this.props
-    console.log('status history timeline component', statusHistoryTimeline)
 
     return (
       <div className={`${styles.requestInfoTimelineContainer}`}>

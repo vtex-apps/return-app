@@ -468,8 +468,6 @@ export function prepareHistoryData(comment: any, request: any) {
         newTimeline.push(item)
       }
     }
-
-    console.log('newTimeline', newTimeline)
     return newTimeline
   } else {
     return timeline
