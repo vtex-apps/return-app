@@ -333,15 +333,15 @@ class ReturnForm extends Component<any, any> {
       let totalTax = 0
 
       if (taxItem.tax) {
-        totalTax = Number((taxItem.tax / 100).toFixed(2))
+        totalTax += (Number((taxItem.tax / 100).toFixed(2)) || 0)
       } else if (taxItem.priceTags) {
         for (const pricetag of taxItem.priceTags) {
           if (pricetag.name.includes('TAXHUB')) {
-            totalTax += pricetag.rawValue
+            totalTax += (pricetag.rawValue || 0)
           }
         }
 
-        const individualTax = (totalTax / taxItem.quantity).toFixed(2)
+        const individualTax = ((totalTax / taxItem.quantity).toFixed(2) || 0)
         taxCalculations.push({
           tax: individualTax,
           sellerSku: taxItem.sellerSku,
@@ -355,7 +355,7 @@ class ReturnForm extends Component<any, any> {
       for (const productItem of newProducts) {
         if (!productItem.tax && taxItem.sellerSku === productItem.sku) {
           productItem['tax'] = taxItem.tax
-          totalAmount += (productItem.totalPrice / 100 + parseFloat(taxItem.tax) * productItem.quantity)
+          totalAmount += (productItem.totalPrice / 100 + (parseFloat(taxItem.tax) || 0) * productItem.quantity)
         }
       }
     }
