@@ -454,6 +454,10 @@ class ReturnForm extends Component<any, any> {
           }
         }
 
+        console.log('statusInput', statusInput)
+        console.log('state status history', this.state.statusHistory)
+        console.log('state status history timeline', this.state.statusHistoryTimeline)
+
         const statusHistoryData = {
           refundId: request.id,
           status: statusInput,
@@ -512,6 +516,25 @@ class ReturnForm extends Component<any, any> {
       this.setState({
         statusHistoryTimeline: prepareHistoryData(oldComments, requestData),
       })
+
+      // if (statusInput === requestsStatuses.denied) {
+      //   const statusTimeline = this.state.statusHistoryTimeline
+      //   const newStatusTimeline:any = []
+      //   for (const status of statusTimeline) {
+      //     console.log('status', status)
+      //     if (status.step === 5) {
+      //       newStatusTimeline.push(status)
+      //     } else if (status.active === 1) {
+      //       newStatusTimeline.push(status)
+      //     }
+      //   }
+      //   console.log('***status timeline***', this.state.statusHistoryTimeline)
+      //   console.log('***new status timeline***', newStatusTimeline)
+      //   this.setState({
+      //     statusHistoryTimeline: newStatusTimeline,
+      //   })
+      // }
+
       if (
         statusInput !== request.status &&
         statusInput !== requestsStatuses.picked
@@ -923,6 +946,7 @@ class ReturnForm extends Component<any, any> {
     } = this.state
 
     const { formatMessage } = this.props.intl
+    console.log('statusHistory Timeline', statusHistoryTimeline)
 
     if (!request) {
       return <div>Not Found</div>

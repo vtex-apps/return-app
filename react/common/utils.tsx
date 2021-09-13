@@ -366,7 +366,7 @@ export function prepareHistoryData(comment: any, request: any) {
     },
   })
 
-  return [
+  const timeline =  [
     {
       status: statusHistoryTimeline.new,
       text: (
@@ -453,6 +453,27 @@ export function prepareHistoryData(comment: any, request: any) {
           : 0,
     },
   ]
+
+  if (request.status === requestsStatuses.denied) {
+    const newTimeline:{
+      status: string;
+      text: JSX.Element;
+      step: number;
+      comments: any;
+      active: number;
+  }[] = []
+
+    for (const item of timeline) {
+      if (item.step === 1 || item.step === 5 || item.comments.length) {
+        newTimeline.push(item)
+      }
+    }
+
+    console.log('newTimeline', newTimeline)
+    return newTimeline
+  } else {
+    return timeline
+  }
 }
 
 export function sendMail(jsonData: any) {

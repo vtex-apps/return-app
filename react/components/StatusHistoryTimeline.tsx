@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl'
 
 import styles from '../styles.css'
 import { returnFormDate, intlArea } from '../common/utils'
+import { stat } from 'fs'
 
 interface Props {
   statusHistoryTimeline: any[]
@@ -25,6 +26,7 @@ class StatusHistoryTimeline extends Component<Props> {
 
   render() {
     const { statusHistoryTimeline } = this.props
+    console.log('status history timeline component', statusHistoryTimeline)
 
     return (
       <div className={`${styles.requestInfoTimelineContainer}`}>
