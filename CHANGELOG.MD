@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Update status history timeline to be adaptive
+
+### Added
+
 - Add tax logic to credit card returns
 
 ### Removed

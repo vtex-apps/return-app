@@ -117,12 +117,12 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                 <FormattedCurrency value={currentProduct.unitPrice / 100} />
               </td>
               <td className={`${styles.tableTd}`}>
-                <FormattedCurrency value={currentProduct.tax} />
+                <FormattedCurrency value={currentProduct.tax || 0} />
               </td>
               <td className={`${styles.tableTd}`}>
                 <FormattedCurrency
                   value={
-                    (((currentProduct.unitPrice / 100) + parseFloat(currentProduct.tax)) * currentProduct.quantity)
+                    ((currentProduct.unitPrice / 100) + (parseFloat(currentProduct.tax) || 0) * currentProduct.quantity)
                   }
                 />
               </td>
