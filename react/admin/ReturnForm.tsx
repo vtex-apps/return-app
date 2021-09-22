@@ -423,9 +423,9 @@ class ReturnForm extends Component<any, any> {
               id: item.sku,
               price: item.unitPrice + parseFloat(item.tax) * 100,
               quantity: item.quantity,
+              status: item.status,
             }
-
-            items.push(invoiceItem)
+            invoiceItem.status === 'Approved' && items.push(invoiceItem)
           }
 
           const issuanceDate = new Date().toISOString().slice(0, 10)
@@ -528,7 +528,7 @@ class ReturnForm extends Component<any, any> {
               ...{ DocumentId: request.id },
               ...request,
             },
-            products: product,
+            products: product.filter((prod) => prod.status === 'Approved'),
             timeline: statusHistoryTimeline,
           })
         }, 2000)

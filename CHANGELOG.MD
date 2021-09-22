@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Add validation to remove orders that have already been returned through the OMS
 
+### Fixed
+
+- Denied items does not show up in the OMS as returned anymore
+
 ### Added
 
 - Update status history timeline to be adaptive
