@@ -395,9 +395,11 @@ class MyReturnsPageAdd extends Component<any, State> {
             if ('list' in orders) {
               if (orders.list.length) {
                 orders.list.forEach((order: any) => {
-                  this.getOrder(order.orderId).then((currentOrder) => {
-                    this.prepareOrderData(currentOrder, settings, true)
-                  })
+                  if(!order.invoiceInput) {
+                    this.getOrder(order.orderId).then((currentOrder) => {
+                      this.prepareOrderData(currentOrder, settings, true)
+                    })
+                  }
                 })
                 setTimeout(() => {
                   this.setState({ loading: false })
