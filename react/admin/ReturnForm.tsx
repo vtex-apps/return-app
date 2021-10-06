@@ -54,6 +54,7 @@ const messages = defineMessages({
   sendLabel: { id: 'returns.sendLabel' },
   shippingLabelSuccess: { id: 'returns.labelSuccess' },
   shippingLabelError: { id: 'returns.labelError' },
+  showLabel: { id: 'returns.showLabel' }
 })
 
 class ReturnForm extends Component<any, any> {
@@ -744,38 +745,10 @@ class ReturnForm extends Component<any, any> {
     })
 
     const { request } = this.state
-    const variables = {
-      street1: request.address,
-      street2: '',
-      city: request.locality,
-      state: request.state,
-      zip: request.zip,
-      country: request.country,
-      name: request.name,
-      phone: request.phoneNumber,
-    }
 
-    let label: any
-
-    try {
-      label = await doMutation({
-        variables: {
-          street1: variables.street1,
-          street2: variables.street2,
-          city: variables.city,
-          state: variables.state,
-          zip: variables.zip,
-          country: variables.country,
-          name: variables.name,
-          phone: variables.phone,
-        },
-      })
-      const { labelUrl } = label.data.createLabel
-
+    if (request.returnLabel) {
       window.setTimeout(() => {
         const { product, statusHistoryTimeline } = this.state
-
-        request.returnLabel = labelUrl
         sendMail({
           data: {
             ...{ DocumentId: request.id },
@@ -784,17 +757,69 @@ class ReturnForm extends Component<any, any> {
           products: product,
           timeline: statusHistoryTimeline,
         })
-        // console.log(request)
       }, 2000)
 
       this.setState({
         showLabelSuccess: true,
       })
-    } catch {
-      this.setState({
-        showLabelError: true,
-      })
+
+    } else {
+      const variables = {
+        street1: request.address,
+        street2: '',
+        city: request.locality,
+        state: request.state,
+        zip: request.zip,
+        country: request.country,
+        name: request.name,
+        phone: request.phoneNumber,
+      }
+  
+      let label: any
+  
+      try {
+        label = await doMutation({
+          variables: {
+            street1: variables.street1,
+            street2: variables.street2,
+            city: variables.city,
+            state: variables.state,
+            zip: variables.zip,
+            country: variables.country,
+            name: variables.name,
+            phone: variables.phone,
+          },
+        })
+        const { labelUrl } = label.data.createLabel
+        
+        window.setTimeout(() => {
+          const { product, statusHistoryTimeline } = this.state
+          
+          let requestBody = request
+          requestBody = { ...requestBody, returnLabel: labelUrl }
+  
+          this.setState({ ...this.state, request: requestBody })
+          this.savePartial(schemaNames.request, requestBody)
+          sendMail({
+            data: {
+              ...{ DocumentId: request.id },
+              ...request,
+            },
+            products: product,
+            timeline: statusHistoryTimeline,
+          })
+        }, 2000)
+  
+        this.setState({
+          showLabelSuccess: true,
+        })
+      } catch {
+        this.setState({
+          showLabelError: true,
+        })
+      }
     }
+
 
     this.setState({
       labelDisabled: false,
@@ -812,6 +837,8 @@ class ReturnForm extends Component<any, any> {
 
     const { formatMessage } = this.props.intl
     const statusesOptions = this.allowedStatuses(request.status)
+
+    console.log('request', request)
 
     return (
       <div>
@@ -868,6 +895,17 @@ class ReturnForm extends Component<any, any> {
                 })}
               </Button>
             </div>
+            {request.returnLabel && (
+              <div className="mt6">
+                <Button
+                  href={request.returnLabel}
+                  target="_blank"
+                  variation="secondary"
+                >
+                  {formatMessage({ id: messages.showLabel.id })}
+                </Button>
+              </div>
+            )}
             <div className="mt6">
               <Mutation mutation={CREATE_LABEL}>
                 {(doMutation) => (
