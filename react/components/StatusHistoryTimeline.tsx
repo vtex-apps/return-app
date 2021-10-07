@@ -5,7 +5,6 @@ import { injectIntl } from 'react-intl'
 
 import styles from '../styles.css'
 import { returnFormDate, intlArea } from '../common/utils'
-import { stat } from 'fs'
 
 interface Props {
   statusHistoryTimeline: any[]

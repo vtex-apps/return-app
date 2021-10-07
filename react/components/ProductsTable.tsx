@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import type { FunctionComponent } from 'react'
 import React from 'react'
 import { FormattedCurrency } from 'vtex.format-currency'
@@ -34,7 +35,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
     },
     noProducts: { id: `returns.noProducts` },
     totalRefundAmount: { id: `returns.totalRefundAmount` },
-    condition: { id: `returns.condition.label` }
+    condition: { id: `returns.condition.label` },
   })
 
   return (
@@ -53,9 +54,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
           <th className={`${styles.tableTh}`}>
             {formatMessage({ id: messages.unitPrice.id })}
           </th>
-          <th className={`${styles.tableTh}`}>
-            Tax
-          </th>
+          <th className={`${styles.tableTh}`}>Tax</th>
           <th className={`${styles.tableTh}`}>
             {formatMessage({ id: messages.subtotalRefund.id })}
           </th>
@@ -101,7 +100,6 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                     : null}
                 </div>
 
-                
                 <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                   <span className={styles.strongText}>
                     {formatMessage({ id: messages.condition.id })}
@@ -122,7 +120,9 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
               <td className={`${styles.tableTd}`}>
                 <FormattedCurrency
                   value={
-                    ((currentProduct.unitPrice / 100) + (parseFloat(currentProduct.tax) || 0) * currentProduct.quantity)
+                    currentProduct.unitPrice / 100 +
+                    (parseFloat(currentProduct.tax) || 0) *
+                      currentProduct.quantity
                   }
                 />
               </td>

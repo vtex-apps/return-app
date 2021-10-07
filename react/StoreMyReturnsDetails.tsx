@@ -1,8 +1,10 @@
+import type { FC } from 'react'
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route } from 'vtex.my-account-commons/Router'
 import { FormattedMessage } from 'react-intl'
 
 import ReturnsDetails from './store/ReturnsDetails'
+import useAxiosInstance from './hooks/useAxiosModule'
 
 const headerConfig = {
   namespace: 'vtex-account__returns-list',
@@ -13,14 +15,24 @@ const headerConfig = {
   },
 }
 
+const StoreMyReturnsDetailsWrapper: FC = (props: any) => {
+  const fetchApi = useAxiosInstance()
+
+  return (
+    <ReturnsDetails
+      {...props}
+      headerConfig={headerConfig}
+      fetchApi={fetchApi}
+    />
+  )
+}
+
 const StoreMyReturnsDetails = () => {
   return (
     <Route
-      path="/my-returns/details/:id"
       exact
-      render={(props: any) => (
-        <ReturnsDetails {...props} headerConfig={headerConfig} />
-      )}
+      path="/my-returns/details/:id"
+      component={StoreMyReturnsDetailsWrapper}
     />
   )
 }

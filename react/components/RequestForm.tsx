@@ -95,11 +95,11 @@ const messages = defineMessages({
   thQuantity: { id: 'returns.thQuantity' },
   thReason: { id: 'returns.thReason' },
   condition: { id: 'returns.condition.label' },
-  formErrorConditionMissing: {id: 'returns.formErrorConditionMissing' },
+  formErrorConditionMissing: { id: 'returns.formErrorConditionMissing' },
   conditionNewWithBox: { id: 'returns.newWithBox' },
   conditionNewWithoutBox: { id: 'returns.newWithoutBox' },
   conditionUsedWithBox: { id: 'returns.usedWithBox' },
-  conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' }
+  conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' },
 })
 
 class RequestForm extends Component<Props> {

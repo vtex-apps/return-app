@@ -124,3 +124,13 @@ export const statusHistoryTimelines = {
   verified: 'Package verified',
   refunded: 'Amount refunded',
 }
+
+export interface Profile {
+  Email: string
+  FirstName: string | null
+  Gender: string | null
+  IsReturningUser: boolean
+  IsUserDefined: boolean
+  LastName: string | null
+  UserId: string
+}
