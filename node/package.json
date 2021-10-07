@@ -35,5 +35,5 @@
   "scripts": {
     "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"
   },
-  "version": "2.4.2"
+  "version": "2.5.0"
 }
