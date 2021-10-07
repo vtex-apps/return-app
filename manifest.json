@@ -10,7 +10,6 @@
     "vtex.format-currency": "0.x",
     "vtex.store": "2.x",
     "vtex.my-account": "1.x",
-    "vtex.session-client": "1.x",
     "vtex.my-account-commons": "1.x",
     "vtex.render-runtime": "8.x",
     "vtex.telemarketing": "2.x",
@@ -40,13 +39,6 @@
       "name": "outbound-access",
       "attrs": {
         "host": "{{account}}.vtexcommercestable.com.br",
-        "path": "/api/*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "portal.vtexcommercestable.com.br",
         "path": "/api/*"
       }
     },

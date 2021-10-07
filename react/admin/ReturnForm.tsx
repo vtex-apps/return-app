@@ -61,6 +61,7 @@ class ReturnForm extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object,
+    fetchApi: PropTypes.func,
   }
 
   constructor(props: any) {
