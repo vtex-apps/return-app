@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
+import axios from 'axios'
+import PropTypes from 'prop-types'
 import { injectIntl, defineMessages } from 'react-intl'
 import {
   ActionMenu,
@@ -60,6 +62,11 @@ const initialFilters = {
 }
 
 class MyReturnsPage extends Component<any, any> {
+  static propTypes = {
+    headerConfig: PropTypes.object,
+    fetchApi: PropTypes.func,
+  }
+
   constructor(props: any) {
     super(props)
     this.state = {
@@ -178,26 +185,24 @@ class MyReturnsPage extends Component<any, any> {
   }
 
   getProfile = () => {
-    fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then(async (response) => {
-        if (response.IsUserDefined) {
-          this.setState((prevState: any) => ({
-            profile: {
-              ...prevState.profile,
-              Email: response.Email,
-              FirstName: response.FirstName,
-              Gender: response.Gender,
-              IsReturningUser: response.IsReturningUser,
-              IsUserDefined: response.IsUserDefined,
-              LastName: response.LastName,
-              UserId: response.UserId,
-            },
-          }))
+    this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState((prevState: any) => ({
+          profile: {
+            ...prevState.profile,
+            Email: response.data.Email,
+            FirstName: response.data.FirstName,
+            Gender: response.data.Gender,
+            IsReturningUser: response.data.IsReturningUser,
+            IsUserDefined: response.data.IsUserDefined,
+            LastName: response.data.LastName,
+            UserId: response.data.UserId,
+          },
+        }))
 
-          this.getRequests(response.UserId, false)
-        }
-      })
+        this.getRequests(response.data.UserId, false)
+      }
+    })
   }
 
   getRequests(userId: string, resetFilters: boolean) {
@@ -408,7 +413,7 @@ class MyReturnsPage extends Component<any, any> {
           cellRenderer: ({ rowData }) => {
             return (
               <div>
-                <Link href={`account#/my-returns/details/${rowData.id}`}>
+                <Link href={`#/my-returns/details/${rowData.id}`}>
                   {formatMessage({ id: messages.view.id })}
                 </Link>
               </div>
@@ -459,11 +464,7 @@ class MyReturnsPage extends Component<any, any> {
           </h2>
         </div>
         <div className={`flex justify-end mb3 ${styles.addNewList}`}>
-          <Button
-            variation="primary"
-            size="small"
-            href="/account#/my-returns/add"
-          >
+          <Button variation="primary" size="small" href="#/my-returns/add">
             {formatMessage({ id: messages.addReturn.id })}
           </Button>
         </div>

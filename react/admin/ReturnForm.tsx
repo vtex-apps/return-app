@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -60,6 +61,7 @@ class ReturnForm extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object,
+    fetchApi: PropTypes.func,
   }
 
   constructor(props: any) {
@@ -195,17 +197,15 @@ class ReturnForm extends Component<any, any> {
   }
 
   async getProfile() {
-    return fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.IsUserDefined) {
-          this.setState({
-            registeredUser: `${response.FirstName} ${response.LastName}`,
-          })
-        }
+    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState({
+          registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
+        })
+      }
 
-        return Promise.resolve(response)
-      })
+      return Promise.resolve(response.data)
+    })
   }
 
   async getFromMasterData(schema: string, type: string, refundId: string) {
@@ -309,39 +309,43 @@ class ReturnForm extends Component<any, any> {
   }
 
   handleTaxes = async () => {
-    const {
-      request,
-      product,
-    } = this.state
+    const { request, product } = this.state
 
     let taxItems: any
+
     if (request) {
       try {
         await fetch(`${fetchPath.getOrder}${request.orderId}`)
-        .then((response) => response.json())
-        .then((res) => {
-          taxItems = res.items
-          return Promise.resolve(res)
-        })
+          .then((response) => response.json())
+          .then((res) => {
+            taxItems = res.items
+
+            return Promise.resolve(res)
+          })
       } catch (e) {
         // console.log(e)
       }
     }
 
     const taxCalculations: any = []
+
     for (const taxItem of taxItems) {
       let totalTax = 0
 
       if (taxItem.tax) {
-        totalTax += (Number((taxItem.tax / 100).toFixed(2)) || 0)
+        totalTax += Number((taxItem.tax / 100).toFixed(2)) || 0
       } else if (taxItem.priceTags) {
         for (const pricetag of taxItem.priceTags) {
           if (pricetag.name.includes('TAXHUB')) {
-            totalTax += (pricetag.rawValue || 0)
+            totalTax += pricetag.rawValue || 0
           }
         }
 
-        const individualTax = parseFloat((totalTax / parseInt(taxItem.quantity)).toFixed(2))
+        const individualTax = parseFloat(
+          // eslint-disable-next-line radix
+          (totalTax / parseInt(taxItem.quantity)).toFixed(2)
+        )
+
         taxCalculations.push({
           tax: individualTax,
           sellerSku: taxItem.sellerSku,
@@ -351,11 +355,14 @@ class ReturnForm extends Component<any, any> {
 
     let totalAmount = 0
     const newProducts = product
+
     for (const taxItem of taxCalculations) {
       for (const productItem of newProducts) {
         if (!productItem.tax && taxItem.sellerSku === productItem.sku) {
-          productItem['tax'] = taxItem.tax
-          totalAmount += (productItem.totalPrice / 100 + (parseFloat(taxItem.tax) || 0) * productItem.quantity)
+          productItem.tax = taxItem.tax
+          totalAmount +=
+            productItem.totalPrice / 100 +
+            (parseFloat(taxItem.tax) || 0) * productItem.quantity
         }
       }
     }
@@ -425,6 +432,7 @@ class ReturnForm extends Component<any, any> {
               quantity: item.quantity,
               status: item.status,
             }
+
             invoiceItem.status === 'Approved' && items.push(invoiceItem)
           }
 
@@ -559,7 +567,7 @@ class ReturnForm extends Component<any, any> {
   }
 
   handleQuantity(product: any, quantity: any) {
-    let quantityInput = parseInt(quantity, 10)
+    const quantityInput = parseInt(quantity, 10)
     let status = productStatuses.new
 
     if (quantityInput === 0) {
@@ -591,7 +599,9 @@ class ReturnForm extends Component<any, any> {
     let refundedAmount = 0
 
     productsForm.forEach((currentProduct) => {
-      refundedAmount += currentProduct.goodProducts * (currentProduct.unitPrice + (parseFloat(currentProduct.tax) * 100))
+      refundedAmount +=
+        currentProduct.goodProducts *
+        (currentProduct.unitPrice + parseFloat(currentProduct.tax) * 100)
       this.saveMasterData(schemaNames.product, currentProduct)
     })
 

@@ -35,7 +35,7 @@ const messages = defineMessages({
   formVoucher: { id: 'returns.formVoucher' },
   formSubmit: { id: 'returns.formSubmit' },
   goBack: { id: 'returns.goBack' },
-  condition: { id: 'returns.condition.label' }
+  condition: { id: 'returns.condition.label' },
 })
 
 class RequestInformation extends Component<Props> {
@@ -181,7 +181,8 @@ class RequestInformation extends Component<Props> {
                 <p
                   className={`ma1 t-small c-on-base ${styles.requestInformationText}`}
                 >
-                  {formatMessage({ id: messages.formState.id })}: {info.state || ''}
+                  {formatMessage({ id: messages.formState.id })}:{' '}
+                  {info.state || ''}
                 </p>
               </div>
               <div className={`mb2 ${styles.requestInformationField}`}>

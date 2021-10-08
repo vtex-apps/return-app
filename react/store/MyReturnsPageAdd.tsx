@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
 import { defineMessages, injectIntl } from 'react-intl'
@@ -103,7 +104,7 @@ const errorMessages = defineMessages({
   agree: { id: 'returns.formErrorAgree' },
   productQuantities: { id: 'returns.formErrorQuantities' },
   reasonMissing: { id: 'returns.formErrorReasonMissing' },
-  condition: { id: 'returns.formErrorConditionMissing' }
+  condition: { id: 'returns.formErrorConditionMissing' },
 })
 
 const messages = defineMessages({
@@ -119,6 +120,11 @@ const emailValidation = (email: string) => {
 }
 
 class MyReturnsPageAdd extends Component<any, State> {
+  static propTypes = {
+    headerConfig: PropTypes.object,
+    fetchApi: PropTypes.func,
+  }
+
   constructor(props: any & State) {
     super(props)
     this.state = {
@@ -175,23 +181,21 @@ class MyReturnsPageAdd extends Component<any, State> {
       })
   }
 
-  async getProfile() {
-    return fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.IsUserDefined) {
-          this.setState({
-            userId: response.UserId,
-            name:
-              response.FirstName && response.LastName
-                ? `${response.FirstName} ${response.LastName}`
-                : '',
-            email: response.Email,
-          })
-        }
+  getProfile() {
+    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState({
+          userId: response.data.UserId,
+          name:
+            response.data.FirstName && response.data.LastName
+              ? `${response.data.FirstName} ${response.data.LastName}`
+              : '',
+          email: response.data.Email,
+        })
+      }
 
-        return Promise.resolve(response)
-      })
+      return Promise.resolve(response)
+    })
   }
 
   async getSkuById(id: string) {
@@ -391,11 +395,11 @@ class MyReturnsPageAdd extends Component<any, State> {
       if (settings !== null) {
         this.setState({ settings })
         this.getProfile().then((user) => {
-          this.getOrders(user.Email, settings.maxDays).then((orders) => {
+          this.getOrders(user.data.Email, settings.maxDays).then((orders) => {
             if ('list' in orders) {
               if (orders.list.length) {
                 orders.list.forEach((order: any) => {
-                  if(!order.invoiceInput) {
+                  if (!order.invoiceInput) {
                     this.getOrder(order.orderId).then((currentOrder) => {
                       this.prepareOrderData(currentOrder, settings, true)
                     })
@@ -577,7 +581,7 @@ class MyReturnsPageAdd extends Component<any, State> {
         errors = true
       } else if (
         parseInt(product.selectedQuantity, 10) > 0 &&
-        (product.condition === '')
+        product.condition === ''
       ) {
         errors = true
       }
@@ -888,7 +892,7 @@ class MyReturnsPageAdd extends Component<any, State> {
                 ) : null}
                 <div className="flex flex-column items-center">
                   <span className="mb4">
-                    <Button href="/account#/my-returns">
+                    <Button href="#/my-returns">
                       {formatMessage({ id: messages.backToOrders.id })}
                     </Button>
                   </span>

@@ -118,6 +118,7 @@ class ReturnsSettings extends Component<any, any> {
   }
 
   getSettings = async () => {
+    // eslint-disable-next-line react/no-access-state-in-setstate
     this.setState({ ...this.state, loading: true })
     await fetch(
       `${fetchPath.getDocuments + schemaNames.settings}/${
