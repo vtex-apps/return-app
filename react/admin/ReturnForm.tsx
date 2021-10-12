@@ -170,7 +170,7 @@ class ReturnForm extends Component<any, any> {
         (response) => {
           let total = 0
 
-          if (!response.length) return
+          if (!response?.length) return
           response.forEach((currentProduct) => {
             total += currentProduct.quantity * currentProduct.unitPrice
           })
@@ -837,8 +837,6 @@ class ReturnForm extends Component<any, any> {
 
     const { formatMessage } = this.props.intl
     const statusesOptions = this.allowedStatuses(request.status)
-
-    console.log('request', request)
 
     return (
       <div>
