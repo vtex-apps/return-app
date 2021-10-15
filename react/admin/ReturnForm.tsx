@@ -1,3 +1,5 @@
+/* eslint-disable radix */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -55,12 +57,14 @@ const messages = defineMessages({
   shippingLabelSuccess: { id: 'returns.labelSuccess' },
   shippingLabelError: { id: 'returns.labelError' },
   showLabel: { id: 'returns.showLabel' }
+
 })
 
 class ReturnForm extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object,
+    fetchApi: PropTypes.func,
   }
 
   constructor(props: any) {
@@ -196,17 +200,15 @@ class ReturnForm extends Component<any, any> {
   }
 
   async getProfile() {
-    return fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.IsUserDefined) {
-          this.setState({
-            registeredUser: `${response.FirstName} ${response.LastName}`,
-          })
-        }
+    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState({
+          registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
+        })
+      }
 
-        return Promise.resolve(response)
-      })
+      return Promise.resolve(response.data)
+    })
   }
 
   async getFromMasterData(schema: string, type: string, refundId: string) {
@@ -310,39 +312,48 @@ class ReturnForm extends Component<any, any> {
   }
 
   handleTaxes = async () => {
-    const {
-      request,
-      product,
-    } = this.state
+    const { request, product } = this.state
 
     let taxItems: any
+
     if (request) {
       try {
         await fetch(`${fetchPath.getOrder}${request.orderId}`)
-        .then((response) => response.json())
-        .then((res) => {
-          taxItems = res.items
-          return Promise.resolve(res)
-        })
+          .then((response) => response.json())
+          .then((res) => {
+            taxItems = res.items
+            this.setState({
+              totalShippingValue: (
+                res.totals.find((total) => total.id === 'Shipping').value / 100
+              ).toFixed(2),
+            })
+
+            return Promise.resolve(res)
+          })
       } catch (e) {
         // console.log(e)
       }
     }
 
     const taxCalculations: any = []
+
     for (const taxItem of taxItems) {
       let totalTax = 0
 
       if (taxItem.tax) {
-        totalTax += (Number((taxItem.tax / 100).toFixed(2)) || 0)
+        totalTax += Number((taxItem.tax / 100).toFixed(2)) || 0
       } else if (taxItem.priceTags) {
         for (const pricetag of taxItem.priceTags) {
           if (pricetag.name.includes('TAXHUB')) {
-            totalTax += (pricetag.rawValue || 0)
+            totalTax += pricetag.rawValue || 0
           }
         }
 
-        const individualTax = parseFloat((totalTax / parseInt(taxItem.quantity)).toFixed(2))
+        const individualTax = parseFloat(
+          // eslint-disable-next-line radix
+          (totalTax / parseInt(taxItem.quantity)).toFixed(2)
+        )
+
         taxCalculations.push({
           tax: individualTax,
           sellerSku: taxItem.sellerSku,
@@ -352,11 +363,19 @@ class ReturnForm extends Component<any, any> {
 
     let totalAmount = 0
     const newProducts = product
+
     for (const taxItem of taxCalculations) {
       for (const productItem of newProducts) {
         if (!productItem.tax && taxItem.sellerSku === productItem.sku) {
-          productItem['tax'] = taxItem.tax
-          totalAmount += (productItem.totalPrice / 100 + (parseFloat(taxItem.tax) || 0) * productItem.quantity)
+          productItem.tax = taxItem.tax
+          productItem.totalValue =
+            productItem.totalPrice / 100 +
+            (parseFloat(taxItem.tax) || 0) * productItem.quantity
+          productItem.quantity *
+            (productItem.unitPrice + (parseFloat(productItem.tax) || 0) * 100)
+          totalAmount +=
+            productItem.totalPrice / 100 +
+            (parseFloat(taxItem.tax) || 0) * productItem.quantity
         }
       }
     }
@@ -424,9 +443,10 @@ class ReturnForm extends Component<any, any> {
               id: item.sku,
               price: item.unitPrice + parseFloat(item.tax) * 100,
               quantity: item.quantity,
+              status: item.status,
             }
 
-            items.push(invoiceItem)
+            invoiceItem.status === 'Approved' && items.push(invoiceItem)
           }
 
           const issuanceDate = new Date().toISOString().slice(0, 10)
@@ -529,7 +549,7 @@ class ReturnForm extends Component<any, any> {
               ...{ DocumentId: request.id },
               ...request,
             },
-            products: product,
+            products: product.filter((prod) => prod.status === 'Approved'),
             timeline: statusHistoryTimeline,
           })
         }, 2000)
@@ -560,7 +580,7 @@ class ReturnForm extends Component<any, any> {
   }
 
   handleQuantity(product: any, quantity: any) {
-    let quantityInput = parseInt(quantity, 10)
+    const quantityInput = parseInt(quantity, 10)
     let status = productStatuses.new
 
     if (quantityInput === 0) {
@@ -580,6 +600,7 @@ class ReturnForm extends Component<any, any> {
                 quantityInput > product.quantity
                   ? product.quantity
                   : quantityInput,
+              refundedValue: !quantityInput && 0,
               status,
             }
           : el
@@ -587,12 +608,46 @@ class ReturnForm extends Component<any, any> {
     }))
   }
 
+  handleRestockValue(product: any, restockValue: any) {
+    if (
+      product.status === requestsStatuses.approved ||
+      product.status === requestsStatuses.partiallyApproved
+    ) {
+      this.setState((prevState) => ({
+        productsForm: prevState.productsForm.map((el) =>
+          el.id === product.id
+            ? {
+                ...el,
+                restockValue,
+                refundedValue:
+                  restockValue > product.totalValue || !restockValue
+                    ? 0
+                    : product.totalValue - restockValue,
+              }
+            : el
+        ),
+      }))
+    }
+  }
+
+  handleRefundedShippingValue(restockShippingValue: any) {
+    const { totalShippingValue } = this.state
+
+    this.setState({
+      restockShippingValue,
+      refundedShippingValue:
+        restockShippingValue > totalShippingValue
+          ? 0
+          : totalShippingValue - restockShippingValue,
+    })
+  }
+
   verifyPackage() {
-    const { request, productsForm } = this.state
-    let refundedAmount = 0
+    const { request, productsForm, refundedShippingValue } = this.state
+    let refundedAmount = refundedShippingValue * 100 || 0
 
     productsForm.forEach((currentProduct) => {
-      refundedAmount += currentProduct.goodProducts * (currentProduct.unitPrice + (parseFloat(currentProduct.tax) * 100))
+      refundedAmount += currentProduct.refundedValue.toFixed(2) * 100
       this.saveMasterData(schemaNames.product, currentProduct)
     })
 
@@ -959,6 +1014,8 @@ class ReturnForm extends Component<any, any> {
       showMain,
       showProductsForm,
       giftCardValue,
+      totalShippingValue,
+      refundedShippingValue,
       totalAmount,
     } = this.state
 
@@ -992,6 +1049,8 @@ class ReturnForm extends Component<any, any> {
           ) : null}
 
           <ProductsTable
+            totalShippingValue={totalShippingValue}
+            refundedShippingValue={refundedShippingValue}
             product={product}
             totalRefundAmount={request.refundedAmount}
             productsValue={totalAmount}
@@ -1044,7 +1103,8 @@ class ReturnForm extends Component<any, any> {
             <thead>
               <tr>
                 <th>{formatMessage({ id: messages.product.id })}</th>
-                <th />
+                <th>{formatMessage({ id: messages.quantity.id })}</th>
+                <th>{formatMessage({ id: messages.restockFee.id })}</th>
                 <th />
               </tr>
             </thead>
@@ -1068,6 +1128,29 @@ class ReturnForm extends Component<any, any> {
                         min={0}
                       />
                     </td>
+                    <td className={styles.mediumCell}>
+                      <Input
+                        suffix={`${(
+                          currentProduct.refundedValue ||
+                          (!currentProduct.goodProducts
+                            ? 0
+                            : currentProduct.totalValue)
+                        ).toFixed(2)}/${currentProduct.totalValue.toFixed(2)}`}
+                        value={currentProduct.restockValue || 0}
+                        size="small"
+                        type="number"
+                        step="any"
+                        onChange={(e) => {
+                          this.handleRestockValue(
+                            currentProduct,
+                            e.target.value
+                          )
+                        }}
+                        max={currentProduct.totalValue}
+                        min={0.0}
+                        disabled={!currentProduct.goodProducts}
+                      />
+                    </td>
                     <td
                       className={`${styles.paddingLeft20} ${styles.mediumCell}`}
                     >
@@ -1082,6 +1165,26 @@ class ReturnForm extends Component<any, any> {
                   </td>
                 </tr>
               )}
+              <tr>
+                <td className={styles.alignEnd} colSpan={2}>
+                  <strong>Order shipping value</strong>
+                </td>
+                <td className={styles.mediumCell}>
+                  <Input
+                    suffix={`${(refundedShippingValue || 0).toFixed(
+                      2
+                    )}/${totalShippingValue}`}
+                    type="number"
+                    step="any"
+                    onChange={(e) => {
+                      this.handleRefundedShippingValue(e.target.value)
+                    }}
+                    value={this.state.restockShippingValue || 0}
+                    max={totalShippingValue}
+                    min={0}
+                  />
+                </td>
+              </tr>
             </tbody>
           </table>
           <div className="mt6">

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import { ContentWrapper } from 'vtex.my-account-commons'
+import axios from 'axios'
+import PropTypes from 'prop-types'
 import { Spinner, Button, Alert } from 'vtex.styleguide'
 import { injectIntl, defineMessages } from 'react-intl'
 import { Mutation } from 'react-apollo'
@@ -31,6 +33,11 @@ const messages = defineMessages({
 })
 
 class ReturnsDetails extends Component<any, any> {
+  static propTypes = {
+    headerConfig: PropTypes.object,
+    fetchApi: PropTypes.func,
+  }
+
   constructor(props: any) {
     super(props)
     this.state = {
@@ -104,17 +111,15 @@ class ReturnsDetails extends Component<any, any> {
   }
 
   async getProfile() {
-    return fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.IsUserDefined) {
-          this.setState({
-            registeredUser: `${response.FirstName} ${response.LastName}`,
-          })
-        }
+    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState({
+          registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
+        })
+      }
 
-        return Promise.resolve(response)
-      })
+      return Promise.resolve(response.data)
+    })
   }
 
   async getGiftCard(id: any) {
@@ -272,6 +277,8 @@ class ReturnsDetails extends Component<any, any> {
                 </span>
               </p>
               <ProductsTable
+                totalShippingValue={null}
+                refundedShippingValue={null}
                 product={product}
                 productsValue={request.totalPrice}
                 totalRefundAmount={request.refundedAmount}

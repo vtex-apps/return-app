@@ -187,7 +187,6 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
           const giftCardIdResponse = response.id
           const exploded = giftCardIdResponse.split('_')
           const giftCardId = exploded[exploded.length - 1]
-
           const updateGiftCardBody = {
             description: 'Initial Charge',
             value: newRequestBody.refundedAmount,

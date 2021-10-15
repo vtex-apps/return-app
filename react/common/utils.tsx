@@ -13,7 +13,6 @@ import {
 import axios from 'axios'
 
 import styles from '../styles.css'
-import { fetchPath } from './fetch'
 import {
   COMMENTS_SCHEMA,
   HISTORY_SCHEMA,
@@ -21,6 +20,7 @@ import {
   RETURNS_SCHEMA,
   SETTINGS_SCHEMA,
 } from '../../common/constants'
+import { fetchPath } from './fetch'
 
 export function getCurrentDate() {
   return new Date().toISOString()
@@ -366,7 +366,7 @@ export function prepareHistoryData(comment: any, request: any) {
     },
   })
 
-  const timeline =  [
+  const timeline = [
     {
       status: statusHistoryTimeline.new,
       text: (
@@ -455,23 +455,24 @@ export function prepareHistoryData(comment: any, request: any) {
   ]
 
   if (request.status === requestsStatuses.denied) {
-    const newTimeline:{
-      status: string;
-      text: JSX.Element;
-      step: number;
-      comments: any;
-      active: number;
-  }[] = []
+    const newTimeline: Array<{
+      status: string
+      text: JSX.Element
+      step: number
+      comments: any
+      active: number
+    }> = []
 
     for (const item of timeline) {
       if (item.step === 1 || item.step === 5 || item.comments.length) {
         newTimeline.push(item)
       }
     }
+
     return newTimeline
-  } else {
-    return timeline
   }
+
+  return timeline
 }
 
 export function sendMail(jsonData: any) {
