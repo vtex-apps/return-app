@@ -55,6 +55,7 @@ const messages = defineMessages({
   sendLabel: { id: 'returns.sendLabel' },
   shippingLabelSuccess: { id: 'returns.labelSuccess' },
   shippingLabelError: { id: 'returns.labelError' },
+  showLabel: { id: 'returns.showLabel' }
 })
 
 class ReturnForm extends Component<any, any> {
