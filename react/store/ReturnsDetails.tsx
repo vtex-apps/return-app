@@ -29,9 +29,7 @@ const messages = defineMessages({
   returnForm: { id: 'returns.details.returnForm' },
   refOrder: { id: 'returns.refOrder' },
   status: { id: 'returns.status' },
-  sendLabel: { id: 'returns.sendLabel' },
-  shippingLabelSuccess: { id: 'returns.labelSuccess' },
-  shippingLabelError: { id: 'returns.labelError' },
+  showLabel: { id: 'returns.showLabel' }
 })
 
 class ReturnsDetails extends Component<any, any> {
@@ -293,6 +291,18 @@ class ReturnsDetails extends Component<any, any> {
               </p>
 
               <RequestInfo giftCardValue={giftCardValue} request={request} />
+
+              {request.returnLabel && (
+                <div className="mt6">
+                  <Button
+                    href={request.returnLabel}
+                    target="_blank"
+                    variation="primary"
+                  >
+                    {formatMessage({ id: messages.showLabel.id })}
+                  </Button>
+                </div>
+              )}
 
               <p className={`mt7 ${styles.requestInfoSectionTitle}`}>
                 <strong className={`${styles.requestInfoSectionTitleStrong}`}>

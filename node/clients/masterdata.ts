@@ -62,7 +62,10 @@ export default class Masterdata extends ExternalClient {
         schemaBody: this.schemas.settingsSchema.schema,
       })
     } catch (error) {
-      console.error(error)
+      if (error.response.status !== 304) {
+        console.log('Catch loop =>', error.response)
+        throw error
+      }
     }
 
     try {
@@ -72,7 +75,10 @@ export default class Masterdata extends ExternalClient {
         schemaBody: this.schemas.returnSchema.schema,
       })
     } catch (error) {
-      console.error(error)
+      if (error.response.status !== 304) {
+        console.log('Catch loop =>', error.response)
+        throw error
+      }
     }
 
     try {
@@ -82,7 +88,10 @@ export default class Masterdata extends ExternalClient {
         schemaBody: this.schemas.productsSchema.schema,
       })
     } catch (error) {
-      console.error(error)
+      if (error.response.status !== 304) {
+        console.log('Catch loop =>', error.response)
+        throw error
+      }
     }
 
     try {
@@ -92,7 +101,10 @@ export default class Masterdata extends ExternalClient {
         schemaBody: this.schemas.commentsSchema.schema,
       })
     } catch (error) {
-      console.error(error)
+      if (error.response.status !== 304) {
+        console.log('Catch loop =>', error.response)
+        throw error
+      }
     }
 
     try {
@@ -102,7 +114,10 @@ export default class Masterdata extends ExternalClient {
         schemaBody: this.schemas.statusHistorySchema.schema,
       })
     } catch (error) {
-      console.error(error)
+      if (error.response.status !== 304) {
+        console.log('Catch loop =>', error.response)
+        throw error
+      }
     }
 
     return true

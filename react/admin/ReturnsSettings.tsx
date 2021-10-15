@@ -212,7 +212,7 @@ class ReturnsSettings extends Component<any, any> {
         await fetch(fetchPath.generateSchema, {
           method: fetchMethod.put,
           headers: fetchHeaders,
-        }).then(() => window.location.reload())
+        })
       } catch (error) {
         console.error(error)
       }

@@ -185,6 +185,7 @@
   "returns.sendLabel": "Send Shipping Label",
   "returns.labelSuccess": "Shipping label successfully sent.",
   "returns.labelError": "Error sending label.",
+  "returns.showLabel": "View Shipping Label",
   "returns.condition.label": "Condition",
   "returns.formErrorConditionMissing": "Condition is required",
   "returns.newWithBox": "New With Box",

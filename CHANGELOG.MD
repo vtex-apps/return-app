@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Update return labels to be saved as part of request
+- Add ability to view shipping labels on both customer and admin sides
+
+### Added
+
 - Update status history timeline to be adaptive
 
 ### Added

@@ -792,7 +792,7 @@ class MyReturnsPageAdd extends Component<any, State> {
               userId,
               orderId: selectedOrderId,
               refundId: DocumentId,
-              skuId: product.refId,
+              skuId: product.refId ? product.refId : '',
               productId: product.productId,
               sku: product.id,
               manufacturerCode: skuResponse.ManufacturerCode
@@ -830,7 +830,9 @@ class MyReturnsPageAdd extends Component<any, State> {
       body: JSON.stringify(body),
       headers: fetchHeaders,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json()
+      })
       .then((json) => {
         if (json) {
           return Promise.resolve(json)
