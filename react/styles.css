@@ -203,6 +203,10 @@
   width: 300px;
 }
 
+.alignEnd {
+  text-align: end;
+}
+
 .iconStatusGreen {
   display: inline-block;
   background: green;

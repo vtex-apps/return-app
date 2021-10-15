@@ -279,6 +279,8 @@ class ReturnsDetails extends Component<any, any> {
                 </span>
               </p>
               <ProductsTable
+                totalShippingValue={null}
+                refundedShippingValue={null}
                 product={product}
                 productsValue={request.totalPrice}
                 totalRefundAmount={request.refundedAmount}

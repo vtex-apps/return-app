@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add validation to remove orders that have already been returned through the OMS
 
+### Added
+
+- Add the posibility of refund a partial amount for each product (Restock Fee)
+- Add the posibility of refund the total or partial value of the order shipping
+
 ### Fixed
 
 - Denied items does not show up in the OMS as returned anymore
