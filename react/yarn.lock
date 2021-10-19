@@ -5020,10 +5020,6 @@ verror@1.10.0:
   version "8.132.3"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime#c7dd142e384f38bd7a7c841543b73e9349fadc93"
 
-"vtex.return-app@https://returnapp--quebramar.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.5.1-beta.6+build1633617858/public/@types/vtex.return-app":
-  version "0.0.0"
-  resolved "https://returnapp--quebramar.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.5.1-beta.6+build1633617858/public/@types/vtex.return-app#5da3019f96c40ba3600e4ed6354fe415d439696b"
-
 "vtex.session-client@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.session-client@1.0.2/public/@types/vtex.session-client":
   version "1.0.2"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.session-client@1.0.2/public/@types/vtex.session-client#239ac9935a59699e62e1509f844de81544ed0877"

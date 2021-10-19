@@ -22,6 +22,7 @@
   "settings.addCustomOption_Submit": "ADĂUGAȚI OPȚIUNEA",
   "returns.orderId": "Id comanda",
   "returns.requestId": "Id solicitare",
+  "returns.sequenceNumber": "Numar secventa",
   "returns.submittedDate": "Data trimiterii",
   "returns.verifyPackage": "Verifica produsele",
   "returns.verifyPackageButton": "Trimite",
@@ -32,6 +33,7 @@
   "returns.pageTitle": "Cererile mele",
   "returns.total": "total",
   "returns.thRequestNo": "Id solicitare",
+  "returns.sequenceNo": "Numar secventa",
   "returns.thDate": "Data",
   "returns.thOrderId": "Id comanda",
   "returns.thCreationDate": "Data trimiterii",
@@ -174,11 +176,5 @@
   "returns.reasonDifferentFromWebsite": "Diferit de descrierea de pe site",
   "returns.thRefId": "Ref ID",
   "returns.thReason": "Motiv",
-  "returns.changeStatusComment": "Schimba statusul sau adauga comentariu",
-  "returns.tax": "Impozit",
-  "returns.restockFee": "Taxa de repopulare",
-  "returns.productValueToRefund": "Valoarea produsului de rambursat",
-  "returns.productValueAvailableToBeRefunded": "Valoarea produsului disponibilă pentru a fi rambursată",
-  "returns.shippingValueAvailableToBeRefunded": "Valoare de livrare disponibilă pentru a fi rambursată",
-  "returns.shippingValueToBeRefunded": "Valoarea de expediere va fi rambursată"
+  "returns.changeStatusComment": "Schimba statusul sau adauga comentariu"
 }

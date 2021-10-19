@@ -33,6 +33,7 @@ import { fetchHeaders, fetchMethod, fetchPath } from '../../common/fetch'
 const initialFilters = {
   orderId: '',
   returnId: '',
+  sequenceNumber: '',
   fromDate: '',
   toDate: '',
   status: '',
@@ -190,6 +191,10 @@ class ReturnsTableContent extends Component<any, any> {
         where += `__id="*${filters.returnId}*"`
       }
 
+      if (filters.sequenceNumber !== '') {
+        where += `sequenceNumber="*${filters.sequenceNumber}*"`
+      }
+
       let startDate = '1970-01-01'
       let endDate = currentDate()
 
@@ -252,6 +257,10 @@ class ReturnsTableContent extends Component<any, any> {
           title: <FormattedMessage id="returns.requestId" />,
           sortable: true,
           width: 350,
+        },
+        sequenceNumber: {
+          title: <FormattedMessage id="returns.sequenceNumber" />,
+          sortable: true,
         },
         orderId: {
           title: <FormattedMessage id="returns.orderId" />,
@@ -316,6 +325,15 @@ class ReturnsTableContent extends Component<any, any> {
       filters: {
         ...prevState.filters,
         returnId: val,
+      },
+    }))
+  }
+
+  filterSequenceNumber(val: string) {
+    this.setState((prevState) => ({
+      filters: {
+        ...prevState.filters,
+        sequenceNumber: val,
       },
     }))
   }
@@ -484,6 +502,21 @@ class ReturnsTableContent extends Component<any, any> {
                   size="small"
                   onChange={(e) => this.filterReturnId(e.target.value)}
                   value={filters.returnId}
+                />
+              )}
+            </FormattedMessage>
+          </div>
+          <div className="ma2">
+            <FormattedMessage id="returns.sequenceNumber">
+              {(msg) => (
+                <Input
+                  placeholder={msg}
+                  onKeyPress={(e) => {
+                    this.handleKeypress(e)
+                  }}
+                  size="small"
+                  onChange={(e) => this.filterSequenceNumber(e.target.value)}
+                  value={filters.sequenceNumber}
                 />
               )}
             </FormattedMessage>

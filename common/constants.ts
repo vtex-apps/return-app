@@ -91,6 +91,7 @@ export const RETURNS_SCHEMA = {
     status: { type: 'string' },
     dateSubmitted: { type: 'string', format: 'date-time' },
     type: { type: 'string' },
+    sequenceNumber: { type: 'integer' },
   },
   'v-security': {
     allowGetAll: true,
@@ -146,6 +147,7 @@ export const RETURNS_SCHEMA = {
     'status',
     'dateSubmitted',
     'type',
+    'sequenceNumber',
   ],
   'v-indexed': [
     'id',
@@ -159,6 +161,7 @@ export const RETURNS_SCHEMA = {
     'state',
     'locality',
     'address',
+    'sequenceNumber',
     'zip',
     'returnLabel',
     'totalPrice',
@@ -173,6 +176,7 @@ export const RETURNS_SCHEMA = {
     'dateSubmitted',
     'type',
   ],
+  'v-auto-increment': ['sequenceNumber'],
 }
 
 export const COMMENTS_SCHEMA = {
