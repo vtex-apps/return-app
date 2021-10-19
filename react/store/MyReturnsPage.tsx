@@ -30,6 +30,7 @@ const tableLength = 15
 
 const messages = defineMessages({
   thRequestNo: { id: 'returns.thRequestNo' },
+  sequenceNumber: { id: 'returns.sequenceNo' },
   thDate: { id: 'returns.thDate' },
   thStatus: { id: 'returns.thStatus' },
   actions: { id: 'returns.actions' },
@@ -57,6 +58,7 @@ const initialFilters = {
   fromDate: '',
   toDate: '',
   status: '',
+  sequenceNumber: '',
 }
 
 class MyReturnsPage extends Component<any, any> {
@@ -289,6 +291,15 @@ class MyReturnsPage extends Component<any, any> {
     }))
   }
 
+  filterSequenceNumber(val: string) {
+    this.setState((prevState) => ({
+      filters: {
+        ...prevState.filters,
+        sequenceNumber: val,
+      },
+    }))
+  }
+
   filterFromDate(val: string) {
     this.setState((prevState) => ({
       filters: {
@@ -387,6 +398,10 @@ class MyReturnsPage extends Component<any, any> {
           sortable: true,
           width: 350,
         },
+        sequenceNumber: {
+          title: formatMessage({ id: messages.sequenceNumber.id }),
+          sortable: true,
+        },
         dateSubmitted: {
           title: formatMessage({ id: messages.thDate.id }),
           cellRenderer: ({ cellData }) => {
@@ -482,6 +497,23 @@ class MyReturnsPage extends Component<any, any> {
               onChange={(e) => this.filterReturnId(e.target.value)}
               value={filters.returnId}
             />
+          </div>
+          <div className={`flex items-center ${styles.filterList}`}>
+            <div
+              className={`ma2 ${styles.filterColumn} ${styles.filterColumnReturnId}`}
+            >
+              <Input
+                placeholder={formatMessage({
+                  id: messages.sequenceNumber.id,
+                })}
+                onKeyPress={(e) => {
+                  this.handleKeypress(e)
+                }}
+                size="small"
+                onChange={(e) => this.filterSequenceNumber(e.target.value)}
+                value={filters.sequenceNumber}
+              />
+            </div>
           </div>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnFromDate}`}
