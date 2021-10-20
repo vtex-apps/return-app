@@ -192,7 +192,7 @@ class ReturnsTableContent extends Component<any, any> {
       }
 
       if (filters.sequenceNumber !== '') {
-        where += `sequenceNumber="*${filters.sequenceNumber}*"`
+        where += `sequenceNumber="${filters.sequenceNumber}"`
       }
 
       let startDate = '1970-01-01'

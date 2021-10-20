@@ -221,6 +221,10 @@ class MyReturnsPage extends Component<any, any> {
         where += `__id="*${useFilters.returnId}*"`
       }
 
+      if (filters.sequenceNumber !== '') {
+        where += `__sequenceNumber=${filters.sequenceNumber}`
+      }
+
       let startDate = '1970-01-01'
       let endDate = currentDate()
 
