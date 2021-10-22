@@ -18,6 +18,7 @@ import { sendMail } from './middlewares/sendMail'
 import { getRequest } from './middlewares/api/getRequest'
 import { getList } from './middlewares/api/getList'
 import { addComment } from './middlewares/api/addComment'
+import { verifyPackage } from './middlewares/api/verifyPackage'
 import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
@@ -95,6 +96,9 @@ export default new Service({
     }),
     apiAddComment: method({
       POST: addComment,
+    }),
+    apiVerifyPackage: method({
+      POST: verifyPackage,
     }),
     apiChangeProductStatus: method({
       POST: changeProductStatus,
