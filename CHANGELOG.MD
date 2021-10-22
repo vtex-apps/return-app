@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Added
-
-- API to verify package setting restock fee and shipping value to refund
 ### Fixed
 - Fix build errors
 
