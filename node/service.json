@@ -82,6 +82,10 @@
       "path": "/no-cache/returns/api/add-comment/:request_id",
       "public": true
     },
+    "apiVerifyPackage": {
+      "path": "/no-cache/returns/api/verify-package/:request_id",
+      "public": true
+    },
     "apiChangeProductStatus": {
       "path": "/no-cache/returns/api/change-product-status/:request_id",
       "public": true
