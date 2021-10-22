@@ -168,6 +168,10 @@ class ReturnForm extends Component<any, any> {
       schemaTypes.requests,
       requestId
     ).then((request) => {
+      if (request.refundedShippingValue) {
+        this.setState({ refundedShippingValue: request.refundedShippingValue })
+      }
+
       this.setState({
         statusInput: request[0].status,
         commentInput: '',
@@ -625,7 +629,7 @@ class ReturnForm extends Component<any, any> {
                 refundedValue:
                   restockValue > product.totalValue || !restockValue
                     ? 0
-                    : product.totalValue - restockValue,
+                    : product.totalValue - (restockValue || 0),
               }
             : el
         ),
@@ -646,9 +650,13 @@ class ReturnForm extends Component<any, any> {
 
   verifyPackage() {
     const { request, productsForm, refundedShippingValue } = this.state
-    let refundedAmount = refundedShippingValue * 100 || 0
+    let refundedAmount = (refundedShippingValue || 0) * 100 || 0
 
     productsForm.forEach((currentProduct) => {
+      currentProduct.refundedValue =
+        !currentProduct.refundedValue && currentProduct.refundedValue !== 0
+          ? currentProduct.totalValue
+          : currentProduct.refundedValue
       refundedAmount += currentProduct.refundedValue.toFixed(2) * 100
       this.saveMasterData(schemaNames.product, currentProduct)
     })
@@ -819,7 +827,6 @@ class ReturnForm extends Component<any, any> {
       this.setState({
         showLabelSuccess: true,
       })
-
     } else {
       const variables = {
         street1: request.address,
@@ -831,9 +838,9 @@ class ReturnForm extends Component<any, any> {
         name: request.name,
         phone: request.phoneNumber,
       }
-  
+
       let label: any
-  
+
       try {
         label = await doMutation({
           variables: {
@@ -848,13 +855,13 @@ class ReturnForm extends Component<any, any> {
           },
         })
         const { labelUrl } = label.data.createLabel
-        
+
         window.setTimeout(() => {
           const { product, statusHistoryTimeline } = this.state
-          
+
           let requestBody = request
           requestBody = { ...requestBody, returnLabel: labelUrl }
-  
+
           this.setState({ ...this.state, request: requestBody })
           this.savePartial(schemaNames.request, requestBody)
           sendMail({
@@ -866,7 +873,7 @@ class ReturnForm extends Component<any, any> {
             timeline: statusHistoryTimeline,
           })
         }, 2000)
-  
+
         this.setState({
           showLabelSuccess: true,
         })
@@ -876,7 +883,6 @@ class ReturnForm extends Component<any, any> {
         })
       }
     }
-
 
     this.setState({
       labelDisabled: false,
@@ -1137,8 +1143,10 @@ class ReturnForm extends Component<any, any> {
                           (!currentProduct.goodProducts
                             ? 0
                             : currentProduct.totalValue)
-                        ).toFixed(2)}/${currentProduct.totalValue.toFixed(2)}`}
-                        value={currentProduct.restockValue || 0}
+                        )?.toFixed(2)}/${currentProduct.totalValue?.toFixed(
+                          2
+                        )}`}
+                        value={currentProduct.restockValue}
                         size="small"
                         type="number"
                         step="any"
@@ -1183,7 +1191,7 @@ class ReturnForm extends Component<any, any> {
                     onChange={(e) => {
                       this.handleRefundedShippingValue(e.target.value)
                     }}
-                    value={this.state.refundedShippingValue || 0}
+                    value={this.state.refundedShippingValue}
                     max={totalShippingValue}
                     min={0}
                   />
