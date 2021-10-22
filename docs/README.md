@@ -300,6 +300,120 @@ Body example:
     "visibleForCustomer": true
 }
 ```
+#### Set restock fee and shipping value to refund
+
+![Generic badge](https://img.shields.io/badge/POST-blue.svg) `https://{accountName}.{environment}.com/no-cache/returns/api/verify-package/{request_id}`
+
+_Body Parameters:_
+
+| Param                 | Type    | Required | Default |
+| --------------------- | ------- | -------- | ------- |
+| restockFee            | number  |   no     |    0    |
+| refundedShippingValue | number  |   no     |    0    |
+
+After using this API you can check the results using the `Get request by id` API
+
+Body example:
+
+```
+{
+    "restockFee": 100,
+    "refundedShippingValue": 20
+}
+```
+##### Response body example:
+
+```
+{
+    "success": true,
+    "errorMessage": "",
+    "totalRefundAmount": 200.36,
+    "newTotalRefundAmount": 120.36000000000001,
+    "refundedProducts": [
+        {
+            "id": "53d20749-2de3-11ec-82ac-1670783e7e4f",
+            "createdIn": "2021-10-15T18:11:34.0460916Z",
+            "refundId": "4fd9fab1-2de3-11ec-82ac-0a07788173f1",
+            "orderId": "1164033206599-01",
+            "userId": "3a1d2c0a-199c-4c98-bc72-ba8b2de0afa3",
+            "imageUrl": "https://sandboxusdev.vteximg.com.br/arquivos/ids/189110-55-55/Cloud-White---Hazy-Orange---Core-Black---10-1.jpg?v=637532549058070000",
+            "sku": "80008134",
+            "skuId": "Adidas01-Colors-10V5",
+            "productId": "80008068",
+            "ean": "C12345-10V5",
+            "brandId": "2000012",
+            "brandName": "AdidasV2",
+            "skuName": "Forum low shoes V5 Cloud White / Hazy Orange / Core Black - 10",
+            "manufacturerCode": "",
+            "unitPrice": 9400,
+            "quantity": 1,
+            "totalPrice": 9400,
+            "goodProducts": 1,
+            "reasonCode": "reasonAccidentalOrder",
+            "reason": "",
+            "condition": "New With Box",
+            "status": "Approved",
+            "dateSubmitted": "2021-10-15T18:11:33.488Z",
+            "type": "product",
+            "tax": 6.18,
+            "totalValue": 100.18
+        },
+        {
+            "id": "51945590-2de3-11ec-82ac-12444306e6c3",
+            "createdIn": "2021-10-15T18:11:33.9621775Z",
+            "refundId": "4fd9fab1-2de3-11ec-82ac-0a07788173f1",
+            "orderId": "1164033206599-01",
+            "userId": "3a1d2c0a-199c-4c98-bc72-ba8b2de0afa3",
+            "imageUrl": "https://sandboxusdev.vteximg.com.br/arquivos/ids/189101-55-55/White-and-Blue---10-1.jpg?v=637532549039470000",
+            "sku": "80008131",
+            "skuId": "Adidas01-White-10V5",
+            "productId": "80008068",
+            "ean": "A12345-10V5",
+            "brandId": "2000012",
+            "brandName": "AdidasV2",
+            "skuName": "Forum low shoes V5 White and Blue - 10",
+            "manufacturerCode": "",
+            "unitPrice": 9400,
+            "quantity": 1,
+            "totalPrice": 9400,
+            "goodProducts": 1,
+            "reasonCode": "reasonAccidentalOrder",
+            "reason": "",
+            "condition": "New With Box",
+            "status": "Approved",
+            "dateSubmitted": "2021-10-15T18:11:33.487Z",
+            "type": "product",
+            "tax": 6.18,
+            "totalValue": 100.18
+        }
+    ],
+    "updatedRequest": {
+        "id": "4fd9fab1-2de3-11ec-82ac-0a07788173f1",
+        "createdIn": "2021-10-15T18:11:32.9614776Z",
+        "userId": "3a1d2c0a-199c-4c98-bc72-ba8b2de0afa3",
+        "orderId": "1164033206599-01",
+        "name": "arturo castillo",
+        "email": "arturo@vinneren.com.mx",
+        "phoneNumber": "+13475983586",
+        "country": "United States",
+        "locality": "Winter Garden",
+        "address": "Liki Tiki Village, 17777 Bali Blvd ",
+        "state": "FL",
+        "zip": "34787",
+        "totalPrice": 18800,
+        "paymentMethod": "card",
+        "extraComment": "",
+        "giftCardCode": "",
+        "giftCardId": "",
+        "refundedAmount": 20036,
+        "iban": "",
+        "accountHolder": "",
+        "status": "Approved",
+        "dateSubmitted": "2021-10-15T18:11:32.395Z",
+        "type": "request"
+    }
+}
+```
 
 #### Change product status
 

@@ -107,7 +107,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                     {formatMessage({ id: messages.reason.id })}
                     {': '}
                   </span>
-                  {currentProduct.reasonCode.substring(0, 6) === 'reason'
+                  {currentProduct.reasonCode?.substring(0, 6) === 'reason'
                     ? formatMessage({
                         id: `returns.${currentProduct.reasonCode}`,
                       })
