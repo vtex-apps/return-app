@@ -86,6 +86,7 @@ export const RETURNS_SCHEMA = {
     giftCardCode: { type: 'string' },
     giftCardId: { type: 'string' },
     refundedAmount: { type: 'integer' },
+    refundedShippingValue: { type: 'integer' },
     iban: { type: 'string' },
     accountHolder: { type: 'string' },
     status: { type: 'string' },
