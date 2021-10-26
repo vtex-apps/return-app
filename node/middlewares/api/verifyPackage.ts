@@ -74,7 +74,7 @@ export async function verifyPackage(ctx: Context, next: () => Promise<any>) {
 
     const updatedRequest = { 
       ...request, 
-      status: 'Approved', 
+      status: 'Pending verification', 
       refundedAmount: (newTotalRefundAmount.toFixed(2)) * 100 ,
       refundedShippingValue: body.refundedShippingValue,
       orderRestockFee: body.restockFee
