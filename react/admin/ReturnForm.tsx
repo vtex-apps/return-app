@@ -168,10 +168,9 @@ class ReturnForm extends Component<any, any> {
       schemaTypes.requests,
       requestId
     ).then((request) => {
-      if (request.refundedShippingValue) {
-        this.setState({ refundedShippingValue: request.refundedShippingValue })
+      if (request[0].refundedShippingValue) {
+        this.setState({ refundedShippingValue: request[0].refundedShippingValue })
       }
-
       this.setState({
         statusInput: request[0].status,
         commentInput: '',
