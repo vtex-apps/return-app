@@ -266,6 +266,34 @@ class MyReturnsPageAdd extends Component<any, State> {
   ) => {
     const thisOrder = order
 
+    thisOrder.refunds = order.items.map((item, index) => ({ 
+      ...item,
+      itemIndex: index,
+      totalProducts: item.quantity,
+      reasonCode: '',
+      reason: '',
+      condition: '',
+      refundedPoducts: order.packageAttachment.packages
+        .slice(1)
+        .map(pack => (pack.items))
+        .reduce((acc, el) => acc.concat(el) ,[])
+        .filter(x => x.itemIndex === index)
+        .reduce((acc, el) => acc + el.quantity ,0),
+     }))
+
+     thisOrder.refunds = thisOrder.refunds.map(refund => ({
+       ...refund,
+       quantity: refund.totalProducts - refund.refundedPoducts
+     })).filter(item => item.totalProducts - item.refundedPoducts !== 0)
+
+    thisOrder.refundedProducts = order.packageAttachment.packages
+      .slice(1) // exclude the first package
+      .map(pack => pack.items
+        .reduce((acc, el) => acc + el.quantity,0))
+      .reduce((acc, el) => acc + el, 0)
+
+    thisOrder.totalProducts = order.items.reduce((acc, el) => acc + el.quantity, 0)
+
     if (order.shippingData.address) {
       thisOrder.country = order.shippingData.address.country
       thisOrder.city = order.shippingData.address.city
@@ -279,7 +307,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       thisOrder.zip = order.shippingData.address.postalCode || ''
     }
 
-    const promises = order.items.map((product: any) => {
+    const promises = thisOrder.refunds.map((product: any) => {
       return new Promise((resolve) => {
         let categoryCount = 0
         let eligible = false
@@ -320,13 +348,6 @@ class MyReturnsPageAdd extends Component<any, State> {
               return eligible
             }
 
-            currentProduct = {
-              ...currentProduct,
-              quantity: currentProduct.quantity - response,
-              reasonCode: '',
-              reason: '',
-              condition: '',
-            }
 
             return eligible
           })
@@ -342,7 +363,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
     Promise.all(promises)
       .then((eligibleProducts) => {
-        const products = eligibleProducts.filter((product) => product)
+        const products = thisOrder.refunds
         const previousOrders = this.state.eligibleOrders
 
         if (products.length) {

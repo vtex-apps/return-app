@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Update the refundedShippingValue in the front if it was declared via API.
+- Filter correctly the available orders to request on MyReturnsPageAdd.
+
+### Fixed
+
 - Fixed orders available to show.
 - Fixed API for verify package.
 
