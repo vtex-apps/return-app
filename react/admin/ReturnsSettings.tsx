@@ -10,6 +10,7 @@ import {
   IconClear,
   Button,
   CheckboxGroup,
+  Checkbox,
   IconDeny,
   Table,
   Modal,
@@ -33,6 +34,7 @@ const messages = defineMessages({
   settingsSaved: { id: 'returns.settingsSaved' },
   labelSettings: { id: 'navigation.labelSettings' },
   updateSchema: { id: 'settings.updateSchema' },
+  smsLinkIntegrationLabel: {id: 'settings.allowSMSLinkIntegration_label'},
   maxDaysLabel: { id: 'settings.maxDays_label' },
   termsLabel: { id: 'settings.terms_label' },
   searchCategories: { id: 'settings.searchCategories' },
@@ -61,6 +63,7 @@ class ReturnsSettings extends Component<any, any> {
     this.state = {
       id: '',
       updatingSchema: false,
+      allowSMSLinkIntegration: '',
       maxDays: '',
       termsUrl: '',
       categoryFilterQuery: '',
@@ -161,6 +164,7 @@ class ReturnsSettings extends Component<any, any> {
         }
         this.setState({
           id: json[0].id,
+          allowSMSLinkIntegration: json[0].allowSMSLinkIntegration,
           maxDays: json[0].maxDays,
           termsUrl: json[0].termsUrl,
           paymentBank,
@@ -299,7 +303,7 @@ class ReturnsSettings extends Component<any, any> {
       errorMessage: '',
       loading: true,
     })
-    const { maxDays, excludedCategories, termsUrl, id, payments, options } =
+    const { allowSMSLinkIntegration, maxDays, excludedCategories, termsUrl, id, payments, options } =
       this.state
 
     let hasErrors = false
@@ -346,6 +350,7 @@ class ReturnsSettings extends Component<any, any> {
 
     const postData = {
       id,
+      allowSMSLinkIntegration: allowSMSLinkIntegration,
       maxDays: parseInt(maxDays, 10),
       excludedCategories: JSON.stringify(excludedCategories),
       termsUrl,
@@ -417,6 +422,7 @@ class ReturnsSettings extends Component<any, any> {
 
   render() {
     const {
+      allowSMSLinkIntegration,
       maxDays,
       termsUrl,
       excludedCategories,
@@ -469,6 +475,16 @@ class ReturnsSettings extends Component<any, any> {
             </div>
           ) : (
             <div>
+              <div className="flex flex-row">
+                <div className="mb6 ph1">
+                  <Checkbox
+                      name="smsLinkIntegration"
+                      checked={allowSMSLinkIntegration}
+                      label={formatMessage({ id: messages.smsLinkIntegrationLabel.id })}
+                      onChange={() => this.setState({ allowSMSLinkIntegration: !allowSMSLinkIntegration })}
+                      />
+                </div>
+              </div>
               <div className="flex flex-column">
                 <div className="flex flex-row">
                   <div className="w-50 ph1">

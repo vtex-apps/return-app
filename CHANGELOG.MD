@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- SMSLink integration
+
 ### Fixed
 
 - Update the refundedShippingValue in the front if it was declared via API.

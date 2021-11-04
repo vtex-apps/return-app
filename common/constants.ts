@@ -6,6 +6,7 @@ export const SETTINGS_SCHEMA = {
     paymentCard: { type: 'boolean' },
     paymentVoucher: { type: 'boolean' },
     termsUrl: { type: 'string' },
+    allowSMSLinkIntegration: { type: 'boolean' },
     options: {
       type: 'array',
       items: { $ref: '#/$defs/options' },
@@ -29,6 +30,7 @@ export const SETTINGS_SCHEMA = {
   'v-security': {
     allowGetAll: true,
     publicFilter: [
+      'allowSMSLinkIntegration',
       'maxDays',
       'excludedCategories',
       'paymentBank',
@@ -44,6 +46,7 @@ export const SETTINGS_SCHEMA = {
   'v-default-fields': [
     'id',
     'createdIn',
+    'allowSMSLinkIntegration',
     'maxDays',
     'excludedCategories',
     'paymentBank',
@@ -56,6 +59,7 @@ export const SETTINGS_SCHEMA = {
   'v-indexed': [
     'id',
     'createdIn',
+    'allowSMSLinkIntegration',
     'maxDays',
     'excludedCategories',
     'paymentBank',

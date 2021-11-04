@@ -6,13 +6,14 @@ VTEX Return App
 
 - Open the VTEX App Store and install this app on your store, or run the following command on VTEX toolbelt:
 
-> vtex install vtex.return-app@1.x
+> vtex install vtex.return-app@2.x
 
 - From the left side access the `Returns > Requests` page. The first time you access it, the application creates the masterdata schema and settings it needs automatically.
 
 ## Settings
 
 - Go to `Returns > Returns Settings` and fill up the form with the settings you need.
+  - `Enable SMSLink integration`: Allow SMSLink integration. Customers will receive messages when a new return request is registered or the request reaches the states of: picked up, approved or denied. For this option you also need to install `vtex.smslink`.
   - `Max days:` The maximum number of days that customers can request the return of products, from the moment the order was invoiced.
   - `Terms and conditions URL:` The URL of the page with the return terms and conditions. The customer can access this URL from the form they fill out to request a return.
     - If you have the terms on conditions page on `http://example.com/terms-and-conditions` it's enough for you to type just `/terms-and-conditions`
@@ -26,7 +27,7 @@ The return application serves the necessary functionalities for requesting retur
 
 #### Installation and configuration
 
-The application can be installed using the following command in VTEX Toolbelt: `vtex install vtex.return-app@0.x`
+The application can be installed using the following command in VTEX Toolbelt: `vtex install vtex.return-app@2.x`
 
 After the installation you must access the `Returns > Requests` page from the admin menu. At this point, the application creates the masterdata schema and email templates automatically.
 
