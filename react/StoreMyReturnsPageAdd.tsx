@@ -1,7 +1,9 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
+import type { FC } from 'react'
+import React, { Fragment } from 'react'
+import { Route } from 'vtex.my-account-commons/Router'
 import { FormattedMessage } from 'react-intl'
 
+import useAxiosInstance from './hooks/useAxiosModule'
 import ReturnsPageAdd from './store/MyReturnsPageAdd'
 
 const headerConfig = {
@@ -13,16 +15,22 @@ const headerConfig = {
   },
 }
 
-const StoreMyReturnsPageAdd = () => {
+const StoreMyReturnsPageAddWrapper: FC = (props: any) => {
+  const axios = useAxiosInstance()
+
   return (
-    <Route
-      path="/my-returns/add"
-      exact
-      render={(props: any) => (
-        <ReturnsPageAdd {...props} headerConfig={headerConfig} />
-      )}
-    />
+    <ReturnsPageAdd {...props} headerConfig={headerConfig} fetchApi={axios} />
   )
 }
+
+const StoreMyReturnsPageAdd = () => (
+  <Fragment>
+    <Route
+      exact
+      path="/my-returns/add"
+      component={StoreMyReturnsPageAddWrapper}
+    />
+  </Fragment>
+)
 
 export default StoreMyReturnsPageAdd

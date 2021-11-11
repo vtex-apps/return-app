@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
+import axios from 'axios'
+import PropTypes from 'prop-types'
 import { injectIntl, defineMessages } from 'react-intl'
 import {
   ActionMenu,
@@ -30,6 +32,7 @@ const tableLength = 15
 
 const messages = defineMessages({
   thRequestNo: { id: 'returns.thRequestNo' },
+  sequenceNumber: { id: 'returns.sequenceNo' },
   thDate: { id: 'returns.thDate' },
   thStatus: { id: 'returns.thStatus' },
   actions: { id: 'returns.actions' },
@@ -57,9 +60,15 @@ const initialFilters = {
   fromDate: '',
   toDate: '',
   status: '',
+  sequenceNumber: '',
 }
 
 class MyReturnsPage extends Component<any, any> {
+  static propTypes = {
+    headerConfig: PropTypes.object,
+    fetchApi: PropTypes.func,
+  }
+
   constructor(props: any) {
     super(props)
     this.state = {
@@ -178,26 +187,24 @@ class MyReturnsPage extends Component<any, any> {
   }
 
   getProfile = () => {
-    fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then(async (response) => {
-        if (response.IsUserDefined) {
-          this.setState((prevState: any) => ({
-            profile: {
-              ...prevState.profile,
-              Email: response.Email,
-              FirstName: response.FirstName,
-              Gender: response.Gender,
-              IsReturningUser: response.IsReturningUser,
-              IsUserDefined: response.IsUserDefined,
-              LastName: response.LastName,
-              UserId: response.UserId,
-            },
-          }))
+    this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState((prevState: any) => ({
+          profile: {
+            ...prevState.profile,
+            Email: response.data.Email,
+            FirstName: response.data.FirstName,
+            Gender: response.data.Gender,
+            IsReturningUser: response.data.IsReturningUser,
+            IsUserDefined: response.data.IsUserDefined,
+            LastName: response.data.LastName,
+            UserId: response.data.UserId,
+          },
+        }))
 
-          this.getRequests(response.UserId, false)
-        }
-      })
+        this.getRequests(response.data.UserId, false)
+      }
+    })
   }
 
   getRequests(userId: string, resetFilters: boolean) {
@@ -212,6 +219,10 @@ class MyReturnsPage extends Component<any, any> {
 
       if (useFilters.returnId !== '') {
         where += `__id="*${useFilters.returnId}*"`
+      }
+
+      if (filters.sequenceNumber !== '') {
+        where += `__sequenceNumber=${filters.sequenceNumber}`
       }
 
       let startDate = '1970-01-01'
@@ -285,6 +296,15 @@ class MyReturnsPage extends Component<any, any> {
       filters: {
         ...prevState.filters,
         returnId: val,
+      },
+    }))
+  }
+
+  filterSequenceNumber(val: string) {
+    this.setState((prevState) => ({
+      filters: {
+        ...prevState.filters,
+        sequenceNumber: val,
       },
     }))
   }
@@ -387,6 +407,10 @@ class MyReturnsPage extends Component<any, any> {
           sortable: true,
           width: 350,
         },
+        sequenceNumber: {
+          title: formatMessage({ id: messages.sequenceNumber.id }),
+          sortable: true,
+        },
         dateSubmitted: {
           title: formatMessage({ id: messages.thDate.id }),
           cellRenderer: ({ cellData }) => {
@@ -408,7 +432,7 @@ class MyReturnsPage extends Component<any, any> {
           cellRenderer: ({ rowData }) => {
             return (
               <div>
-                <Link href={`account#/my-returns/details/${rowData.id}`}>
+                <Link href={`#/my-returns/details/${rowData.id}`}>
                   {formatMessage({ id: messages.view.id })}
                 </Link>
               </div>
@@ -459,11 +483,7 @@ class MyReturnsPage extends Component<any, any> {
           </h2>
         </div>
         <div className={`flex justify-end mb3 ${styles.addNewList}`}>
-          <Button
-            variation="primary"
-            size="small"
-            href="/account#/my-returns/add"
-          >
+          <Button variation="primary" size="small" href="#/my-returns/add">
             {formatMessage({ id: messages.addReturn.id })}
           </Button>
         </div>
@@ -482,6 +502,23 @@ class MyReturnsPage extends Component<any, any> {
               onChange={(e) => this.filterReturnId(e.target.value)}
               value={filters.returnId}
             />
+          </div>
+          <div className={`flex items-center ${styles.filterList}`}>
+            <div
+              className={`ma2 ${styles.filterColumn} ${styles.filterColumnReturnId}`}
+            >
+              <Input
+                placeholder={formatMessage({
+                  id: messages.sequenceNumber.id,
+                })}
+                onKeyPress={(e) => {
+                  this.handleKeypress(e)
+                }}
+                size="small"
+                onChange={(e) => this.filterSequenceNumber(e.target.value)}
+                value={filters.sequenceNumber}
+              />
+            </div>
           </div>
           <div
             className={`ma2 ${styles.filterColumn} ${styles.filterColumnFromDate}`}

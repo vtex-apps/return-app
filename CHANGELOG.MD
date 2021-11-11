@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Update the refundedShippingValue in the front if it was declared via API.
+- Filter correctly the available orders to request on MyReturnsPageAdd.
+
+### Fixed
+
+- Fixed orders available to show.
+- Fixed API for verify package.
+
+### Added
+
+- API to verify package setting restock fee and shipping value to refund
+### Fixed
+- Fix build errors
+
+### Added
+
+- I18n It
+
+- Add validation to remove orders that have already been returned through the OMS
+
+### Added
+
+- Add the posibility of refund a partial amount for each product (Restock Fee)
+- Add the posibility of refund the total or partial value of the order shipping
+
+### Fixed
+
+- Denied items does not show up in the OMS as returned anymore
+
+### Added
+
+- Update return labels to be saved as part of request
+- Add ability to view shipping labels on both customer and admin sides
+
+### Added
+
+- Update status history timeline to be adaptive
+
+### Added
+
+- Add tax logic to credit card returns
+
+### Removed
+
+- Removed label creation button from customer side
+
+### Added
+
+- Added dropdown for customers to specify condition of the product they are returning
+
+## [2.1.0] - 2021-08-27
+
 ### Added
 
 - Added ability to deny a return request in the request status dropdown

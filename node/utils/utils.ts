@@ -4,6 +4,7 @@ export function formatRequest(request: any) {
     orderId: request.orderId,
     totalPrice: request.totalPrice,
     refundedAmount: request.refundedAmount,
+    refundedShippingValue: request.refundedShippingValue,
     status: request.status,
     dateSubmitted: request.dateSubmitted,
     extraComment: request.extraComment,
@@ -43,6 +44,7 @@ export function formatProduct(product: any) {
     goodProducts: product.goodProducts,
     reasonCode: product.reasonCode,
     reasonText: product.reason,
+    condition: product.condition,
     status: product.status,
   }
 }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
 import { defineMessages, injectIntl } from 'react-intl'
@@ -35,6 +36,7 @@ type Errors = {
   agree: string
   productQuantities: string
   reasonMissing: string
+  condition: string
 }
 
 type State = {
@@ -81,6 +83,7 @@ const initialErrors = {
   agree: '',
   productQuantities: '',
   reasonMissing: '',
+  condition: '',
   state: '',
   zip: '',
 }
@@ -101,6 +104,7 @@ const errorMessages = defineMessages({
   agree: { id: 'returns.formErrorAgree' },
   productQuantities: { id: 'returns.formErrorQuantities' },
   reasonMissing: { id: 'returns.formErrorReasonMissing' },
+  condition: { id: 'returns.formErrorConditionMissing' },
 })
 
 const messages = defineMessages({
@@ -116,6 +120,11 @@ const emailValidation = (email: string) => {
 }
 
 class MyReturnsPageAdd extends Component<any, State> {
+  static propTypes = {
+    headerConfig: PropTypes.object,
+    fetchApi: PropTypes.func,
+  }
+
   constructor(props: any & State) {
     super(props)
     this.state = {
@@ -172,23 +181,21 @@ class MyReturnsPageAdd extends Component<any, State> {
       })
   }
 
-  async getProfile() {
-    return fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.IsUserDefined) {
-          this.setState({
-            userId: response.UserId,
-            name:
-              response.FirstName && response.LastName
-                ? `${response.FirstName} ${response.LastName}`
-                : '',
-            email: response.Email,
-          })
-        }
+  getProfile() {
+    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState({
+          userId: response.data.UserId,
+          name:
+            response.data.FirstName && response.data.LastName
+              ? `${response.data.FirstName} ${response.data.LastName}`
+              : '',
+          email: response.data.Email,
+        })
+      }
 
-        return Promise.resolve(response)
-      })
+      return Promise.resolve(response)
+    })
   }
 
   async getSkuById(id: string) {
@@ -259,6 +266,34 @@ class MyReturnsPageAdd extends Component<any, State> {
   ) => {
     const thisOrder = order
 
+    thisOrder.refunds = order.items.map((item, index) => ({ 
+      ...item,
+      itemIndex: index,
+      totalProducts: item.quantity,
+      reasonCode: '',
+      reason: '',
+      condition: '',
+      refundedPoducts: order.packageAttachment.packages
+        .slice(1)
+        .map(pack => (pack.items))
+        .reduce((acc, el) => acc.concat(el) ,[])
+        .filter(x => x.itemIndex === index)
+        .reduce((acc, el) => acc + el.quantity ,0),
+     }))
+
+     thisOrder.refunds = thisOrder.refunds.map(refund => ({
+       ...refund,
+       quantity: refund.totalProducts - refund.refundedPoducts
+     })).filter(item => item.totalProducts - item.refundedPoducts !== 0)
+
+    thisOrder.refundedProducts = order.packageAttachment.packages
+      .slice(1) // exclude the first package
+      .map(pack => pack.items
+        .reduce((acc, el) => acc + el.quantity,0))
+      .reduce((acc, el) => acc + el, 0)
+
+    thisOrder.totalProducts = order.items.reduce((acc, el) => acc + el.quantity, 0)
+
     if (order.shippingData.address) {
       thisOrder.country = order.shippingData.address.country
       thisOrder.city = order.shippingData.address.city
@@ -272,7 +307,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       thisOrder.zip = order.shippingData.address.postalCode || ''
     }
 
-    const promises = order.items.map((product: any) => {
+    const promises = thisOrder.refunds.map((product: any) => {
       return new Promise((resolve) => {
         let categoryCount = 0
         let eligible = false
@@ -313,12 +348,6 @@ class MyReturnsPageAdd extends Component<any, State> {
               return eligible
             }
 
-            currentProduct = {
-              ...currentProduct,
-              quantity: currentProduct.quantity - response,
-              reasonCode: '',
-              reason: '',
-            }
 
             return eligible
           })
@@ -334,7 +363,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
     Promise.all(promises)
       .then((eligibleProducts) => {
-        const products = eligibleProducts.filter((product) => product)
+        const products = thisOrder.refunds
         const previousOrders = this.state.eligibleOrders
 
         if (products.length) {
@@ -387,13 +416,13 @@ class MyReturnsPageAdd extends Component<any, State> {
       if (settings !== null) {
         this.setState({ settings })
         this.getProfile().then((user) => {
-          this.getOrders(user.Email, settings.maxDays).then((orders) => {
+          this.getOrders(user.data.Email, settings.maxDays).then((orders) => {
             if ('list' in orders) {
               if (orders.list.length) {
                 orders.list.forEach((order: any) => {
-                  this.getOrder(order.orderId).then((currentOrder) => {
-                    this.prepareOrderData(currentOrder, settings, true)
-                  })
+                    this.getOrder(order.orderId).then((currentOrder) => {
+                      this.prepareOrderData(currentOrder, settings, true)
+                    })
                 })
                 setTimeout(() => {
                   this.setState({ loading: false })
@@ -569,6 +598,11 @@ class MyReturnsPageAdd extends Component<any, State> {
             (product.reason === '' || !reason.replace(/\s/g, '').length)))
       ) {
         errors = true
+      } else if (
+        parseInt(product.selectedQuantity, 10) > 0 &&
+        product.condition === ''
+      ) {
+        errors = true
       }
     })
 
@@ -655,6 +689,19 @@ class MyReturnsPageAdd extends Component<any, State> {
           ? {
               ...el,
               reason: value,
+            }
+          : el
+      ),
+    }))
+  }
+
+  handleCondition(product: any, value: any) {
+    this.setState((prevState) => ({
+      orderProducts: prevState.orderProducts.map((el) =>
+        el.uniqueId === product.uniqueId
+          ? {
+              ...el,
+              condition: value,
             }
           : el
       ),
@@ -764,7 +811,7 @@ class MyReturnsPageAdd extends Component<any, State> {
               userId,
               orderId: selectedOrderId,
               refundId: DocumentId,
-              skuId: product.refId,
+              skuId: product.refId ? product.refId : '',
               productId: product.productId,
               sku: product.id,
               manufacturerCode: skuResponse.ManufacturerCode
@@ -777,6 +824,7 @@ class MyReturnsPageAdd extends Component<any, State> {
               imageUrl: product.imageUrl,
               reasonCode: product.reasonCode,
               reason: product.reason,
+              condition: product.condition,
               unitPrice: parseInt(product.sellingPrice, 10),
               quantity: parseInt(product.selectedQuantity, 10),
               totalPrice: parseInt(
@@ -801,7 +849,9 @@ class MyReturnsPageAdd extends Component<any, State> {
       body: JSON.stringify(body),
       headers: fetchHeaders,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json()
+      })
       .then((json) => {
         if (json) {
           return Promise.resolve(json)
@@ -863,7 +913,7 @@ class MyReturnsPageAdd extends Component<any, State> {
                 ) : null}
                 <div className="flex flex-column items-center">
                   <span className="mb4">
-                    <Button href="/account#/my-returns">
+                    <Button href="#/my-returns">
                       {formatMessage({ id: messages.backToOrders.id })}
                     </Button>
                   </span>
@@ -896,6 +946,9 @@ class MyReturnsPageAdd extends Component<any, State> {
                   }}
                   handleReason={(product, value) => {
                     this.handleReason(product, value)
+                  }}
+                  handleCondition={(product, value) => {
+                    this.handleCondition(product, value)
                   }}
                   errors={errors}
                   handleInputChange={(e) => this.handleInputChange(e)}

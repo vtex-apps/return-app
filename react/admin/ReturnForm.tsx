@@ -1,3 +1,5 @@
+/* eslint-disable radix */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -54,12 +56,18 @@ const messages = defineMessages({
   sendLabel: { id: 'returns.sendLabel' },
   shippingLabelSuccess: { id: 'returns.labelSuccess' },
   shippingLabelError: { id: 'returns.labelError' },
+  showLabel: { id: 'returns.showLabel' },
+  quantity: { id: 'returns.quantity' },
+  restockFee: { id: `returns.restockFee` },
+  productValueToRefund: { id: 'returns.productValueToRefund' },
+  shippingValueToBeRefunded: { id: `returns.shippingValueToBeRefunded` },
 })
 
 class ReturnForm extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object,
+    fetchApi: PropTypes.func,
   }
 
   constructor(props: any) {
@@ -85,6 +93,7 @@ class ReturnForm extends Component<any, any> {
       showLabelSuccess: false,
       showLabelError: false,
       labelDisabled: false,
+      totalAmount: 0,
     }
   }
 
@@ -159,6 +168,9 @@ class ReturnForm extends Component<any, any> {
       schemaTypes.requests,
       requestId
     ).then((request) => {
+      if (request[0].refundedShippingValue) {
+        this.setState({ refundedShippingValue: request[0].refundedShippingValue })
+      }
       this.setState({
         statusInput: request[0].status,
         commentInput: '',
@@ -168,7 +180,7 @@ class ReturnForm extends Component<any, any> {
         (response) => {
           let total = 0
 
-          if (!response.length) return
+          if (!response?.length) return
           response.forEach((currentProduct) => {
             total += currentProduct.quantity * currentProduct.unitPrice
           })
@@ -194,17 +206,15 @@ class ReturnForm extends Component<any, any> {
   }
 
   async getProfile() {
-    return fetch(fetchPath.getProfile)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.IsUserDefined) {
-          this.setState({
-            registeredUser: `${response.FirstName} ${response.LastName}`,
-          })
-        }
+    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+      if (response.data.IsUserDefined) {
+        this.setState({
+          registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
+        })
+      }
 
-        return Promise.resolve(response)
-      })
+      return Promise.resolve(response.data)
+    })
   }
 
   async getFromMasterData(schema: string, type: string, refundId: string) {
@@ -300,9 +310,88 @@ class ReturnForm extends Component<any, any> {
           initialProductsForm: productsForm,
         })
 
+        this.handleTaxes()
+
         return json
       })
       .catch((err) => this.setState({ error: err }))
+  }
+
+  handleTaxes = async () => {
+    const { request, product } = this.state
+
+    let taxItems: any
+
+    if (request) {
+      try {
+        await fetch(`${fetchPath.getOrder}${request.orderId}`)
+          .then((response) => response.json())
+          .then((res) => {
+            taxItems = res.items
+            this.setState({
+              totalShippingValue: (
+                res.totals.find((total) => total.id === 'Shipping').value / 100
+              ).toFixed(2),
+            })
+
+            return Promise.resolve(res)
+          })
+      } catch (e) {
+        // console.log(e)
+      }
+    }
+
+    const taxCalculations: any = []
+
+    for (const taxItem of taxItems) {
+      let totalTax = 0
+
+      if (taxItem.tax) {
+        totalTax += Number((taxItem.tax / 100).toFixed(2)) || 0
+      } else if (taxItem.priceTags) {
+        for (const pricetag of taxItem.priceTags) {
+          if (pricetag.name.includes('TAXHUB')) {
+            totalTax += pricetag.rawValue || 0
+          }
+        }
+
+        const individualTax = parseFloat(
+          // eslint-disable-next-line radix
+          (totalTax / parseInt(taxItem.quantity)).toFixed(2)
+        )
+
+        taxCalculations.push({
+          tax: individualTax,
+          sellerSku: taxItem.sellerSku,
+        })
+      }
+    }
+
+    let totalAmount = 0
+    const newProducts = product
+
+    for (const taxItem of taxCalculations) {
+      for (const productItem of newProducts) {
+        if (!productItem.tax && taxItem.sellerSku === productItem.sku) {
+          productItem.tax = taxItem.tax
+          productItem.totalValue =
+            productItem.totalPrice / 100 +
+            (parseFloat(taxItem.tax) || 0) * productItem.quantity
+          productItem.quantity *
+            (productItem.unitPrice + (parseFloat(productItem.tax) || 0) * 100)
+          totalAmount +=
+            productItem.totalPrice / 100 +
+            (parseFloat(taxItem.tax) || 0) * productItem.quantity
+        }
+      }
+    }
+
+    this.setState((prevState) => ({
+      ...prevState,
+      product: newProducts,
+      productsForm: newProducts,
+      totalAmount,
+    }))
   }
 
   submitStatusCommentForm() {
@@ -358,11 +447,12 @@ class ReturnForm extends Component<any, any> {
           for (const item of this.state.product) {
             const invoiceItem = {
               id: item.sku,
-              price: item.unitPrice,
+              price: item.unitPrice + parseFloat(item.tax) * 100,
               quantity: item.quantity,
+              status: item.status,
             }
 
-            items.push(invoiceItem)
+            invoiceItem.status === 'Approved' && items.push(invoiceItem)
           }
 
           const issuanceDate = new Date().toISOString().slice(0, 10)
@@ -383,9 +473,6 @@ class ReturnForm extends Component<any, any> {
               body: JSON.stringify(body),
               headers: fetchHeaders,
             })
-            // .then((response) => {
-            //   console.log(response)
-            // })
           } catch {
             // console.log(e)
           }
@@ -403,8 +490,14 @@ class ReturnForm extends Component<any, any> {
 
         delete requestBody.giftCardCode
         delete requestBody.giftCardId
+        delete requestBody.sellerId
+        delete requestBody.sellerRequestId
+        delete requestBody.marketplaceId
+        delete requestBody.marketplaceRequestId
+
         this.savePartial(schemaNames.request, requestBody)
         this.saveMasterData(schemaNames.history, statusHistoryData)
+
         if (
           request.status === requestsStatuses.picked &&
           statusInput === requestsStatuses.pendingVerification
@@ -449,6 +542,7 @@ class ReturnForm extends Component<any, any> {
       this.setState({
         statusHistoryTimeline: prepareHistoryData(oldComments, requestData),
       })
+
       if (
         statusInput !== request.status &&
         statusInput !== requestsStatuses.picked
@@ -461,7 +555,7 @@ class ReturnForm extends Component<any, any> {
               ...{ DocumentId: request.id },
               ...request,
             },
-            products: product,
+            products: product.filter((prod) => prod.status === 'Approved'),
             timeline: statusHistoryTimeline,
           })
         }, 2000)
@@ -492,7 +586,7 @@ class ReturnForm extends Component<any, any> {
   }
 
   handleQuantity(product: any, quantity: any) {
-    let quantityInput = parseInt(quantity, 10)
+    const quantityInput = parseInt(quantity, 10)
     let status = productStatuses.new
 
     if (quantityInput === 0) {
@@ -512,6 +606,7 @@ class ReturnForm extends Component<any, any> {
                 quantityInput > product.quantity
                   ? product.quantity
                   : quantityInput,
+              refundedValue: !quantityInput && 0,
               status,
             }
           : el
@@ -519,12 +614,49 @@ class ReturnForm extends Component<any, any> {
     }))
   }
 
+  handleRestockValue(product: any, restockValue: any) {
+    if (
+      product.status === requestsStatuses.approved ||
+      product.status === requestsStatuses.partiallyApproved
+    ) {
+      this.setState((prevState) => ({
+        productsForm: prevState.productsForm.map((el) =>
+          el.id === product.id
+            ? {
+                ...el,
+                restockValue,
+                refundedValue:
+                  restockValue > product.totalValue || !restockValue
+                    ? 0
+                    : product.totalValue - (restockValue || 0),
+              }
+            : el
+        ),
+      }))
+    }
+  }
+
+  handleRefundedShippingValue(refundedShippingValue: any) {
+    const { totalShippingValue } = this.state
+
+    this.setState({
+      refundedShippingValue:
+        refundedShippingValue > totalShippingValue
+          ? totalShippingValue
+          : refundedShippingValue,
+    })
+  }
+
   verifyPackage() {
-    const { request, productsForm } = this.state
-    let refundedAmount = 0
+    const { request, productsForm, refundedShippingValue } = this.state
+    let refundedAmount = (refundedShippingValue || 0) * 100 || 0
 
     productsForm.forEach((currentProduct) => {
-      refundedAmount += currentProduct.goodProducts * currentProduct.unitPrice
+      currentProduct.refundedValue =
+        !currentProduct.refundedValue && currentProduct.refundedValue !== 0
+          ? currentProduct.totalValue
+          : currentProduct.refundedValue
+      refundedAmount += currentProduct.refundedValue.toFixed(2) * 100
       this.saveMasterData(schemaNames.product, currentProduct)
     })
 
@@ -677,38 +809,10 @@ class ReturnForm extends Component<any, any> {
     })
 
     const { request } = this.state
-    const variables = {
-      street1: request.address,
-      street2: '',
-      city: request.locality,
-      state: request.state,
-      zip: request.zip,
-      country: request.country,
-      name: request.name,
-      phone: request.phoneNumber,
-    }
 
-    let label: any
-
-    try {
-      label = await doMutation({
-        variables: {
-          street1: variables.street1,
-          street2: variables.street2,
-          city: variables.city,
-          state: variables.state,
-          zip: variables.zip,
-          country: variables.country,
-          name: variables.name,
-          phone: variables.phone,
-        },
-      })
-      const { labelUrl } = label.data.createLabel
-
+    if (request.returnLabel) {
       window.setTimeout(() => {
         const { product, statusHistoryTimeline } = this.state
-
-        request.returnLabel = labelUrl
         sendMail({
           data: {
             ...{ DocumentId: request.id },
@@ -717,16 +821,66 @@ class ReturnForm extends Component<any, any> {
           products: product,
           timeline: statusHistoryTimeline,
         })
-        // console.log(request)
       }, 2000)
 
       this.setState({
         showLabelSuccess: true,
       })
-    } catch {
-      this.setState({
-        showLabelError: true,
-      })
+    } else {
+      const variables = {
+        street1: request.address,
+        street2: '',
+        city: request.locality,
+        state: request.state,
+        zip: request.zip,
+        country: request.country,
+        name: request.name,
+        phone: request.phoneNumber,
+      }
+
+      let label: any
+
+      try {
+        label = await doMutation({
+          variables: {
+            street1: variables.street1,
+            street2: variables.street2,
+            city: variables.city,
+            state: variables.state,
+            zip: variables.zip,
+            country: variables.country,
+            name: variables.name,
+            phone: variables.phone,
+          },
+        })
+        const { labelUrl } = label.data.createLabel
+
+        window.setTimeout(() => {
+          const { product, statusHistoryTimeline } = this.state
+
+          let requestBody = request
+          requestBody = { ...requestBody, returnLabel: labelUrl }
+
+          this.setState({ ...this.state, request: requestBody })
+          this.savePartial(schemaNames.request, requestBody)
+          sendMail({
+            data: {
+              ...{ DocumentId: request.id },
+              ...request,
+            },
+            products: product,
+            timeline: statusHistoryTimeline,
+          })
+        }, 2000)
+
+        this.setState({
+          showLabelSuccess: true,
+        })
+      } catch {
+        this.setState({
+          showLabelError: true,
+        })
+      }
     }
 
     this.setState({
@@ -758,6 +912,7 @@ class ReturnForm extends Component<any, any> {
             <div className="mb6">
               <Dropdown
                 size="small"
+                placeholder="Select Status"
                 options={statusesOptions}
                 value={statusInput}
                 onChange={(_, v: any) => this.setState({ statusInput: v })}
@@ -800,6 +955,17 @@ class ReturnForm extends Component<any, any> {
                 })}
               </Button>
             </div>
+            {request.returnLabel && (
+              <div className="mt6">
+                <Button
+                  href={request.returnLabel}
+                  target="_blank"
+                  variation="secondary"
+                >
+                  {formatMessage({ id: messages.showLabel.id })}
+                </Button>
+              </div>
+            )}
             <div className="mt6">
               <Mutation mutation={CREATE_LABEL}>
                 {(doMutation) => (
@@ -855,6 +1021,9 @@ class ReturnForm extends Component<any, any> {
       showMain,
       showProductsForm,
       giftCardValue,
+      totalShippingValue,
+      refundedShippingValue,
+      totalAmount,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -887,9 +1056,11 @@ class ReturnForm extends Component<any, any> {
           ) : null}
 
           <ProductsTable
+            totalShippingValue={totalShippingValue}
+            refundedShippingValue={refundedShippingValue}
             product={product}
             totalRefundAmount={request.refundedAmount}
-            productsValue={request.totalPrice}
+            productsValue={totalAmount}
           />
           <p className="mt7">
             <strong className="mr6">
@@ -939,7 +1110,8 @@ class ReturnForm extends Component<any, any> {
             <thead>
               <tr>
                 <th>{formatMessage({ id: messages.product.id })}</th>
-                <th />
+                <th>{formatMessage({ id: messages.quantity.id })}</th>
+                <th>{formatMessage({ id: messages.restockFee.id })}</th>
                 <th />
               </tr>
             </thead>
@@ -963,6 +1135,31 @@ class ReturnForm extends Component<any, any> {
                         min={0}
                       />
                     </td>
+                    <td className={styles.mediumCell}>
+                      <Input
+                        suffix={`${(
+                          currentProduct.refundedValue ||
+                          (!currentProduct.goodProducts
+                            ? 0
+                            : currentProduct.totalValue)
+                        )?.toFixed(2)}/${currentProduct.totalValue?.toFixed(
+                          2
+                        )}`}
+                        value={currentProduct.restockValue}
+                        size="small"
+                        type="number"
+                        step="any"
+                        onChange={(e) => {
+                          this.handleRestockValue(
+                            currentProduct,
+                            e.target.value
+                          )
+                        }}
+                        max={currentProduct.totalValue}
+                        min={0.0}
+                        disabled={!currentProduct.goodProducts}
+                      />
+                    </td>
                     <td
                       className={`${styles.paddingLeft20} ${styles.mediumCell}`}
                     >
@@ -977,6 +1174,28 @@ class ReturnForm extends Component<any, any> {
                   </td>
                 </tr>
               )}
+              <tr>
+                <td className={styles.alignEnd} colSpan={2}>
+                  <strong>
+                    {formatMessage({
+                      id: messages.shippingValueToBeRefunded.id,
+                    })}
+                  </strong>
+                </td>
+                <td className={styles.mediumCell}>
+                  <Input
+                    suffix={`/${totalShippingValue}`}
+                    type="number"
+                    step="any"
+                    onChange={(e) => {
+                      this.handleRefundedShippingValue(e.target.value)
+                    }}
+                    value={this.state.refundedShippingValue}
+                    max={totalShippingValue}
+                    min={0}
+                  />
+                </td>
+              </tr>
             </tbody>
           </table>
           <div className="mt6">

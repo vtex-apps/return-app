@@ -37,6 +37,7 @@ interface Props {
   handleQuantity: any
   handleReasonCode: any
   handleReason: any
+  handleCondition: any
   errors: any
   handleInputChange: any
   formInputs: FormInputs
@@ -93,6 +94,12 @@ const messages = defineMessages({
   thProduct: { id: 'returns.thProduct' },
   thQuantity: { id: 'returns.thQuantity' },
   thReason: { id: 'returns.thReason' },
+  condition: { id: 'returns.condition.label' },
+  formErrorConditionMissing: { id: 'returns.formErrorConditionMissing' },
+  conditionNewWithBox: { id: 'returns.newWithBox' },
+  conditionNewWithoutBox: { id: 'returns.newWithoutBox' },
+  conditionUsedWithBox: { id: 'returns.usedWithBox' },
+  conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' },
 })
 
 class RequestForm extends Component<Props> {
@@ -262,6 +269,7 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
+          placeholder="Select Reason"
           size="small"
           options={returnOptions}
           value={product.reasonCode}
@@ -298,6 +306,53 @@ class RequestForm extends Component<Props> {
             />
           </div>
         ) : null}
+      </div>
+    )
+  }
+
+  renderConditionDropdown(product: any) {
+    const {
+      intl: { formatMessage },
+    }: any = this.props
+
+    const conditionOptions = [
+      {
+        value: 'New With Box',
+        label: formatMessage({ id: messages.conditionNewWithBox.id }),
+      },
+      {
+        value: 'New Without Box',
+        label: formatMessage({ id: messages.conditionNewWithoutBox.id }),
+      },
+      {
+        value: 'Used With Box',
+        label: formatMessage({ id: messages.conditionUsedWithBox.id }),
+      },
+      {
+        value: 'Used Without Box',
+        label: formatMessage({ id: messages.conditionUsedWithoutBox.id }),
+      },
+    ]
+
+    return (
+      <div className={styles.reasonHolder}>
+        <Dropdown
+          label=""
+          placeholder="Select Condition"
+          size="small"
+          options={conditionOptions}
+          value={product.condition}
+          errorMessage={
+            product.condition === '' && product.selectedQuantity > 0
+              ? formatMessage({
+                  id: messages.formErrorConditionMissing.id,
+                })
+              : ''
+          }
+          onChange={(e) => {
+            this.props.handleCondition(product, e.target.value)
+          }}
+        />
       </div>
     )
   }
@@ -374,6 +429,9 @@ class RequestForm extends Component<Props> {
                 <th className={styles.tableTh}>
                   {formatMessage({ id: messages.thReason.id })}
                 </th>
+                <th className={styles.tableTh}>
+                  {formatMessage({ id: messages.condition.id })}
+                </th>
               </tr>
             </thead>
             <tbody className={styles.tableTbody}>
@@ -402,7 +460,7 @@ class RequestForm extends Component<Props> {
                   <td className={`${styles.tableTd} ${styles.tableTdQuantity}`}>
                     <Input
                       suffix={`/${product.quantity}`}
-                      size="small"
+                      size="regular"
                       type="number"
                       value={product.selectedQuantity}
                       onChange={(e) => {
@@ -414,6 +472,9 @@ class RequestForm extends Component<Props> {
                   </td>
                   <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
                     {this.renderReasonsDropdown(product)}
+                  </td>
+                  <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
+                    {this.renderConditionDropdown(product)}
                   </td>
                 </tr>
               ))}

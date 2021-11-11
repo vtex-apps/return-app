@@ -118,6 +118,7 @@ class ReturnsSettings extends Component<any, any> {
   }
 
   getSettings = async () => {
+    // eslint-disable-next-line react/no-access-state-in-setstate
     this.setState({ ...this.state, loading: true })
     await fetch(
       `${fetchPath.getDocuments + schemaNames.settings}/${
@@ -211,7 +212,7 @@ class ReturnsSettings extends Component<any, any> {
         await fetch(fetchPath.generateSchema, {
           method: fetchMethod.put,
           headers: fetchHeaders,
-        }).then(() => window.location.reload())
+        })
       } catch (error) {
         console.error(error)
       }
