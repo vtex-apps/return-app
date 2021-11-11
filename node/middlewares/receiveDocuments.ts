@@ -12,6 +12,7 @@ export async function receiveDocuments(ctx: Context, next: () => Promise<any>) {
   )
 
   ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 
   await next()

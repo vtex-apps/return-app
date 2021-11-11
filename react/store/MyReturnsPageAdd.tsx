@@ -266,13 +266,14 @@ class MyReturnsPageAdd extends Component<any, State> {
   ) => {
     const thisOrder = order
 
-    thisOrder.refunds = order.items.map((item, index) => ({ 
+    thisOrder.refunds = order.items.map((item, index) => ({
       ...item,
       itemIndex: index,
       totalProducts: item.quantity,
       reasonCode: '',
       reason: '',
       condition: '',
+      selectedQuantity: 0,
       refundedPoducts: order.packageAttachment.packages
         .slice(1)
         .map(pack => (pack.items))

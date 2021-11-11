@@ -11,6 +11,7 @@ export async function returnAppGetSchemas(
   const response = await masterDataClient.getSchema(ctx, schema.toString())
 
   ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 
   await next()
