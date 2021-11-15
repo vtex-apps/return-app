@@ -523,36 +523,44 @@ class ReturnForm extends Component<any, any> {
         this.savePartial(schemaNames.request, requestBody)
         this.saveMasterData(schemaNames.history, statusHistoryData)
 
-        let smsLinkBody: any = {
-          requestId: request.id,
-          orderId: request.orderId,
-          phone: request.phoneNumber
-        }
-
-        let sendSMS = false
-        if(statusInput === requestsStatuses.denied || statusInput === requestsStatuses.refunded) {
-          smsLinkBody = {
-            ...smsLinkBody,
-            event: statusInput === requestsStatuses.denied ? 'request-denied': 'request-finalized',
+        if(settings.allowSMSLinkIntegration) {
+          let smsLinkBody: any = {
+            requestId: request.id,
+            orderId: request.orderId,
+            phone: request.phoneNumber
           }
-          sendSMS = true
-        } else if (statusInput === requestsStatuses.picked) {
-          smsLinkBody = {
-            ...smsLinkBody,
-            event: 'parcel-received',
-          }
-          sendSMS = true
-        }
+  
+          let sendSMS = true
+          let SMSLinkEvent = ''
 
-        if(sendSMS && settings.allowSMSLinkIntegration) {
-          try {
-            fetch(`${fetchPath.sendSMS}`, {
-              method: fetchMethod.post,
-              body: JSON.stringify(smsLinkBody),
-              headers: fetchHeaders,
-            })
-          } catch {
-            // console.log(e)
+          switch (statusInput) {
+              case requestsStatuses.denied:
+                  SMSLinkEvent =  'request-denied'
+                  break;
+              case requestsStatuses.refunded:
+                  SMSLinkEvent =  'request-finalized'
+                  break;
+              case requestsStatuses.picked:
+                  SMSLinkEvent =  'parcel-received'
+                  break;
+              default:
+                  sendSMS = false
+          }
+         
+          if (sendSMS){
+            smsLinkBody = {
+              ...smsLinkBody,
+              event: SMSLinkEvent,
+            }
+            try {
+              fetch(`${fetchPath.sendSMS}`, {
+                method: fetchMethod.post,
+                body: JSON.stringify(smsLinkBody),
+                headers: fetchHeaders,
+              })
+            } catch {
+              // console.log(e)
+            }
           }
         }
 
