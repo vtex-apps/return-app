@@ -1,6 +1,7 @@
 {
   "navigation.label": "Resi",
   "navigation.labelRequests": "Richieste",
+  "navigation.requestInfo": "Richiedi informazioni",
   "navigation.labelSettings": "Impostazioni di reso",
   "settings.updateSchema": "Aggiornamento delle impostazioni in corso",
   "settings.maxDays_label": "Numero massimo di giorni:",

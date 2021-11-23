@@ -5,6 +5,7 @@ import { Clients } from './clients'
 import { returnAppGetSchemas } from './middlewares/returnAppGetSchemas'
 import { generateReturnsSchema } from './middlewares/generateReturnsSchema'
 import { receiveDocuments } from './middlewares/receiveDocuments'
+import { getRequests } from './middlewares/getRequests'
 import { receiveCategories } from './middlewares/receiveCategories'
 import { saveMasterdataDocuments } from './middlewares/saveMasterdataDocuments'
 import { saveMasterdataPartialDocuments } from './middlewares/saveMasterdataPartialDocuments'
@@ -57,6 +58,9 @@ export default new Service({
     }),
     getDocuments: method({
       GET: receiveDocuments,
+    }),
+    getRequests: method({
+      GET: getRequests,
     }),
     getCategories: method({
       GET: receiveCategories,

@@ -15,6 +15,11 @@
       "public": true,
       "settingsType": "workspace"
     },
+    "getRequests": {
+      "path": "/returns/getRequests/:schemaName/:page/:pageSize/:sortBy/:sortOrder/:whereClause",
+      "public": true,
+      "settingsType": "workspace"
+    },
     "getDocuments": {
       "path": "/returns/getDocuments/:schemaName/:type/:whereClause",
       "public": true,

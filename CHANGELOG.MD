@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
+- totalPrice for partial requests
+
+### Changes
+- Get requests method has been changed to `searchDocumentsWithPaginationInfo`
+
+### Added
+- Cache-control: no-cache on middlewares
+- Navigation has been added in admin area to keep users on the same page when they open a request
+
+### Fixed
 
 - Update the refundedShippingValue in the front if it was declared via API.
 - Filter correctly the available orders to request on MyReturnsPageAdd.

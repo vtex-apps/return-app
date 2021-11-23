@@ -9,6 +9,7 @@ export async function generateReturnsSchema(
   const response = await masterDataClient.generateSchema(ctx)
 
   ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 
   await next()
