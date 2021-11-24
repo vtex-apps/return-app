@@ -61,6 +61,109 @@ The application use 6 routes. 3 routes for admins and 3 for customers
 - `My returns > Add` (from this page the customer adds a new return request)
 - `My returns > Details` (on this page the customer can see all the information about the return request. This page is very similar to the admin page, except that the customer does not have access to change the status of the return request or change the status of the products)
 
+## Setup for CRON using V4 Scheduler 
+
+#### Find all schedules CRONS
+
+Method - GET; Endpoint - http://{{account}}.{{environment}}/api/scheduler/:workspace/:app
+
+Params:
+    Query Params:
+    KEY: version ; Value: 4
+
+    Path Variables:
+    KEY: workspace; Value: yourWorkspace or master
+    KEY: app;       Value: return-app
+
+Headers:
+    KEY: Content-Type; Value: application/json
+    KEY: X-VTEX-API-AppKey;   Value: {{X-VTEX-API-AppKey}}
+    KEY: X-VTEX-API-AppTokem; Value: {{X-VTEX-API-AppToken}}
+
+#### Create CRON
+
+Method - POST; Endpoint - http://{{account}}.{{environment}}/api/scheduler/:workspace/:app
+
+Params:
+  Query Params:
+  KEY: version ; Value: 4
+
+  Path Variables:
+  KEY: workspace; Value: yourWorkspace or master
+  KEY: app;       Value: return-app
+
+Headers:
+  KEY: Content-Type; Value: application/json
+  KEY: X-VTEX-API-AppKey;   Value: {{X-VTEX-API-AppKey}}.
+  KEY: X-VTEX-API-AppTokem; Value: {{X-VTEX-API-AppToken}}
+
+Body:
+{
+  "id": "test-create-ping-scheduler", 
+  "scheduler": {
+      "expression": "*/5 * * * *",
+      "endDate": "2222-03-13T23:59:00"
+  },
+  "request": {
+      "uri": "https://{{replaceWithPublicDNS}}/returns/ping?workspace=yourWorkspace",
+      "method": "GET",
+      "body": {
+          "test": "TestPingScheduler"
+      }
+  }
+}
+
+#### Update CRON
+
+Method - PUT; Endpoint - http://{{account}}.{{environment}}/api/scheduler/:workspace/:app
+
+Params:
+    Query Params:
+    KEY: version ; Value: 4
+
+    Path Variables:
+    KEY: workspace; Value: yourWorkspace or master
+    KEY: app;       Value: return-app
+
+Headers:
+    KEY: Content-Type; Value: application/json
+    KEY: X-VTEX-API-AppKey;   Value: {{X-VTEX-API-AppKey}}
+    KEY: X-VTEX-API-AppTokem; Value: {{X-VTEX-API-AppToken}}
+
+Body:
+{
+  "id": "test-create-ping-scheduler", 
+  "scheduler": {
+      "expression": "*/5 * * * *",
+      "endDate": "2222-03-13T23:59:00"
+  },
+  "request": {
+      "uri": "https://{{replaceWithPublicDNS}}/returns/ping?workspace=yourWorkspace",
+      "method": "GET",
+      "body": {
+          "test": "TestPingScheduler"
+      }
+  }
+}
+
+#### Delete CRON
+
+Method - DEL; Endpoint - http://{{account}}.{{environment}}/api/scheduler/:workspace/:app/:id
+
+Params:
+    Query Params:
+    KEY: version ; Value: 4
+
+    Path Variables:
+    KEY: workspace; Value: yourWorkspace or master
+    KEY: app;       Value: return-app
+    KEY: id;        Value: test-create-ping-scheduler (from your POST Method's BODY)
+
+Headers:
+    KEY: Content-Type; Value: application/json
+    KEY: X-VTEX-API-AppKey;   Value: {{X-VTEX-API-AppKey}}
+    KEY: X-VTEX-API-AppTokem; Value: {{X-VTEX-API-AppToken}}
+    
 ## Return requests information
 
 #### Available payment methods

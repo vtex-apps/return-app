@@ -1,4 +1,4 @@
-import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
+import type { ClientsConfig, ServiceContext, RecorderState, EventContext } from '@vtex/api'
 import { Service, method, LRUCache } from '@vtex/api'
 
 import { Clients } from './clients'
@@ -23,6 +23,10 @@ import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
+import Ping from './clients/pingClient'
+import { isAdminAuthenticated } from './middlewares/common/isAdminAuthenticated'
+import { createScheduler } from './middlewares/scheduler/createScheduler'
+import { deleteScheduler } from './middlewares/scheduler/deleteScheduler'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -44,6 +48,10 @@ declare global {
   type Context = ServiceContext<Clients, State>
 
   type State = RecorderState
+
+  interface EventCtx<Body = unknown> extends EventContext<Clients> {
+    body: Body
+  }
 }
 
 export default new Service({
@@ -111,6 +119,11 @@ export default new Service({
     }),
     createRefund: method({
       POST: createRefund,
+    }),
+    ping: [Ping.getMiddleware()],
+    cron: method({
+      POST: [isAdminAuthenticated, createScheduler],
+      DELETE: [deleteScheduler],
     }),
   },
 })
