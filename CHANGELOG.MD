@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.10.2] - 2021-11-18
+
+### Added
+
+- Ping Endpoint
+- Setup Cron Documentation
+- Scheduler Endpoint
+
 ### Fixed
 
 - Update the refundedShippingValue in the front if it was declared via API.
