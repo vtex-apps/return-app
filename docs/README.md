@@ -489,3 +489,5 @@ _Body Parameters:_
 **Upcoming documentation:**
 
 - [New CSS Handles](https://github.com/vtex-apps/return-app/pull/6)
+
+ - [[Urgent] Partial refund + improvements on admin area](https://github.com/vtex-apps/return-app/pull/38)
