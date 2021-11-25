@@ -181,21 +181,30 @@ class MyReturnsPageAdd extends Component<any, State> {
       })
   }
 
-  getProfile() {
-    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
-      if (response.data.IsUserDefined) {
-        this.setState({
-          userId: response.data.UserId,
-          name:
-            response.data.FirstName && response.data.LastName
-              ? `${response.data.FirstName} ${response.data.LastName}`
-              : '',
-          email: response.data.Email,
-        })
+  async getProfile() {
+
+    const profileResponse = await fetch(fetchPath.getProfile);
+    const profile = await profileResponse.json();
+    if(profile.IsUserDefined) {
+      this.setState({
+        userId: profile.UserId,
+        name:
+            profile.FirstName && profile.LastName
+                ? `${profile.FirstName} ${profile.LastName}`
+                : '',
+        email: profile.Email,
+      })
+    } else {
+      const checkImpersonate = await fetch(`/api/sessions?items=*`);
+      const impersonate = await checkImpersonate.json();
+
+      if (!impersonate.namespaces.impersonate.canImpersonate.value) {
+        return false;
       }
 
-      return Promise.resolve(response)
-    })
+      profile.Email = impersonate.namespaces.impersonate.storeUserEmail.value;
+    }
+    return profile
   }
 
   async getSkuById(id: string) {
@@ -343,6 +352,10 @@ class MyReturnsPageAdd extends Component<any, State> {
 
         this.checkProduct(where, product.refId)
           .then((response) => {
+            currentProduct = {
+                ...currentProduct,
+                quantity: product.quantity - response
+            }
             if (response >= product.quantity) {
               eligible = false
 
@@ -364,7 +377,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
     Promise.all(promises)
       .then((eligibleProducts) => {
-        const products = thisOrder.refunds
+        const products = eligibleProducts.filter((i) => i)
         const previousOrders = this.state.eligibleOrders
 
         if (products.length) {
@@ -406,7 +419,6 @@ class MyReturnsPageAdd extends Component<any, State> {
               (thisQuantity += +receivedProduct.quantity)
           })
         }
-
         return Promise.resolve(thisQuantity)
       })
   }
@@ -417,7 +429,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       if (settings !== null) {
         this.setState({ settings })
         this.getProfile().then((user) => {
-          this.getOrders(user.data.Email, settings.maxDays).then((orders) => {
+          this.getOrders(user.Email, settings.maxDays).then((orders) => {
             if ('list' in orders) {
               if (orders.list.length) {
                 orders.list.forEach((order: any) => {
