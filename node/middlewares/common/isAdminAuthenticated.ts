@@ -1,23 +1,29 @@
-import { isAdmin } from '../../utils/validators'
+import { json } from 'co-body'
+import { CRON } from '../../utils/constants'
 
 export async function isAdminAuthenticated(
   ctx: Context,
   next: () => Promise<any>
 ) {
-  console.log(ctx.vtex)
-  if (!ctx.vtex.sessionToken) {
-    ctx.status = 401
+    interface CtxObject {token: string }
+    try {
 
-    return
-  }
+      const {token} : CtxObject= await json(ctx.req)
 
-  const hasAdminPermissions = await isAdmin(ctx)
+    if (token !== CRON.authToken) {
+          ctx.status = 401
 
-  if (!hasAdminPermissions) {
-    ctx.status = 401
+          return
+        }
 
-    return
-  }
+      await next()
+    } catch (e) {
+      ctx.vtex.logger.error({
+        middleware: 'VALIDATE-CRON-TOKEN',
+        message: 'Error while validating token',
+        error: e,
+      })
 
-  await next()
+      ctx.status = 500
+    }
 }

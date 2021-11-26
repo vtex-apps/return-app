@@ -16,7 +16,7 @@ export async function createScheduler(ctx: Context, next: () => Promise<any>) {
           uri: CRON.url(ctx.host),
           method: SchedulerRequestMethods.POST,
           body: {
-            "cron": "PingScheduler"
+            token: CRON.authToken,
             }
         },
       })

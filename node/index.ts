@@ -1,4 +1,4 @@
-import type { ClientsConfig, ServiceContext, RecorderState, EventContext } from '@vtex/api'
+import type { ClientsConfig, ServiceContext, RecorderState, EventContext, ParamsContext } from '@vtex/api'
 import { Service, method, LRUCache } from '@vtex/api'
 
 import { Clients } from './clients'
@@ -24,9 +24,9 @@ import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import Ping from './clients/pingClient'
-import { isAdminAuthenticated } from './middlewares/common/isAdminAuthenticated'
 import { createScheduler } from './middlewares/scheduler/createScheduler'
 import { deleteScheduler } from './middlewares/scheduler/deleteScheduler'
+import { isAdminAuthenticated } from './middlewares/common/isAdminAuthenticated'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -43,18 +43,17 @@ const clients: ClientsConfig<Clients> = {
     },
   },
 }
-
 declare global {
-  type Context = ServiceContext<Clients, State>
-
-  type State = RecorderState
-
+  type Context<Payload = unknown> = ServiceContext<Clients, State<Payload>>
+  interface State<Payload> extends RecorderState {
+    payload: Payload
+  }
   interface EventCtx<Body = unknown> extends EventContext<Clients> {
     body: Body
   }
 }
 
-export default new Service({
+export default new Service<Clients, State<never>, ParamsContext>({
   clients,
   routes: {
     getSchemas: method({
@@ -123,7 +122,7 @@ export default new Service({
     ping: [Ping.getMiddleware()],
     cron: method({
       POST: [isAdminAuthenticated, createScheduler],
-      DELETE: [deleteScheduler],
+      DELETE: [isAdminAuthenticated, deleteScheduler],
     }),
   },
 })

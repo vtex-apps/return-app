@@ -164,6 +164,35 @@ Headers:
     KEY: X-VTEX-API-AppKey;   Value: {{X-VTEX-API-AppKey}}
     KEY: X-VTEX-API-AppTokem; Value: {{X-VTEX-API-AppToken}}
     
+### Set CRON Automatically 
+
+* **Method**
+  `POST` | `DELETE`
+
+
+* **URL POST METHOD**
+  `http://{{account}}.{{environment}}/returns/cron`
+
+* **URL DELETE METHOD**
+  `http://{{account}}.{{environment}}/returns/cron/:id`
+
+* **Body**
+
+```json
+{
+  "token": "52843179-97f4-4e49-b716-1ecf58809838"
+}
+```
+
+* **Success response**
+  * `POST`:
+    * Code: `201`
+    * Content: `'Cron created'`
+  * `DELETE`:
+    * Code: `200`
+    * Content: `'Cron deleted'`
+
+
 ## Return requests information
 
 #### Available payment methods
