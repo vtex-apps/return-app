@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
+- Profile request for production environment
+
+### Fixed
 - Access for telesales user
 - GetProfile request from FE switched back to fetch instead of axios.
 - Quantity and availability of a product if there is already a return request placed for that product.

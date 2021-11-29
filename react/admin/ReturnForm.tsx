@@ -206,7 +206,8 @@ class ReturnForm extends Component<any, any> {
   }
 
   async getProfile() {
-    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+    const profileUrl = this.props.production ? `https://${this.props.binding.canonicalBaseAddress}${fetchPath.getProfile}` : fetchPath.getProfile
+    return this.props.fetchApi(profileUrl).then((response) => {
       if (response.data.IsUserDefined) {
         this.setState({
           registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
