@@ -7,7 +7,6 @@ import {useRuntime} from 'vtex.render-runtime'
 
 import useAxiosInstance from './hooks/useAxiosModule'
 import ReturnsPage from './store/MyReturnsPage'
-import ReturnsPageAdd from "./store/MyReturnsPageAdd";
 
 const headerConfig = {
   namespace: 'vtex-account__returns-list',
