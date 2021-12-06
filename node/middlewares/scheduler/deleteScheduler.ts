@@ -16,7 +16,7 @@ export async function deleteScheduler(ctx: Context, next: () => Promise<any>) {
       await next()
     } catch (e) {
       logger.error({
-        middleware: 'DELETE SELLER CRON',
+        middleware: 'DELETE RETURN APP CRON',
         message: 'Error while deleting cron',
         error: formatError(e),
       })

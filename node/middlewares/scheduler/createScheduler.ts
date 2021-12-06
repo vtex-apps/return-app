@@ -14,7 +14,7 @@ export async function createScheduler(ctx: Context, next: () => Promise<any>) {
         cronExpression: CRON.expression,
         request: {
           uri: CRON.url(ctx.host),
-          method: SchedulerRequestMethods.POST,
+          method: SchedulerRequestMethods.GET,
           body: {
             token: CRON.authToken,
             }
@@ -27,7 +27,7 @@ export async function createScheduler(ctx: Context, next: () => Promise<any>) {
       await next()
     } catch (e) {
       logger.error({
-        middleware: 'CREATE SELLER ACCOUNT NAME CRON',
+        middleware: 'CREATE RETURN APP SCHEDULER CRON',
         message: 'Error while creating cron',
         error: formatError(e),
       })

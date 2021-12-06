@@ -8,7 +8,7 @@ export async function isAdminAuthenticated(
     interface CtxObject {token: string }
     try {
 
-      const {token} : CtxObject= await json(ctx.req)
+      const {token}: CtxObject = await json(ctx.req)
 
     if (token !== CRON.authToken) {
           ctx.status = 401

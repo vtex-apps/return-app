@@ -174,7 +174,7 @@ Headers:
   `http://{{account}}.{{environment}}/returns/cron`
 
 * **URL DELETE METHOD**
-  `http://{{account}}.{{environment}}/returns/cron/:id`
+  `http://{{account}}.{{environment}}/returns/cron/`
 
 * **Body**
 

@@ -17,7 +17,7 @@ export function formatError(error: any) {
        * is an instance of XMLHttpRequest in the browser and an instance
        * of http.ClientRequest in Node.js
        */
-      return `Failed with no response for request: with no response`
+      return 'Failed with no response for request: with no response'
     }
   
     // Something happened in setting up the request and triggered an Error
