@@ -3,7 +3,6 @@ import { OMS } from '@vtex/clients/build'
 
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
-import pingClient from './pingClient'
 import scheduler from './scheduler'
 
 // Extend the default IOClients implementation with our own custom clients.
@@ -18,10 +17,6 @@ export class Clients extends IOClients {
 
   public get oms() {
     return this.getOrSet('oms', OMS)
-  }
-
-  public get ping() {
-    return this.getOrSet('ping', pingClient)
   }
 
   public get scheduler() {

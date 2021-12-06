@@ -23,10 +23,10 @@ import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
-import Ping from './clients/pingClient'
 import { createScheduler } from './middlewares/scheduler/createScheduler'
 import { deleteScheduler } from './middlewares/scheduler/deleteScheduler'
 import { isAdminAuthenticated } from './middlewares/common/isAdminAuthenticated'
+import { ping } from './middlewares/ping'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -119,7 +119,7 @@ export default new Service<Clients, State<never>, ParamsContext>({
     createRefund: method({
       POST: createRefund,
     }),
-    ping: [Ping.getMiddleware()],
+    ping: [ping],
     cron: method({
       POST: [isAdminAuthenticated, createScheduler],
       DELETE: [isAdminAuthenticated, deleteScheduler],
