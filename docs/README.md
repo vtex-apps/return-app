@@ -492,3 +492,4 @@ _Body Parameters:_
 
  - [[Urgent] Partial refund + improvements on admin area](https://github.com/vtex-apps/return-app/pull/38)
  - [Fix profile request for production environment](https://github.com/vtex-apps/return-app/pull/42)
+ - [[API ERROR] Update returns schema + fix binding](https://github.com/vtex-apps/return-app/pull/43)
