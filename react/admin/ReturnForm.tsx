@@ -14,6 +14,7 @@ import {
   Input,
   Alert,
 } from 'vtex.styleguide'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import {
   returnFormDate,
@@ -27,7 +28,6 @@ import {
   prepareHistoryData,
   sendMail,
   intlArea,
-  isInt,
   getProductStatusTranslation,
 } from '../common/utils'
 import styles from '../styles.css'
@@ -169,8 +169,11 @@ class ReturnForm extends Component<any, any> {
       requestId
     ).then((request) => {
       if (request[0].refundedShippingValue) {
-        this.setState({ refundedShippingValue: request[0].refundedShippingValue })
+        this.setState({
+          refundedShippingValue: request[0].refundedShippingValue,
+        })
       }
+
       this.setState({
         statusInput: request[0].status,
         commentInput: '',
@@ -206,7 +209,9 @@ class ReturnForm extends Component<any, any> {
   }
 
   async getProfile() {
-    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+    const { rootPath } = this.props.runtime
+
+    return this.props.fetch(fetchPath.getProfile(rootPath)).then((response) => {
       if (response.data.IsUserDefined) {
         this.setState({
           registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
@@ -813,6 +818,7 @@ class ReturnForm extends Component<any, any> {
     if (request.returnLabel) {
       window.setTimeout(() => {
         const { product, statusHistoryTimeline } = this.state
+
         sendMail({
           data: {
             ...{ DocumentId: request.id },
@@ -859,8 +865,10 @@ class ReturnForm extends Component<any, any> {
           const { product, statusHistoryTimeline } = this.state
 
           let requestBody = request
+
           requestBody = { ...requestBody, returnLabel: labelUrl }
 
+          // eslint-disable-next-line react/no-access-state-in-setstate
           this.setState({ ...this.state, request: requestBody })
           this.savePartial(schemaNames.request, requestBody)
           sendMail({
@@ -1217,4 +1225,4 @@ class ReturnForm extends Component<any, any> {
   }
 }
 
-export default injectIntl(ReturnForm)
+export default injectIntl(withRuntimeContext(ReturnForm))

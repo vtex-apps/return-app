@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import { ContentWrapper } from 'vtex.my-account-commons'
-import axios from 'axios'
 import PropTypes from 'prop-types'
-import { Spinner, Button, Alert } from 'vtex.styleguide'
+import { Spinner, Button } from 'vtex.styleguide'
 import { injectIntl, defineMessages } from 'react-intl'
-import { Mutation } from 'react-apollo'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import {
   productStatuses,
@@ -14,7 +13,6 @@ import {
   schemaTypes,
   prepareHistoryData,
   intlArea,
-  sendMail,
 } from '../common/utils'
 import RequestInfo from '../components/RequestInfo'
 import StatusHistoryTable from '../components/StatusHistoryTable'
@@ -22,14 +20,13 @@ import ProductsTable from '../components/ProductsTable'
 import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 import StatusHistoryTimeline from '../components/StatusHistoryTimeline'
 import styles from '../styles.css'
-import CREATE_LABEL from '../graphql/createLabel.gql'
 
 const messages = defineMessages({
   notFound: { id: 'returns.requestNotFound' },
   returnForm: { id: 'returns.details.returnForm' },
   refOrder: { id: 'returns.refOrder' },
   status: { id: 'returns.status' },
-  showLabel: { id: 'returns.showLabel' }
+  showLabel: { id: 'returns.showLabel' },
 })
 
 class ReturnsDetails extends Component<any, any> {
@@ -111,7 +108,9 @@ class ReturnsDetails extends Component<any, any> {
   }
 
   async getProfile() {
-    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
+    const { rootPath } = this.props.runtime
+
+    return this.props.fetch(fetchPath.getProfile(rootPath)).then((response) => {
       if (response.data.IsUserDefined) {
         this.setState({
           registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
@@ -325,4 +324,4 @@ class ReturnsDetails extends Component<any, any> {
   }
 }
 
-export default injectIntl(ReturnsDetails)
+export default injectIntl(withRuntimeContext(ReturnsDetails))

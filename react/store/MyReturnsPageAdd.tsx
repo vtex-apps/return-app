@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
 import { defineMessages, injectIntl } from 'react-intl'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import {
   schemaTypes,
@@ -182,28 +184,31 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 
   async getProfile() {
+    const { rootPath } = this.props.runtime
 
-    const profileResponse = await fetch(fetchPath.getProfile);
-    const profile = await profileResponse.json();
-    if(profile.IsUserDefined) {
+    const profileResponse = await fetch(fetchPath.getProfile(rootPath))
+    const profile = await profileResponse.json()
+
+    if (profile.IsUserDefined) {
       this.setState({
         userId: profile.UserId,
         name:
-            profile.FirstName && profile.LastName
-                ? `${profile.FirstName} ${profile.LastName}`
-                : '',
+          profile.FirstName && profile.LastName
+            ? `${profile.FirstName} ${profile.LastName}`
+            : '',
         email: profile.Email,
       })
     } else {
-      const checkImpersonate = await fetch(`/api/sessions?items=*`);
-      const impersonate = await checkImpersonate.json();
+      const checkImpersonate = await fetch(`/api/sessions?items=*`)
+      const impersonate = await checkImpersonate.json()
 
       if (!impersonate.namespaces.impersonate.canImpersonate.value) {
-        return false;
+        return false
       }
 
-      profile.Email = impersonate.namespaces.impersonate.storeUserEmail.value;
+      profile.Email = impersonate.namespaces.impersonate.storeUserEmail.value
     }
+
     return profile
   }
 
@@ -285,24 +290,28 @@ class MyReturnsPageAdd extends Component<any, State> {
       selectedQuantity: 0,
       refundedPoducts: order.packageAttachment.packages
         .slice(1)
-        .map(pack => (pack.items))
-        .reduce((acc, el) => acc.concat(el) ,[])
-        .filter(x => x.itemIndex === index)
-        .reduce((acc, el) => acc + el.quantity ,0),
-     }))
+        .map((pack) => pack.items)
+        .reduce((acc, el) => acc.concat(el), [])
+        .filter((x) => x.itemIndex === index)
+        .reduce((acc, el) => acc + el.quantity, 0),
+    }))
 
-     thisOrder.refunds = thisOrder.refunds.map(refund => ({
-       ...refund,
-       quantity: refund.totalProducts - refund.refundedPoducts
-     })).filter(item => item.totalProducts - item.refundedPoducts !== 0)
+    thisOrder.refunds = thisOrder.refunds
+      .map((refund) => ({
+        ...refund,
+        quantity: refund.totalProducts - refund.refundedPoducts,
+      }))
+      .filter((item) => item.totalProducts - item.refundedPoducts !== 0)
 
     thisOrder.refundedProducts = order.packageAttachment.packages
       .slice(1) // exclude the first package
-      .map(pack => pack.items
-        .reduce((acc, el) => acc + el.quantity,0))
+      .map((pack) => pack.items.reduce((acc, el) => acc + el.quantity, 0))
       .reduce((acc, el) => acc + el, 0)
 
-    thisOrder.totalProducts = order.items.reduce((acc, el) => acc + el.quantity, 0)
+    thisOrder.totalProducts = order.items.reduce(
+      (acc, el) => acc + el.quantity,
+      0
+    )
 
     if (order.shippingData.address) {
       thisOrder.country = order.shippingData.address.country
@@ -353,15 +362,14 @@ class MyReturnsPageAdd extends Component<any, State> {
         this.checkProduct(where, product.refId)
           .then((response) => {
             currentProduct = {
-                ...currentProduct,
-                quantity: product.quantity - response
+              ...currentProduct,
+              quantity: product.quantity - response,
             }
             if (response >= product.quantity) {
               eligible = false
 
               return eligible
             }
-
 
             return eligible
           })
@@ -419,6 +427,7 @@ class MyReturnsPageAdd extends Component<any, State> {
               (thisQuantity += +receivedProduct.quantity)
           })
         }
+
         return Promise.resolve(thisQuantity)
       })
   }
@@ -433,9 +442,9 @@ class MyReturnsPageAdd extends Component<any, State> {
             if ('list' in orders) {
               if (orders.list.length) {
                 orders.list.forEach((order: any) => {
-                    this.getOrder(order.orderId).then((currentOrder) => {
-                      this.prepareOrderData(currentOrder, settings, true)
-                    })
+                  this.getOrder(order.orderId).then((currentOrder) => {
+                    this.prepareOrderData(currentOrder, settings, true)
+                  })
                 })
                 setTimeout(() => {
                   this.setState({ loading: false })
@@ -1019,4 +1028,4 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 }
 
-export default injectIntl(MyReturnsPageAdd)
+export default injectIntl(withRuntimeContext(MyReturnsPageAdd))

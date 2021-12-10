@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BaseLoading, SkeletonBox } from 'vtex.my-account-commons'
 import { useLazyQuery } from 'react-apollo'
 import { injectIntl } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import GET_REFUNDS_LIST from '../graphql/userRefunds.graphql'
 import type { Profile } from '../typings/utils'
@@ -32,8 +33,12 @@ const withExtraProps =
       variables: { userId: profile.UserId || '-1' },
     })
 
+    const { rootPath } = useRuntime()
+
     useEffect(() => {
-      fetch(fetchPath.getProfile)
+      const getProfileUrl = fetchPath.getProfile(rootPath)
+
+      fetch(getProfileUrl)
         .then((response) => response.json())
         .then(async (response) => {
           if (response.IsUserDefined) {
