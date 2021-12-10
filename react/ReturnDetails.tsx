@@ -14,7 +14,7 @@ const messages = defineMessages({
 
 const ReturnDetails: FC = (props) => {
   const intl = useIntl()
-    const { navigate } = useRuntime()
+    const { navigate, binding, production } = useRuntime()
     const axios = useAxiosInstance()
 
   return (
@@ -24,7 +24,13 @@ const ReturnDetails: FC = (props) => {
                                                   navigate({to: `/admin/app/returns/requests/`})
                                               }}/>}>
       <PageBlock variation="full">
-        <ReturnForm data={props} intl={intl} fetchApi={axios}/>
+        <ReturnForm
+            data={props}
+            intl={intl}
+            fetchApi={axios}
+            binding={binding}
+            production={production}
+        />
       </PageBlock>
     </Layout>
   )
