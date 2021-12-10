@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Profile request for production environment
+- Fix requests schema for older requests
 
 ### Fixed
 - Access for telesales user
