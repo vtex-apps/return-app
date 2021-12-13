@@ -8,7 +8,7 @@ import {useRuntime} from "vtex.render-runtime";
 import useAxiosInstance from './hooks/useAxiosModule'
 
 const messages = defineMessages({
-    requests: {id: "navigation.labelRequests"},
+    requests: {id: "navigatio`n.labelRequests"},
     info: {id: "navigation.requestInfo"}
 })
 
