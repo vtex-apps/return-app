@@ -1,5 +1,5 @@
 import { json } from 'co-body'
-import { CRON } from '../../utils/constants'
+import { getSettings } from '../../utils/settings'
 
 export async function isAdminAuthenticated(
   ctx: Context,
@@ -7,10 +7,11 @@ export async function isAdminAuthenticated(
 ) {
     interface CtxObject {token: string }
     try {
-
       const {token}: CtxObject = await json(ctx.req)
 
-    if (token !== CRON.authToken) {
+      let settings = await getSettings(ctx)
+
+    if (token !== settings.authToken) {
           ctx.status = 401
 
           return

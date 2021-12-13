@@ -1,6 +1,7 @@
 import { SchedulerRequestMethods } from '../../typings/scheduler'
 import { CRON } from '../../utils/constants'
 import { formatError } from '../../utils/formatError'
+import { getSettings } from '../../utils/settings'
 
 export async function createScheduler(ctx: Context, next: () => Promise<any>) {
     const {
@@ -9,14 +10,15 @@ export async function createScheduler(ctx: Context, next: () => Promise<any>) {
     } = ctx
   
     try {
+      let settings = await getSettings(ctx)
       await scheduler.createOrUpdateScheduler({
-        cronId: CRON.id,
+        cronId: settings.cronId,
         cronExpression: CRON.expression,
         request: {
           uri: CRON.url(ctx.host),
           method: SchedulerRequestMethods.GET,
           body: {
-            token: CRON.authToken,
+            token: settings.authToken,
             }
         },
       })

@@ -27,6 +27,7 @@ import { createScheduler } from './middlewares/scheduler/createScheduler'
 import { deleteScheduler } from './middlewares/scheduler/deleteScheduler'
 import { isAdminAuthenticated } from './middlewares/common/isAdminAuthenticated'
 import { ping } from './middlewares/ping'
+import validateSettingsMiddleware from './middlewares/validateSettingsMiddleware'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -121,8 +122,8 @@ export default new Service<Clients, State<never>, ParamsContext>({
     }),
     ping: [ping],
     cron: method({
-      POST: [isAdminAuthenticated, createScheduler],
-      DELETE: [isAdminAuthenticated, deleteScheduler],
+      POST: [validateSettingsMiddleware, isAdminAuthenticated, createScheduler],
+      DELETE: [validateSettingsMiddleware, isAdminAuthenticated, deleteScheduler],
     }),
   },
 })
