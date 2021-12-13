@@ -13,6 +13,7 @@ export async function saveMasterdataPartialDocuments(
   const response = await masterDataClient.savePartial(ctx, schemaName, body)
 
   ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 
   await next()

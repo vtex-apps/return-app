@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
-import axios from 'axios'
 import PropTypes from 'prop-types'
 import { injectIntl, defineMessages } from 'react-intl'
 import {

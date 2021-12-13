@@ -10,6 +10,7 @@ export async function createRefund(ctx: Context, next: () => Promise<any>) {
   const response = await returnAppClient.createRefund(ctx, orderId, body)
 
   ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 
   await next()

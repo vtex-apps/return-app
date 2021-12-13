@@ -13,6 +13,7 @@ export async function saveMasterdataDocuments(
   const response = await masterDataClient.saveDocuments(ctx, schemaName, body)
 
   ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 
   await next()

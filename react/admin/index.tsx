@@ -1,11 +1,13 @@
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Layout, PageBlock, PageHeader } from 'vtex.styleguide'
 
 import ReturnsTable from './ReturnsTable'
+import { useRuntime } from 'vtex.render-runtime'
 
-const ReturnsRequests: FunctionComponent = () => {
+const ReturnsRequests: FC = () => {
+    const { navigate } = useRuntime()
   return (
     <Layout
       fullWidth
@@ -14,7 +16,7 @@ const ReturnsRequests: FunctionComponent = () => {
       }
     >
       <PageBlock variation="full">
-        <ReturnsTable />
+        <ReturnsTable navigate={navigate}/>
       </PageBlock>
     </Layout>
   )
