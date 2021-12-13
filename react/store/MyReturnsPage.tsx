@@ -188,11 +188,7 @@ class MyReturnsPage extends Component<any, any> {
 
   getProfile = () => {
     const { rootPath } = this.props.runtime
-    const profileUrl = this.props.production
-      ? `https://${
-          this.props.binding.canonicalBaseAddress
-        }${fetchPath.getProfile(rootPath)}`
-      : fetchPath.getProfile(rootPath)
+    const profileUrl = fetchPath.getProfile(rootPath)
 
     fetch(profileUrl)
       .then((res) => res.json())
