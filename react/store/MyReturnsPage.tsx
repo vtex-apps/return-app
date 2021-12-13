@@ -11,6 +11,7 @@ import {
   Link,
   Table,
 } from 'vtex.styleguide'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import styles from '../styles.css'
 import {
@@ -186,25 +187,30 @@ class MyReturnsPage extends Component<any, any> {
   }
 
   getProfile = () => {
-    const profileUrl = this.props.production ? `https://${this.props.binding.canonicalBaseAddress}${fetchPath.getProfile}` : fetchPath.getProfile
-    this.props.fetchApi(profileUrl).then((response) => {
-      if (response.data.IsUserDefined) {
-        this.setState((prevState: any) => ({
-          profile: {
-            ...prevState.profile,
-            Email: response.data.Email,
-            FirstName: response.data.FirstName,
-            Gender: response.data.Gender,
-            IsReturningUser: response.data.IsReturningUser,
-            IsUserDefined: response.data.IsUserDefined,
-            LastName: response.data.LastName,
-            UserId: response.data.UserId,
-          },
-        }))
+    const { rootPath } = this.props.runtime
+    const profileUrl = fetchPath.getProfile(rootPath)
 
-        this.getRequests(response.data.UserId, false)
-      }
-    })
+    fetch(profileUrl)
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.IsUserDefined) {
+          this.setState((prevState: any) => ({
+            profile: {
+              ...prevState.profile,
+              Email: response.Email,
+              FirstName: response.FirstName,
+              Gender: response.Gender,
+              IsReturningUser: response.IsReturningUser,
+              IsUserDefined: response.IsUserDefined,
+              LastName: response.LastName,
+              UserId: response.UserId,
+            },
+          }))
+
+          this.getRequests(response.UserId, false)
+        }
+      })
+      .catch(console.error)
   }
 
   getRequests(userId: string, resetFilters: boolean) {
@@ -660,4 +666,4 @@ class MyReturnsPage extends Component<any, any> {
   }
 }
 
-export default injectIntl(MyReturnsPage)
+export default injectIntl(withRuntimeContext(MyReturnsPage))

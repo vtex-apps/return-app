@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import React, { Fragment } from 'react'
 import { Route } from 'vtex.my-account-commons/Router'
 import { FormattedMessage } from 'react-intl'
-import {useRuntime} from 'vtex.render-runtime'
+import { useRuntime } from 'vtex.render-runtime'
 
 import useAxiosInstance from './hooks/useAxiosModule'
 import ReturnsPageAdd from './store/MyReturnsPageAdd'
@@ -18,14 +18,15 @@ const headerConfig = {
 
 const StoreMyReturnsPageAddWrapper: FC = (props: any) => {
   const axios = useAxiosInstance()
-  const {production, binding} = useRuntime()
+  const { production, binding } = useRuntime()
 
   return (
-    <ReturnsPageAdd {...props}
-                    headerConfig={headerConfig}
-                    fetchApi={axios}
-                    production={production}
-                    binding={binding}
+    <ReturnsPageAdd
+      {...props}
+      headerConfig={headerConfig}
+      fetchApi={axios}
+      production={production}
+      binding={binding}
     />
   )
 }
