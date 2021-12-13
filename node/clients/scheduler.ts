@@ -18,8 +18,15 @@ export default class Scheduler extends IOClient {
     })
   }
 
+  private BASE_URL = `http://${this.context.host}/api/scheduler/${this.context.workspace}/${Scheduler.APP_NAME}/`
+
+  public async getAllCrons(){
+    let url = this.BASE_URL+`?version=4`
+    return this.http.get(url)
+  }
+
   private getSchedulerUrl(id = '') {
-    return `http://${this.context.host}/api/scheduler/${this.context.workspace}/${Scheduler.APP_NAME}/${id}?version=4`
+    return this.BASE_URL+`${id}?version=4`
   }
 
   public async createOrUpdateScheduler(params: CreateSchedulerParams) {
