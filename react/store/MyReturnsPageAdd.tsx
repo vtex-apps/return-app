@@ -185,8 +185,13 @@ class MyReturnsPageAdd extends Component<any, State> {
 
   async getProfile() {
     const { rootPath } = this.props.runtime
+    const profileUrl = this.props.production
+      ? `https://${
+          this.props.binding.canonicalBaseAddress
+        }${fetchPath.getProfile(rootPath)}`
+      : fetchPath.getProfile(rootPath)
 
-    const profileResponse = await fetch(fetchPath.getProfile(rootPath))
+    const profileResponse = await fetch(profileUrl)
     const profile = await profileResponse.json()
 
     if (profile.IsUserDefined) {
