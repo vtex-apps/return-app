@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.10.2] - 2021-11-26
+
+### Added
+
+- Authentication for Create/Delete Cron
+
+## 2021-11-18
+
+### Added
+
+- Ping Endpoint
+- Setup Cron Documentation
+- Scheduler Endpoint
+
 ### Fixed
 - Profile request for production environment
 - Fix requests schema for older requests
