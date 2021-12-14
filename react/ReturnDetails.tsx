@@ -8,8 +8,8 @@ import {useRuntime} from "vtex.render-runtime";
 import useAxiosInstance from './hooks/useAxiosModule'
 
 const messages = defineMessages({
-    requests: {id: "navigatio`n.labelRequests"},
-    info: {id: "navigation.requestInfo"}
+  requests: { id: 'navigation.labelRequests' },
+  info: { id: 'navigation.requestInfo' },
 })
 
 const ReturnDetails: FC = (props) => {
