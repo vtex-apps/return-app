@@ -4,7 +4,7 @@ import { ContentWrapper } from 'vtex.my-account-commons'
 import PropTypes from 'prop-types'
 import { Spinner, Button } from 'vtex.styleguide'
 import { injectIntl, defineMessages } from 'react-intl'
-
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import {
   productStatuses,
@@ -26,7 +26,7 @@ const messages = defineMessages({
   returnForm: { id: 'returns.details.returnForm' },
   refOrder: { id: 'returns.refOrder' },
   status: { id: 'returns.status' },
-  showLabel: { id: 'returns.showLabel' }
+  showLabel: { id: 'returns.showLabel' },
 })
 
 class ReturnsDetails extends Component<any, any> {
@@ -108,8 +108,10 @@ class ReturnsDetails extends Component<any, any> {
   }
 
   async getProfile() {
-    const profileUrl = this.props.production ? `https://${this.props.binding.canonicalBaseAddress}${fetchPath.getProfile}` : fetchPath.getProfile
-    return this.props.fetchApi(profileUrl).then((response) => {
+    const { rootPath } = this.props.runtime
+    const profileUrl = fetchPath.getProfile(rootPath)
+
+    return this.props.fetch(profileUrl).then((response) => {
       if (response.data.IsUserDefined) {
         this.setState({
           registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
@@ -323,4 +325,4 @@ class ReturnsDetails extends Component<any, any> {
   }
 }
 
-export default injectIntl(ReturnsDetails)
+export default injectIntl(withRuntimeContext(ReturnsDetails))

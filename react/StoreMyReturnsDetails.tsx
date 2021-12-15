@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import React from 'react'
 import { Route } from 'vtex.my-account-commons/Router'
 import { FormattedMessage } from 'react-intl'
-import {useRuntime} from 'vtex.render-runtime'
+import { useRuntime } from 'vtex.render-runtime'
 
 import ReturnsDetails from './store/ReturnsDetails'
 import useAxiosInstance from './hooks/useAxiosModule'
@@ -18,7 +18,7 @@ const headerConfig = {
 
 const StoreMyReturnsDetailsWrapper: FC = (props: any) => {
   const fetchApi = useAxiosInstance()
-  const {production, binding} = useRuntime()
+  const { production, binding } = useRuntime()
 
   return (
     <ReturnsDetails
