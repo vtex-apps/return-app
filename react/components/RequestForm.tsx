@@ -115,12 +115,13 @@ class RequestForm extends Component<Props> {
   paymentMethods() {
     const {
       settings,
+        selectedOrder,
       intl: { formatMessage },
     }: any = this.props
 
     const output: any[] = []
 
-    if (settings.paymentCard) {
+    if (settings.paymentCard && selectedOrder.paymentData.transactions[0].payments[0].firstDigits !== null) {
       output.push({
         value: 'card',
         label: formatMessage({ id: messages.formCreditCard.id }),
