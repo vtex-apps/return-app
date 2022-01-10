@@ -212,7 +212,7 @@ class ReturnForm extends Component<any, any> {
     const { rootPath } = this.props.runtime
     const profileUrl = fetchPath.getProfile(rootPath)
 
-    return this.props.fetch(profileUrl).then((response) => {
+    return this.props.fetchApi(profileUrl).then((response) => {
       if (response.data.IsUserDefined) {
         this.setState({
           registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
@@ -415,6 +415,8 @@ class ReturnForm extends Component<any, any> {
 
     let requestData = request
     let oldComments = comment
+    let giftCardCode = '';
+    let giftCardId = '';
 
     if (statusInput !== request.status || commentInput !== '') {
       if (statusInput !== request.status) {
@@ -427,19 +429,21 @@ class ReturnForm extends Component<any, any> {
           this.generateGiftCard(requestData).then((json: any) => {
             const returnedId = json.id
             const exploded = returnedId.split('_')
-            const giftCardId = exploded[exploded.length - 1]
+            giftCardId = exploded[exploded.length - 1]
 
             this.updateGiftCard(giftCardId, requestData).then()
+            giftCardCode = json.redemptionCode;
+
             this.savePartial(schemaNames.request, {
               id: requestData.id,
-              giftCardCode: json.redemptionCode,
+              giftCardCode,
               giftCardId,
             })
 
             this.setState((prevState) => ({
               request: {
                 ...prevState.request,
-                giftCardCode: json.redemptionCode,
+                giftCardCode,
                 giftCardId,
               },
             }))
@@ -560,6 +564,10 @@ class ReturnForm extends Component<any, any> {
             data: {
               ...{ DocumentId: request.id },
               ...request,
+              status: statusInput,
+              giftCardId,
+              giftCardCode
+
             },
             products: product.filter((prod) => prod.status === 'Approved'),
             timeline: statusHistoryTimeline,
@@ -576,11 +584,11 @@ class ReturnForm extends Component<any, any> {
   }
 
   saveMasterData = (schema: string, body: any) => {
-    fetch(fetchPath.saveDocuments + schema, {
-      method: fetchMethod.post,
-      body: JSON.stringify(body),
-      headers: fetchHeaders,
-    }).then(() => {})
+      fetch(fetchPath.saveDocuments + schema, {
+        method: fetchMethod.post,
+        body: JSON.stringify(body),
+        headers: fetchHeaders,
+      }).then(() => {})
   }
 
   savePartial = (schema: string, body: any) => {
@@ -663,12 +671,21 @@ class ReturnForm extends Component<any, any> {
           ? currentProduct.totalValue
           : currentProduct.refundedValue
       refundedAmount += currentProduct.refundedValue.toFixed(2) * 100
-      this.saveMasterData(schemaNames.product, currentProduct)
+      try {
+        this.saveMasterData(schemaNames.product, currentProduct)
+      } catch(e) {
+        console.log(e)
+      }
     })
 
-    const updatedRequest = { ...request, refundedAmount }
 
-    this.saveMasterData(schemaNames.request, updatedRequest)
+    const updatedRequest = { ...request, refundedAmount: parseInt(refundedAmount.toString()), refundedShippingValue: Number((refundedShippingValue || 0) * 100 || 0) }
+    try {
+      this.saveMasterData(schemaNames.request, updatedRequest)
+    } catch(e) {
+      console.log(e)
+    }
+
     this.setState({
       request: updatedRequest,
       showMain: true,
@@ -1032,7 +1049,6 @@ class ReturnForm extends Component<any, any> {
       giftCardValue,
       totalShippingValue,
       refundedShippingValue,
-      totalAmount,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -1069,7 +1085,7 @@ class ReturnForm extends Component<any, any> {
             refundedShippingValue={refundedShippingValue}
             product={product}
             totalRefundAmount={request.refundedAmount}
-            productsValue={totalAmount}
+            productsValue={request.totalPrice}
           />
           <p className="mt7">
             <strong className="mr6">

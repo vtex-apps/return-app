@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
+- The card refund method is valid only if the customer has paid for the order with the card.
+- Fix shipping value available in frontend
+- Fix shipping value refunded in frontend
+- Email fixes
+- The total value of the products was multiplied by 100 in frontend
+- The value of the product available for refund is displayed as "NAN" if the product did not have the tax set
+- "Submitted by" was blank in history timeline because of a prop.
+- Check to prevent users from viewing other users' return requests.
+
+
+### Fixed
 - Profile request for production environment
 - Fix requests schema for older requests
 
