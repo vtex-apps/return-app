@@ -14,6 +14,7 @@ import {
   sendMail,
   substractDays,
   getCurrentDate,
+  mergeArrays,
 } from '../common/utils'
 import { isValidIBANNumber } from '../common/validations'
 import { countries } from '../common/countries'
@@ -281,6 +282,33 @@ class MyReturnsPageAdd extends Component<any, State> {
   ) => {
     const thisOrder = order
 
+    let refundedProducts: any = []
+
+    order.items.forEach((prod: any) => {
+      refundedProducts.push({
+        id: prod.id,
+        refunded: 0,
+      })
+    })
+
+    order.packageAttachment.packages.forEach((pack: any) => {
+      if (Object.keys(pack.restitutions).length) {
+        pack.restitutions.Refund.items.forEach((prod: any) => {
+          let currentProduct = refundedProducts.find(
+            (elem) => elem.id === prod.id
+          )
+
+          if (currentProduct) {
+            currentProduct = {
+              ...currentProduct,
+              refunded: currentProduct.refunded + prod.quantity,
+            }
+            refundedProducts = mergeArrays(refundedProducts, currentProduct)
+          }
+        })
+      }
+    })
+
     thisOrder.refunds = order.items.map((item, index) => ({
       ...item,
       itemIndex: index,
@@ -289,12 +317,8 @@ class MyReturnsPageAdd extends Component<any, State> {
       reason: '',
       condition: '',
       selectedQuantity: 0,
-      refundedPoducts: order.packageAttachment.packages
-        .slice(1)
-        .map((pack) => pack.items)
-        .reduce((acc, el) => acc.concat(el), [])
-        .filter((x) => x.itemIndex === index)
-        .reduce((acc, el) => acc + el.quantity, 0),
+      refundedPoducts:
+        refundedProducts.find((elem: any) => elem.id === item.id).refunded ?? 0,
     }))
 
     thisOrder.refunds = thisOrder.refunds
@@ -303,11 +327,6 @@ class MyReturnsPageAdd extends Component<any, State> {
         quantity: refund.totalProducts - refund.refundedPoducts,
       }))
       .filter((item) => item.totalProducts - item.refundedPoducts !== 0)
-
-    thisOrder.refundedProducts = order.packageAttachment.packages
-      .slice(1) // exclude the first package
-      .map((pack) => pack.items.reduce((acc, el) => acc + el.quantity, 0))
-      .reduce((acc, el) => acc + el, 0)
 
     thisOrder.totalProducts = order.items.reduce(
       (acc, el) => acc + el.quantity,
