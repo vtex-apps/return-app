@@ -1054,6 +1054,7 @@ class ReturnForm extends Component<any, any> {
       giftCardValue,
       totalShippingValue,
       refundedShippingValue,
+      totalAmount,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -1090,7 +1091,7 @@ class ReturnForm extends Component<any, any> {
             refundedShippingValue={refundedShippingValue}
             product={product}
             totalRefundAmount={request.refundedAmount}
-            productsValue={request.totalPrice}
+            productsValue={totalAmount}
           />
           <p className="mt7">
             <strong className="mr6">
