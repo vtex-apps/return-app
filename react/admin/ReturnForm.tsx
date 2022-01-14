@@ -415,8 +415,8 @@ class ReturnForm extends Component<any, any> {
 
     let requestData = request
     let oldComments = comment
-    let giftCardCode = '';
-    let giftCardId = '';
+    let giftCardCode = ''
+    let giftCardId = ''
 
     if (statusInput !== request.status || commentInput !== '') {
       if (statusInput !== request.status) {
@@ -429,10 +429,11 @@ class ReturnForm extends Component<any, any> {
           this.generateGiftCard(requestData).then((json: any) => {
             const returnedId = json.id
             const exploded = returnedId.split('_')
+
             giftCardId = exploded[exploded.length - 1]
 
             this.updateGiftCard(giftCardId, requestData).then()
-            giftCardCode = json.redemptionCode;
+            giftCardCode = json.redemptionCode
 
             this.savePartial(schemaNames.request, {
               id: requestData.id,
@@ -455,9 +456,10 @@ class ReturnForm extends Component<any, any> {
           const items: any = []
 
           for (const item of this.state.product) {
+            const tax = item.tax ?? 0
             const invoiceItem = {
               id: item.sku,
-              price: item.unitPrice + parseFloat(item.tax) * 100,
+              price: item.unitPrice + parseFloat(tax) * 100,
               quantity: item.quantity,
               status: item.status,
             }
@@ -466,8 +468,8 @@ class ReturnForm extends Component<any, any> {
           }
 
           const issuanceDate = new Date().toISOString().slice(0, 10)
-          const invoiceNumber = this.state.request.id
-          const invoiceValue = this.state.request.refundedAmount.toString()
+          const invoiceNumber = requestData.id
+          const invoiceValue = Number(requestData.refundedAmount.toString())
 
           const body = {
             items,
@@ -566,8 +568,7 @@ class ReturnForm extends Component<any, any> {
               ...request,
               status: statusInput,
               giftCardId,
-              giftCardCode
-
+              giftCardCode,
             },
             products: product.filter((prod) => prod.status === 'Approved'),
             timeline: statusHistoryTimeline,
@@ -584,11 +585,11 @@ class ReturnForm extends Component<any, any> {
   }
 
   saveMasterData = (schema: string, body: any) => {
-      fetch(fetchPath.saveDocuments + schema, {
-        method: fetchMethod.post,
-        body: JSON.stringify(body),
-        headers: fetchHeaders,
-      }).then(() => {})
+    fetch(fetchPath.saveDocuments + schema, {
+      method: fetchMethod.post,
+      body: JSON.stringify(body),
+      headers: fetchHeaders,
+    }).then(() => {})
   }
 
   savePartial = (schema: string, body: any) => {
@@ -673,16 +674,20 @@ class ReturnForm extends Component<any, any> {
       refundedAmount += currentProduct.refundedValue.toFixed(2) * 100
       try {
         this.saveMasterData(schemaNames.product, currentProduct)
-      } catch(e) {
+      } catch (e) {
         console.log(e)
       }
     })
 
+    const updatedRequest = {
+      ...request,
+      refundedAmount: parseInt(refundedAmount.toString()),
+      refundedShippingValue: Number((refundedShippingValue || 0) * 100 || 0),
+    }
 
-    const updatedRequest = { ...request, refundedAmount: parseInt(refundedAmount.toString()), refundedShippingValue: Number((refundedShippingValue || 0) * 100 || 0) }
     try {
       this.saveMasterData(schemaNames.request, updatedRequest)
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     }
 
