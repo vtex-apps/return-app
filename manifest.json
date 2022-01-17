@@ -69,5 +69,21 @@
     },
     "free": true
   },
+  "settingsSchema": {
+    "title": "profitshare",
+    "type": "object",
+    "properties": {
+      "cronId": {
+        "title": "Cron Id",
+        "description": "Enter Cron Id",
+        "type": "string"
+      },
+      "authToken": {
+        "title": "AuthToken",
+        "description": "Enter authToken",
+        "type": "string"
+      }
+    }
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

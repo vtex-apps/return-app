@@ -107,6 +107,14 @@
       "path": "/returns/createRefund/:orderId",
       "public": true,
       "settingsType": "workspace"
+    },
+    "ping": {
+      "path": "/returns/ping",
+      "public": true
+    },
+    "cron": {
+      "path": "/returns/cron",
+      "public": true
     }
   }
 }
