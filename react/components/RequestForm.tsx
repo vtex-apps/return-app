@@ -52,6 +52,7 @@ const messages = defineMessages({
   formBank: { id: 'returns.formBank' },
   formAgree: { id: 'returns.formAgree' },
   termsAndConditions: { id: 'returns.TermsConditions' },
+  reasonDefaultOption: { id: 'returns.reasonDefaultOption' },
   reasonAccidentalOrder: { id: 'returns.reasonAccidentalOrder' },
   reasonBetterPrice: { id: 'returns.reasonBetterPrice' },
   reasonPerformance: { id: 'returns.reasonPerformance' },
@@ -96,6 +97,7 @@ const messages = defineMessages({
   thReason: { id: 'returns.thReason' },
   condition: { id: 'returns.condition.label' },
   formErrorConditionMissing: { id: 'returns.formErrorConditionMissing' },
+  conditionDefaultOption: { id: 'returns.conditionDefaultOption' },
   conditionNewWithBox: { id: 'returns.newWithBox' },
   conditionNewWithoutBox: { id: 'returns.newWithoutBox' },
   conditionUsedWithBox: { id: 'returns.usedWithBox' },
@@ -270,7 +272,7 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
-          placeholder="Select Reason"
+          placeholder={formatMessage({ id: messages.reasonDefaultOption.id })}
           size="small"
           options={returnOptions}
           value={product.reasonCode}
@@ -339,7 +341,7 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
-          placeholder="Select Condition"
+          placeholder={formatMessage({ id: messages.conditionDefaultOption.id })}
           size="small"
           options={conditionOptions}
           value={product.condition}

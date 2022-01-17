@@ -142,3 +142,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Auto-update schemas
 - Payment method settings - display or hide payment methods
+
+## [2.16.2] - 2021-01-17
+
+### Fixed
+
+- Reason default option translate;
+- Condition default option translate;
