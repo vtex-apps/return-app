@@ -4,6 +4,7 @@
   "navigation.requestInfo": "Request Info",
   "navigation.labelSettings": "Returns Settings",
   "settings.updateSchema": "Updating Settings...",
+  "settings.allowSMSLinkIntegration_label": "Enable SMSLink integration",
   "settings.maxDays_label": "Max days:",
   "settings.terms_label": "Terms and conditions URL:",
   "settings.paymentMethods_label": "Available payment methods:",

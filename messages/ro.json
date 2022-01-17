@@ -4,6 +4,7 @@
   "navigation.requestInfo": "Cerere de retur",
   "navigation.labelSettings": "Setari",
   "settings.updateSchema": "Un moment, facem cateva actualizari pentru tine!",
+  "settings.allowSMSLinkIntegration_label": "Permite integrarea cu SMSLink",
   "settings.maxDays_label": "Numar maxim de zile:",
   "settings.terms_label": "URL pentru termeni si conditii:",
   "settings.paymentMethods_label": "Metode de plata:",

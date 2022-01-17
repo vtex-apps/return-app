@@ -94,12 +94,36 @@ class ReturnForm extends Component<any, any> {
       showLabelError: false,
       labelDisabled: false,
       totalAmount: 0,
+      settings: {}
     }
   }
 
   componentDidMount(): void {
     this.getProfile().then()
+    this.getSettings()
     this.getFullData()
+  }
+
+  getSettings = async () => {
+    // eslint-disable-next-line react/no-access-state-in-setstate
+    this.setState({ ...this.state, loading: true })
+    await fetch(
+      `${fetchPath.getDocuments + schemaNames.settings}/${
+        schemaTypes.settings
+      }/1`,
+      {
+        method: fetchMethod.get,
+        headers: fetchHeaders,
+      }
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((json) => {
+        if (!json?.[0]) return
+        this.setState({settings: json[0] })
+      })
+      .catch((err) => this.setState({ error: err }))
   }
 
   getGiftCardInfo(request: any) {
@@ -411,6 +435,7 @@ class ReturnForm extends Component<any, any> {
       product,
       registeredUser,
       comment,
+      settings
     } = this.state
 
     let requestData = request
@@ -509,6 +534,47 @@ class ReturnForm extends Component<any, any> {
 
         this.savePartial(schemaNames.request, requestBody)
         this.saveMasterData(schemaNames.history, statusHistoryData)
+
+        if(settings.allowSMSLinkIntegration) {
+          let smsLinkBody: any = {
+            requestId: request.id,
+            orderId: request.orderId,
+            phone: request.phoneNumber
+          }
+  
+          let sendSMS = true
+          let SMSLinkEvent = ''
+
+          switch (statusInput) {
+              case requestsStatuses.denied:
+                  SMSLinkEvent =  'request-denied'
+                  break;
+              case requestsStatuses.refunded:
+                  SMSLinkEvent =  'request-finalized'
+                  break;
+              case requestsStatuses.picked:
+                  SMSLinkEvent =  'parcel-received'
+                  break;
+              default:
+                  sendSMS = false
+          }
+         
+          if (sendSMS){
+            smsLinkBody = {
+              ...smsLinkBody,
+              event: SMSLinkEvent,
+            }
+            try {
+              fetch(`${fetchPath.sendSMS}`, {
+                method: fetchMethod.post,
+                body: JSON.stringify(smsLinkBody),
+                headers: fetchHeaders,
+              })
+            } catch {
+              // console.log(e)
+            }
+          }
+        }
 
         if (
           request.status === requestsStatuses.picked &&

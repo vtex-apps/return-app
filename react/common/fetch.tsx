@@ -16,6 +16,7 @@ export const fetchPath = {
   getOrder: '/returns/getOrder/',
   renderTemplates: '/api/template-render/pvt/templates',
   createRefund: '/returns/createRefund/',
+  sendSMS: '/sms-link-app/send-sms',
 }
 
 export const fetchMethod = {
