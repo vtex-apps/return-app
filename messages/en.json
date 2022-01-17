@@ -198,6 +198,7 @@
   "returns.showLabel": "View Shipping Label",
   "returns.condition.label": "Condition",
   "returns.formErrorConditionMissing": "Condition is required",
+  "returns.conditionDefaultOption": "Select Condition",
   "returns.newWithBox": "New With Box",
   "returns.newWithoutBox": "New Without Box",
   "returns.usedWithBox": "Used With Box",

@@ -191,6 +191,7 @@
   "returns.labelError": "Errore nell'invio dell'etichetta",
   "returns.condition.label": "Condizione",
   "returns.formErrorConditionMissing": "È obbligatorio inserire una condizione",
+  "returns.conditionDefaultOption": "Seleziona Condizione",
   "returns.newWithBox": "Nuovo con scatola",
   "returns.newWithoutBox": "Nuovo senza scatola",
   "returns.usedWithBox": "Usato con scatola",

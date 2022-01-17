@@ -97,6 +97,7 @@ const messages = defineMessages({
   thReason: { id: 'returns.thReason' },
   condition: { id: 'returns.condition.label' },
   formErrorConditionMissing: { id: 'returns.formErrorConditionMissing' },
+  conditionDefaultOption: { id: 'returns.conditionDefaultOption' },
   conditionNewWithBox: { id: 'returns.newWithBox' },
   conditionNewWithoutBox: { id: 'returns.newWithoutBox' },
   conditionUsedWithBox: { id: 'returns.usedWithBox' },
@@ -340,7 +341,7 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
-          placeholder="Select Condition"
+          placeholder={formatMessage({ id: messages.conditionDefaultOption.id })}
           size="small"
           options={conditionOptions}
           value={product.condition}
