@@ -793,6 +793,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       refundedAmount: 0,
       giftCardCode: '',
       giftCardId: '',
+      refundedShippingValue: 0,
       iban,
       accountHolder,
       status: requestsStatuses.new,
