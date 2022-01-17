@@ -176,6 +176,7 @@
   "returns.November": "November",
   "returns.December": "December",
   "returns.viewOrder": "view order",
+  "returns.reasonDefaultOption": "Select Reason",
   "returns.reasonAccidentalOrder": "Accidental order",
   "returns.reasonBetterPrice": "Better price available",
   "returns.reasonPerformance": "Performance or quality not adequate",

@@ -52,6 +52,7 @@ const messages = defineMessages({
   formBank: { id: 'returns.formBank' },
   formAgree: { id: 'returns.formAgree' },
   termsAndConditions: { id: 'returns.TermsConditions' },
+  reasonDefaultOption: { id: 'returns.reasonDefaultOption' },
   reasonAccidentalOrder: { id: 'returns.reasonAccidentalOrder' },
   reasonBetterPrice: { id: 'returns.reasonBetterPrice' },
   reasonPerformance: { id: 'returns.reasonPerformance' },
@@ -270,7 +271,7 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
-          placeholder="Select Reason"
+          placeholder={formatMessage({ id: messages.reasonDefaultOption.id })}
           size="small"
           options={returnOptions}
           value={product.reasonCode}

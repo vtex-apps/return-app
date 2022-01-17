@@ -161,6 +161,7 @@
   "returns.productStatusDenied": "Refuzat",
   "returns.viewOrder": "vezi comanda",
   "returns.reasonOther": "Alt motiv",
+  "returns.reasonDefaultOption": "Selectați Motivul",
   "returns.reasonAccidentalOrder": "Comandat din greseala",
   "returns.reasonBetterPrice": "Preț mai bun in alta parte",
   "returns.reasonPerformance": "Performanța sau calitatea nu sunt adecvate",
