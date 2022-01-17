@@ -1,6 +1,7 @@
 {
   "navigation.label": "Resi",
   "navigation.labelRequests": "Richieste",
+  "navigation.requestInfo": "Richiedi informazioni",
   "navigation.labelSettings": "Impostazioni di reso",
   "settings.updateSchema": "Aggiornamento delle impostazioni in corso",
   "settings.allowSMSLinkIntegration_label": "Abilita l'integrazione di SMSLink",
@@ -15,7 +16,7 @@
   "settings.noCustomOptions_HowTo": "Per aggiungere le tue opzioni di reso personalizzate, clicca sul pulsante in alto a destra della tabella",
   "settings.noCustomOptions_Disclaimer": "Tali opzioni sovrascriveranno quelle predefinite. Ciò significa che le opzioni visualizzate qui avranno la precedenza.",
   "settings.addCustomOption": "AGGIUNGI NUOVA OPZIONE",
-  "returns.sequenceNo": "",
+  "returns.sequenceNo": "Sequenza di numeri",
   "settings.deleteCustomOption": "ELIMINA OPZIONE",
   "settings.addCustomOption_Header": "AGGIUNGI UNA NUOVA OPZIONE DI RESO",
   "settings.addCustomOption_Required": "Obbligatorio",

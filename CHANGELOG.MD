@@ -7,9 +7,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Added
+### Fixed
+- The card refund method is valid only if the customer has paid for the order with the card.
+- Fix shipping value available in frontend
+- Fix shipping value refunded in frontend
+- Email fixes
+- The total value of the products was multiplied by 100 in frontend
+- The value of the product available for refund is displayed as "NAN" if the product did not have the tax set
+- "Submitted by" was blank in history timeline because of a prop.
+- Check to prevent users from viewing other users' return requests.
 
-- SMSLink integration
+
+### Fixed
+- Profile request for production environment
+- Fix requests schema for older requests
+
+### Fixed
+- Access for telesales user
+- GetProfile request from FE switched back to fetch instead of axios.
+- Quantity and availability of a product if there is already a return request placed for that product.
+
+### Fixed
+- totalPrice for partial requests
+
+### Changes
+- Get requests method has been changed to `searchDocumentsWithPaginationInfo`
+
+### Added
+- Cache-control: no-cache on middlewares
+- Navigation has been added in admin area to keep users on the same page when they open a request
 
 ### Fixed
 

@@ -1,6 +1,8 @@
 export const fetchPath = {
   getDocuments: '/returns/getDocuments/',
-  getProfile: '/no-cache/profileSystem/getProfile',
+  getRequests: '/returns/getRequests/',
+  getProfile: (rootPath?: string) =>
+    `${rootPath ?? ''}/no-cache/profileSystem/getProfile`,
   saveDocuments: '/returns/saveDocuments/',
   savePartialDocument: '/returns/savePartialDocument/',
   getCategories: '/returns/getCategories',

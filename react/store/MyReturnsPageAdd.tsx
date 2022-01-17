@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
 import { defineMessages, injectIntl } from 'react-intl'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import {
   schemaTypes,
@@ -12,6 +14,7 @@ import {
   sendMail,
   substractDays,
   getCurrentDate,
+  mergeArrays,
 } from '../common/utils'
 import { isValidIBANNumber } from '../common/validations'
 import { countries } from '../common/countries'
@@ -181,21 +184,34 @@ class MyReturnsPageAdd extends Component<any, State> {
       })
   }
 
-  getProfile() {
-    return this.props.fetchApi(fetchPath.getProfile).then((response) => {
-      if (response.data.IsUserDefined) {
-        this.setState({
-          userId: response.data.UserId,
-          name:
-            response.data.FirstName && response.data.LastName
-              ? `${response.data.FirstName} ${response.data.LastName}`
-              : '',
-          email: response.data.Email,
-        })
+  async getProfile() {
+    const { rootPath } = this.props.runtime
+    const profileUrl = fetchPath.getProfile(rootPath)
+
+    const profileResponse = await fetch(profileUrl)
+    const profile = await profileResponse.json()
+
+    if (profile.IsUserDefined) {
+      this.setState({
+        userId: profile.UserId,
+        name:
+          profile.FirstName && profile.LastName
+            ? `${profile.FirstName} ${profile.LastName}`
+            : '',
+        email: profile.Email,
+      })
+    } else {
+      const checkImpersonate = await fetch(`/api/sessions?items=*`)
+      const impersonate = await checkImpersonate.json()
+
+      if (!impersonate.namespaces.impersonate.canImpersonate.value) {
+        return false
       }
 
-      return Promise.resolve(response)
-    })
+      profile.Email = impersonate.namespaces.impersonate.storeUserEmail.value
+    }
+
+    return profile
   }
 
   async getSkuById(id: string) {
@@ -266,33 +282,56 @@ class MyReturnsPageAdd extends Component<any, State> {
   ) => {
     const thisOrder = order
 
-    thisOrder.refunds = order.items.map((item, index) => ({ 
+    let refundedProducts: any = []
+
+    order.items.forEach((prod: any) => {
+      refundedProducts.push({
+        id: prod.id,
+        refunded: 0,
+      })
+    })
+
+    order.packageAttachment.packages.forEach((pack: any) => {
+      if (Object.keys(pack.restitutions).length) {
+        pack.restitutions.Refund.items.forEach((prod: any) => {
+          let currentProduct = refundedProducts.find(
+            (elem) => elem.id === prod.id
+          )
+
+          if (currentProduct) {
+            currentProduct = {
+              ...currentProduct,
+              refunded: currentProduct.refunded + prod.quantity,
+            }
+            refundedProducts = mergeArrays(refundedProducts, currentProduct)
+          }
+        })
+      }
+    })
+
+    thisOrder.refunds = order.items.map((item, index) => ({
       ...item,
       itemIndex: index,
       totalProducts: item.quantity,
       reasonCode: '',
       reason: '',
       condition: '',
-      refundedPoducts: order.packageAttachment.packages
-        .slice(1)
-        .map(pack => (pack.items))
-        .reduce((acc, el) => acc.concat(el) ,[])
-        .filter(x => x.itemIndex === index)
-        .reduce((acc, el) => acc + el.quantity ,0),
-     }))
+      selectedQuantity: 0,
+      refundedPoducts:
+        refundedProducts.find((elem: any) => elem.id === item.id).refunded ?? 0,
+    }))
 
-     thisOrder.refunds = thisOrder.refunds.map(refund => ({
-       ...refund,
-       quantity: refund.totalProducts - refund.refundedPoducts
-     })).filter(item => item.totalProducts - item.refundedPoducts !== 0)
+    thisOrder.refunds = thisOrder.refunds
+      .map((refund) => ({
+        ...refund,
+        quantity: refund.totalProducts - refund.refundedPoducts,
+      }))
+      .filter((item) => item.totalProducts - item.refundedPoducts !== 0)
 
-    thisOrder.refundedProducts = order.packageAttachment.packages
-      .slice(1) // exclude the first package
-      .map(pack => pack.items
-        .reduce((acc, el) => acc + el.quantity,0))
-      .reduce((acc, el) => acc + el, 0)
-
-    thisOrder.totalProducts = order.items.reduce((acc, el) => acc + el.quantity, 0)
+    thisOrder.totalProducts = order.items.reduce(
+      (acc, el) => acc + el.quantity,
+      0
+    )
 
     if (order.shippingData.address) {
       thisOrder.country = order.shippingData.address.country
@@ -342,12 +381,15 @@ class MyReturnsPageAdd extends Component<any, State> {
 
         this.checkProduct(where, product.refId)
           .then((response) => {
+            currentProduct = {
+              ...currentProduct,
+              quantity: product.quantity - response,
+            }
             if (response >= product.quantity) {
               eligible = false
 
               return eligible
             }
-
 
             return eligible
           })
@@ -363,7 +405,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
     Promise.all(promises)
       .then((eligibleProducts) => {
-        const products = thisOrder.refunds
+        const products = eligibleProducts.filter((i) => i)
         const previousOrders = this.state.eligibleOrders
 
         if (products.length) {
@@ -416,13 +458,13 @@ class MyReturnsPageAdd extends Component<any, State> {
       if (settings !== null) {
         this.setState({ settings })
         this.getProfile().then((user) => {
-          this.getOrders(user.data.Email, settings.maxDays).then((orders) => {
+          this.getOrders(user.Email, settings.maxDays).then((orders) => {
             if ('list' in orders) {
               if (orders.list.length) {
                 orders.list.forEach((order: any) => {
-                    this.getOrder(order.orderId).then((currentOrder) => {
-                      this.prepareOrderData(currentOrder, settings, true)
-                    })
+                  this.getOrder(order.orderId).then((currentOrder) => {
+                    this.prepareOrderData(currentOrder, settings, true)
+                  })
                 })
                 setTimeout(() => {
                   this.setState({ loading: false })
@@ -1024,4 +1066,4 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 }
 
-export default injectIntl(MyReturnsPageAdd)
+export default injectIntl(withRuntimeContext(MyReturnsPageAdd))

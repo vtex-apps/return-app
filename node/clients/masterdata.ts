@@ -123,7 +123,7 @@ export default class Masterdata extends ExternalClient {
     return true
   }
 
-  // eslint-disable-next-line max-params
+
   public async getDocuments(
     ctx: any,
     schemaName: any,
@@ -150,6 +150,24 @@ export default class Masterdata extends ExternalClient {
       schema: schemaName,
       where: decodeURI(whereCls),
       sort: type !== 'settings' ? 'createdIn DESC' : '',
+    })
+  }
+
+  public async getDocumentsWithPagination(
+      ctx: any,
+      options: any,
+  ): Promise<any> {
+
+    return ctx.clients.masterdata.searchDocumentsWithPaginationInfo({
+      dataEntity: this.schemas.schemaEntity,
+      fields: [],
+      pagination: {
+        page: Number(options.page),
+        pageSize: Number(options.pageSize),
+      },
+      schema: options.schema,
+      where: decodeURI(options.where),
+      sort: `${options.sortBy} ${options.sortOrder}`,
     })
   }
 

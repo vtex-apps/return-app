@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import { Route } from 'vtex.my-account-commons/Router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
 
 import useAxiosInstance from './hooks/useAxiosModule'
 import ReturnsPage from './store/MyReturnsPage'
@@ -19,9 +20,16 @@ const headerConfig = {
 
 const StoreMyReturnsPageWrapper: FC = (props: any) => {
   const fetchApi = useAxiosInstance()
+  const { production, binding } = useRuntime()
 
   return (
-    <ReturnsPage {...props} headerConfig={headerConfig} fetchApi={fetchApi} />
+    <ReturnsPage
+      {...props}
+      headerConfig={headerConfig}
+      fetchApi={fetchApi}
+      production={production}
+      binding={binding}
+    />
   )
 }
 

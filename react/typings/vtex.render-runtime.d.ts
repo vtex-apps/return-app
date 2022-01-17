@@ -82,4 +82,6 @@ declare module 'vtex.render-runtime' {
   export interface SessionPromise {
     response: Session | SessionUnauthorized | SessionForbidden
   }
+
+  export function useRuntime()
 }

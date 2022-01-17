@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
-import axios from 'axios'
 import PropTypes from 'prop-types'
 import { injectIntl, defineMessages } from 'react-intl'
 import {
@@ -12,6 +11,7 @@ import {
   Link,
   Table,
 } from 'vtex.styleguide'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import styles from '../styles.css'
 import {
@@ -187,24 +187,30 @@ class MyReturnsPage extends Component<any, any> {
   }
 
   getProfile = () => {
-    this.props.fetchApi(fetchPath.getProfile).then((response) => {
-      if (response.data.IsUserDefined) {
-        this.setState((prevState: any) => ({
-          profile: {
-            ...prevState.profile,
-            Email: response.data.Email,
-            FirstName: response.data.FirstName,
-            Gender: response.data.Gender,
-            IsReturningUser: response.data.IsReturningUser,
-            IsUserDefined: response.data.IsUserDefined,
-            LastName: response.data.LastName,
-            UserId: response.data.UserId,
-          },
-        }))
+    const { rootPath } = this.props.runtime
+    const profileUrl = fetchPath.getProfile(rootPath)
 
-        this.getRequests(response.data.UserId, false)
-      }
-    })
+    fetch(profileUrl)
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.IsUserDefined) {
+          this.setState((prevState: any) => ({
+            profile: {
+              ...prevState.profile,
+              Email: response.Email,
+              FirstName: response.FirstName,
+              Gender: response.Gender,
+              IsReturningUser: response.IsReturningUser,
+              IsUserDefined: response.IsUserDefined,
+              LastName: response.LastName,
+              UserId: response.UserId,
+            },
+          }))
+
+          this.getRequests(response.UserId, false)
+        }
+      })
+      .catch(console.error)
   }
 
   getRequests(userId: string, resetFilters: boolean) {
@@ -660,4 +666,4 @@ class MyReturnsPage extends Component<any, any> {
   }
 }
 
-export default injectIntl(MyReturnsPage)
+export default injectIntl(withRuntimeContext(MyReturnsPage))

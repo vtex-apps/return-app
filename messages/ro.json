@@ -1,6 +1,7 @@
 {
   "navigation.label": "Returnari",
   "navigation.labelRequests": "Cereri de retur",
+  "navigation.requestInfo": "Cerere de retur",
   "navigation.labelSettings": "Setari",
   "settings.updateSchema": "Un moment, facem cateva actualizari pentru tine!",
   "settings.allowSMSLinkIntegration_label": "Permite integrarea cu SMSLink",

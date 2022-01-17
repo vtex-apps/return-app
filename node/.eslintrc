@@ -6,7 +6,9 @@
     "jest": true
   },
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
     "camelcase": [1, {"properties": "always"}
-    ]
+    ],
+    "no-console": "off"
   }
 }
