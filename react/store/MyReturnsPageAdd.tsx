@@ -770,7 +770,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       iban,
       accountHolder,
       orderProducts,
-      settings
+      settings,
     } = this.state
 
     orderProducts.forEach((product: any) => {
@@ -797,6 +797,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       iban,
       accountHolder,
       status: requestsStatuses.new,
+      refundedShippingValue: 0,
       dateSubmitted: getCurrentDate(),
       type: schemaTypes.requests,
     }
@@ -819,13 +820,14 @@ class MyReturnsPageAdd extends Component<any, State> {
           })
           .then(() => {
             this.showTable()
-            if(settings.allowSMSLinkIntegration) {
-              let smsLinkBody: any = {
+            if (settings.allowSMSLinkIntegration) {
+              const smsLinkBody: any = {
                 requestId: response.DocumentId,
                 orderId: requestData.orderId,
                 phone: requestData.phoneNumber,
-                event: 'request-created'
+                event: 'request-created',
               }
+
               try {
                 fetch(`${fetchPath.sendSMS}`, {
                   method: fetchMethod.post,
