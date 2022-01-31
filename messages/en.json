@@ -22,6 +22,8 @@
   "settings.addCustomOption_Name": "Return option",
   "settings.addCustomOption_Days": "Maximum return days",
   "settings.addCustomOption_Submit": "ADD OPTION",
+  "settings.otherOptions": "Other Options",
+  "settings.otherOptions_enable": "Enable Other Options",
   "returns.orderId": "Order ID",
   "returns.requestId": "Request ID",
   "returns.sequenceNumber": "Sequence No",

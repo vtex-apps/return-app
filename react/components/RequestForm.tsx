@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import {
   Button,
@@ -260,10 +260,16 @@ class RequestForm extends Component<Props> {
         return filteredOptions
       }, [])
 
+    /**
+     * Note: here push other value, that we get from the backend as a settings props from the parent component.
+     * settings.enableOtherOption
+     */
+    if(this.props.settings?.enableOtherOption){
       returnOptions.push({
         value: 'reasonOther',
         label: formatMessage({ id: messages.reasonOther.id }),
       })
+    }
     }
 
     return (
