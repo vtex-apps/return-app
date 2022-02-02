@@ -163,6 +163,7 @@ class MyReturnsPageAdd extends Component<any, State> {
     this.handleInputChange = this.handleInputChange.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
     this.sendRequest = this.sendRequest.bind(this)
+    this.sendData = this.sendData.bind(this)
   }
 
   async getSettings() {
@@ -895,21 +896,15 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 
   async sendData(body: any, schema: string) {
-    return fetch(fetchPath.saveDocuments + schema, {
+    const data = await fetch(fetchPath.saveDocuments + schema, {
       method: fetchMethod.post,
       body: JSON.stringify(body),
       headers: fetchHeaders,
     })
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        if (json) {
-          return Promise.resolve(json)
-        }
 
-        return Promise.resolve(null)
-      })
+    const response = await data.json()
+
+    return response
   }
 
   render() {
