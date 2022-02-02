@@ -162,6 +162,7 @@ class MyReturnsPageAdd extends Component<any, State> {
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
+    this.sendRequest = this.sendRequest.bind(this)
   }
 
   async getSettings() {
@@ -750,7 +751,7 @@ class MyReturnsPageAdd extends Component<any, State> {
     }))
   }
 
-  sendRequest() {
+  async sendRequest() {
     let totalPrice = 0
 
     this.setState({ errorSubmit: '' })
@@ -802,30 +803,38 @@ class MyReturnsPageAdd extends Component<any, State> {
 
     const { formatMessage } = this.props.intl
 
-    this.sendData(requestData, schemaNames.request).then((response) => {
+    let requestId
+
+    try {
+      const response = await this.sendData(requestData, schemaNames.request)
+
       if ('DocumentId' in response) {
-        this.addStatusHistory(response.DocumentId).then()
-        this.submitProductRequest(response.DocumentId)
-          .then(() => {
-            this.setState({
-              successSubmit: formatMessage({ id: messages.submitSuccess.id }),
-              submittedRequest: true,
-            })
-            sendMail({
-              data: { ...requestData, ...response },
-              products: orderProducts,
-            })
-          })
-          .then(() => {
-            this.showTable()
-          })
-      } else {
+        requestId = response.DocumentId
+        await this.addStatusHistory(requestId)
+        await this.submitProductRequest(requestId)
+
         this.setState({
-          errorSubmit: formatMessage({ id: messages.submitError.id }),
+          successSubmit: formatMessage({ id: messages.submitSuccess.id }),
           submittedRequest: true,
         })
+
+        sendMail({
+          data: { ...requestData, ...response },
+          products: orderProducts,
+        })
+
+        this.showTable()
+      } else {
+        throw new Error()
       }
-    })
+    } catch (e) {
+      // delete requestId
+      console.error({ e })
+      this.setState({
+        errorSubmit: formatMessage({ id: messages.submitError.id }),
+        submittedRequest: true,
+      })
+    }
   }
 
   async addStatusHistory(DocumentId: string) {
