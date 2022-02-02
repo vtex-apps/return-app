@@ -193,6 +193,7 @@ export const schemaTypes = {
 
 export const requestsStatuses = {
   new: 'New',
+  processing: 'Processing',
   picked: 'Picked up from client',
   pendingVerification: 'Pending verification',
   approved: 'Approved',
@@ -211,6 +212,7 @@ export const productStatuses = {
 
 export const statusHistoryTimeline = {
   new: 'new',
+  processing: 'Processing',
   picked: 'Picked up from client',
   pending: 'Pending verification',
   verified: 'Package verified',
@@ -349,6 +351,9 @@ export function prepareHistoryData(comment: any, request: any) {
     new: {
       id: 'returns.timelineNew',
     },
+    processing: {
+      id: 'returns.processing',
+    },
     picked: {
       id: 'returns.timelinePicked',
     },
@@ -380,6 +385,28 @@ export function prepareHistoryData(comment: any, request: any) {
         (item: any) => item.status === requestsStatuses.new
       ),
       active: 1,
+    },
+    {
+      status: statusHistoryTimeline.processing,
+      text: (
+        <span>
+          <FormattedMessageFixed id={messages.processing.id} />
+        </span>
+      ),
+      step: 1,
+      comments: comment.filter(
+        (item: any) => item.status === requestsStatuses.processing
+      ),
+      active:
+        request.status === requestsStatuses.processing ||
+        request.status === requestsStatuses.picked ||
+        request.status === requestsStatuses.pendingVerification ||
+        request.status === requestsStatuses.partiallyApproved ||
+        request.status === requestsStatuses.approved ||
+        request.status === requestsStatuses.denied ||
+        request.status === requestsStatuses.refunded
+          ? 1
+          : 0,
     },
     {
       status: statusHistoryTimeline.picked,
@@ -526,7 +553,10 @@ export function renderStatusIcon(request: any) {
     )
   }
 
-  if (request === requestsStatuses.pendingVerification) {
+  if (
+    request === requestsStatuses.pendingVerification ||
+    request === requestsStatuses.processing
+  ) {
     return (
       <div>
         <span className={styles.statusPendingVerification}>

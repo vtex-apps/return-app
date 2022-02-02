@@ -739,10 +739,37 @@ class ReturnForm extends Component<any, any> {
       allowedStatuses.push({
         label: formatMessage({
           id: `returns.status${getProductStatusTranslation(
+            requestsStatuses.processing
+          )}`,
+        }),
+        value: requestsStatuses.processing,
+      })
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `returns.status${getProductStatusTranslation(
             requestsStatuses.picked
           )}`,
         }),
         value: requestsStatuses.picked,
+      })
+    }
+
+    if (status === requestsStatuses.processing) {
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `returns.status${getProductStatusTranslation(
+            requestsStatuses.picked
+          )}`,
+        }),
+        value: requestsStatuses.picked,
+      })
+      allowedStatuses.push({
+        label: formatMessage({
+          id: `returns.status${getProductStatusTranslation(
+            requestsStatuses.denied
+          )}`,
+        }),
+        value: requestsStatuses.denied,
       })
     }
 
