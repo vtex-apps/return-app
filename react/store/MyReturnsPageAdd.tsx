@@ -6,6 +6,7 @@ import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
 import { defineMessages, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
+import { graphql } from 'react-apollo'
 
 import {
   schemaTypes,
@@ -23,6 +24,7 @@ import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 import EligibleOrdersTable from '../components/EligibleOrdersTable'
 import RequestInformation from '../components/RequestInformation'
 import RequestForm from '../components/RequestForm'
+import DELETE_RETURN_REQUEST from './graphql/deleteReturnRequest.gql'
 
 type Errors = {
   name: string
@@ -829,7 +831,7 @@ class MyReturnsPageAdd extends Component<any, State> {
         throw new Error()
       }
     } catch (e) {
-      // delete requestId
+      await this.props.deleteReturnRequest({ variables: { id: requestId } })
       console.error({ e })
       this.setState({
         errorSubmit: formatMessage({ id: messages.submitError.id }),
@@ -854,45 +856,46 @@ class MyReturnsPageAdd extends Component<any, State> {
   async submitProductRequest(DocumentId: string) {
     const { orderProducts, userId, selectedOrderId } = this.state
 
-    orderProducts.forEach((product: any) => {
+    for (const product of orderProducts) {
       if (parseInt(product.selectedQuantity, 10) > 0) {
-        this.getSkuById(product.id)
-          .then((response) => response.json())
-          .then((skuResponse) => {
-            const productData = {
-              userId,
-              orderId: selectedOrderId,
-              refundId: DocumentId,
-              skuId: product.refId ? product.refId : '',
-              productId: product.productId,
-              sku: product.id,
-              manufacturerCode: skuResponse.ManufacturerCode
-                ? skuResponse.ManufacturerCode
-                : '',
-              ean: product.ean ? product.ean : '',
-              brandId: product.additionalInfo.brandId,
-              brandName: product.additionalInfo.brandName,
-              skuName: product.name,
-              imageUrl: product.imageUrl,
-              reasonCode: product.reasonCode,
-              reason: product.reason,
-              condition: product.condition,
-              unitPrice: parseInt(product.sellingPrice, 10),
-              quantity: parseInt(product.selectedQuantity, 10),
-              totalPrice: parseInt(
-                String(product.sellingPrice * product.selectedQuantity),
-                10
-              ),
-              goodProducts: 0,
-              status: requestsStatuses.new,
-              dateSubmitted: getCurrentDate(),
-              type: schemaTypes.products,
-            }
+        // eslint-disable-next-line no-await-in-loop
+        const data = await this.getSkuById(product.id)
+        // eslint-disable-next-line no-await-in-loop
+        const skuResponse = await data.json()
+        const productData = {
+          userId,
+          orderId: selectedOrderId,
+          refundId: DocumentId,
+          skuId: product.refId ? product.refId : '',
+          productId: product.productId,
+          sku: product.id,
+          manufacturerCode: skuResponse.ManufacturerCode
+            ? skuResponse.ManufacturerCode
+            : '',
+          ean: product.ean ? product.ean : '',
+          brandId: product.additionalInfo.brandId,
+          brandName: product.additionalInfo.brandName,
+          skuName: product.name,
+          imageUrl: product.imageUrl,
+          reasonCode: product.reasonCode,
+          reason: product.reason,
+          condition: product.condition,
+          unitPrice: parseInt(product.sellingPrice, 10),
+          quantity: parseInt(product.selectedQuantity, 10),
+          totalPrice: parseInt(
+            String(product.sellingPrice * product.selectedQuantity),
+            10
+          ),
+          goodProducts: 0,
+          status: requestsStatuses.new,
+          dateSubmitted: getCurrentDate(),
+          type: schemaTypes.products,
+        }
 
-            this.sendData(productData, schemaNames.product).then()
-          })
+        // eslint-disable-next-line no-await-in-loop
+        await this.sendData(productData, schemaNames.product)
       }
-    })
+    }
   }
 
   async sendData(body: any, schema: string) {
@@ -1052,4 +1055,8 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 }
 
-export default injectIntl(withRuntimeContext(MyReturnsPageAdd))
+export default injectIntl(
+  graphql(DELETE_RETURN_REQUEST, { name: 'deleteReturnRequest' })(
+    withRuntimeContext(MyReturnsPageAdd)
+  )
+)
