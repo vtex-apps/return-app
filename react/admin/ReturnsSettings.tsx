@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import {
   Layout,
@@ -14,11 +14,11 @@ import {
   Table,
   Modal,
   Divider,
-  Checkbox
+  Checkbox,
 } from 'vtex.styleguide'
 
 import styles from '../styles.css'
-import { schemaNames, schemaTypes, isInt, verifySchemas } from '../common/utils'
+import { schemaNames, schemaTypes, verifySchemas } from '../common/utils'
 import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 
 const categoriesArray: any[] = []
@@ -304,8 +304,15 @@ class ReturnsSettings extends Component<any, any> {
       errorMessage: '',
       loading: true,
     })
-    const { maxDays, excludedCategories, termsUrl, id, payments, options, enableOtherOption } =
-      this.state
+    const {
+      maxDays,
+      excludedCategories,
+      termsUrl,
+      id,
+      payments,
+      options,
+      enableOtherOption,
+    } = this.state
 
     let hasErrors = false
 
@@ -425,10 +432,10 @@ class ReturnsSettings extends Component<any, any> {
     /**
      * toggle the Other Option checkbox on or off and set otherOption in the state
      */
-    this.setState({
-      enableOtherOption : !this.state.enableOtherOption
-    });
-}
+    this.setState((prevState) => ({
+      enableOtherOption: !prevState.enableOtherOption,
+    }))
+  }
 
   render() {
     const {
@@ -615,7 +622,7 @@ class ReturnsSettings extends Component<any, any> {
                       id: messages.noCustomOptions.id,
                     })}
                     emptyStateChildren={
-                      <Fragment>
+                      <React.Fragment>
                         <p>
                           {formatMessage({
                             id: messages.noCustomOptionsHowTo.id,
@@ -626,7 +633,7 @@ class ReturnsSettings extends Component<any, any> {
                             id: messages.noCustomOptionsDisclaimer.id,
                           })}
                         </p>
-                      </Fragment>
+                      </React.Fragment>
                     }
                     toolbar={{
                       newLine: {
@@ -655,13 +662,14 @@ class ReturnsSettings extends Component<any, any> {
                   </div>
                   <Checkbox
                     checked={enableOtherOption}
-                    label={formatMessage({ id: messages.enableOtherOptions.id })}
+                    label={formatMessage({
+                      id: messages.enableOtherOptions.id,
+                    })}
                     name="disabled-checkbox-group"
                     onChange={this.handleEnableOtherOption}
                     value="return-other-option"
                     id="return-other-option-checkbox"
                   />
-                  
                   <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
                     <div className="flex flex-column">
                       <div className="w-100">
