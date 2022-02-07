@@ -53,7 +53,7 @@ const messages = defineMessages({
   all: { id: 'returns.all' },
   saveSettings: { id: 'settings.saveSettings' },
   otherOptions: { id: 'settings.otherOptions' },
-  enableOtherOptions: { id: 'settings.enableOtherOption' },
+  enableOtherOptions: { id: 'settings.otherOptions_enable' },
 })
 
 class ReturnsSettings extends Component<any, any> {

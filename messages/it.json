@@ -23,7 +23,7 @@
   "settings.addCustomOption_Days": "Numero massimo di giorni per il reso",
   "settings.addCustomOption_Submit": "AGGIUNGI OPZIONE",
   "settings.otherOptions": "Altre opzioni",
-  "settings.enableOtherOption": "Abilita altre opzioni",
+  "settings.otherOptions_enable": "Abilita altre opzioni",
   "returns.orderId": "ID ordine",
   "returns.requestId": "ID richiesta",
   "returns.submittedDate": "Data di invio",
