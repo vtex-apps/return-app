@@ -22,7 +22,7 @@
   "settings.addCustomOption_Days": "Zile maxime de returnare",
   "settings.addCustomOption_Submit": "ADĂUGAȚI OPȚIUNEA",
   "settings.otherOptions": "Alte optiuni",
-  "settings.otherOptions_enable": "Activați alte opțiuni",
+  "settings.enableOtherOption": "Activați alte opțiuni",
   "returns.orderId": "Id comanda",
   "returns.requestId": "Id solicitare",
   "returns.sequenceNumber": "Numar secventa",
