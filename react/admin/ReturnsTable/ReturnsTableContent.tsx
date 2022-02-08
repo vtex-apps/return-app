@@ -164,7 +164,7 @@ class ReturnsTableContent extends Component<any, any> {
         tableIsLoading: false,
         paging: {
           ...prevState.paging,
-          total: returns.pagination.total,
+          // total: returns.pagination.total,
         },
       }))
       // this.setState({
@@ -344,6 +344,15 @@ class ReturnsTableContent extends Component<any, any> {
 
     const currentItemTo =
       Number(this.state.currentItemTo) + Number(paging.perPage)
+
+    this.setState(
+      (prevState) => ({
+        paging: prevState.paging,
+        currentItemFrom,
+        currentItemTo,
+      }),
+      this.getRequests
+    )
 
     // this.setState(
     //     {paging, currentItemFrom, currentItemTo},
