@@ -159,16 +159,6 @@ class ReturnsTableContent extends Component<any, any> {
           total: returns.pagination?.total,
         },
       }))
-      //   this.setState({
-      //     returns: returns.data,
-      //     orderedItems: returns,
-      //     slicedData: returns.length ? returns.slice(0, tableLength) : [],
-      //     tableIsLoading: false,
-      //     paging: {
-      //       ...this.state.paging,
-      //       total: returns.pagination.total,
-      //     },
-      //   })
     }
 
     this.setState({ tableIsLoading: false })
@@ -328,7 +318,6 @@ class ReturnsTableContent extends Component<any, any> {
 
   handleNextClick() {
     const { paging } = this.state
-    // paging.page = Number(paging.page) + 1
 
     const currentItemFrom =
       Number(this.state.currentItemFrom) + Number(paging.perPage)
@@ -345,8 +334,6 @@ class ReturnsTableContent extends Component<any, any> {
         currentItemTo,
       }
     }, this.getRequests)
-
-    // this.setState({ paging, currentItemFrom, currentItemTo }, this.getRequests)
   }
 
   handlePrevClick() {
@@ -369,7 +356,6 @@ class ReturnsTableContent extends Component<any, any> {
         currentItemTo,
       }
     }, this.getRequests)
-    // this.setState({ paging, currentItemFrom, currentItemTo }, this.getRequests)
   }
 
   handleFirstPageFilter() {
