@@ -1,0 +1,7 @@
+type Query {
+  doNotCall: Boolean
+}
+
+type Mutation {
+  deleteReturnRequest(Id: [ID]!): Boolean
+}
