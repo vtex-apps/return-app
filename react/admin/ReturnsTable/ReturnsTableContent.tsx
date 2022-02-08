@@ -164,7 +164,7 @@ class ReturnsTableContent extends Component<any, any> {
         tableIsLoading: false,
         paging: {
           ...prevState.paging,
-          // total: returns.pagination.total,
+          total: returns.pagination.total,
         },
       }))
       // this.setState({
