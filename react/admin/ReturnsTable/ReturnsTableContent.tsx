@@ -100,14 +100,6 @@ class ReturnsTableContent extends Component<any, any> {
   async getRequests() {
     this.setState({ tableIsLoading: true })
     const { filters, paging, dataSort } = this.state
-
-    /**
-     * here we reset the paging to 1 when we filter the table.
-     */
-    this.setState({
-      paging: initialPaging,
-    })
-
     let where = 'type=request'
 
     if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
@@ -164,19 +156,19 @@ class ReturnsTableContent extends Component<any, any> {
         tableIsLoading: false,
         paging: {
           ...prevState.paging,
-          total: returns.pagination.total,
+          total: returns.pagination?.total,
         },
       }))
-      // this.setState({
+      //   this.setState({
       //     returns: returns.data,
       //     orderedItems: returns,
       //     slicedData: returns.length ? returns.slice(0, tableLength) : [],
       //     tableIsLoading: false,
       //     paging: {
-      //         ...this.state.paging,
-      //         total: returns.pagination.total,
+      //       ...this.state.paging,
+      //       total: returns.pagination.total,
       //     },
-      // })
+      //   })
     }
 
     this.setState({ tableIsLoading: false })
@@ -319,7 +311,7 @@ class ReturnsTableContent extends Component<any, any> {
     if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
       this.handleResetFilters()
     } else {
-      this.getRequests()
+      this.handleFirstPageFilter()
     }
   }
 
@@ -336,8 +328,7 @@ class ReturnsTableContent extends Component<any, any> {
 
   handleNextClick() {
     const { paging } = this.state
-
-    paging.page = Number(paging.page) + 1
+    // paging.page = Number(paging.page) + 1
 
     const currentItemFrom =
       Number(this.state.currentItemFrom) + Number(paging.perPage)
@@ -345,45 +336,55 @@ class ReturnsTableContent extends Component<any, any> {
     const currentItemTo =
       Number(this.state.currentItemTo) + Number(paging.perPage)
 
-    this.setState(
-      (prevState) => ({
+    this.setState((prevState) => {
+      prevState.paging.page = Number(prevState.paging.page) + 1
+
+      return {
         paging: prevState.paging,
         currentItemFrom,
         currentItemTo,
-      }),
-      this.getRequests
-    )
+      }
+    }, this.getRequests)
 
-    // this.setState(
-    //     {paging, currentItemFrom, currentItemTo},
-    //     this.getRequests
-    // )
+    // this.setState({ paging, currentItemFrom, currentItemTo }, this.getRequests)
   }
 
   handlePrevClick() {
     const { paging } = this.state
 
     if (paging.page === 0) return
-    paging.page = Number(paging.page) - 1
+
     const currentItemFrom =
       Number(this.state.currentItemFrom) - Number(paging.perPage)
 
     const currentItemTo =
       Number(this.state.currentItemTo) - Number(paging.perPage)
 
-    this.setState(
-      (prevState) => ({
+    this.setState((prevState) => {
+      prevState.paging.page -= 1
+
+      return {
         paging: prevState.paging,
         currentItemFrom,
         currentItemTo,
-      }),
-      this.getRequests
-    )
+      }
+    }, this.getRequests)
+    // this.setState({ paging, currentItemFrom, currentItemTo }, this.getRequests)
+  }
 
-    // this.setState(
-    //     {paging, currentItemFrom, currentItemTo},
-    //     this.getRequests
-    // )
+  handleFirstPageFilter() {
+    const currentItemFrom = Number(this.state.currentItemFrom)
+    const currentItemTo = Number(this.state.currentItemTo)
+
+    this.setState((prevState) => {
+      prevState.paging.page = 1
+
+      return {
+        paging: prevState.paging,
+        currentItemFrom,
+        currentItemTo,
+      }
+    }, this.getRequests)
   }
 
   handleViewRequest = (requestId: string) => {
