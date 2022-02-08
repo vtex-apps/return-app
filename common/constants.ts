@@ -65,6 +65,7 @@ export const SETTINGS_SCHEMA = {
     'options',
     'type',
   ],
+  'v-immediate-indexing': true,
 }
 
 export const RETURNS_SCHEMA = {
@@ -124,6 +125,7 @@ export const RETURNS_SCHEMA = {
     publicJsonSchema: false,
   },
   'v-cache': false,
+  'v-immediate-indexing': true,
   'v-default-fields': [
     'id',
     'createdIn',
@@ -229,6 +231,7 @@ export const COMMENTS_SCHEMA = {
     'dateSubmitted',
     'type',
   ],
+  'v-immediate-indexing': true,
 }
 
 export const PRODUCTS_SCHEMA = {
@@ -284,6 +287,7 @@ export const PRODUCTS_SCHEMA = {
     ],
     publicJsonSchema: false,
   },
+  'v-immediate-indexing': true,
   'v-cache': false,
   'v-default-fields': [
     'id',
@@ -344,6 +348,7 @@ export const HISTORY_SCHEMA = {
     ],
     publicJsonSchema: false,
   },
+  'v-immediate-indexing': true,
   'v-cache': false,
   'v-default-fields': [
     'id',
