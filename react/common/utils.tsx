@@ -21,7 +21,7 @@ import {
   SETTINGS_SCHEMA,
 } from '../../common/constants'
 import { fetchPath } from './fetch'
-import getCurrentStep from './helpers/timelineActiveStatus'
+import isCurrentStepActive from './helpers/timelineActiveStatus'
 
 export function getCurrentDate() {
   return new Date().toISOString()
@@ -398,7 +398,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.processing
       ),
-      active: getCurrentStep({ status: request.status }) >= 2 ? 1 : 0, // 2 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 2 }), // 2 baseed on the current step
     },
     {
       status: statusHistoryTimeline.picked,
@@ -407,7 +407,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.picked
       ),
-      active: getCurrentStep({ status: request.status }) >= 3 ? 1 : 0, // 3 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 3 }), // 3 baseed on the current step
     },
     {
       status: statusHistoryTimeline.pending,
@@ -416,7 +416,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.pendingVerification
       ),
-      active: getCurrentStep({ status: request.status }) >= 4 ? 1 : 0, // 4 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 4 }), // 4 baseed on the current step
     },
     {
       status: statusHistoryTimeline.verified,
@@ -428,7 +428,7 @@ export function prepareHistoryData(comment: any, request: any) {
           item.status === requestsStatuses.approved ||
           item.status === requestsStatuses.denied
       ),
-      active: getCurrentStep({ status: request.status }) >= 5 ? 1 : 0, // 5 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 5 }), // 5 baseed on the current step
     },
     {
       status: statusHistoryTimeline.refunded,
@@ -444,7 +444,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.refunded
       ),
-      active: getCurrentStep({ status: request.status }) >= 6 ? 1 : 0, // 6 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 6 }), // 6 baseed on the current step
     },
   ]
 

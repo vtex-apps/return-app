@@ -29,4 +29,17 @@ const getCurrentStep = ({ status }: Request): number => {
   return stepStatusDictionary[status]
 }
 
-export default getCurrentStep
+/**
+ *
+ * @param param.status - status of request ("New" , "Processing" , "Picked up from client" , "Pending verification" , "Approved" , "Partially approved" , "Denied" , "Refunded").
+ * @param param.step - current step of request.
+ * @returns 1 | 0
+ */
+const isCurrentStepActive = ({
+  status,
+  step,
+}: Request & { step: number }): 1 | 0 => {
+  return getCurrentStep({ status }) >= step ? 1 : 0
+}
+
+export default isCurrentStepActive
