@@ -200,7 +200,7 @@ export const requestsStatuses = {
   partiallyApproved: 'Partially approved',
   denied: 'Denied',
   refunded: 'Refunded',
-}
+} as const
 
 export const productStatuses = {
   new: 'New',

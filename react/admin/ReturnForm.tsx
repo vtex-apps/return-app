@@ -37,6 +37,7 @@ import StatusHistoryTable from '../components/StatusHistoryTable'
 import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 import StatusHistoryTimeline from '../components/StatusHistoryTimeline'
 import CREATE_LABEL from '../graphql/createLabel.gql'
+import allowedStatusList from '../common/helpers/allowedStatus'
 
 const messages = defineMessages({
   statusCommentError: { id: 'returns.statusCommentError' },
@@ -709,153 +710,11 @@ class ReturnForm extends Component<any, any> {
     })
   }
 
-  allowedStatuses(status) {
+  allowedStatusListHandler(status) {
     const { product } = this.state
-    const extractStatuses = {
-      [productStatuses.new]: 0,
-      [productStatuses.pendingVerification]: 0,
-      [productStatuses.partiallyApproved]: 0,
-      [productStatuses.approved]: 0,
-      [productStatuses.denied]: 0,
-    }
-
-    let totalProducts = 0
-
-    product.forEach((currentProduct) => {
-      extractStatuses[currentProduct.status] += 1
-      totalProducts += 1
-    })
-
     const { formatMessage } = this.props.intl
 
-    const currentStatus = formatMessage({
-      id: `returns.status${getProductStatusTranslation(status)}`,
-    })
-
-    // const currentStatus = status + " (current status)";
-    let allowedStatuses: any = [{ label: currentStatus, value: status }]
-
-    if (status === requestsStatuses.new) {
-      allowedStatuses.push({
-        label: formatMessage({
-          id: `returns.status${getProductStatusTranslation(
-            requestsStatuses.processing
-          )}`,
-        }),
-        value: requestsStatuses.processing,
-      })
-      allowedStatuses.push({
-        label: formatMessage({
-          id: `returns.status${getProductStatusTranslation(
-            requestsStatuses.picked
-          )}`,
-        }),
-        value: requestsStatuses.picked,
-      })
-    }
-
-    if (status === requestsStatuses.processing) {
-      allowedStatuses.push({
-        label: formatMessage({
-          id: `returns.status${getProductStatusTranslation(
-            requestsStatuses.picked
-          )}`,
-        }),
-        value: requestsStatuses.picked,
-      })
-      allowedStatuses.push({
-        label: formatMessage({
-          id: `returns.status${getProductStatusTranslation(
-            requestsStatuses.denied
-          )}`,
-        }),
-        value: requestsStatuses.denied,
-      })
-    }
-
-    if (status === requestsStatuses.picked) {
-      allowedStatuses.push({
-        label: formatMessage({
-          id: `returns.status${getProductStatusTranslation(
-            requestsStatuses.pendingVerification
-          )}`,
-        }),
-        value: requestsStatuses.pendingVerification,
-      })
-    }
-
-    if (status === requestsStatuses.new || status === requestsStatuses.picked) {
-      allowedStatuses.push({
-        label: formatMessage({
-          id: `returns.status${getProductStatusTranslation(
-            requestsStatuses.denied
-          )}`,
-        }),
-        value: requestsStatuses.denied,
-      })
-    }
-
-    if (status === requestsStatuses.pendingVerification) {
-      if (
-        extractStatuses[productStatuses.new] > 0 ||
-        extractStatuses[productStatuses.pendingVerification] > 0
-      ) {
-        // Caz in care cel putin un produs nu a fost verificat >> Pending Verification. Nu actionam
-      } else if (extractStatuses[productStatuses.approved] === totalProducts) {
-        // Caz in care toate sunt Approved >> Approved
-        allowedStatuses.push({
-          label: formatMessage({
-            id: `returns.status${getProductStatusTranslation(
-              requestsStatuses.approved
-            )}`,
-          }),
-          value: requestsStatuses.approved,
-        })
-      } else if (extractStatuses[productStatuses.denied] === totalProducts) {
-        // Caz in care toate produsele sunt denied >> Denied
-        allowedStatuses.push({
-          label: formatMessage({
-            id: `returns.status${getProductStatusTranslation(
-              requestsStatuses.denied
-            )}`,
-          }),
-          value: requestsStatuses.denied,
-        })
-      } else if (
-        (extractStatuses[productStatuses.approved] > 0 &&
-          extractStatuses[productStatuses.approved] < totalProducts) ||
-        extractStatuses[productStatuses.partiallyApproved] > 0
-      ) {
-        // Caz in care exista produse approved sau partiallyApproved si sau denied >> Partially Approved
-        allowedStatuses.push({
-          label: formatMessage({
-            id: `returns.status${getProductStatusTranslation(
-              requestsStatuses.partiallyApproved
-            )}`,
-          }),
-          value: requestsStatuses.partiallyApproved,
-        })
-      }
-    }
-
-    if (
-      status === requestsStatuses.partiallyApproved ||
-      status === requestsStatuses.approved
-    ) {
-      allowedStatuses = [
-        { label: currentStatus, value: status },
-        {
-          label: formatMessage({
-            id: `returns.status${getProductStatusTranslation(
-              requestsStatuses.refunded
-            )}`,
-          }),
-          value: requestsStatuses.refunded,
-        },
-      ]
-    }
-
-    return allowedStatuses
+    return allowedStatusList({ status, product, formatMessage })
   }
 
   createLabel = async (doMutation) => {
@@ -956,7 +815,7 @@ class ReturnForm extends Component<any, any> {
     } = this.state
 
     const { formatMessage } = this.props.intl
-    const statusesOptions = this.allowedStatuses(request.status)
+    const statusesOptions = this.allowedStatusListHandler(request.status)
 
     return (
       <div>
