@@ -817,8 +817,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
       if ('DocumentId' in response) {
         requestId = response.DocumentId
-        console.log(requestId, 'req id')
-        console.log(typeof requestId, 'typeee')
+
         await this.addStatusHistory(requestId)
         const productsResponse = await this.submitProductRequest(requestId)
 
@@ -826,7 +825,6 @@ class MyReturnsPageAdd extends Component<any, State> {
           deleteIdsArg = [requestId, ...productsResponse]
         }
 
-        console.log(productsResponse, 'productsResponse')
         throw new Error()
 
         this.setState({
@@ -844,14 +842,12 @@ class MyReturnsPageAdd extends Component<any, State> {
         throw new Error()
       }
     } catch (e) {
-      console.log(deleteIdsArg, 'deleteIdsArg')
       await this.props.deleteReturnRequest({ variables: { Id: deleteIdsArg } })
       console.error({ e })
       this.setState({
         errorSubmit: formatMessage({ id: messages.submitError.id }),
         submittedRequest: true,
       })
-      console.log('been here')
     }
   }
 
@@ -908,7 +904,6 @@ class MyReturnsPageAdd extends Component<any, State> {
           type: schemaTypes.products,
         }
 
-        console.log({ productData })
         try {
           // eslint-disable-next-line no-await-in-loop
           const resSingleProd = await this.sendData(
@@ -917,7 +912,6 @@ class MyReturnsPageAdd extends Component<any, State> {
           )
 
           indexes.push(resSingleProd.DocumentId)
-          console.log(resSingleProd, 'Refund id? from res')
         } catch (e) {
           console.error(e)
         }
