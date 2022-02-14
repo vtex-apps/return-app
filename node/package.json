@@ -17,19 +17,19 @@
     "vtex.device-detector": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.device-detector@0.2.6/public/@types/vtex.device-detector",
     "vtex.easypost": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost",
     "vtex.format-currency": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.3.0/public/@types/vtex.format-currency",
-    "vtex.my-account": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.22.0/public/@types/vtex.my-account",
+    "vtex.my-account": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.24.0/public/@types/vtex.my-account",
     "vtex.my-account-commons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons",
     "vtex.react-portal": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.react-portal@0.4.1/public/@types/vtex.react-portal",
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime",
-    "vtex.session-client": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.session-client@1.0.2/public/@types/vtex.session-client",
-    "vtex.store": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.120.1/public/@types/vtex.store",
-    "vtex.store-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.154.0/public/@types/vtex.store-components",
-    "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.146.2/public/@types/vtex.store-graphql",
+    "vtex.return-app": "https://zeki--vtexspain.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.16.1+build1644361871/public/@types/vtex.return-app",
+    "vtex.store": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.121.1/public/@types/vtex.store",
+    "vtex.store-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.155.9/public/@types/vtex.store-components",
+    "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.2/public/@types/vtex.store-graphql",
     "vtex.store-icons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-icons@0.18.0/public/@types/vtex.store-icons",
     "vtex.store-resources": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-resources@0.85.0/public/@types/vtex.store-resources",
     "vtex.store-session": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-session@0.3.6/public/_types/react",
-    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.145.0/public/@types/vtex.styleguide",
-    "vtex.telemarketing": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.telemarketing@2.10.2/public/@types/vtex.telemarketing"
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.145.2/public/@types/vtex.styleguide",
+    "vtex.telemarketing": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.telemarketing@2.10.3/public/@types/vtex.telemarketing"
   },
   "scripts": {
     "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"

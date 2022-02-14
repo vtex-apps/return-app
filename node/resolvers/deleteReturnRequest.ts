@@ -1,16 +1,21 @@
 export const deleteReturnRequest = async (
   _: unknown,
-  args: { id: string },
+  args: { Id: string[] },
   ctx: Context
 ) => {
-  const { id } = args
+  const { Id } = args
   const {
     clients: { masterdata },
   } = ctx
 
+  const promises = Id.map((id) => {
+    return masterdata.deleteDocument({ id, dataEntity: 'ReturnApp' })
+  })
+
+  await Promise.all(promises)
+
   // Hard coded data entity name. Later, we should take it to a constant file.
   // Not doing now to avoid confusion with other constant files
-  await masterdata.deleteDocument({ id, dataEntity: 'ReturnApp' })
 
   return true
 }

@@ -6,6 +6,7 @@ import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
 import { defineMessages, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
+import { withCssHandles } from 'vtex.css-handles'
 import { graphql } from 'react-apollo'
 
 import {
@@ -123,6 +124,8 @@ const emailValidation = (email: string) => {
     email
   )
 }
+
+const CSS_HANDLES = ['errorContainer']
 
 class MyReturnsPageAdd extends Component<any, State> {
   static propTypes = {
@@ -807,14 +810,22 @@ class MyReturnsPageAdd extends Component<any, State> {
     const { formatMessage } = this.props.intl
 
     let requestId
+    let deleteIdsArg: string[] = []
 
     try {
       const response = await this.sendData(requestData, schemaNames.request)
 
       if ('DocumentId' in response) {
         requestId = response.DocumentId
+
         await this.addStatusHistory(requestId)
-        await this.submitProductRequest(requestId)
+        const productsResponse = await this.submitProductRequest(requestId)
+
+        if (productsResponse) {
+          deleteIdsArg = [requestId, ...productsResponse]
+        }
+
+        throw new Error()
 
         this.setState({
           successSubmit: formatMessage({ id: messages.submitSuccess.id }),
@@ -831,7 +842,7 @@ class MyReturnsPageAdd extends Component<any, State> {
         throw new Error()
       }
     } catch (e) {
-      await this.props.deleteReturnRequest({ variables: { id: requestId } })
+      await this.props.deleteReturnRequest({ variables: { Id: deleteIdsArg } })
       console.error({ e })
       this.setState({
         errorSubmit: formatMessage({ id: messages.submitError.id }),
@@ -855,6 +866,7 @@ class MyReturnsPageAdd extends Component<any, State> {
 
   async submitProductRequest(DocumentId: string) {
     const { orderProducts, userId, selectedOrderId } = this.state
+    const indexes: string[] = []
 
     for (const product of orderProducts) {
       if (parseInt(product.selectedQuantity, 10) > 0) {
@@ -892,10 +904,21 @@ class MyReturnsPageAdd extends Component<any, State> {
           type: schemaTypes.products,
         }
 
-        // eslint-disable-next-line no-await-in-loop
-        await this.sendData(productData, schemaNames.product)
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const resSingleProd = await this.sendData(
+            productData,
+            schemaNames.product
+          )
+
+          indexes.push(resSingleProd.DocumentId)
+        } catch (e) {
+          console.error(e)
+        }
       }
     }
+
+    return indexes
   }
 
   async sendData(body: any, schema: string) {
@@ -940,6 +963,7 @@ class MyReturnsPageAdd extends Component<any, State> {
     }: any = this.state
 
     const { formatMessage } = this.props.intl
+    const { cssHandles } = this.props
 
     return (
       <ContentWrapper {...this.props.headerConfig}>
@@ -958,6 +982,11 @@ class MyReturnsPageAdd extends Component<any, State> {
                 {successSubmit ? (
                   <div className={styles.successContainer}>
                     <p className={styles.successMessage}>{successSubmit}</p>
+                  </div>
+                ) : null}
+                {errorSubmit ? (
+                  <div className={`${cssHandles.errorContainer} mb4`}>
+                    <p className={styles.errorMessage}>{errorSubmit}</p>
                   </div>
                 ) : null}
                 <div className="flex flex-column items-center">
@@ -1057,6 +1086,6 @@ class MyReturnsPageAdd extends Component<any, State> {
 
 export default injectIntl(
   graphql(DELETE_RETURN_REQUEST, { name: 'deleteReturnRequest' })(
-    withRuntimeContext(MyReturnsPageAdd)
+    withCssHandles(CSS_HANDLES)(withRuntimeContext(MyReturnsPageAdd))
   )
 )
