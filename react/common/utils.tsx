@@ -21,6 +21,7 @@ import {
   SETTINGS_SCHEMA,
 } from '../../common/constants'
 import { fetchPath } from './fetch'
+import isCurrentStepActive from './helpers/timelineActiveStatus'
 
 export function getCurrentDate() {
   return new Date().toISOString()
@@ -193,13 +194,14 @@ export const schemaTypes = {
 
 export const requestsStatuses = {
   new: 'New',
+  processing: 'Processing',
   picked: 'Picked up from client',
   pendingVerification: 'Pending verification',
   approved: 'Approved',
   partiallyApproved: 'Partially approved',
   denied: 'Denied',
   refunded: 'Refunded',
-}
+} as const
 
 export const productStatuses = {
   new: 'New',
@@ -211,6 +213,7 @@ export const productStatuses = {
 
 export const statusHistoryTimeline = {
   new: 'new',
+  processing: 'Processing',
   picked: 'Picked up from client',
   pending: 'Pending verification',
   verified: 'Package verified',
@@ -349,6 +352,9 @@ export function prepareHistoryData(comment: any, request: any) {
     new: {
       id: 'returns.timelineNew',
     },
+    processing: {
+      id: 'returns.processing',
+    },
     picked: {
       id: 'returns.timelinePicked',
     },
@@ -382,55 +388,47 @@ export function prepareHistoryData(comment: any, request: any) {
       active: 1,
     },
     {
+      status: statusHistoryTimeline.processing,
+      text: (
+        <span>
+          <FormattedMessageFixed id={messages.processing.id} />
+        </span>
+      ),
+      step: 2,
+      comments: comment.filter(
+        (item: any) => item.status === requestsStatuses.processing
+      ),
+      active: isCurrentStepActive({ status: request.status, step: 2 }), // 2 baseed on the current step
+    },
+    {
       status: statusHistoryTimeline.picked,
       text: <FormattedMessageFixed id={messages.picked.id} />,
-      step: 2,
+      step: 3,
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.picked
       ),
-      active:
-        request.status === requestsStatuses.picked ||
-        request.status === requestsStatuses.pendingVerification ||
-        request.status === requestsStatuses.partiallyApproved ||
-        request.status === requestsStatuses.approved ||
-        request.status === requestsStatuses.denied ||
-        request.status === requestsStatuses.refunded
-          ? 1
-          : 0,
+      active: isCurrentStepActive({ status: request.status, step: 3 }), // 3 baseed on the current step
     },
     {
       status: statusHistoryTimeline.pending,
       text: <FormattedMessageFixed id={messages.pending.id} />,
-      step: 3,
+      step: 4,
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.pendingVerification
       ),
-      active:
-        request.status === requestsStatuses.pendingVerification ||
-        request.status === requestsStatuses.partiallyApproved ||
-        request.status === requestsStatuses.approved ||
-        request.status === requestsStatuses.denied ||
-        request.status === requestsStatuses.refunded
-          ? 1
-          : 0,
+      active: isCurrentStepActive({ status: request.status, step: 4 }), // 4 baseed on the current step
     },
     {
       status: statusHistoryTimeline.verified,
       text: <FormattedMessageFixed id={messages.verified.id} />,
-      step: 4,
+      step: 5,
       comments: comment.filter(
         (item: any) =>
           item.status === requestsStatuses.partiallyApproved ||
           item.status === requestsStatuses.approved ||
           item.status === requestsStatuses.denied
       ),
-      active:
-        request.status === requestsStatuses.partiallyApproved ||
-        request.status === requestsStatuses.approved ||
-        request.status === requestsStatuses.denied ||
-        request.status === requestsStatuses.refunded
-          ? 1
-          : 0,
+      active: isCurrentStepActive({ status: request.status, step: 5 }), // 5 baseed on the current step
     },
     {
       status: statusHistoryTimeline.refunded,
@@ -442,15 +440,11 @@ export function prepareHistoryData(comment: any, request: any) {
         ) : (
           <FormattedMessageFixed id={messages.refunded.id} />
         ),
-      step: 5,
+      step: 6,
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.refunded
       ),
-      active:
-        request.status === requestsStatuses.refunded ||
-        request.status === requestsStatuses.denied
-          ? 1
-          : 0,
+      active: isCurrentStepActive({ status: request.status, step: 6 }), // 6 baseed on the current step
     },
   ]
 
@@ -464,7 +458,12 @@ export function prepareHistoryData(comment: any, request: any) {
     }> = []
 
     for (const item of timeline) {
-      if (item.step === 1 || item.step === 5 || item.comments.length) {
+      if (
+        item.step === 1 ||
+        item.step === 2 ||
+        item.step === 5 ||
+        item.comments.length
+      ) {
         newTimeline.push(item)
       }
     }
@@ -526,7 +525,10 @@ export function renderStatusIcon(request: any) {
     )
   }
 
-  if (request === requestsStatuses.pendingVerification) {
+  if (
+    request === requestsStatuses.pendingVerification ||
+    request === requestsStatuses.processing
+  ) {
     return (
       <div>
         <span className={styles.statusPendingVerification}>

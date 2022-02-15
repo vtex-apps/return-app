@@ -14,10 +14,11 @@ import {
   Table,
   Modal,
   Divider,
+  Checkbox,
 } from 'vtex.styleguide'
 
 import styles from '../styles.css'
-import { schemaNames, schemaTypes, isInt, verifySchemas } from '../common/utils'
+import { schemaNames, schemaTypes, verifySchemas } from '../common/utils'
 import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 
 const categoriesArray: any[] = []
@@ -51,6 +52,8 @@ const messages = defineMessages({
   addCustomOptionSubmit: { id: 'settings.addCustomOption_Submit' },
   all: { id: 'returns.all' },
   saveSettings: { id: 'settings.saveSettings' },
+  otherOptions: { id: 'settings.otherOptions' },
+  enableOtherOptions: { id: 'settings.otherOptions_enable' },
 })
 
 class ReturnsSettings extends Component<any, any> {
@@ -77,6 +80,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentBank: false,
       paymentCard: false,
       paymentVoucher: false,
+      enableOtherOption: false,
       successMessage: '',
       errorMessage: '',
       payments: {
@@ -169,6 +173,7 @@ class ReturnsSettings extends Component<any, any> {
           payments: updatedPayments,
           options: json[0].options || [],
           excludedCategories: JSON.parse(json[0].excludedCategories),
+          enableOtherOption: json[0].enableOtherOption,
           loading: false,
         })
       })
@@ -299,8 +304,15 @@ class ReturnsSettings extends Component<any, any> {
       errorMessage: '',
       loading: true,
     })
-    const { maxDays, excludedCategories, termsUrl, id, payments, options } =
-      this.state
+    const {
+      maxDays,
+      excludedCategories,
+      termsUrl,
+      id,
+      payments,
+      options,
+      enableOtherOption,
+    } = this.state
 
     let hasErrors = false
 
@@ -353,6 +365,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentBank: payments.paymentBank.checked,
       paymentVoucher: payments.paymentVoucher.checked,
       options,
+      enableOtherOption,
       type: schemaTypes.settings,
     }
 
@@ -415,6 +428,15 @@ class ReturnsSettings extends Component<any, any> {
     this.handleModalToggle()
   }
 
+  handleEnableOtherOption = () => {
+    /**
+     * toggle the Other Option checkbox on or off and set otherOption in the state
+     */
+    this.setState((prevState) => ({
+      enableOtherOption: !prevState.enableOtherOption,
+    }))
+  }
+
   render() {
     const {
       maxDays,
@@ -432,6 +454,7 @@ class ReturnsSettings extends Component<any, any> {
       payments,
       options,
       isModalOpen,
+      enableOtherOption,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -630,6 +653,22 @@ class ReturnsSettings extends Component<any, any> {
                         onClick: ({ rowData }) => this.removeOption(rowData),
                       },
                     ]}
+                  />
+
+                  <div className="flex flex-column w-100 mb7">
+                    <p className="f4 mb0">
+                      {formatMessage({ id: messages.otherOptions.id })}:
+                    </p>
+                  </div>
+                  <Checkbox
+                    checked={enableOtherOption}
+                    label={formatMessage({
+                      id: messages.enableOtherOptions.id,
+                    })}
+                    name="disabled-checkbox-group"
+                    onChange={this.handleEnableOtherOption}
+                    value="return-other-option"
+                    id="return-other-option-checkbox"
                   />
                   <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
                     <div className="flex flex-column">
