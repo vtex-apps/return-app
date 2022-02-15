@@ -44,6 +44,13 @@
       }
     },
     {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/oms/pvt/orders/*"
+      }
+    },
+    {
       "name": "vbase-read-write"
     },
     {

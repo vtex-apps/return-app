@@ -11,14 +11,12 @@ interface ReturnRequest {
   state: string
   zip: string
   address: string
-  returnLabel: string | null
   totalPrice: Int
   paymentMethod: string
   extraComment: string
   giftCardCode: string
   giftCardId: string
   refundedAmount: Int
-  refundedShippingValue: Int
   iban: string
   accountHolder: string
   status: string
@@ -29,7 +27,13 @@ interface ReturnRequest {
 
 type ReturnRequestInput = Omit<
   ReturnRequest,
-  'id' | 'createdIn' | 'sequenceNumber' | 'type' | 'dateSubmitted'
+  | 'id'
+  | 'createdIn'
+  | 'sequenceNumber'
+  | 'type'
+  | 'dateSubmitted'
+  | 'totalPrice'
+  | 'status'
 >
 
 type AuthToken = 'ADMIN_TOKEN' | 'STORE_TOKEN'
@@ -50,7 +54,6 @@ interface ProductReturned {
   manufacturerCode: string
   unitPrice: number
   quantity: number
-  totalPrice: number
   goodProducts: number
   reasonCode: string
   condition: string
@@ -61,7 +64,7 @@ interface ProductReturned {
 }
 
 type ProductReturnedInput = Omit<
-  ReturnRequest,
+  ProductReturned,
   | 'id'
   | 'createdIn'
   | 'userId'
@@ -69,4 +72,6 @@ type ProductReturnedInput = Omit<
   | 'refundId'
   | 'type'
   | 'manufacturerCode'
+  | 'totalPrice'
+  | 'status'
 >

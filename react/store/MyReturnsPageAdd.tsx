@@ -825,8 +825,6 @@ class MyReturnsPageAdd extends Component<any, State> {
           deleteIdsArg = [requestId, ...productsResponse]
         }
 
-        throw new Error()
-
         this.setState({
           successSubmit: formatMessage({ id: messages.submitSuccess.id }),
           submittedRequest: true,

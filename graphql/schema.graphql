@@ -1,7 +1,17 @@
+enum AuthToken {
+  ADMIN_TOKEN
+  STORE_TOKEN
+}
+
 type Query {
   doNotCall: Boolean
 }
 
 type Mutation {
   deleteReturnRequest(Id: [ID]!): Boolean
+  createReturnRequest(
+    returnRequest: ReturnRequestInput!
+    returnedItems: [ProductReturnedInput!]!
+    authToken: AuthToken!
+  ): Boolean
 }

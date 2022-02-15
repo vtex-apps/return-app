@@ -6020,10 +6020,6 @@ verror@1.10.0:
   version "8.132.3"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime#c7dd142e384f38bd7a7c841543b73e9349fadc93"
 
-"vtex.return-app@https://zeki--vtexspain.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.16.1+build1644361871/public/@types/vtex.return-app":
-  version "2.16.1"
-  resolved "https://zeki--vtexspain.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.16.1+build1644361871/public/@types/vtex.return-app#4639f212b905646d6614be9a44e0ee8ab832d9b6"
-
 "vtex.store-components@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.155.9/public/@types/vtex.store-components":
   version "3.155.9"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.155.9/public/@types/vtex.store-components#3dc767937110f31a859765e7ec21a85654151622"

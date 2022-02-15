@@ -9,11 +9,9 @@ input ProductReturnedInput {
   skuName: String!
   unitPrice: Int!
   quantity: Int!
-  totalPrice: Int!
   goodProducts: Int!
   reasonCode: String!
   condition: String!
-  status: String!
 }
 
 type ProductReturned {

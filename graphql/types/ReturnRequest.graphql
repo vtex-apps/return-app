@@ -9,17 +9,13 @@ input ReturnRequestInput {
   state: String!
   zip: String!
   address: String!
-  returnLabel: String
-  totalPrice: Int!
   paymentMethod: String!
   extraComment: String!
   giftCardCode: String!
   giftCardId: String!
   refundedAmount: Int!
-  refundedShippingValue: Int
   iban: String!
   accountHolder: String!
-  status: String!
 }
 
 type ReturnRequest {
@@ -33,14 +29,12 @@ type ReturnRequest {
   state: String!
   zip: String!
   address: String!
-  returnLabel: String
   totalPrice: Int!
   paymentMethod: String!
   extraComment: String!
   giftCardCode: String!
   giftCardId: String!
   refundedAmount: Int!
-  refundedShippingValue: Int
   iban: String!
   accountHolder: String!
   status: String!
