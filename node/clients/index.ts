@@ -19,6 +19,9 @@ export class Clients extends IOClients {
     return this.getOrSet('oms', OMS)
   }
 
+  // started migrating calls to MD via this class, that extends the
+  // MasterData from @vtex/api. It will work as a factory, in order to make
+  // it easy to call the methods from the resolvers.
   public get mdFactory() {
     return this.getOrSet('mdFactory', MDFactory)
   }

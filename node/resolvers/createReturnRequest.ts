@@ -105,6 +105,8 @@ export const createReturnRequest = async (
       },
     })
 
+    // if something fails, we delete all documents related to that request.
+    // This way, we try to make the operation atomic.
     const deletedDocumentPromises = documentIdCollection.map((id) =>
       masterdata.deleteDocument({ id, dataEntity: 'ReturnApp' })
     )
