@@ -11,6 +11,7 @@ export const SETTINGS_SCHEMA = {
       items: { $ref: '#/$defs/options' },
     },
     type: { type: 'string' },
+    enableOtherOption: { type: 'boolean' },
   },
   $defs: {
     options: {
@@ -36,6 +37,7 @@ export const SETTINGS_SCHEMA = {
       'paymentVoucher',
       'termsUrl',
       'options',
+      'enableOtherOption',
       'type',
     ],
     publicJsonSchema: false,
@@ -51,6 +53,7 @@ export const SETTINGS_SCHEMA = {
     'paymentVoucher',
     'termsUrl',
     'options',
+    'enableOtherOption',
     'type',
   ],
   'v-indexed': [
@@ -63,6 +66,7 @@ export const SETTINGS_SCHEMA = {
     'paymentVoucher',
     'termsUrl',
     'options',
+    'enableOtherOption',
     'type',
   ],
   'v-immediate-indexing': true,

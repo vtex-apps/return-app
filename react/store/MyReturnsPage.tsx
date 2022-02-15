@@ -44,6 +44,7 @@ const messages = defineMessages({
   filterFromDate: { id: 'returns.filterFromDate' },
   filterToDate: { id: 'returns.filterToDate' },
   statusNew: { id: 'returns.statusNew' },
+  statusProcessing: { id: 'returns.statusProcessing' },
   statusApproved: { id: 'returns.statusApproved' },
   statusPendingVerification: { id: 'returns.statusPendingVerification' },
   statusPartiallyApproved: { id: 'returns.statusPartiallyApproved' },
@@ -577,6 +578,12 @@ class MyReturnsPage extends Component<any, any> {
                     id: messages.statusNew.id,
                   }),
                   onClick: () => this.filterStatus('new'),
+                },
+                {
+                  label: formatMessage({
+                    id: messages.statusProcessing.id,
+                  }),
+                  onClick: () => this.filterStatus('processing'),
                 },
                 {
                   label: formatMessage({
