@@ -1,3 +1,7 @@
+import { createReturnProductFields } from '../utils/createReturnProductFields'
+import { createReturnRequestFields } from '../utils/createReturnRequestFields'
+import { createStatusHistoryFields } from '../utils/createStatusHistoryFields'
+
 export const createReturnRequest = async (
   _: unknown,
   args: {
@@ -8,7 +12,7 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const {
-    clients: { oms, masterdata, returnApp },
+    clients: { oms, masterdata, returnApp, mdFactory },
     vtex: { logger },
   } = ctx
 
@@ -17,15 +21,8 @@ export const createReturnRequest = async (
 
   const orderPromise = oms.order(orderId, args.authToken)
 
-  const requestsPromise = masterdata.searchDocuments<ReturnRequest>({
-    dataEntity: 'ReturnApp',
-    schema: 'returnRequests',
+  const requestsPromise = mdFactory.searchReturnRequests({
     where: `(type=request AND orderId="${orderId}")`,
-    fields: ['id'],
-    pagination: {
-      page: 1,
-      pageSize: 100,
-    },
   })
 
   // If order doesn't exist, it throws an error and stop the process.
@@ -37,20 +34,13 @@ export const createReturnRequest = async (
     return total + item.quantity * item.unitPrice
   }, 0)
 
-  const rmaRequestFields = {
-    ...returnRequest,
-    type: 'request',
+  const rmaRequestFields = createReturnRequestFields({
+    returnRequestInput: returnRequest,
     sequenceNumber: rmaSequenceNumber,
-    dateSubmitted: new Date().toISOString(),
     totalPrice,
-    status: 'New',
-  }
-
-  const rmaRequest = await masterdata.createDocument({
-    dataEntity: 'ReturnApp',
-    schema: 'returnRequests',
-    fields: rmaRequestFields,
   })
+
+  const rmaRequest = await mdFactory.createReturnRequest(rmaRequestFields)
 
   const { DocumentId } = rmaRequest
 
@@ -59,17 +49,14 @@ export const createReturnRequest = async (
   const documentIdCollection = [DocumentId]
 
   try {
-    const { DocumentId: messageId } = await masterdata.createDocument({
-      dataEntity: 'ReturnApp',
-      schema: 'returnStatusHistory',
-      fields: {
-        submittedBy: name,
-        refundId: DocumentId,
-        status: 'New',
-        dateSubmitted: new Date().toISOString(),
-        type: 'statusHistory',
-      },
+    const statusHistoryFields = createStatusHistoryFields({
+      refundId: DocumentId,
+      submittedBy: name,
     })
+
+    const { DocumentId: messageId } = await mdFactory.createStatusHistory(
+      statusHistoryFields
+    )
 
     documentIdCollection.push(messageId)
 
@@ -78,24 +65,19 @@ export const createReturnRequest = async (
     for (const item of nonEmptyItems) {
       // eslint-disable-next-line no-await-in-loop
       const skuData = await returnApp.getSkuById(ctx, item.sku)
-      const poductData = {
-        ...item,
+
+      const productFields = createReturnProductFields({
+        item,
         userId,
         orderId,
         refundId: DocumentId,
-        status: 'New',
-        manufacturerCode: skuData.manufacturerCode ?? '',
         totalPrice: item.quantity * item.unitPrice,
-        dateSubmitted: new Date().toISOString(),
-        type: 'product',
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      const { DocumentId: productReturnId } = await masterdata.createDocument({
-        dataEntity: 'ReturnApp',
-        schema: 'returnProducts',
-        fields: poductData,
+        manufacturerCode: skuData.manufacturerCode,
       })
+
+      const { DocumentId: productReturnId } =
+        // eslint-disable-next-line no-await-in-loop
+        await mdFactory.createReturnProduct(productFields)
 
       documentIdCollection.push(productReturnId)
     }
@@ -132,5 +114,5 @@ export const createReturnRequest = async (
     throw new Error(e)
   }
 
-  return true
+  return { returnRequestId: DocumentId }
 }

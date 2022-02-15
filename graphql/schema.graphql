@@ -13,5 +13,5 @@ type Mutation {
     returnRequest: ReturnRequestInput!
     returnedItems: [ProductReturnedInput!]!
     authToken: AuthToken!
-  ): Boolean
+  ): returnRequestCreated
 }

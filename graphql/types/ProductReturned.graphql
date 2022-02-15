@@ -39,3 +39,7 @@ type ProductReturned {
   dateSubmitted: String!
   type: String!
 }
+
+type returnRequestCreated {
+  returnRequestId: String!
+}
