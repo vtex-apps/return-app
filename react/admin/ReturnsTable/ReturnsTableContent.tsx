@@ -31,6 +31,14 @@ import {
 } from '../../common/utils'
 import { fetchHeaders, fetchMethod, fetchPath } from '../../common/fetch'
 
+type FilterBy =
+  | 'status'
+  | 'returnId'
+  | 'sequenceNumber'
+  | 'orderId'
+  | 'fromDate'
+  | 'toDate'
+
 const initialFilters = {
   orderId: '',
   returnId: '',
@@ -227,41 +235,50 @@ class ReturnsTableContent extends Component<any, any> {
     }
   }
 
-  filterStatus(status: string) {
+  filterByKey(filterBy: FilterBy, value: string) {
     this.setState((prevState) => ({
       filters: {
         ...prevState.filters,
-        status,
+        [filterBy]: value,
       },
     }))
   }
 
-  filterReturnId(val: string) {
-    this.setState((prevState) => ({
-      filters: {
-        ...prevState.filters,
-        returnId: val,
-      },
-    }))
-  }
+  // filterStatus(status: string) {
+  //   this.setState((prevState) => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       status,
+  //     },
+  //   }))
+  // }
 
-  filterSequenceNumber(val: string) {
-    this.setState((prevState) => ({
-      filters: {
-        ...prevState.filters,
-        sequenceNumber: val,
-      },
-    }))
-  }
+  // filterReturnId(val: string) {
+  //   this.setState((prevState) => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       returnId: val,
+  //     },
+  //   }))
+  // }
 
-  filterOrderId(val: string) {
-    this.setState((prevState) => ({
-      filters: {
-        ...prevState.filters,
-        orderId: val,
-      },
-    }))
-  }
+  // filterSequenceNumber(val: string) {
+  //   this.setState((prevState) => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       sequenceNumber: val,
+  //     },
+  //   }))
+  // }
+
+  // filterOrderId(val: string) {
+  //   this.setState((prevState) => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       orderId: val,
+  //     },
+  //   }))
+  // }
 
   filterFromDate(val: string) {
     this.setState((prevState) => ({
@@ -359,16 +376,21 @@ class ReturnsTableContent extends Component<any, any> {
   }
 
   handleFirstPageFilter() {
-    const currentItemFrom = Number(this.state.currentItemFrom)
+    // return
+    // this.getRequests()
+    // const currentItemFrom = Number(this.state.currentItemFrom)
     const currentItemTo = Number(this.state.currentItemTo)
 
+    console.log('currentItemTo :>> ', currentItemTo)
     this.setState((prevState) => {
       prevState.paging.page = 1
+      // prevState.currentItemFrom = 1
+      // prevState.currentItemTo = 1
 
       return {
         paging: prevState.paging,
-        currentItemFrom,
-        currentItemTo,
+        // currentItemFrom: prevState.currentItemFrom,
+        // currentItemTo: Number(prevState.currentItemTo),
       }
     }, this.getRequests)
   }
@@ -440,7 +462,7 @@ class ReturnsTableContent extends Component<any, any> {
                     this.handleKeypress(e)
                   }}
                   size="small"
-                  onChange={(e) => this.filterReturnId(e.target.value)}
+                  onChange={(e) => this.filterByKey('returnId', e.target.value)} // returnId
                   value={filters.returnId}
                 />
               )}
@@ -455,7 +477,9 @@ class ReturnsTableContent extends Component<any, any> {
                     this.handleKeypress(e)
                   }}
                   size="small"
-                  onChange={(e) => this.filterSequenceNumber(e.target.value)}
+                  onChange={(e) =>
+                    this.filterByKey('sequenceNumber', e.target.value)
+                  } // sequenceNumber
                   value={filters.sequenceNumber}
                 />
               )}
@@ -470,7 +494,7 @@ class ReturnsTableContent extends Component<any, any> {
                     this.handleKeypress(e)
                   }}
                   size="small"
-                  onChange={(e) => this.filterOrderId(e.target.value)}
+                  onChange={(e) => this.filterByKey('orderId', e.target.value)} // orderId
                   value={filters.orderId}
                 />
               )}
@@ -513,35 +537,37 @@ class ReturnsTableContent extends Component<any, any> {
               options={[
                 {
                   label: <FormattedMessage id="returns.statusAllStatuses" />,
-                  onClick: () => this.filterStatus(''),
+                  onClick: () => this.filterByKey('status', ''), // status
                 },
                 {
                   label: <FormattedMessage id="returns.statusNew" />,
-                  onClick: () => this.filterStatus('new'),
+                  onClick: () => this.filterByKey('status', 'new'),
                 },
                 {
                   label: <FormattedMessage id="returns.statusApproved" />,
-                  onClick: () => this.filterStatus('approved'),
+                  onClick: () => this.filterByKey('status', 'approved'),
                 },
                 {
                   label: (
                     <FormattedMessage id="returns.statusPendingVerification" />
                   ),
-                  onClick: () => this.filterStatus('pendingVerification'),
+                  onClick: () =>
+                    this.filterByKey('status', 'pendingVerification'),
                 },
                 {
                   label: (
                     <FormattedMessage id="returns.statusPartiallyApproved" />
                   ),
-                  onClick: () => this.filterStatus('partiallyApproved'),
+                  onClick: () =>
+                    this.filterByKey('status', 'pendingVerification'),
                 },
                 {
                   label: <FormattedMessage id="returns.statusDenied" />,
-                  onClick: () => this.filterStatus('denied'),
+                  onClick: () => this.filterByKey('status', 'denied'),
                 },
                 {
                   label: <FormattedMessage id="returns.statusRefunded" />,
-                  onClick: () => this.filterStatus('refunded'),
+                  onClick: () => this.filterByKey('status', 'refunded'),
                 },
               ]}
             />
