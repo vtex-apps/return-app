@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## Added
+- Graphql mutation to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process
 
+## [2.1.0 to 2.17.0]
 ### Fixed
 - The card refund method is valid only if the customer has paid for the order with the card.
 - Fix shipping value available in frontend
