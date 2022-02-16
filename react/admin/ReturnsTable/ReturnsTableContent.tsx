@@ -98,7 +98,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     }
   }
 
-  handleModalToggle = () => {
+  onHandleHandleModalToggle = () => {
     this.setState((prevState) => ({ isModalOpen: !prevState.isModalOpen }))
   }
 
@@ -328,7 +328,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
       .then((response) => response.json())
       .then((products) => {
         this.setState({ selectedRequestProducts: products })
-        this.handleModalToggle()
+        this.onHandleHandleModalToggle()
       })
       .catch((err) => this.setState({ error: err }))
   }
@@ -494,11 +494,11 @@ class ReturnsTableContent extends Component<IProps, IState> {
             sortOrder: this.state.dataSort.sortOrder,
           }}
         />
-        {/* <ReturnTableModal
+        <ReturnTableModal
           selectedRequestProducts={selectedRequestProducts}
           isModalOpen={this.state.isModalOpen}
-          handleModalToggle={this.handleModalToggle}
-        /> */}
+          handleHandleModalToggle={this.onHandleHandleModalToggle}
+        />
       </div>
     )
   }

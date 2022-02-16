@@ -7,16 +7,16 @@ import styles from '../styles.css'
 
 type ReturnTableModalProps = {
   selectedRequestProducts: any[]
-  handleModalToggle: () => void
+  handleHandleModalToggle: () => void
   isModalOpen: boolean
 }
 const ReturnTableModal = ({
   selectedRequestProducts,
   isModalOpen,
-  handleModalToggle,
+  handleHandleModalToggle,
 }: ReturnTableModalProps) => {
   return (
-    <Modal centered isOpen={isModalOpen} onClose={handleModalToggle}>
+    <Modal centered isOpen={isModalOpen} onClose={handleHandleModalToggle}>
       <div className="dark-gray">
         {selectedRequestProducts.length ? (
           <table className={`${styles.table} ${styles.tableModal}`}>
