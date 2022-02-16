@@ -29,10 +29,47 @@ const returnsTableSchema = ({
       },
       dateSubmitted: {
         title: <FormattedMessage id="returns.submittedDate" />,
-        cellRenderer: ({ cellData }) => {
+        cellRenderer: ({ cellData }): any => {
           return beautifyDate(cellData)
         },
         sortable: true,
+      },
+      status: {
+        title: <FormattedMessage id="returns.status" />,
+        sortable: true,
+        width: 200,
+        cellRenderer: ({ cellData }): any => {
+          return renderStatusIcon(cellData)
+        },
+      },
+      actions: {
+        width: 150,
+        title: <FormattedMessage id="returns.actions" />,
+        // eslint-disable-next-line react/display-name
+        cellRenderer: ({ rowData }): any => {
+          return (
+            <div>
+              <Button
+                variation="tertiary"
+                onClick={() => {
+                  handleViewRequest(rowData.id)
+                }}
+              >
+                <IconGrid />
+              </Button>
+              <Button
+                variation="tertiary"
+                onClick={() => {
+                  navigator({
+                    to: `/admin/app/returns/${rowData.id}/details`,
+                  })
+                }}
+              >
+                <IconVisibilityOn />
+              </Button>
+            </div>
+          )
+        },
       },
     },
   }
