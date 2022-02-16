@@ -617,3 +617,9 @@ export async function verifySchemas() {
 
 export const mergeArrays = (arr: any, obj: any) =>
   arr && arr.map((t: any) => (t.id === obj.id ? obj : t))
+
+export const capitalize = (s: string) => {
+  if (typeof s !== 'string') return ''
+
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}

@@ -6,10 +6,10 @@ import { beautifyDate, renderStatusIcon } from './utils'
 
 type ReturnsTableSchemaProps = {
   handleViewRequest: (requestId: string) => void
-  navigator: (to: { to: string }) => void
+  navigate: (to: { to: string }) => void
 }
 const ReturnsTableSchema = ({
-  navigator,
+  navigate,
   handleViewRequest,
 }: ReturnsTableSchemaProps) => {
   return {
@@ -61,7 +61,7 @@ const ReturnsTableSchema = ({
               <Button
                 variation="tertiary"
                 onClick={() => {
-                  navigator({
+                  navigate({
                     to: `/admin/app/returns/${rowData.id}/details`,
                   })
                 }}
