@@ -10,6 +10,7 @@ input ProductReturnedInput {
   unitPrice: Int!
   quantity: Int!
   goodProducts: Int!
+  reason: String!
   reasonCode: String!
   condition: String!
 }
@@ -33,6 +34,7 @@ type ProductReturned {
   quantity: Int!
   totalPrice: Int!
   goodProducts: Int!
+  reason: String!
   reasonCode: String!
   condition: String!
   status: String!
