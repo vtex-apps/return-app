@@ -28,7 +28,8 @@
     "messages": "1.x",
     "docs": "0.x",
     "store": "0.x",
-    "node": "6.x"
+    "node": "6.x",
+    "graphql": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
@@ -40,6 +41,13 @@
       "attrs": {
         "host": "{{account}}.vtexcommercestable.com.br",
         "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/checkout/pub/*"
       }
     },
     {
