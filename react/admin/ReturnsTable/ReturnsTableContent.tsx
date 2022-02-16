@@ -11,25 +11,20 @@ import {
   ButtonWithIcon,
   ActionMenu,
   Modal,
-  IconVisibilityOn,
-  IconGrid,
 } from 'vtex.styleguide'
 
 import styles from '../../styles.css'
 import {
-  beautifyDate,
   currentDate,
   filterDate,
   requestsStatuses,
   FormattedMessageFixed,
-  sortColumns,
-  order,
   schemaNames,
   schemaTypes,
   getStatusTranslation,
-  renderStatusIcon,
 } from '../../common/utils'
 import { fetchHeaders, fetchMethod, fetchPath } from '../../common/fetch'
+import ReturnsTableSchema from '../../common/ReturnsTableSchema'
 
 type FilterBy =
   | 'status'
@@ -152,6 +147,18 @@ class ReturnsTableContent extends Component<any, any> {
       }/${dataSort.sortedBy}/${dataSort.sortOrder}/${where}`
     )
 
+    console.log(
+      `${fetchPath.getRequests + schemaNames.request}/${paging.page}/${
+        paging.perPage
+      }/${dataSort.sortedBy}/${dataSort.sortOrder}/${where}`
+    )
+    this.setState({ tableIsLoading: false })
+    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request
+    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request AND sequenceNumber="10"
+    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request AND createdIn between 2022-02-01 AND 2022-02-01
+    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request AND sequenceNumber="19" AND createdIn between 2022-02-01 AND 2022-02-01
+    // return
+
     const returns = await returnsResponse.json()
 
     if ('error' in returns) {
@@ -167,71 +174,6 @@ class ReturnsTableContent extends Component<any, any> {
           total: returns.pagination?.total,
         },
       }))
-    }
-
-    this.setState({ tableIsLoading: false })
-  }
-
-  getTableSchema() {
-    return {
-      properties: {
-        id: {
-          title: <FormattedMessage id="returns.requestId" />,
-          sortable: true,
-          width: 350,
-        },
-        sequenceNumber: {
-          title: <FormattedMessage id="returns.sequenceNumber" />,
-          sortable: true,
-        },
-        orderId: {
-          title: <FormattedMessage id="returns.orderId" />,
-          sortable: true,
-        },
-        dateSubmitted: {
-          title: <FormattedMessage id="returns.submittedDate" />,
-          cellRenderer: ({ cellData }) => {
-            return beautifyDate(cellData)
-          },
-          sortable: true,
-        },
-        status: {
-          title: <FormattedMessage id="returns.status" />,
-          sortable: true,
-          width: 200,
-          cellRenderer: ({ cellData }) => {
-            return <div>{renderStatusIcon(cellData)}</div>
-          },
-        },
-        actions: {
-          width: 150,
-          title: <FormattedMessage id="returns.actions" />,
-          cellRenderer: ({ rowData }) => {
-            return (
-              <div>
-                <Button
-                  variation="tertiary"
-                  onClick={() => {
-                    this.handleViewRequest(rowData.id)
-                  }}
-                >
-                  <IconGrid />
-                </Button>
-                <Button
-                  variation="tertiary"
-                  onClick={() => {
-                    this.props.navigate({
-                      to: `/admin/app/returns/${rowData.id}/details`,
-                    })
-                  }}
-                >
-                  <IconVisibilityOn />
-                </Button>
-              </div>
-            )
-          },
-        },
-      },
     }
   }
 
@@ -376,6 +318,7 @@ class ReturnsTableContent extends Component<any, any> {
   }
 
   handleFirstPageFilter() {
+    // ! made by me to handle first page filter ASEM QAFFAF
     // return
     // this.getRequests()
     // const currentItemFrom = Number(this.state.currentItemFrom)
@@ -594,7 +537,10 @@ class ReturnsTableContent extends Component<any, any> {
           loading={tableIsLoading}
           items={returns}
           emptyStateLabel={emptyStateLabel}
-          schema={this.getTableSchema()}
+          schema={ReturnsTableSchema({
+            navigator: this.props.navigator,
+            handleViewRequest: this.handleViewRequest,
+          })}
           pagination={{
             onNextClick: this.handleNextClick,
             onPrevClick: this.handlePrevClick,
