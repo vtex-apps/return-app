@@ -98,7 +98,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     }
   }
 
-  onHandleHandleModalToggle = () => {
+  onHandleModalToggle = () => {
     this.setState((prevState) => ({ isModalOpen: !prevState.isModalOpen }))
   }
 
@@ -328,7 +328,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
       .then((response) => response.json())
       .then((products) => {
         this.setState({ selectedRequestProducts: products })
-        this.onHandleHandleModalToggle()
+        this.onHandleModalToggle()
       })
       .catch((err) => this.setState({ error: err }))
   }
@@ -497,7 +497,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
         <ReturnTableModal
           selectedRequestProducts={selectedRequestProducts}
           isModalOpen={this.state.isModalOpen}
-          handleHandleModalToggle={this.onHandleHandleModalToggle}
+          handleModalToggle={this.onHandleModalToggle}
         />
       </div>
     )
