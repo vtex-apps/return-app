@@ -8,7 +8,7 @@ type ReturnsTableSchemaProps = {
   handleViewRequest: (requestId: string) => void
   navigator: (to: { to: string }) => void
 }
-const returnsTableSchema = ({
+const ReturnsTableSchema = ({
   navigator,
   handleViewRequest,
 }: ReturnsTableSchemaProps) => {
@@ -29,7 +29,7 @@ const returnsTableSchema = ({
       },
       dateSubmitted: {
         title: <FormattedMessage id="returns.submittedDate" />,
-        cellRenderer: ({ cellData }): any => {
+        cellRenderer: ({ cellData }) => {
           return beautifyDate(cellData)
         },
         sortable: true,
@@ -38,15 +38,16 @@ const returnsTableSchema = ({
         title: <FormattedMessage id="returns.status" />,
         sortable: true,
         width: 200,
-        cellRenderer: ({ cellData }): any => {
-          return renderStatusIcon(cellData)
+        // eslint-disable-next-line react/display-name
+        cellRenderer: ({ cellData }) => {
+          return <div>{renderStatusIcon(cellData)}</div>
         },
       },
       actions: {
         width: 150,
         title: <FormattedMessage id="returns.actions" />,
         // eslint-disable-next-line react/display-name
-        cellRenderer: ({ rowData }): any => {
+        cellRenderer: ({ rowData }) => {
           return (
             <div>
               <Button
@@ -75,4 +76,4 @@ const returnsTableSchema = ({
   }
 }
 
-export default returnsTableSchema
+export default ReturnsTableSchema
