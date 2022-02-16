@@ -46,7 +46,7 @@ interface IProps {
   navigate: (to: { to: string }) => void
 }
 
-type FilterBy = keyof typeof initialFilters
+export type FilterBy = keyof typeof initialFilters
 
 interface IState {
   orderedItems: any[]

@@ -21,12 +21,3 @@ export interface PageProps extends RouteComponentProps<MatchParams> {
   profile: Profile
   headerConfig: HeaderConfig
 }
-
-export type FilterBy =
-  | 'status'
-  | 'returnId'
-  | 'sequenceNumber'
-  | 'orderId'
-  | 'fromDate'
-  | 'toDate'
-  | 'createdIn'
