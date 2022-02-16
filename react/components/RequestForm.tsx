@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
 import { defineMessages, injectIntl } from 'react-intl'
 import {
   Button,
@@ -11,6 +12,7 @@ import {
 } from 'vtex.styleguide'
 import PropTypes from 'prop-types'
 
+import NEAR_PICKUP_POINTS from '../graphql/nearestPickupPoints.gql'
 import { returnFormDate } from '../common/utils'
 import styles from '../styles.css'
 
@@ -110,6 +112,10 @@ class RequestForm extends Component<Props> {
 
   componentDidMount(): void {
     typeof window !== 'undefined' && window.scrollTo(0, 0)
+  }
+
+  componentDidUpdate() {
+    console.log(this.props)
   }
 
   paymentMethods() {
@@ -706,4 +712,20 @@ class RequestForm extends Component<Props> {
   }
 }
 
-export default injectIntl(RequestForm)
+const compose = (...funcs) =>
+  funcs.reduce(
+    (a, b) =>
+      (...args) =>
+        a(b(...args)),
+    (arg) => arg
+  )
+
+export default compose(
+  graphql(NEAR_PICKUP_POINTS, {
+    options: () => ({
+      variables: { lat: '2.2015347', long: '41.3977365' },
+      ssr: false,
+    }),
+    name: 'NearestPickupPoints',
+  })
+)(injectIntl(RequestForm))

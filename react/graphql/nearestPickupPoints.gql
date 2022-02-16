@@ -1,0 +1,10 @@
+query NearestPickupPoints($lat: String!, $long: String!) {
+  nearestPickupPoints(lat: $lat, long: $long)
+    @context(provider: "vtex.return-app") {
+    items {
+      pickupPoint {
+        friendlyName
+      }
+    }
+  }
+}
