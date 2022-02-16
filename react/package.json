@@ -4,12 +4,14 @@
     "test": "vtex-test-tools test"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.8",
     "@types/faker": "^4.1.5",
-    "apollo-client": "^2.6.10",
+    "apollo-client": "^2.6.4",
+    "axios": "^0.20.0",
     "classnames": "^2.2.6",
     "debounce": "^1.2.0",
     "faker": "^4.1.0",
-    "graphql": "^14.6.0",
+    "graphql": "15.5.0",
     "graphql-tag": "^2.10.1",
     "ramda": "^0.24.1",
     "react": "^16.12.0",
@@ -17,8 +19,7 @@
     "react-dom": "^16.12.0",
     "react-html-parser": "^2.0.2",
     "react-intl": "^3.12.0",
-    "react-router-dom": "^4.3.1",
-    "axios": "^0.20.0"
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@types/graphql": "14.2.2",
@@ -36,7 +37,6 @@
     "vtex.my-account-commons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons",
     "vtex.react-portal": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.react-portal@0.4.1/public/@types/vtex.react-portal",
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime",
-    "vtex.return-app": "https://zeki--vtexspain.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.16.1+build1644361612/public/@types/vtex.return-app",
     "vtex.store": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.121.1/public/@types/vtex.store",
     "vtex.store-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.155.9/public/@types/vtex.store-components",
     "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.2/public/@types/vtex.store-graphql",

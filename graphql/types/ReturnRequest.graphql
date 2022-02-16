@@ -1,0 +1,44 @@
+input ReturnRequestInput {
+  userId: String!
+  orderId: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  country: String!
+  locality: String!
+  state: String!
+  zip: String!
+  address: String!
+  paymentMethod: String!
+  extraComment: String!
+  giftCardCode: String!
+  giftCardId: String!
+  refundedAmount: Int!
+  iban: String!
+  accountHolder: String!
+}
+
+type ReturnRequest {
+  userId: String!
+  orderId: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  country: String!
+  locality: String!
+  state: String!
+  zip: String!
+  address: String!
+  totalPrice: Int!
+  paymentMethod: String!
+  extraComment: String!
+  giftCardCode: String!
+  giftCardId: String!
+  refundedAmount: Int!
+  iban: String!
+  accountHolder: String!
+  status: String!
+  dateSubmitted: String!
+  type: String!
+  sequenceNumber: String
+}
