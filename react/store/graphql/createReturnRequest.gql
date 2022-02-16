@@ -6,7 +6,7 @@ mutation CreateReturn(
     returnRequest: $returnRequest
     returnedItems: $returnedItems
     authToken: STORE_TOKEN
-  ) {
+  ) @context(provider: "vtex.return-app") {
     returnRequestId
   }
 }
