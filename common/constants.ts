@@ -12,6 +12,7 @@ export const SETTINGS_SCHEMA = {
     },
     type: { type: 'string' },
     enableOtherOption: { type: 'boolean' },
+    enablePickupPoints: { type: 'boolean' },
   },
   $defs: {
     options: {
@@ -37,7 +38,7 @@ export const SETTINGS_SCHEMA = {
       'paymentVoucher',
       'termsUrl',
       'options',
-      'enableOtherOption',
+      'enablePickupPoints',
       'type',
     ],
     publicJsonSchema: false,
@@ -53,7 +54,7 @@ export const SETTINGS_SCHEMA = {
     'paymentVoucher',
     'termsUrl',
     'options',
-    'enableOtherOption',
+    'enablePickupPoints',
     'type',
   ],
   'v-indexed': [
@@ -66,7 +67,7 @@ export const SETTINGS_SCHEMA = {
     'paymentVoucher',
     'termsUrl',
     'options',
-    'enableOtherOption',
+    'enablePickupPoints',
     'type',
   ],
 }

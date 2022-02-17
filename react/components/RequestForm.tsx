@@ -46,6 +46,7 @@ interface Props {
   submit: any
   settings: any
   intl: any
+  NearestPickupPoints: any
 }
 
 const messages = defineMessages({
@@ -104,7 +105,17 @@ const messages = defineMessages({
   conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' },
 })
 
+let lat = ''
+let long = ''
+
 class RequestForm extends Component<Props> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      isVisible: true,
+    }
+  }
+
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object,
@@ -112,6 +123,10 @@ class RequestForm extends Component<Props> {
 
   componentDidMount(): void {
     typeof window !== 'undefined' && window.scrollTo(0, 0)
+    lat =
+      this.props.selectedOrder.shippingData.address.geoCoordinates[0].toString()
+    long =
+      this.props.selectedOrder.shippingData.address.geoCoordinates[1].toString()
   }
 
   componentDidUpdate() {
@@ -723,7 +738,10 @@ const compose = (...funcs) =>
 export default compose(
   graphql(NEAR_PICKUP_POINTS, {
     options: () => ({
-      variables: { lat: '2.2015347', long: '41.3977365' },
+      variables: {
+        lat,
+        long,
+      },
       ssr: false,
     }),
     name: 'NearestPickupPoints',
