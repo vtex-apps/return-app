@@ -86,4 +86,79 @@ export class MDFactory extends MasterData {
       fields: productReturnFields,
     })
   }
+
+  public updateSettingsSchema(schemaBody: typeof SETTINGS_SCHEMA) {
+    return this.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schemas.settingsSchema.name,
+      schemaBody,
+    })
+  }
+
+  public updateRequestSchema(schemaBody: typeof RETURNS_SCHEMA) {
+    return this.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schemas.returnSchema.name,
+      schemaBody,
+    })
+  }
+
+  public updateCommentsSchema(schemaBody: typeof COMMENTS_SCHEMA) {
+    return this.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schemas.commentsSchema.name,
+      schemaBody,
+    })
+  }
+
+  public updateHistorySchema(schemaBody: typeof HISTORY_SCHEMA) {
+    return this.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schemas.statusHistorySchema.name,
+      schemaBody,
+    })
+  }
+
+  public updatetProductsSchema(schemaBody: typeof PRODUCTS_SCHEMA) {
+    return this.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schemas.productsSchema.name,
+      schemaBody,
+    })
+  }
+
+  public getSettingsSchema() {
+    return this.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schemas.settingsSchema.name,
+    })
+  }
+
+  public getRequestSchema() {
+    return this.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schemas.returnSchema.name,
+    })
+  }
+
+  public getCommentsSchema() {
+    return this.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schemas.commentsSchema.name,
+    })
+  }
+
+  public getHistorySchema() {
+    return this.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schemas.statusHistorySchema.name,
+    })
+  }
+
+  public getProductsSchema() {
+    return this.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schemas.productsSchema.name,
+    })
+  }
 }
