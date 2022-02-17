@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ## Added
-- Graphql mutation to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process
+- Graphql mutation to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process.
 
 ## [2.1.0 to 2.17.0]
 ### Fixed

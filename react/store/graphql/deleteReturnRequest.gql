@@ -1,3 +1,0 @@
-mutation deleteReturnRequest($Id: [ID]!) {
-  deleteReturnRequest(Id: $Id) @context(provider: "vtex.return-app")
-}

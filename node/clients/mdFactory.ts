@@ -36,6 +36,10 @@ export class MDFactory extends MasterData {
     },
   }
 
+  public deleteRMADocument(id: string) {
+    return this.deleteDocument({ id, dataEntity: this.dataEntity })
+  }
+
   public searchReturnRequests({
     fields,
     pagination,
