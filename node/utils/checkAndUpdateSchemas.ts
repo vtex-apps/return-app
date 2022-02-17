@@ -30,11 +30,13 @@ const isSchemaUpdated = async (ctx: Context) => {
   return false
 }
 
-export const updateSchema = async (ctx: Context) => {
+export const checkAndUpdateSchemas = async (ctx: Context) => {
   const {
     clients: { vbase, mdFactory },
     vtex: { logger },
   } = ctx
+
+  let hasUpdated = false
 
   try {
     const updated = await isSchemaUpdated(ctx)
@@ -75,24 +77,29 @@ export const updateSchema = async (ctx: Context) => {
     if (!isDeepStrictEqual(settingsSchema, SETTINGS_SCHEMA)) {
       updateSettingsSchemaPromise =
         mdFactory.updateSettingsSchema(SETTINGS_SCHEMA)
+      hasUpdated = true
     }
 
     if (!isDeepStrictEqual(requestSchema, RETURNS_SCHEMA)) {
       updateRequestSchemaPromise = mdFactory.updateRequestSchema(RETURNS_SCHEMA)
+      hasUpdated = true
     }
 
     if (!isDeepStrictEqual(commentsSchema, COMMENTS_SCHEMA)) {
       updateCommentsSchemaPromise =
         mdFactory.updateCommentsSchema(COMMENTS_SCHEMA)
+      hasUpdated = true
     }
 
     if (!isDeepStrictEqual(historySchema, HISTORY_SCHEMA)) {
       updateHistorySchemaPromise = mdFactory.updateHistorySchema(HISTORY_SCHEMA)
+      hasUpdated = true
     }
 
     if (!isDeepStrictEqual(productsSchema, PRODUCTS_SCHEMA)) {
       updateProductsSchemaPromise =
         mdFactory.updatetProductsSchema(PRODUCTS_SCHEMA)
+      hasUpdated = true
     }
 
     await Promise.all([
@@ -113,7 +120,13 @@ export const updateSchema = async (ctx: Context) => {
     }
   }
 
-  logger.info({
-    message: `Schemas updated, appVersion: ${appVersion}`,
-  })
+  if (hasUpdated) {
+    logger.info({
+      message: `Schemas updated, appVersion: ${appVersion}`,
+    })
+  } else {
+    logger.info({
+      message: `Schemas checked. Nothing to update, appVersion: ${appVersion}`,
+    })
+  }
 }
