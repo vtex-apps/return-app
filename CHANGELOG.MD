@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ## Added
-- Graphql mutation to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process.
+- Graphql mutation `createReturnRequest` to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process.
+- Graphql mutation `deleteReturnRequest` to delete documents on master data.
+- Error handler when submitting new request.
+- Flag `v-immediate-indexing` in all schemas to force faster indexing.
+
+## Changed
+- Request to create a new RMA is now using Graphql mutation `createReturnRequest`.
+- RMA sequence number is created using the order sequence number. 
 
 ## [2.1.0 to 2.17.0]
 ### Fixed
