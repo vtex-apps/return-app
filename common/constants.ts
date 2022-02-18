@@ -98,7 +98,7 @@ export const RETURNS_SCHEMA = {
     dateSubmitted: { type: 'string', format: 'date-time' },
     type: { type: 'string' },
     sequenceNumber: {
-      type: 'string',
+      type: ['string', 'integer', 'null'],
     },
   },
   'v-security': {
