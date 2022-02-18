@@ -1,64 +1,39 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import type { FormEvent } from 'react'
 import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
 import PropTypes from 'prop-types'
-import {
-  Button,
-  Input,
-  Table,
-  DatePicker,
-  ButtonWithIcon,
-} from 'vtex.styleguide'
+import { Table } from 'vtex.styleguide'
 
 import {
   currentDate,
   filterDate,
   requestsStatuses,
-  FormattedMessageFixed,
   schemaNames,
   schemaTypes,
-  getStatusTranslation,
 } from '../../common/utils'
 import { fetchHeaders, fetchMethod, fetchPath } from '../../common/fetch'
 import ReturnsTableSchema from '../../common/ReturnsTableSchema'
-import { StatusDropDownMenu } from '../../components/StatusDropDownMenu'
 import { ReturnTableModal } from '../../components/ReturnTableModal'
-
-const initialFilters = {
-  orderId: '',
-  returnId: '',
-  sequenceNumber: '',
-  fromDate: '',
-  toDate: '',
-  status: '',
-  createdIn: '',
-}
-
-const tableLength = 15
-const initialPaging = {
-  total: 0,
-  page: 1,
-  perPage: tableLength,
-}
+import { initialFilters } from '../../common/constants/returnsTable'
+import ReturnTableFrom from './ReturnTableFrom'
 
 interface IProps {
   navigate: (to: { to: string }) => void
 }
 
-export type FilterBy = keyof typeof initialFilters
+type FilterBy = keyof typeof initialFilters
 
 interface IState {
   orderedItems: any[]
-  returns: any[]
-  slicedData: any[]
-  error: string
-  paging: typeof initialPaging
+  itmes: any[]
+  error: string | null
+  pageNumber: number
+  perPage: number
+  totalItems: number
+  itemFrom: number
+  itemTo: number
   filters: typeof initialFilters
-  currentItemFrom: number
-  currentItemTo: number
   emptyStateLabel: JSX.Element
-  async: any[]
   tableIsLoading: boolean
   isFiltered: boolean
   dataSort: {
@@ -69,8 +44,10 @@ interface IState {
   selectedRequestProducts: any[]
 }
 
+const INITIAL_ROW_LENGTH = 15
+
 class ReturnsTableContent extends Component<IProps, IState> {
-  static propTypes = {
+  public static propTypes = {
     navigate: PropTypes.func,
   }
 
@@ -78,15 +55,15 @@ class ReturnsTableContent extends Component<IProps, IState> {
     super(props)
     this.state = {
       orderedItems: [],
-      returns: [],
-      slicedData: [],
-      error: '',
-      paging: initialPaging,
+      itmes: [],
+      error: null,
+      perPage: INITIAL_ROW_LENGTH,
+      pageNumber: 1,
+      totalItems: 0, // 0 is initial value
+      itemFrom: 1, // 1 the first value
+      itemTo: INITIAL_ROW_LENGTH,
       filters: initialFilters,
-      currentItemFrom: 1,
-      currentItemTo: tableLength,
       emptyStateLabel: <FormattedMessage id="returns.nothingToShow" />,
-      async: [],
       tableIsLoading: true,
       isFiltered: false,
       dataSort: {
@@ -98,24 +75,19 @@ class ReturnsTableContent extends Component<IProps, IState> {
     }
   }
 
-  onHandleModalToggle = () => {
-    this.setState((prevState) => ({ isModalOpen: !prevState.isModalOpen }))
-  }
-
-  handleSort = ({ sortOrder, sortedBy }) => {
-    this.setState(
-      { dataSort: { sortedBy, sortOrder }, paging: initialPaging },
-      this.getRequests
-    )
-  }
-
-  componentDidMount() {
+  public componentDidMount = () => {
     this.getRequests()
   }
 
-  getRequests = async () => {
+  private getRequests = async () => {
     this.setState({ tableIsLoading: true })
-    const { filters, paging, dataSort } = this.state
+    const {
+      filters,
+      pageNumber,
+      perPage,
+      dataSort: { sortedBy, sortOrder },
+    } = this.state
+
     let where = 'type=request'
 
     if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
@@ -154,168 +126,27 @@ class ReturnsTableContent extends Component<IProps, IState> {
       where += ` AND status="${requestsStatuses[filters.status]}"`
     }
 
-    const returnsResponse = await fetch(
-      `${fetchPath.getRequests + schemaNames.request}/${paging.page}/${
-        paging.perPage
-      }/${dataSort.sortedBy}/${dataSort.sortOrder}/${where}`
-    )
+    const url = `${
+      fetchPath.getRequests + schemaNames.request
+    }/${pageNumber}/${perPage}/${sortedBy}/${sortOrder}/${where}`
 
-    console.log(
-      `${fetchPath.getRequests + schemaNames.request}/${paging.page}/${
-        paging.perPage
-      }/${dataSort.sortedBy}/${dataSort.sortOrder}/${where}`
-    )
-    this.setState({ tableIsLoading: false })
-    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request
-    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request AND sequenceNumber="10"
-    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request AND createdIn between 2022-02-01 AND 2022-02-01
-    // /returns/getRequests/returnRequests/1/15/createdIn/DESC/type=request AND sequenceNumber="19" AND createdIn between 2022-02-01 AND 2022-02-01
-    // return
+    const returnsResponse = await fetch(url)
 
     const returns = await returnsResponse.json()
 
     if ('error' in returns) {
-      this.setState({ error: returns.error })
+      this.setState({ error: returns.error, tableIsLoading: false })
     } else {
-      this.setState((prevState) => ({
-        returns: returns.data,
+      this.setState({
+        itmes: returns.data,
         orderedItems: returns,
-        slicedData: returns.length ? returns.slice(0, tableLength) : [],
+        totalItems: returns.pagination?.total,
         tableIsLoading: false,
-        paging: {
-          ...prevState.paging,
-          total: returns.pagination?.total,
-        },
-      }))
+      })
     }
   }
 
-  filterByKey = (filterBy: FilterBy, value: string) => {
-    this.setState((prevState: IState) => ({
-      filters: {
-        ...prevState.filters,
-        [filterBy]: value,
-      },
-    }))
-  }
-
-  filterFromDate = (val: string) => {
-    this.setState((prevState: IState) => ({
-      filters: {
-        ...prevState.filters,
-        fromDate: val,
-        toDate:
-          prevState.filters.toDate === '' || prevState.filters.toDate < val
-            ? val
-            : prevState.filters.toDate,
-      },
-    }))
-    setTimeout(() => {
-      this.handleApplyFilters()
-    }, 200)
-  }
-
-  filterToDate = (val: string) => {
-    this.setState((prevState: any) => ({
-      filters: {
-        ...prevState.filters,
-        toDate: val,
-        fromDate:
-          prevState.filters.fromDate === '' || prevState.filters.fromDate > val
-            ? val
-            : prevState.filters.fromDate,
-      },
-    }))
-    setTimeout(() => {
-      this.handleApplyFilters()
-    }, 200)
-  }
-
-  handleApplyFilters = () => {
-    const { filters } = this.state
-
-    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
-      this.handleResetFilters()
-    } else {
-      this.handleFirstPageFilter()
-    }
-  }
-
-  handleResetFilters = () => {
-    this.setState(
-      {
-        filters: initialFilters,
-        tableIsLoading: true,
-        isFiltered: false,
-      },
-      this.getRequests
-    )
-  }
-
-  handleNextClick = () => {
-    const { paging } = this.state
-
-    const currentItemFrom =
-      Number(this.state.currentItemFrom) + Number(paging.perPage)
-
-    const currentItemTo =
-      Number(this.state.currentItemTo) + Number(paging.perPage)
-
-    this.setState((prevState) => {
-      prevState.paging.page = Number(prevState.paging.page) + 1
-
-      return {
-        paging: prevState.paging,
-        currentItemFrom,
-        currentItemTo,
-      }
-    }, this.getRequests)
-  }
-
-  handlePrevClick = () => {
-    const { paging } = this.state
-
-    if (paging.page === 0) return
-
-    const currentItemFrom =
-      Number(this.state.currentItemFrom) - Number(paging.perPage)
-
-    const currentItemTo =
-      Number(this.state.currentItemTo) - Number(paging.perPage)
-
-    this.setState((prevState) => {
-      prevState.paging.page -= 1
-
-      return {
-        paging: prevState.paging,
-        currentItemFrom,
-        currentItemTo,
-      }
-    }, this.getRequests)
-  }
-
-  handleFirstPageFilter() {
-    // ! made by me to handle first page filter ASEM
-    // return
-    // this.getRequests()
-    // const currentItemFrom = Number(this.state.currentItemFrom)
-    const currentItemTo = Number(this.state.currentItemTo)
-
-    console.log('currentItemTo :>> ', currentItemTo)
-    this.setState((prevState) => {
-      prevState.paging.page = 1
-      // prevState.currentItemFrom = 1
-      // prevState.currentItemTo = 1
-
-      return {
-        paging: prevState.paging,
-        // currentItemFrom: prevState.currentItemFrom,
-        // currentItemTo: Number(prevState.currentItemTo),
-      }
-    }, this.getRequests)
-  }
-
-  handleViewRequest = (requestId: string) => {
+  private handleViewRequest = (requestId: string) => {
     fetch(
       `${fetchPath.getDocuments + schemaNames.product}/${
         schemaTypes.products
@@ -333,42 +164,106 @@ class ReturnsTableContent extends Component<IProps, IState> {
       .catch((err) => this.setState({ error: err }))
   }
 
-  handleOnSubmitForm = (event: FormEvent) => {
-    event.preventDefault()
-    this.handleApplyFilters()
+  private onHandleModalToggle = () => {
+    this.setState((prevState) => ({ isModalOpen: !prevState.isModalOpen }))
   }
 
-  handleOnChangeForm = (event: FormEvent) => {
-    const { name, value } = event.target as EventTarget & {
-      name: FilterBy
-      value: string
+  private setStateWithResetPage = async (
+    key: keyof IState,
+    value: any,
+    callback?: () => Promise<void>
+  ) => {
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        pageNumber: 1,
+        itemFrom: 1,
+        itemTo: 15,
+        [key]: value,
+      }),
+      callback || undefined
+    )
+  }
+
+  private handleSort = ({ sortOrder, sortedBy }) => {
+    this.setStateWithResetPage(
+      'dataSort',
+      { sortedBy, sortOrder },
+      this.getRequests
+    )
+  }
+
+  private onhandleResetFilters = () => {
+    this.setStateWithResetPage('filters', initialFilters, this.getRequests)
+  }
+
+  private onhandleApplyFilters = () => {
+    const { filters } = this.state
+
+    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
+      /**
+       * here we compare the initialFilters with the current filters if they are equal so no filter is applied.
+       */
+      this.onhandleResetFilters()
+
+      return // reset filters
     }
 
-    this.filterByKey(name, value)
+    /**
+     * here we reset the page number to 1 and apply the filters.
+     */
+    this.setStateWithResetPage('pageNumber', 1, this.getRequests)
   }
 
-  render() {
+  private filterByKey = (filterBy: FilterBy, value: string) => {
+    this.setState((prevState: IState) => ({
+      filters: {
+        ...prevState.filters,
+        [filterBy]: value,
+      },
+    }))
+  }
+
+  private handleNextClick = () => {
+    this.setState(
+      (prevState) => ({
+        pageNumber: prevState.pageNumber + 1,
+        itemFrom: prevState.itemFrom + prevState.perPage,
+        itemTo: prevState.itemTo + prevState.perPage,
+      }),
+      this.getRequests
+    )
+  }
+
+  private handlePrevClick = () => {
+    const { pageNumber } = this.state
+
+    if (pageNumber === 1) return // do nothing when page is first page
+
+    this.setState(
+      (prevState) => ({
+        pageNumber: prevState.pageNumber - 1,
+        itemFrom: prevState.itemFrom - prevState.perPage,
+        itemTo: prevState.itemTo - prevState.perPage,
+      }),
+      this.getRequests
+    )
+  }
+
+  public render() {
     const {
       error,
-      paging,
       tableIsLoading,
       filters,
-      returns,
+      itmes,
       emptyStateLabel,
       isFiltered,
       selectedRequestProducts,
-      currentItemFrom,
-      currentItemTo,
+      perPage,
+      totalItems,
+      itemFrom,
+      itemTo,
     } = this.state
-
-    const statusLabel =
-      filters.status !== '' ? (
-        <FormattedMessageFixed
-          id={`returns.status${getStatusTranslation(filters.status)}`}
-        />
-      ) : (
-        <FormattedMessage id="returns.statusAllStatuses" />
-      )
 
     if (error) {
       return (
@@ -380,115 +275,34 @@ class ReturnsTableContent extends Component<IProps, IState> {
 
     return (
       <div>
-        <form
-          onSubmit={this.handleOnSubmitForm}
-          onChange={this.handleOnChangeForm}
-        >
-          <div className="flex items-center">
-            <div className="ma2">
-              <FormattedMessage id="returns.requestId">
-                {(msg) => (
-                  <Input
-                    placeholder={msg}
-                    size="small"
-                    name="returnId"
-                    value={filters.returnId}
-                  />
-                )}
-              </FormattedMessage>
-            </div>
-            <div className="ma2">
-              <FormattedMessage id="returns.sequenceNumber">
-                {(msg) => (
-                  <Input
-                    placeholder={msg}
-                    size="small"
-                    name="sequenceNumber"
-                    value={filters.sequenceNumber}
-                  />
-                )}
-              </FormattedMessage>
-            </div>
-            <div className="ma2">
-              <FormattedMessage id="returns.orderId">
-                {(msg) => (
-                  <Input
-                    placeholder={msg}
-                    size="small"
-                    name="orderId"
-                    value={filters.orderId}
-                  />
-                )}
-              </FormattedMessage>
-            </div>
-            <div className="ma2">
-              <FormattedMessage id="returns.filterFromDate">
-                {(msg) => (
-                  <DatePicker
-                    placeholder={msg}
-                    locale="en-GB"
-                    size="small"
-                    onChange={(value) => this.filterFromDate(value)}
-                    value={filters.fromDate}
-                  />
-                )}
-              </FormattedMessage>
-            </div>
-            <div className="ma2">
-              <FormattedMessage id="returns.filterToDate">
-                {(msg) => (
-                  <DatePicker
-                    placeholder={msg}
-                    locale="en-GB"
-                    size="small"
-                    onChange={(value) => this.filterToDate(value)}
-                    value={filters.toDate}
-                  />
-                )}
-              </FormattedMessage>
-            </div>
-            <div className="ma2">
-              <StatusDropDownMenu
-                filterByKey={this.filterByKey}
-                statusLabel={statusLabel}
-              />
-            </div>
-            <div className="ma2">
-              <Button size="small" type="submit">
-                <FormattedMessage id="returns.filterResults" />
-              </Button>
-            </div>
-            {isFiltered ? (
-              <div className="ma2">
-                <ButtonWithIcon
-                  variation="secondary"
-                  size="small"
-                  onClick={() => this.handleResetFilters()}
-                >
-                  <FormattedMessage id="returns.clearFilters" />
-                </ButtonWithIcon>
-              </div>
-            ) : null}
-          </div>
-        </form>
+        <ReturnTableFrom
+          filters={filters}
+          handleApplyFilters={this.onhandleApplyFilters}
+          filterByKey={this.filterByKey}
+          handleResetFilters={this.onhandleResetFilters}
+          isFiltered={isFiltered}
+        />
         <Table
           fullWidth
           loading={tableIsLoading}
-          items={returns}
+          items={itmes}
           emptyStateLabel={emptyStateLabel}
           schema={ReturnsTableSchema({
             navigate: this.props.navigate,
             handleViewRequest: this.handleViewRequest,
           })}
           pagination={{
-            onNextClick: this.handleNextClick,
-            onPrevClick: this.handlePrevClick,
             textShowRows: <FormattedMessage id="returns.tableShowRows" />,
             textOf: <FormattedMessage id="returns.tableOf" />,
-            currentItemFrom,
-            currentItemTo,
-            totalItems: paging.total,
+            onNextClick: this.handleNextClick,
+            onPrevClick: this.handlePrevClick,
+
+            tableLength: perPage,
+            currentItemFrom: itmes.length ? itemFrom : 0,
+            currentItemTo: itemTo,
+            totalItems,
           }}
+          onSort={this.handleSort}
           sort={{
             sortedBy: this.state.dataSort.sortedBy,
             sortOrder: this.state.dataSort.sortOrder,

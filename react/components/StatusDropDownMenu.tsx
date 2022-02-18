@@ -2,8 +2,10 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ActionMenu } from 'vtex.styleguide'
 
-import type { FilterBy } from '../admin/ReturnsTable/ReturnsTableContent'
+import type { initialFilters } from '../common/constants/returnsTable'
 import { requestsStatuses, capitalize } from '../common/utils'
+
+type FilterBy = keyof typeof initialFilters
 
 type StatusDropDownMenuProps = {
   filterByKey: (filterBy: FilterBy, value: string) => void
