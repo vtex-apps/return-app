@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Dropdown,
   Textarea,
+  Toggle,
 } from 'vtex.styleguide'
 import PropTypes from 'prop-types'
 
@@ -47,6 +48,10 @@ interface Props {
   settings: any
   intl: any
   NearestPickupPoints: any
+}
+
+interface State {
+  isPickupPointsSelected: boolean
 }
 
 const messages = defineMessages({
@@ -108,11 +113,11 @@ const messages = defineMessages({
 let lat = ''
 let long = ''
 
-class RequestForm extends Component<Props> {
+class RequestForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      isVisible: true,
+      isPickupPointsSelected: false,
     }
   }
 
@@ -565,66 +570,102 @@ class RequestForm extends Component<Props> {
           </div>
 
           <div
-            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+            className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
           >
-            <p className={`${styles.returnFormInputsHeader}`}>
-              {formatMessage({ id: messages.formPickupAddress.id })}
-            </p>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="address"
-                placeholder={formatMessage({ id: messages.formAddress.id })}
-                onChange={handleInputChange}
-                value={formInputs.address}
-                errorMessage={
-                  errors.address ? formatMessage({ id: errors.address }) : ''
+            <div className="flex justify-between">
+              {this.state.isPickupPointsSelected ? (
+                <p className={`${styles.returnFormInputsHeader}`}>
+                  Pickup Points
+                </p>
+              ) : (
+                <p className={`${styles.returnFormInputsHeader}`}>
+                  {formatMessage({ id: messages.formPickupAddress.id })}
+                </p>
+              )}
+              <Toggle
+                label={this.state.isPickupPointsSelected ? '' : 'Pickup Points'}
+                checked={this.state.isPickupPointsSelected}
+                onChange={() =>
+                  this.setState((prevState) => ({
+                    isPickupPointsSelected: !prevState.isPickupPointsSelected,
+                  }))
                 }
               />
             </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="locality"
-                placeholder={formatMessage({ id: messages.formLocality.id })}
-                onChange={handleInputChange}
-                value={formInputs.locality}
-                errorMessage={
-                  errors.locality ? formatMessage({ id: errors.locality }) : ''
-                }
+            {this.state.isPickupPointsSelected ? (
+              <Dropdown
+                label="Pickup"
+                placeholder="Select Pickup"
+                size="small"
+                value="Pickup Point 1"
               />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="state"
-                placeholder={formatMessage({ id: messages.formState.id })}
-                onChange={handleInputChange}
-                value={formInputs.state || ''}
-                errorMessage={
-                  errors.state ? formatMessage({ id: errors.state }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="zip"
-                placeholder={formatMessage({ id: messages.formZip.id })}
-                onChange={handleInputChange}
-                value={formInputs.zip || ''}
-                errorMessage={
-                  errors.zip ? formatMessage({ id: errors.zip }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="country"
-                placeholder={formatMessage({ id: messages.formCountry.id })}
-                onChange={handleInputChange}
-                value={formInputs.country}
-                errorMessage={
-                  errors.country ? formatMessage({ id: errors.country }) : ''
-                }
-              />
-            </div>
+            ) : (
+              <>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="address"
+                    placeholder={formatMessage({ id: messages.formAddress.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.address}
+                    errorMessage={
+                      errors.address
+                        ? formatMessage({ id: errors.address })
+                        : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="locality"
+                    placeholder={formatMessage({
+                      id: messages.formLocality.id,
+                    })}
+                    onChange={handleInputChange}
+                    value={formInputs.locality}
+                    errorMessage={
+                      errors.locality
+                        ? formatMessage({ id: errors.locality })
+                        : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="state"
+                    placeholder={formatMessage({ id: messages.formState.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.state || ''}
+                    errorMessage={
+                      errors.state ? formatMessage({ id: errors.state }) : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="zip"
+                    placeholder={formatMessage({ id: messages.formZip.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.zip || ''}
+                    errorMessage={
+                      errors.zip ? formatMessage({ id: errors.zip }) : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="country"
+                    placeholder={formatMessage({ id: messages.formCountry.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.country}
+                    errorMessage={
+                      errors.country
+                        ? formatMessage({ id: errors.country })
+                        : ''
+                    }
+                  />
+                </div>
+              </>
+            )}
           </div>
           <div className={`mt4 ph4 ${styles.returnFormExtraComment}`}>
             <p className={`${styles.returnFormExtraCommentHeader}`}>

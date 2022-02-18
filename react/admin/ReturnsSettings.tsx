@@ -54,6 +54,8 @@ const messages = defineMessages({
   saveSettings: { id: 'settings.saveSettings' },
   otherOptions: { id: 'settings.otherOptions' },
   enableOtherOptions: { id: 'settings.otherOptions_enable' },
+  deliveryOptions: { id: 'settings.deliveryOptions' },
+  enablePickupPoints: { id: 'settings.enablePickupPoints' },
 })
 
 class ReturnsSettings extends Component<any, any> {
@@ -81,6 +83,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentCard: false,
       paymentVoucher: false,
       enableOtherOption: false,
+      enablePickupPoints: false,
       successMessage: '',
       errorMessage: '',
       payments: {
@@ -175,6 +178,7 @@ class ReturnsSettings extends Component<any, any> {
           excludedCategories: JSON.parse(json[0].excludedCategories),
           enableOtherOption: json[0].enableOtherOption,
           loading: false,
+          enablePickupOptions: json[0].enablePickupOptions,
         })
       })
       .catch((err) => this.setState({ error: err }))
@@ -312,6 +316,7 @@ class ReturnsSettings extends Component<any, any> {
       payments,
       options,
       enableOtherOption,
+      enablePickupPoints,
     } = this.state
 
     let hasErrors = false
@@ -366,6 +371,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentVoucher: payments.paymentVoucher.checked,
       options,
       enableOtherOption,
+      enablePickupPoints,
       type: schemaTypes.settings,
     }
 
@@ -437,6 +443,15 @@ class ReturnsSettings extends Component<any, any> {
     }))
   }
 
+  handleEnablePickupPoints = () => {
+    /**
+     * toggle the Other Option checkbox on or off and set otherOption in the state
+     */
+    this.setState((prevState) => ({
+      enablePickupPoints: !prevState.enablePickupPoints,
+    }))
+  }
+
   render() {
     const {
       maxDays,
@@ -455,6 +470,7 @@ class ReturnsSettings extends Component<any, any> {
       options,
       isModalOpen,
       enableOtherOption,
+      enablePickupPoints,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -654,22 +670,41 @@ class ReturnsSettings extends Component<any, any> {
                       },
                     ]}
                   />
-
-                  <div className="flex flex-column w-100 mb7">
-                    <p className="f4 mb0">
-                      {formatMessage({ id: messages.otherOptions.id })}:
-                    </p>
+                  <div className="mb7">
+                    <div className="flex flex-column w-100 mb5">
+                      <p className="f4 mb0">
+                        {formatMessage({ id: messages.otherOptions.id })}:
+                      </p>
+                    </div>
+                    <Checkbox
+                      checked={enableOtherOption}
+                      label={formatMessage({
+                        id: messages.enableOtherOptions.id,
+                      })}
+                      name="disabled-checkbox-group"
+                      onChange={this.handleEnableOtherOption}
+                      value="return-other-option"
+                      id="return-other-option-checkbox"
+                    />
                   </div>
-                  <Checkbox
-                    checked={enableOtherOption}
-                    label={formatMessage({
-                      id: messages.enableOtherOptions.id,
-                    })}
-                    name="disabled-checkbox-group"
-                    onChange={this.handleEnableOtherOption}
-                    value="return-other-option"
-                    id="return-other-option-checkbox"
-                  />
+                  <Divider orientation="horizontal" />
+                  <div className="">
+                    <div className="flex flex-column w-100 mb5 mt5">
+                      <p className="f4 mb0">
+                        {formatMessage({ id: messages.deliveryOptions.id })}:
+                      </p>
+                    </div>
+                    <Checkbox
+                      checked={enablePickupPoints}
+                      label={formatMessage({
+                        id: messages.enablePickupPoints.id,
+                      })}
+                      name="disabled-checkbox-group"
+                      onChange={this.handleEnablePickupPoints}
+                      value="return-other-option"
+                      id="return-pickup-points-checkbox"
+                    />
+                  </div>
                   <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
                     <div className="flex flex-column">
                       <div className="w-100">

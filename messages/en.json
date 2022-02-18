@@ -24,6 +24,8 @@
   "settings.addCustomOption_Submit": "ADD OPTION",
   "settings.otherOptions": "Other Option",
   "settings.otherOptions_enable": "Enable Other Option",
+  "settings.deliveryOptions": "Delivery Options",
+  "settings.enablePickupPoints": "Enable Pickup Points",
   "returns.orderId": "Order ID",
   "returns.requestId": "Request ID",
   "returns.sequenceNumber": "Sequence No",
