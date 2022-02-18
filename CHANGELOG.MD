@@ -6,15 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-## Added
+### Added
 - Graphql mutation `createReturnRequest` to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process.
 - Graphql mutation `deleteReturnRequest` to delete documents on master data.
 - Error handler when submitting new request.
 - Flag `v-immediate-indexing` in all schemas to force faster indexing.
 
-## Changed
+### Changed
 - Request to create a new RMA is now using Graphql mutation `createReturnRequest`.
-- RMA sequence number is created using the order sequence number. 
+- RMA sequence number is created using the order sequence number.
+
+### Fix
+- Total products value on return request details page in the Admin side. It was being divided by 100.
 
 ## [2.1.0 to 2.17.0]
 ### Fixed
