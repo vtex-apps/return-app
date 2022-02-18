@@ -132,9 +132,9 @@ interface Props {
       }>
     >
     data: {
-      error: ApolloError | undefined
-      loading: boolean
-      called: boolean
+      errorSubmittingRequest: ApolloError | undefined
+      submittingRequest: boolean
+      requestSubmitted: boolean
     }
   }
   rootPath: TODO
@@ -772,12 +772,12 @@ class MyReturnsPageAdd extends Component<Props, State> {
   async sendRequest() {
     const {
       sendRequest,
-      data: { loading },
+      data: { submittingRequest },
     } = this.props.creatReturnRequest
 
     const { formatMessage } = this.props.intl
 
-    if (loading) {
+    if (submittingRequest) {
       return
     }
 
@@ -889,14 +889,14 @@ class MyReturnsPageAdd extends Component<Props, State> {
     const {
       cssHandles,
       creatReturnRequest: {
-        data: { called, loading: loadingRequest },
+        data: { requestSubmitted, submittingRequest },
       },
     } = this.props
 
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
-          if (loading || loadingRequest) {
+          if (loading || submittingRequest) {
             return (
               <div className="flex justify-center pt6 pb6">
                 <Spinner />
@@ -904,7 +904,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
             )
           }
 
-          if (called) {
+          if (requestSubmitted) {
             return (
               <div>
                 {successSubmit ? (

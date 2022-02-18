@@ -25,10 +25,16 @@ const StoreMyReturnsPageAddWrapper: FC = (props: any) => {
   const axios = useAxiosInstance()
   const { production, binding, rootPath } = useRuntime()
   const intl = useIntl()
-  const [createReturnRequest, { error, loading, called }] = useMutation<
-    { returnRequestId: string },
-    ReturnRequestMutationArgs
-  >(CREATE_RETURN_REQUEST)
+  const [
+    createReturnRequest,
+    {
+      error: errorSubmittingRequest,
+      loading: submittingRequest,
+      called: requestSubmitted,
+    },
+  ] = useMutation<{ returnRequestId: string }, ReturnRequestMutationArgs>(
+    CREATE_RETURN_REQUEST
+  )
 
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -55,7 +61,7 @@ const StoreMyReturnsPageAddWrapper: FC = (props: any) => {
       intl={intl}
       creatReturnRequest={{
         sendRequest,
-        data: { error, loading, called },
+        data: { errorSubmittingRequest, submittingRequest, requestSubmitted },
       }}
     />
   )
