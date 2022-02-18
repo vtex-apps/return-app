@@ -79,7 +79,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     this.getRequests()
   }
 
-  private getRequests = async () => {
+  protected getRequests = async () => {
     this.setState({ tableIsLoading: true })
     const {
       filters,
@@ -146,7 +146,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     }
   }
 
-  private handleViewRequest = (requestId: string) => {
+  protected handleViewRequest = (requestId: string) => {
     fetch(
       `${fetchPath.getDocuments + schemaNames.product}/${
         schemaTypes.products
@@ -164,11 +164,11 @@ class ReturnsTableContent extends Component<IProps, IState> {
       .catch((err) => this.setState({ error: err }))
   }
 
-  private onHandleModalToggle = () => {
+  protected onHandleModalToggle = () => {
     this.setState((prevState) => ({ isModalOpen: !prevState.isModalOpen }))
   }
 
-  private setStateWithResetPage = async (
+  protected setStateWithResetPage = async (
     key: keyof IState,
     value: any,
     callback?: () => Promise<void>
@@ -185,7 +185,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     )
   }
 
-  private handleSort = ({ sortOrder, sortedBy }) => {
+  protected handleSort = ({ sortOrder, sortedBy }) => {
     this.setStateWithResetPage(
       'dataSort',
       { sortedBy, sortOrder },
@@ -193,11 +193,11 @@ class ReturnsTableContent extends Component<IProps, IState> {
     )
   }
 
-  private onhandleResetFilters = () => {
+  protected onhandleResetFilters = () => {
     this.setStateWithResetPage('filters', initialFilters, this.getRequests)
   }
 
-  private onhandleApplyFilters = () => {
+  protected onhandleApplyFilters = () => {
     const { filters } = this.state
 
     if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
@@ -215,7 +215,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     this.setStateWithResetPage('pageNumber', 1, this.getRequests)
   }
 
-  private filterByKey = (filterBy: FilterBy, value: string) => {
+  protected filterByKey = (filterBy: FilterBy, value: string) => {
     this.setState((prevState: IState) => ({
       filters: {
         ...prevState.filters,
@@ -224,7 +224,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     }))
   }
 
-  private handleNextClick = () => {
+  protected handleNextClick = () => {
     this.setState(
       (prevState) => ({
         pageNumber: prevState.pageNumber + 1,
@@ -235,7 +235,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     )
   }
 
-  private handlePrevClick = () => {
+  protected handlePrevClick = () => {
     const { pageNumber } = this.state
 
     if (pageNumber === 1) return // do nothing when page is first page
