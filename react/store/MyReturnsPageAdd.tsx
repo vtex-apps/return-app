@@ -838,23 +838,27 @@ class MyReturnsPageAdd extends Component<Props, State> {
       reason: item.reason,
     }))
 
-    const { errors } = await sendRequest({
-      returnRequest: requestData,
-      returnedItems,
-    })
+    try {
+      const { errors } = await sendRequest({
+        returnRequest: requestData,
+        returnedItems,
+      })
 
-    if (errors) {
-      console.error({ errors })
+      if (errors) {
+        const errorSubmitting = new Error(JSON.stringify(errors, null, 2))
+
+        throw errorSubmitting
+      }
+
+      this.setState({
+        successSubmit: formatMessage({ id: messages.submitSuccess.id }),
+      })
+    } catch (e) {
+      console.error(e)
       this.setState({
         errorSubmit: formatMessage({ id: messages.submitError.id }),
       })
-
-      return
     }
-
-    this.setState({
-      successSubmit: formatMessage({ id: messages.submitSuccess.id }),
-    })
   }
 
   render() {

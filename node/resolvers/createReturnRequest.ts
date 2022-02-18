@@ -107,11 +107,10 @@ export const createReturnRequest = async (
 
     // if something fails, we delete all documents related to that request.
     // This way, we try to make the operation atomic.
-    const deletedDocumentPromises = documentIdCollection.map((id) =>
-      mdFactory.deleteRMADocument(id)
-    )
-
-    await Promise.all(deletedDocumentPromises)
+    for (const id of documentIdCollection) {
+      // eslint-disable-next-line no-await-in-loop
+      await mdFactory.deleteRMADocument(id)
+    }
 
     throw new Error(e)
   }
