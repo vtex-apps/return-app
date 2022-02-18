@@ -4,16 +4,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
-import { defineMessages, injectIntl } from 'react-intl'
-import { withRuntimeContext } from 'vtex.render-runtime'
-import { withCssHandles } from 'vtex.css-handles'
-import { graphql } from 'react-apollo'
+import { defineMessages } from 'react-intl'
+import type { ExecutionResult } from 'react-apollo'
+import type { ApolloError } from '@apollo/client'
 
 import {
   schemaTypes,
-  requestsStatuses,
   schemaNames,
-  sendMail,
   substractDays,
   getCurrentDate,
   mergeArrays,
@@ -25,7 +22,6 @@ import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 import EligibleOrdersTable from '../components/EligibleOrdersTable'
 import RequestInformation from '../components/RequestInformation'
 import RequestForm from '../components/RequestForm'
-import DELETE_RETURN_REQUEST from './graphql/deleteReturnRequest.gql'
 
 type Errors = {
   name: string
@@ -73,7 +69,6 @@ type State = {
   loading: boolean
   settings: any
   currentProduct: any
-  submittedRequest: boolean
 }
 
 const initialErrors = {
@@ -125,9 +120,30 @@ const emailValidation = (email: string) => {
   )
 }
 
-const CSS_HANDLES = ['errorContainer']
-
-class MyReturnsPageAdd extends Component<any, State> {
+type TODO = any
+interface Props {
+  creatReturnRequest: {
+    sendRequest: ({
+      returnRequest,
+      returnedItems,
+    }: ReturnRequestMutationArgs) => Promise<
+      ExecutionResult<{
+        returnRequestId: string
+      }>
+    >
+    data: {
+      error: ApolloError | undefined
+      loading: boolean
+      called: boolean
+    }
+  }
+  rootPath: TODO
+  intl: TODO
+  headerConfig: TODO
+  deleteReturnRequest: TODO
+  cssHandles: TODO
+}
+class MyReturnsPageAdd extends Component<Props, State> {
   static propTypes = {
     headerConfig: PropTypes.object,
     fetchApi: PropTypes.func,
@@ -163,12 +179,10 @@ class MyReturnsPageAdd extends Component<any, State> {
       settings: {},
       loading: false,
       currentProduct: {},
-      submittedRequest: false,
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
     this.sendRequest = this.sendRequest.bind(this)
-    this.sendData = this.sendData.bind(this)
   }
 
   async getSettings() {
@@ -192,7 +206,7 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 
   async getProfile() {
-    const { rootPath } = this.props.runtime
+    const { rootPath } = this.props
     const profileUrl = fetchPath.getProfile(rootPath)
 
     const profileResponse = await fetch(profileUrl)
@@ -509,9 +523,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       phone,
       country,
       locality,
-      state,
       address,
-      zip,
       paymentMethod,
       iban,
       accountHolder,
@@ -758,9 +770,19 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 
   async sendRequest() {
-    let totalPrice = 0
+    const {
+      sendRequest,
+      data: { loading },
+    } = this.props.creatReturnRequest
+
+    const { formatMessage } = this.props.intl
+
+    if (loading) {
+      return
+    }
 
     this.setState({ errorSubmit: '' })
+
     const {
       userId,
       selectedOrderId,
@@ -779,10 +801,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       orderProducts,
     } = this.state
 
-    orderProducts.forEach((product: any) => {
-      totalPrice += product.selectedQuantity * product.sellingPrice
-    })
-
     const requestData = {
       userId,
       orderId: selectedOrderId,
@@ -792,143 +810,51 @@ class MyReturnsPageAdd extends Component<any, State> {
       country,
       locality,
       state,
-      address,
       zip,
+      address,
       paymentMethod,
       extraComment: encodeURIComponent(extraComment),
-      totalPrice,
-      refundedAmount: 0,
       giftCardCode: '',
       giftCardId: '',
+      refundedAmount: 0,
       iban,
       accountHolder,
-      status: requestsStatuses.new,
-      dateSubmitted: getCurrentDate(),
-      type: schemaTypes.requests,
     }
 
-    const { formatMessage } = this.props.intl
+    const returnedItems = orderProducts.map((item) => ({
+      imageUrl: item.imageUrl,
+      skuId: item.refId ?? '',
+      sku: item.id,
+      productId: item.productId,
+      ean: item.ean ?? '',
+      brandId: item.additionalInfo.brandId,
+      brandName: item.additionalInfo.brandName,
+      skuName: item.name,
+      unitPrice: parseInt(item.sellingPrice, 10),
+      quantity: parseInt(item.selectedQuantity, 10),
+      goodProducts: 0,
+      reasonCode: item.reasonCode,
+      condition: item.condition,
+      reason: item.reason,
+    }))
 
-    let requestId
-    let deleteIdsArg: string[] = []
-
-    try {
-      const response = await this.sendData(requestData, schemaNames.request)
-
-      if ('DocumentId' in response) {
-        requestId = response.DocumentId
-
-        await this.addStatusHistory(requestId)
-        const productsResponse = await this.submitProductRequest(requestId)
-
-        if (productsResponse) {
-          deleteIdsArg = [requestId, ...productsResponse]
-        }
-
-        this.setState({
-          successSubmit: formatMessage({ id: messages.submitSuccess.id }),
-          submittedRequest: true,
-        })
-
-        sendMail({
-          data: { ...requestData, ...response },
-          products: orderProducts,
-        })
-
-        this.showTable()
-      } else {
-        throw new Error()
-      }
-    } catch (e) {
-      await this.props.deleteReturnRequest({ variables: { Id: deleteIdsArg } })
-      console.error({ e })
-      this.setState({
-        errorSubmit: formatMessage({ id: messages.submitError.id }),
-        submittedRequest: true,
-      })
-    }
-  }
-
-  async addStatusHistory(DocumentId: string) {
-    const { name } = this.state
-    const bodyData = {
-      submittedBy: name,
-      refundId: DocumentId,
-      status: requestsStatuses.new,
-      dateSubmitted: getCurrentDate(),
-      type: schemaTypes.history,
-    }
-
-    this.sendData(bodyData, schemaNames.history).then()
-  }
-
-  async submitProductRequest(DocumentId: string) {
-    const { orderProducts, userId, selectedOrderId } = this.state
-    const indexes: string[] = []
-
-    for (const product of orderProducts) {
-      if (parseInt(product.selectedQuantity, 10) > 0) {
-        // eslint-disable-next-line no-await-in-loop
-        const data = await this.getSkuById(product.id)
-        // eslint-disable-next-line no-await-in-loop
-        const skuResponse = await data.json()
-        const productData = {
-          userId,
-          orderId: selectedOrderId,
-          refundId: DocumentId,
-          skuId: product.refId ? product.refId : '',
-          productId: product.productId,
-          sku: product.id,
-          manufacturerCode: skuResponse.ManufacturerCode
-            ? skuResponse.ManufacturerCode
-            : '',
-          ean: product.ean ? product.ean : '',
-          brandId: product.additionalInfo.brandId,
-          brandName: product.additionalInfo.brandName,
-          skuName: product.name,
-          imageUrl: product.imageUrl,
-          reasonCode: product.reasonCode,
-          reason: product.reason,
-          condition: product.condition,
-          unitPrice: parseInt(product.sellingPrice, 10),
-          quantity: parseInt(product.selectedQuantity, 10),
-          totalPrice: parseInt(
-            String(product.sellingPrice * product.selectedQuantity),
-            10
-          ),
-          goodProducts: 0,
-          status: requestsStatuses.new,
-          dateSubmitted: getCurrentDate(),
-          type: schemaTypes.products,
-        }
-
-        try {
-          // eslint-disable-next-line no-await-in-loop
-          const resSingleProd = await this.sendData(
-            productData,
-            schemaNames.product
-          )
-
-          indexes.push(resSingleProd.DocumentId)
-        } catch (e) {
-          console.error(e)
-        }
-      }
-    }
-
-    return indexes
-  }
-
-  async sendData(body: any, schema: string) {
-    const data = await fetch(fetchPath.saveDocuments + schema, {
-      method: fetchMethod.post,
-      body: JSON.stringify(body),
-      headers: fetchHeaders,
+    const { errors } = await sendRequest({
+      returnRequest: requestData,
+      returnedItems,
     })
 
-    const response = await data.json()
+    if (errors) {
+      console.error({ errors })
+      this.setState({
+        errorSubmit: formatMessage({ id: messages.submitError.id }),
+      })
 
-    return response
+      return
+    }
+
+    this.setState({
+      successSubmit: formatMessage({ id: messages.submitSuccess.id }),
+    })
   }
 
   render() {
@@ -956,17 +882,21 @@ class MyReturnsPageAdd extends Component<any, State> {
       errorSubmit,
       successSubmit,
       selectedOrder,
-      submittedRequest,
       settings,
     }: any = this.state
 
     const { formatMessage } = this.props.intl
-    const { cssHandles } = this.props
+    const {
+      cssHandles,
+      creatReturnRequest: {
+        data: { called, loading: loadingRequest },
+      },
+    } = this.props
 
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
-          if (loading) {
+          if (loading || loadingRequest) {
             return (
               <div className="flex justify-center pt6 pb6">
                 <Spinner />
@@ -974,7 +904,7 @@ class MyReturnsPageAdd extends Component<any, State> {
             )
           }
 
-          if (submittedRequest) {
+          if (called) {
             return (
               <div>
                 {successSubmit ? (
@@ -1082,8 +1012,4 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 }
 
-export default injectIntl(
-  graphql(DELETE_RETURN_REQUEST, { name: 'deleteReturnRequest' })(
-    withCssHandles(CSS_HANDLES)(withRuntimeContext(MyReturnsPageAdd))
-  )
-)
+export default MyReturnsPageAdd

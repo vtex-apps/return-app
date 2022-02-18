@@ -77,3 +77,8 @@ type ProductReturnedInput = Omit<
   | 'totalPrice'
   | 'status'
 >
+
+interface ReturnRequestMutationArgs {
+  returnRequest: ReturnRequestInput
+  returnedItems: ProductReturnedInput[]
+}
