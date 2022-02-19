@@ -24,7 +24,7 @@ interface IProps {
 type FilterBy = keyof typeof initialFilters
 
 interface IState {
-  orderedItems: any[]
+  // orderedItems: any[]
   itmes: any[]
   error: string | null
   pageNumber: number
@@ -54,7 +54,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      orderedItems: [],
+      // orderedItems: [],
       itmes: [],
       error: null,
       perPage: INITIAL_ROW_LENGTH,
@@ -139,7 +139,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
     } else {
       this.setState({
         itmes: returns.data,
-        orderedItems: returns,
+        // orderedItems: returns,
         totalItems: returns.pagination?.total,
         tableIsLoading: false,
       })
@@ -186,11 +186,22 @@ class ReturnsTableContent extends Component<IProps, IState> {
   }
 
   protected handleSort = ({ sortOrder, sortedBy }) => {
-    this.setStateWithResetPage(
-      'dataSort',
-      { sortedBy, sortOrder },
+    //  TODO: check with Ceser whither we reset the page when do table sort or not
+
+    // ? here we just sort by the existing data
+    this.setState(
+      {
+        dataSort: { sortedBy, sortOrder },
+      },
       this.getRequests
     )
+
+    // ? here we the table and go to the first page
+    // this.setStateWithResetPage(
+    //   'dataSort',
+    //   { sortedBy, sortOrder },
+    //   this.getRequests
+    // )
   }
 
   protected onhandleResetFilters = () => {
@@ -206,7 +217,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
        */
       this.onhandleResetFilters()
 
-      return // reset filters
+      return
     }
 
     /**
@@ -238,7 +249,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
   protected handlePrevClick = () => {
     const { pageNumber } = this.state
 
-    if (pageNumber === 1) return // do nothing when page is first page
+    if (pageNumber === 1) return // do nothing when page is the first page.
 
     this.setState(
       (prevState) => ({
