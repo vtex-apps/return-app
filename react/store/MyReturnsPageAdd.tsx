@@ -287,6 +287,12 @@ class MyReturnsPageAdd extends Component<Props, State> {
       })
     }
 
+    if (this.state.settings.hidePaymentMethodSelection) {
+      this.setState({
+        paymentMethod: 'Default',
+      })
+    }
+
     this.setState({
       selectedOrderId: order.orderId,
       phone: order.clientProfileData.phone,

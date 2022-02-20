@@ -15,6 +15,7 @@ import {
   Modal,
   Divider,
   Checkbox,
+  Toggle,
 } from 'vtex.styleguide'
 
 import styles from '../styles.css'
@@ -39,6 +40,13 @@ const messages = defineMessages({
   searchCategories: { id: 'settings.searchCategories' },
   excludedCategories: { id: 'settings.excludedCategories' },
   paymentMethodsLabel: { id: 'settings.paymentMethods_label' },
+  hidePaymentMethodSelection: { id: 'settings.hidePaymentMethodSelection' },
+  hidePaymentMethodSelection_checked: {
+    id: 'settings.hidePaymentMethodSelection_checked',
+  },
+  hidePaymentMethodSelection_unchecked: {
+    id: 'settings.hidePaymentMethodSelection_unchecked',
+  },
   returnOptionsLabel: { id: 'settings.returnOptions_label' },
   noCustomOptions: { id: 'settings.noCustomOptions' },
   noCustomOptionsHowTo: { id: 'settings.noCustomOptions_HowTo' },
@@ -174,6 +182,8 @@ class ReturnsSettings extends Component<any, any> {
           options: json[0].options || [],
           excludedCategories: JSON.parse(json[0].excludedCategories),
           enableOtherOption: json[0].enableOtherOption,
+          hidePaymentMethodSelection:
+            json[0].hidePaymentMethodSelection ?? false,
           loading: false,
         })
       })
@@ -312,6 +322,7 @@ class ReturnsSettings extends Component<any, any> {
       payments,
       options,
       enableOtherOption,
+      hidePaymentMethodSelection,
     } = this.state
 
     let hasErrors = false
@@ -366,6 +377,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentVoucher: payments.paymentVoucher.checked,
       options,
       enableOtherOption,
+      hidePaymentMethodSelection,
       type: schemaTypes.settings,
     }
 
@@ -455,6 +467,7 @@ class ReturnsSettings extends Component<any, any> {
       options,
       isModalOpen,
       enableOtherOption,
+      hidePaymentMethodSelection,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -588,7 +601,7 @@ class ReturnsSettings extends Component<any, any> {
                   ) : null}
                 </div>
                 <Divider orientation="horizontal" />
-                <div className="flex flex-column w-100">
+                <div className="flex flex-column w-100 mb6">
                   <p className="f4 mb6">
                     {formatMessage({ id: messages.paymentMethodsLabel.id })}
                   </p>
@@ -602,12 +615,36 @@ class ReturnsSettings extends Component<any, any> {
                       this.setState({ payments: newCheckedMap })
                     }}
                   />
-
                   {errors.payments && (
                     <p className={`${styles.errorMessage}`}>
                       {errors.payments}
                     </p>
                   )}
+                  <p className="f5 mv4">
+                    {formatMessage({
+                      id: messages.hidePaymentMethodSelection.id,
+                    })}
+                  </p>
+                  <Toggle
+                    label={
+                      hidePaymentMethodSelection
+                        ? formatMessage({
+                            id: messages.hidePaymentMethodSelection_checked.id,
+                          })
+                        : formatMessage({
+                            id: messages.hidePaymentMethodSelection_unchecked
+                              .id,
+                          })
+                    }
+                    semantic
+                    checked={hidePaymentMethodSelection}
+                    onChange={() =>
+                      this.setState((prevState) => ({
+                        hidePaymentMethodSelection:
+                          !prevState.hidePaymentMethodSelection,
+                      }))
+                    }
+                  />
                 </div>
                 <Divider orientation="horizontal" />
                 <div className="flex flex-column w-100 mb7">
