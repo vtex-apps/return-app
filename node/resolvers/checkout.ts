@@ -7,14 +7,10 @@ export const nearestPickupPoints = async (
     clients: { checkout },
   } = ctx
 
-  try {
-    const closestPickupPointsData = await checkout.getNearestPickupPoints(
-      lat,
-      long
-    )
+  const closestPickupPointsData = await checkout.getNearestPickupPoints(
+    lat,
+    long
+  )
 
-    return closestPickupPointsData
-  } catch (error) {
-    console.log(error.response, '----specific errror----')
-  }
+  return closestPickupPointsData
 }
