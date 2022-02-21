@@ -677,9 +677,15 @@ class MyReturnsPageAdd extends Component<any, State> {
     const { city, country, street, number, state, postalCode } =
       pickupPoint.address
 
+    const address = `${street} ${number}`
+
     this.setState((prevState) => ({
       ...prevState,
       zip: postalCode,
+      city,
+      country,
+      address,
+      state,
     }))
   }
 
