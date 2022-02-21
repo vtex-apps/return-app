@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "return-app",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -28,7 +28,8 @@
     "messages": "1.x",
     "docs": "0.x",
     "store": "0.x",
-    "node": "6.x"
+    "node": "6.x",
+    "graphql": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
@@ -40,6 +41,13 @@
       "attrs": {
         "host": "{{account}}.vtexcommercestable.com.br",
         "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/oms/pvt/orders/*"
       }
     },
     {

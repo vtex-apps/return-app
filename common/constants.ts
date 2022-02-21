@@ -69,6 +69,7 @@ export const SETTINGS_SCHEMA = {
     'enableOtherOption',
     'type',
   ],
+  'v-immediate-indexing': true,
 }
 
 export const RETURNS_SCHEMA = {
@@ -96,7 +97,9 @@ export const RETURNS_SCHEMA = {
     status: { type: 'string' },
     dateSubmitted: { type: 'string', format: 'date-time' },
     type: { type: 'string' },
-    sequenceNumber: { type: ['integer', 'null'] },
+    sequenceNumber: {
+      type: ['string', 'integer', 'null'],
+    },
   },
   'v-security': {
     allowGetAll: true,
@@ -184,7 +187,7 @@ export const RETURNS_SCHEMA = {
     'dateSubmitted',
     'type',
   ],
-  'v-auto-increment': ['sequenceNumber'],
+  'v-immediate-indexing': true,
 }
 
 export const COMMENTS_SCHEMA = {
@@ -233,13 +236,14 @@ export const COMMENTS_SCHEMA = {
     'dateSubmitted',
     'type',
   ],
+  'v-immediate-indexing': true,
 }
 
 export const PRODUCTS_SCHEMA = {
   properties: {
-    refundId: { type: 'string' },
-    orderId: { type: 'string' },
-    userId: { type: 'string' },
+    refundId: { type: 'string', IsRelationship: true },
+    orderId: { type: 'string', IsRelationship: true },
+    userId: { type: 'string', IsRelationship: true },
     imageUrl: { type: 'string' },
     skuId: { type: 'string' },
     sku: { type: 'string' },
@@ -288,6 +292,7 @@ export const PRODUCTS_SCHEMA = {
     ],
     publicJsonSchema: false,
   },
+  'v-immediate-indexing': true,
   'v-cache': false,
   'v-default-fields': [
     'id',
@@ -348,6 +353,7 @@ export const HISTORY_SCHEMA = {
     ],
     publicJsonSchema: false,
   },
+  'v-immediate-indexing': true,
   'v-cache': false,
   'v-default-fields': [
     'id',

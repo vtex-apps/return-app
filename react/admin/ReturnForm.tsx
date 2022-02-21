@@ -387,7 +387,7 @@ class ReturnForm extends Component<any, any> {
           productItem.quantity *
             (productItem.unitPrice + (parseFloat(productItem.tax) || 0) * 100)
           totalAmount +=
-            productItem.totalPrice / 100 +
+            productItem.totalPrice +
             (parseFloat(taxItem.tax) || 0) * productItem.quantity
         }
       }
