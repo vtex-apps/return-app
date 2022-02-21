@@ -4,6 +4,14 @@ query NearestPickupPoints($lat: String!, $long: String!) {
     items {
       pickupPoint {
         friendlyName
+        address {
+          postalCode
+          city
+          state
+          country
+          street
+          number
+        }
       }
     }
   }

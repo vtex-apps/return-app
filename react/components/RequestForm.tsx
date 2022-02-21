@@ -43,6 +43,7 @@ interface Props {
   handleCondition: any
   errors: any
   handleInputChange: any
+  handleInputChangeByPickupPointsDropdown: any
   formInputs: FormInputs
   submit: any
   settings: any
@@ -52,6 +53,8 @@ interface Props {
 
 interface State {
   isPickupPointsSelected: boolean
+  selectedPickupPoint: string
+  dropdownOptionsPickupPoints: []
 }
 
 const messages = defineMessages({
@@ -116,8 +119,13 @@ let long = ''
 class RequestForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
+    this.handlePickupPointSelected = this.handlePickupPointSelected.bind(this)
+    this.handleChangeInputsbySelectedPickupPoint =
+      this.handleChangeInputsbySelectedPickupPoint.bind(this)
     this.state = {
       isPickupPointsSelected: false,
+      selectedPickupPoint: '',
+      dropdownOptionsPickupPoints: [],
     }
   }
 
@@ -135,7 +143,50 @@ class RequestForm extends Component<Props, State> {
   }
 
   componentDidUpdate() {
-    console.log(this.props)
+    const { NearestPickupPoints } = this.props
+    const { isPickupPointsSelected, dropdownOptionsPickupPoints } = this.state
+
+    if (
+      isPickupPointsSelected &&
+      NearestPickupPoints &&
+      !dropdownOptionsPickupPoints.length
+    ) {
+      const dropdownOptions = NearestPickupPoints.nearestPickupPoints.items.map(
+        ({ pickupPoint }) => {
+          const { friendlyName, address } = pickupPoint
+          const { street, number, postalCode } = address
+
+          return {
+            value: friendlyName,
+            label: `${friendlyName} - ${street} - ${number} - ${postalCode}`,
+          }
+        }
+      )
+
+      this.setState({ dropdownOptionsPickupPoints: dropdownOptions })
+    }
+  }
+
+  handlePickupPointSelected(e) {
+    this.setState({ selectedPickupPoint: e.currentTarget.value })
+    this.handleChangeInputsbySelectedPickupPoint(e.currentTarget.value)
+  }
+
+  handleChangeInputsbySelectedPickupPoint(pickupPointInfo) {
+    console.log(pickupPointInfo)
+    const findSelectedPickupPoint =
+      this.props.NearestPickupPoints.nearestPickupPoints.items.find(
+        ({ pickupPoint }) => {
+          console.log(pickupPoint, 'friendlyName')
+          console.log(pickupPointInfo, 'pickupPointInfo')
+
+          return pickupPoint.friendlyName === pickupPointInfo
+        }
+      )
+
+    console.log(findSelectedPickupPoint)
+    // const filterAddressProps = findSelectedPickupPoint.map()
+    this.props.handleInputChangeByPickupPointsDropdown(findSelectedPickupPoint)
   }
 
   paymentMethods() {
@@ -572,7 +623,7 @@ class RequestForm extends Component<Props, State> {
           <div
             className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
           >
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center ">
               {this.state.isPickupPointsSelected ? (
                 <p className={`${styles.returnFormInputsHeader}`}>
                   Pickup Points
@@ -593,11 +644,14 @@ class RequestForm extends Component<Props, State> {
               />
             </div>
             {this.state.isPickupPointsSelected ? (
+              // Working
               <Dropdown
-                label="Pickup"
+                label=""
                 placeholder="Select Pickup"
                 size="small"
-                value="Pickup Point 1"
+                options={this.state.dropdownOptionsPickupPoints}
+                value={this.state.selectedPickupPoint}
+                onChange={this.handlePickupPointSelected}
               />
             ) : (
               <>

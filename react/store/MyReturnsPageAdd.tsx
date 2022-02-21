@@ -161,6 +161,8 @@ class MyReturnsPageAdd extends Component<any, State> {
       submittedRequest: false,
     }
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleInputChangeByPickupPointsDropdown =
+      this.handleInputChangeByPickupPointsDropdown.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
   }
 
@@ -666,7 +668,19 @@ class MyReturnsPageAdd extends Component<any, State> {
     const value = target.type === 'checkbox' ? target.checked : target.value
     const { name } = target
 
+    console.log(name, 'nameeee')
     this.setState((prevState) => ({ ...prevState, [name]: value }))
+  }
+
+  handleInputChangeByPickupPointsDropdown({ pickupPoint }: any) {
+    console.log(pickupPoint.address)
+    const { city, country, street, number, state, postalCode } =
+      pickupPoint.address
+
+    this.setState((prevState) => ({
+      ...prevState,
+      zip: postalCode,
+    }))
   }
 
   submit() {
@@ -804,6 +818,8 @@ class MyReturnsPageAdd extends Component<any, State> {
 
     this.sendData(requestData, schemaNames.request).then((response) => {
       if ('DocumentId' in response) {
+        console.log(response.DocumentId)
+        console.log(requestData)
         this.addStatusHistory(response.DocumentId).then()
         this.submitProductRequest(response.DocumentId)
           .then(() => {
@@ -994,6 +1010,9 @@ class MyReturnsPageAdd extends Component<any, State> {
                   }}
                   errors={errors}
                   handleInputChange={(e) => this.handleInputChange(e)}
+                  handleInputChangeByPickupPointsDropdown={(e) =>
+                    this.handleInputChangeByPickupPointsDropdown(e)
+                  }
                   formInputs={{
                     name,
                     email,
