@@ -348,6 +348,7 @@ class ReturnsSettings extends Component<any, any> {
     }
 
     if (
+      !hidePaymentMethodSelection &&
       !payments.paymentBank.checked &&
       !payments.paymentCard.checked &&
       !payments.paymentVoucher.checked
@@ -602,24 +603,6 @@ class ReturnsSettings extends Component<any, any> {
                 </div>
                 <Divider orientation="horizontal" />
                 <div className="flex flex-column w-100 mb6">
-                  <p className="f4 mb6">
-                    {formatMessage({ id: messages.paymentMethodsLabel.id })}
-                  </p>
-                  <CheckboxGroup
-                    name="simpleCheckboxGroup"
-                    label={formatMessage({ id: messages.all.id })}
-                    id="simple"
-                    value="simple"
-                    checkedMap={payments}
-                    onGroupChange={(newCheckedMap) => {
-                      this.setState({ payments: newCheckedMap })
-                    }}
-                  />
-                  {errors.payments && (
-                    <p className={`${styles.errorMessage}`}>
-                      {errors.payments}
-                    </p>
-                  )}
                   <p className="f5 mv4">
                     {formatMessage({
                       id: messages.hidePaymentMethodSelection.id,
@@ -645,6 +628,28 @@ class ReturnsSettings extends Component<any, any> {
                       }))
                     }
                   />
+                  {!hidePaymentMethodSelection && (
+                    <>
+                      <p className="f5 mb6">
+                        {formatMessage({ id: messages.paymentMethodsLabel.id })}
+                      </p>
+                      <CheckboxGroup
+                        name="simpleCheckboxGroup"
+                        label={formatMessage({ id: messages.all.id })}
+                        id="simple"
+                        value="simple"
+                        checkedMap={payments}
+                        onGroupChange={(newCheckedMap) => {
+                          this.setState({ payments: newCheckedMap })
+                        }}
+                      />
+                    </>
+                  )}
+                  {errors.payments && (
+                    <p className={`${styles.errorMessage}`}>
+                      {errors.payments}
+                    </p>
+                  )}
                 </div>
                 <Divider orientation="horizontal" />
                 <div className="flex flex-column w-100 mb7">

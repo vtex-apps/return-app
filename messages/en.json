@@ -87,6 +87,7 @@
   "returns.no_eligible_orders": "There aren't any eligible products from your orders for a return request.",
   "returns.thSelectOrder": "Select order",
   "returns.backToOrders": "Back to orders",
+  "returns.orderPaymentMethod": "Refund with order payment method",
   "returns.thProduct": "Product",
   "returns.thQuantity": "Quantity",
   "returns.goBack": "Go Back",

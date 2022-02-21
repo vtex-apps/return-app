@@ -112,6 +112,7 @@ const messages = defineMessages({
   submitSuccess: { id: 'returns.requestSubmitSuccess' },
   submitError: { id: 'returns.requestSubmitError' },
   backToOrders: { id: 'returns.backToOrders' },
+  orderPaymentMethod: { id: 'returns.orderPaymentMethod' },
 })
 
 const emailValidation = (email: string) => {
@@ -289,7 +290,9 @@ class MyReturnsPageAdd extends Component<Props, State> {
 
     if (this.state.settings.hidePaymentMethodSelection) {
       this.setState({
-        paymentMethod: 'Default',
+        paymentMethod: this.props.intl.formatMessage({
+          id: messages.orderPaymentMethod.id,
+        }),
       })
     }
 
