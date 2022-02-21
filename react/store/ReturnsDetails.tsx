@@ -132,16 +132,18 @@ class ReturnsDetails extends Component<any, any> {
     const { rootPath } = this.props.runtime
     const profileUrl = fetchPath.getProfile(rootPath)
 
-    return this.props.fetchApi(profileUrl).then((response) => {
-      if (response.data.IsUserDefined) {
-        this.setState({
-          registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
-          registeredUserId: `${response.data.UserId}`,
-        })
-      }
+    return fetch(profileUrl)
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.IsUserDefined) {
+          this.setState({
+            registeredUser: `${response.FirstName} ${response.LastName}`,
+            registeredUserId: `${response.UserId}`,
+          })
+        }
 
-      return Promise.resolve(response.data)
-    })
+        return Promise.resolve(response)
+      })
   }
 
   async getGiftCard(id: any) {
