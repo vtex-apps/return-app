@@ -173,19 +173,13 @@ class RequestForm extends Component<Props, State> {
   }
 
   handleChangeInputsbySelectedPickupPoint(pickupPointInfo) {
-    console.log(pickupPointInfo)
     const findSelectedPickupPoint =
       this.props.NearestPickupPoints.nearestPickupPoints.items.find(
         ({ pickupPoint }) => {
-          console.log(pickupPoint, 'friendlyName')
-          console.log(pickupPointInfo, 'pickupPointInfo')
-
           return pickupPoint.friendlyName === pickupPointInfo
         }
       )
 
-    console.log(findSelectedPickupPoint)
-    // const filterAddressProps = findSelectedPickupPoint.map()
     this.props.handleInputChangeByPickupPointsDropdown(findSelectedPickupPoint)
   }
 
@@ -644,7 +638,6 @@ class RequestForm extends Component<Props, State> {
               />
             </div>
             {this.state.isPickupPointsSelected ? (
-              // Working
               <Dropdown
                 label=""
                 placeholder="Select Pickup"
