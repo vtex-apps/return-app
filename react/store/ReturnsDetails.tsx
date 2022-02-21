@@ -49,7 +49,7 @@ class ReturnsDetails extends Component<any, any> {
       giftCardValue: 0,
       shippingLabel: '',
       totalShippingValue: 0,
-      registeredUserId: ''
+      registeredUserId: '',
     }
   }
 
@@ -62,12 +62,12 @@ class ReturnsDetails extends Component<any, any> {
     const requestId = this.props.match.params.id
 
     const request = await this.getFromMasterData(
-        schemaNames.request,
-        schemaTypes.requests,
-        requestId
-    );
+      schemaNames.request,
+      schemaTypes.requests,
+      requestId
+    )
 
-    if(request[0].userId === this.state.registeredUserId) {
+    if (request[0].userId === this.state.registeredUserId) {
       if (request[0].giftCardId !== '') {
         this.getGiftCard(request[0].giftCardId).then()
       }
@@ -79,7 +79,11 @@ class ReturnsDetails extends Component<any, any> {
         loading: false,
       })
 
-      const response = await this.getProductsFromMasterData(request[0].orderId, requestId);
+      const response = await this.getProductsFromMasterData(
+        request[0].orderId,
+        requestId
+      )
+
       let total = 0
 
       if (!response?.length) return
@@ -89,35 +93,39 @@ class ReturnsDetails extends Component<any, any> {
       })
 
       const comments = await this.getFromMasterData(
-          schemaNames.comment,
-          schemaTypes.comments,
-          requestId
+        schemaNames.comment,
+        schemaTypes.comments,
+        requestId
       )
 
       this.setState({
         statusHistoryTimeline: prepareHistoryData(comments, request[0]),
-        totalRefundAmount: total
+        totalRefundAmount: total,
       })
 
       await this.getFromMasterData(
-          schemaNames.history,
-          schemaTypes.history,
-          requestId
-      );
+        schemaNames.history,
+        schemaTypes.history,
+        requestId
+      )
 
-      const orderResponse = await fetch(`${fetchPath.getOrder}${request[0].orderId}`);
-      const order = await orderResponse.json();
+      const orderResponse = await fetch(
+        `${fetchPath.getOrder}${request[0].orderId}`
+      )
+
+      const order = await orderResponse.json()
 
       this.setState({
-        totalShippingValue: (order.totals.find((total) => total.id === 'Shipping').value / 100).toFixed(2)
+        totalShippingValue: (
+          order.totals.find((orderTotal) => orderTotal.id === 'Shipping')
+            .value / 100
+        ).toFixed(2),
       })
     } else {
-      this.setState({request: ''})
+      this.setState({ request: '' })
     }
 
-    this.setState({ loading: false})
-
-
+    this.setState({ loading: false })
   }
 
   async getProfile() {
@@ -128,7 +136,7 @@ class ReturnsDetails extends Component<any, any> {
       if (response.data.IsUserDefined) {
         this.setState({
           registeredUser: `${response.data.FirstName} ${response.data.LastName}`,
-          registeredUserId: `${response.data.UserId}`
+          registeredUserId: `${response.data.UserId}`,
         })
       }
 
@@ -254,7 +262,7 @@ class ReturnsDetails extends Component<any, any> {
       statusHistory,
       loading,
       giftCardValue,
-      totalShippingValue
+      totalShippingValue,
     } = this.state
 
     const { formatMessage } = this.props.intl
