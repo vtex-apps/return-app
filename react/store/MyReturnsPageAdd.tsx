@@ -4,14 +4,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { Button, Spinner } from 'vtex.styleguide'
-import { defineMessages, injectIntl } from 'react-intl'
-import { withRuntimeContext } from 'vtex.render-runtime'
+import { defineMessages } from 'react-intl'
+import type { ExecutionResult } from 'react-apollo'
+import type { ApolloError } from '@apollo/client'
 
 import {
   schemaTypes,
-  requestsStatuses,
   schemaNames,
-  sendMail,
   substractDays,
   getCurrentDate,
   mergeArrays,
@@ -70,7 +69,6 @@ type State = {
   loading: boolean
   settings: any
   currentProduct: any
-  submittedRequest: boolean
 }
 
 const initialErrors = {
@@ -122,7 +120,30 @@ const emailValidation = (email: string) => {
   )
 }
 
-class MyReturnsPageAdd extends Component<any, State> {
+type TODO = any
+interface Props {
+  creatReturnRequest: {
+    sendRequest: ({
+      returnRequest,
+      returnedItems,
+    }: ReturnRequestMutationArgs) => Promise<
+      ExecutionResult<{
+        returnRequestId: string
+      }>
+    >
+    data: {
+      errorSubmittingRequest: ApolloError | undefined
+      submittingRequest: boolean
+      requestSubmitted: boolean
+    }
+  }
+  rootPath: TODO
+  intl: TODO
+  headerConfig: TODO
+  deleteReturnRequest: TODO
+  cssHandles: TODO
+}
+class MyReturnsPageAdd extends Component<Props, State> {
   static propTypes = {
     headerConfig: PropTypes.object,
     fetchApi: PropTypes.func,
@@ -158,10 +179,10 @@ class MyReturnsPageAdd extends Component<any, State> {
       settings: {},
       loading: false,
       currentProduct: {},
-      submittedRequest: false,
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
+    this.sendRequest = this.sendRequest.bind(this)
   }
 
   async getSettings() {
@@ -185,7 +206,7 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 
   async getProfile() {
-    const { rootPath } = this.props.runtime
+    const { rootPath } = this.props
     const profileUrl = fetchPath.getProfile(rootPath)
 
     const profileResponse = await fetch(profileUrl)
@@ -502,9 +523,7 @@ class MyReturnsPageAdd extends Component<any, State> {
       phone,
       country,
       locality,
-      state,
       address,
-      zip,
       paymentMethod,
       iban,
       accountHolder,
@@ -750,10 +769,20 @@ class MyReturnsPageAdd extends Component<any, State> {
     }))
   }
 
-  sendRequest() {
-    let totalPrice = 0
+  async sendRequest() {
+    const {
+      sendRequest,
+      data: { submittingRequest },
+    } = this.props.creatReturnRequest
+
+    const { formatMessage } = this.props.intl
+
+    if (submittingRequest) {
+      return
+    }
 
     this.setState({ errorSubmit: '' })
+
     const {
       userId,
       selectedOrderId,
@@ -772,10 +801,6 @@ class MyReturnsPageAdd extends Component<any, State> {
       orderProducts,
     } = this.state
 
-    orderProducts.forEach((product: any) => {
-      totalPrice += product.selectedQuantity * product.sellingPrice
-    })
-
     const requestData = {
       userId,
       orderId: selectedOrderId,
@@ -785,122 +810,55 @@ class MyReturnsPageAdd extends Component<any, State> {
       country,
       locality,
       state,
-      address,
       zip,
+      address,
       paymentMethod,
       extraComment: encodeURIComponent(extraComment),
-      totalPrice,
-      refundedAmount: 0,
       giftCardCode: '',
       giftCardId: '',
+      refundedAmount: 0,
       iban,
       accountHolder,
-      status: requestsStatuses.new,
-      dateSubmitted: getCurrentDate(),
-      type: schemaTypes.requests,
     }
 
-    const { formatMessage } = this.props.intl
+    const returnedItems = orderProducts.map((item) => ({
+      imageUrl: item.imageUrl,
+      skuId: item.refId ?? '',
+      sku: item.id,
+      productId: item.productId,
+      ean: item.ean ?? '',
+      brandId: item.additionalInfo.brandId,
+      brandName: item.additionalInfo.brandName,
+      skuName: item.name,
+      unitPrice: parseInt(item.sellingPrice, 10),
+      quantity: parseInt(item.selectedQuantity, 10),
+      goodProducts: 0,
+      reasonCode: item.reasonCode,
+      condition: item.condition,
+      reason: item.reason,
+    }))
 
-    this.sendData(requestData, schemaNames.request).then((response) => {
-      if ('DocumentId' in response) {
-        this.addStatusHistory(response.DocumentId).then()
-        this.submitProductRequest(response.DocumentId)
-          .then(() => {
-            this.setState({
-              successSubmit: formatMessage({ id: messages.submitSuccess.id }),
-              submittedRequest: true,
-            })
-            sendMail({
-              data: { ...requestData, ...response },
-              products: orderProducts,
-            })
-          })
-          .then(() => {
-            this.showTable()
-          })
-      } else {
-        this.setState({
-          errorSubmit: formatMessage({ id: messages.submitError.id }),
-          submittedRequest: true,
-        })
+    try {
+      const { errors } = await sendRequest({
+        returnRequest: requestData,
+        returnedItems,
+      })
+
+      if (errors) {
+        const errorSubmitting = new Error(JSON.stringify(errors, null, 2))
+
+        throw errorSubmitting
       }
-    })
-  }
 
-  async addStatusHistory(DocumentId: string) {
-    const { name } = this.state
-    const bodyData = {
-      submittedBy: name,
-      refundId: DocumentId,
-      status: requestsStatuses.new,
-      dateSubmitted: getCurrentDate(),
-      type: schemaTypes.history,
+      this.setState({
+        successSubmit: formatMessage({ id: messages.submitSuccess.id }),
+      })
+    } catch (e) {
+      console.error(e)
+      this.setState({
+        errorSubmit: formatMessage({ id: messages.submitError.id }),
+      })
     }
-
-    this.sendData(bodyData, schemaNames.history).then()
-  }
-
-  async submitProductRequest(DocumentId: string) {
-    const { orderProducts, userId, selectedOrderId } = this.state
-
-    orderProducts.forEach((product: any) => {
-      if (parseInt(product.selectedQuantity, 10) > 0) {
-        this.getSkuById(product.id)
-          .then((response) => response.json())
-          .then((skuResponse) => {
-            const productData = {
-              userId,
-              orderId: selectedOrderId,
-              refundId: DocumentId,
-              skuId: product.refId ? product.refId : '',
-              productId: product.productId,
-              sku: product.id,
-              manufacturerCode: skuResponse.ManufacturerCode
-                ? skuResponse.ManufacturerCode
-                : '',
-              ean: product.ean ? product.ean : '',
-              brandId: product.additionalInfo.brandId,
-              brandName: product.additionalInfo.brandName,
-              skuName: product.name,
-              imageUrl: product.imageUrl,
-              reasonCode: product.reasonCode,
-              reason: product.reason,
-              condition: product.condition,
-              unitPrice: parseInt(product.sellingPrice, 10),
-              quantity: parseInt(product.selectedQuantity, 10),
-              totalPrice: parseInt(
-                String(product.sellingPrice * product.selectedQuantity),
-                10
-              ),
-              goodProducts: 0,
-              status: requestsStatuses.new,
-              dateSubmitted: getCurrentDate(),
-              type: schemaTypes.products,
-            }
-
-            this.sendData(productData, schemaNames.product).then()
-          })
-      }
-    })
-  }
-
-  async sendData(body: any, schema: string) {
-    return fetch(fetchPath.saveDocuments + schema, {
-      method: fetchMethod.post,
-      body: JSON.stringify(body),
-      headers: fetchHeaders,
-    })
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        if (json) {
-          return Promise.resolve(json)
-        }
-
-        return Promise.resolve(null)
-      })
   }
 
   render() {
@@ -928,16 +886,21 @@ class MyReturnsPageAdd extends Component<any, State> {
       errorSubmit,
       successSubmit,
       selectedOrder,
-      submittedRequest,
       settings,
     }: any = this.state
 
     const { formatMessage } = this.props.intl
+    const {
+      cssHandles,
+      creatReturnRequest: {
+        data: { requestSubmitted, submittingRequest },
+      },
+    } = this.props
 
     return (
       <ContentWrapper {...this.props.headerConfig}>
         {() => {
-          if (loading) {
+          if (loading || submittingRequest) {
             return (
               <div className="flex justify-center pt6 pb6">
                 <Spinner />
@@ -945,12 +908,17 @@ class MyReturnsPageAdd extends Component<any, State> {
             )
           }
 
-          if (submittedRequest) {
+          if (requestSubmitted) {
             return (
               <div>
                 {successSubmit ? (
                   <div className={styles.successContainer}>
                     <p className={styles.successMessage}>{successSubmit}</p>
+                  </div>
+                ) : null}
+                {errorSubmit ? (
+                  <div className={`${cssHandles.errorContainer} mb4`}>
+                    <p className={styles.errorMessage}>{errorSubmit}</p>
                   </div>
                 ) : null}
                 <div className="flex flex-column items-center">
@@ -1048,4 +1016,4 @@ class MyReturnsPageAdd extends Component<any, State> {
   }
 }
 
-export default injectIntl(withRuntimeContext(MyReturnsPageAdd))
+export default MyReturnsPageAdd
