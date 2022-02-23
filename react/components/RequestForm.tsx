@@ -381,8 +381,6 @@ class RequestForm extends Component<Props> {
       intl: { formatMessage },
     } = this.props
 
-    console.log({ selectedOrder, orderProducts })
-
     const isLoadingProducts = !orderProducts.length
 
     return (
