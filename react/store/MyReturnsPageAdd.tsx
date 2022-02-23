@@ -699,10 +699,43 @@ class MyReturnsPageAdd extends Component<Props, State> {
   }
 
   showTable() {
-    this.setState({
+    const setView = {
       showOrdersTable: true,
       showForm: false,
       showInfo: false,
+    }
+
+    const resetFormInputs = {
+      country: '',
+      locality: '',
+      address: '',
+      state: '',
+      zip: '',
+      phone: '',
+      name: '',
+      extraComment: '',
+      paymentMethod: '',
+      iban: '',
+      accountHolder: '',
+      agree: false,
+    }
+
+    const resetOrderSelectedInfo = {
+      selectedOrder: [],
+      orderProducts: [],
+      selectedOrderId: '',
+    }
+
+    /**
+     * Clean state related to order selected.
+     * This is needed to avoid showing the wrong order information if something
+     * goes wrong during the call to retrieve product information.
+     * Possible error for RMA refering the wrong order id.
+     */
+    this.setState({
+      ...setView,
+      ...resetFormInputs,
+      ...resetOrderSelectedInfo,
     })
   }
 
