@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.18.2] - 2022-02-22
+### Fixed
+- `createReturnRequest` throwing a 403 due to wrong auth cookies passed to get order details.
+
 ## [2.18.1] - 2022-02-21
 ### Fixed
 - RMA details page for binding bounded accounts.
@@ -22,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Request to create a new RMA is now using Graphql mutation `createReturnRequest`.
 - RMA sequence number is created using the order sequence number.
 
-### Fix
+### Fixed
 - Total products value on return request details page in the Admin side. It was being divided by 100.
 
 ## [2.1.0 to 2.17.0]

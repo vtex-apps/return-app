@@ -1,6 +1,7 @@
 enum AuthToken {
   ADMIN_TOKEN
   STORE_TOKEN
+  AUTH_TOKEN
 }
 
 type Query {
