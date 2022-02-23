@@ -133,16 +133,17 @@ class ReturnsTableContent extends Component<IProps, IState> {
       const returns = await returnsResponse.json()
 
       if ('error' in returns) {
-        this.setState({ error: returns.error, tableIsLoading: false })
+        this.setState({ error: returns.error })
       } else {
         this.setState({
           itmes: returns.data,
           totalItems: returns.pagination?.total,
-          tableIsLoading: false,
         })
       }
     } catch (error) {
-      this.setState({ error: error.message, tableIsLoading: false })
+      this.setState({ error: error.message })
+    } finally {
+      this.setState({ tableIsLoading: false })
     }
   }
 
@@ -162,7 +163,9 @@ class ReturnsTableContent extends Component<IProps, IState> {
       this.setState({ selectedRequestProducts: products })
       this.onHandleModalToggle()
     } catch (error) {
-      this.setState({ error: error.message, tableIsLoading: false })
+      this.setState({ error: error.message })
+    } finally {
+      this.setState({ tableIsLoading: false })
     }
   }
 
