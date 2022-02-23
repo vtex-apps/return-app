@@ -142,7 +142,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
         })
       }
     } catch (error) {
-      this.setState({ error: error.message })
+      this.setState({ error: error.message, tableIsLoading: false })
     }
   }
 
@@ -162,7 +162,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
       this.setState({ selectedRequestProducts: products })
       this.onHandleModalToggle()
     } catch (error) {
-      this.setState({ error: error.message })
+      this.setState({ error: error.message, tableIsLoading: false })
     }
   }
 
