@@ -172,7 +172,7 @@ class ReturnsTableContent extends Component<IProps, IState> {
 
   protected setStateWithResetPage = async (
     key: keyof IState,
-    value: any,
+    value: IState[keyof IState],
     callback?: () => Promise<void>
   ) => {
     this.setState(
