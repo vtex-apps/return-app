@@ -17,11 +17,12 @@ const ReturnsTableSchema = ({
       id: {
         title: <FormattedMessage id="returns.requestId" />,
         sortable: true,
-        width: 350,
+        width: 320,
       },
       sequenceNumber: {
         title: <FormattedMessage id="returns.sequenceNumber" />,
-        sortable: true,
+        width: 150,
+        sortable: false,
       },
       orderId: {
         title: <FormattedMessage id="returns.orderId" />,
@@ -37,14 +38,12 @@ const ReturnsTableSchema = ({
       status: {
         title: <FormattedMessage id="returns.status" />,
         sortable: true,
-        width: 200,
         // eslint-disable-next-line react/display-name
         cellRenderer: ({ cellData }) => {
           return <div>{renderStatusIcon(cellData)}</div>
         },
       },
       actions: {
-        width: 150,
         title: <FormattedMessage id="returns.actions" />,
         // eslint-disable-next-line react/display-name
         cellRenderer: ({ rowData }) => {

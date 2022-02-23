@@ -1,4 +1,3 @@
-import type { FormEvent } from 'react'
 import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
 import PropTypes from 'prop-types'
@@ -24,7 +23,6 @@ interface IProps {
 type FilterBy = keyof typeof initialFilters
 
 interface IState {
-  // orderedItems: any[]
   itmes: any[]
   error: string | null
   pageNumber: number
@@ -54,7 +52,6 @@ class ReturnsTableContent extends Component<IProps, IState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      // orderedItems: [],
       itmes: [],
       error: null,
       perPage: INITIAL_ROW_LENGTH,
@@ -80,88 +77,93 @@ class ReturnsTableContent extends Component<IProps, IState> {
   }
 
   protected getRequests = async () => {
-    this.setState({ tableIsLoading: true })
-    const {
-      filters,
-      pageNumber,
-      perPage,
-      dataSort: { sortedBy, sortOrder },
-    } = this.state
+    try {
+      this.setState({ tableIsLoading: true })
+      const {
+        filters,
+        pageNumber,
+        perPage,
+        dataSort: { sortedBy, sortOrder },
+      } = this.state
 
-    let where = 'type=request'
+      let where = 'type=request'
 
-    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
-      this.setState({ isFiltered: false })
-    } else {
-      this.setState({ isFiltered: true })
-    }
+      if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
+        this.setState({ isFiltered: false })
+      } else {
+        this.setState({ isFiltered: true })
+      }
 
-    if (filters.orderId !== '') {
-      where += ` AND orderId="*${filters.orderId}*"`
-    }
+      if (filters.orderId !== '') {
+        where += ` AND orderId="*${filters.orderId}*"`
+      }
 
-    if (filters.returnId !== '') {
-      where += ` AND id="*${filters.returnId}*"`
-    }
+      if (filters.returnId !== '') {
+        where += ` AND id="*${filters.returnId}*"`
+      }
 
-    if (filters.sequenceNumber !== '') {
-      where += ` AND sequenceNumber="${filters.sequenceNumber}"`
-    }
+      if (filters.sequenceNumber !== '') {
+        where += ` AND sequenceNumber="${filters.sequenceNumber}"`
+      }
 
-    let startDate = '1970-01-01'
-    let endDate = currentDate()
+      let startDate = '1970-01-01'
+      let endDate = currentDate()
 
-    if (filters.fromDate !== '' || filters.toDate !== '') {
-      startDate =
-        filters.fromDate !== '' ? filterDate(filters.fromDate) : startDate
-      endDate =
-        filters.toDate !== ''
-          ? filterDate(filters.toDate)
-          : filterDate(filters.fromDate)
+      if (filters.fromDate !== '' || filters.toDate !== '') {
+        startDate =
+          filters.fromDate !== '' ? filterDate(filters.fromDate) : startDate
+        endDate =
+          filters.toDate !== ''
+            ? filterDate(filters.toDate)
+            : filterDate(filters.fromDate)
 
-      where += ` AND createdIn between ${startDate} AND ${endDate}`
-    }
+        where += ` AND createdIn between ${startDate} AND ${endDate}`
+      }
 
-    if (filters.status !== '') {
-      where += ` AND status="${requestsStatuses[filters.status]}"`
-    }
+      if (filters.status !== '') {
+        where += ` AND status="${requestsStatuses[filters.status]}"`
+      }
 
-    const url = `${
-      fetchPath.getRequests + schemaNames.request
-    }/${pageNumber}/${perPage}/${sortedBy}/${sortOrder}/${where}`
+      const url = `${
+        fetchPath.getRequests + schemaNames.request
+      }/${pageNumber}/${perPage}/${sortedBy}/${sortOrder}/${where}`
 
-    const returnsResponse = await fetch(url)
+      const returnsResponse = await fetch(url)
 
-    const returns = await returnsResponse.json()
+      const returns = await returnsResponse.json()
 
-    if ('error' in returns) {
-      this.setState({ error: returns.error, tableIsLoading: false })
-    } else {
-      this.setState({
-        itmes: returns.data,
-        // orderedItems: returns,
-        totalItems: returns.pagination?.total,
-        tableIsLoading: false,
-      })
+      if ('error' in returns) {
+        this.setState({ error: returns.error, tableIsLoading: false })
+      } else {
+        this.setState({
+          itmes: returns.data,
+          totalItems: returns.pagination?.total,
+          tableIsLoading: false,
+        })
+      }
+    } catch (error) {
+      this.setState({ error: error.message })
     }
   }
 
-  protected handleViewRequest = (requestId: string) => {
-    fetch(
-      `${fetchPath.getDocuments + schemaNames.product}/${
+  protected handleViewRequest = async (requestId: string) => {
+    try {
+      const url = `${fetchPath.getDocuments + schemaNames.product}/${
         schemaTypes.products
-      }/refundId=${requestId}`,
-      {
+      }/refundId=${requestId}`
+
+      const returnProducts = await fetch(url, {
         method: fetchMethod.get,
         headers: fetchHeaders,
-      }
-    )
-      .then((response) => response.json())
-      .then((products) => {
-        this.setState({ selectedRequestProducts: products })
-        this.onHandleModalToggle()
       })
-      .catch((err) => this.setState({ error: err }))
+
+      const products = await returnProducts.json()
+
+      this.setState({ selectedRequestProducts: products })
+      this.onHandleModalToggle()
+    } catch (error) {
+      this.setState({ error: error.message })
+    }
   }
 
   protected onHandleModalToggle = () => {
@@ -186,22 +188,13 @@ class ReturnsTableContent extends Component<IProps, IState> {
   }
 
   protected handleSort = ({ sortOrder, sortedBy }) => {
-    //  TODO: check with Ceser whither we reset the page when do table sort or not
-
-    // ? here we just sort by the existing data
+    //  here we just sort by the existing data
     this.setState(
       {
         dataSort: { sortedBy, sortOrder },
       },
       this.getRequests
     )
-
-    // ? here we the table and go to the first page
-    // this.setStateWithResetPage(
-    //   'dataSort',
-    //   { sortedBy, sortOrder },
-    //   this.getRequests
-    // )
   }
 
   protected onhandleResetFilters = () => {

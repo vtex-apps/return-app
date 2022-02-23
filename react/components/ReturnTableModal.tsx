@@ -2,8 +2,9 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { Modal } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
-import styles from '../styles.css'
+const CSS_HANDLES = ['table', 'tableModal'] as const
 
 type ReturnTableModalProps = {
   selectedRequestProducts: any[]
@@ -15,11 +16,13 @@ const ReturnTableModal = ({
   isModalOpen,
   handleModalToggle,
 }: ReturnTableModalProps) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   return (
     <Modal centered isOpen={isModalOpen} onClose={handleModalToggle}>
       <div className="dark-gray">
         {selectedRequestProducts.length ? (
-          <table className={`${styles.table} ${styles.tableModal}`}>
+          <table className={`${handles.table} ${handles.tableModal}`}>
             <thead>
               <tr>
                 <th>

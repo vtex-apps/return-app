@@ -9,13 +9,23 @@ import type { initialFilters } from '../../common/constants/returnsTable'
 
 type FilterBy = keyof typeof initialFilters
 
+type ReturnTableFromProps = {
+  filters: {
+    [key in FilterBy]: string
+  }
+  handleApplyFilters: () => void
+  filterByKey: (filterBy: FilterBy, value: string) => void
+  handleResetFilters: () => void
+  isFiltered: boolean
+}
+
 const ReturnTableFrom = ({
   filters,
   handleApplyFilters,
   filterByKey,
   handleResetFilters,
   isFiltered,
-}) => {
+}: ReturnTableFromProps) => {
   const handleOnChangeForm = (event: FormEvent) => {
     const { name, value } = event.target as EventTarget & {
       name: FilterBy
@@ -36,7 +46,7 @@ const ReturnTableFrom = ({
       filterByKey('toDate', fromDate)
     }
 
-    handleApplyFilters(event)
+    handleApplyFilters()
   }
 
   const statusLabel =
