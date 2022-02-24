@@ -627,16 +627,21 @@ class RequestForm extends Component<Props, State> {
                   {formatMessage({ id: messages.formPickupAddress.id })}
                 </p>
               )}
-              <Toggle
-                label={this.state.isPickupPointsSelected ? '' : 'Pickup Points'}
-                checked={this.state.isPickupPointsSelected}
-                onChange={() =>
-                  this.setState((prevState) => ({
-                    isPickupPointsSelected: !prevState.isPickupPointsSelected,
-                  }))
-                }
-              />
+              {this.props.settings.enablePickupPoints ? (
+                <Toggle
+                  label={
+                    this.state.isPickupPointsSelected ? '' : 'Pickup Points'
+                  }
+                  checked={this.state.isPickupPointsSelected}
+                  onChange={() =>
+                    this.setState((prevState) => ({
+                      isPickupPointsSelected: !prevState.isPickupPointsSelected,
+                    }))
+                  }
+                />
+              ) : null}
             </div>
+            {/* working */}
             {this.state.isPickupPointsSelected ? (
               <Dropdown
                 label=""

@@ -15,6 +15,7 @@ import {
   Modal,
   Divider,
   Checkbox,
+  Toggle,
 } from 'vtex.styleguide'
 
 import styles from '../styles.css'
@@ -166,6 +167,7 @@ class ReturnsSettings extends Component<any, any> {
             checked: paymentVoucher,
           },
         }
+
         this.setState({
           id: json[0].id,
           maxDays: json[0].maxDays,
@@ -178,7 +180,7 @@ class ReturnsSettings extends Component<any, any> {
           excludedCategories: JSON.parse(json[0].excludedCategories),
           enableOtherOption: json[0].enableOtherOption,
           loading: false,
-          enablePickupOptions: json[0].enablePickupOptions,
+          enablePickupPoints: json[0].enablePickupPoints,
         })
       })
       .catch((err) => this.setState({ error: err }))
@@ -319,6 +321,8 @@ class ReturnsSettings extends Component<any, any> {
       enablePickupPoints,
     } = this.state
 
+    console.log(enablePickupPoints, 'stateee')
+
     let hasErrors = false
 
     if (!maxDays) {
@@ -445,7 +449,7 @@ class ReturnsSettings extends Component<any, any> {
 
   handleEnablePickupPoints = () => {
     /**
-     * toggle the Other Option checkbox on or off and set otherOption in the state
+     * toggle the Pickup Points checkbox to display them or not.
      */
     this.setState((prevState) => ({
       enablePickupPoints: !prevState.enablePickupPoints,
@@ -694,15 +698,10 @@ class ReturnsSettings extends Component<any, any> {
                         {formatMessage({ id: messages.deliveryOptions.id })}:
                       </p>
                     </div>
-                    <Checkbox
+                    <Toggle
+                      label="Enable pickup points"
                       checked={enablePickupPoints}
-                      label={formatMessage({
-                        id: messages.enablePickupPoints.id,
-                      })}
-                      name="disabled-checkbox-group"
                       onChange={this.handleEnablePickupPoints}
-                      value="return-other-option"
-                      id="return-pickup-points-checkbox"
                     />
                   </div>
                   <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
