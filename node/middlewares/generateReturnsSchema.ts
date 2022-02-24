@@ -4,13 +4,24 @@ export async function generateReturnsSchema(
 ) {
   const {
     clients: { masterData: masterDataClient },
+    vtex: { logger },
   } = ctx
 
-  const response = await masterDataClient.generateSchema(ctx)
+  try {
+    const response = await masterDataClient.generateSchema(ctx)
 
-  ctx.status = 200
-  ctx.set('Cache-Control', 'no-cache')
-  ctx.body = response
+    ctx.status = 200
+    ctx.set('Cache-Control', 'no-cache')
+    ctx.body = response
+  } catch (e) {
+    logger.error({
+      message: `Error generating schema`,
+      error: e,
+      data: {
+        ctx,
+      },
+    })
+  }
 
   await next()
 }
