@@ -1,3 +1,18 @@
+enum AuthToken {
+  ADMIN_TOKEN
+  STORE_TOKEN
+  AUTH_TOKEN
+}
+
 type Query {
   nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
+}
+
+type Mutation {
+  deleteReturnRequest(Id: [ID]!): Boolean
+  createReturnRequest(
+    returnRequest: ReturnRequestInput!
+    returnedItems: [ProductReturnedInput!]!
+    authToken: AuthToken!
+  ): returnRequestCreated
 }

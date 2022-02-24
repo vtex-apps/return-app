@@ -1,0 +1,12 @@
+mutation CreateReturn(
+  $returnRequest: ReturnRequestInput!
+  $returnedItems: [ProductReturnedInput!]!
+) {
+  createReturnRequest(
+    returnRequest: $returnRequest
+    returnedItems: $returnedItems
+    authToken: AUTH_TOKEN
+  ) @context(provider: "vtex.return-app") {
+    returnRequestId
+  }
+}

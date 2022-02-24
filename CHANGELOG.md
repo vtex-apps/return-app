@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.18.2] - 2022-02-22
+### Fixed
+- `createReturnRequest` throwing a 403 due to wrong auth cookies passed to get order details.
+
+## [2.18.1] - 2022-02-21
+### Fixed
+- RMA details page for binding bounded accounts.
+
+## [2.18.0] - 2022-02-21
+### Added
+- Graphql mutation `createReturnRequest` to create a new return request. Make it atomic, deleting all objects related to it if something fails during the process.
+- Graphql mutation `deleteReturnRequest` to delete documents on master data.
+- Error handler when submitting new request.
+- Flag `v-immediate-indexing` in all schemas to force faster indexing.
+
+### Changed
+- Request to create a new RMA is now using Graphql mutation `createReturnRequest`.
+- RMA sequence number is created using the order sequence number.
+
+### Fixed
+- Total products value on return request details page in the Admin side. It was being divided by 100.
+
+## [2.1.0 to 2.17.0]
 ### Fixed
 - The card refund method is valid only if the customer has paid for the order with the card.
 - Fix shipping value available in frontend
