@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.18.2] - 2022-02-24
+### Fixed
+- `ReturnsTableContent` refactor and fix the returns list table when search for any item you will get an empty list and then you have to go back to the first page to see the results
+
 ## [2.18.2] - 2022-02-22
 ### Fixed
 - `createReturnRequest` throwing a 403 due to wrong auth cookies passed to get order details.
