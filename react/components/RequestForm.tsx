@@ -8,6 +8,7 @@ import {
   RadioGroup,
   Dropdown,
   Textarea,
+  Spinner,
 } from 'vtex.styleguide'
 import PropTypes from 'prop-types'
 
@@ -382,6 +383,8 @@ class RequestForm extends Component<Props> {
       settings,
     } = this.props
 
+    const isLoadingProducts = !orderProducts.length
+
     return (
       <div>
         <div className={`mb6 mt4 ${styles.backToOrders}`}>
@@ -393,321 +396,339 @@ class RequestForm extends Component<Props> {
             {formatMessage({ id: messages.backToOrders.id })}
           </Button>
         </div>
-        <div
-          className={`cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ${styles.orderInfoHeader}`}
-        >
-          <div className={`flex flex-row ${styles.orderInfoHeaderRow}`}>
+        {isLoadingProducts ? (
+          <Spinner />
+        ) : (
+          <>
             <div
-              className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
+              className={`cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ${styles.orderInfoHeader}`}
             >
-              <div
-                className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderDateLabel}`}
-              >
-                {formatMessage({ id: messages.orderDate.id })}
-              </div>
-              <div
-                className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderDate}`}
-              >
-                {returnFormDate(selectedOrder.creationDate)}
-              </div>
-            </div>
-            <div
-              className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
-            >
-              <div
-                className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderIdLabel}`}
-              >
-                {formatMessage({ id: messages.thOrderId.id })}
-              </div>
-              <div
-                className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderId}`}
-              >
-                {selectedOrder.orderId}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <table className={styles.tblProducts}>
-            <thead className={styles.tableThead}>
-              <tr className={styles.tableTr}>
-                <th className={styles.tableTh} />
-                <th className={styles.tableTh}>
-                  {formatMessage({ id: messages.thProduct.id })}
-                </th>
-                <th className={styles.tableTh}>
-                  {formatMessage({ id: messages.thQuantity.id })}
-                </th>
-                <th className={styles.tableTh}>
-                  {formatMessage({ id: messages.thReason.id })}
-                </th>
-                <th className={styles.tableTh}>
-                  {formatMessage({ id: messages.condition.id })}
-                </th>
-              </tr>
-            </thead>
-            <tbody className={styles.tableTbody}>
-              {orderProducts.map((product: any) => (
-                <tr
-                  key={`product${product.uniqueId}`}
-                  className={styles.tableTr}
+              <div className={`flex flex-row ${styles.orderInfoHeaderRow}`}>
+                <div
+                  className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
                 >
-                  <td className={`${styles.tableTd} ${styles.tableTdImage}`}>
-                    <img
-                      className={styles.imageCol}
-                      src={product.imageUrl}
-                      alt={product.name}
-                    />
-                  </td>
-                  <td className={`${styles.tableTd} ${styles.w350}`}>
-                    <a
-                      className={styles.productUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={product.detailUrl}
-                    >
-                      {product.name}
-                    </a>
-                  </td>
-                  <td className={`${styles.tableTd} ${styles.tableTdQuantity}`}>
-                    <Input
-                      suffix={`/${product.quantity}`}
-                      size="regular"
-                      type="number"
-                      value={product.selectedQuantity}
-                      onChange={(e) => {
-                        handleQuantity(product, e.target.value)
-                      }}
-                      max={product.quantity}
-                      min={0}
-                    />
-                  </td>
-                  <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
-                    {this.renderReasonsDropdown(product)}
-                  </td>
-                  <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
-                    {this.renderConditionDropdown(product)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {errors.productQuantities ? (
-            <p className={styles.errorMessage}>
-              {formatMessage({ id: errors.productQuantities })}
-            </p>
-          ) : null}
-        </div>
-        <div
-          className={`flex-ns flex-wrap flex-row ${styles.returnFormInputs}`}
-        >
-          <div
-            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
-          >
-            <p className={`${styles.returnFormInputsHeader}`}>
-              {formatMessage({ id: messages.formContactDetails.id })}
-            </p>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="name"
-                placeholder={formatMessage({ id: messages.formName.id })}
-                onChange={handleInputChange}
-                value={formInputs.name}
-                errorMessage={
-                  errors.name ? formatMessage({ id: errors.name }) : ''
-                }
-              />
+                  <div
+                    className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderDateLabel}`}
+                  >
+                    {formatMessage({ id: messages.orderDate.id })}
+                  </div>
+                  <div
+                    className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderDate}`}
+                  >
+                    {returnFormDate(selectedOrder.creationDate)}
+                  </div>
+                </div>
+                <div
+                  className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
+                >
+                  <div
+                    className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderIdLabel}`}
+                  >
+                    {formatMessage({ id: messages.thOrderId.id })}
+                  </div>
+                  <div
+                    className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderId}`}
+                  >
+                    {selectedOrder.orderId}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                disabled
-                name="email"
-                placeholder={formatMessage({
-                  id: messages.formEmail.id,
-                })}
-                onChange={handleInputChange}
-                value={formInputs.email}
-                errorMessage={
-                  errors.email ? formatMessage({ id: errors.email }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="phone"
-                placeholder={formatMessage({ id: messages.formPhone.id })}
-                onChange={handleInputChange}
-                value={formInputs.phone}
-                errorMessage={
-                  errors.phone ? formatMessage({ id: errors.phone }) : ''
-                }
-              />
-            </div>
-          </div>
-
-          <div
-            className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
-          >
-            <p className={`${styles.returnFormInputsHeader}`}>
-              {formatMessage({ id: messages.formPickupAddress.id })}
-            </p>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="address"
-                placeholder={formatMessage({ id: messages.formAddress.id })}
-                onChange={handleInputChange}
-                value={formInputs.address}
-                errorMessage={
-                  errors.address ? formatMessage({ id: errors.address }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="locality"
-                placeholder={formatMessage({ id: messages.formLocality.id })}
-                onChange={handleInputChange}
-                value={formInputs.locality}
-                errorMessage={
-                  errors.locality ? formatMessage({ id: errors.locality }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="state"
-                placeholder={formatMessage({ id: messages.formState.id })}
-                onChange={handleInputChange}
-                value={formInputs.state || ''}
-                errorMessage={
-                  errors.state ? formatMessage({ id: errors.state }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="zip"
-                placeholder={formatMessage({ id: messages.formZip.id })}
-                onChange={handleInputChange}
-                value={formInputs.zip || ''}
-                errorMessage={
-                  errors.zip ? formatMessage({ id: errors.zip }) : ''
-                }
-              />
-            </div>
-            <div className={`mb4 ${styles.returnFormInput}`}>
-              <Input
-                name="country"
-                placeholder={formatMessage({ id: messages.formCountry.id })}
-                onChange={handleInputChange}
-                value={formInputs.country}
-                errorMessage={
-                  errors.country ? formatMessage({ id: errors.country }) : ''
-                }
-              />
-            </div>
-          </div>
-          <div className={`mt4 ph4 ${styles.returnFormExtraComment}`}>
-            <p className={`${styles.returnFormExtraCommentHeader}`}>
-              {formatMessage({ id: messages.formExtraComment.id })}
-            </p>
-            <div className={`${styles.returnFormExtraCommentInput}`}>
-              <Textarea
-                name="extraComment"
-                resize="none"
-                onChange={handleInputChange}
-                maxLength="250"
-                value={formInputs.extraComment}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div
-          className={`flex-ns flex-wrap flex-auto flex-column pa4 mb6 ${styles.returnFormInputsPayment}`}
-        >
-          <p className={`${styles.returnFormInputsHeader}`}>
-            {formatMessage({ id: messages.formPaymentMethod.id })}
-          </p>
-          {settings.hidePaymentMethodSelection ? (
-            formatMessage({ id: messages.defaultPaymentMethod.id })
-          ) : (
-            <RadioGroup
-              hideBorder
-              name="paymentMethod"
-              options={this.paymentMethods()}
-              value={formInputs.paymentMethod}
-              errorMessage={
-                errors.paymentMethod
-                  ? formatMessage({ id: errors.paymentMethod })
-                  : ''
-              }
-              onChange={handleInputChange}
-            />
-          )}
-
-          {formInputs.paymentMethod === 'bank' ? (
             <div>
+              <table className={styles.tblProducts}>
+                <thead className={styles.tableThead}>
+                  <tr className={styles.tableTr}>
+                    <th className={styles.tableTh} />
+                    <th className={styles.tableTh}>
+                      {formatMessage({ id: messages.thProduct.id })}
+                    </th>
+                    <th className={styles.tableTh}>
+                      {formatMessage({ id: messages.thQuantity.id })}
+                    </th>
+                    <th className={styles.tableTh}>
+                      {formatMessage({ id: messages.thReason.id })}
+                    </th>
+                    <th className={styles.tableTh}>
+                      {formatMessage({ id: messages.condition.id })}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className={styles.tableTbody}>
+                  {orderProducts.map((product: any) => (
+                    <tr
+                      key={`product${product.uniqueId}`}
+                      className={styles.tableTr}
+                    >
+                      <td
+                        className={`${styles.tableTd} ${styles.tableTdImage}`}
+                      >
+                        <img
+                          className={styles.imageCol}
+                          src={product.imageUrl}
+                          alt={product.name}
+                        />
+                      </td>
+                      <td className={`${styles.tableTd} ${styles.w350}`}>
+                        <a
+                          className={styles.productUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={product.detailUrl}
+                        >
+                          {product.name}
+                        </a>
+                      </td>
+                      <td
+                        className={`${styles.tableTd} ${styles.tableTdQuantity}`}
+                      >
+                        <Input
+                          suffix={`/${product.quantity}`}
+                          size="regular"
+                          type="number"
+                          value={product.selectedQuantity}
+                          onChange={(e) => {
+                            handleQuantity(product, e.target.value)
+                          }}
+                          max={product.quantity}
+                          min={0}
+                        />
+                      </td>
+                      <td
+                        className={`${styles.tableTd} ${styles.tableTdReason}`}
+                      >
+                        {this.renderReasonsDropdown(product)}
+                      </td>
+                      <td
+                        className={`${styles.tableTd} ${styles.tableTdReason}`}
+                      >
+                        {this.renderConditionDropdown(product)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {errors.productQuantities ? (
+                <p className={styles.errorMessage}>
+                  {formatMessage({ id: errors.productQuantities })}
+                </p>
+              ) : null}
+            </div>
+            <div
+              className={`flex-ns flex-wrap flex-row ${styles.returnFormInputs}`}
+            >
               <div
-                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputAccountHolder}`}
+                className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
               >
-                <Input
-                  name="accountHolder"
-                  placeholder={formatMessage({
-                    id: messages.formAccountHolder.id,
-                  })}
-                  onChange={handleInputChange}
-                  value={formInputs.accountHolder}
+                <p className={`${styles.returnFormInputsHeader}`}>
+                  {formatMessage({ id: messages.formContactDetails.id })}
+                </p>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="name"
+                    placeholder={formatMessage({ id: messages.formName.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.name}
+                    errorMessage={
+                      errors.name ? formatMessage({ id: errors.name }) : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    disabled
+                    name="email"
+                    placeholder={formatMessage({
+                      id: messages.formEmail.id,
+                    })}
+                    onChange={handleInputChange}
+                    value={formInputs.email}
+                    errorMessage={
+                      errors.email ? formatMessage({ id: errors.email }) : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="phone"
+                    placeholder={formatMessage({ id: messages.formPhone.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.phone}
+                    errorMessage={
+                      errors.phone ? formatMessage({ id: errors.phone }) : ''
+                    }
+                  />
+                </div>
+              </div>
+
+              <div
+                className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+              >
+                <p className={`${styles.returnFormInputsHeader}`}>
+                  {formatMessage({ id: messages.formPickupAddress.id })}
+                </p>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="address"
+                    placeholder={formatMessage({ id: messages.formAddress.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.address}
+                    errorMessage={
+                      errors.address
+                        ? formatMessage({ id: errors.address })
+                        : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="locality"
+                    placeholder={formatMessage({
+                      id: messages.formLocality.id,
+                    })}
+                    onChange={handleInputChange}
+                    value={formInputs.locality}
+                    errorMessage={
+                      errors.locality
+                        ? formatMessage({ id: errors.locality })
+                        : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="state"
+                    placeholder={formatMessage({ id: messages.formState.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.state || ''}
+                    errorMessage={
+                      errors.state ? formatMessage({ id: errors.state }) : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="zip"
+                    placeholder={formatMessage({ id: messages.formZip.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.zip || ''}
+                    errorMessage={
+                      errors.zip ? formatMessage({ id: errors.zip }) : ''
+                    }
+                  />
+                </div>
+                <div className={`mb4 ${styles.returnFormInput}`}>
+                  <Input
+                    name="country"
+                    placeholder={formatMessage({ id: messages.formCountry.id })}
+                    onChange={handleInputChange}
+                    value={formInputs.country}
+                    errorMessage={
+                      errors.country
+                        ? formatMessage({ id: errors.country })
+                        : ''
+                    }
+                  />
+                </div>
+              </div>
+              <div className={`mt4 ph4 ${styles.returnFormExtraComment}`}>
+                <p className={`${styles.returnFormExtraCommentHeader}`}>
+                  {formatMessage({ id: messages.formExtraComment.id })}
+                </p>
+                <div className={`${styles.returnFormExtraCommentInput}`}>
+                  <Textarea
+                    name="extraComment"
+                    resize="none"
+                    onChange={handleInputChange}
+                    maxLength="250"
+                    value={formInputs.extraComment}
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column pa4 mb6 ${styles.returnFormInputsPayment}`}
+            >
+              <p className={`${styles.returnFormInputsHeader}`}>
+                {formatMessage({ id: messages.formPaymentMethod.id })}
+              </p>
+              {settings.hidePaymentMethodSelection ? (
+                formatMessage({ id: messages.defaultPaymentMethod.id })
+              ) : (
+                <RadioGroup
+                  hideBorder
+                  name="paymentMethod"
+                  options={this.paymentMethods()}
+                  value={formInputs.paymentMethod}
                   errorMessage={
-                    errors.accountHolder
-                      ? formatMessage({ id: errors.accountHolder })
+                    errors.paymentMethod
+                      ? formatMessage({ id: errors.paymentMethod })
                       : ''
                   }
-                />
-              </div>
-              <div
-                className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
-              >
-                <Input
-                  name="iban"
-                  placeholder={formatMessage({ id: messages.formIBAN.id })}
                   onChange={handleInputChange}
-                  value={formInputs.iban}
-                  errorMessage={
-                    errors.iban ? formatMessage({ id: errors.iban }) : ''
-                  }
                 />
-              </div>
+              )}
+              {formInputs.paymentMethod === 'bank' ? (
+                <div>
+                  <div
+                    className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputAccountHolder}`}
+                  >
+                    <Input
+                      name="accountHolder"
+                      placeholder={formatMessage({
+                        id: messages.formAccountHolder.id,
+                      })}
+                      onChange={handleInputChange}
+                      value={formInputs.accountHolder}
+                      errorMessage={
+                        errors.accountHolder
+                          ? formatMessage({ id: errors.accountHolder })
+                          : ''
+                      }
+                    />
+                  </div>
+                  <div
+                    className={`flex-ns flex-wrap flex-auto flex-column mt4 ${styles.returnFormInputIban}`}
+                  >
+                    <Input
+                      name="iban"
+                      placeholder={formatMessage({ id: messages.formIBAN.id })}
+                      onChange={handleInputChange}
+                      value={formInputs.iban}
+                      errorMessage={
+                        errors.iban ? formatMessage({ id: errors.iban }) : ''
+                      }
+                    />
+                  </div>
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-
-        <div
-          className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormTerms}`}
-        >
-          <Checkbox
-            checked={formInputs.agree}
-            id="agree"
-            key="formAgreeCheckbox"
-            label={this.renderTermsAndConditions()}
-            name="agree"
-            onChange={handleInputChange}
-            value={formInputs.agree}
-          />
-          {errors.agree ? (
-            <p
-              className={`c-danger t-small mt3 lh-title ${styles.returnFormErrorAgree}`}
+            <div
+              className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormTerms}`}
             >
-              {formatMessage({ id: errors.agree })}
-            </p>
-          ) : null}
-        </div>
-
-        <div className={`mt4 ph4 ${styles.returnFormActions}`}>
-          <Button type="submit" variation="primary" onClick={submit}>
-            {formatMessage({ id: messages.formNextStep.id })}
-          </Button>
-        </div>
+              <Checkbox
+                checked={formInputs.agree}
+                id="agree"
+                key="formAgreeCheckbox"
+                label={this.renderTermsAndConditions()}
+                name="agree"
+                onChange={handleInputChange}
+                value={formInputs.agree}
+              />
+              {errors.agree ? (
+                <p
+                  className={`c-danger t-small mt3 lh-title ${styles.returnFormErrorAgree}`}
+                >
+                  {formatMessage({ id: errors.agree })}
+                </p>
+              ) : null}
+            </div>
+            <div className={`mt4 ph4 ${styles.returnFormActions}`}>
+              <Button type="submit" variation="primary" onClick={submit}>
+                {formatMessage({ id: messages.formNextStep.id })}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     )
   }
