@@ -112,6 +112,7 @@ const messages = defineMessages({
   submitSuccess: { id: 'returns.requestSubmitSuccess' },
   submitError: { id: 'returns.requestSubmitError' },
   backToOrders: { id: 'returns.backToOrders' },
+  orderPaymentMethod: { id: 'returns.orderPaymentMethod' },
 })
 
 const emailValidation = (email: string) => {
@@ -284,6 +285,14 @@ class MyReturnsPageAdd extends Component<Props, State> {
         }${complement}`,
         state: order.shippingData.address.state || '',
         zip: order.shippingData.address.postalCode || '',
+      })
+    }
+
+    if (this.state.settings.hidePaymentMethodSelection) {
+      this.setState({
+        paymentMethod: this.props.intl.formatMessage({
+          id: messages.orderPaymentMethod.id,
+        }),
       })
     }
 
