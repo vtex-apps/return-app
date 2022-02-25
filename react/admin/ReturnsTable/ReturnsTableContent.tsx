@@ -1,597 +1,328 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import React, {Component} from 'react'
-import {FormattedMessage} from 'react-intl'
+import React, { Component } from 'react'
+import { FormattedMessage } from 'react-intl'
 import PropTypes from 'prop-types'
-import {FormattedCurrency} from 'vtex.format-currency'
-import {
-    Button,
-    Input,
-    Table,
-    DatePicker,
-    ButtonWithIcon,
-    ActionMenu,
-    Modal,
-    IconVisibilityOn,
-    IconGrid,
-} from 'vtex.styleguide'
+import { Table } from 'vtex.styleguide'
 
-import styles from '../../styles.css'
 import {
-    beautifyDate,
-    currentDate,
-    filterDate,
-    requestsStatuses,
-    FormattedMessageFixed,
-    sortColumns,
-    order,
-    schemaNames,
-    schemaTypes,
-    getStatusTranslation,
-    renderStatusIcon,
+  currentDate,
+  filterDate,
+  requestsStatuses,
+  schemaNames,
+  schemaTypes,
 } from '../../common/utils'
-import {fetchHeaders, fetchMethod, fetchPath} from '../../common/fetch'
+import { fetchHeaders, fetchMethod, fetchPath } from '../../common/fetch'
+import ReturnsTableSchema from '../../common/ReturnsTableSchema'
+import { ReturnTableModal } from '../../components/ReturnTableModal'
+import { initialFilters } from '../../common/constants/returnsTable'
+import ReturnTableFrom from './ReturnTableFrom'
 
-const initialFilters = {
-    orderId: '',
-    returnId: '',
-    sequenceNumber: '',
-    fromDate: '',
-    toDate: '',
-    status: '',
+interface IProps {
+  navigate: (to: { to: string }) => void
 }
 
-const tableLength = 15
-const initialPaging = {
-    total: 0,
-    page: 1,
-    perPage: tableLength
+type FilterBy = keyof typeof initialFilters
+
+interface IState {
+  itmes: any[]
+  error: string | null
+  pageNumber: number
+  perPage: number
+  totalItems: number
+  itemFrom: number
+  itemTo: number
+  filters: typeof initialFilters
+  emptyStateLabel: JSX.Element
+  tableIsLoading: boolean
+  isFiltered: boolean
+  dataSort: {
+    sortedBy: FilterBy
+    sortOrder: 'DESC' | 'ASC'
+  }
+  isModalOpen: boolean
+  selectedRequestProducts: any[]
 }
 
-class ReturnsTableContent extends Component<any, any> {
-    static propTypes = {
-        navigate: PropTypes.func
-    };
-    constructor(props: any) {
-        super(props)
-        this.state = {
-            orderedItems: [],
-            returns: [],
-            slicedData: [],
-            error: '',
-            paging: initialPaging,
-            filters: initialFilters,
-            currentItemFrom: 1,
-            currentItemTo: tableLength,
-            emptyStateLabel: <FormattedMessage id="returns.nothingToShow"/>,
-            async: [],
-            tableIsLoading: true,
-            isFiltered: false,
-            dataSort: {
-                sortedBy: 'createdIn',
-                sortOrder: 'DESC',
-            },
-            isModalOpen: false,
-            selectedRequestProducts: [],
-        }
+const INITIAL_ROW_LENGTH = 15
 
-        this.handleSort = this.handleSort.bind(this)
-        this.handleNextClick = this.handleNextClick.bind(this)
-        this.handlePrevClick = this.handlePrevClick.bind(this)
-        this.getRequests = this.getRequests.bind(this)
-        this.handleModalToggle = this.handleModalToggle.bind(this)
+class ReturnsTableContent extends Component<IProps, IState> {
+  public static propTypes = {
+    navigate: PropTypes.func,
+  }
+
+  constructor(props: any) {
+    super(props)
+    this.state = {
+      itmes: [],
+      error: null,
+      perPage: INITIAL_ROW_LENGTH,
+      pageNumber: 1,
+      totalItems: 0, // 0 is initial value
+      itemFrom: 1, // 1 the first value
+      itemTo: INITIAL_ROW_LENGTH,
+      filters: initialFilters,
+      emptyStateLabel: <FormattedMessage id="returns.nothingToShow" />,
+      tableIsLoading: true,
+      isFiltered: false,
+      dataSort: {
+        sortedBy: 'createdIn',
+        sortOrder: 'DESC',
+      },
+      isModalOpen: false,
+      selectedRequestProducts: [],
     }
+  }
 
-    handleModalToggle() {
-        this.setState((prevState) => ({isModalOpen: !prevState.isModalOpen}))
+  public componentDidMount = () => {
+    this.getRequests()
+  }
+
+  protected getRequests = async () => {
+    try {
+      this.setState({ tableIsLoading: true })
+      const {
+        filters,
+        pageNumber,
+        perPage,
+        dataSort: { sortedBy, sortOrder },
+      } = this.state
+
+      let where = 'type=request'
+
+      if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
+        this.setState({ isFiltered: false })
+      } else {
+        this.setState({ isFiltered: true })
+      }
+
+      if (filters.orderId !== '') {
+        where += ` AND orderId="*${filters.orderId}*"`
+      }
+
+      if (filters.returnId !== '') {
+        where += ` AND id="*${filters.returnId}*"`
+      }
+
+      if (filters.sequenceNumber !== '') {
+        where += ` AND sequenceNumber="${filters.sequenceNumber}"`
+      }
+
+      let startDate = '1970-01-01'
+      let endDate = currentDate()
+
+      if (filters.fromDate !== '' || filters.toDate !== '') {
+        startDate =
+          filters.fromDate !== '' ? filterDate(filters.fromDate) : startDate
+        endDate =
+          filters.toDate !== ''
+            ? filterDate(filters.toDate)
+            : filterDate(filters.fromDate)
+
+        where += ` AND createdIn between ${startDate} AND ${endDate}`
+      }
+
+      if (filters.status !== '') {
+        where += ` AND status="${requestsStatuses[filters.status]}"`
+      }
+
+      const url = `${
+        fetchPath.getRequests + schemaNames.request
+      }/${pageNumber}/${perPage}/${sortedBy}/${sortOrder}/${where}`
+
+      const returnsResponse = await fetch(url)
+
+      const returns = await returnsResponse.json()
+
+      if ('error' in returns) {
+        this.setState({ error: returns.error })
+      } else {
+        this.setState({
+          itmes: returns.data,
+          totalItems: returns.pagination?.total,
+        })
+      }
+    } catch (error) {
+      this.setState({ error: error.message })
+    } finally {
+      this.setState({ tableIsLoading: false })
     }
+  }
 
-    handleSort({sortOrder, sortedBy}) {
-        this.setState({dataSort: {sortedBy, sortOrder}, paging: initialPaging}, this.getRequests);
+  protected handleViewRequest = async (requestId: string) => {
+    try {
+      const url = `${fetchPath.getDocuments + schemaNames.product}/${
+        schemaTypes.products
+      }/refundId=${requestId}`
+
+      const returnProducts = await fetch(url, {
+        method: fetchMethod.get,
+        headers: fetchHeaders,
+      })
+
+      const products = await returnProducts.json()
+
+      this.setState({ selectedRequestProducts: products })
+      this.onHandleModalToggle()
+    } catch (error) {
+      this.setState({ error: error.message })
+    } finally {
+      this.setState({ tableIsLoading: false })
     }
+  }
 
-    componentDidMount() {
-        this.getRequests()
-    }
+  protected onHandleModalToggle = () => {
+    this.setState((prevState) => ({ isModalOpen: !prevState.isModalOpen }))
+  }
 
-    async getRequests() {
-      this.setState({tableIsLoading: true})
-        const {filters, paging, dataSort} = this.state
-        let where = 'type=request'
-
-        if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
-            this.setState({isFiltered: false})
-        } else {
-          this.setState({isFiltered: true})
-        }
-            if (filters.orderId !== '') {
-                where += ` AND orderId="*${filters.orderId}*"`
-            }
-
-            if (filters.returnId !== '') {
-                where += ` AND id="*${filters.returnId}*"`
-            }
-
-            if (filters.sequenceNumber !== '') {
-                where += ` AND sequenceNumber="${filters.sequenceNumber}"`
-            }
-
-            let startDate = '1970-01-01'
-            let endDate = currentDate()
-
-            if (filters.fromDate !== '' || filters.toDate !== '') {
-                startDate =
-                    filters.fromDate !== '' ? filterDate(filters.fromDate) : startDate
-                endDate =
-                    filters.toDate !== ''
-                        ? filterDate(filters.toDate)
-                        : filterDate(filters.fromDate)
-
-                where += ` AND createdIn between ${startDate} AND ${endDate}`
-            }
-
-            if (filters.status !== '') {
-                where += ` AND status="${requestsStatuses[filters.status]}"`
-            }
-
-
-        const returnsResponse = await fetch(`${fetchPath.getRequests + schemaNames.request}/${paging.page}/${paging.perPage}/${dataSort.sortedBy}/${dataSort.sortOrder}/${where}`);
-        const returns = await returnsResponse.json();
-
-        if ('error' in returns) {
-            this.setState({error: returns.error})
-        } else {
-            this.setState({
-                returns: returns.data,
-                orderedItems: returns,
-                slicedData: returns.length ? returns.slice(0, tableLength) : [],
-                tableIsLoading: false,
-                paging: {
-                    ...this.state.paging,
-                    total: returns.pagination.total,
-                },
-            })
-        }
-
-        this.setState({tableIsLoading: false})
-    }
-
-    getTableSchema() {
-        return {
-            properties: {
-                id: {
-                    title: <FormattedMessage id="returns.requestId"/>,
-                    sortable: true,
-                    width: 350,
-                },
-                sequenceNumber: {
-                    title: <FormattedMessage id="returns.sequenceNumber"/>,
-                    sortable: true,
-                },
-                orderId: {
-                    title: <FormattedMessage id="returns.orderId"/>,
-                    sortable: true,
-                },
-                dateSubmitted: {
-                    title: <FormattedMessage id="returns.submittedDate"/>,
-                    cellRenderer: ({cellData}) => {
-                        return beautifyDate(cellData)
-                    },
-                    sortable: true,
-                },
-                status: {
-                    title: <FormattedMessage id="returns.status"/>,
-                    sortable: true,
-                    width: 200,
-                    cellRenderer: ({cellData}) => {
-                        return <div>{renderStatusIcon(cellData)}</div>
-                    },
-                },
-                actions: {
-                    width: 150,
-                    title: <FormattedMessage id="returns.actions"/>,
-                    cellRenderer: ({rowData}) => {
-                        return (
-                            <div>
-                                <Button
-                                    variation="tertiary"
-                                    onClick={() => {
-                                        this.handleViewRequest(rowData.id)
-                                    }}
-                                >
-                                    <IconGrid/>
-                                </Button>
-                                <Button
-                                    variation="tertiary"
-                                    onClick={() => {
-                                        this.props.navigate({to: `/admin/app/returns/${rowData.id}/details`})
-                                    }}
-                                >
-                                    <IconVisibilityOn/>
-                                </Button>
-                            </div>
-                        )
-                    },
-                },
-            },
-        }
-    }
-
-    filterStatus(status: string) {
-        this.setState((prevState) => ({
-            filters: {
-                ...prevState.filters,
-                status,
-            },
-        }))
-    }
-
-    filterReturnId(val: string) {
-        this.setState((prevState) => ({
-            filters: {
-                ...prevState.filters,
-                returnId: val,
-            },
-        }))
-    }
-
-    filterSequenceNumber(val: string) {
-        this.setState((prevState) => ({
-            filters: {
-                ...prevState.filters,
-                sequenceNumber: val,
-            },
-        }))
-    }
-
-    filterOrderId(val: string) {
-        this.setState((prevState) => ({
-            filters: {
-                ...prevState.filters,
-                orderId: val,
-            },
-        }))
-    }
-
-    filterFromDate(val: string) {
-        this.setState((prevState) => ({
-            filters: {
-                ...prevState.filters,
-                fromDate: val,
-                toDate:
-                    prevState.filters.toDate === '' || prevState.filters.toDate < val
-                        ? val
-                        : prevState.filters.toDate,
-            },
-        }))
-        setTimeout(() => {
-            this.handleApplyFilters()
-        }, 200)
-    }
-
-    filterToDate(val: string) {
-        this.setState((prevState) => ({
-            filters: {
-                ...prevState.filters,
-                toDate: val,
-                fromDate:
-                    prevState.filters.fromDate === '' || prevState.filters.fromDate > val
-                        ? val
-                        : prevState.filters.fromDate,
-            },
-        }))
-        setTimeout(() => {
-            this.handleApplyFilters()
-        }, 200)
-    }
-
-    handleApplyFilters() {
-        const {filters} = this.state
-
-        if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
-            this.handleResetFilters()
-        } else {
-            this.getRequests()
-        }
-    }
-
-    handleResetFilters() {
-        this.setState(
-            {
-                filters: initialFilters,
-                tableIsLoading: true,
-                isFiltered: false,
-            },
-            this.getRequests
-        )
-    }
-
-  handleNextClick() {
-    const {paging} = this.state;
-    paging.page = Number(paging.page) + 1;
-
-    const currentItemFrom = Number(this.state.currentItemFrom) + Number(paging.perPage);
-    const currentItemTo = Number(this.state.currentItemTo) + Number(paging.perPage);
-
+  protected setStateWithResetPage = async (
+    key: keyof IState,
+    value: IState[keyof IState],
+    callback?: () => Promise<void>
+  ) => {
     this.setState(
-        {paging, currentItemFrom, currentItemTo},
-        this.getRequests
+      (prevState) => ({
+        ...prevState,
+        pageNumber: 1,
+        itemFrom: 1,
+        itemTo: 15,
+        [key]: value,
+      }),
+      callback || undefined
     )
   }
 
-  handlePrevClick() {
-    const {paging} = this.state;
-
-    if (paging.page === 0) return;
-    paging.page = Number(paging.page) - 1;
-    const currentItemFrom = Number(this.state.currentItemFrom) - Number(paging.perPage);
-    const currentItemTo = Number(this.state.currentItemTo) - Number(paging.perPage);
-
+  protected handleSort = ({ sortOrder, sortedBy }) => {
+    //  here we just sort by the existing data
     this.setState(
-        {paging, currentItemFrom, currentItemTo},
-        this.getRequests
+      {
+        dataSort: { sortedBy, sortOrder },
+      },
+      this.getRequests
     )
   }
 
-    handleViewRequest = (requestId: string) => {
-        fetch(
-            `${fetchPath.getDocuments + schemaNames.product}/${
-                schemaTypes.products
-            }/refundId=${requestId}`,
-            {
-                method: fetchMethod.get,
-                headers: fetchHeaders,
-            }
-        )
-            .then((response) => response.json())
-            .then((products) => {
-                this.setState({selectedRequestProducts: products})
-                this.handleModalToggle()
-            })
-            .catch((err) => this.setState({error: err}))
+  protected onhandleResetFilters = () => {
+    this.setStateWithResetPage('filters', initialFilters, this.getRequests)
+  }
+
+  protected onhandleApplyFilters = () => {
+    const { filters } = this.state
+
+    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
+      /**
+       * here we compare the initialFilters with the current filters if they are equal so no filter is applied.
+       */
+      this.onhandleResetFilters()
+
+      return
     }
 
-    handleKeypress(e) {
-        if (e.key === 'Enter') {
-            this.handleApplyFilters()
-        }
+    /**
+     * here we reset the page number to 1 and apply the filters.
+     */
+    this.setStateWithResetPage('pageNumber', 1, this.getRequests)
+  }
+
+  protected filterByKey = (filterBy: FilterBy, value: string) => {
+    this.setState((prevState: IState) => ({
+      filters: {
+        ...prevState.filters,
+        [filterBy]: value,
+      },
+    }))
+  }
+
+  protected handleNextClick = () => {
+    this.setState(
+      (prevState) => ({
+        pageNumber: prevState.pageNumber + 1,
+        itemFrom: prevState.itemFrom + prevState.perPage,
+        itemTo: prevState.itemTo + prevState.perPage,
+      }),
+      this.getRequests
+    )
+  }
+
+  protected handlePrevClick = () => {
+    const { pageNumber } = this.state
+
+    if (pageNumber === 1) return // do nothing when page is the first page.
+
+    this.setState(
+      (prevState) => ({
+        pageNumber: prevState.pageNumber - 1,
+        itemFrom: prevState.itemFrom - prevState.perPage,
+        itemTo: prevState.itemTo - prevState.perPage,
+      }),
+      this.getRequests
+    )
+  }
+
+  public render() {
+    const {
+      error,
+      tableIsLoading,
+      filters,
+      itmes,
+      emptyStateLabel,
+      isFiltered,
+      selectedRequestProducts,
+      perPage,
+      totalItems,
+      itemFrom,
+      itemTo,
+    } = this.state
+
+    if (error) {
+      return (
+        <div>
+          <p className="center">{error}</p>
+        </div>
+      )
     }
 
-    render() {
-        const {
-            error,
-            paging,
-            tableIsLoading,
-            filters,
-            returns,
-            emptyStateLabel,
-            isFiltered,
-            selectedRequestProducts,
-            currentItemFrom,
-            currentItemTo
-        } = this.state
+    return (
+      <div>
+        <ReturnTableFrom
+          filters={filters}
+          handleApplyFilters={this.onhandleApplyFilters}
+          filterByKey={this.filterByKey}
+          handleResetFilters={this.onhandleResetFilters}
+          isFiltered={isFiltered}
+        />
+        <Table
+          fullWidth
+          loading={tableIsLoading}
+          items={itmes}
+          emptyStateLabel={emptyStateLabel}
+          schema={ReturnsTableSchema({
+            navigate: this.props.navigate,
+            handleViewRequest: this.handleViewRequest,
+          })}
+          pagination={{
+            textShowRows: <FormattedMessage id="returns.tableShowRows" />,
+            textOf: <FormattedMessage id="returns.tableOf" />,
+            onNextClick: this.handleNextClick,
+            onPrevClick: this.handlePrevClick,
 
-        const statusLabel =
-            filters.status !== '' ? (
-                <FormattedMessageFixed
-                    id={`returns.status${getStatusTranslation(filters.status)}`}
-                />
-            ) : (
-                <FormattedMessage id="returns.statusAllStatuses"/>
-            )
-
-        if (error) {
-            return (
-                <div>
-                    <p className="center">{error}</p>
-                </div>
-            )
-        }
-
-        return (
-            <div>
-                <div className="flex items-center">
-                    <div className="ma2">
-                        <FormattedMessage id="returns.requestId">
-                            {(msg) => (
-                                <Input
-                                    placeholder={msg}
-                                    onKeyPress={(e) => {
-                                        this.handleKeypress(e)
-                                    }}
-                                    size="small"
-                                    onChange={(e) => this.filterReturnId(e.target.value)}
-                                    value={filters.returnId}
-                                />
-                            )}
-                        </FormattedMessage>
-                    </div>
-                    <div className="ma2">
-                        <FormattedMessage id="returns.sequenceNumber">
-                            {(msg) => (
-                                <Input
-                                    placeholder={msg}
-                                    onKeyPress={(e) => {
-                                        this.handleKeypress(e)
-                                    }}
-                                    size="small"
-                                    onChange={(e) => this.filterSequenceNumber(e.target.value)}
-                                    value={filters.sequenceNumber}
-                                />
-                            )}
-                        </FormattedMessage>
-                    </div>
-                    <div className="ma2">
-                        <FormattedMessage id="returns.orderId">
-                            {(msg) => (
-                                <Input
-                                    placeholder={msg}
-                                    onKeyPress={(e) => {
-                                        this.handleKeypress(e)
-                                    }}
-                                    size="small"
-                                    onChange={(e) => this.filterOrderId(e.target.value)}
-                                    value={filters.orderId}
-                                />
-                            )}
-                        </FormattedMessage>
-                    </div>
-                    <div className="ma2">
-                        <FormattedMessage id="returns.filterFromDate">
-                            {(msg) => (
-                                <DatePicker
-                                    placeholder={msg}
-                                    locale="en-GB"
-                                    size="small"
-                                    onChange={(value) => this.filterFromDate(value)}
-                                    value={filters.fromDate}
-                                />
-                            )}
-                        </FormattedMessage>
-                    </div>
-                    <div className="ma2">
-                        <FormattedMessage id="returns.filterToDate">
-                            {(msg) => (
-                                <DatePicker
-                                    placeholder={msg}
-                                    locale="en-GB"
-                                    size="small"
-                                    onChange={(value) => this.filterToDate(value)}
-                                    value={filters.toDate}
-                                />
-                            )}
-                        </FormattedMessage>
-                    </div>
-                    <div className="ma2">
-                        <ActionMenu
-                            label={statusLabel}
-                            align="right"
-                            buttonProps={{
-                                variation: 'secondary',
-                                size: 'small',
-                            }}
-                            options={[
-                                {
-                                    label: <FormattedMessage id="returns.statusAllStatuses"/>,
-                                    onClick: () => this.filterStatus(''),
-                                },
-                                {
-                                    label: <FormattedMessage id="returns.statusNew"/>,
-                                    onClick: () => this.filterStatus('new'),
-                                },
-                                {
-                                    label: <FormattedMessage id="returns.statusApproved"/>,
-                                    onClick: () => this.filterStatus('approved'),
-                                },
-                                {
-                                    label: (
-                                        <FormattedMessage id="returns.statusPendingVerification"/>
-                                    ),
-                                    onClick: () => this.filterStatus('pendingVerification'),
-                                },
-                                {
-                                    label: (
-                                        <FormattedMessage id="returns.statusPartiallyApproved"/>
-                                    ),
-                                    onClick: () => this.filterStatus('partiallyApproved'),
-                                },
-                                {
-                                    label: <FormattedMessage id="returns.statusDenied"/>,
-                                    onClick: () => this.filterStatus('denied'),
-                                },
-                                {
-                                    label: <FormattedMessage id="returns.statusRefunded"/>,
-                                    onClick: () => this.filterStatus('refunded'),
-                                },
-                            ]}
-                        />
-                    </div>
-                    <div className="ma2">
-                        <Button size="small" onClick={() => this.handleApplyFilters()}>
-                            <FormattedMessage id="returns.filterResults"/>
-                        </Button>
-                    </div>
-                    {isFiltered ? (
-                        <div className="ma2">
-                            <ButtonWithIcon
-                                variation="secondary"
-                                size="small"
-                                onClick={() => this.handleResetFilters()}
-                            >
-                                <FormattedMessage id="returns.clearFilters"/>
-                            </ButtonWithIcon>
-                        </div>
-                    ) : null}
-                </div>
-                <Table
-                    fullWidth
-                    loading={tableIsLoading}
-                    items={returns}
-                    emptyStateLabel={emptyStateLabel}
-                    schema={this.getTableSchema()}
-                    pagination={{
-                        onNextClick: this.handleNextClick,
-                        onPrevClick: this.handlePrevClick,
-                        textShowRows: <FormattedMessage id="returns.tableShowRows"/>,
-                        textOf: <FormattedMessage id="returns.tableOf"/>,
-                        currentItemFrom: currentItemFrom,
-                        currentItemTo: currentItemTo,
-                        totalItems: paging.total,
-                    }}
-                    sort={{
-                        sortedBy: this.state.dataSort.sortedBy,
-                        sortOrder: this.state.dataSort.sortOrder,
-                    }}
-                    onSort={this.handleSort}
-                />
-                <Modal
-                    centered
-                    isOpen={this.state.isModalOpen}
-                    onClose={this.handleModalToggle}
-                >
-                    <div className="dark-gray">
-                        {selectedRequestProducts.length ? (
-                            <table className={`${styles.table} ${styles.tableModal}`}>
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <FormattedMessage id="returns.skuId"/>
-                                    </th>
-                                    <th>
-                                        <FormattedMessage id="returns.product"/>
-                                    </th>
-                                    <th>
-                                        <FormattedMessage id="returns.unitPrice"/>
-                                    </th>
-                                    <th>
-                                        <FormattedMessage id="returns.quantity"/>
-                                    </th>
-                                    <th>
-                                        <FormattedMessage id="returns.price"/>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {selectedRequestProducts.map((product: any) => (
-                                    <tr key={product.skuId}>
-                                        <td>{product.skuId}</td>
-                                        <td>{product.skuName}</td>
-                                        <td>
-                                            <FormattedCurrency value={product.unitPrice / 100}/>
-                                        </td>
-                                        <td>{product.quantity}</td>
-                                        <td>
-                                            <FormattedCurrency value={product.totalPrice / 100}/>
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        ) : null}
-                    </div>
-                </Modal>
-            </div>
-        )
-    }
+            tableLength: perPage,
+            currentItemFrom: itmes.length ? itemFrom : 0,
+            currentItemTo: itemTo,
+            totalItems,
+          }}
+          onSort={this.handleSort}
+          sort={{
+            sortedBy: this.state.dataSort.sortedBy,
+            sortOrder: this.state.dataSort.sortOrder,
+          }}
+        />
+        <ReturnTableModal
+          selectedRequestProducts={selectedRequestProducts}
+          isModalOpen={this.state.isModalOpen}
+          handleModalToggle={this.onHandleModalToggle}
+        />
+      </div>
+    )
+  }
 }
 
 export default ReturnsTableContent

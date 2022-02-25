@@ -12,6 +12,7 @@ export const SETTINGS_SCHEMA = {
     },
     type: { type: 'string' },
     enableOtherOption: { type: 'boolean' },
+    hidePaymentMethodSelection: { type: 'boolean' },
   },
   $defs: {
     options: {
@@ -38,6 +39,7 @@ export const SETTINGS_SCHEMA = {
       'termsUrl',
       'options',
       'enableOtherOption',
+      'hidePaymentMethodSelection',
       'type',
     ],
     publicJsonSchema: false,
@@ -54,6 +56,7 @@ export const SETTINGS_SCHEMA = {
     'termsUrl',
     'options',
     'enableOtherOption',
+    'hidePaymentMethodSelection',
     'type',
   ],
   'v-indexed': [
@@ -67,6 +70,7 @@ export const SETTINGS_SCHEMA = {
     'termsUrl',
     'options',
     'enableOtherOption',
+    'hidePaymentMethodSelection',
     'type',
   ],
   'v-immediate-indexing': true,
@@ -127,6 +131,7 @@ export const RETURNS_SCHEMA = {
       'status',
       'dateSubmitted',
       'type',
+      'sequenceNumber',
     ],
     publicJsonSchema: false,
   },
