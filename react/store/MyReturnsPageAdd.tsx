@@ -998,7 +998,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
                     accountHolder,
                     agree,
                   }}
-                  submit={() => {
+                  handleSubmit={() => {
                     this.submit()
                   }}
                 />
