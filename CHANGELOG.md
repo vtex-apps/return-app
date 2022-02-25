@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - `ReturnsTableContent` refactor and fix the returns list table when search for any item you will get an empty list and then you have to go back to the first page to see the results
+- Clean state when store user navigates between different orders trying to avoid the error where there is a mismatch between the order id and the products in a RMA.
 
 ## [2.18.2] - 2022-02-22
 ### Fixed
