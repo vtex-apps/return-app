@@ -135,6 +135,7 @@
   "returns.all": "All",
   "returns.statusNew": "New",
   "returns.statusProcessing": "Processing",
+  "returns.statusPicked": "Picked",
   "returns.statusPickedUpFromClient": "Item(s) received from client",
   "returns.statusApproved": "Approved",
   "returns.statusPendingVerification": "Pending verification",
