@@ -75,6 +75,9 @@ export const SETTINGS_SCHEMA = {
 export const RETURNS_SCHEMA = {
   properties: {
     userId: { type: 'string', IsRelationship: true },
+    refundId: {
+      type: ['string', 'null'],
+    },
     orderId: { type: 'string', IsRelationship: true },
     name: { type: 'string' },
     email: { type: 'string', format: 'email' },
@@ -161,6 +164,7 @@ export const RETURNS_SCHEMA = {
   ],
   'v-indexed': [
     'id',
+    'refundId',
     'createdIn',
     'userId',
     'orderId',

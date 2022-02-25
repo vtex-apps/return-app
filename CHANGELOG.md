@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed 
+- add `refundId` to returnRequests schema 
+
 
 ## [2.18.2] - 2022-02-22
 ### Fixed
