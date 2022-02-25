@@ -127,6 +127,7 @@ export const RETURNS_SCHEMA = {
       'status',
       'dateSubmitted',
       'type',
+      'sequenceNumber',
     ],
     publicJsonSchema: false,
   },

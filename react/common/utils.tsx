@@ -398,7 +398,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.processing
       ),
-      active: isCurrentStepActive({ status: request.status, step: 2 }), // 2 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 2 }), // 2 based on the current step
     },
     {
       status: statusHistoryTimeline.picked,
@@ -407,7 +407,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.picked
       ),
-      active: isCurrentStepActive({ status: request.status, step: 3 }), // 3 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 3 }), // 3 based on the current step
     },
     {
       status: statusHistoryTimeline.pending,
@@ -416,7 +416,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.pendingVerification
       ),
-      active: isCurrentStepActive({ status: request.status, step: 4 }), // 4 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 4 }), // 4 based on the current step
     },
     {
       status: statusHistoryTimeline.verified,
@@ -428,7 +428,7 @@ export function prepareHistoryData(comment: any, request: any) {
           item.status === requestsStatuses.approved ||
           item.status === requestsStatuses.denied
       ),
-      active: isCurrentStepActive({ status: request.status, step: 5 }), // 5 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 5 }), // 5 based on the current step
     },
     {
       status: statusHistoryTimeline.refunded,
@@ -444,7 +444,7 @@ export function prepareHistoryData(comment: any, request: any) {
       comments: comment.filter(
         (item: any) => item.status === requestsStatuses.refunded
       ),
-      active: isCurrentStepActive({ status: request.status, step: 6 }), // 6 baseed on the current step
+      active: isCurrentStepActive({ status: request.status, step: 6 }), // 6 based on the current step
     },
   ]
 
@@ -617,3 +617,9 @@ export async function verifySchemas() {
 
 export const mergeArrays = (arr: any, obj: any) =>
   arr && arr.map((t: any) => (t.id === obj.id ? obj : t))
+
+export const capitalize = (s: string) => {
+  if (typeof s !== 'string') return ''
+
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
