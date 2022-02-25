@@ -84,6 +84,7 @@ const messages = defineMessages({
   formState: { id: 'returns.formState' },
   formZip: { id: 'returns.formZip' },
   formPaymentMethod: { id: 'returns.formPaymentMethod' },
+  defaultPaymentMethod: { id: 'returns.defaultPaymentMethod' },
   formIBAN: { id: 'returns.formIBAN' },
   formAccountHolder: { id: 'returns.formAccountHolder' },
   formNextStep: { id: 'returns.formNextStep' },
@@ -379,6 +380,7 @@ class RequestForm extends Component<Props> {
       formInputs,
       submit,
       intl: { formatMessage },
+      settings,
     } = this.props
 
     const isLoadingProducts = !orderProducts.length
@@ -644,23 +646,27 @@ class RequestForm extends Component<Props> {
               </div>
             </div>
             <div
-              className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsPayment}`}
+              className={`flex-ns flex-wrap flex-auto flex-column pa4 mb6 ${styles.returnFormInputsPayment}`}
             >
               <p className={`${styles.returnFormInputsHeader}`}>
                 {formatMessage({ id: messages.formPaymentMethod.id })}
               </p>
-              <RadioGroup
-                hideBorder
-                name="paymentMethod"
-                options={this.paymentMethods()}
-                value={formInputs.paymentMethod}
-                errorMessage={
-                  errors.paymentMethod
-                    ? formatMessage({ id: errors.paymentMethod })
-                    : ''
-                }
-                onChange={handleInputChange}
-              />
+              {settings.hidePaymentMethodSelection ? (
+                formatMessage({ id: messages.defaultPaymentMethod.id })
+              ) : (
+                <RadioGroup
+                  hideBorder
+                  name="paymentMethod"
+                  options={this.paymentMethods()}
+                  value={formInputs.paymentMethod}
+                  errorMessage={
+                    errors.paymentMethod
+                      ? formatMessage({ id: errors.paymentMethod })
+                      : ''
+                  }
+                  onChange={handleInputChange}
+                />
+              )}
               {formInputs.paymentMethod === 'bank' ? (
                 <div>
                   <div
