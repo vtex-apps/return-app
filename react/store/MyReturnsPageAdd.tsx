@@ -22,6 +22,7 @@ import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 import EligibleOrdersTable from '../components/EligibleOrdersTable'
 import RequestInformation from '../components/RequestInformation'
 import RequestForm from '../components/RequestForm'
+import { SAME_AS_ORDER } from '../components/RequestInfo'
 
 type Errors = {
   name: string
@@ -112,6 +113,7 @@ const messages = defineMessages({
   submitSuccess: { id: 'returns.requestSubmitSuccess' },
   submitError: { id: 'returns.requestSubmitError' },
   backToOrders: { id: 'returns.backToOrders' },
+  orderPaymentMethod: { id: 'returns.orderPaymentMethod' },
 })
 
 const emailValidation = (email: string) => {
@@ -286,6 +288,12 @@ class MyReturnsPageAdd extends Component<Props, State> {
         }${complement}`,
         state: order.shippingData.address.state || '',
         zip: order.shippingData.address.postalCode || '',
+      })
+    }
+
+    if (this.state.settings.hidePaymentMethodSelection) {
+      this.setState({
+        paymentMethod: SAME_AS_ORDER,
       })
     }
 
@@ -717,10 +725,43 @@ class MyReturnsPageAdd extends Component<Props, State> {
   }
 
   showTable() {
-    this.setState({
+    const setView = {
       showOrdersTable: true,
       showForm: false,
       showInfo: false,
+    }
+
+    const resetFormInputs = {
+      country: '',
+      locality: '',
+      address: '',
+      state: '',
+      zip: '',
+      phone: '',
+      name: '',
+      extraComment: '',
+      paymentMethod: '',
+      iban: '',
+      accountHolder: '',
+      agree: false,
+    }
+
+    const resetOrderSelectedInfo = {
+      selectedOrder: [],
+      orderProducts: [],
+      selectedOrderId: '',
+    }
+
+    /**
+     * Clean state related to order selected.
+     * This is needed to avoid showing the wrong order information if something
+     * goes wrong during the call to retrieve product information.
+     * Possible error for RMA refering the wrong order id.
+     */
+    this.setState({
+      ...setView,
+      ...resetFormInputs,
+      ...resetOrderSelectedInfo,
     })
   }
 

@@ -17,7 +17,7 @@ VTEX Return App
   - `Terms and conditions URL:` The URL of the page with the return terms and conditions. The customer can access this URL from the form they fill out to request a return.
     - If you have the terms on conditions page on `http://example.com/terms-and-conditions` it's enough for you to type just `/terms-and-conditions`
   - `Excluded categories:` Products that are in those categories will not be eligible for return
-  - `Payment methods:` Display or hide payment methods. _You should have at least one option selected._
+  - `Payment methods:` Display or hide payment methods. _You should have at least one option selected._ You can also prevent customers from changing to which method the refund will be emitted.
   - `Custom return options (OPTIONAL):` This table allows to create custom reasons as return options, with the addition to have custom max allowed dates for each one. _If none added, the default reasons will be used_
 
 ## Short description

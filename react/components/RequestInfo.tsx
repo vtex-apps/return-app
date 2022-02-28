@@ -5,6 +5,8 @@ import { defineMessages, injectIntl } from 'react-intl'
 
 import styles from '../styles.css'
 
+export const SAME_AS_ORDER = 'sameAsOrder'
+
 interface Props {
   request: any
   giftCardValue: any
@@ -40,6 +42,7 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
     voucherCode: { id: `returns.voucherCode` },
     voucherCodeNotGenerated: { id: `returns.voucherCodeNotGenerated` },
     voucherValue: { id: `returns.voucherValue` },
+    orderPaymentMethod: { id: `returns.orderPaymentMethod` },
   })
 
   return (
@@ -232,7 +235,9 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
         <p
           className={`ma1 t-small c-on-base ${styles.requestInfoPaymentMethod}`}
         >
-          {request.paymentMethod}
+          {request.paymentMethod === SAME_AS_ORDER
+            ? formatMessage({ id: messages.orderPaymentMethod.id })
+            : request.paymentMethod}
         </p>
       )}
       {request.extraComment && request.extraComment !== '' && (

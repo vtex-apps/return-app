@@ -12,7 +12,7 @@ export const SETTINGS_SCHEMA = {
     },
     type: { type: 'string' },
     enableOtherOption: { type: 'boolean' },
-    enablePickupPoints: { type: 'boolean' },
+    hidePaymentMethodSelection: { type: 'boolean' },
   },
   $defs: {
     options: {
@@ -39,7 +39,7 @@ export const SETTINGS_SCHEMA = {
       'termsUrl',
       'options',
       'enableOtherOption',
-      'enablePickupPoints',
+      'hidePaymentMethodSelection',
       'type',
     ],
     publicJsonSchema: false,
@@ -56,7 +56,7 @@ export const SETTINGS_SCHEMA = {
     'termsUrl',
     'options',
     'enableOtherOption',
-    'enablePickupPoints',
+    'hidePaymentMethodSelection',
     'type',
   ],
   'v-indexed': [
@@ -71,6 +71,7 @@ export const SETTINGS_SCHEMA = {
     'options',
     'enableOtherOption',
     'enablePickupPoints',
+    'hidePaymentMethodSelection',
     'type',
   ],
   'v-immediate-indexing': true,
@@ -79,6 +80,9 @@ export const SETTINGS_SCHEMA = {
 export const RETURNS_SCHEMA = {
   properties: {
     userId: { type: 'string', IsRelationship: true },
+    refundId: {
+      type: ['string', 'null'],
+    },
     orderId: { type: 'string', IsRelationship: true },
     name: { type: 'string' },
     email: { type: 'string', format: 'email' },
@@ -131,6 +135,7 @@ export const RETURNS_SCHEMA = {
       'status',
       'dateSubmitted',
       'type',
+      'sequenceNumber',
     ],
     publicJsonSchema: false,
   },
@@ -165,6 +170,7 @@ export const RETURNS_SCHEMA = {
   ],
   'v-indexed': [
     'id',
+    'refundId',
     'createdIn',
     'userId',
     'orderId',

@@ -15,6 +15,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add `enablePickupPoints` field on return settings to offer a pickup point delivery option. Main file changed: `RequestForm.tsx`
 
+## [2.19.0] - 2022-02-28
+
+### Changed
+
+- Add `refundId` to `returnRequests` schema so it matches `returnProducts` and avoid breaking the search, which was preventing to display the history information in the RMAs.
+
+### Added
+
+- A new setting to prevent customers changing to a different payment method, as a refund, from the one in the order.
+
+### Fixed
+
+- `ReturnsTableContent` refactor and fix the returns list table when search for any item you will get an empty list and then you have to go back to the first page to see the results
+- Clean state when store user navigates between different orders trying to avoid the error where there is a mismatch between the order id and the products in a RMA.
+- Show total amount for the RMA in the admin side.
+
 ## [2.18.2] - 2022-02-22
 
 ### Fixed
