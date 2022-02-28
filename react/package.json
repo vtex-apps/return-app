@@ -46,5 +46,5 @@
     "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.145.2/public/@types/vtex.styleguide",
     "vtex.telemarketing": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.telemarketing@2.10.3/public/@types/vtex.telemarketing"
   },
-  "version": "2.17.0"
+  "version": "2.19.0"
 }
