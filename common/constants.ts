@@ -12,6 +12,7 @@ export const SETTINGS_SCHEMA = {
     },
     type: { type: 'string' },
     enableOtherOption: { type: 'boolean' },
+    enablePickupPoints: { type: 'boolean' },
     hidePaymentMethodSelection: { type: 'boolean' },
   },
   $defs: {
@@ -39,6 +40,7 @@ export const SETTINGS_SCHEMA = {
       'termsUrl',
       'options',
       'enableOtherOption',
+      'enablePickupPoints',
       'hidePaymentMethodSelection',
       'type',
     ],
@@ -56,6 +58,7 @@ export const SETTINGS_SCHEMA = {
     'termsUrl',
     'options',
     'enableOtherOption',
+    'enablePickupPoints',
     'hidePaymentMethodSelection',
     'type',
   ],

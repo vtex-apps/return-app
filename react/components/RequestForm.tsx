@@ -431,187 +431,77 @@ const RequestForm = (props) => {
       <div
         className={`cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy o-100 ${styles.orderInfoHeader}`}
       >
-        <div className={`flex flex-row ${styles.orderInfoHeaderRow}`}>
-          <div
-            className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
-          >
-            <div
-              className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderDateLabel}`}
-            >
-              {intl.formatMessage({ id: messages.orderDate.id })}
-            </div>
-            <div>
-              <table className={styles.tblProducts}>
-                <thead className={styles.tableThead}>
-                  <tr className={styles.tableTr}>
-                    <th className={styles.tableTh} />
-                    <th className={styles.tableTh}>
-                      {intl.formatMessage({ id: messages.thProduct.id })}
-                    </th>
-                    <th className={styles.tableTh}>
-                      {intl.formatMessage({ id: messages.thQuantity.id })}
-                    </th>
-                    <th className={styles.tableTh}>
-                      {intl.formatMessage({ id: messages.thReason.id })}
-                    </th>
-                    <th className={styles.tableTh}>
-                      {intl.formatMessage({ id: messages.condition.id })}
-                    </th>
-                  </tr>
-                </thead>
-                {!props.orderProducts.length ? (
-                  <Spinner />
-                ) : (
-                  <tbody className={styles.tableTbody}>
-                    {props.orderProducts.map((product: any) => (
-                      <tr
-                        key={`product${product.uniqueId}`}
-                        className={styles.tableTr}
-                      >
-                        <td
-                          className={`${styles.tableTd} ${styles.tableTdImage}`}
-                        >
-                          <img
-                            className={styles.imageCol}
-                            src={product.imageUrl}
-                            alt={product.name}
-                          />
-                        </td>
-                        <td className={`${styles.tableTd} ${styles.w350}`}>
-                          <a
-                            className={styles.productUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={product.detailUrl}
-                          >
-                            {product.name}
-                          </a>
-                        </td>
-                        <td
-                          className={`${styles.tableTd} ${styles.tableTdQuantity}`}
-                        >
-                          <Input
-                            suffix={`/${product.quantity}`}
-                            size="regular"
-                            type="number"
-                            value={product.selectedQuantity}
-                            onChange={(e) => {
-                              props.handleQuantity(product, e.target.value)
-                            }}
-                            max={product.quantity}
-                            min={0}
-                          />
-                        </td>
-                        <td
-                          className={`${styles.tableTd} ${styles.tableTdReason}`}
-                        >
-                          {() => renderReasonsDropdown(product)}
-                        </td>
-                        <td
-                          className={`${styles.tableTd} ${styles.tableTdReason}`}
-                        >
-                          {() => renderConditionDropdown(product)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
-              </table>
-              {props.errors.productQuantities ? (
-                <p className={styles.errorMessage}>
-                  {intl.formatMessage({ id: props.errors.productQuantities })}
-                </p>
-              ) : null}
-            </div>
-            <div
-              className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderDate}`}
-            >
-              {returnFormDate(props.selectedOrder.creationDate)}
-            </div>
-          </div>
-          <div
-            className={`flex flex-column w-50 ${styles.orderInfoHeaderColumn}`}
-          >
-            <div
-              className={`w-100 f7 f6-xl fw4 c-muted-1 ttu ${styles.orderInfoHeaderOrderIdLabel}`}
-            >
-              {intl.formatMessage({ id: messages.thOrderId.id })}
-            </div>
-            <div
-              className={`db pv0 f6 fw5 c-on-base f5-l ${styles.orderInfoHeaderOrderId}`}
-            >
-              {props.selectedOrder.orderId}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <table className={styles.tblProducts}>
-          <thead className={styles.tableThead}>
-            <tr className={styles.tableTr}>
-              <th className={styles.tableTh} />
-              <th className={styles.tableTh}>
-                {intl.formatMessage({ id: messages.thProduct.id })}
-              </th>
-              <th className={styles.tableTh}>
-                {intl.formatMessage({ id: messages.thQuantity.id })}
-              </th>
-              <th className={styles.tableTh}>
-                {intl.formatMessage({ id: messages.thReason.id })}
-              </th>
-              <th className={styles.tableTh}>
-                {intl.formatMessage({ id: messages.condition.id })}
-              </th>
-            </tr>
-          </thead>
-          <tbody className={styles.tableTbody}>
-            {props.orderProducts.map((product: any) => (
-              <tr key={`product${product.uniqueId}`} className={styles.tableTr}>
-                <td className={`${styles.tableTd} ${styles.tableTdImage}`}>
-                  <img
-                    className={styles.imageCol}
-                    src={product.imageUrl}
-                    alt={product.name}
-                  />
-                </td>
-                <td className={`${styles.tableTd} ${styles.w350}`}>
-                  <a
-                    className={styles.productUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={product.detailUrl}
-                  >
-                    {product.name}
-                  </a>
-                </td>
-                <td className={`${styles.tableTd} ${styles.tableTdQuantity}`}>
-                  <Input
-                    suffix={`/${product.quantity}`}
-                    size="regular"
-                    type="number"
-                    value={product.selectedQuantity}
-                    onChange={(e) => {
-                      props.handleQuantity(product, e.target.value)
-                    }}
-                    max={product.quantity}
-                    min={0}
-                  />
-                </td>
-                <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
-                  {renderReasonsDropdown(product)}
-                </td>
-                <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
-                  {renderConditionDropdown(product)}
-                </td>
+        <div>
+          <table className={styles.tblProducts}>
+            <thead className={styles.tableThead}>
+              <tr className={styles.tableTr}>
+                <th className={styles.tableTh} />
+                <th className={styles.tableTh}>
+                  {intl.formatMessage({ id: messages.thProduct.id })}
+                </th>
+                <th className={styles.tableTh}>
+                  {intl.formatMessage({ id: messages.thQuantity.id })}
+                </th>
+                <th className={styles.tableTh}>
+                  {intl.formatMessage({ id: messages.thReason.id })}
+                </th>
+                <th className={styles.tableTh}>
+                  {intl.formatMessage({ id: messages.condition.id })}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {props.errors.productQuantities ? (
-          <p className={styles.errorMessage}>
-            {intl.formatMessage({ id: props.errors.productQuantities })}
-          </p>
-        ) : null}
+            </thead>
+            <tbody className={styles.tableTbody}>
+              {props.orderProducts.map((product: any) => (
+                <tr
+                  key={`product${product.uniqueId}`}
+                  className={styles.tableTr}
+                >
+                  <td className={`${styles.tableTd} ${styles.tableTdImage}`}>
+                    <img
+                      className={styles.imageCol}
+                      src={product.imageUrl}
+                      alt={product.name}
+                    />
+                  </td>
+                  <td className={`${styles.tableTd} ${styles.w350}`}>
+                    <a
+                      className={styles.productUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={product.detailUrl}
+                    >
+                      {product.name}
+                    </a>
+                  </td>
+                  <td className={`${styles.tableTd} ${styles.tableTdQuantity}`}>
+                    <Input
+                      suffix={`/${product.quantity}`}
+                      size="regular"
+                      type="number"
+                      value={product.selectedQuantity}
+                      onChange={(e) => {
+                        props.handleQuantity(product, e.target.value)
+                      }}
+                      max={product.quantity}
+                      min={0}
+                    />
+                  </td>
+                  <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
+                    {renderReasonsDropdown(product)}
+                  </td>
+                  <td className={`${styles.tableTd} ${styles.tableTdReason}`}>
+                    {renderConditionDropdown(product)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {props.errors.productQuantities ? (
+            <p className={styles.errorMessage}>
+              {intl.formatMessage({ id: props.errors.productQuantities })}
+            </p>
+          ) : null}
+        </div>
       </div>
       <div className={`flex-ns flex-wrap flex-row ${styles.returnFormInputs}`}>
         <div
