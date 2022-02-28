@@ -22,6 +22,7 @@ import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
 import EligibleOrdersTable from '../components/EligibleOrdersTable'
 import RequestInformation from '../components/RequestInformation'
 import RequestForm from '../components/RequestForm'
+import { SAME_AS_ORDER } from '../components/RequestInfo'
 
 type Errors = {
   name: string
@@ -290,9 +291,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
 
     if (this.state.settings.hidePaymentMethodSelection) {
       this.setState({
-        paymentMethod: this.props.intl.formatMessage({
-          id: messages.orderPaymentMethod.id,
-        }),
+        paymentMethod: SAME_AS_ORDER,
       })
     }
 
