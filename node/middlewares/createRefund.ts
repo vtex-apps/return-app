@@ -12,6 +12,11 @@ export async function createRefund(ctx: Context, next: () => Promise<any>) {
   try {
     const response = await returnAppClient.createRefund(ctx, orderId, body)
 
+    logger.info({
+      message: `Created refund successfully for orderId ${orderId}`,
+      data: response,
+    })
+
     ctx.status = 200
     ctx.set('Cache-Control', 'no-cache')
     ctx.body = response

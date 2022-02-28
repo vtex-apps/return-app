@@ -10,6 +10,11 @@ export async function generateReturnsSchema(
   try {
     const response = await masterDataClient.generateSchema(ctx)
 
+    logger.info({
+      message: 'Schema generated successfully',
+      data: response,
+    })
+
     ctx.status = 200
     ctx.set('Cache-Control', 'no-cache')
     ctx.body = response
