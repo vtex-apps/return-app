@@ -5,6 +5,7 @@ enum AuthToken {
 }
 
 type Query {
+  doNotCall: Boolean!
   nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
 }
 
