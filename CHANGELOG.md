@@ -6,9 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Fixed 
-- add `refundId` to returnRequests schema 
-
+### Changed 
+- Add `refundId` to `returnRequests` schema so it matches `returnProducts` and avoid breaking the search, which was preventing to display the history information in the RMAs.
 
 ### Added
 - A new setting to prevent customers changing to a different payment method, as a refund, from the one in the order.
