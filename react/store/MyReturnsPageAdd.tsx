@@ -183,6 +183,8 @@ class MyReturnsPageAdd extends Component<Props, State> {
       currentProduct: {},
     }
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleInputChangeByPickupPointsDropdown =
+      this.handleInputChangeByPickupPointsDropdown.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
     this.sendRequest = this.sendRequest.bind(this)
   }
@@ -696,6 +698,22 @@ class MyReturnsPageAdd extends Component<Props, State> {
     this.setState((prevState) => ({ ...prevState, [name]: value }))
   }
 
+  handleInputChangeByPickupPointsDropdown({ pickupPoint }: any) {
+    const { city, country, street, number, state, postalCode } =
+      pickupPoint.address
+
+    const address = `${street} ${number}`
+
+    this.setState((prevState) => ({
+      ...prevState,
+      zip: postalCode,
+      city,
+      country,
+      address,
+      state,
+    }))
+  }
+
   submit() {
     if (this.validateForm()) {
       this.setState({
@@ -1018,6 +1036,9 @@ class MyReturnsPageAdd extends Component<Props, State> {
                     accountHolder,
                     agree,
                   }}
+                  handleInputChangeByPickupPointsDropdown={(e) =>
+                    this.handleInputChangeByPickupPointsDropdown(e)
+                  }
                   submit={() => {
                     this.submit()
                   }}

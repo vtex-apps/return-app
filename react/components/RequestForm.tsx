@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
 import { defineMessages, injectIntl } from 'react-intl'
 import {
   Button,
@@ -9,9 +10,11 @@ import {
   Dropdown,
   Textarea,
   Spinner,
+  Toggle,
 } from 'vtex.styleguide'
 import PropTypes from 'prop-types'
 
+import NEAR_PICKUP_POINTS from '../graphql/nearestPickupPoints.gql'
 import { returnFormDate } from '../common/utils'
 import styles from '../styles.css'
 
@@ -41,10 +44,18 @@ interface Props {
   handleCondition: any
   errors: any
   handleInputChange: any
+  handleInputChangeByPickupPointsDropdown: any
   formInputs: FormInputs
   submit: any
   settings: any
   intl: any
+  NearestPickupPoints: any
+}
+
+interface State {
+  isPickupPointsSelected: boolean
+  selectedPickupPoint: string
+  dropdownOptionsPickupPoints: []
 }
 
 const messages = defineMessages({
@@ -77,6 +88,7 @@ const messages = defineMessages({
   formEmail: { id: 'returns.formEmail' },
   formPhone: { id: 'returns.formPhone' },
   formPickupAddress: { id: 'returns.formPickupAddress' },
+  formPickupPoints: { id: 'returns.formPickupPoints' },
   formParcel: { id: 'returns.formParcel' },
   formCountry: { id: 'returns.formCountry' },
   formLocality: { id: 'returns.formLocality' },
@@ -104,14 +116,75 @@ const messages = defineMessages({
   conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' },
 })
 
-class RequestForm extends Component<Props> {
+let lat = ''
+let long = ''
+
+class RequestForm extends Component<Props, State> {
   static propTypes = {
     data: PropTypes.object,
     intl: PropTypes.object,
   }
 
+  constructor(props: Props) {
+    super(props)
+    this.handlePickupPointSelected = this.handlePickupPointSelected.bind(this)
+    this.handleChangeInputsbySelectedPickupPoint =
+      this.handleChangeInputsbySelectedPickupPoint.bind(this)
+    this.state = {
+      isPickupPointsSelected: false,
+      selectedPickupPoint: '',
+      dropdownOptionsPickupPoints: [],
+    }
+  }
+
   componentDidMount(): void {
     typeof window !== 'undefined' && window.scrollTo(0, 0)
+    console.log(this.props.settings.enablePickupPoints, 'piopssss')
+    lat =
+      this.props.selectedOrder.shippingData.address.geoCoordinates[0].toString()
+    long =
+      this.props.selectedOrder.shippingData.address.geoCoordinates[1].toString()
+  }
+
+  componentDidUpdate() {
+    const { NearestPickupPoints } = this.props
+    const { isPickupPointsSelected, dropdownOptionsPickupPoints } = this.state
+
+    if (
+      isPickupPointsSelected &&
+      NearestPickupPoints &&
+      !dropdownOptionsPickupPoints.length
+    ) {
+      const dropdownOptions = NearestPickupPoints.nearestPickupPoints.items.map(
+        ({ pickupPoint }) => {
+          const { friendlyName, address } = pickupPoint
+          const { street, number, postalCode } = address
+
+          return {
+            value: friendlyName,
+            label: `${friendlyName} - ${street} - ${number} - ${postalCode}`,
+          }
+        }
+      )
+
+      this.setState({ dropdownOptionsPickupPoints: dropdownOptions })
+    }
+  }
+
+  handlePickupPointSelected(e) {
+    this.setState({ selectedPickupPoint: e.currentTarget.value })
+    this.handleChangeInputsbySelectedPickupPoint(e.currentTarget.value)
+  }
+
+  handleChangeInputsbySelectedPickupPoint(pickupPointInfo) {
+    const findSelectedPickupPoint =
+      this.props.NearestPickupPoints.nearestPickupPoints.items.find(
+        ({ pickupPoint }) => {
+          return pickupPoint.friendlyName === pickupPointInfo
+        }
+      )
+
+    this.props.handleInputChangeByPickupPointsDropdown(findSelectedPickupPoint)
   }
 
   paymentMethods() {
@@ -561,74 +634,117 @@ class RequestForm extends Component<Props> {
               </div>
 
               <div
-                className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+                className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
               >
-                <p className={`${styles.returnFormInputsHeader}`}>
-                  {formatMessage({ id: messages.formPickupAddress.id })}
-                </p>
-                <div className={`mb4 ${styles.returnFormInput}`}>
-                  <Input
-                    name="address"
-                    placeholder={formatMessage({ id: messages.formAddress.id })}
-                    onChange={handleInputChange}
-                    value={formInputs.address}
-                    errorMessage={
-                      errors.address
-                        ? formatMessage({ id: errors.address })
-                        : ''
-                    }
-                  />
+                <div className="flex justify-between items-center ">
+                  {this.state.isPickupPointsSelected ? (
+                    <p className={`${styles.returnFormInputsHeader}`}>
+                      {formatMessage({ id: messages.formPickupPoints.id })}
+                    </p>
+                  ) : (
+                    <p className={`${styles.returnFormInputsHeader}`}>
+                      {formatMessage({ id: messages.formPickupAddress.id })}
+                    </p>
+                  )}
+                  {this.props.settings.enablePickupPoints ? (
+                    <Toggle
+                      label={
+                        this.state.isPickupPointsSelected ? '' : 'Pickup Points'
+                      }
+                      checked={this.state.isPickupPointsSelected}
+                      onChange={() =>
+                        this.setState((prevState) => ({
+                          isPickupPointsSelected:
+                            !prevState.isPickupPointsSelected,
+                        }))
+                      }
+                    />
+                  ) : null}
                 </div>
-                <div className={`mb4 ${styles.returnFormInput}`}>
-                  <Input
-                    name="locality"
-                    placeholder={formatMessage({
-                      id: messages.formLocality.id,
-                    })}
-                    onChange={handleInputChange}
-                    value={formInputs.locality}
-                    errorMessage={
-                      errors.locality
-                        ? formatMessage({ id: errors.locality })
-                        : ''
-                    }
+                {this.state.isPickupPointsSelected ? (
+                  <Dropdown
+                    label=""
+                    placeholder="Select Pickup Point"
+                    size="small"
+                    options={this.state.dropdownOptionsPickupPoints}
+                    value={this.state.selectedPickupPoint}
+                    onChange={this.handlePickupPointSelected}
                   />
-                </div>
-                <div className={`mb4 ${styles.returnFormInput}`}>
-                  <Input
-                    name="state"
-                    placeholder={formatMessage({ id: messages.formState.id })}
-                    onChange={handleInputChange}
-                    value={formInputs.state || ''}
-                    errorMessage={
-                      errors.state ? formatMessage({ id: errors.state }) : ''
-                    }
-                  />
-                </div>
-                <div className={`mb4 ${styles.returnFormInput}`}>
-                  <Input
-                    name="zip"
-                    placeholder={formatMessage({ id: messages.formZip.id })}
-                    onChange={handleInputChange}
-                    value={formInputs.zip || ''}
-                    errorMessage={
-                      errors.zip ? formatMessage({ id: errors.zip }) : ''
-                    }
-                  />
-                </div>
-                <div className={`mb4 ${styles.returnFormInput}`}>
-                  <Input
-                    name="country"
-                    placeholder={formatMessage({ id: messages.formCountry.id })}
-                    onChange={handleInputChange}
-                    value={formInputs.country}
-                    errorMessage={
-                      errors.country
-                        ? formatMessage({ id: errors.country })
-                        : ''
-                    }
-                  />
-                </div>
+                ) : (
+                  <>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="address"
+                        placeholder={formatMessage({
+                          id: messages.formAddress.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.address}
+                        errorMessage={
+                          errors.address
+                            ? formatMessage({ id: errors.address })
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="locality"
+                        placeholder={formatMessage({
+                          id: messages.formLocality.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.locality}
+                        errorMessage={
+                          errors.locality
+                            ? formatMessage({ id: errors.locality })
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="state"
+                        placeholder={formatMessage({
+                          id: messages.formState.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.state || ''}
+                        errorMessage={
+                          errors.state
+                            ? formatMessage({ id: errors.state })
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="zip"
+                        placeholder={formatMessage({ id: messages.formZip.id })}
+                        onChange={handleInputChange}
+                        value={formInputs.zip || ''}
+                        errorMessage={
+                          errors.zip ? formatMessage({ id: errors.zip }) : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="country"
+                        placeholder={formatMessage({
+                          id: messages.formCountry.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.country}
+                        errorMessage={
+                          errors.country
+                            ? formatMessage({ id: errors.country })
+                            : ''
+                        }
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               <div className={`mt4 ph4 ${styles.returnFormExtraComment}`}>
                 <p className={`${styles.returnFormExtraCommentHeader}`}>
@@ -734,4 +850,23 @@ class RequestForm extends Component<Props> {
   }
 }
 
-export default injectIntl(RequestForm)
+const compose = (...funcs) =>
+  funcs.reduce(
+    (a, b) =>
+      (...args) =>
+        a(b(...args)),
+    (arg) => arg
+  )
+
+export default compose(
+  graphql(NEAR_PICKUP_POINTS, {
+    options: () => ({
+      variables: {
+        lat,
+        long,
+      },
+      ssr: false,
+    }),
+    name: 'NearestPickupPoints',
+  })
+)(injectIntl(RequestForm))

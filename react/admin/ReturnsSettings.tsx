@@ -62,6 +62,9 @@ const messages = defineMessages({
   saveSettings: { id: 'settings.saveSettings' },
   otherOptions: { id: 'settings.otherOptions' },
   enableOtherOptions: { id: 'settings.otherOptions_enable' },
+  deliveryOptions: { id: 'settings.deliveryOptions' },
+  enabledPickupPoints: { id: 'settings.enabledPickupPoints' },
+  disabledPickupPoints: { id: 'settings.disabledPickupPoints' },
 })
 
 class ReturnsSettings extends Component<any, any> {
@@ -89,6 +92,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentCard: false,
       paymentVoucher: false,
       enableOtherOption: false,
+      enablePickupPoints: false,
       successMessage: '',
       errorMessage: '',
       payments: {
@@ -171,6 +175,8 @@ class ReturnsSettings extends Component<any, any> {
             checked: paymentVoucher,
           },
         }
+
+        console.log(json[0], 'optionsss')
         this.setState({
           id: json[0].id,
           maxDays: json[0].maxDays,
@@ -182,6 +188,7 @@ class ReturnsSettings extends Component<any, any> {
           options: json[0].options || [],
           excludedCategories: JSON.parse(json[0].excludedCategories),
           enableOtherOption: json[0].enableOtherOption,
+          enablePickupPoints: json[0].enablePickupPoints,
           hidePaymentMethodSelection:
             json[0].hidePaymentMethodSelection ?? false,
           loading: false,
@@ -322,6 +329,7 @@ class ReturnsSettings extends Component<any, any> {
       payments,
       options,
       enableOtherOption,
+      enablePickupPoints,
       hidePaymentMethodSelection,
     } = this.state
 
@@ -378,6 +386,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentVoucher: payments.paymentVoucher.checked,
       options,
       enableOtherOption,
+      enablePickupPoints,
       hidePaymentMethodSelection,
       type: schemaTypes.settings,
     }
@@ -450,6 +459,12 @@ class ReturnsSettings extends Component<any, any> {
     }))
   }
 
+  handleEnablePickupPoints = () => {
+    this.setState((prevState) => ({
+      enablePickupPoints: !prevState.enablePickupPoints,
+    }))
+  }
+
   render() {
     const {
       maxDays,
@@ -468,6 +483,7 @@ class ReturnsSettings extends Component<any, any> {
       options,
       isModalOpen,
       enableOtherOption,
+      enablePickupPoints,
       hidePaymentMethodSelection,
     } = this.state
 
@@ -697,21 +713,44 @@ class ReturnsSettings extends Component<any, any> {
                     ]}
                   />
 
-                  <div className="flex flex-column w-100 mb7">
-                    <p className="f4 mb0">
-                      {formatMessage({ id: messages.otherOptions.id })}:
-                    </p>
+                  <div className="mb7">
+                    <div className="flex flex-column w-100 mb5">
+                      <p className="f4 mb0">
+                        {formatMessage({ id: messages.otherOptions.id })}:
+                      </p>
+                    </div>
+                    <Checkbox
+                      checked={enableOtherOption}
+                      label={formatMessage({
+                        id: messages.enableOtherOptions.id,
+                      })}
+                      name="disabled-checkbox-group"
+                      onChange={this.handleEnableOtherOption}
+                      value="return-other-option"
+                      id="return-other-option-checkbox"
+                    />
                   </div>
-                  <Checkbox
-                    checked={enableOtherOption}
-                    label={formatMessage({
-                      id: messages.enableOtherOptions.id,
-                    })}
-                    name="disabled-checkbox-group"
-                    onChange={this.handleEnableOtherOption}
-                    value="return-other-option"
-                    id="return-other-option-checkbox"
-                  />
+                  <Divider orientation="horizontal" />
+                  <div>
+                    <div className="flex flex-column w-100 mb5 mt5">
+                      <p className="f4 mb0">
+                        {formatMessage({ id: messages.deliveryOptions.id })}:
+                      </p>
+                    </div>
+                    <Toggle
+                      label={
+                        enablePickupPoints
+                          ? formatMessage({
+                              id: messages.enabledPickupPoints.id,
+                            })
+                          : formatMessage({
+                              id: messages.disabledPickupPoints.id,
+                            })
+                      }
+                      checked={enablePickupPoints}
+                      onChange={this.handleEnablePickupPoints}
+                    />
+                  </div>
                   <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
                     <div className="flex flex-column">
                       <div className="w-100">
