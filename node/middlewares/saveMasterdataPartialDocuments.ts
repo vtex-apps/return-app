@@ -15,7 +15,7 @@ export async function saveMasterdataPartialDocuments(
   const response = await masterDataClient.savePartial(ctx, schemaName, body)
 
   if (!response) {
-    throw new Error('Error sending email')
+    throw new Error('Error saving MasterData partial documents')
   }
 
   logger.info({
