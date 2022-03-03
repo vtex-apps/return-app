@@ -25,6 +25,7 @@ import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { mutations } from './resolvers'
+import { getProfileEmailAndId } from './middlewares/getProfileEmailAndId'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -45,7 +46,10 @@ const clients: ClientsConfig<Clients> = {
 declare global {
   type Context = ServiceContext<Clients, State>
 
-  type State = RecorderState
+  interface State extends RecorderState {
+    userEmail?: string
+    userId?: string
+  }
 }
 
 export default new Service({
@@ -58,7 +62,7 @@ export default new Service({
       PUT: generateReturnsSchema,
     }),
     getDocuments: method({
-      GET: receiveDocuments,
+      GET: [getProfileEmailAndId, receiveDocuments],
     }),
     getRequests: method({
       GET: getRequests,
@@ -67,10 +71,10 @@ export default new Service({
       GET: receiveCategories,
     }),
     getOrders: method({
-      GET: getOrders,
+      GET: [getProfileEmailAndId, getOrders],
     }),
     getOrder: method({
-      GET: getOrder,
+      GET: [getProfileEmailAndId, getOrder],
     }),
     saveDocuments: method({
       POST: saveMasterdataDocuments,
