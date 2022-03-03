@@ -12,27 +12,20 @@ export async function saveMasterdataPartialDocuments(
 
   const { schemaName } = ctx.vtex.route.params
 
-  try {
-    const response = await masterDataClient.savePartial(ctx, schemaName, body)
+  const response = await masterDataClient.savePartial(ctx, schemaName, body)
 
-    logger.info({
-      message: `Save partial documents on ${schemaName} successfully`,
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.set('Cache-Control', 'no-cache')
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error saving partial documents on schema: ${schemaName}`,
-      error: e,
-      data: {
-        ctx,
-        body,
-      },
-    })
+  if (!response) {
+    throw new Error('Error sending email')
   }
+
+  logger.info({
+    message: `Save partial documents on ${schemaName} successfully`,
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = response
 
   await next()
 }

@@ -16,6 +16,10 @@ export async function checkStatus(ctx: Context, next: () => Promise<any>) {
     `id=${request_id}`
   )
 
+  if (!requestResponse) {
+    throw new Error(`Error getting return documents on checking status`)
+  }
+
   let output = {
     success: true,
     status: '',
@@ -51,6 +55,10 @@ export async function checkStatus(ctx: Context, next: () => Promise<any>) {
         'product',
         `refundId=${request_id}`
       )
+
+      if (!requestResponse) {
+        throw new Error(`Error getting product documents on checking status`)
+      }
 
       if (productsResponse.length) {
         productsResponse.forEach((product: any) => {

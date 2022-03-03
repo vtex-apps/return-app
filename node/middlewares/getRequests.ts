@@ -16,30 +16,23 @@ export async function getRequests(ctx: Context, next: () => Promise<any>) {
     pageSize,
   }
 
-  try {
-    const response = await masterDataClient.getDocumentsWithPagination(
-      ctx,
-      options
-    )
+  const response = await masterDataClient.getDocumentsWithPagination(
+    ctx,
+    options
+  )
 
-    logger.info({
-      message: 'Get requests with pagination successfully',
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.set('Cache-Control', 'no-cache')
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error getting requests with pagination`,
-      error: e,
-      data: {
-        ctx,
-        options,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error getting requests`)
   }
+
+  logger.info({
+    message: 'Get requests with pagination successfully',
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = response
 
   await next()
 }

@@ -7,28 +7,19 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
     vtex: { logger },
   } = ctx
 
-  try {
-    const response = await returnAppClient.sendMail(ctx, body)
+  const response = await returnAppClient.sendMail(ctx, body)
 
-    logger.info({
-      message: `Send email successfully`,
-      data: response,
-    })
-
-    throw new Error('error sending email')
-
-    ctx.status = 200
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error sending email`,
-      error: e,
-      data: {
-        ctx,
-        body,
-      },
-    })
+  if (!response) {
+    throw new Error('Error sending email')
   }
+
+  logger.info({
+    message: `Send email successfully`,
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.body = response
 
   await next()
 }

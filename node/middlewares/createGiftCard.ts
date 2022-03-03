@@ -7,25 +7,20 @@ export async function createGiftCard(ctx: Context, next: () => Promise<any>) {
     vtex: { logger },
   } = ctx
 
-  try {
-    const response = await returnAppClient.createGiftCard(ctx, body)
+  const response = await returnAppClient.createGiftCard(ctx, body)
 
-    logger.info({
-      message: 'Created giftcard successfully',
-      data: response,
-    })
-    ctx.status = 200
-    ctx.set('Cache-Control', 'no-cache')
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error creating creating gift card`,
-      error: e,
-      data: {
-        body,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error creating gift card`)
   }
+
+  logger.info({
+    message: 'Created giftcard successfully',
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = response
 
   await next()
 }

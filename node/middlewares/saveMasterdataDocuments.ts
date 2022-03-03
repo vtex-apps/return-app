@@ -12,29 +12,20 @@ export async function saveMasterdataDocuments(
 
   const { schemaName } = ctx.vtex.route.params
 
-  try {
-    const response = await masterDataClient.saveDocuments(ctx, schemaName, body)
+  const response = await masterDataClient.saveDocuments(ctx, schemaName, body)
 
-    logger.info({
-      message: `Save documents on ${schemaName} successfully`,
-      data: response,
-    })
-
-    throw new Error('error sending email')
-
-    ctx.status = 200
-    ctx.set('Cache-Control', 'no-cache')
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error saving documents on schema: ${schemaName}`,
-      error: e,
-      data: {
-        ctx,
-        body,
-      },
-    })
+  if (!response) {
+    throw new Error('Error saving MasterData documents')
   }
+
+  logger.info({
+    message: `Save documents on ${schemaName} successfully`,
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = response
 
   await next()
 }

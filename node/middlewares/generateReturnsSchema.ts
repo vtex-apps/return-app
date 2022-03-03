@@ -7,26 +7,20 @@ export async function generateReturnsSchema(
     vtex: { logger },
   } = ctx
 
-  try {
-    const response = await masterDataClient.generateSchema(ctx)
+  const response = await masterDataClient.generateSchema(ctx)
 
-    logger.info({
-      message: 'Schema generated successfully',
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.set('Cache-Control', 'no-cache')
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error generating schema`,
-      error: e,
-      data: {
-        ctx,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error generating schema`)
   }
+
+  logger.info({
+    message: 'Schema generated successfully',
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = response
 
   await next()
 }

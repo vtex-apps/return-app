@@ -21,6 +21,10 @@ export async function getRequest(ctx: Context, next: () => Promise<any>) {
     `id=${request_id}`
   )
 
+  if (!requestResponse) {
+    throw new Error(`Error getting request`)
+  }
+
   let output = {
     success: false,
     errorMessage: 'Not Found',
@@ -36,6 +40,10 @@ export async function getRequest(ctx: Context, next: () => Promise<any>) {
       'product',
       `refundId=${request_id}`
     )
+
+    if (!productsResponse) {
+      throw new Error(`Error getting products request`)
+    }
 
     const products: any[] = []
 
@@ -53,6 +61,10 @@ export async function getRequest(ctx: Context, next: () => Promise<any>) {
       `refundId=${request_id}`
     )
 
+    if (!statusHistoryResponse) {
+      throw new Error(`Error getting status history request`)
+    }
+
     const statusHistory: any[] = []
 
     if (statusHistoryResponse.length) {
@@ -68,6 +80,10 @@ export async function getRequest(ctx: Context, next: () => Promise<any>) {
       'comment',
       `refundId=${request_id}`
     )
+
+    if (!commentsResponse) {
+      throw new Error(`Error getting comments response`)
+    }
 
     const comments: any[] = []
 

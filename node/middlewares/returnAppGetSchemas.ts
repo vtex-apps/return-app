@@ -9,26 +9,20 @@ export async function returnAppGetSchemas(
 
   const { schema } = ctx.vtex.route.params
 
-  try {
-    const response = await masterDataClient.getSchema(ctx, schema.toString())
+  const response = await masterDataClient.getSchema(ctx, schema.toString())
 
-    logger.info({
-      message: `Get schema ${schema} successfully`,
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.set('Cache-Control', 'no-cache')
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error getting schema: ${schema}`,
-      error: e,
-      data: {
-        ctx,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error getting schema: ${schema}`)
   }
+
+  logger.info({
+    message: `Get schema ${schema} successfully`,
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
+  ctx.body = response
 
   await next()
 }

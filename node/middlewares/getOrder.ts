@@ -6,25 +6,19 @@ export async function getOrder(ctx: Context, next: () => Promise<any>) {
 
   const { orderId } = ctx.vtex.route.params
 
-  try {
-    const response = await returnAppClient.getOrder(ctx, orderId)
+  const response = await returnAppClient.getOrder(ctx, orderId)
 
-    logger.info({
-      message: 'Get order successfully',
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error fetching order: ${orderId}`,
-      error: e,
-      data: {
-        ctx,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error getting order`)
   }
+
+  logger.info({
+    message: 'Get order successfully',
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.body = response
 
   await next()
 }

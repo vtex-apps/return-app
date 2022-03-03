@@ -40,6 +40,10 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
       `id=${request_id}`
     )
 
+    if (!requestResponse) {
+      throw new Error(`Error getting returns request`)
+    }
+
     if (requestResponse.length) {
       const [request] = requestResponse
       const productsResponse = await masterDataClient.getDocuments(
@@ -48,6 +52,10 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
         'product',
         `refundId=${request_id}`
       )
+
+      if (!requestResponse) {
+        throw new Error(`Error getting products request`)
+      }
 
       let nextStatus = ''
 
@@ -127,11 +135,15 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
           status: nextStatus,
         }
 
-        await masterDataClient.saveDocuments(
+        const saveReturnResponse = await masterDataClient.saveDocuments(
           ctx,
           'returnRequests',
           newRequestBody
         )
+
+        if (!saveReturnResponse) {
+          throw new Error(`Error saving return request`)
+        }
 
         // add history
         const historyBody = {
@@ -142,11 +154,15 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
           type: 'statusHistory',
         }
 
-        await masterDataClient.saveDocuments(
+        const saveStatusResponse = await masterDataClient.saveDocuments(
           ctx,
           'returnStatusHistory',
           historyBody
         )
+
+        if (!saveStatusResponse) {
+          throw new Error(`Error saving status history`)
+        }
 
         if (nextStatus === requestsStatuses.pendingVerification) {
           // update all products to pendingVerification
@@ -157,11 +173,15 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
                 status: nextStatus,
               }
 
-              await masterDataClient.saveDocuments(
+              const saveProductResponse = await masterDataClient.saveDocuments(
                 ctx,
                 'returnProducts',
                 newProductBody
               )
+
+              if (!saveProductResponse) {
+                throw new Error(`Error saving product`)
+              }
             })
           }
         }
@@ -184,6 +204,10 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
             giftCardBody
           )
 
+          if (!response) {
+            throw new Error(`Error creating giftcard`)
+          }
+
           const giftCardIdResponse = response.id
           const exploded = giftCardIdResponse.split('_')
           const giftCardId = exploded[exploded.length - 1]
@@ -200,13 +224,22 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
               headers
             )
 
+          if (!updateGiftCardResponse) {
+            throw new Error(`Error updating product`)
+          }
+
           const reqBody = {
             ...newRequestBody,
             giftCardCode: updateGiftCardResponse.redemptionCode,
             giftCardId,
           }
 
-          await masterDataClient.saveDocuments(ctx, 'returnRequests', reqBody)
+          const saveRequestGiftCardResponse =
+            await masterDataClient.saveDocuments(ctx, 'returnRequests', reqBody)
+
+          if (!saveRequestGiftCardResponse) {
+            throw new Error(`Error saving gift card return request`)
+          }
         }
 
         // Get all info and prepare for mail
@@ -217,12 +250,20 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
           `refundId=${request_id}`
         )
 
+        if (!commentsResponse) {
+          throw new Error(`Error getting comments`)
+        }
+
         const newProductResponse = await masterDataClient.getDocuments(
           ctx,
           'returnProducts',
           'product',
           `refundId=${request_id}`
         )
+
+        if (!commentsResponse) {
+          throw new Error(`Error getting new products`)
+        }
 
         const timelineHistory = [
           {
@@ -311,7 +352,11 @@ export async function updateStatus(ctx: Context, next: () => Promise<any>) {
           jsonData: jsonDataMail,
         }
 
-        await returnAppClient.sendMail(ctx, mailBody)
+        const emailResponse = await returnAppClient.sendMail(ctx, mailBody)
+
+        if (!emailResponse) {
+          throw new Error(`Error sending email`)
+        }
       }
     } else {
       output = {

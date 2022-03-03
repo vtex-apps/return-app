@@ -9,26 +9,19 @@ export async function updateGiftCard(ctx: Context, next: () => Promise<any>) {
   const { id } = ctx.vtex.route.params
   const body = await json(ctx.req)
 
-  try {
-    const response = await returnAppClient.updateGiftCard(ctx, id, body)
+  const response = await returnAppClient.updateGiftCard(ctx, id, body)
 
-    logger.info({
-      message: `Update gift card successfully`,
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error updating gift card with id: ${id}`,
-      error: e,
-      data: {
-        ctx,
-        body,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error updating giftcard with id ${id}`)
   }
+
+  logger.info({
+    message: `Update gift card successfully`,
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.body = response
 
   await next()
 }

@@ -7,25 +7,19 @@ export async function receiveCategories(
     vtex: { logger },
   } = ctx
 
-  try {
-    const response = await returnAppClient.getCategories(ctx)
+  const response = await returnAppClient.getCategories(ctx)
 
-    logger.info({
-      message: 'Received categories successfully',
-      data: response,
-    })
-
-    ctx.status = 200
-    ctx.body = response
-  } catch (e) {
-    logger.error({
-      message: `Error receiving categories`,
-      error: e,
-      data: {
-        ctx,
-      },
-    })
+  if (!response) {
+    throw new Error(`Error receiving categories`)
   }
+
+  logger.info({
+    message: 'Received categories successfully',
+    data: response,
+  })
+
+  ctx.status = 200
+  ctx.body = response
 
   await next()
 }

@@ -9,6 +9,10 @@ export async function getSkuById(ctx: Context, next: () => Promise<any>) {
   try {
     const response = await returnAppClient.getSkuById(ctx, id)
 
+    if (!response) {
+      throw new Error(`Error getting SkuById for id: ${id}`)
+    }
+
     logger.info({
       message: 'Get SKU by id successfully',
       data: response,
