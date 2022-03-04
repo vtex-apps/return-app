@@ -11,20 +11,18 @@ export async function getOrder(ctx: Context) {
 
   const response = await returnAppClient.getOrder(ctx, orderId)
 
+  if (!response) {
+    throw new Error(`Error getting order`)
+  }
+
   const { userId } = state
   const { userProfileId } = response.clientProfileData
 
-  const hasAllIDs = userId && userProfileId
-
-  if (!hasAllIDs && userId !== userProfileId) {
+  if (userId !== userProfileId) {
     throw statusToError({
       status: 401,
       message: 'unauthorized',
     })
-  }
-
-  if (!response) {
-    throw new Error(`Error getting order`)
   }
 
   logger.info({
