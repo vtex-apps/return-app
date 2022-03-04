@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+### Added 
+- Add `getProfileEmailAndId.tsx` middleware to validate any request from sessionCookie, and get the user's email and id from the session. then pass them to the next middleware in the state.
+- Add `statusToError.ts` convert the status code to error message by passing the status number and error message.
+ 
 ## [2.19.0] - 2022-02-28
 ### Changed 
 - Add `refundId` to `returnRequests` schema so it matches `returnProducts` and avoid breaking the search, which was preventing to display the history information in the RMAs.
