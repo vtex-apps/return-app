@@ -123,7 +123,6 @@ export default class Masterdata extends ExternalClient {
     return true
   }
 
-
   public async getDocuments(
     ctx: any,
     schemaName: any,
@@ -154,10 +153,9 @@ export default class Masterdata extends ExternalClient {
   }
 
   public async getDocumentsWithPagination(
-      ctx: any,
-      options: any,
+    ctx: any,
+    options: any
   ): Promise<any> {
-
     return ctx.clients.masterdata.searchDocumentsWithPaginationInfo({
       dataEntity: this.schemas.schemaEntity,
       fields: [],
