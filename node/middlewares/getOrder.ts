@@ -4,6 +4,7 @@ export async function getOrder(ctx: Context) {
   const {
     clients: { returnApp: returnAppClient },
     state,
+    vtex: { logger },
   } = ctx
 
   const { orderId } = ctx.vtex.route.params
@@ -21,6 +22,15 @@ export async function getOrder(ctx: Context) {
       message: 'unauthorized',
     })
   }
+
+  if (!response) {
+    throw new Error(`Error getting order`)
+  }
+
+  logger.info({
+    message: 'Get order successfully',
+    data: response,
+  })
 
   ctx.status = 200
   ctx.body = response

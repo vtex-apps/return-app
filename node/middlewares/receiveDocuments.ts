@@ -18,6 +18,7 @@ type ProductRequests = {
 export async function receiveDocuments(ctx: Context) {
   const {
     clients: { masterData: masterDataClient },
+    vtex: { logger },
     state,
   } = ctx
 
@@ -45,8 +46,16 @@ export async function receiveDocuments(ctx: Context) {
     whereClause
   )
 
-  ctx.status = 200
-  ctx.set('Cache-Control', 'no-cache')
+  if (!response) {
+    throw new Error(
+      `Error receiving documents on type: ${type} on schema: ${schemaName} where: ${whereClause}`
+    )
+  }
+
+  logger.info({
+    message: 'Received documents successfully',
+    data: response,
+  })
 
   if (schemaName === 'returnRequests' || schemaName === 'returnProducts') {
     const productMatchedUserId = response.filter(
@@ -57,11 +66,19 @@ export async function receiveDocuments(ctx: Context) {
         return product.userId && product.userId === userId
       }
     )
+    if (!productMatchedUserId.length) {
+      throw new Error(
+        `Error receiving documents on type: ${type} on schema: ${schemaName} where: ${whereClause}`
+      )
+    }
 
+    ctx.status = 200
+    ctx.set('Cache-Control', 'no-cache')
     ctx.body = productMatchedUserId
 
     return
   }
-
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache')
   ctx.body = response
 }

@@ -34,6 +34,10 @@ export async function getList(ctx: Context, next: () => Promise<any>) {
     filterData
   )
 
+  if (!requestResponse) {
+    throw new Error(`Error getting list`)
+  }
+
   const output: any[] = []
 
   if (requestResponse.length) {
@@ -62,6 +66,10 @@ export async function getList(ctx: Context, next: () => Promise<any>) {
           `refundId=${request.id}`
         )
 
+        if (!statusHistoryResponse) {
+          throw new Error(`Error getting status history on get list`)
+        }
+
         const statusHistory: any[] = []
 
         if (statusHistoryResponse.length) {
@@ -77,6 +85,10 @@ export async function getList(ctx: Context, next: () => Promise<any>) {
           'comment',
           `refundId=${request.id}`
         )
+
+        if (!commentsResponse) {
+          throw new Error(`Error getting comments`)
+        }
 
         const comments: any[] = []
 
