@@ -50,6 +50,7 @@ declare global {
   interface State extends RecorderState {
     userEmail?: string
     userId?: string
+    isAdmin?: boolean
   }
 }
 
@@ -63,7 +64,7 @@ export default new Service({
       PUT: [errorHandler, generateReturnsSchema],
     }),
     getDocuments: method({
-      GET: [errorHandler, getProfileEmailAndId, receiveDocuments],
+      GET: [getProfileEmailAndId, receiveDocuments],
     }),
     getRequests: method({
       GET: [errorHandler, getRequests],
@@ -72,10 +73,10 @@ export default new Service({
       GET: [errorHandler, receiveCategories],
     }),
     getOrders: method({
-      GET: [errorHandler, getProfileEmailAndId, getOrders],
+      GET: [getProfileEmailAndId, getOrders],
     }),
     getOrder: method({
-      GET: [errorHandler, getProfileEmailAndId, getOrder],
+      GET: [getProfileEmailAndId, getOrder],
     }),
     saveDocuments: method({
       POST: [errorHandler, saveMasterdataDocuments],

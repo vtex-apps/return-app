@@ -24,7 +24,23 @@ export async function receiveDocuments(ctx: Context) {
 
   const { schemaName, whereClause, type } = ctx.vtex.route.params
 
-  const { userId } = state
+  const { userId, isAdmin } = state
+
+  if (isAdmin) {
+    /**
+     * here we can use the adminUserAuthToken, so we can get the data from the admin account. 
+     */
+    ctx.status = 200
+    ctx.set('Cache-Control', 'no-cache')
+    const adminResponse = await masterDataClient.getDocuments(
+      ctx,
+      schemaName,
+      type,
+      whereClause
+    )
+    ctx.body = adminResponse
+    return
+  }
   const whereClauseQueries = new URLSearchParams(whereClause as string)
 
   const userIdFromURL = whereClauseQueries.get('userId')
