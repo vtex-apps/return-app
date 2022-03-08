@@ -25,9 +25,9 @@ export default class Checkout extends JanusClient {
     )
   }
 
-  protected get = <T>(url: string, config: RequestConfig = {}) => {
+  protected get = async <T>(url: string, config: RequestConfig = {}) => {
     try {
-      return this.http.get<T>(url, config)
+      return await this.http.get<T>(url, config)
     } catch (e) {
       return statusToError(e)
     }

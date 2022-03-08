@@ -176,7 +176,6 @@ class ReturnsSettings extends Component<any, any> {
           },
         }
 
-        console.log(json[0], 'optionsss')
         this.setState({
           id: json[0].id,
           maxDays: json[0].maxDays,
