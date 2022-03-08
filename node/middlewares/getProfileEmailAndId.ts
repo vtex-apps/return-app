@@ -11,21 +11,10 @@ const getProfileEmailAndId = async (
       clients: { session },
       cookies,
       state,
-      vtex: {
-        adminUserAuthToken,
-        // storeUserAuthToken
-      },
+      vtex: { adminUserAuthToken, storeUserAuthToken },
     } = ctx
 
     const sessionCookie = cookies.get(VTEX_SESSION)
-    console.log('sessionCookie', sessionCookie)
-    // console.log('adminUserAuthToken', adminUserAuthToken)
-    // console.log('storeUserAuthToken', storeUserAuthToken)
-
-    if (adminUserAuthToken) {
-      state.isAdmin = true
-      return await next()
-    }
 
     if (!sessionCookie) {
       throw statusToError({
@@ -34,6 +23,30 @@ const getProfileEmailAndId = async (
       })
     }
 
+    if (storeUserAuthToken) {
+      state.storeUserAuthToken = storeUserAuthToken
+
+      await next()
+    }
+
+    if (adminUserAuthToken) {
+      /**
+       * when we have adminUserAuthToken, we dont want to keep processing and get the email and the userId.
+       */
+      state.isAdmin = true
+      state.adminUserAuthToken = adminUserAuthToken
+
+      await next()
+      return state
+    }
+
+    if (!adminUserAuthToken && !storeUserAuthToken) {
+      throw statusToError({
+        status: 401,
+        message: 'Profile not found',
+      })
+    }
+  
     const { sessionData } = await session.getSession(sessionCookie, [
       'profile.email',
       'profile.id',
@@ -53,12 +66,11 @@ const getProfileEmailAndId = async (
     state.userId = userId
 
     await next()
+    return state
   } catch (error) {
-    console.log('error.message', error.message)
-
     throw statusToError({
       status: 401,
-      message: 'Profile not found',
+      message: `Profile not found ${error.message}`,
     })
   }
 }

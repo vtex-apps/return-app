@@ -51,6 +51,8 @@ declare global {
     userEmail?: string
     userId?: string
     isAdmin?: boolean
+    adminUserAuthToken?: string
+    storeUserAuthToken?: string
   }
 }
 
