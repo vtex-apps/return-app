@@ -1,7 +1,7 @@
 import { AuthenticationError, ForbiddenError, UserInputError } from '@vtex/api'
 
 type StatusToError = {
-  status: number
+  status: 401 | 403 | 400
   message: string
 }
 
