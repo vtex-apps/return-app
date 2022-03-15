@@ -13,6 +13,7 @@ export const SETTINGS_SCHEMA = {
     type: { type: 'string' },
     enableOtherOption: { type: 'boolean' },
     hidePaymentMethodSelection: { type: 'boolean' },
+    proportionalShippingValue: { type: 'boolean' },
   },
   $defs: {
     options: {
