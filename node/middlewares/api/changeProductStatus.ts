@@ -52,6 +52,12 @@ export async function changeProductStatus(
       `id=${request_id}`
     )
 
+    if (!requestResponse) {
+      throw new Error(
+        `Error getting return documents before changing product status`
+      )
+    }
+
     // verificam daca exista o cerere de retur cu id-ul respectiv
     if (requestResponse.length) {
       if (requestResponse[0].status === requestsStatuses.refunded) {
@@ -79,6 +85,12 @@ export async function changeProductStatus(
           'product',
           `refundId=${request_id}__${searchField}`
         )
+
+        if (!requestResponse) {
+          throw new Error(
+            `Error getting product documents before changing product status`
+          )
+        }
 
         // verificam daca exista produsul in cererea de retur
         if (productResponse.length) {

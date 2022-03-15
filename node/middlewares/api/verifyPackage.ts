@@ -16,8 +16,9 @@ export async function verifyPackage(ctx: Context, next: () => Promise<any>) {
     totalRefundAmount: 0,
     newTotalRefundAmount: 0,
     refundedProducts: [],
-    updatedRequest: {}
+    updatedRequest: {},
   }
+
   const { request_id } = ctx.vtex.route.params
   const [request] = await masterDataClient.getDocuments(
     ctx,
@@ -26,58 +27,91 @@ export async function verifyPackage(ctx: Context, next: () => Promise<any>) {
     `id=${request_id}`
   )
 
+  if (!request) {
+    throw new Error(`Error getting documents on verify package`)
+  }
+
   if (request.status !== 'Pending verification') {
     output = {
       ...output,
       success: false,
       errorMessage: 'No pending verification status',
-    } 
-
+    }
   } else {
-    
     const { items } = await returnAppClient.getOrder(ctx, request.orderId)
     const productsResponse = await masterDataClient.getDocuments(
-      ctx, 
-      'returnProducts', 
-      'product', 
+      ctx,
+      'returnProducts',
+      'product',
       `orderId=${request.orderId}`
     )
 
-    const refundedProducts = productsResponse.filter((product: any) => product.refundId === request_id)
+    if (!productsResponse) {
+      throw new Error(`Error getting products on verify package`)
+    }
+
+    const refundedProducts = productsResponse.filter(
+      (product: any) => product.refundId === request_id
+    )
+
     const refundedProductsIds = refundedProducts.map((x: any) => x.sku)
     const totalTaxes = items
-      .filter((x: any) => refundedProductsIds.some((refundedProductsId: any) => x.id === refundedProductsId))
+      .filter((x: any) =>
+        refundedProductsIds.some(
+          (refundedProductsId: any) => x.id === refundedProductsId
+        )
+      )
       .reduce((acc: any, currentProduct: any) => {
-        let tax = (currentProduct.priceTags
-          .filter((x: any) => x.name.includes('TAXHUB'))
-          .reduce((acc: any, el: any) => acc + Number(el.rawValue), 0) / currentProduct.quantity).toFixed(2)
+        const tax = (
+          currentProduct.priceTags
+            .filter((x: any) => x.name.includes('TAXHUB'))
+            .reduce((acc2: any, el: any) => acc2 + Number(el.rawValue), 0) /
+          currentProduct.quantity
+        ).toFixed(2)
 
-        return [...acc, {sku: currentProduct.id, tax}]
+        return [...acc, { sku: currentProduct.id, tax }]
       }, [])
-      
+
     const refundedProductsTax = refundedProducts.map((x: any) => ({
       ...x,
       goodProducts: x.quantity,
-      status: "Approved",
+      status: 'Approved',
       tax: Number(totalTaxes.find((y: any) => y.sku === x.sku).tax),
-      totalValue: (Number(totalTaxes.find((y: any) => y.sku === x.sku).tax) + Number(x.unitPrice / 100)) * Number(x.quantity)
+      totalValue:
+        (Number(totalTaxes.find((y: any) => y.sku === x.sku).tax) +
+          Number(x.unitPrice / 100)) *
+        Number(x.quantity),
     }))
 
-    const totalRefundAmount = refundedProductsTax.reduce((acc: any,el: any) =>  acc + Number(el.totalValue), 0)
-    const newTotalRefundAmount = (totalRefundAmount - (body?.restockFee || 0) + (body?.refundedShippingValue || 0))
+    const totalRefundAmount = refundedProductsTax.reduce(
+      (acc: any, el: any) => acc + Number(el.totalValue),
+      0
+    )
 
+    const newTotalRefundAmount =
+      totalRefundAmount -
+      (body?.restockFee || 0) +
+      (body?.refundedShippingValue || 0)
 
     for (let i = 0; i < refundedProductsTax.length; i++) {
       const currentProduct = refundedProductsTax[i]
-      await masterDataClient.saveDocuments(ctx, 'returnProducts', currentProduct)
+      const saveProductsResponse = await masterDataClient.saveDocuments(
+        ctx,
+        'returnProducts',
+        currentProduct
+      )
+
+      if (!saveProductsResponse) {
+        throw new Error(`Error saving product`)
+      }
     }
 
-    const updatedRequest = { 
-      ...request, 
-      status: 'Pending verification', 
-      refundedAmount: (newTotalRefundAmount.toFixed(2)) * 100 ,
+    const updatedRequest = {
+      ...request,
+      status: 'Pending verification',
+      refundedAmount: newTotalRefundAmount.toFixed(2) * 100,
       refundedShippingValue: body.refundedShippingValue,
-      orderRestockFee: body.restockFee
+      orderRestockFee: body.restockFee,
     }
 
     await masterDataClient.saveDocuments(ctx, 'returnRequests', updatedRequest)
@@ -85,7 +119,7 @@ export async function verifyPackage(ctx: Context, next: () => Promise<any>) {
     output = {
       ...output,
       totalRefundAmount,
-      newTotalRefundAmount: newTotalRefundAmount,
+      newTotalRefundAmount,
       refundedProducts: refundedProductsTax,
       updatedRequest,
     }

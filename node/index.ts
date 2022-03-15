@@ -24,6 +24,7 @@ import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
+import { errorHandler } from './middlewares/errorHandler'
 import { mutations } from './resolvers'
 
 const TIMEOUT_MS = 5000
@@ -52,70 +53,70 @@ export default new Service({
   clients,
   routes: {
     getSchemas: method({
-      GET: returnAppGetSchemas,
+      GET: [errorHandler, returnAppGetSchemas],
     }),
     generateSchema: method({
-      PUT: generateReturnsSchema,
+      PUT: [errorHandler, generateReturnsSchema],
     }),
     getDocuments: method({
-      GET: receiveDocuments,
+      GET: [errorHandler, receiveDocuments],
     }),
     getRequests: method({
-      GET: getRequests,
+      GET: [errorHandler, getRequests],
     }),
     getCategories: method({
-      GET: receiveCategories,
+      GET: [errorHandler, receiveCategories],
     }),
     getOrders: method({
-      GET: getOrders,
+      GET: [errorHandler, getOrders],
     }),
     getOrder: method({
-      GET: getOrder,
+      GET: [errorHandler, getOrder],
     }),
     saveDocuments: method({
-      POST: saveMasterdataDocuments,
+      POST: [errorHandler, saveMasterdataDocuments],
     }),
     savePartialDocument: method({
-      POST: saveMasterdataPartialDocuments,
+      POST: [errorHandler, saveMasterdataPartialDocuments],
     }),
     createGiftCard: method({
-      POST: createGiftCard,
+      POST: [errorHandler, createGiftCard],
     }),
     updateGiftCard: method({
-      POST: updateGiftCard,
+      POST: [errorHandler, updateGiftCard],
     }),
     getGiftCard: method({
-      GET: getGiftCard,
+      GET: [errorHandler, getGiftCard],
     }),
     getSkuById: method({
-      GET: getSkuById,
+      GET: [errorHandler, getSkuById],
     }),
     sendMail: method({
-      POST: sendMail,
+      POST: [errorHandler, sendMail],
     }),
     apiGetRequest: method({
-      GET: getRequest,
+      GET: [errorHandler, getRequest],
     }),
     apiGetList: method({
-      GET: getList,
+      GET: [errorHandler, getList],
     }),
     apiAddComment: method({
-      POST: addComment,
+      POST: [errorHandler, addComment],
     }),
     apiVerifyPackage: method({
-      POST: verifyPackage,
+      POST: [errorHandler, verifyPackage],
     }),
     apiChangeProductStatus: method({
-      POST: changeProductStatus,
+      POST: [errorHandler, changeProductStatus],
     }),
     apiCheckStatus: method({
-      GET: checkStatus,
+      GET: [errorHandler, checkStatus],
     }),
     apiUpdateStatus: method({
-      POST: updateStatus,
+      POST: [errorHandler, updateStatus],
     }),
     createRefund: method({
-      POST: createRefund,
+      POST: [errorHandler, createRefund],
     }),
   },
   graphql: {
