@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Mismatch between products returned and order id when an order takes too long to resolve (e.g. due to slow internet) when a store user is selecting an order to be returned.
+
+### Added
+- Error handler for middlewares
 
 ## [2.19.0] - 2022-02-28
 ### Changed 
