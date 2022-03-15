@@ -13,7 +13,7 @@ export const SETTINGS_SCHEMA = {
     type: { type: 'string' },
     enableOtherOption: { type: 'boolean' },
     hidePaymentMethodSelection: { type: 'boolean' },
-    proportionalShippingValue: { type: 'boolean' },
+    enableProportionalShippingValue: { type: 'boolean' },
   },
   $defs: {
     options: {
@@ -42,6 +42,7 @@ export const SETTINGS_SCHEMA = {
       'enableOtherOption',
       'hidePaymentMethodSelection',
       'type',
+      'enableProportionalShippingValue',
     ],
     publicJsonSchema: false,
   },
@@ -58,6 +59,7 @@ export const SETTINGS_SCHEMA = {
     'options',
     'enableOtherOption',
     'hidePaymentMethodSelection',
+    'enableProportionalShippingValue',
     'type',
   ],
   'v-indexed': [
@@ -72,6 +74,7 @@ export const SETTINGS_SCHEMA = {
     'options',
     'enableOtherOption',
     'hidePaymentMethodSelection',
+    'enableProportionalShippingValue',
     'type',
   ],
   'v-immediate-indexing': true,

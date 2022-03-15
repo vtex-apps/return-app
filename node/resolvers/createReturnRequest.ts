@@ -12,7 +12,7 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const {
-    clients: { oms, returnApp, mdFactory, masterdata },
+    clients: { oms, returnApp, mdFactory, masterData },
     vtex: { logger },
   } = ctx
 
@@ -33,6 +33,17 @@ export const createReturnRequest = async (
   let totalShipping = 0
   let totalTax = 0
 
+  const totalPrice = returnedItems.reduce((total, item) => {
+    return total + item.quantity * item.unitPrice
+  }, 0)
+
+  const returnSettingsResponse = await masterData.getDocuments(
+    ctx,
+    'returnSettings',
+    'settings',
+    ''
+  )
+
   order.totals.forEach((total) => {
     if (total.id === 'Shipping') {
       totalShipping = total.value
@@ -43,25 +54,22 @@ export const createReturnRequest = async (
     return null
   })
 
-  const totalPrice = returnedItems.reduce((total, item) => {
-    return total + item.quantity * item.unitPrice
-  }, 0)
-
   const calculateReturnItemsPercentage =
     (totalPrice * 100) / (order.value - totalTax)
 
   const calculateProportionalShippingCost =
     (calculateReturnItemsPercentage * totalShipping) / 100
 
-  const refundedShippingValue = Number(
-    calculateProportionalShippingCost.toFixed(0)
-  )
+  const refundedShippingValue = returnSettingsResponse[0]
+    .enableProportionalShippingValue
+    ? Number(calculateProportionalShippingCost.toFixed(0))
+    : totalShipping
 
   const rmaRequestFields = createReturnRequestFields({
     returnRequestInput: returnRequest,
     sequenceNumber: rmaSequenceNumber,
-    refundedShippingValue,
     totalPrice,
+    refundedShippingValue,
   })
 
   const rmaRequest = await mdFactory.createReturnRequest(rmaRequestFields)

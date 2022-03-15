@@ -27,6 +27,7 @@
   "settings.addCustomOption_Submit": "ADD OPTION",
   "settings.otherOptions": "Other Option",
   "settings.otherOptions_enable": "Enable Other Option",
+  "settings.proportionalShippingValue": "Shipping value proportional to the total of the products",
   "returns.orderId": "Order ID",
   "returns.requestId": "Request ID",
   "returns.sequenceNumber": "Sequence No",

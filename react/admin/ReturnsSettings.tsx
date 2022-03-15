@@ -62,6 +62,7 @@ const messages = defineMessages({
   saveSettings: { id: 'settings.saveSettings' },
   otherOptions: { id: 'settings.otherOptions' },
   enableOtherOptions: { id: 'settings.otherOptions_enable' },
+  proportionalShippingValue: { id: 'settings.proportionalShippingValue' },
 })
 
 class ReturnsSettings extends Component<any, any> {
@@ -89,6 +90,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentCard: false,
       paymentVoucher: false,
       enableOtherOption: false,
+      enableProportionalShippingValue: false,
       successMessage: '',
       errorMessage: '',
       payments: {
@@ -182,6 +184,7 @@ class ReturnsSettings extends Component<any, any> {
           options: json[0].options || [],
           excludedCategories: JSON.parse(json[0].excludedCategories),
           enableOtherOption: json[0].enableOtherOption,
+          enableProportionalShippingValue: json[0].proportionalShippingValue,
           hidePaymentMethodSelection:
             json[0].hidePaymentMethodSelection ?? false,
           loading: false,
@@ -322,6 +325,7 @@ class ReturnsSettings extends Component<any, any> {
       payments,
       options,
       enableOtherOption,
+      enableProportionalShippingValue,
       hidePaymentMethodSelection,
     } = this.state
 
@@ -378,6 +382,7 @@ class ReturnsSettings extends Component<any, any> {
       paymentVoucher: payments.paymentVoucher.checked,
       options,
       enableOtherOption,
+      enableProportionalShippingValue,
       hidePaymentMethodSelection,
       type: schemaTypes.settings,
     }
@@ -450,6 +455,13 @@ class ReturnsSettings extends Component<any, any> {
     }))
   }
 
+  handleEnableProportionalShippingValue = () => {
+    this.setState((prevState) => ({
+      enableProportionalShippingValue:
+        !prevState.enableProportionalShippingValue,
+    }))
+  }
+
   render() {
     const {
       maxDays,
@@ -468,6 +480,7 @@ class ReturnsSettings extends Component<any, any> {
       options,
       isModalOpen,
       enableOtherOption,
+      enableProportionalShippingValue,
       hidePaymentMethodSelection,
     } = this.state
 
@@ -712,6 +725,21 @@ class ReturnsSettings extends Component<any, any> {
                     value="return-other-option"
                     id="return-other-option-checkbox"
                   />
+                  <Divider orientation="horizontal" />
+                  <div>
+                    <div className="flex flex-column w-100 mb5 mt5">
+                      <p className="f4 mb0">
+                        {formatMessage({
+                          id: messages.proportionalShippingValue.id,
+                        })}
+                        :
+                      </p>
+                    </div>
+                    <Toggle
+                      checked={enableProportionalShippingValue}
+                      onChange={this.handleEnableProportionalShippingValue}
+                    />
+                  </div>
                   <Modal isOpen={isModalOpen} onClose={this.handleModalToggle}>
                     <div className="flex flex-column">
                       <div className="w-100">
