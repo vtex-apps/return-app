@@ -41,6 +41,10 @@ export async function addComment(ctx: Context, next: () => Promise<any>) {
       `id=${request_id}`
     )
 
+    if (!requestResponse) {
+      throw new Error(`Error getting documents before adding comment`)
+    }
+
     if (requestResponse.length) {
       const [response] = requestResponse
       const commentBody = {
@@ -53,7 +57,15 @@ export async function addComment(ctx: Context, next: () => Promise<any>) {
         refundId: request_id,
       }
 
-      await masterDataClient.saveDocuments(ctx, 'returnComments', commentBody)
+      const saveCommentResponse = await masterDataClient.saveDocuments(
+        ctx,
+        'returnComments',
+        commentBody
+      )
+
+      if (!saveCommentResponse) {
+        throw new Error(`Error saving comment`)
+      }
     } else {
       output = {
         ...output,

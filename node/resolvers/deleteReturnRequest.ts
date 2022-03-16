@@ -6,13 +6,29 @@ export const deleteReturnRequest = async (
   const { Id } = args
   const {
     clients: { mdFactory },
+    vtex: { logger },
   } = ctx
 
   const promises = Id.map((id) => {
     return mdFactory.deleteRMADocument(id)
   })
 
-  await Promise.all(promises)
+  try {
+    const response = await Promise.all(promises)
+
+    logger.info({
+      message: `Return request documents deleted successfully`,
+      data: response,
+    })
+  } catch (e) {
+    logger.error({
+      message: `Error deleting return request documents with IDs: ${Id}`,
+      error: e,
+      data: {
+        ctx,
+      },
+    })
+  }
 
   return true
 }

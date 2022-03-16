@@ -271,7 +271,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
   }
 
   selectOrder(order) {
-    this.prepareOrderData(order, this.state.settings, false)
+    this.prepareOrderData(order, this.state.settings, false, true)
     if (order.shippingData.address) {
       const complement =
         order.shippingData.address.complement !== null
@@ -309,7 +309,8 @@ class MyReturnsPageAdd extends Component<Props, State> {
   prepareOrderData = (
     order: any,
     settings: any,
-    updateEligibleOrders: boolean
+    updateEligibleOrders: boolean,
+    isSelectingOrder = false
   ) => {
     const thisOrder = order
 
@@ -451,8 +452,19 @@ class MyReturnsPageAdd extends Component<Props, State> {
         return { previousOrders, products }
       })
       .then(({ previousOrders, products }) => {
+        /**
+         * This check is prevent setting the products that will be returned
+         * during componentDidMount. Since this method is being called inside a
+         * loop, any order that takes longer to resolve in the initial setup will
+         * overwrite the products if user has already selected an order to view.
+         */
+        if (isSelectingOrder) {
+          this.setState({
+            orderProducts: products,
+          })
+        }
+
         this.setState({
-          orderProducts: products,
           eligibleOrders: previousOrders,
         })
 
