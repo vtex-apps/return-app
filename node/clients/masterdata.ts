@@ -123,6 +123,7 @@ export default class Masterdata extends ExternalClient {
     return true
   }
 
+  // eslint-disable-next-line max-params
   public async getDocuments(
     ctx: any,
     schemaName: any,

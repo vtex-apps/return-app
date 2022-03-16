@@ -2,7 +2,7 @@ export const nearestPickupPoints = async (
   _: any,
   { lat, long }: CheckoutPickupPointsArgs,
   ctx: Context
-) => {
+): Promise<CheckoutOutput> => {
   const {
     clients: { checkout },
   } = ctx

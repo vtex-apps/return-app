@@ -24,8 +24,8 @@ import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
-import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries } from './resolvers'
+import { errorHandler } from './middlewares/errorHandler'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })

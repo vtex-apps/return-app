@@ -95,6 +95,7 @@ export async function verifyPackage(ctx: Context, next: () => Promise<any>) {
 
     for (let i = 0; i < refundedProductsTax.length; i++) {
       const currentProduct = refundedProductsTax[i]
+      // eslint-disable-next-line no-await-in-loop
       const saveProductsResponse = await masterDataClient.saveDocuments(
         ctx,
         'returnProducts',

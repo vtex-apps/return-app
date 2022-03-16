@@ -116,9 +116,6 @@ const messages = defineMessages({
   conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' },
 })
 
-let lat = ''
-let long = ''
-
 class RequestForm extends Component<Props, State> {
   static propTypes = {
     data: PropTypes.object,
@@ -139,11 +136,11 @@ class RequestForm extends Component<Props, State> {
 
   componentDidMount(): void {
     typeof window !== 'undefined' && window.scrollTo(0, 0)
-    console.log(this.props.settings.enablePickupPoints, 'piopssss')
-    lat =
-      this.props.selectedOrder.shippingData.address.geoCoordinates[0].toString()
-    long =
-      this.props.selectedOrder.shippingData.address.geoCoordinates[1].toString()
+    // console.log(this.props.settings.enablePickupPoints, 'piopssss')
+    // lat =
+    //   this.props.selectedOrder.shippingData.address.geoCoordinates[0].toString()
+    // long =
+    //   this.props.selectedOrder.shippingData.address.geoCoordinates[1].toString()
   }
 
   componentDidUpdate() {
@@ -860,10 +857,10 @@ const compose = (...funcs) =>
 
 export default compose(
   graphql(NEAR_PICKUP_POINTS, {
-    options: () => ({
+    options: ({ selectedOrder }: { selectedOrder: any }) => ({
       variables: {
-        lat,
-        long,
+        lat: selectedOrder.shippingData.address.geoCoordinates[0].toString(),
+        long: selectedOrder.shippingData.address.geoCoordinates[1].toString(),
       },
       ssr: false,
     }),
