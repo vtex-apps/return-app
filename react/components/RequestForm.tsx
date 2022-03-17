@@ -136,11 +136,6 @@ class RequestForm extends Component<Props, State> {
 
   componentDidMount(): void {
     typeof window !== 'undefined' && window.scrollTo(0, 0)
-    // console.log(this.props.settings.enablePickupPoints, 'piopssss')
-    // lat =
-    //   this.props.selectedOrder.shippingData.address.geoCoordinates[0].toString()
-    // long =
-    //   this.props.selectedOrder.shippingData.address.geoCoordinates[1].toString()
   }
 
   componentDidUpdate() {
