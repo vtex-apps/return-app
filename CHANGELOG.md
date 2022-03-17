@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.19.1] - 2022-03-15
+### Fixed
+- Mismatch between products returned and order id when an order takes too long to resolve (e.g. due to slow internet) when a store user is selecting an order to be returned.
+
+### Added
+- Error handler for middlewares
+
 ## [2.19.0] - 2022-02-28
 ### Changed 
 - Add `refundId` to `returnRequests` schema so it matches `returnProducts` and avoid breaking the search, which was preventing to display the history information in the RMAs.
