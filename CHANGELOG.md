@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Allow call center operators to create RMA for store users when impersonating them. Set `userId`, `email`, and `name` from session API when impersonating is happening.
 
 ## [2.19.1] - 2022-03-15
 ### Fixed
