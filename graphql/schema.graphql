@@ -16,4 +16,5 @@ type Mutation {
     returnedItems: [ProductReturnedInput!]!
     authToken: AuthToken!
   ): returnRequestCreated
+  saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
 }

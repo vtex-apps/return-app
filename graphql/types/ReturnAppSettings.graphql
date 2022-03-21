@@ -1,20 +1,20 @@
 type ReturnAppSettings {
   maxDays: Int!
   excludedCategories: [String!]!
-  allowedPaymentTypes: [PaymentType!]!
+  allowedPaymentTypes: PaymentType!
   termsUrl: String
   customReturnReasons: [CustomReturnReason]
-  options: [ReturnOption!]
+  options: ReturnOption
 }
 
 type PaymentType {
-  bank: Boolean!
-  card: Boolean!
-  giftCard: Boolean!
+  bank: Boolean
+  card: Boolean
+  giftCard: Boolean
 }
 
 type CustomReturnReason {
-  name: String!
+  reason: String!
   maxDays: Int!
   translations: [CustomReturnReasonTranslation!]
 }
@@ -25,8 +25,41 @@ type CustomReturnReasonTranslation {
 }
 
 type ReturnOption {
-  enableOtherOptionSelection: Boolean!
-  enablePickupPoints: Boolean!
-  enablePaymentMethodSelection: Boolean!
-  enableProportionalShippingValue: Boolean!
+  enableOtherOptionSelection: Boolean
+  enablePickupPoints: Boolean
+  enablePaymentMethodSelection: Boolean
+  enableProportionalShippingValue: Boolean
+}
+
+input ReturnAppSettingsInput {
+  maxDays: Int!
+  excludedCategories: [String!]!
+  allowedPaymentTypes: PaymentTypeInput!
+  termsUrl: String
+  customReturnReasons: [CustomReturnReasonInput]
+  options: ReturnOptionInput
+}
+
+input PaymentTypeInput {
+  bank: Boolean
+  card: Boolean
+  giftCard: Boolean
+}
+
+input CustomReturnReasonInput {
+  reason: String!
+  maxDays: Int!
+  translations: [CustomReturnReasonTranslationInput!]
+}
+
+input CustomReturnReasonTranslationInput {
+  locale: String!
+  translation: String!
+}
+
+input ReturnOptionInput {
+  enableOtherOptionSelection: Boolean
+  enablePickupPoints: Boolean
+  enablePaymentMethodSelection: Boolean
+  enableProportionalShippingValue: Boolean
 }
