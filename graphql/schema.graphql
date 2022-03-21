@@ -6,6 +6,7 @@ enum AuthToken {
 
 type Query {
   doNotCall: Boolean
+  returnAppSettings: ReturnAppSettings
 }
 
 type Mutation {

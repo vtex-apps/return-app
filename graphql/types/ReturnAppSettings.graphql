@@ -1,0 +1,32 @@
+type ReturnAppSettings {
+  maxDays: Int!
+  excludedCategories: [String!]!
+  allowedPaymentTypes: [PaymentType!]!
+  termsUrl: String
+  customReturnReasons: [CustomReturnReason]
+  options: [ReturnOption!]
+}
+
+type PaymentType {
+  bank: Boolean!
+  card: Boolean!
+  giftCard: Boolean!
+}
+
+type CustomReturnReason {
+  name: String!
+  maxDays: Int!
+  translations: [CustomReturnReasonTranslation!]
+}
+
+type CustomReturnReasonTranslation {
+  locale: String!
+  translation: String!
+}
+
+type ReturnOption {
+  enableOtherOptionSelection: Boolean!
+  enablePickupPoints: Boolean!
+  enablePaymentMethodSelection: Boolean!
+  enableProportionalShippingValue: Boolean!
+}
