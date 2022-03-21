@@ -1,31 +1,7 @@
 {
+  "extends": "@vtex/tsconfig",
+  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"],
   "compilerOptions": {
-    "types": ["node", "jest"],
-    "typeRoots": ["node_modules/@types"],
-    "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "allowJs": false,
-    "allowSyntheticDefaultImports": false,
-    "noEmitOnError": false,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true
-  },
-  "typeAcquisition": {
-    "enable": false
-  },
-  "include": [
-    "global.ts",
-    "./**/*",
-    "../react/masterdata/*.tsx"
-  ],
-  "exclude": ["node_modules"]
+    "types": ["node", "jest"]
+  }
 }

@@ -1,5 +1,3 @@
 {
-  "rules": {
-    "object-literal-sort-keys": false
-  }
+  "extends": "tslint-config-vtex"
 }

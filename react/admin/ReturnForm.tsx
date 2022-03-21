@@ -28,7 +28,6 @@ import {
   prepareHistoryData,
   sendMail,
   intlArea,
-  getProductStatusTranslation,
 } from '../common/utils'
 import styles from '../styles.css'
 import ProductsTable from '../components/ProductsTable'
@@ -676,6 +675,7 @@ class ReturnForm extends Component<any, any> {
       try {
         this.saveMasterData(schemaNames.product, currentProduct)
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e)
       }
     })
@@ -689,6 +689,7 @@ class ReturnForm extends Component<any, any> {
     try {
       this.saveMasterData(schemaNames.request, updatedRequest)
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e)
     }
 

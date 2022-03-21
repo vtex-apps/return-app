@@ -3,38 +3,14 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es2017",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
     "jsx": "preserve",
-    "lib": [
-      "es2019",
-      "DOM"
-    ],
-    "noEmitOnError": false,
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node",
-      "jest",
-      "graphql"
-    ]
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2017", "dom"],
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "./typings/*.d.ts",
-    "./**/*.tsx",
-    "./**/*.ts",
-    "./**/*.tsx",
-    "./**/*.ts",
-    "./**/*.d.ts"
-  ],
-  "typeAcquisition": {
-    "enable": false
-  },
+  "exclude": ["node_modules"],
+  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"],
   "extends": "@vtex/tsconfig"
 }
