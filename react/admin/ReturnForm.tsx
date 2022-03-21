@@ -28,7 +28,6 @@ import {
   prepareHistoryData,
   sendMail,
   intlArea,
-  getProductStatusTranslation,
 } from '../common/utils'
 import styles from '../styles.css'
 import ProductsTable from '../components/ProductsTable'
@@ -348,7 +347,6 @@ class ReturnForm extends Component<any, any> {
           initialProductsForm: productsForm,
         })
 
-        console.log('before handle taxes')
         this.handleTaxes()
 
         return json
