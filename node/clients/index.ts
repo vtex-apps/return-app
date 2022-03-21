@@ -1,11 +1,12 @@
 import { IOClients } from '@vtex/api'
-import { OMS } from '@vtex/clients/build'
+import { vbaseFor, OMS } from '@vtex/clients'
 
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { MDFactory } from './mdFactory'
 
-// Extend the default IOClients implementation with our own custom clients.
+const ReturnAppSettings = vbaseFor<string, any>('appSettings')
+
 export class Clients extends IOClients {
   public get returnApp() {
     return this.getOrSet('returnApp', ReturnApp)
@@ -24,5 +25,9 @@ export class Clients extends IOClients {
   // it easy to call the methods from the resolvers.
   public get mdFactory() {
     return this.getOrSet('mdFactory', MDFactory)
+  }
+
+  public get appSettings() {
+    return this.getOrSet('appSettings', ReturnAppSettings)
   }
 }
