@@ -184,7 +184,8 @@ class ReturnsSettings extends Component<any, any> {
           options: json[0].options || [],
           excludedCategories: JSON.parse(json[0].excludedCategories),
           enableOtherOption: json[0].enableOtherOption,
-          enableProportionalShippingValue: json[0].proportionalShippingValue,
+          enableProportionalShippingValue:
+            json[0].enableProportionalShippingValue,
           hidePaymentMethodSelection:
             json[0].hidePaymentMethodSelection ?? false,
           loading: false,

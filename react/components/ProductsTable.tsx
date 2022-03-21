@@ -173,7 +173,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
           <td className={`${styles.tableTd}`} />
           <td className={`${styles.tableTd}`} colSpan={2}>
             <strong>
-              <FormattedCurrency value={productsValue/100} />
+              <FormattedCurrency value={productsValue / 100} />
             </strong>
           </td>
         </tr>
@@ -192,7 +192,9 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
               <FormattedCurrency
                 value={product.reduce(
                   (acc, el) =>
-                    acc + (el.unitPrice / 100 + (el.tax ? el.tax : 0)) * el.goodProducts,
+                    acc +
+                    (el.unitPrice / 100 + (el.tax ? el.tax : 0)) *
+                      el.goodProducts,
                   0
                 )}
               />

@@ -3,7 +3,6 @@ interface CreateReturnRequestFieldsArgs {
   sequenceNumber: string
   totalPrice: number
   status?: string
-  refundedShippingValue: number
 }
 
 export const createReturnRequestFields = ({
@@ -11,7 +10,6 @@ export const createReturnRequestFields = ({
   sequenceNumber,
   totalPrice,
   status = 'New',
-  refundedShippingValue,
 }: CreateReturnRequestFieldsArgs) => {
   return {
     ...returnRequestInput,
@@ -20,6 +18,5 @@ export const createReturnRequestFields = ({
     status,
     type: 'request',
     dateSubmitted: new Date().toISOString(),
-    refundedShippingValue,
   }
 }

@@ -75,6 +75,8 @@ class ReturnForm extends Component<any, any> {
     super(props)
     this.state = {
       request: {},
+      enableProportionalShippingValue: false,
+      disableSetManualShippingValue: false,
       comment: [],
       product: [],
       productsForm: [],
@@ -161,8 +163,37 @@ class ReturnForm extends Component<any, any> {
       .catch((err) => this.setState({ error: err }))
   }
 
+  async getSettings() {
+    return fetch(
+      `${fetchPath.getDocuments + schemaNames.settings}/${
+        schemaTypes.settings
+      }/1`,
+      {
+        method: fetchMethod.get,
+        headers: fetchHeaders,
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        if (json?.[0]) {
+          return Promise.resolve(json[0])
+        }
+
+        return Promise.resolve(null)
+      })
+  }
+
   getFullData() {
     const requestId = this.props.data.params.id
+
+    this.getSettings().then((settings) => {
+      if (settings !== null) {
+        this.setState({
+          enableProportionalShippingValue:
+            settings.enableProportionalShippingValue,
+        })
+      }
+    })
 
     this.getFromMasterData(
       schemaNames.request,
@@ -317,6 +348,7 @@ class ReturnForm extends Component<any, any> {
           initialProductsForm: productsForm,
         })
 
+        console.log('before handle taxes')
         this.handleTaxes()
 
         return json
@@ -340,6 +372,30 @@ class ReturnForm extends Component<any, any> {
                 res.totals.find((total) => total.id === 'Shipping').value / 100
               ).toFixed(2),
             })
+
+            // if (this.state.enableProportionalShippingValue) {
+            //   const totalShipping = res.totals.find((total) => {
+            //     return total.id === 'Shipping'
+            //   })
+
+            //   const totalTax = res.totals.find((total) => {
+            //     return total.id === 'Tax'
+            //   })
+
+            //   const calculateReturnItemsPercentage =
+            //     (request.totalPrice * 100) / (res.value - totalTax.value)
+
+            //   const calculateProportionalShippingCost =
+            //     (calculateReturnItemsPercentage * totalShipping.value) / 100
+
+            //   const refundedShippingValue = Number(
+            //     calculateProportionalShippingCost.toFixed(0)
+            //   )
+
+            //   console.log(refundedShippingValue, 'refundedShippingValue')
+            //   this.setState({ refundedShippingValue })
+            //   this.setState({ disableSetManualShippingValue: true })
+            // }
 
             return Promise.resolve(res)
           })
@@ -611,6 +667,10 @@ class ReturnForm extends Component<any, any> {
       status = productStatuses.partiallyApproved
     } else if (product.quantity <= quantityInput) {
       status = productStatuses.approved
+    }
+
+    if (this.state.enableProportionalShippingValue) {
+      console.log(quantityInput)
     }
 
     this.setState((prevState) => ({
@@ -1105,6 +1165,7 @@ class ReturnForm extends Component<any, any> {
                     suffix={`/${totalShippingValue}`}
                     type="number"
                     step="any"
+                    disabled={this.state.disableSetManualShippingValue}
                     onChange={(e) => {
                       this.handleRefundedShippingValue(e.target.value)
                     }}
