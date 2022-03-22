@@ -387,8 +387,8 @@ class ReturnForm extends Component<any, any> {
               const calculateProportionalShippingCost =
                 (calculateReturnItemsPercentage * totalShipping.value) / 100
 
-              const refundedShippingValue = Number(
-                calculateProportionalShippingCost
+              const refundedShippingValue = (
+                calculateProportionalShippingCost / 100
               ).toFixed(2)
 
               this.setState({ refundedShippingValue })
@@ -1168,7 +1168,7 @@ class ReturnForm extends Component<any, any> {
                     onChange={(e) => {
                       this.handleRefundedShippingValue(e.target.value)
                     }}
-                    value={this.state.refundedShippingValue / 100}
+                    value={this.state.refundedShippingValue}
                     max={this.state.totalShippingValue}
                     min={0}
                   />

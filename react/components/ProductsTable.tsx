@@ -227,7 +227,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
           <td className={`${styles.tableTd}`} />
           <td className={`${styles.tableTd}`} colSpan={2}>
             <strong>
-              <FormattedCurrency value={refundedShippingValue / 100 || 0} />
+              <FormattedCurrency value={refundedShippingValue || 0} />
             </strong>
           </td>
         </tr>
