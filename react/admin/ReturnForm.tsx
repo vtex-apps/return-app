@@ -388,10 +388,9 @@ class ReturnForm extends Component<any, any> {
                 (calculateReturnItemsPercentage * totalShipping.value) / 100
 
               const refundedShippingValue = Number(
-                calculateProportionalShippingCost.toFixed(0)
-              )
+                calculateProportionalShippingCost
+              ).toFixed(2)
 
-              console.log(refundedShippingValue, 'refundedShippingValue')
               this.setState({ refundedShippingValue })
               this.setState({ disableSetManualShippingValue: true })
             }
@@ -405,34 +404,22 @@ class ReturnForm extends Component<any, any> {
 
     const taxCalculations: any = []
 
-    console.log(taxItems, 'taxItems')
-
     for (const taxItem of taxItems) {
       let totalTax = 0
 
-      console.log(totalTax, 'totalTax ===')
-
       if (taxItem.tax) {
-        console.log('tax')
         totalTax += Number((taxItem.tax / 100).toFixed(2)) || 0
-        console.log(totalTax, 'broke ? totalTax ===')
       } else if (taxItem.priceTags) {
-        console.log('priceTags')
         for (const pricetag of taxItem.priceTags) {
           if (pricetag.name.includes('TAXHUB')) {
-            console.log('TAXHUB')
             totalTax += pricetag.rawValue || 0
           }
         }
 
-        console.log('before individual tax')
-
         const individualTax = parseFloat(
+          // eslint-disable-next-line radix
           (totalTax / parseInt(taxItem.quantity)).toFixed(2)
         )
-
-        console.log(individualTax, 'individual tax')
-        // eslint-disable-next-line radix
 
         taxCalculations.push({
           tax: individualTax,
@@ -444,12 +431,8 @@ class ReturnForm extends Component<any, any> {
     let totalAmount = 0
     const newProducts = product
 
-    console.log(taxCalculations, 'taxCalculations')
-
     for (const taxItem of taxCalculations) {
-      console.log('hereee')
       for (const productItem of newProducts) {
-        console.log('hereee222')
         if (!productItem.tax && taxItem.sellerSku === productItem.sku) {
           productItem.tax = taxItem.tax
           productItem.totalValue =
@@ -463,8 +446,6 @@ class ReturnForm extends Component<any, any> {
         }
       }
     }
-
-    console.log(newProducts, 'new products totalValue??')
 
     this.setState((prevState) => ({
       ...prevState,
@@ -709,13 +690,10 @@ class ReturnForm extends Component<any, any> {
   }
 
   handleRestockValue(product: any, restockValue: any) {
-    console.log(product, 'product')
-    console.log(restockValue, 'restockValue')
     if (
       product.status === requestsStatuses.approved ||
       product.status === requestsStatuses.partiallyApproved
     ) {
-      console.log('approved')
       this.setState((prevState) => ({
         productsForm: prevState.productsForm.map((el) =>
           el.id === product.id
@@ -748,8 +726,6 @@ class ReturnForm extends Component<any, any> {
     const { request, productsForm, refundedShippingValue } = this.state
     let refundedAmount = (refundedShippingValue || 0) * 100 || 0
 
-    console.log('verifyPackage')
-
     productsForm.forEach((currentProduct) => {
       currentProduct.refundedValue =
         !currentProduct.refundedValue && currentProduct.refundedValue !== 0
@@ -758,7 +734,6 @@ class ReturnForm extends Component<any, any> {
       refundedAmount += currentProduct.refundedValue.toFixed(2) * 100
       try {
         this.saveMasterData(schemaNames.product, currentProduct)
-        console.log('submitted')
       } catch (e) {
         console.log(e)
       }
@@ -772,7 +747,6 @@ class ReturnForm extends Component<any, any> {
 
     try {
       this.saveMasterData(schemaNames.request, updatedRequest)
-      console.log('submitted')
     } catch (e) {
       console.log(e)
     }
@@ -1194,7 +1168,7 @@ class ReturnForm extends Component<any, any> {
                     onChange={(e) => {
                       this.handleRefundedShippingValue(e.target.value)
                     }}
-                    value={this.state.refundedShippingValue}
+                    value={this.state.refundedShippingValue / 100}
                     max={this.state.totalShippingValue}
                     min={0}
                   />
