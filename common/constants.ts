@@ -228,6 +228,20 @@ export const RETURNS_SCHEMA = {
     condition: { type: 'string' },
     // History
   },
+  $defs: {
+    options: {
+      type: 'object',
+      required: ['optionName', 'maxOptionDay'],
+      properties: {
+        optionName: {
+          type: 'string',
+        },
+        maxOptionDay: {
+          type: 'integer',
+        },
+      },
+    },
+  },
   'v-security': {
     allowGetAll: true,
     publicFilter: [
@@ -405,6 +419,20 @@ export const COMMENTS_SCHEMA = {
     condition: { type: 'string' },
     // History
   },
+  $defs: {
+    options: {
+      type: 'object',
+      required: ['optionName', 'maxOptionDay'],
+      properties: {
+        optionName: {
+          type: 'string',
+        },
+        maxOptionDay: {
+          type: 'integer',
+        },
+      },
+    },
+  },
   'v-security': {
     allowGetAll: true,
     publicFilter: [
@@ -547,6 +575,20 @@ export const PRODUCTS_SCHEMA = {
     reason: { type: 'string' },
     condition: { type: 'string' },
     // History
+  },
+  $defs: {
+    options: {
+      type: 'object',
+      required: ['optionName', 'maxOptionDay'],
+      properties: {
+        optionName: {
+          type: 'string',
+        },
+        maxOptionDay: {
+          type: 'integer',
+        },
+      },
+    },
   },
   'v-security': {
     allowGetAll: true,
@@ -720,6 +762,20 @@ export const HISTORY_SCHEMA = {
     reason: { type: 'string' },
     condition: { type: 'string' },
     // History
+  },
+  $defs: {
+    options: {
+      type: 'object',
+      required: ['optionName', 'maxOptionDay'],
+      properties: {
+        optionName: {
+          type: 'string',
+        },
+        maxOptionDay: {
+          type: 'integer',
+        },
+      },
+    },
   },
   'v-security': {
     allowGetAll: true,
