@@ -1,6 +1,15 @@
+import type {
+  ReturnAppSettings,
+  MutationSaveReturnAppSettingsArgs,
+} from 'vtex.return-app'
+
 const SETTINGS_PATH = 'app-settings'
 
-const returnAppSettings = (_root: unknown, _args: unknown, ctx: Context) => {
+const returnAppSettings = (
+  _root: unknown,
+  _args: unknown,
+  ctx: Context
+): Promise<ReturnAppSettings | null> => {
   const {
     clients: { appSettings },
   } = ctx
@@ -10,7 +19,7 @@ const returnAppSettings = (_root: unknown, _args: unknown, ctx: Context) => {
 
 const saveReturnAppSettings = async (
   _root: unknown,
-  args: { settings: unknown },
+  args: MutationSaveReturnAppSettingsArgs,
   ctx: Context
 ) => {
   const {

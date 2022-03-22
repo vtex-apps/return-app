@@ -5085,6 +5085,10 @@ verror@1.10.0:
   version "8.132.3"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime#c7dd142e384f38bd7a7c841543b73e9349fadc93"
 
+"vtex.return-app@https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.19.1+build1647891675/public/@types/vtex.return-app":
+  version "2.19.1"
+  resolved "https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@2.19.1+build1647891675/public/@types/vtex.return-app#7419a87a831ab9a69aa7bcf974789e51af4d6953"
+
 "vtex.store-components@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.157.0/public/@types/vtex.store-components":
   version "3.157.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.157.0/public/@types/vtex.store-components#87238bbea4b61a2c77412c4010b3c4255200c433"

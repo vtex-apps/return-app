@@ -1,11 +1,12 @@
 import { IOClients } from '@vtex/api'
 import { vbaseFor, OMS } from '@vtex/clients'
+import { ReturnAppSettings } from 'vtex.return-app'
 
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { MDFactory } from './mdFactory'
 
-const ReturnAppSettings = vbaseFor<string, any>('appSettings')
+const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 
 export class Clients extends IOClients {
   public get returnApp() {
