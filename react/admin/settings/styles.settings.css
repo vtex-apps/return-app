@@ -1,0 +1,5 @@
+.transparent-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+}
