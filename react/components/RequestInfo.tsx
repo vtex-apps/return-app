@@ -37,8 +37,12 @@ const RequestInfo: FunctionComponent<Props> = (props) => {
       paymentMethod: 'bank',
     },
     formAccountHolder: { id: `returns.formAccountHolder` },
-    formBankTransferAccount: { id: `returns.formBankTransferAccount` },
-    formVoucher: { id: `returns.formVoucher` },
+    formBankTransferAccount: {
+      id: `admin/return-app.settings.section.payment-options.available-payment-methods.bankTransferAccount`,
+    },
+    formVoucher: {
+      id: `admin/return-app.settings.section.payment-options.available-payment-methods.gift-card`,
+    },
     voucherCode: { id: `returns.voucherCode` },
     voucherCodeNotGenerated: { id: `returns.voucherCodeNotGenerated` },
     voucherValue: { id: `returns.voucherValue` },

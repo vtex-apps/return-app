@@ -48,9 +48,15 @@ interface Props {
 }
 
 const messages = defineMessages({
-  formCreditCard: { id: 'returns.formCreditCard' },
-  formVoucher: { id: 'returns.formVoucher' },
-  formBank: { id: 'returns.formBank' },
+  formCreditCard: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.card',
+  },
+  formVoucher: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.gift-card',
+  },
+  formBank: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.bank',
+  },
   formAgree: { id: 'returns.formAgree' },
   termsAndConditions: { id: 'returns.TermsConditions' },
   reasonAccidentalOrder: { id: 'returns.reasonAccidentalOrder' },
