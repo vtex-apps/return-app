@@ -1,0 +1,66 @@
+type ReturnAppSettings {
+  maxDays: Int!
+  excludedCategories: [String!]!
+  allowedPaymentTypes: PaymentType!
+  termsUrl: String
+  customReturnReasons: [CustomReturnReason]
+  options: ReturnOption
+}
+
+type PaymentType {
+  bank: Boolean
+  card: Boolean
+  giftCard: Boolean
+}
+
+type CustomReturnReason {
+  reason: String!
+  maxDays: Int!
+  translations: [CustomReturnReasonTranslation!]
+}
+
+type CustomReturnReasonTranslation {
+  locale: String!
+  translation: String!
+}
+
+type ReturnOption {
+  enableOtherOptionSelection: Boolean
+  enablePickupPoints: Boolean
+  enablePaymentMethodSelection: Boolean
+  enableProportionalShippingValue: Boolean
+}
+
+input ReturnAppSettingsInput {
+  maxDays: Int!
+  excludedCategories: [String!]!
+  allowedPaymentTypes: PaymentTypeInput!
+  termsUrl: String
+  customReturnReasons: [CustomReturnReasonInput]
+  options: ReturnOptionInput
+}
+
+input PaymentTypeInput {
+  bank: Boolean
+  card: Boolean
+  giftCard: Boolean
+}
+
+input CustomReturnReasonInput {
+  reason: String!
+  maxDays: Int!
+  translations: [CustomReturnReasonTranslationInput!]
+    @hasUniqueValues(field: "locale")
+}
+
+input CustomReturnReasonTranslationInput {
+  locale: String!
+  translation: String!
+}
+
+input ReturnOptionInput {
+  enableOtherOptionSelection: Boolean
+  enablePickupPoints: Boolean
+  enablePaymentMethodSelection: Boolean
+  enableProportionalShippingValue: Boolean
+}

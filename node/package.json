@@ -4,6 +4,8 @@
     "@vtex/clients": "^2.13.0",
     "axios": "^0.20.0",
     "co-body": "^6.0.0",
+    "graphql": "^14.0.0",
+    "graphql-tools": "^4.0.0",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
@@ -23,9 +25,10 @@
     "vtex.my-account": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account",
     "vtex.my-account-commons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons",
     "vtex.react-portal": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.react-portal@0.4.1/public/@types/vtex.react-portal",
-    "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime",
+    "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
+    "vtex.return-app": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.1/public/@types/vtex.return-app",
     "vtex.store": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.123.0/public/@types/vtex.store",
-    "vtex.store-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.157.0/public/@types/vtex.store-components",
+    "vtex.store-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.158.0/public/@types/vtex.store-components",
     "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.3/public/@types/vtex.store-graphql",
     "vtex.store-icons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-icons@0.18.0/public/@types/vtex.store-icons",
     "vtex.store-resources": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-resources@0.86.0/public/@types/vtex.store-resources",

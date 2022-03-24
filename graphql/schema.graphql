@@ -6,6 +6,7 @@ enum AuthToken {
 
 type Query {
   doNotCall: Boolean
+  returnAppSettings: ReturnAppSettings
 }
 
 type Mutation {
@@ -15,4 +16,5 @@ type Mutation {
     returnedItems: [ProductReturnedInput!]!
     authToken: AuthToken!
   ): returnRequestCreated
+  saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
 }

@@ -25,7 +25,8 @@ import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
-import { mutations } from './resolvers'
+import { mutations, queries } from './resolvers'
+import { schemaDirectives } from './directives'
 
 const TIMEOUT_MS = 5000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -124,6 +125,10 @@ export default new Service({
       Mutation: {
         ...mutations,
       },
+      Query: {
+        ...queries,
+      },
     },
+    schemaDirectives,
   },
 })
