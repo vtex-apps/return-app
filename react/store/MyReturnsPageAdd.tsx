@@ -185,6 +185,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleInputChangeByPickupPointsDropdown =
       this.handleInputChangeByPickupPointsDropdown.bind(this)
+    this.handleToggleAddress = this.handleToggleAddress.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
     this.sendRequest = this.sendRequest.bind(this)
   }
@@ -726,6 +727,25 @@ class MyReturnsPageAdd extends Component<Props, State> {
     }))
   }
 
+  handleToggleAddress(addressData) {
+    const complement =
+      addressData.complement !== null ? `, ${addressData.complement}` : ''
+
+    if (addressData) {
+      this.setState({
+        country: countries[addressData.country]
+          ? countries[addressData.country]
+          : addressData.country,
+        locality: addressData.city,
+        address: `${addressData.street} ${
+          addressData.number || ''
+        }${complement}`,
+        state: addressData.state || '',
+        zip: addressData.postalCode || '',
+      })
+    }
+  }
+
   submit() {
     if (this.validateForm()) {
       this.setState({
@@ -1051,6 +1071,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
                   handleInputChangeByPickupPointsDropdown={(e) =>
                     this.handleInputChangeByPickupPointsDropdown(e)
                   }
+                  handleToggleAddress={(e) => this.handleToggleAddress(e)}
                   submit={() => {
                     this.submit()
                   }}

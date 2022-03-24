@@ -45,6 +45,7 @@ interface Props {
   errors: any
   handleInputChange: any
   handleInputChangeByPickupPointsDropdown: any
+  handleToggleAddress: any
   formInputs: FormInputs
   submit: any
   settings: any
@@ -127,6 +128,8 @@ class RequestForm extends Component<Props, State> {
     this.handlePickupPointSelected = this.handlePickupPointSelected.bind(this)
     this.handleChangeInputsbySelectedPickupPoint =
       this.handleChangeInputsbySelectedPickupPoint.bind(this)
+    this.handleSelectedToggleAddress =
+      this.handleSelectedToggleAddress.bind(this)
     this.state = {
       isPickupPointsSelected: false,
       selectedPickupPoint: '',
@@ -177,6 +180,18 @@ class RequestForm extends Component<Props, State> {
       )
 
     this.props.handleInputChangeByPickupPointsDropdown(findSelectedPickupPoint)
+  }
+
+  handleSelectedToggleAddress() {
+    if (this.state.isPickupPointsSelected) {
+      this.props.handleToggleAddress(
+        this.props.selectedOrder.shippingData.address
+      )
+    }
+
+    this.setState((prevState) => ({
+      isPickupPointsSelected: !prevState.isPickupPointsSelected,
+    }))
   }
 
   paymentMethods() {
@@ -579,7 +594,7 @@ class RequestForm extends Component<Props, State> {
               ) : null}
             </div>
             <div
-              className={`flex-ns flex-wrap flex-row ${styles.returnFormInputs}`}
+              className={`flex-ns flex-wrap flex-row  ${styles.returnFormInputs}`}
             >
               <div
                 className={`flex-ns flex-wrap flex-auto flex-column pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnLeft}`}
@@ -626,7 +641,7 @@ class RequestForm extends Component<Props, State> {
               </div>
 
               <div
-                className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
+                className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 w-40 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
               >
                 <div className="flex justify-between items-center ">
                   {this.state.isPickupPointsSelected ? (
@@ -644,24 +659,94 @@ class RequestForm extends Component<Props, State> {
                         this.state.isPickupPointsSelected ? '' : 'Pickup Points'
                       }
                       checked={this.state.isPickupPointsSelected}
-                      onChange={() =>
-                        this.setState((prevState) => ({
-                          isPickupPointsSelected:
-                            !prevState.isPickupPointsSelected,
-                        }))
-                      }
+                      onChange={this.handleSelectedToggleAddress}
                     />
                   ) : null}
                 </div>
                 {this.state.isPickupPointsSelected ? (
-                  <Dropdown
-                    label=""
-                    placeholder="Select Pickup Point"
-                    size="small"
-                    options={this.state.dropdownOptionsPickupPoints}
-                    value={this.state.selectedPickupPoint}
-                    onChange={this.handlePickupPointSelected}
-                  />
+                  <div className="w-100">
+                    <div className="mb4">
+                      <Dropdown
+                        label=""
+                        placeholder="Select Pickup Point"
+                        size="small"
+                        options={this.state.dropdownOptionsPickupPoints}
+                        value={this.state.selectedPickupPoint}
+                        onChange={this.handlePickupPointSelected}
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="address"
+                        placeholder={formatMessage({
+                          id: messages.formAddress.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.address}
+                        errorMessage={
+                          errors.address
+                            ? formatMessage({ id: errors.address })
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="locality"
+                        placeholder={formatMessage({
+                          id: messages.formLocality.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.locality}
+                        errorMessage={
+                          errors.locality
+                            ? formatMessage({ id: errors.locality })
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="state"
+                        placeholder={formatMessage({
+                          id: messages.formState.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.state || ''}
+                        errorMessage={
+                          errors.state
+                            ? formatMessage({ id: errors.state })
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="zip"
+                        placeholder={formatMessage({ id: messages.formZip.id })}
+                        onChange={handleInputChange}
+                        value={formInputs.zip || ''}
+                        errorMessage={
+                          errors.zip ? formatMessage({ id: errors.zip }) : ''
+                        }
+                      />
+                    </div>
+                    <div className={`mb4 ${styles.returnFormInput}`}>
+                      <Input
+                        name="country"
+                        placeholder={formatMessage({
+                          id: messages.formCountry.id,
+                        })}
+                        onChange={handleInputChange}
+                        value={formInputs.country}
+                        errorMessage={
+                          errors.country
+                            ? formatMessage({ id: errors.country })
+                            : ''
+                        }
+                      />
+                    </div>
+                  </div>
                 ) : (
                   <>
                     <div className={`mb4 ${styles.returnFormInput}`}>
