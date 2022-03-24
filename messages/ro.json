@@ -2,7 +2,7 @@
   "navigation.label": "Returnari",
   "navigation.labelRequests": "Cereri de retur",
   "navigation.requestInfo": "Cerere de retur",
-  "navigation.labelSettings": "Setari",
+  "admin/return-app.settings.navigation.label": "Setari",
   "settings.updateSchema": "Un moment, facem cateva actualizari pentru tine!",
   "settings.maxDays_label": "Numar maxim de zile:",
   "settings.terms_label": "URL pentru termeni si conditii:",

@@ -2,7 +2,7 @@
   "navigation.label": "Returns",
   "navigation.labelRequests": "Requests",
   "navigation.requestInfo": "Request Info",
-  "navigation.labelSettings": "Returns Settings",
+  "admin/return-app.settings.navigation.label": "Returns Settings",
   "settings.updateSchema": "Updating Settings",
   "settings.maxDays_label": "Max days:",
   "settings.terms_label": "Terms and conditions URL:",

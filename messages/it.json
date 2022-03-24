@@ -2,7 +2,7 @@
   "navigation.label": "Resi",
   "navigation.labelRequests": "Richieste",
   "navigation.requestInfo": "Richiedi informazioni",
-  "navigation.labelSettings": "Impostazioni di reso",
+  "admin/return-app.settings.navigation.label": "Impostazioni di reso",
   "settings.updateSchema": "Aggiornamento delle impostazioni in corso",
   "settings.maxDays_label": "Numero massimo di giorni:",
   "settings.terms_label": "URL dei termini e delle condizioni:",

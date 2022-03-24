@@ -33,7 +33,7 @@ const messages = defineMessages({
   errorFieldRequired: { id: 'returns.errorFieldRequired' },
   paymentsFieldRequired: { id: 'returns.paymentsFieldRequired' },
   settingsSaved: { id: 'returns.settingsSaved' },
-  labelSettings: { id: 'navigation.labelSettings' },
+  labelSettings: { id: 'admin/return-app.settings.navigation.label' },
   updateSchema: { id: 'settings.updateSchema' },
   maxDaysLabel: { id: 'settings.maxDays_label' },
   termsLabel: { id: 'settings.terms_label' },

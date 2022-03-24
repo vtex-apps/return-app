@@ -4,7 +4,7 @@
     "path": "/admin/app/returns/requests/"
   },
   "admin.app.returnsSettings": {
-    "component": "ReturnsSettings",
+    "component": "RMASettings",
     "path": "/admin/app/returns/settings/"
   },
   "admin.app.returnDetails": {

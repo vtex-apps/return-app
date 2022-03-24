@@ -8,7 +8,7 @@
       "path": "/admin/returns/requests"
     },
     {
-      "labelId": "navigation.labelSettings",
+      "labelId": "admin/return-app.settings.navigation.label",
       "path": "/admin/returns/settings"
     }
   ]
