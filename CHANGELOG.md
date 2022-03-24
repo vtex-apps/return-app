@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Allow call center operators to create RMA for store users when impersonating them. Set `userId`, `email`, and `name` from session API when impersonating is happening.
 
-## 2022-03-22
-
 ### Added
 
 - Unify schema properties and indexes to avoid updating each client after deployment when we change a schema.
