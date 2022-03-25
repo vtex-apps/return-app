@@ -43,6 +43,12 @@ export const RMASettings = () => {
     dispatch({ type: 'updateMaxDays', payload: maxDays })
   }
 
+  const handleTermsAndConditionInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    dispatch({ type: 'updateTermsUrl', payload: value })
+  }
+
   return (
     <Layout
       pageHeader={
@@ -92,7 +98,7 @@ export const RMASettings = () => {
                     label={
                       <FormattedMessage id="admin/return-app.settings.terms.label" />
                     }
-                    onChange={() => {}}
+                    onChange={handleTermsAndConditionInput}
                     errorMessage=""
                     required
                   />
