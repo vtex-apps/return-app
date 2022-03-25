@@ -14,7 +14,7 @@ import {
 import { CustomReasons } from './components/CustomReasons'
 import { ExcludedCategories } from './components/ExcludedCategories'
 import { GeneralOptions } from './components/GeneralOptions'
-import { PaymenthOptions } from './components/PaymentOptions'
+import { PaymentOptions } from './components/PaymentOptions'
 import { RequiredOptions } from './components/RequiredOptions'
 import { useSettings } from './hooks/useSettings'
 
@@ -55,7 +55,7 @@ export const RMASettings = () => {
             <RequiredOptions />
             <ExcludedCategories />
             <Divider />
-            <PaymenthOptions />
+            <PaymentOptions />
             <Divider />
             <CustomReasons />
             <Divider />

@@ -1,43 +1,104 @@
 import type { ChangeEvent, ReactElement } from 'react'
-import React, { useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import React from 'react'
+import type { IntlShape } from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
+import type { PaymentType } from 'vtex.return-app'
 import { Toggle, CheckboxGroup } from 'vtex.styleguide'
+
+import { useSettings } from '../hooks/useSettings'
 
 interface CheckboxProps {
   label: ReactElement
   checked: boolean
+  name: string
 }
 
-export const PaymenthOptions = () => {
-  const [allowSelection, setAllowSelection] = useState(false)
-  const [selectedOptions, setSelectedOptions] = useState<
-    Record<string, CheckboxProps>
-  >({
-    bank: {
-      label: (
-        <FormattedMessage id="admin/return-app.settings.section.payment-options.available-payment-methods.bank" />
-      ),
-      checked: true,
-    },
-    card: {
-      label: (
-        <FormattedMessage id="admin/return-app.settings.section.payment-options.available-payment-methods.card" />
-      ),
-      checked: true,
-    },
-    giftCard: {
-      label: (
-        <FormattedMessage id="admin/return-app.settings.section.payment-options.available-payment-methods.gift-card" />
-      ),
-      checked: true,
-    },
-  })
+const messages = defineMessages({
+  bank: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.bank',
+  },
+  card: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.card',
+  },
+  giftCard: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.gift-card',
+  },
+})
 
-  const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
+const createOptionsLabel = (
+  paymentsTypeOptions: PaymentType,
+  intl: IntlShape
+) => {
+  if (!paymentsTypeOptions) return null
+
+  const paymentTypes = Object.keys(paymentsTypeOptions)
+  const createCheckoutOptions = paymentTypes.reduce(
+    (checkoutOptions, paymentType) => {
+      return {
+        ...checkoutOptions,
+        [paymentType]: {
+          label: intl.formatMessage(messages[paymentType]),
+          checked: paymentsTypeOptions[paymentType],
+          name: paymentType,
+        },
+      }
+    },
+    {} as { string: CheckboxProps }
+  )
+
+  return createCheckoutOptions
+}
+
+export const PaymentOptions = () => {
+  const {
+    appSettings,
+    actions: { dispatch },
+  } = useSettings()
+
+  const intl = useIntl()
+
+  const optionsLabel = createOptionsLabel(
+    appSettings?.paymentOptions?.allowedPaymentTypes,
+    intl
+  )
+
+  const handleEnablePaymentMethodSelection = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const { checked } = e.target
 
-    setAllowSelection(checked)
+    dispatch({
+      type: 'updatePaymentOptions',
+      payload: {
+        enablePaymentMethodSelection: checked,
+        allowedPaymentTypes: appSettings.paymentOptions.allowedPaymentTypes,
+      },
+    })
   }
+
+  const handleOptionSelection = (options: { string: CheckboxProps }) => {
+    const paymentOptions = Object.keys(options)
+
+    const updatedPaymentOptions = paymentOptions.reduce(
+      (acc, paymentOption) => {
+        return {
+          ...acc,
+          [paymentOption]: options[paymentOption].checked,
+        }
+      },
+      {}
+    )
+
+    dispatch({
+      type: 'updatePaymentOptions',
+      payload: {
+        ...appSettings.paymentOptions,
+        allowedPaymentTypes: updatedPaymentOptions,
+      },
+    })
+  }
+
+  const { enablePaymentMethodSelection } = appSettings.paymentOptions ?? {}
 
   return (
     <section>
@@ -47,20 +108,20 @@ export const PaymenthOptions = () => {
       <div className="mb4 mh4">
         <Toggle
           label={
-            allowSelection ? (
+            enablePaymentMethodSelection ? (
               <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.check" />
             ) : (
               <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.uncheck" />
             )
           }
-          checked={allowSelection}
+          checked={enablePaymentMethodSelection}
           semantic
-          onChange={handleToggle}
+          onChange={handleEnablePaymentMethodSelection}
           helpText={
             <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.description" />
           }
         />
-        {allowSelection ? (
+        {enablePaymentMethodSelection && optionsLabel ? (
           <div>
             <h4>
               <FormattedMessage id="admin/return-app.settings.section.payment-options.available-payment-methods.header" />
@@ -70,8 +131,8 @@ export const PaymenthOptions = () => {
               label={
                 <FormattedMessage id="admin/return-app.settings.section.payment-options.available-payment-methods.label" />
               }
-              checkedMap={selectedOptions}
-              onGroupChange={setSelectedOptions}
+              checkedMap={optionsLabel}
+              onGroupChange={handleOptionSelection}
             />
           </div>
         ) : null}
