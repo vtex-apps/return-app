@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
@@ -21,13 +21,26 @@ import { useSettings } from './hooks/useSettings'
 import './styles.settings.css'
 
 export const RMASettings = () => {
-  const { appSettings, loading, error } = useSettings()
-
-  // eslint-disable-next-line no-console
-  console.log({ appSettings })
+  const {
+    appSettings,
+    loading,
+    error,
+    actions: { dispatch },
+  } = useSettings()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+  }
+
+  const handleMaxDaysInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    const maxDays = Number(value)
+
+    if (Number.isNaN(maxDays)) {
+      return
+    }
+
+    dispatch({ type: 'updateMaxDays', payload: maxDays })
   }
 
   return (
@@ -41,7 +54,7 @@ export const RMASettings = () => {
       }
     >
       <PageBlock variation="full">
-        {!error ? (
+        {error ? (
           <EmptyState
             title={
               <FormattedMessage id="admin/return-app.settings.error.header" />
@@ -59,20 +72,22 @@ export const RMASettings = () => {
               <div className="flex flex-row">
                 <div className="w-50 ph1">
                   <Input
-                    value={0}
+                    // logic to avoid leading zero to be persistent in the input
+                    value={appSettings.maxDays === 0 ? '' : appSettings.maxDays}
                     type="number"
                     size="regular"
                     label={
                       <FormattedMessage id="admin/return-app.settings.max-days.label" />
                     }
-                    onChange={() => {}}
+                    onChange={handleMaxDaysInput}
                     errorMessage=""
                     required
                   />
                 </div>
                 <div className="w-50 ph1">
                   <Input
-                    value="/google.com"
+                    value={appSettings.termsUrl}
+                    type="url"
                     size="regular"
                     label={
                       <FormattedMessage id="admin/return-app.settings.terms.label" />

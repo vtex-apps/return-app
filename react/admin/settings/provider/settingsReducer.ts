@@ -76,7 +76,7 @@ export const initialStateAction = (initialState: ReturnAppSettings) => {
   }
 }
 
-type Actions =
+export type Actions =
   | ReturnType<typeof maxDaysAction>
   | ReturnType<typeof excludedCategoriesAction>
   | ReturnType<typeof termsUrlAction>

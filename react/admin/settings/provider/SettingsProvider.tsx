@@ -1,15 +1,18 @@
 import type { ApolloError } from 'apollo-client'
-import type { FC } from 'react'
+import type { FC, Dispatch } from 'react'
 import React, { createContext, useReducer, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import type { ReturnAppSettings } from 'vtex.return-app'
 
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
+import type { Actions } from './settingsReducer'
 import { settingsReducer, initialSettingsState } from './settingsReducer'
 
 interface SettingsContextInterface {
   appSettings: ReturnAppSettings
-  actions: unknown
+  actions: {
+    dispatch: Dispatch<Actions>
+  }
   loading: boolean
   error?: ApolloError
 }
