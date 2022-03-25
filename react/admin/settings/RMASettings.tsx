@@ -8,6 +8,8 @@ import {
   Input,
   Divider,
   Button,
+  Spinner,
+  EmptyState,
 } from 'vtex.styleguide'
 
 import { CustomReasons } from './components/CustomReasons'
@@ -19,10 +21,10 @@ import { useSettings } from './hooks/useSettings'
 import './styles.settings.css'
 
 export const RMASettings = () => {
-  const { data, loading, error } = useSettings()
+  const { appSettings, loading, error } = useSettings()
 
   // eslint-disable-next-line no-console
-  console.log({ data, loading, error })
+  console.log({ appSettings })
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -39,49 +41,64 @@ export const RMASettings = () => {
       }
     >
       <PageBlock variation="full">
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-column">
-            <div className="flex flex-row">
-              <div className="w-50 ph1">
-                <Input
-                  value={0}
-                  size="regular"
-                  label={
-                    <FormattedMessage id="admin/return-app.settings.max-days.label" />
-                  }
-                  onChange={() => {}}
-                  errorMessage=""
-                  required
-                />
-              </div>
-              <div className="w-50 ph1">
-                <Input
-                  value="/google.com"
-                  size="regular"
-                  label={
-                    <FormattedMessage id="admin/return-app.settings.terms.label" />
-                  }
-                  onChange={() => {}}
-                  errorMessage=""
-                  required
-                />
+        {!error ? (
+          <EmptyState
+            title={
+              <FormattedMessage id="admin/return-app.settings.error.header" />
+            }
+          >
+            <p>
+              <FormattedMessage id="admin/return-app.settings.error.description" />
+            </p>
+          </EmptyState>
+        ) : loading ? (
+          <Spinner />
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-column">
+              <div className="flex flex-row">
+                <div className="w-50 ph1">
+                  <Input
+                    value={0}
+                    type="number"
+                    size="regular"
+                    label={
+                      <FormattedMessage id="admin/return-app.settings.max-days.label" />
+                    }
+                    onChange={() => {}}
+                    errorMessage=""
+                    required
+                  />
+                </div>
+                <div className="w-50 ph1">
+                  <Input
+                    value="/google.com"
+                    size="regular"
+                    label={
+                      <FormattedMessage id="admin/return-app.settings.terms.label" />
+                    }
+                    onChange={() => {}}
+                    errorMessage=""
+                    required
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <ExcludedCategories />
-          <Divider />
-          <PaymenthOptions />
-          <Divider />
-          <CustomReasons />
-          <Divider />
-          <GeneralOptions />
-          <Divider />
-          <div className="flex flex-column mt6">
-            <Button variation="primary" type="submit" onClick={() => {}}>
-              <FormattedMessage id="admin/return-app.settings.save.button" />
-            </Button>
-          </div>
-        </form>
+            <ExcludedCategories />
+            <Divider />
+            <PaymenthOptions />
+            <Divider />
+            <CustomReasons />
+            <Divider />
+            <GeneralOptions />
+            <Divider />
+            <div className="flex flex-column mt6">
+              <Button variation="primary" type="submit" onClick={() => {}}>
+                <FormattedMessage id="admin/return-app.settings.save.button" />
+              </Button>
+            </div>
+          </form>
+        )}
       </PageBlock>
     </Layout>
   )

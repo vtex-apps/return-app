@@ -8,7 +8,7 @@ import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import { settingsReducer, initialSettingsState } from './settingsReducer'
 
 interface SettingsContextInterface {
-  data: ReturnAppSettings
+  appSettings: ReturnAppSettings
   actions: unknown
   loading: boolean
   error?: ApolloError
@@ -38,7 +38,7 @@ export const SettingsProvider: FC = ({ children }) => {
 
   return (
     <SettingsContext.Provider
-      value={{ data: appSettings, loading, error, actions: { dispatch } }}
+      value={{ appSettings, loading, error, actions: { dispatch } }}
     >
       {children}
     </SettingsContext.Provider>
