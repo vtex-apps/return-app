@@ -1,7 +1,9 @@
 import type { ChangeEvent } from 'react'
-import React, { useState } from 'react'
+import React from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { Toggle, Divider } from 'vtex.styleguide'
+
+import { useSettings } from '../hooks/useSettings'
 
 const generalOptions = [
   'enableOtherOptionSelection',
@@ -31,16 +33,20 @@ const messages = defineMessages({
 })
 
 export const GeneralOptions = () => {
-  const [selectedOptions, setSelectedOptions] = useState<
-    Record<string, boolean>
-  >({})
+  const {
+    appSettings,
+    actions: { dispatch },
+  } = useSettings()
 
   const intl = useIntl()
 
   const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target
 
-    setSelectedOptions({ ...selectedOptions, [name]: checked })
+    const selectedOption = appSettings.options ?? {}
+    const updatedSelection = { ...selectedOption, [name]: checked }
+
+    dispatch({ type: 'updateOptions', payload: updatedSelection })
   }
 
   return (
@@ -49,25 +55,29 @@ export const GeneralOptions = () => {
         <FormattedMessage id="admin/return-app.settings.section.general-options.header" />
       </h3>
       <div className="mb4 mh4">
-        {generalOptions.map((option, i, self) => {
-          return (
-            <div className="mt4" key={option}>
-              <Toggle
-                name={option}
-                semantic
-                label={intl.formatMessage(messages[`${option}-label`])}
-                helpText={intl.formatMessage(messages[`${option}-description`])}
-                onChange={handleToggle}
-                checked={selectedOptions[option]}
-              />
-              {i === self.length - 1 ? null : (
-                <div className="mv4">
-                  <Divider />
+        {!appSettings?.options
+          ? null
+          : generalOptions.map((option, i, self) => {
+              return (
+                <div className="mt4" key={option}>
+                  <Toggle
+                    name={option}
+                    semantic
+                    label={intl.formatMessage(messages[`${option}-label`])}
+                    helpText={intl.formatMessage(
+                      messages[`${option}-description`]
+                    )}
+                    onChange={handleToggle}
+                    checked={appSettings.options?.[option]}
+                  />
+                  {i === self.length - 1 ? null : (
+                    <div className="mv4">
+                      <Divider />
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )
-        })}
+              )
+            })}
       </div>
     </section>
   )
