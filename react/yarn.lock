@@ -5197,17 +5197,17 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.1/public/@types/vtex.return-app":
+"vtex.return-app@https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648226895/public/@types/vtex.return-app":
   version "3.0.0-beta.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.1/public/@types/vtex.return-app#d6713a6578cba3ee8643e4555114205a71cc64f5"
+  resolved "https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648226895/public/@types/vtex.return-app#da3e9cbb34a7d816ac0d13e70f9d036a0dcb24d0"
 
 "vtex.store-components@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.158.0/public/@types/vtex.store-components":
   version "3.158.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.158.0/public/@types/vtex.store-components#92018e6f735e19ef369358856c26f2d27140db91"
 
-"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.3/public/@types/vtex.store-graphql":
-  version "2.149.3"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.3/public/@types/vtex.store-graphql#f221e93ea4b4fb0867d2256956fd5080b3d24ff5"
+"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.4/public/@types/vtex.store-graphql":
+  version "2.149.4"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.4/public/@types/vtex.store-graphql#8b4eaff2109b5eda3d86d387de5289ff63f93e6b"
 
 "vtex.store-icons@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-icons@0.18.0/public/@types/vtex.store-icons":
   version "0.18.0"
