@@ -15,7 +15,7 @@ export const RequiredOptions = () => {
     const { value } = e.target
     const maxDays = Number(value)
 
-    if (Number.isNaN(maxDays)) {
+    if (Number.isNaN(maxDays) || maxDays < 0) {
       return
     }
 
