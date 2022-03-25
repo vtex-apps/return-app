@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [2.19.2] - 2022-03-24
 ### Fixed
+
+- Prevent undefined price values on verify items by adding property `totalValue` on every scenario.
+
+## [2.19.2] - 2022-03-24
+
+### Fixed
+
 - Allow call center operators to create RMA for store users when impersonating them. Set `userId`, `email`, and `name` from session API when impersonating is happening.
 
 ### Added
