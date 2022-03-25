@@ -14,10 +14,16 @@ import { CustomReasons } from './components/CustomReasons'
 import { ExcludedCategories } from './components/ExcludedCategories'
 import { GeneralOptions } from './components/GeneralOptions'
 import { PaymenthOptions } from './components/PaymentOptions'
+import { useSettings } from './hooks/useSettings'
 
 import './styles.settings.css'
 
 export const RMASettings = () => {
+  const { data, loading, error } = useSettings()
+
+  // eslint-disable-next-line no-console
+  console.log({ data, loading, error })
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
   }
