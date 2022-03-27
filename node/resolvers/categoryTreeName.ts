@@ -4,29 +4,32 @@ const transformCategoryTree = (
   categoryTree: CategoryTree[],
   parentName = ''
 ): CategoryInfo[] => {
-  const result = []
+  const categoryInfoFlatten = []
 
   for (const category of categoryTree) {
     if (!category.hasChildren) {
-      result.push({
+      categoryInfoFlatten.push({
         id: category.id,
         name: parentName ? `${parentName} > ${category.name}` : category.name,
       })
     } else {
-      const pName = parentName
+      const categoryTreeName = parentName
         ? `${parentName} > ${category.name}`
         : category.name
 
-      const group = transformCategoryTree(category.children, pName)
+      const group = transformCategoryTree(category.children, categoryTreeName)
 
-      result.push(...group, { id: category.id, name: pName })
+      categoryInfoFlatten.push(...group, {
+        id: category.id,
+        name: categoryTreeName,
+      })
     }
   }
 
-  return result
+  return categoryInfoFlatten
 }
 
-export const categoryInfo = async (
+export const categoryTreeName = async (
   _: unknown,
   _args: unknown,
   ctx: Context

@@ -4,11 +4,11 @@ import {
   queries as settingsQuery,
   mutations as settingsMutation,
 } from './appSettings'
-import { categoryInfo } from './categoryInfo'
+import { categoryTreeName } from './categoryTreeName'
 
 export const mutations = {
   deleteReturnRequest,
   createReturnRequest,
   ...settingsMutation,
 }
-export const queries = { ...settingsQuery, categoryInfo }
+export const queries = { ...settingsQuery, categoryTreeName }
