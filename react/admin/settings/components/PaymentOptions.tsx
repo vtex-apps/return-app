@@ -34,6 +34,9 @@ const createOptionsLabel = (
   const paymentTypes = Object.keys(paymentsTypeOptions)
   const createCheckoutOptions = paymentTypes.reduce(
     (checkoutOptions, paymentType) => {
+      // This handles the field __typename that comes from the GraphQL query
+      if (!messages[paymentType]) return checkoutOptions
+
       return {
         ...checkoutOptions,
         [paymentType]: {

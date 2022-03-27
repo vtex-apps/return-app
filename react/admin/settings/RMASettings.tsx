@@ -19,10 +19,15 @@ import { RequiredOptions } from './components/RequiredOptions'
 import { useSettings } from './hooks/useSettings'
 
 export const RMASettings = () => {
-  const { loading, error } = useSettings()
+  const {
+    loading,
+    error,
+    actions: { handleSaveAppSettings },
+  } = useSettings()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    handleSaveAppSettings()
   }
 
   return (
