@@ -145,7 +145,7 @@
   "returns.settingsErrorDaysNumber": "Si prega di indicare un numero di giorni",
   "returns.errorFieldRequired": "Questo campo è obbligatorio",
   "returns.paymentsFieldRequired": "Si prega di selezionare almeno un metodo di pagamento",
-  "returns.settingsSaved": "Impostazioni salvate!",
+  "admin/return-app.settings.alert.save.success": "Impostazioni salvate!",
   "returns.settingMin3Chars": "Inserisci almeno 3 caratteri",
   "returns.statusCommentError": "Devi cambiare lo stato attuale o lasciare un commento",
   "returns.addComment": "Aggiungi commento",

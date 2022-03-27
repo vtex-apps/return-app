@@ -2,10 +2,12 @@ import type { ApolloError } from 'apollo-client'
 import type { FC, Dispatch } from 'react'
 import React, { createContext, useReducer, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import type { ReturnAppSettings, ReturnAppSettingsInput } from 'vtex.return-app'
 
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import SAVE_APP_SETTINGS from '../graphql/saveAppSettings.gql'
+import { useAlert } from '../../hooks/userAlert'
 import type { Actions } from './settingsReducer'
 import { settingsReducer, initialSettingsState } from './settingsReducer'
 
@@ -17,6 +19,7 @@ interface SettingsContextInterface {
   }
   loading: boolean
   error?: ApolloError
+  savingAppSettings: boolean
 }
 
 export const SettingsContext = createContext<SettingsContextInterface>(
@@ -29,6 +32,8 @@ export const SettingsProvider: FC = ({ children }) => {
     initialSettingsState
   )
 
+  const { openAlert } = useAlert()
+
   const { data, loading, error } =
     useQuery<{ returnAppSettings: ReturnAppSettings }>(APP_SETTINGS)
 
@@ -36,9 +41,6 @@ export const SettingsProvider: FC = ({ children }) => {
     { saveReturnAppSettings: boolean },
     { settings: ReturnAppSettingsInput }
   >(SAVE_APP_SETTINGS)
-
-  // eslint-disable-next-line no-console
-  console.log({ savingAppSettings })
 
   useEffect(() => {
     if (data?.returnAppSettings) {
@@ -61,16 +63,17 @@ export const SettingsProvider: FC = ({ children }) => {
       }
 
       if (mutationResult?.saveReturnAppSettings) {
-        // feedback to the user
-        // eslint-disable-next-line no-console
-        console.log('saved')
+        openAlert(
+          'success',
+          <FormattedMessage id="admin/return-app.settings.alert.save.success" />
+        )
       }
     } catch {
-      // feedback to the user
-      // eslint-disable-next-line no-console
-      console.log('error')
+      openAlert(
+        'error',
+        <FormattedMessage id="admin/return-app.settings.alert.save.error" />
+      )
     }
-    //
   }
 
   return (
@@ -79,6 +82,7 @@ export const SettingsProvider: FC = ({ children }) => {
         appSettings,
         loading,
         error,
+        savingAppSettings,
         actions: { dispatch, handleSaveAppSettings },
       }}
     >

@@ -128,7 +128,7 @@
   "returns.settingsErrorDaysNumber": "Va rugam furnizati un numar de zile",
   "returns.errorFieldRequired": "Acest camp este obligatoriu",
   "returns.paymentsFieldRequired": "Va rugam selectati cel putin o metoda de plata",
-  "returns.settingsSaved": "Setarile au fost salvate! Veti fi redirectionat in scurt timp",
+  "admin/return-app.settings.alert.save.success": "Setarile au fost salvate! Veti fi redirectionat in scurt timp",
   "returns.settingMin3Chars": "Introduceti cel putin 3 caractere",
   "returns.statusCommentError": "Trebuie sa schimbati starea curenta sau sa lasati un comentariu",
   "returns.addComment": "Adauga comentariu",

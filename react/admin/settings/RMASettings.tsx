@@ -22,6 +22,7 @@ export const RMASettings = () => {
   const {
     loading,
     error,
+    savingAppSettings,
     actions: { handleSaveAppSettings },
   } = useSettings()
 
@@ -66,8 +67,16 @@ export const RMASettings = () => {
             <GeneralOptions />
             <Divider />
             <div className="flex flex-column mt6">
-              <Button variation="primary" type="submit" onClick={() => {}}>
-                <FormattedMessage id="admin/return-app.settings.save.button" />
+              <Button
+                disabled={savingAppSettings}
+                variation="primary"
+                type="submit"
+              >
+                {savingAppSettings ? (
+                  <Spinner size={20} />
+                ) : (
+                  <FormattedMessage id="admin/return-app.settings.save.button" />
+                )}
               </Button>
             </div>
           </form>
