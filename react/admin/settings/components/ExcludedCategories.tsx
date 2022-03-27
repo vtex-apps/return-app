@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useQuery } from 'react-apollo'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { AutocompleteInput, IconWarning } from 'vtex.styleguide'
+import { AutocompleteInput, IconWarning, IconDeny } from 'vtex.styleguide'
 import type { CategoryInfo } from 'vtex.return-app'
 
 import GET_CATEGORY_TREE_INFO from '../graphql/getCategoryTreeName.gql'
+import { useSettings } from '../hooks/useSettings'
 
 interface FilterSearchCategoriesArgs {
   categoryList?: CategoryInfo[]
   term: string
+  excludedCategories: string[]
+}
+
+interface LabelFormat {
+  /**
+   * The category name.
+   */
+  label: string
+  /**
+   * The category id.
+   */
+  value: string
 }
 
 const AUTO_COMPLETE_LIST_SIZE = 10
@@ -16,12 +29,19 @@ const AUTO_COMPLETE_LIST_SIZE = 10
 export const filterSearchCategories = ({
   categoryList,
   term,
-}: FilterSearchCategoriesArgs): Array<{ label: string; value: string }> => {
+  excludedCategories,
+}: FilterSearchCategoriesArgs): LabelFormat[] => {
   if (!categoryList) {
     return []
   }
 
-  const formattedLabels = categoryList.map(({ id, name }) => {
+  const removeExcluded = categoryList.filter(({ id }) => {
+    if (!id) return false
+
+    return !excludedCategories.includes(id)
+  })
+
+  const formattedLabels = removeExcluded.map(({ id, name }) => {
     return {
       label: `${id} - ${name}`,
       value: id as string,
@@ -35,15 +55,52 @@ export const filterSearchCategories = ({
 
 export const ExcludedCategories = () => {
   const [searchedCategory, setSearchedCategory] = React.useState('')
+  const {
+    appSettings: { excludedCategories },
+    actions: { dispatch },
+  } = useSettings()
+
   const intl = useIntl()
   const { data, loading, error } = useQuery<{
     categoryTreeName: CategoryInfo[]
   }>(GET_CATEGORY_TREE_INFO)
 
+  const categoryNamesMap = useMemo(() => {
+    if (!data) {
+      return {}
+    }
+
+    const { categoryTreeName } = data
+
+    return categoryTreeName.reduce((categoryMap, { id, name }) => {
+      if (id) {
+        categoryMap[id] = name
+      }
+
+      return categoryMap
+    }, {})
+  }, [data])
+
   const listOfOptions = filterSearchCategories({
     categoryList: data?.categoryTreeName,
     term: searchedCategory,
+    excludedCategories,
   })
+
+  const handleCategorySelection = (e: LabelFormat) => {
+    dispatch({
+      type: 'updateExcludedCategories',
+      payload: [...excludedCategories, e.value],
+    })
+    setSearchedCategory('')
+  }
+
+  const handleDeleteExcludedCategory = (categoryId: string) => {
+    dispatch({
+      type: 'updateExcludedCategories',
+      payload: excludedCategories.filter((id) => id !== categoryId),
+    })
+  }
 
   return (
     <div className="flex flex-column mb6">
@@ -63,7 +120,7 @@ export const ExcludedCategories = () => {
             disabled: error,
           }}
           options={{
-            onSelect: () => {},
+            onSelect: handleCategorySelection,
             value: !searchedCategory.length
               ? []
               : listOfOptions.slice(0, AUTO_COMPLETE_LIST_SIZE),
@@ -84,6 +141,32 @@ export const ExcludedCategories = () => {
           }}
         />
       </div>
+
+      {!excludedCategories.length ? null : (
+        <ul>
+          {excludedCategories.map((categoryId) => {
+            const categoryName = categoryNamesMap[categoryId]
+
+            return (
+              <li key={categoryId}>
+                <span className="flex items-center">
+                  <p>{`${categoryId} - ${categoryName}`}</p>
+                  <button
+                    className="pointer mh4 bg-transparent c-danger"
+                    style={{
+                      border: 'none',
+                    }}
+                    type="button"
+                    onClick={() => handleDeleteExcludedCategory(categoryId)}
+                  >
+                    <IconDeny size={12} />
+                  </button>
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }
