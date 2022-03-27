@@ -29,7 +29,7 @@ export const RequiredOptions = () => {
   }
 
   return (
-    <div className="flex flex-column">
+    <section className="mb6 flex flex-column">
       <div className="flex flex-row">
         <div className="w-50 ph1">
           <Input
@@ -59,6 +59,6 @@ export const RequiredOptions = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   )
 }

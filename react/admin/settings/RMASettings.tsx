@@ -18,8 +18,6 @@ import { PaymentOptions } from './components/PaymentOptions'
 import { RequiredOptions } from './components/RequiredOptions'
 import { useSettings } from './hooks/useSettings'
 
-import './styles.settings.css'
-
 export const RMASettings = () => {
   const { loading, error } = useSettings()
 
@@ -53,6 +51,7 @@ export const RMASettings = () => {
         ) : (
           <form onSubmit={handleSubmit}>
             <RequiredOptions />
+            <Divider />
             <ExcludedCategories />
             <Divider />
             <PaymentOptions />

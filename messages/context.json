@@ -24,6 +24,7 @@
   "admin/return-app.settings.section.general-options.enable-pickup-points.description": "Allow user drop off items at pickup points",
   "admin/return-app.settings.section.general-options.enable-proportional-shipping-value.label": "Proportional shippping value",
   "admin/return-app.settings.section.general-options.enable-proportional-shipping-value.description": "Calculate proportional shipping value for every item returned",
+  "admin/return-app.settings.section-excluded-categories.fetch-data-error": "Error loading categories",
   "returns.sequenceNo": "Sequence No",
   "admin/return-app.settings.save.button": "Save settings",
   "settings.noCustomOptions": "No options recorded",
