@@ -234,6 +234,14 @@ class MyReturnsPageAdd extends Component<Props, State> {
         return false
       }
 
+      const { email, firstName, lastName, id } = impersonate.namespaces.profile
+
+      this.setState({
+        userId: id.value,
+        email: email.value,
+        name: `${firstName.value} ${lastName.value}`,
+      })
+
       profile.Email = impersonate.namespaces.impersonate.storeUserEmail.value
     }
 

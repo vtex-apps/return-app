@@ -655,9 +655,6 @@ class RequestForm extends Component<Props, State> {
                   )}
                   {this.props.settings.enablePickupPoints ? (
                     <Toggle
-                      label={
-                        this.state.isPickupPointsSelected ? '' : 'Pickup Points'
-                      }
                       checked={this.state.isPickupPointsSelected}
                       onChange={this.handleSelectedToggleAddress}
                     />
@@ -683,6 +680,7 @@ class RequestForm extends Component<Props, State> {
                         })}
                         onChange={handleInputChange}
                         value={formInputs.address}
+                        disabled
                         errorMessage={
                           errors.address
                             ? formatMessage({ id: errors.address })
@@ -698,6 +696,7 @@ class RequestForm extends Component<Props, State> {
                         })}
                         onChange={handleInputChange}
                         value={formInputs.locality}
+                        disabled
                         errorMessage={
                           errors.locality
                             ? formatMessage({ id: errors.locality })
@@ -713,6 +712,7 @@ class RequestForm extends Component<Props, State> {
                         })}
                         onChange={handleInputChange}
                         value={formInputs.state || ''}
+                        disabled
                         errorMessage={
                           errors.state
                             ? formatMessage({ id: errors.state })
@@ -726,6 +726,7 @@ class RequestForm extends Component<Props, State> {
                         placeholder={formatMessage({ id: messages.formZip.id })}
                         onChange={handleInputChange}
                         value={formInputs.zip || ''}
+                        disabled
                         errorMessage={
                           errors.zip ? formatMessage({ id: errors.zip }) : ''
                         }
@@ -739,6 +740,7 @@ class RequestForm extends Component<Props, State> {
                         })}
                         onChange={handleInputChange}
                         value={formInputs.country}
+                        disabled
                         errorMessage={
                           errors.country
                             ? formatMessage({ id: errors.country })
