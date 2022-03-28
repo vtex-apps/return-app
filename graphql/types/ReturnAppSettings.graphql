@@ -3,7 +3,7 @@ type ReturnAppSettings {
   excludedCategories: [String!]!
   paymentOptions: PaymentOptions!
   termsUrl: String!
-  customReturnReasons: [CustomReturnReason]
+  customReturnReasons: [CustomReturnReason!]
   options: ReturnOption
 }
 
@@ -40,7 +40,7 @@ input ReturnAppSettingsInput {
   excludedCategories: [String!]!
   paymentOptions: PaymentOptionsInput!
   termsUrl: String!
-  customReturnReasons: [CustomReturnReasonInput]
+  customReturnReasons: [CustomReturnReasonInput!]
   options: ReturnOptionInput
 }
 

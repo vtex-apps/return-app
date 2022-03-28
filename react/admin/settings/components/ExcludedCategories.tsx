@@ -26,7 +26,7 @@ interface LabelFormat {
 
 const AUTO_COMPLETE_LIST_SIZE = 10
 
-export const filterSearchCategories = ({
+const filterSearchCategories = ({
   categoryList,
   term,
   excludedCategories,

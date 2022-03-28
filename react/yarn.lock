@@ -5197,9 +5197,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648369063/public/@types/vtex.return-app":
+"vtex.return-app@https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648461272/public/@types/vtex.return-app":
   version "3.0.0-beta.1"
-  resolved "https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648369063/public/@types/vtex.return-app#109f0610ae0759cb2970036485765d5a39513b15"
+  resolved "https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648461272/public/@types/vtex.return-app#be406668feac4264b32db5bcb2c8167445d32b3a"
 
 "vtex.store-components@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.158.0/public/@types/vtex.store-components":
   version "3.158.0"

@@ -13,20 +13,23 @@ export const AlertContext = createContext<AlertContextInterface>(
 )
 
 export const AlertProvider: FC = ({ children }) => {
-  const [open, setOpen] = useState<AlertStatus | ''>('')
-  const [message, setMessage] = useState<string>('')
+  const [alertStatus, setAlertStatus] = useState<AlertStatus | ''>('')
+  const [message, setMessage] = useState<string | ReactElement>('')
 
-  const openAlert = (status: AlertStatus, alertMessage) => {
-    setOpen(status)
+  const openAlert = (
+    status: AlertStatus,
+    alertMessage: string | ReactElement
+  ) => {
+    setAlertStatus(status)
     setMessage(alertMessage)
   }
 
   const handleClose = useCallback(() => {
-    if (open) {
-      setOpen('')
+    if (alertStatus) {
+      setAlertStatus('')
       setMessage('')
     }
-  }, [open])
+  }, [alertStatus])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -36,17 +39,17 @@ export const AlertProvider: FC = ({ children }) => {
     return () => {
       clearTimeout(timeout)
     }
-  }, [handleClose, open])
+  }, [handleClose, alertStatus])
 
   return (
     <AlertContext.Provider value={{ openAlert }}>
-      {open ? (
+      {alertStatus ? (
         <div className="w-100 fixed z-max overflow-hidden">
           <div
             className="mt7"
             style={{ maxWidth: '520px', margin: '2rem auto' }}
           >
-            <Alert type="success" onClose={handleClose}>
+            <Alert type={alertStatus} onClose={handleClose}>
               {message}
             </Alert>
           </div>
