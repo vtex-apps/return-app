@@ -38,6 +38,7 @@
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.max-days.label": "Maximum return days",
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.max-days.placeholder": "Enter maximum return days",
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.add-new.button": "ADD OPTION",
+  "admin/return-app.settings.section.custom-reasons.modal.custom-reason.edit.button": "EDIT OPTION",
   "admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.confirm": "Delete",
   "admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.cancel": "Cancel",
   "admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.message": "Do you want to delete <b>{reason}</b> and its translations?",

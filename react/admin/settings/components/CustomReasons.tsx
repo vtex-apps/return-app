@@ -9,7 +9,7 @@ import {
 } from 'vtex.styleguide'
 
 import { useSettings } from '../hooks/useSettings'
-import { NewReasonModal } from './NewReasonModal'
+import { NewReasonModal } from './CustomReasonModal'
 
 const addIndexToCustomReason = (
   customReturnReasons: CustomReturnReason[] | undefined | null
@@ -32,19 +32,26 @@ const tableSchema = {
 
 interface LineActionsArgs {
   handleDeleteCustomReason: (reason: number) => void
+  handleEditCustomReason: (customReason: CustomReasonWithIndex) => void
 }
+
+export type CustomReasonWithIndex = ReturnType<
+  typeof addIndexToCustomReason
+>[number]
 
 interface RowData {
-  rowData: ReturnType<typeof addIndexToCustomReason>[number]
+  rowData: CustomReasonWithIndex
 }
 
-const lineActions = ({ handleDeleteCustomReason }: LineActionsArgs) => {
+const lineActions = ({
+  handleDeleteCustomReason,
+  handleEditCustomReason,
+}: LineActionsArgs) => {
   return [
     {
       label: () => 'Edit',
       onClick: ({ rowData }: RowData) => {
-        // eslint-disable-next-line no-console
-        console.log('Edit', rowData)
+        handleEditCustomReason(rowData)
       },
     },
     {
@@ -67,6 +74,9 @@ const lineActions = ({ handleDeleteCustomReason }: LineActionsArgs) => {
 export const CustomReasons = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null)
+  const [customReasonToEdit, setCustomReasonToEdit] =
+    useState<CustomReasonWithIndex | null>(null)
+
   const {
     appSettings: { customReturnReasons },
     actions: { dispatch },
@@ -74,6 +84,16 @@ export const CustomReasons = () => {
 
   const handleDeleteCustomReason = (reasonIndex: number) => {
     setIndexToDelete(reasonIndex)
+  }
+
+  const handleEditCustomReason = (customReason: CustomReasonWithIndex) => {
+    setCustomReasonToEdit(customReason)
+    setIsOpen(true)
+  }
+
+  const handleCloseCustomReasonModal = () => {
+    setCustomReasonToEdit(null)
+    setIsOpen(false)
   }
 
   const confirmDelete = () => {
@@ -110,7 +130,10 @@ export const CustomReasons = () => {
           schema={tableSchema}
           // Add index to custom reasons so it can be used on edit and delete operations
           items={addIndexToCustomReason(customReturnReasons)}
-          lineActions={lineActions({ handleDeleteCustomReason })}
+          lineActions={lineActions({
+            handleDeleteCustomReason,
+            handleEditCustomReason,
+          })}
           emptyStateLabel={
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.empty-custom-reasons" />
           }
@@ -126,7 +149,11 @@ export const CustomReasons = () => {
           }
         />
       </div>
-      <NewReasonModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <NewReasonModal
+        isOpen={isOpen}
+        onClose={handleCloseCustomReasonModal}
+        editing={customReasonToEdit}
+      />
       {/* it has to check === null because indexToDelete can be zero */}
       {indexToDelete === null ? null : (
         <ModalDialog

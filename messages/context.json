@@ -41,6 +41,7 @@
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.max-days.label": "Maximum return days",
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.max-days.placeholder": "Enter maximum return days",
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.add-new.button": "ADD OPTION",
+  "admin/return-app.settings.section.custom-reasons.modal.custom-reason.edit.button": "EDIT OPTION",
   "settings.otherOptions": "Other Option",
   "settings.otherOptions_enable": "Enable Other Option",
   "returns.orderId": "Order ID",

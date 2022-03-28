@@ -1,17 +1,23 @@
 import type { ChangeEvent, FormEvent } from 'react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import type { CustomReturnReason } from 'vtex.return-app'
 import { Modal, Input, Button } from 'vtex.styleguide'
 
 import { useSettings } from '../hooks/useSettings'
+import type { CustomReasonWithIndex } from './CustomReasons'
 
 interface NewReasonModalProps {
   isOpen: boolean
   onClose: () => void
+  editing: CustomReasonWithIndex | null
 }
 
-export const NewReasonModal = ({ isOpen, onClose }: NewReasonModalProps) => {
+export const NewReasonModal = ({
+  isOpen,
+  onClose,
+  editing,
+}: NewReasonModalProps) => {
   const {
     appSettings: { maxDays, customReturnReasons },
     actions: { dispatch },
@@ -22,6 +28,16 @@ export const NewReasonModal = ({ isOpen, onClose }: NewReasonModalProps) => {
   )
 
   const intl = useIntl()
+
+  useEffect(() => {
+    if (!editing) return
+    // editing has index property, not accepted by Graphql.
+    setTempReason({
+      reason: editing.reason,
+      maxDays: editing.maxDays,
+      translations: editing.translations,
+    })
+  }, [editing])
 
   const handleTempReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
@@ -40,11 +56,28 @@ export const NewReasonModal = ({ isOpen, onClose }: NewReasonModalProps) => {
   const handleAddNewReason = (e: FormEvent) => {
     e.preventDefault()
     e.stopPropagation()
+
+    let payload: CustomReturnReason[]
+
+    if (editing) {
+      payload =
+        customReturnReasons?.map((reason, i) => {
+          if (i === editing.index) {
+            return tempReason
+          }
+
+          return reason
+        }) ?? []
+    } else {
+      // Adding new one
+      payload = customReturnReasons
+        ? [...customReturnReasons, tempReason]
+        : [tempReason]
+    }
+
     dispatch({
       type: 'updateCustomReturnReasons',
-      payload: customReturnReasons
-        ? [...customReturnReasons, tempReason]
-        : [tempReason],
+      payload,
     })
     handleCloseModal()
   }
@@ -96,7 +129,11 @@ export const NewReasonModal = ({ isOpen, onClose }: NewReasonModalProps) => {
               />
             </div>
             <Button type="submit">
-              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.custom-reason.add-new.button" />
+              {editing ? (
+                <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.custom-reason.edit.button" />
+              ) : (
+                <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.custom-reason.add-new.button" />
+              )}
             </Button>
           </form>
         </div>
