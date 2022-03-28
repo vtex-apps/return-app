@@ -1,9 +1,23 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { ButtonWithIcon, IconPlusLines, Table } from 'vtex.styleguide'
+import type { CustomReturnReason } from 'vtex.return-app'
+import {
+  ButtonWithIcon,
+  IconPlusLines,
+  Table,
+  ModalDialog,
+} from 'vtex.styleguide'
 
 import { useSettings } from '../hooks/useSettings'
 import { NewReasonModal } from './NewReasonModal'
+
+const addIndexToCustomReason = (
+  customReturnReasons: CustomReturnReason[] | undefined | null
+) =>
+  customReturnReasons?.map((reason, i) => ({
+    ...reason,
+    index: i,
+  })) ?? []
 
 const tableSchema = {
   properties: {
@@ -16,11 +30,64 @@ const tableSchema = {
   },
 }
 
+interface LineActionsArgs {
+  handleDeleteCustomReason: (reason: number) => void
+}
+
+interface RowData {
+  rowData: ReturnType<typeof addIndexToCustomReason>[number]
+}
+
+const lineActions = ({ handleDeleteCustomReason }: LineActionsArgs) => {
+  return [
+    {
+      label: () => 'Edit',
+      onClick: ({ rowData }: RowData) => {
+        // eslint-disable-next-line no-console
+        console.log('Edit', rowData)
+      },
+    },
+    {
+      label: () => 'Delete',
+      isDangerous: true,
+      onClick: ({ rowData }: RowData) => {
+        handleDeleteCustomReason(rowData.index)
+      },
+    },
+    {
+      label: () => 'Translations',
+      onClick: ({ rowData }: RowData) => {
+        // eslint-disable-next-line no-console
+        console.log('Translations', { rowData })
+      },
+    },
+  ]
+}
+
 export const CustomReasons = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [indexToDelete, setIndexToDelete] = useState<number | null>(null)
   const {
     appSettings: { customReturnReasons },
+    actions: { dispatch },
   } = useSettings()
+
+  const handleDeleteCustomReason = (reasonIndex: number) => {
+    setIndexToDelete(reasonIndex)
+  }
+
+  const confirmDelete = () => {
+    const newCustomReturnReasons = customReturnReasons?.filter(
+      (_, i) => i !== indexToDelete
+    )
+
+    setIndexToDelete(null)
+
+    dispatch({
+      type: 'updateCustomReturnReasons',
+      payload: newCustomReturnReasons ?? [],
+    })
+  }
 
   return (
     <section>
@@ -41,7 +108,9 @@ export const CustomReasons = () => {
         <Table
           fullWidth
           schema={tableSchema}
-          items={customReturnReasons ?? []}
+          // Add index to custom reasons so it can be used on edit and delete operations
+          items={addIndexToCustomReason(customReturnReasons)}
+          lineActions={lineActions({ handleDeleteCustomReason })}
           emptyStateLabel={
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.empty-custom-reasons" />
           }
@@ -58,6 +127,38 @@ export const CustomReasons = () => {
         />
       </div>
       <NewReasonModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {/* it has to check === null because indexToDelete can be zero */}
+      {indexToDelete === null ? null : (
+        <ModalDialog
+          centered
+          isOpen={indexToDelete !== null}
+          onClose={() => setIndexToDelete(null)}
+          confirmation={{
+            label: (
+              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.confirm" />
+            ),
+            onClick: confirmDelete,
+            isDangerous: true,
+          }}
+          cancelation={{
+            label: (
+              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.cancel" />
+            ),
+            onClick: () => setIndexToDelete(null),
+          }}
+        >
+          <p className="f3 fw3 f3-ns">
+            <FormattedMessage
+              id="admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.message"
+              values={{
+                reason: customReturnReasons?.[indexToDelete]?.reason,
+                // eslint-disable-next-line react/display-name
+                b: (chunks: string) => <b>{chunks}</b>,
+              }}
+            />
+          </p>
+        </ModalDialog>
+      )}
     </section>
   )
 }
