@@ -124,7 +124,6 @@ export const SETTINGS_SCHEMA = {
     'termsUrl',
     'options',
     'enableOtherOption',
-    'enablePickupPoints',
     'hidePaymentMethodSelection',
     'type',
     // returns
