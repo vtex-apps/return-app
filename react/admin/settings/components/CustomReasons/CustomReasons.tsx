@@ -9,7 +9,8 @@ import {
 } from 'vtex.styleguide'
 
 import { useSettings } from '../../hooks/useSettings'
-import { NewReasonModal } from './CustomReasonModal'
+import { CustomReasonModal } from './CustomReasonModal'
+import { TranslationsMoldal } from './TranslationsMoldal'
 
 const addIndexToCustomReason = (
   customReturnReasons: CustomReturnReason[] | undefined | null
@@ -72,7 +73,7 @@ const lineActions = ({
 }
 
 export const CustomReasons = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false)
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null)
   const [customReasonToEdit, setCustomReasonToEdit] =
     useState<CustomReasonWithIndex | null>(null)
@@ -88,12 +89,12 @@ export const CustomReasons = () => {
 
   const handleEditCustomReason = (customReason: CustomReasonWithIndex) => {
     setCustomReasonToEdit(customReason)
-    setIsOpen(true)
+    setIsCustomModalOpen(true)
   }
 
   const handleCloseCustomReasonModal = () => {
     setCustomReasonToEdit(null)
-    setIsOpen(false)
+    setIsCustomModalOpen(false)
   }
 
   const confirmDelete = () => {
@@ -117,7 +118,7 @@ export const CustomReasons = () => {
         </h3>
         <span>
           <ButtonWithIcon
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsCustomModalOpen(true)}
             icon={<IconPlusLines />}
           >
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.add.button" />
@@ -149,8 +150,8 @@ export const CustomReasons = () => {
           }
         />
       </div>
-      <NewReasonModal
-        isOpen={isOpen}
+      <CustomReasonModal
+        isOpen={isCustomModalOpen}
         onClose={handleCloseCustomReasonModal}
         editing={customReasonToEdit}
       />
@@ -186,6 +187,7 @@ export const CustomReasons = () => {
           </p>
         </ModalDialog>
       )}
+      <TranslationsMoldal />
     </section>
   )
 }

@@ -7,17 +7,17 @@ import { Modal, Input, Button } from 'vtex.styleguide'
 import { useSettings } from '../../hooks/useSettings'
 import type { CustomReasonWithIndex } from './CustomReasons'
 
-interface NewReasonModalProps {
+interface CustomReasonModalProps {
   isOpen: boolean
   onClose: () => void
   editing: CustomReasonWithIndex | null
 }
 
-export const NewReasonModal = ({
+export const CustomReasonModal = ({
   isOpen,
   onClose,
   editing,
-}: NewReasonModalProps) => {
+}: CustomReasonModalProps) => {
   const {
     appSettings: { maxDays, customReturnReasons },
     actions: { dispatch },
