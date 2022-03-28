@@ -447,6 +447,13 @@ class ReturnForm extends Component<any, any> {
       }
     }
 
+    for (const productItem of newProducts) {
+      // Can´t use hasOwnProperty directly because of the eslint rule 'no-prototype-builtins' prevents calling Object.prototype methods directly from an object.
+      if (!Object.prototype.hasOwnProperty.call(productItem, 'totalValue')) {
+        productItem.totalValue = productItem.totalPrice / 100
+      }
+    }
+
     this.setState((prevState) => ({
       ...prevState,
       product: newProducts,
