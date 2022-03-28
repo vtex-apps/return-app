@@ -8,7 +8,7 @@ import {
   ModalDialog,
 } from 'vtex.styleguide'
 
-import { useSettings } from '../hooks/useSettings'
+import { useSettings } from '../../hooks/useSettings'
 import { NewReasonModal } from './CustomReasonModal'
 
 const addIndexToCustomReason = (

@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import type { CustomReturnReason } from 'vtex.return-app'
 import { Modal, Input, Button } from 'vtex.styleguide'
 
-import { useSettings } from '../hooks/useSettings'
+import { useSettings } from '../../hooks/useSettings'
 import type { CustomReasonWithIndex } from './CustomReasons'
 
 interface NewReasonModalProps {
