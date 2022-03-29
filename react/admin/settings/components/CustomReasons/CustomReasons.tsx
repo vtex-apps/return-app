@@ -11,7 +11,7 @@ import {
 
 import { useSettings } from '../../hooks/useSettings'
 import { CustomReasonModal } from './CustomReasonModal'
-import { TranslationsMoldal } from './TranslationsMoldal'
+import { TranslationsModal } from './TranslationsModal'
 
 const addIndexToCustomReason = (
   customReturnReasons: CustomReturnReason[] | undefined | null
@@ -203,7 +203,7 @@ export const CustomReasons = () => {
           </p>
         </ModalDialog>
       )}
-      <TranslationsMoldal
+      <TranslationsModal
         customReasonOnFocus={customReasonToEdit}
         isOpen={modalOpen === 'translations'}
         onClose={handleStateCleanup}

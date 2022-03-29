@@ -81,17 +81,17 @@ const tableSchema = (
   },
 })
 
-interface TranslationsMoldalProps {
+interface TranslationsModalProps {
   isOpen: boolean
   onClose: () => void
   customReasonOnFocus: CustomReasonWithIndex | null
 }
 
-export const TranslationsMoldal = ({
+export const TranslationsModal = ({
   customReasonOnFocus,
   isOpen,
   onClose,
-}: TranslationsMoldalProps) => {
+}: TranslationsModalProps) => {
   const [tempTranslations, setTempTranslations] = useState<
     CustomReturnReasonTranslation[]
   >([])
