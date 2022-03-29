@@ -76,6 +76,7 @@ class ReturnForm extends Component<any, any> {
       request: {},
       enableProportionalShippingValue: false,
       disableSetManualShippingValue: false,
+      quantityAndProductsSelected: [],
       comment: [],
       product: [],
       productsForm: [],
@@ -96,6 +97,7 @@ class ReturnForm extends Component<any, any> {
       showLabelError: false,
       labelDisabled: false,
       totalAmount: 0,
+      orderTotalPrice: 0,
     }
   }
 
@@ -201,7 +203,9 @@ class ReturnForm extends Component<any, any> {
     ).then((request) => {
       if (request[0].refundedShippingValue) {
         this.setState({
-          refundedShippingValue: request[0].refundedShippingValue,
+          refundedShippingValue: (
+            request[0].refundedShippingValue / 100
+          ).toFixed(2),
         })
       }
 
@@ -365,6 +369,7 @@ class ReturnForm extends Component<any, any> {
           .then((response) => response.json())
           .then((res) => {
             taxItems = res.items
+
             this.setState({
               totalShippingValue: (
                 res.totals.find((total) => total.id === 'Shipping').value / 100
@@ -373,25 +378,11 @@ class ReturnForm extends Component<any, any> {
 
             // Calculate proportional shipping value if its enable on return settings.
             if (this.state.enableProportionalShippingValue) {
-              const totalShipping = res.totals.find((total) => {
-                return total.id === 'Shipping'
-              })
+              const orderTotalPrice = res.items.reduce((total, item) => {
+                return total + item.quantity * item.sellingPrice
+              }, 0)
 
-              const totalTax = res.totals.find((total) => {
-                return total.id === 'Tax'
-              })
-
-              const calculateReturnItemsPercentage =
-                (request.totalPrice * 100) / (res.value - totalTax.value)
-
-              const calculateProportionalShippingCost =
-                (calculateReturnItemsPercentage * totalShipping.value) / 100
-
-              const refundedShippingValue = (
-                calculateProportionalShippingCost / 100
-              ).toFixed(2)
-
-              this.setState({ refundedShippingValue })
+              this.setState({ orderTotalPrice })
               this.setState({ disableSetManualShippingValue: true })
             }
 
@@ -675,8 +666,7 @@ class ReturnForm extends Component<any, any> {
     }
 
     if (this.state.enableProportionalShippingValue) {
-      console.log({ quantityInput })
-      console.log(product)
+      this.handleCalculateProportionalShippingValue(product, quantityInput)
     }
 
     this.setState((prevState) => ({
@@ -694,6 +684,48 @@ class ReturnForm extends Component<any, any> {
           : el
       ),
     }))
+  }
+
+  handleCalculateProportionalShippingValue(product, quantityInput) {
+    const filterDifferents = this.state.quantityAndProductsSelected.filter(
+      (item) => {
+        return item.productId !== product.productId
+      }
+    )
+
+    if (quantityInput) {
+      this.setState({
+        quantityAndProductsSelected: [
+          ...filterDifferents,
+          {
+            productId: product.productId,
+            unitPrice: product.unitPrice,
+            productQuantity: quantityInput,
+          },
+        ],
+      })
+    } else {
+      this.setState({
+        quantityAndProductsSelected: [...filterDifferents],
+      })
+    }
+
+    const totalProdAndQuantity = filterDifferents.reduce((acc, productItem) => {
+      return acc + productItem.unitPrice
+    }, 0)
+
+    const calculateProportionalShippingCost =
+      ((totalProdAndQuantity + product.unitPrice * quantityInput) *
+        this.state.totalShippingValue) /
+      this.state.orderTotalPrice
+
+    const refundedShippingValue = Number(
+      calculateProportionalShippingCost
+    ).toFixed(2)
+
+    this.setState({
+      refundedShippingValue,
+    })
   }
 
   handleRestockValue(product: any, restockValue: any) {
@@ -731,6 +763,7 @@ class ReturnForm extends Component<any, any> {
 
   verifyPackage() {
     const { request, productsForm, refundedShippingValue } = this.state
+
     let refundedAmount = (refundedShippingValue || 0) * 100 || 0
 
     productsForm.forEach((currentProduct) => {
