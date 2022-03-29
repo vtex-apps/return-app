@@ -52,7 +52,6 @@ export const SettingsProvider: FC = ({ children }) => {
   }, [data])
 
   const handleSaveAppSettings = async () => {
-    // validate the form
     try {
       const { data: mutationResult, errors } = await saveAppSettings({
         variables: { settings: appSettings },
