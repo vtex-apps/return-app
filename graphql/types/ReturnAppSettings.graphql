@@ -59,7 +59,6 @@ input CustomReturnReasonInput {
   reason: String!
   maxDays: Int!
   translations: [CustomReturnReasonTranslationInput!]
-    @hasUniqueValues(field: "locale")
 }
 
 input CustomReturnReasonTranslationInput {

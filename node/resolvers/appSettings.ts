@@ -6,6 +6,7 @@ import type {
 import {
   validateMaxDaysCustomReasons,
   validatePaymentOptions,
+  valideteUniqueCustomReasonsPerLocale,
 } from '../utils/appSettingsValidation'
 
 const SETTINGS_PATH = 'app-settings'
@@ -31,21 +32,17 @@ const saveReturnAppSettings = async (
     clients: { appSettings },
   } = ctx
 
-  if (
-    !validateMaxDaysCustomReasons(
-      args.settings.maxDays,
-      args.settings.customReturnReasons ?? []
-    )
-  ) {
-    throw new Error(
-      'A custom reason cannot have a max days greater than the general max days'
-    )
-  }
+  // validate if all custom reasons have max days smaller than the general max days
+  validateMaxDaysCustomReasons(
+    args.settings.maxDays,
+    args.settings.customReturnReasons ?? []
+  )
+
+  // validate if all custom reasons have unique locales for their translations
+  valideteUniqueCustomReasonsPerLocale(args.settings.customReturnReasons)
 
   // validate that there is at least one payment method selected or user has to use the same as in the order
-  if (!validatePaymentOptions(args.settings.paymentOptions)) {
-    throw new Error('At least one payment method must be selected')
-  }
+  validatePaymentOptions(args.settings.paymentOptions)
 
   await appSettings.save(SETTINGS_PATH, args.settings)
 

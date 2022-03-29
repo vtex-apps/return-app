@@ -1,1 +1,0 @@
-directive @hasUniqueValues(field: String) on INPUT_FIELD_DEFINITION
