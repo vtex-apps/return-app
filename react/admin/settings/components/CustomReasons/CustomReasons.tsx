@@ -23,10 +23,14 @@ const addIndexToCustomReason = (
 const tableSchema = {
   properties: {
     reason: {
-      title: 'Reason',
+      title: (
+        <FormattedMessage id="admin/return-app.settings.section.custom-reasons.table.header.reason" />
+      ),
     },
     maxDays: {
-      title: 'Max days',
+      title: (
+        <FormattedMessage id="admin/return-app.settings.section.custom-reasons.table.header.max-days" />
+      ),
     },
   },
 }
@@ -34,6 +38,7 @@ const tableSchema = {
 interface LineActionsArgs {
   handleDeleteCustomReason: (reason: number) => void
   handleEditCustomReason: (customReason: CustomReasonWithIndex) => void
+  handleOpenTranslations: (customReason: CustomReasonWithIndex) => void
 }
 
 export type CustomReasonWithIndex = ReturnType<
@@ -47,6 +52,7 @@ interface RowData {
 const lineActions = ({
   handleDeleteCustomReason,
   handleEditCustomReason,
+  handleOpenTranslations,
 }: LineActionsArgs) => {
   return [
     {
@@ -65,15 +71,17 @@ const lineActions = ({
     {
       label: () => 'Translations',
       onClick: ({ rowData }: RowData) => {
-        // eslint-disable-next-line no-console
-        console.log('Translations', { rowData })
+        handleOpenTranslations(rowData)
       },
     },
   ]
 }
 
 export const CustomReasons = () => {
-  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState<
+    'add' | 'edit' | 'translations' | ''
+  >('')
+
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null)
   const [customReasonToEdit, setCustomReasonToEdit] =
     useState<CustomReasonWithIndex | null>(null)
@@ -89,12 +97,17 @@ export const CustomReasons = () => {
 
   const handleEditCustomReason = (customReason: CustomReasonWithIndex) => {
     setCustomReasonToEdit(customReason)
-    setIsCustomModalOpen(true)
+    setModalOpen('edit')
   }
 
-  const handleCloseCustomReasonModal = () => {
+  const handleOpenTranslations = (customReason: CustomReasonWithIndex) => {
+    setCustomReasonToEdit(customReason)
+    setModalOpen('translations')
+  }
+
+  const handleStateCleanup = () => {
     setCustomReasonToEdit(null)
-    setIsCustomModalOpen(false)
+    setModalOpen('')
   }
 
   const confirmDelete = () => {
@@ -118,7 +131,7 @@ export const CustomReasons = () => {
         </h3>
         <span>
           <ButtonWithIcon
-            onClick={() => setIsCustomModalOpen(true)}
+            onClick={() => setModalOpen('add')}
             icon={<IconPlusLines />}
           >
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.add.button" />
@@ -134,6 +147,7 @@ export const CustomReasons = () => {
           lineActions={lineActions({
             handleDeleteCustomReason,
             handleEditCustomReason,
+            handleOpenTranslations,
           })}
           emptyStateLabel={
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.empty-custom-reasons" />
@@ -151,11 +165,12 @@ export const CustomReasons = () => {
         />
       </div>
       <CustomReasonModal
-        isOpen={isCustomModalOpen}
-        onClose={handleCloseCustomReasonModal}
-        editing={customReasonToEdit}
+        isOpen={modalOpen === 'add' || modalOpen === 'edit'}
+        modalOpen={modalOpen}
+        onClose={handleStateCleanup}
+        customReasonOnFocus={customReasonToEdit}
       />
-      {/* it has to check === null because indexToDelete can be zero */}
+      {/* Modal to confirm delete operation. It has to check === null because indexToDelete can be zero */}
       {indexToDelete === null ? null : (
         <ModalDialog
           centered
@@ -187,7 +202,11 @@ export const CustomReasons = () => {
           </p>
         </ModalDialog>
       )}
-      <TranslationsMoldal />
+      <TranslationsMoldal
+        customReasonOnFocus={customReasonToEdit}
+        isOpen={modalOpen === 'translations'}
+        onClose={handleStateCleanup}
+      />
     </section>
   )
 }

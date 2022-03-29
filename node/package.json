@@ -26,7 +26,7 @@
     "vtex.my-account-commons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons",
     "vtex.react-portal": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.react-portal@0.4.1/public/@types/vtex.react-portal",
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
-    "vtex.return-app": "https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648461272/public/@types/vtex.return-app",
+    "vtex.return-app": "https://rmav3admin--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.1+build1648484209/public/@types/vtex.return-app",
     "vtex.store": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.123.0/public/@types/vtex.store",
     "vtex.store-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-components@3.158.0/public/@types/vtex.store-components",
     "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.149.4/public/@types/vtex.store-graphql",
@@ -34,7 +34,8 @@
     "vtex.store-resources": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-resources@0.86.0/public/@types/vtex.store-resources",
     "vtex.store-session": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-session@0.3.6/public/_types/react",
     "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide",
-    "vtex.telemarketing": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.telemarketing@2.11.1/public/@types/vtex.telemarketing"
+    "vtex.telemarketing": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.telemarketing@2.11.1/public/@types/vtex.telemarketing",
+    "vtex.tenant-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql"
   },
   "scripts": {
     "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"

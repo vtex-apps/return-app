@@ -9,14 +9,16 @@ import type { CustomReasonWithIndex } from './CustomReasons'
 
 interface CustomReasonModalProps {
   isOpen: boolean
+  modalOpen: 'add' | 'edit' | 'translations' | ''
   onClose: () => void
-  editing: CustomReasonWithIndex | null
+  customReasonOnFocus: CustomReasonWithIndex | null
 }
 
 export const CustomReasonModal = ({
   isOpen,
+  modalOpen,
   onClose,
-  editing,
+  customReasonOnFocus,
 }: CustomReasonModalProps) => {
   const {
     appSettings: { maxDays, customReturnReasons },
@@ -30,14 +32,15 @@ export const CustomReasonModal = ({
   const intl = useIntl()
 
   useEffect(() => {
-    if (!editing) return
-    // editing has index property, not accepted by Graphql.
-    setTempReason({
-      reason: editing.reason,
-      maxDays: editing.maxDays,
-      translations: editing.translations,
-    })
-  }, [editing])
+    if (customReasonOnFocus && modalOpen === 'edit') {
+      // customReasonOnFocus has index property, not accepted by Graphql.
+      setTempReason({
+        reason: customReasonOnFocus.reason,
+        maxDays: customReasonOnFocus.maxDays,
+        translations: customReasonOnFocus.translations,
+      })
+    }
+  }, [modalOpen, customReasonOnFocus])
 
   const handleTempReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
@@ -59,10 +62,10 @@ export const CustomReasonModal = ({
 
     let payload: CustomReturnReason[]
 
-    if (editing) {
+    if (modalOpen === 'edit' && customReasonOnFocus) {
       payload =
         customReturnReasons?.map((reason, i) => {
-          if (i === editing.index) {
+          if (i === customReasonOnFocus.index) {
             return tempReason
           }
 
@@ -129,11 +132,12 @@ export const CustomReasonModal = ({
               />
             </div>
             <Button type="submit">
-              {editing ? (
+              {modalOpen === 'edit' ? (
                 <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.custom-reason.edit.button" />
-              ) : (
+              ) : null}
+              {modalOpen === 'add' ? (
                 <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.custom-reason.add-new.button" />
-              )}
+              ) : null}
             </Button>
           </form>
         </div>

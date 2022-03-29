@@ -117,7 +117,6 @@ export const ExcludedCategories = () => {
             onChange: (term: string) => setSearchedCategory(term),
             onClear: () => setSearchedCategory(''),
             value: searchedCategory,
-            disabled: error,
           }}
           options={{
             onSelect: handleCategorySelection,

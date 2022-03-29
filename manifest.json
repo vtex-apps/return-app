@@ -20,7 +20,8 @@
     "vtex.store-icons": "0.x",
     "vtex.device-detector": "0.x",
     "vtex.css-handles": "0.x",
-    "vtex.easypost": "0.x"
+    "vtex.easypost": "0.x",
+    "vtex.tenant-graphql": "0.x"
   },
   "builders": {
     "admin": "0.x",
