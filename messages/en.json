@@ -11,6 +11,7 @@
   "admin/return-app.settings.section.payment-options.enable-payment-method-selection.description": "Prevent the customer from selecting a different payment method",
   "admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.uncheck": "Same as order",
   "admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.check": "Allowed to choose",
+  "admin/return-app.settings.section.payment-options.enable-payment-method-selection.error": "At least one method should be selected.",
   "admin/return-app.settings.section.custom-reasons.modal.custom-reason.header": "Custom available return options:",
   "admin/return-app.settings.excluded-categories.label": "Excluded categories",
   "admin/return-app.settings.search-categories.placeholder": "Search category",
