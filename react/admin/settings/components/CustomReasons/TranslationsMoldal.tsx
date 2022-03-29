@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactElement } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import type { Tenant, Binding } from 'vtex.tenant-graphql'
@@ -191,27 +191,47 @@ export const TranslationsMoldal = ({
         onClick: handleCloseModal,
       }}
     >
-      {error ? (
-        <EmptyState
-          title={
-            <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.header" />
-          }
-        >
-          <p>
-            <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.description" />
-          </p>
-        </EmptyState>
-      ) : loading ? (
-        <Spinner />
-      ) : (
+      <div>
         <div>
-          <Table
-            schema={tableSchema(handleTranslationInput)}
-            items={createTranslationOptions(availableLocales, tempTranslations)}
-            fullWidth
-          />
+          <h4 className="f3 fw3 gray mt6 mb2">
+            <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.header.custom-reason-translation" />
+          </h4>
+          <p>
+            <FormattedMessage
+              id="admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
+              values={{
+                reason: customReasonOnFocus?.reason,
+                // eslint-disable-next-line react/display-name
+                b: (chunks: ReactElement) => <b>{chunks}</b>,
+              }}
+            />
+          </p>
         </div>
-      )}
+        {error ? (
+          <EmptyState
+            title={
+              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.header" />
+            }
+          >
+            <p>
+              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.description" />
+            </p>
+          </EmptyState>
+        ) : loading ? (
+          <Spinner />
+        ) : (
+          <div>
+            <Table
+              schema={tableSchema(handleTranslationInput)}
+              items={createTranslationOptions(
+                availableLocales,
+                tempTranslations
+              )}
+              fullWidth
+            />
+          </div>
+        )}
+      </div>
     </ModalDialog>
   )
 }

@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import type { CustomReturnReason } from 'vtex.return-app'
@@ -196,7 +197,7 @@ export const CustomReasons = () => {
               values={{
                 reason: customReturnReasons?.[indexToDelete]?.reason,
                 // eslint-disable-next-line react/display-name
-                b: (chunks: string) => <b>{chunks}</b>,
+                b: (chunks: ReactElement) => <b>{chunks}</b>,
               }}
             />
           </p>
