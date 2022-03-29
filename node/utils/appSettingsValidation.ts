@@ -21,9 +21,13 @@ export const validatePaymentOptions = (paymentOptions: PaymentOptionsInput) => {
 
 export const validateMaxDaysCustomReasons = (
   maxDays: number,
-  customReasons: CustomReturnReasonInput[]
+  customReturnReasons: CustomReturnReasonInput[] | undefined | null
 ) => {
-  for (const customReason of customReasons) {
+  if (!customReturnReasons) return
+
+  if (customReturnReasons.length === 0) return
+
+  for (const customReason of customReturnReasons) {
     if (customReason.maxDays > maxDays) {
       throw new Error(
         `Custom reason ${customReason.reason} cannot have a max days (${customReason.maxDays}) greater than the general max days ${maxDays}`

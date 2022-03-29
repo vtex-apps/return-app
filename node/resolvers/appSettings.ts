@@ -35,7 +35,7 @@ const saveReturnAppSettings = async (
   // validate if all custom reasons have max days smaller than the general max days
   validateMaxDaysCustomReasons(
     args.settings.maxDays,
-    args.settings.customReturnReasons ?? []
+    args.settings.customReturnReasons
   )
 
   // validate if all custom reasons have unique locales for their translations
