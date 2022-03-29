@@ -55,29 +55,25 @@ export const GeneralOptions = () => {
         <FormattedMessage id="admin/return-app.settings.section.general-options.header" />
       </h3>
       <div className="mb4 mh4">
-        {!appSettings?.options
-          ? null
-          : generalOptions.map((option, i, self) => {
-              return (
-                <div className="mt4" key={option}>
-                  <Toggle
-                    name={option}
-                    semantic
-                    label={intl.formatMessage(messages[`${option}-label`])}
-                    helpText={intl.formatMessage(
-                      messages[`${option}-description`]
-                    )}
-                    onChange={handleToggle}
-                    checked={appSettings.options?.[option]}
-                  />
-                  {i === self.length - 1 ? null : (
-                    <div className="mv4">
-                      <Divider />
-                    </div>
-                  )}
+        {generalOptions.map((option, i, self) => {
+          return (
+            <div className="mt4" key={option}>
+              <Toggle
+                name={option}
+                semantic
+                label={intl.formatMessage(messages[`${option}-label`])}
+                helpText={intl.formatMessage(messages[`${option}-description`])}
+                onChange={handleToggle}
+                checked={appSettings.options?.[option]}
+              />
+              {i === self.length - 1 ? null : (
+                <div className="mv4">
+                  <Divider />
                 </div>
-              )
-            })}
+              )}
+            </div>
+          )
+        })}
       </div>
     </section>
   )
