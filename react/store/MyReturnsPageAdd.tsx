@@ -760,7 +760,6 @@ class MyReturnsPageAdd extends Component<Props, State> {
   resetAddressInputs() {
     const resetAddressInputs = {
       country: '',
-      locality: '',
       address: '',
       state: '',
       zip: '',
