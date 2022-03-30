@@ -30,6 +30,8 @@
   "settings.deliveryOptions": "Delivery Options",
   "settings.enabledPickupPoints": "Enabled Pickup Points",
   "settings.disabledPickupPoints": "Disabled Pickup Points",
+  "returns.pickupPointsLabel": "Pickup Points",
+  "returns.pickupPointsTooltip": "Select an address near you to pick up your order",
   "returns.orderId": "Order ID",
   "returns.requestId": "Request ID",
   "returns.sequenceNumber": "Sequence No",

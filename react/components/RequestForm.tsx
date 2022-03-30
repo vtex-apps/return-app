@@ -11,6 +11,7 @@ import {
   Textarea,
   Spinner,
   Toggle,
+  Tooltip,
 } from 'vtex.styleguide'
 import PropTypes from 'prop-types'
 
@@ -46,6 +47,7 @@ interface Props {
   handleInputChange: any
   handleInputChangeByPickupPointsDropdown: any
   handleToggleAddress: any
+  resetAddressInputs: any
   formInputs: FormInputs
   submit: any
   settings: any
@@ -115,6 +117,8 @@ const messages = defineMessages({
   conditionNewWithoutBox: { id: 'returns.newWithoutBox' },
   conditionUsedWithBox: { id: 'returns.usedWithBox' },
   conditionUsedWithoutBox: { id: 'returns.usedWithoutBox' },
+  pickupPointsLabel: { id: 'returns.pickupPointsLabel' },
+  pickupPointsTooltip: { id: 'returns.pickupPointsTooltip' },
 })
 
 class RequestForm extends Component<Props, State> {
@@ -157,7 +161,9 @@ class RequestForm extends Component<Props, State> {
 
           return {
             value: friendlyName,
-            label: `${friendlyName} - ${street} - ${number} - ${postalCode}`,
+            label: `${friendlyName ?? ''} ${street ?? ''} ${number ?? ''} ${
+              postalCode ?? ''
+            }`,
           }
         }
       )
@@ -187,6 +193,8 @@ class RequestForm extends Component<Props, State> {
       this.props.handleToggleAddress(
         this.props.selectedOrder.shippingData.address
       )
+    } else {
+      this.props.resetAddressInputs()
     }
 
     this.setState((prevState) => ({
@@ -643,21 +651,33 @@ class RequestForm extends Component<Props, State> {
               <div
                 className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 w-40 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
               >
-                <div className="flex justify-between items-center ">
+                <div className="flex items-center ">
                   {this.state.isPickupPointsSelected ? (
-                    <p className={`${styles.returnFormInputsHeader}`}>
+                    <p className={`${styles.returnFormInputsHeader} mr5`}>
                       {formatMessage({ id: messages.formPickupPoints.id })}
                     </p>
                   ) : (
-                    <p className={`${styles.returnFormInputsHeader}`}>
+                    <p className={`${styles.returnFormInputsHeader} mr5`}>
                       {formatMessage({ id: messages.formPickupAddress.id })}
                     </p>
                   )}
                   {this.props.settings.enablePickupPoints ? (
-                    <Toggle
-                      checked={this.state.isPickupPointsSelected}
-                      onChange={this.handleSelectedToggleAddress}
-                    />
+                    <>
+                      <Toggle
+                        checked={this.state.isPickupPointsSelected}
+                        onChange={this.handleSelectedToggleAddress}
+                      />
+                      <Tooltip
+                        label={formatMessage({
+                          id: messages.pickupPointsTooltip.id,
+                        })}
+                        position="top"
+                      >
+                        <p className="ml3">
+                          {formatMessage({ id: messages.pickupPointsLabel.id })}
+                        </p>
+                      </Tooltip>
+                    </>
                   ) : null}
                 </div>
                 {this.state.isPickupPointsSelected ? (

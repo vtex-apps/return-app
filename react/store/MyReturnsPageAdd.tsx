@@ -186,6 +186,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
     this.handleInputChangeByPickupPointsDropdown =
       this.handleInputChangeByPickupPointsDropdown.bind(this)
     this.handleToggleAddress = this.handleToggleAddress.bind(this)
+    this.resetAddressInputs = this.resetAddressInputs.bind(this)
     this.selectOrder = this.selectOrder.bind(this)
     this.sendRequest = this.sendRequest.bind(this)
   }
@@ -382,7 +383,9 @@ class MyReturnsPageAdd extends Component<Props, State> {
           ? `, ${order.shippingData.address.complement}`
           : ''
 
-      thisOrder.address = `${order.shippingData.address.street} ${order.shippingData.address.number}${complement}`
+      thisOrder.address = `${order.shippingData.address.street || ''} ${
+        order.shippingData.address.number || ''
+      }${complement || ''}`
       thisOrder.state = order.shippingData.address.state || ''
       thisOrder.zip = order.shippingData.address.postalCode || ''
     }
@@ -723,7 +726,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
     const { city, country, street, number, state, postalCode } =
       pickupPoint.address
 
-    const address = `${street} ${number}`
+    const address = `${street || ''} ${number || ''}`
 
     this.setState((prevState) => ({
       ...prevState,
@@ -745,13 +748,27 @@ class MyReturnsPageAdd extends Component<Props, State> {
           ? countries[addressData.country]
           : addressData.country,
         locality: addressData.city,
-        address: `${addressData.street} ${
+        address: `${addressData.street || ''} ${
           addressData.number || ''
         }${complement}`,
         state: addressData.state || '',
         zip: addressData.postalCode || '',
       })
     }
+  }
+
+  resetAddressInputs() {
+    const resetAddressInputs = {
+      country: '',
+      locality: '',
+      address: '',
+      state: '',
+      zip: '',
+    }
+
+    this.setState({
+      ...resetAddressInputs,
+    })
   }
 
   submit() {
@@ -1076,6 +1093,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
                     accountHolder,
                     agree,
                   }}
+                  resetAddressInputs={this.resetAddressInputs}
                   handleInputChangeByPickupPointsDropdown={(e) =>
                     this.handleInputChangeByPickupPointsDropdown(e)
                   }
