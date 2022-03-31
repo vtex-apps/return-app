@@ -1,5 +1,5 @@
 {
-  "navigation.label": "Returnari",
+  "admin/return-app.navigation.label": "Returnari",
   "navigation.labelRequests": "Cereri de retur",
   "navigation.requestInfo": "Cerere de retur",
   "admin/return-app.settings.navigation.label": "Setari",
@@ -26,6 +26,7 @@
   "returns.skuId": "Id sku",
   "returns.price": "Pret",
   "returns.link": "Returnari",
+  "store/return-app.link": "Returnari",
   "returns.addReturn": "Adauga o cerere de retur",
   "returns.pageTitle": "Cererile mele",
   "returns.total": "total",

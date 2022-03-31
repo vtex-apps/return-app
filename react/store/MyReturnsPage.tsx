@@ -67,7 +67,6 @@ const initialFilters = {
 class MyReturnsPage extends Component<any, any> {
   static propTypes = {
     headerConfig: PropTypes.object,
-    fetchApi: PropTypes.func,
   }
 
   constructor(props: any) {

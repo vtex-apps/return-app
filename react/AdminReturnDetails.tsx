@@ -12,7 +12,7 @@ const messages = defineMessages({
   info: { id: 'navigation.requestInfo' },
 })
 
-const ReturnDetails: FC = (props) => {
+const AdminReturnDetails: FC = (props) => {
   const intl = useIntl()
   const { navigate, binding, production } = useRuntime()
   const axios = useAxiosInstance()
@@ -43,4 +43,4 @@ const ReturnDetails: FC = (props) => {
   )
 }
 
-export default ReturnDetails
+export default AdminReturnDetails

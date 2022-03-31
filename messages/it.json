@@ -1,5 +1,5 @@
 {
-  "navigation.label": "Resi",
+  "admin/return-app.navigation.label": "Resi",
   "navigation.labelRequests": "Richieste",
   "navigation.requestInfo": "Richiedi informazioni",
   "admin/return-app.settings.navigation.label": "Impostazioni di reso",
@@ -27,6 +27,7 @@
   "returns.skuId": "ID SKU",
   "returns.price": "Prezzo",
   "returns.link": "I miei resi",
+  "store/return-app.link": "I miei resi",
   "returns.addReturn": "Aggiungi un nuovo modulo di reso",
   "returns.pageTitle": "Le mie richieste",
   "returns.total": "totale",

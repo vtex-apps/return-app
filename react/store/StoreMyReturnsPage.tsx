@@ -1,12 +1,10 @@
 import type { FC } from 'react'
-import React, { Fragment } from 'react'
-import { Route } from 'vtex.my-account-commons/Router'
+import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 
-import useAxiosInstance from './hooks/useAxiosModule'
-import ReturnsPage from './store/MyReturnsPage'
+import ReturnsPage from './MyReturnsPage'
 
 const headerConfig = {
   namespace: 'vtex-account__returns-list',
@@ -18,25 +16,15 @@ const headerConfig = {
   ),
 }
 
-const StoreMyReturnsPageWrapper: FC = (props: any) => {
-  const fetchApi = useAxiosInstance()
+export const StoreMyReturnsPageWrapper: FC = (props: any) => {
   const { production, binding } = useRuntime()
 
   return (
     <ReturnsPage
       {...props}
       headerConfig={headerConfig}
-      fetchApi={fetchApi}
       production={production}
       binding={binding}
     />
   )
 }
-
-const StoreMyReturnsPage = () => (
-  <Fragment>
-    <Route exact path="/my-returns" component={StoreMyReturnsPageWrapper} />
-  </Fragment>
-)
-
-export default StoreMyReturnsPage

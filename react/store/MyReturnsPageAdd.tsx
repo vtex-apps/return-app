@@ -148,7 +148,6 @@ interface Props {
 class MyReturnsPageAdd extends Component<Props, State> {
   static propTypes = {
     headerConfig: PropTypes.object,
-    fetchApi: PropTypes.func,
   }
 
   constructor(props: any & State) {

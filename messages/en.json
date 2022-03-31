@@ -1,5 +1,5 @@
 {
-  "navigation.label": "Returns",
+  "admin/return-app.navigation.label": "Returns",
   "navigation.labelRequests": "Requests",
   "navigation.requestInfo": "Request Info",
   "admin/return-app.settings.navigation.label": "Returns Settings",
@@ -60,6 +60,7 @@
   "returns.skuId": "Sku ID",
   "returns.price": "Price",
   "returns.link": "My Returns",
+  "store/return-app.link": "My Returns",
   "returns.addReturn": "Add a new return form",
   "returns.pageTitle": "My requests",
   "returns.total": "total",

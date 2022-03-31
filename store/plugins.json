@@ -1,8 +1,4 @@
 {
   "my-account-menu > my-account-link": "my-account-link.my-returns-link",
-  "my-account-pages > my-account-page": [
-    "my-account-link.my-returns-page",
-    "my-account-link.my-returns-page-add",
-    "my-account-link.my-returns-page-details"
-  ]
+  "my-account-pages > my-account-page": "my-account-link.my-returns-app"
 }
