@@ -1,4 +1,9 @@
-import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
+import type {
+  ClientsConfig,
+  ServiceContext,
+  RecorderState,
+  ParamsContext,
+} from '@vtex/api'
 import { Service, method, LRUCache } from '@vtex/api'
 
 import { Clients } from './clients'
@@ -26,6 +31,7 @@ import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries } from './resolvers'
+import { schemaDirectives } from './directives'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -46,10 +52,12 @@ const clients: ClientsConfig<Clients> = {
 declare global {
   type Context = ServiceContext<Clients, State>
 
-  type State = RecorderState
+  interface State extends RecorderState {
+    userProfile: UserProfile
+  }
 }
 
-export default new Service({
+export default new Service<Clients, State, ParamsContext>({
   clients,
   routes: {
     getSchemas: method({
@@ -127,6 +135,9 @@ export default new Service({
       Query: {
         ...queries,
       },
+    },
+    schemaDirectives: {
+      ...schemaDirectives,
     },
   },
 })

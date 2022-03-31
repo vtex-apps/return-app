@@ -1,3 +1,24 @@
+interface UserProfile {
+  email: string
+  userId: string
+}
+
+interface SessionData {
+  id: string
+  namespaces: {
+    profile: ProfileSession
+  }
+}
+
+interface ProfileSession {
+  id: {
+    value: string
+  }
+  email: {
+    value: string
+  }
+}
+
 interface ReturnRequest {
   id: string
   createdIn: string

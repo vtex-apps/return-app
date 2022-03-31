@@ -8,6 +8,7 @@ type Query {
   doNotCall: Boolean
   returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
   categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
+  ordersAvailableToReturn: Boolean @withUserProfile
 }
 
 type Mutation {
