@@ -12,6 +12,7 @@ import {
   Spinner,
   Toggle,
   Tooltip,
+  IconInfo,
 } from 'vtex.styleguide'
 import PropTypes from 'prop-types'
 
@@ -195,6 +196,7 @@ class RequestForm extends Component<Props, State> {
       )
     } else {
       this.props.resetAddressInputs()
+      this.setState({ selectedPickupPoint: '' })
     }
 
     this.setState((prevState) => ({
@@ -651,7 +653,7 @@ class RequestForm extends Component<Props, State> {
               <div
                 className={`flex-ns flex-wrap flex-auto flex-column mr3 pa4 w-40 ${styles.returnFormInputsColumn} ${styles.returnFormInputsColumnRight}`}
               >
-                <div className="flex items-center ">
+                <div className="flex items-center justify-between">
                   {this.state.isPickupPointsSelected ? (
                     <p className={`${styles.returnFormInputsHeader} mr5`}>
                       {formatMessage({ id: messages.formPickupPoints.id })}
@@ -662,22 +664,27 @@ class RequestForm extends Component<Props, State> {
                     </p>
                   )}
                   {this.props.settings.enablePickupPoints ? (
-                    <>
-                      <Toggle
-                        checked={this.state.isPickupPointsSelected}
-                        onChange={this.handleSelectedToggleAddress}
-                      />
+                    <section className="flex items-center justify-between">
                       <Tooltip
                         label={formatMessage({
                           id: messages.pickupPointsTooltip.id,
                         })}
-                        position="top"
+                        position="left"
                       >
-                        <p className="ml3">
-                          {formatMessage({ id: messages.pickupPointsLabel.id })}
-                        </p>
+                        <span className="flex items-center">
+                          <IconInfo className="ml5 o-50" />
+                          <p className="ml2 mr3">
+                            {formatMessage({
+                              id: messages.pickupPointsLabel.id,
+                            })}
+                          </p>
+                        </span>
                       </Tooltip>
-                    </>
+                      <Toggle
+                        checked={this.state.isPickupPointsSelected}
+                        onChange={this.handleSelectedToggleAddress}
+                      />
+                    </section>
                   ) : null}
                 </div>
                 {this.state.isPickupPointsSelected ? (

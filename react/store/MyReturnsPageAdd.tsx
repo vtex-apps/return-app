@@ -762,6 +762,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
       country: '',
       address: '',
       state: '',
+      locality: 'Locality',
       zip: '',
     }
 
