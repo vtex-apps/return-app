@@ -1,0 +1,14 @@
+query ordersAvailableToReturn($page: Int!) {
+  ordersAvailableToReturn(page: $page) @context(provider: "vtex.return-app") {
+    list {
+      orderId
+      creationDate
+    }
+    paging {
+      total
+      pages
+      currentPage
+      perPage
+    }
+  }
+}

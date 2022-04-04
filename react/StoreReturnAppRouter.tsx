@@ -3,9 +3,7 @@ import { Route, Switch } from 'vtex.my-account-commons/Router'
 
 import { StoreMyReturnsPageWrapper } from './store/StoreMyReturnsPage'
 import { StoreMyReturnsDetailsWrapper } from './store/StoreMyReturnsDetails'
-import { StoreMyReturnsPageAddWrapper } from './store/StoreMyReturnsPageAdd'
-
-const MockPage = () => <div>Mock Page</div>
+import { OrdersAvailableToRMA, CreateRMA } from './store/StoreMyReturnsAdd'
 
 export const AppRouter = () => {
   return (
@@ -16,12 +14,8 @@ export const AppRouter = () => {
         path="/my-returns/details/:id"
         component={StoreMyReturnsDetailsWrapper}
       />
-      <Route
-        exact
-        path="/my-returns/add"
-        component={StoreMyReturnsPageAddWrapper}
-      />
-      <Route exact path="/my-returns/add/:orderId" component={MockPage} />
+      <Route exact path="/my-returns/add" component={OrdersAvailableToRMA} />
+      <Route exact path="/my-returns/add/:orderId" component={CreateRMA} />
     </Switch>
   )
 }

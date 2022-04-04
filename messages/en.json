@@ -61,6 +61,7 @@
   "returns.price": "Price",
   "returns.link": "My Returns",
   "store/return-app.link": "My Returns",
+  "store/return-app.request-return.page.header": "Request a new return",
   "returns.addReturn": "Add a new return form",
   "returns.pageTitle": "My requests",
   "returns.total": "total",
