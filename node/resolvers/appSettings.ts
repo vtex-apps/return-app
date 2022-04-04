@@ -8,10 +8,9 @@ import {
   validatePaymentOptions,
   valideteUniqueCustomReasonsPerLocale,
 } from '../utils/appSettingsValidation'
+import { SETTINGS_PATH } from '../utils/constants'
 
-const SETTINGS_PATH = 'app-settings'
-
-const returnAppSettings = (
+const returnAppSettings = async (
   _root: unknown,
   _args: unknown,
   ctx: Context
@@ -20,7 +19,11 @@ const returnAppSettings = (
     clients: { appSettings },
   } = ctx
 
-  return appSettings.get(SETTINGS_PATH, true)
+  const settings = await appSettings.get(SETTINGS_PATH, true)
+
+  if (!settings) return null
+
+  return settings
 }
 
 const saveReturnAppSettings = async (
