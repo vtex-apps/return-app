@@ -1,5 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import type { OrderToReturnList } from 'vtex.return-app'
+import type { OrdersToReturnList } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 
@@ -35,7 +35,7 @@ export const ordersAvailableToReturn = async (
   _: unknown,
   args: { page: number },
   ctx: Context
-): Promise<OrderToReturnList | null> => {
+): Promise<OrdersToReturnList | null> => {
   const {
     state: { userProfile },
     clients: { appSettings, oms },

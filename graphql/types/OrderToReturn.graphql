@@ -1,4 +1,4 @@
-type OrderToReturnList {
+type OrdersToReturnList {
   list: [OrderToReturnSummary]
   paging: Pagination
 }
