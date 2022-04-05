@@ -38,7 +38,7 @@ const createParams = ({
   f_status: 'invoiced' as const,
   f_creationDate: `creationDate:[${substractDays(maxDays)} TO ${currentDate}]`,
   page,
-  perPage: 15 as const,
+  perPage: 100 as const,
 })
 
 export const ordersAvailableToReturn = async (
@@ -64,12 +64,10 @@ export const ordersAvailableToReturn = async (
   const { email } = userProfile
 
   // Fetch order associated to the user email
-  const { list, paging } = await oms.listOrdersWithParams(
+  // Hard coded limit to get only latest 100 orders for a user. If we need to fetch more, we need to implement pagination
+  const { list } = await oms.listOrdersWithParams(
     createParams({ maxDays, userEmail: email, page })
   )
-
-  // eslint-disable-next-line no-console
-  console.log({ paging })
 
   const orderListPromises = []
 
