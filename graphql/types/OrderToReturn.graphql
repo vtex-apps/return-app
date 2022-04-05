@@ -1,16 +1,4 @@
-type OrdersToReturnList {
-  list: [OrderToReturnSummary]
-  paging: Pagination
-}
-
 type OrderToReturnSummary {
   orderId: String!
   creationDate: String!
-}
-
-type Pagination {
-  total: Int!
-  pages: Int!
-  currentPage: Int!
-  perPage: Int!
 }

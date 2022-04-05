@@ -8,7 +8,7 @@ type Query {
   doNotCall: Boolean
   returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
   categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
-  ordersAvailableToReturn(page: Int!): OrdersToReturnList
+  ordersAvailableToReturn: [OrderToReturnSummary]
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
 }
