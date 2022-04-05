@@ -56,6 +56,9 @@ export const ordersAvailableToReturn = async (
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
 
+  // eslint-disable-next-line no-console
+  console.log({ settings })
+
   if (!settings) {
     throw new ResolverError('Return App settings is not configured')
   }
@@ -161,6 +164,8 @@ export const ordersAvailableToReturn = async (
   // 3. calculate all items already returned - packages invoice type input
   // 4. Get items committed to be returned (will need to wait until feature the create RMA is done). Need to control the items that were alredy invoiced to return. This way we can remove it from the comparasion.
   // 5. calculate all items still available to be returned (2 - (3 + 4))
+  // eslint-disable-next-line no-console
+  console.log({ orderList })
 
   return orderList
 }
