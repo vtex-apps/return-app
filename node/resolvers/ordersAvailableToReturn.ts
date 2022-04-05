@@ -1,5 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import type { OrderToReturnSummary } from 'vtex.return-app'
+import type { OrdersToReturnList } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 
@@ -45,7 +45,7 @@ export const ordersAvailableToReturn = async (
   _: unknown,
   args: { page: number },
   ctx: Context
-): Promise<OrderToReturnSummary[]> => {
+): Promise<OrdersToReturnList> => {
   const {
     state: { userProfile },
     clients: { appSettings, oms },
@@ -65,7 +65,7 @@ export const ordersAvailableToReturn = async (
 
   // Fetch order associated to the user email
   // Hard coded limit to get only latest 100 orders for a user. If we need to fetch more, we need to implement pagination
-  const { list } = await oms.listOrdersWithParams(
+  const { list, paging } = await oms.listOrdersWithParams(
     createParams({ maxDays, userEmail: email, page })
   )
 
@@ -168,5 +168,5 @@ export const ordersAvailableToReturn = async (
   // 4. Get items committed to be returned - get it from MD - Needs to get all RMA created for this orderId, check the items commited to be reuturned, BUT not returned yet (not in the invoice type Input)
   // 5. calculate all items still available to be returned
 
-  return orderList
+  return { list: orderList, paging }
 }
