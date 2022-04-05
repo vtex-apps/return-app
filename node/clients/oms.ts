@@ -14,7 +14,7 @@ interface OrderList {
     total: number
     pages: number
     currentPage: number
-    perPage: number
+    per_page: number
   }
 }
 
@@ -24,7 +24,7 @@ interface OrderListParams {
   f_status: 'invoiced'
   f_creationDate: string
   page: number
-  perPage: 15
+  per_page: 10
 }
 
 export class OMSCustom extends OMS {

@@ -1,5 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import type { OrderToReturnSummary } from 'vtex.return-app'
+// import type { OrdersToReturnList } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 
@@ -38,14 +38,14 @@ const createParams = ({
   f_status: 'invoiced' as const,
   f_creationDate: `creationDate:[${substractDays(maxDays)} TO ${currentDate}]`,
   page,
-  perPage: 15 as const,
+  per_page: 10 as const,
 })
 
 export const ordersAvailableToReturn = async (
   _: unknown,
   args: { page: number },
   ctx: Context
-): Promise<OrderToReturnSummary[]> => {
+): Promise<any> => {
   const {
     state: { userProfile },
     clients: { appSettings, oms },
@@ -66,16 +66,15 @@ export const ordersAvailableToReturn = async (
   const { maxDays, excludedCategories } = settings
   const { email } = userProfile
 
+  // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
     createParams({ maxDays, userEmail: email, page })
   )
 
-  // eslint-disable-next-line no-console
-  console.log({ paging })
-
   const orderListPromises = []
 
   for (const order of list) {
+    // Fetch order details to get items and packages
     const orderPromise = oms.order(order.orderId)
 
     orderListPromises.push(orderPromise)
@@ -91,21 +90,25 @@ export const ordersAvailableToReturn = async (
   for (const order of orders) {
     const { items, orderId, creationDate } = order
 
+    // Calculate all items already shipped - packages invoice type output
     // Filter items invoiced
     const invoiceOutput = order.packageAttachment.packages.filter(
       ({ type }) => type === 'Output'
     )
 
+    // Create a list with all items inside the packages
     const invoicedItemsRaw = invoiceOutput.map(
       ({ items: invoicedItems }) => invoicedItems
     )
 
+    // Flatten the list of items
     const invoicedItemsFlatten = invoicedItemsRaw.reduce(
       (acc, invoicedItems) => {
         return [...acc, ...invoicedItems]
       }
     )
 
+    // Create a map to get quantity invoiced for an item (based on its index)
     const mapItemIndexAndQuantity = new Map<number, number>()
 
     for (const invoicedItem of invoicedItemsFlatten) {
@@ -122,6 +125,7 @@ export const ordersAvailableToReturn = async (
 
     const invoicedItems = []
 
+    // Associate itemIndex with the correspondent item in the order.item
     for (const index of mapItemIndexAndQuantity.keys()) {
       const quantity = mapItemIndexAndQuantity.get(index) as number
 
@@ -133,6 +137,7 @@ export const ordersAvailableToReturn = async (
 
       const categoryIdList = categoriesIds.split('/').filter(Boolean)
 
+      // Here we can add the fields we want to have in the final item array. TBD the needed ones
       invoicedItems.push({
         id,
         productId,
@@ -141,12 +146,14 @@ export const ordersAvailableToReturn = async (
       })
     }
 
+    // Remove items that are included in the categories not allowed to be returned
     const filteredItems = invoicedItems.filter(({ categoriesIds }) => {
       return !excludedCategories.some((categoryId) =>
         categoriesIds.includes(categoryId)
       )
     })
 
+    // If order has at least one item to be returned, we add it to the final item list
     if (filteredItems.length > 0) {
       orderList.push({
         orderId,
@@ -159,13 +166,12 @@ export const ordersAvailableToReturn = async (
     }
   }
 
-  // 1. fetch order details to get items and packages
-  // 2. calculate all items already shipped - packages invoice type output
   // 3. calculate all items already returned - packages invoice type input
-  // 4. Get items committed to be returned (will need to wait until feature the create RMA is done). Need to control the items that were alredy invoiced to return. This way we can remove it from the comparasion.
-  // 5. calculate all items still available to be returned (2 - (3 + 4))
-  // eslint-disable-next-line no-console
-  console.log({ orderList })
+  // 4. Get items committed to be returned - get it from MD - Needs to get all RMA created for this orderId, check the items commited to be reuturned, BUT not returned yet (not in the invoice type Input)
+  // 5. calculate all items still available to be returned
 
-  return orderList
+  // eslint-disable-next-line no-console
+  console.log(paging, 'paging')
+
+  return { list: orderList, paging }
 }

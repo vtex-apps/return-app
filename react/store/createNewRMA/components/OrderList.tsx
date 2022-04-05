@@ -14,8 +14,7 @@ export const OrderList = ({ orders }: Props) => {
 
   return (
     <>
-      <div>Orders</div>
-      <SelectOrderTable />
+      <SelectOrderTable orders={orders} />
       <Link to="#/my-returns/add/1234">Add</Link>
     </>
   )
