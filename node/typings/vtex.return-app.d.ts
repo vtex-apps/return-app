@@ -7,14 +7,24 @@ interface SessionData {
   id: string
   namespaces: {
     profile: ProfileSession
+    authentication: AuthenticationSession
   }
 }
 
 interface ProfileSession {
-  id: {
+  id?: {
     value: string
   }
-  email: {
+  email?: {
+    value: string
+  }
+}
+
+interface AuthenticationSession {
+  adminUserEmail?: {
+    value: string
+  }
+  adminUserId?: {
     value: string
   }
 }
