@@ -1,6 +1,7 @@
 interface UserProfile {
   email: string
   userId: string
+  role: 'admin' | 'store-user'
 }
 
 interface SessionData {
