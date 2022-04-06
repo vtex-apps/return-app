@@ -1,5 +1,11 @@
 import { ResolverError } from '@vtex/api'
-import type { OrdersToReturnList } from 'vtex.return-app'
+import type {
+  ExcludedItem,
+  InvoicedItem,
+  OrdersToReturnList,
+  OrderToReturnSummary,
+  ProcessedItem,
+} from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 
@@ -49,7 +55,6 @@ export const ordersAvailableToReturn = async (
   const {
     state: { userProfile },
     clients: { appSettings, oms },
-    vtex: { logger },
   } = ctx
 
   const { page } = args
@@ -82,7 +87,7 @@ export const ordersAvailableToReturn = async (
 
   const orders = await Promise.all(orderListPromises)
 
-  const orderList = []
+  const orderList: OrderToReturnSummary[] = []
 
   for (const order of orders) {
     const { items, orderId, creationDate } = order
@@ -102,7 +107,25 @@ export const ordersAvailableToReturn = async (
     const invoicedItemsFlatten = invoicedItemsRaw.reduce(
       (acc, invoicedItems) => {
         return [...acc, ...invoicedItems]
-      }
+      },
+      []
+    )
+
+    const invoiceInput = order.packageAttachment.packages.filter(
+      ({ type }) => type === 'Input'
+    )
+
+    // Create a list with all items inside the packages
+    const returnedItemsRaw = invoiceInput.map(
+      ({ items: returnedItems }) => returnedItems
+    )
+
+    // Flatten the list of items
+    const returnedItemsFlatten = returnedItemsRaw.reduce(
+      (acc, returnedItems) => {
+        return [...acc, ...returnedItems]
+      },
+      []
     )
 
     // Create a map to get quantity invoiced for an item (based on its index)
@@ -120,7 +143,29 @@ export const ordersAvailableToReturn = async (
       }
     }
 
-    const invoicedItems = []
+    // Create a map to get quantity invoiced for an item (based on its index)
+    const mapRefundedItemIndexAndQuantity = new Map<number, number>()
+
+    for (const invoicedItem of returnedItemsFlatten) {
+      const { itemIndex, quantity } = invoicedItem
+
+      if (mapRefundedItemIndexAndQuantity.has(itemIndex)) {
+        const currentQuantity = mapRefundedItemIndexAndQuantity.get(
+          itemIndex
+        ) as number
+
+        mapRefundedItemIndexAndQuantity.set(
+          itemIndex,
+          currentQuantity + quantity
+        )
+      } else {
+        mapRefundedItemIndexAndQuantity.set(itemIndex, quantity)
+      }
+    }
+
+    const invoicedItems: InvoicedItem[] = []
+    const excludedItems: ExcludedItem[] = []
+    const processedItems: ProcessedItem[] = []
 
     // Associate itemIndex with the correspondent item in the order.item
     for (const index of mapItemIndexAndQuantity.keys()) {
@@ -132,40 +177,48 @@ export const ordersAvailableToReturn = async (
         additionalInfo: { categoriesIds },
       } = items[index]
 
-      const categoryIdList = categoriesIds.split('/').filter(Boolean)
-
       // Here we can add the fields we want to have in the final item array. TBD the needed ones
-      invoicedItems.push({
+      const currentLength = invoicedItems.push({
         id,
         productId,
-        categoriesIds: categoryIdList,
         quantity,
       })
-    }
 
-    // Remove items that are included in the categories not allowed to be returned
-    const filteredItems = invoicedItems.filter(({ categoriesIds }) => {
-      return !excludedCategories.some((categoryId) =>
-        categoriesIds.includes(categoryId)
+      const categoryIdList = categoriesIds.split('/').filter(Boolean)
+
+      const excludedCategory = excludedCategories.filter((categoryId) =>
+        categoryIdList.includes(categoryId)
       )
-    })
 
-    // If order has at least one item to be returned, we add it to the final item list
-    if (filteredItems.length > 0) {
-      orderList.push({
-        orderId,
-        creationDate,
-      })
-    } else {
-      logger.info({
-        message: `Order ${order.orderId} has no item available to return`,
-      })
+      // Remove items that are included in the categories not allowed to be returned
+      if (excludedCategory.length) {
+        excludedItems.push({
+          itemIndex: currentLength - 1,
+          reason: {
+            key: 'EXCLUDED_CATEGORY',
+            value: JSON.stringify(excludedCategory),
+          },
+        })
+      }
+
+      // Add items already refunded to the processed items list TBD: Check items committed via RMA app to be returned / returned and merge the information here.
+      // A item could have been refunded via RMA app or OMS interface (or manually via API)
+      if (mapRefundedItemIndexAndQuantity.has(index)) {
+        processedItems.push({
+          itemIndex: currentLength - 1,
+          quantity: mapRefundedItemIndexAndQuantity.get(index) as number,
+        })
+      }
     }
-  }
 
-  // 3. calculate all items already returned - packages invoice type input
-  // 4. Get items committed to be returned - get it from MD - Needs to get all RMA created for this orderId, check the items commited to be reuturned, BUT not returned yet (not in the invoice type Input)
-  // 5. calculate all items still available to be returned
+    orderList.push({
+      orderId,
+      creationDate,
+      invoicedItems,
+      processedItems,
+      excludedItems,
+    })
+  }
 
   return { list: orderList, paging }
 }

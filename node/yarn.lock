@@ -6139,9 +6139,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.4+build1649161602/public/@types/vtex.return-app":
+"vtex.return-app@https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.4+build1649167002/public/@types/vtex.return-app":
   version "3.0.0-beta.4"
-  resolved "https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.4+build1649161602/public/@types/vtex.return-app#76be431f7773ffff790f97c593a9b14fc50c8bd4"
+  resolved "https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.4+build1649167002/public/@types/vtex.return-app#0de89ce2aca2ae69c8a36e346c34e35815c3d797"
 
 "vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.151.0/public/@types/vtex.store-graphql":
   version "2.151.0"
