@@ -6,6 +6,9 @@ type OrdersToReturnList {
 type OrderToReturnSummary {
   orderId: String!
   creationDate: String!
+  invoicedItems: [InvoicedItem]!
+  processedItems: [ProcessedItem]!
+  excludedItems: [excludedItem]!
 }
 
 type Pagination {
@@ -13,4 +16,29 @@ type Pagination {
   pages: Int!
   currentPage: Int!
   perPage: Int!
+}
+
+type InvoicedItem {
+  id: String!
+  productId: String!
+  quantity: Int!
+}
+
+type ProcessedItem {
+  itemIndex: Int!
+  quantity: Int!
+}
+
+type excludedItem {
+  itemIndex: Int!
+  reason: ExcludedReason!
+}
+
+type ExcludedReason {
+  key: ExcludedReasonEnum!
+  value: String!
+}
+
+enum ExcludedReasonEnum {
+  EXCLUDED_CATEGORY
 }
