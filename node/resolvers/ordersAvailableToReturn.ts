@@ -61,9 +61,6 @@ export const ordersAvailableToReturn = async (
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
 
-  // eslint-disable-next-line no-console
-  console.log({ settings })
-
   if (!settings) {
     throw new ResolverError('Return App settings is not configured')
   }
@@ -222,9 +219,6 @@ export const ordersAvailableToReturn = async (
       excludedItems,
     })
   }
-
-  // eslint-disable-next-line no-console
-  console.log(paging, 'paging')
 
   return { list: orderList, paging }
 }

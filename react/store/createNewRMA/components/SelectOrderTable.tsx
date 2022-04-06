@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { Table, Button } from 'vtex.styleguide'
+import type { OrdersToReturnList } from 'vtex.return-app'
 
 const tableSchema = {
   properties: {
@@ -48,11 +49,17 @@ const tableSchema = {
   },
 }
 
-export const SelectOrderTable = ({ orders }) => {
+interface Props {
+  orders: OrdersToReturnList
+}
+
+export const SelectOrderTable = ({ orders }: Props) => {
   const [paginationState, setPaginationState] = useState({
     page: 1,
     pageSize: 5,
   })
+
+  const { paging } = orders
 
   const handleNextClick = () => {
     const newPage = paginationState.page + 1
@@ -74,16 +81,9 @@ export const SelectOrderTable = ({ orders }) => {
     })
   }
 
-  const handleRowsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = e
-
-    setPaginationState({
-      page: 1,
-      pageSize: +value,
-    })
-  }
+  const perPage = paging?.perPage ?? 0
+  const currentPage = paging?.currentPage ?? 1
+  const totalItems = paging?.total ?? 0
 
   return (
     <div>
@@ -94,19 +94,14 @@ export const SelectOrderTable = ({ orders }) => {
         pagination={{
           onNextClick: handleNextClick,
           onPrevClick: handlePrevClick,
-          onRowsChange: handleRowsChange,
-          currentItemFrom:
-            orders.paging.perPage * orders.paging.currentPage -
-            orders.paging.perPage,
+          currentItemFrom: perPage * currentPage - perPage + 1,
           currentItemTo:
-            orders.paging.perPage * orders.paging.currentPage >
-            orders.paging.total
-              ? orders.paging.total
-              : orders.paging.perPage * orders.paging.currentPage,
+            perPage * currentPage > totalItems
+              ? totalItems
+              : perPage * currentPage,
           textShowRows: 'Show rows',
           textOf: 'of',
-          totalItems: orders.paging.total,
-          rowsOptions: [orders.paging.perPage],
+          totalItems,
         }}
       />
     </div>
