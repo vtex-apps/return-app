@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import type { ChangeEvent } from 'react'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { Table, Button } from 'vtex.styleguide'
 import type { OrdersToReturnList } from 'vtex.return-app'

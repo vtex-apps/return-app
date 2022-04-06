@@ -6,8 +6,19 @@ type OrdersToReturnList {
 type OrderToReturnSummary {
   orderId: String!
   creationDate: String!
+  """
+  Items invoiced / sent to costumer with items details.
+  """
   invoicedItems: [InvoicedItem]!
+  """
+  Items committed to return or already returned (invoiced as Input) that cannot be considered to be returned anymore.
+  The itemIndex property is used to identify the item in the list of invoiced items.
+  """
   processedItems: [ProcessedItem]!
+  """
+  Items forbidden to be return.
+  The itemIndex property is used to identify the item in the list of invoiced items.
+  """
   excludedItems: [excludedItem]!
 }
 
