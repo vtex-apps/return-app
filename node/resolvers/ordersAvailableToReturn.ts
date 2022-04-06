@@ -44,7 +44,7 @@ const createParams = ({
   f_status: 'invoiced' as const,
   f_creationDate: `creationDate:[${substractDays(maxDays)} TO ${currentDate}]`,
   page,
-  perPage: 10 as const,
+  per_page: 10 as const,
 })
 
 export const ordersAvailableToReturn = async (

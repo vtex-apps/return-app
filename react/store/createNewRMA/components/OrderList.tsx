@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList } from 'vtex.return-app'
 
+import { SelectOrderTable } from './SelectOrderTable'
+
 interface Props {
   orders: OrdersToReturnList
 }
@@ -12,7 +14,7 @@ export const OrderList = ({ orders }: Props) => {
 
   return (
     <>
-      <div>Orders</div>
+      <SelectOrderTable orders={orders} />
       <Link to="#/my-returns/add/1234">Add</Link>
     </>
   )

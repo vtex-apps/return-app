@@ -24,7 +24,7 @@ interface OrderListParams {
   f_status: 'invoiced'
   f_creationDate: string
   page: number
-  perPage: 10
+  per_page: 10
 }
 
 export class OMSCustom extends OMS {
