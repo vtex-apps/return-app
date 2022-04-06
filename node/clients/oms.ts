@@ -14,7 +14,7 @@ interface OrderList {
     total: number
     pages: number
     currentPage: number
-    per_page: number
+    perPage: number
   }
 }
 
