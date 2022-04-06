@@ -6,6 +6,7 @@ import {
 } from './appSettings'
 import { categoryTreeName } from './categoryTreeName'
 import { ordersAvailableToReturn } from './ordersAvailableToReturn'
+import { orderToReturnSummary } from './orderToReturnSummary'
 
 export const mutations = {
   deleteReturnRequest,
@@ -16,4 +17,5 @@ export const queries = {
   ...settingsQuery,
   categoryTreeName,
   ordersAvailableToReturn,
+  orderToReturnSummary,
 }

@@ -3,17 +3,7 @@ import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
-
-const currentDate = new Date().toISOString()
-
-const substractDays = (days: number) => {
-  const date = new Date()
-
-  date.setDate(date.getDate() - days)
-  date.setUTCHours(0, 0, 0)
-
-  return date.toISOString()
-}
+import { getCurrentDate, substractDays } from '../utils/dateHelpers'
 
 const ONE_MINUTE = 60 * 1000
 
@@ -33,14 +23,21 @@ const createParams = ({
   maxDays: number
   userEmail: string
   page: number
-}) => ({
-  clientEmail: userEmail,
-  orderBy: 'creationDate,desc' as const,
-  f_status: 'invoiced' as const,
-  f_creationDate: `creationDate:[${substractDays(maxDays)} TO ${currentDate}]`,
-  page,
-  per_page: 10 as const,
-})
+}) => {
+  const currentDate = getCurrentDate()
+
+  return {
+    clientEmail: userEmail,
+    orderBy: 'creationDate,desc' as const,
+    f_status: 'invoiced' as const,
+    f_creationDate: `creationDate:[${substractDays(
+      currentDate,
+      maxDays
+    )} TO ${currentDate}]`,
+    page,
+    per_page: 10 as const,
+  }
+}
 
 export const ordersAvailableToReturn = async (
   _: unknown,
