@@ -53,3 +53,8 @@ type ExcludedReason {
 enum ExcludedReasonEnum {
   EXCLUDED_CATEGORY
 }
+
+enum OrderToReturnValidation {
+  OUT_OF_MAX_DAYS
+  ORDER_NOT_INVOICED
+}
