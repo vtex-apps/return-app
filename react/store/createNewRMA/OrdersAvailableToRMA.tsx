@@ -23,7 +23,8 @@ const headerConfig = {
 }
 
 export const OrdersAvailableToRMA = () => {
-  const { data, loading, error, refetch } = useQuery<
+  // const [fetchedOrders, setFetchedOrders] = useState<OrdersToReturnList[]>([])
+  const { data, loading, error, fetchMore } = useQuery<
     { ordersAvailableToReturn: OrdersToReturnList },
     { page: number }
   >(ORDERS_AVAILABLE_TO_RETURN, {
@@ -33,14 +34,28 @@ export const OrdersAvailableToRMA = () => {
   })
 
   const handlePagination = (page) => {
-    refetch({ page })
+    // eslint-disable-next-line no-console
+    // console.log({ fetchedOrders })
+    fetchMore({
+      variables: {
+        page,
+      },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        // eslint-disable-next-line no-console
+        console.log(prevResult)
+        // eslint-disable-next-line no-console
+        console.log(fetchMoreResult)
+
+        return fetchMoreResult
+      },
+    })
   }
 
   return (
     <>
       {loading || error ? (
         <BaseLoading
-          queryData={{ loading, error, refetch }}
+          queryData={{ loading, error, fetchMore }}
           headerConfig={headerConfig}
         >
           <SkeletonBox shouldAllowGrowing shouldShowLowerButton>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
@@ -55,36 +55,13 @@ const tableSchema = {
 }
 
 export const OrderList = ({ orders, handlePagination }: Props) => {
-  const [fetchedOrders, setFetchedOrders] = useState<OrdersToReturnList[]>([])
   const { paging } = orders
   const perPage = paging?.perPage ?? 0
   const currentPage = paging?.currentPage ?? 1
   const totalItems = paging?.total ?? 0
 
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log({ currentPage })
-    const alreadyFetched = fetchedOrders.length
-      ? fetchedOrders.every((order) => {
-          // eslint-disable-next-line no-console
-          console.log(order)
-
-          return order.paging?.currentPage === currentPage
-        })
-      : false
-
-    // eslint-disable-next-line no-console
-    console.log(alreadyFetched)
-    if (!alreadyFetched) {
-      setFetchedOrders((prevOrders) => [...prevOrders, orders])
-    }
-  }, [orders, fetchedOrders, currentPage])
-
   const handleNextClick = () => {
     const newPage = currentPage + 1
-
-    // eslint-disable-next-line no-console
-    console.log({ fetchedOrders })
 
     handlePagination(newPage)
   }
@@ -93,8 +70,6 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
     if (currentPage === 1) return
     const newPage = currentPage - 1
 
-    // eslint-disable-next-line no-console
-    console.log({ fetchedOrders })
     handlePagination(newPage)
   }
 
