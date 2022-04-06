@@ -32,6 +32,10 @@ export const OrdersAvailableToRMA = () => {
     },
   })
 
+  const handlePagination = (page) => {
+    refetch({ page })
+  }
+
   return (
     <>
       {loading || error ? (
@@ -45,7 +49,12 @@ export const OrdersAvailableToRMA = () => {
         </BaseLoading>
       ) : !data ? null : (
         <ContentWrapper {...headerConfig}>
-          {() => <OrderList orders={data.ordersAvailableToReturn} />}
+          {() => (
+            <OrderList
+              orders={data.ordersAvailableToReturn}
+              handlePagination={handlePagination}
+            />
+          )}
         </ContentWrapper>
       )}
     </>
