@@ -1,2 +1,2 @@
 export { OrdersAvailableToRMA } from './createNewRMA/OrdersAvailableToRMA'
-export { CreateRMA } from './createNewRMA/CreateRMA'
+export { OrderToRMADetails } from './createNewRMA/OrderToRMADetails'

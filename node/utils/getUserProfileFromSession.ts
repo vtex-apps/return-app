@@ -9,11 +9,13 @@ const createUserProfile = (sessionData: SessionData): UserProfile => {
   const email = profile.email?.value ?? authentication.adminUserEmail?.value
   const userId = profile.id?.value ?? authentication.adminUserId?.value
 
+  const role = authentication.adminUserId ? 'admin' : 'store-user'
+
   if (!email || !userId) {
     throw new ResolverError('Invalid session data')
   }
 
-  return { email, userId }
+  return { email, userId, role }
 }
 
 export const getUserProfileFromSession = async (
