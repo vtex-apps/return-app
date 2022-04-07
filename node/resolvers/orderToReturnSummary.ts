@@ -35,8 +35,11 @@ export const orderToReturnSummary = async (
     status,
   } = order
 
+  const orderBelongsToUser = userId === userProfileId
+  const userIsAdmin = role === 'admin'
+
   // User should only be able to see their order.
-  if (userId !== userProfileId && role !== 'admin') {
+  if (!orderBelongsToUser && !userIsAdmin) {
     throw new ForbiddenError('User cannot access this order')
   }
 
