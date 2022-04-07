@@ -1,6 +1,9 @@
 import React from 'react'
 import { useQuery } from 'react-apollo'
-import type { OrdersToReturnList } from 'vtex.return-app'
+import type {
+  OrdersToReturnList,
+  QueryOrdersAvailableToReturnArgs,
+} from 'vtex.return-app'
 import {
   ContentWrapper,
   BaseLoading,
@@ -26,7 +29,7 @@ export const OrdersAvailableToRMA = () => {
   // const [fetchedOrders, setFetchedOrders] = useState<OrdersToReturnList[]>([])
   const { data, loading, error, fetchMore } = useQuery<
     { ordersAvailableToReturn: OrdersToReturnList },
-    { page: number }
+    QueryOrdersAvailableToReturnArgs
   >(ORDERS_AVAILABLE_TO_RETURN, {
     variables: {
       page: 1,
