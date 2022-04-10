@@ -4,6 +4,18 @@ import type { OrdersToReturnList } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { Table } from 'vtex.styleguide'
 
+function availableProductsToReturn(data) {
+  let excludedItems = 0
+
+  excludedItems = data.excludedItems.length
+
+  if (excludedItems) {
+    return 'Not active'
+  }
+
+  return 'Active'
+}
+
 interface Props {
   orders: OrdersToReturnList
   handlePagination: (page: number, operation: string) => void
@@ -35,6 +47,14 @@ const tableSchema = {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-status" />
       ),
+      cellRenderer: function formatDate({ rowData }) {
+        // eslint-disable-next-line no-console
+        console.log(rowData, 'rowData')
+
+        const message = availableProductsToReturn(rowData)
+
+        return <p>{message}</p>
+      },
     },
     selectOrder: {
       title: (

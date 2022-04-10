@@ -44,6 +44,12 @@ export const OrdersAvailableToRMA = () => {
     }
   }, [data])
 
+  useEffect(() => {
+    if (data) {
+      setMergeData([data.ordersAvailableToReturn])
+    }
+  }, [data])
+
   const handlePagination = (page: number, operation: string) => {
     const alreadyFetched = mergeData.find((ordersItem) => {
       return ordersItem.paging?.currentPage === page
