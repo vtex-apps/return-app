@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
-import { Table, Button } from 'vtex.styleguide'
+import { Table } from 'vtex.styleguide'
 
 interface Props {
   orders: OrdersToReturnList
@@ -41,13 +41,13 @@ const tableSchema = {
         <FormattedMessage id="store/return-app.return-order-list.table-selectOrder" />
       ),
       cellRenderer: function selectOrderButton({ rowData }) {
-        // eslint-disable-next-line no-console
-        console.log(rowData)
-
         return (
-          <Button size="small">
+          <Link
+            to={`#/my-returns/add/${rowData.orderId}`}
+            className="pointer c-link active-c-link no-underline bg-transparent b--transparent c-action-primary hover-b--transparent hover-bg-action-secondary hover-b--action-secondary t-action br2 pa3-s"
+          >
             <FormattedMessage id="store/return-app.return-order-list.table-selectOrder" />
-          </Button>
+          </Link>
         )
       },
     },
@@ -56,8 +56,8 @@ const tableSchema = {
 
 export const OrderList = ({ orders, handlePagination }: Props) => {
   const { paging } = orders
-  const perPage = paging?.perPage ?? 0
   const currentPage = paging?.currentPage ?? 1
+  const perPage = paging?.perPage ?? 0
   const totalItems = paging?.total ?? 0
 
   const handleNextClick = () => {
@@ -74,24 +74,21 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
   }
 
   return (
-    <>
-      <Table
-        fullWidth
-        schema={tableSchema}
-        items={orders.list}
-        pagination={{
-          onNextClick: handleNextClick,
-          onPrevClick: handlePrevClick,
-          currentItemFrom: perPage * currentPage - perPage + 1,
-          currentItemTo:
-            perPage * currentPage > totalItems
-              ? totalItems
-              : perPage * currentPage,
-          textOf: 'of',
-          totalItems,
-        }}
-      />
-      <Link to="#/my-returns/add/1234">Add</Link>
-    </>
+    <Table
+      fullWidth
+      schema={tableSchema}
+      items={orders.list}
+      pagination={{
+        onNextClick: handleNextClick,
+        onPrevClick: handlePrevClick,
+        currentItemFrom: perPage * currentPage - perPage + 1,
+        currentItemTo:
+          perPage * currentPage > totalItems
+            ? totalItems
+            : perPage * currentPage,
+        textOf: 'of',
+        totalItems,
+      }}
+    />
   )
 }

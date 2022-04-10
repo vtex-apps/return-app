@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import type {
   OrdersToReturnList,
@@ -26,7 +26,9 @@ const headerConfig = {
 }
 
 export const OrdersAvailableToRMA = () => {
-  // const [fetchedOrders, setFetchedOrders] = useState<OrdersToReturnList[]>([])
+  const [mergeData, setMergeData] = useState<OrdersToReturnList[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
   const { data, loading, error, fetchMore } = useQuery<
     { ordersAvailableToReturn: OrdersToReturnList },
     QueryOrdersAvailableToReturnArgs
@@ -36,20 +38,36 @@ export const OrdersAvailableToRMA = () => {
     },
   })
 
-  const handlePagination = (page) => {
-    // eslint-disable-next-line no-console
-    // console.log({ fetchedOrders })
+  useEffect(() => {
+    if (data) {
+      setMergeData([data.ordersAvailableToReturn])
+    }
+  }, [data])
+
+  const handlePagination = (page: number) => {
     fetchMore({
       variables: {
         page,
       },
       updateQuery: (prevResult, { fetchMoreResult }) => {
-        // eslint-disable-next-line no-console
-        console.log(prevResult)
-        // eslint-disable-next-line no-console
-        console.log(fetchMoreResult)
+        if (!fetchMoreResult) return prevResult
 
-        return fetchMoreResult
+        const alreadyFetched = mergeData.find((ordersItem) => {
+          return ordersItem.paging?.currentPage === page
+        })
+
+        if (!alreadyFetched) {
+          setMergeData((prevState) => [
+            ...prevState,
+            fetchMoreResult.ordersAvailableToReturn,
+          ])
+        }
+
+        setCurrentPage(
+          Number(fetchMoreResult.ordersAvailableToReturn.paging?.currentPage)
+        )
+
+        return prevResult
       },
     })
   }
@@ -65,11 +83,11 @@ export const OrdersAvailableToRMA = () => {
             <SkeletonPiece height={40} />
           </SkeletonBox>
         </BaseLoading>
-      ) : !data ? null : (
+      ) : !mergeData.length ? null : (
         <ContentWrapper {...headerConfig}>
           {() => (
             <OrderList
-              orders={data.ordersAvailableToReturn}
+              orders={mergeData[currentPage - 1]}
               handlePagination={handlePagination}
             />
           )}
