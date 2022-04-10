@@ -44,32 +44,36 @@ export const OrdersAvailableToRMA = () => {
     }
   }, [data])
 
-  const handlePagination = (page: number) => {
-    fetchMore({
-      variables: {
-        page,
-      },
-      updateQuery: (prevResult, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prevResult
+  const handlePagination = (page: number, operation: string) => {
+    const alreadyFetched = mergeData.find((ordersItem) => {
+      return ordersItem.paging?.currentPage === page
+    })
 
-        const alreadyFetched = mergeData.find((ordersItem) => {
-          return ordersItem.paging?.currentPage === page
-        })
+    if (!alreadyFetched) {
+      fetchMore({
+        variables: {
+          page,
+        },
+        updateQuery: (prevResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prevResult
 
-        if (!alreadyFetched) {
           setMergeData((prevState) => [
             ...prevState,
             fetchMoreResult.ordersAvailableToReturn,
           ])
-        }
 
-        setCurrentPage(
-          Number(fetchMoreResult.ordersAvailableToReturn.paging?.currentPage)
-        )
+          setCurrentPage(
+            Number(fetchMoreResult.ordersAvailableToReturn.paging?.currentPage)
+          )
 
-        return prevResult
-      },
-    })
+          return prevResult
+        },
+      })
+    } else {
+      operation === '+'
+        ? setCurrentPage((prevState) => prevState + 1)
+        : setCurrentPage((prevState) => prevState - 1)
+    }
   }
 
   return (

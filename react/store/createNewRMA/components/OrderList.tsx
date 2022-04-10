@@ -6,7 +6,7 @@ import { Table } from 'vtex.styleguide'
 
 interface Props {
   orders: OrdersToReturnList
-  handlePagination: (page: number) => void
+  handlePagination: (page: number, operation: string) => void
 }
 
 const tableSchema = {
@@ -63,14 +63,14 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
   const handleNextClick = () => {
     const newPage = currentPage + 1
 
-    handlePagination(newPage)
+    handlePagination(newPage, '+')
   }
 
   const handlePrevClick = () => {
     if (currentPage === 1) return
     const newPage = currentPage - 1
 
-    handlePagination(newPage)
+    handlePagination(newPage, '-')
   }
 
   return (
