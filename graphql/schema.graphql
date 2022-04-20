@@ -6,7 +6,8 @@ enum AuthToken {
 
 type Query {
   doNotCall: Boolean
-  returnAppSettings: ReturnAppSettings
+  returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
+  categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
 }
 
 type Mutation {

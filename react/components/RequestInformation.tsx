@@ -30,9 +30,13 @@ const messages = defineMessages({
   formState: { id: 'returns.formState' },
   formZip: { id: 'returns.formZip' },
   formPaymentMethod: { id: 'returns.formPaymentMethod' },
-  formBankTransferAccount: { id: 'returns.formBankTransferAccount' },
+  formBankTransferAccount: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.bankTransferAccount',
+  },
   formAccountHolder: { id: 'returns.formAccountHolder' },
-  formVoucher: { id: 'returns.formVoucher' },
+  formVoucher: {
+    id: 'admin/return-app.settings.section.payment-options.available-payment-methods.gift-card',
+  },
   formSubmit: { id: 'returns.formSubmit' },
   goBack: { id: 'returns.goBack' },
   condition: { id: 'returns.condition.label' },

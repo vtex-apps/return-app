@@ -26,10 +26,9 @@ import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries } from './resolvers'
-import { schemaDirectives } from './directives'
 
 const TIMEOUT_MS = 5000
-const memoryCache = new LRUCache<string, any>({ max: 5000 })
+const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
 
 const clients: ClientsConfig<Clients> = {
   implementation: Clients,
@@ -38,8 +37,8 @@ const clients: ClientsConfig<Clients> = {
       retries: 2,
       timeout: TIMEOUT_MS,
     },
-    status: {
-      memoryCache,
+    catalog: {
+      memoryCache: catalogMemoryCache,
     },
   },
 }
@@ -129,6 +128,5 @@ export default new Service({
         ...queries,
       },
     },
-    schemaDirectives,
   },
 })

@@ -5,6 +5,7 @@ import { ReturnAppSettings } from 'vtex.return-app'
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { MDFactory } from './mdFactory'
+import { Catalog } from './catalog'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 
@@ -30,5 +31,9 @@ export class Clients extends IOClients {
 
   public get appSettings() {
     return this.getOrSet('appSettings', ReturnAppSettings)
+  }
+
+  public get catalog() {
+    return this.getOrSet('catalog', Catalog)
   }
 }

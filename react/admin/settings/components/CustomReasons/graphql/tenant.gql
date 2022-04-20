@@ -1,0 +1,9 @@
+query tenantInfo {
+  tenantInfo @context(provider: "vtex.tenant-graphql") {
+    bindings {
+      defaultLocale
+      supportedLocales
+      targetProduct
+    }
+  }
+}
