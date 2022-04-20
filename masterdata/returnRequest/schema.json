@@ -5,7 +5,8 @@
       "required": true
     },
     "totalReturnAmount": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "sequenceNumber": {
       "type": "string",
