@@ -349,7 +349,7 @@ export const OrderToRMADetails = (
     setFormInputs((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  if (error) {
+  if (error && !errorCase.length) {
     const errorCode = getErrorCode(error)
     let errorString = ''
 
@@ -367,7 +367,7 @@ export const OrderToRMADetails = (
         break
 
       case 'FORBIDDEN':
-        errorString = 'You don`t have access to this order'
+        errorString = 'You don´t have access to this order'
         break
 
       default:
@@ -393,8 +393,8 @@ export const OrderToRMADetails = (
         </div>
       ) : (
         <Table
+          emptyStateLabel={errorCase}
           fullWidth
-          emptyStateLabel={(errorCase && !data) ?? errorCase}
           schema={tableSchema}
           items={order}
           totalizers={[
