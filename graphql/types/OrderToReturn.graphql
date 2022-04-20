@@ -33,6 +33,8 @@ type InvoicedItem {
   id: String!
   productId: String!
   quantity: Int!
+  name: String!
+  imageUrl: String!
 }
 
 type ProcessedItem {

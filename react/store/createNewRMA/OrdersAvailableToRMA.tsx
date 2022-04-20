@@ -85,14 +85,16 @@ export const OrdersAvailableToRMA = () => {
   return (
     <>
       {loading || error ? (
-        <BaseLoading
-          queryData={{ loading, error, fetchMore }}
-          headerConfig={headerConfig}
-        >
-          <SkeletonBox shouldAllowGrowing shouldShowLowerButton>
-            <SkeletonPiece height={40} />
-          </SkeletonBox>
-        </BaseLoading>
+        <div className="flex justify-center items-center-s">
+          <BaseLoading
+            queryData={{ loading, error, fetchMore }}
+            headerConfig={headerConfig}
+          >
+            <SkeletonBox shouldAllowGrowing shouldShowLowerButton>
+              <SkeletonPiece height={40} />
+            </SkeletonBox>
+          </BaseLoading>
+        </div>
       ) : !mergeData.length ? null : (
         <ContentWrapper {...headerConfig}>
           {() => (

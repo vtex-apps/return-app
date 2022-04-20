@@ -2,5 +2,24 @@ query orderToReturnSummary($orderId: ID!) {
   orderToReturnSummary(orderId: $orderId)
     @context(provider: "vtex.return-app") {
     orderId
+    creationDate
+    invoicedItems {
+      id
+      productId
+      quantity
+      name
+      imageUrl
+    }
+    processedItems {
+      itemIndex
+      quantity
+    }
+    excludedItems {
+      itemIndex
+      reason {
+        key
+        value
+      }
+    }
   }
 }
