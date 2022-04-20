@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
@@ -8,7 +8,10 @@ import { productsStatusToReturn } from '../../utils/filterProductStatus'
 
 interface Props {
   orders: OrdersToReturnList
-  handlePagination: (page: number, operation: 'next' | 'previous') => void
+  handlePagination: (
+    page: number,
+    operation: 'next' | 'previous'
+  ) => Promise<void>
 }
 
 const tableSchema = {
@@ -62,22 +65,30 @@ const tableSchema = {
 }
 
 export const OrderList = ({ orders, handlePagination }: Props) => {
+  const [fetchMoreState, setFetchMoreState] = useState<'IDLE' | 'LOADING'>(
+    'IDLE'
+  )
+
   const { paging } = orders
   const currentPage = paging?.currentPage ?? 1
   const perPage = paging?.perPage ?? 0
   const totalItems = paging?.total ?? 0
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     const newPage = currentPage + 1
 
-    handlePagination(newPage, 'next')
+    setFetchMoreState('LOADING')
+    await handlePagination(newPage, 'next')
+    setFetchMoreState('IDLE')
   }
 
-  const handlePrevClick = () => {
+  const handlePrevClick = async () => {
     if (currentPage === 1) return
     const newPage = currentPage - 1
 
-    handlePagination(newPage, 'previous')
+    setFetchMoreState('LOADING')
+    await handlePagination(newPage, 'previous')
+    setFetchMoreState('IDLE')
   }
 
   return (
@@ -85,6 +96,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
       fullWidth
       schema={tableSchema}
       items={orders.list}
+      loading={fetchMoreState === 'LOADING'}
       pagination={{
         onNextClick: handleNextClick,
         onPrevClick: handlePrevClick,

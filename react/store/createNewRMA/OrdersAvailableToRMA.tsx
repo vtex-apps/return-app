@@ -44,13 +44,16 @@ export const OrdersAvailableToRMA = () => {
     }
   }, [data])
 
-  const handlePagination = (page: number, operation: 'next' | 'previous') => {
+  const handlePagination = async (
+    page: number,
+    operation: 'next' | 'previous'
+  ): Promise<void> => {
     const alreadyFetched = mergeData.find((ordersItem) => {
       return ordersItem.paging?.currentPage === page
     })
 
     if (!alreadyFetched) {
-      fetchMore({
+      await fetchMore({
         variables: {
           page,
         },
