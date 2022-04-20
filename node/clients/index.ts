@@ -1,6 +1,6 @@
 import { IOClients } from '@vtex/api'
-import { vbaseFor } from '@vtex/clients'
-import { ReturnAppSettings } from 'vtex.return-app'
+import { vbaseFor, masterDataFor } from '@vtex/clients'
+import { ReturnAppSettings, ReturnRequest } from 'vtex.return-app'
 
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
@@ -9,6 +9,7 @@ import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
+const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
 
 export class Clients extends IOClients {
   public get returnApp() {
@@ -36,5 +37,9 @@ export class Clients extends IOClients {
 
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
+  }
+
+  public get returnRequest() {
+    return this.getOrSet('returnRequest', ReturnRequest)
   }
 }

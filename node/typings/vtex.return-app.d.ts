@@ -68,8 +68,6 @@ type ReturnRequestInput = Omit<
   | 'status'
 >
 
-type AuthToken = 'ADMIN_TOKEN' | 'STORE_TOKEN'
-
 interface ProductReturned {
   id: string
   createdIn: string
