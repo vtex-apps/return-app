@@ -10,7 +10,6 @@ import {
   Textarea,
   Input,
   Dropdown,
-  Spinner,
 } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
 import type {
@@ -387,35 +386,30 @@ export const OrderToRMADetails = (
         title="My Returns"
         linkLabel="Back to Orders"
       />
-      {loading ? (
-        <div className="flex justify-center items-center-s">
-          <Spinner />
-        </div>
-      ) : (
-        <Table
-          emptyStateLabel={errorCase}
-          fullWidth
-          schema={tableSchema}
-          items={order}
-          totalizers={[
-            {
-              label: 'OrderId',
-              value: `${orderId}`,
-            },
-            {
-              label: 'Creation Date',
-              value: (
-                <FormattedDate
-                  value={`${data?.orderToReturnSummary.creationDate}`}
-                  day="numeric"
-                  month="long"
-                  year="numeric"
-                />
-              ),
-            },
-          ]}
-        />
-      )}
+      <Table
+        emptyStateLabel={errorCase}
+        loading={loading}
+        fullWidth
+        schema={tableSchema}
+        items={order}
+        totalizers={[
+          {
+            label: 'OrderId',
+            value: `${orderId}`,
+          },
+          {
+            label: 'Creation Date',
+            value: (
+              <FormattedDate
+                value={`${data?.orderToReturnSummary.creationDate}`}
+                day="numeric"
+                month="long"
+                year="numeric"
+              />
+            ),
+          },
+        ]}
+      />
       <div className="flex-ns flex-wrap flex-row mt5">
         <div className="flex-ns flex-wrap flex-auto flex-column pa4">
           <p>Contact details</p>
