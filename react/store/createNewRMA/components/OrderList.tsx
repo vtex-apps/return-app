@@ -6,12 +6,10 @@ import { Table } from 'vtex.styleguide'
 
 import { productsStatusToReturn } from '../../utils/filterProductStatus'
 
+type Operation = 'next' | 'previous'
 interface Props {
   orders: OrdersToReturnList
-  handlePagination: (
-    page: number,
-    operation: 'next' | 'previous'
-  ) => Promise<void>
+  handlePagination: (page: number, operation: Operation) => Promise<void>
 }
 
 const tableSchema = {
@@ -74,20 +72,15 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
   const perPage = paging?.perPage ?? 0
   const totalItems = paging?.total ?? 0
 
-  const handleNextClick = async () => {
-    const newPage = currentPage + 1
+  const handlePaginationClick = async (operation: Operation) => {
+    if (currentPage === 1 && operation === 'previous') {
+      return
+    }
+
+    const newPage = operation === 'next' ? currentPage + 1 : currentPage - 1
 
     setFetchMoreState('LOADING')
     await handlePagination(newPage, 'next')
-    setFetchMoreState('IDLE')
-  }
-
-  const handlePrevClick = async () => {
-    if (currentPage === 1) return
-    const newPage = currentPage - 1
-
-    setFetchMoreState('LOADING')
-    await handlePagination(newPage, 'previous')
     setFetchMoreState('IDLE')
   }
 
@@ -98,8 +91,8 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
       items={orders.list}
       loading={fetchMoreState === 'LOADING'}
       pagination={{
-        onNextClick: handleNextClick,
-        onPrevClick: handlePrevClick,
+        onNextClick: () => handlePaginationClick('next'),
+        onPrevClick: () => handlePaginationClick('previous'),
         currentItemFrom: perPage * currentPage - perPage + 1,
         currentItemTo:
           perPage * currentPage > totalItems
