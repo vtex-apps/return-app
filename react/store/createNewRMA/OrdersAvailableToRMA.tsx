@@ -10,7 +10,6 @@ import {
   SkeletonPiece,
   SkeletonBox,
 } from 'vtex.my-account-commons'
-import { Spinner } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
 import ORDERS_AVAILABLE_TO_RETURN from './graphql/getOrdersAvailableToReturn.gql'
@@ -45,13 +44,7 @@ export const OrdersAvailableToRMA = () => {
     }
   }, [data])
 
-  useEffect(() => {
-    if (data) {
-      setMergeData([data.ordersAvailableToReturn])
-    }
-  }, [data])
-
-  const handlePagination = (page: number, operation: string) => {
+  const handlePagination = (page: number, operation: 'next' | 'previous') => {
     const alreadyFetched = mergeData.find((ordersItem) => {
       return ordersItem.paging?.currentPage === page
     })
@@ -76,30 +69,25 @@ export const OrdersAvailableToRMA = () => {
           return prevResult
         },
       })
-    } else {
-      operation === '+'
-        ? setCurrentPage((prevState) => prevState + 1)
-        : setCurrentPage((prevState) => prevState - 1)
+
+      return
     }
+
+    operation === 'next' && setCurrentPage(page)
+    operation === 'previous' && setCurrentPage(page)
   }
 
   return (
     <>
       {loading || error ? (
-        error ? (
-          <BaseLoading
-            queryData={{ loading, error, fetchMore }}
-            headerConfig={headerConfig}
-          >
-            <SkeletonBox shouldAllowGrowing shouldShowLowerButton>
-              <SkeletonPiece height={40} />
-            </SkeletonBox>
-          </BaseLoading>
-        ) : (
-          <div className="vh-25 flex justify-center items-center-s">
-            <Spinner />
-          </div>
-        )
+        <BaseLoading
+          queryData={{ loading, error, fetchMore }}
+          headerConfig={headerConfig}
+        >
+          <SkeletonBox shouldAllowGrowing shouldShowLowerButton>
+            <SkeletonPiece height={40} />
+          </SkeletonBox>
+        </BaseLoading>
       ) : !mergeData.length ? null : (
         <ContentWrapper {...headerConfig}>
           {() => (

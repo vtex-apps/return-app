@@ -8,7 +8,7 @@ import { productsStatusToReturn } from '../../utils/filterProductStatus'
 
 interface Props {
   orders: OrdersToReturnList
-  handlePagination: (page: number, operation: string) => void
+  handlePagination: (page: number, operation: 'next' | 'previous') => void
 }
 
 const tableSchema = {
@@ -70,14 +70,14 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
   const handleNextClick = () => {
     const newPage = currentPage + 1
 
-    handlePagination(newPage, '+')
+    handlePagination(newPage, 'next')
   }
 
   const handlePrevClick = () => {
     if (currentPage === 1) return
     const newPage = currentPage - 1
 
-    handlePagination(newPage, '-')
+    handlePagination(newPage, 'previous')
   }
 
   return (
