@@ -114,7 +114,7 @@
         "properties": {
           "orderItemIndex": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
-          "verifiedItems": { "type": "integer" },
+          "verifiedItems": { "type": ["integer", "null"], "required": true },
           "reasonCode": { "type": "string", "required": true },
           "reason": { "type": "string", "required": true },
           "condition": {
@@ -204,8 +204,9 @@
     "createdIn",
     "orderId",
     "sequenceNumber",
-    "dateSubmitted"
+    "dateSubmitted",
+    "status"
   ],
-  "v-indexed": ["id", "createdIn", "orderId", "customerProfileData"],
+  "v-indexed": ["id", "createdIn", "orderId", "customerProfileData", "status"],
   "v-immediate-indexing": true
 }
