@@ -16,12 +16,12 @@ const tableSchema = {
   properties: {
     orderId: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-id" />
+        <FormattedMessage id="store/return-app.return-order-list.table-header.oder-id" />
       ),
     },
     creationDate: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-creationDate" />
+        <FormattedMessage id="store/return-app.return-order-list.table-header.creation-date" />
       ),
       cellRenderer: function formatDate({ cellData }: { cellData: string }) {
         return (
@@ -36,7 +36,7 @@ const tableSchema = {
     },
     status: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-status" />
+        <FormattedMessage id="store/return-app.return-order-list.table-header.status" />
       ),
       cellRenderer: function isActive({ rowData }) {
         const message = productsStatusToReturn(rowData)
@@ -46,7 +46,7 @@ const tableSchema = {
     },
     selectOrder: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-selectOrder" />
+        <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
       ),
       cellRenderer: function selectOrderButton({ rowData }) {
         return (
@@ -54,7 +54,7 @@ const tableSchema = {
             to={`#/my-returns/add/${rowData.orderId}`}
             className="pointer c-link active-c-link no-underline bg-transparent b--transparent c-action-primary hover-b--transparent hover-bg-action-secondary hover-b--action-secondary t-action br2 pa3-s"
           >
-            <FormattedMessage id="store/return-app.return-order-list.table-selectOrder" />
+            <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
           </Link>
         )
       },
