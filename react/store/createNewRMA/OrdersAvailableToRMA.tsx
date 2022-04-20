@@ -10,6 +10,7 @@ import {
   SkeletonPiece,
   SkeletonBox,
 } from 'vtex.my-account-commons'
+import { Spinner } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
 import ORDERS_AVAILABLE_TO_RETURN from './graphql/getOrdersAvailableToReturn.gql'
@@ -85,7 +86,7 @@ export const OrdersAvailableToRMA = () => {
   return (
     <>
       {loading || error ? (
-        <div className="flex justify-center items-center-s">
+        error ? (
           <BaseLoading
             queryData={{ loading, error, fetchMore }}
             headerConfig={headerConfig}
@@ -94,7 +95,11 @@ export const OrdersAvailableToRMA = () => {
               <SkeletonPiece height={40} />
             </SkeletonBox>
           </BaseLoading>
-        </div>
+        ) : (
+          <div className="vh-25 flex justify-center items-center-s">
+            <Spinner />
+          </div>
+        )
       ) : !mergeData.length ? null : (
         <ContentWrapper {...headerConfig}>
           {() => (
