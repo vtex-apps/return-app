@@ -7,8 +7,6 @@ import {
   PageHeader,
   PageBlock,
   NumericStepper,
-  Textarea,
-  Input,
   Dropdown,
 } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
@@ -20,7 +18,7 @@ import type {
 } from 'vtex.return-app'
 
 import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
-import RETURN_APP_SETTINGS from '../../admin/settings/graphql/getAppSettings.gql'
+import RETURN_APP_SETTINGS from './graphql/getAppSettings.gql'
 import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
 import { availableProductsToReturn } from '../utils/filterProductsToReturn'
 
@@ -71,17 +69,6 @@ export const OrderToRMADetails = (
   const [condition, setCondition] = useState({})
   const [reason, setReason] = useState({})
   const [errorCase, setErrorCase] = useState('')
-  const [formInputs, setFormInputs] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    country: '',
-    locality: '',
-    address: '',
-    state: '',
-    zip: '',
-    extraComment: '',
-  })
 
   const { data, loading, error } = useQuery<
     { orderToReturnSummary: OrderToReturnSummary },
@@ -340,14 +327,6 @@ export const OrderToRMADetails = (
     },
   }
 
-  const handleInputChange = (event) => {
-    const { target } = event
-    const value = target.type === 'checkbox' ? target.checked : target.value
-    const { name } = target
-
-    setFormInputs((prevState) => ({ ...prevState, [name]: value }))
-  }
-
   if (error && !errorCase.length) {
     const errorCode = getErrorCode(error)
     let errorString = ''
@@ -410,92 +389,6 @@ export const OrderToRMADetails = (
           },
         ]}
       />
-      <div className="flex-ns flex-wrap flex-row mt5">
-        <div className="flex-ns flex-wrap flex-auto flex-column pa4">
-          <p>Contact details</p>
-          <div className="mb4">
-            <Input
-              name="name"
-              placeholder="Name"
-              onChange={handleInputChange}
-              value={formInputs.name}
-            />
-          </div>
-          <div className="mb4">
-            <Input
-              disabled
-              name="email"
-              placeholder="email"
-              onChange={handleInputChange}
-              value={formInputs.email}
-            />
-          </div>
-          <div className="mb4">
-            <Input
-              name="phone"
-              placeholder="Phone"
-              onChange={handleInputChange}
-              value={formInputs.phone}
-            />
-          </div>
-        </div>
-
-        <div className="flex-ns flex-wrap flex-auto flex-column pa4">
-          <p>Pickup Address</p>
-          <div className="mb4">
-            <Input
-              name="address"
-              placeholder="address"
-              onChange={handleInputChange}
-              value={formInputs.address}
-            />
-          </div>
-          <div className="mb4">
-            <Input
-              name="locality"
-              placeholder="Locality"
-              onChange={handleInputChange}
-              value={formInputs.locality}
-            />
-          </div>
-          <div className="mb4">
-            <Input
-              name="state"
-              placeholder="State"
-              onChange={handleInputChange}
-              value={formInputs.state}
-            />
-          </div>
-          <div className="mb4">
-            <Input
-              name="zip"
-              placeholder="zip"
-              onChange={handleInputChange}
-              value={formInputs.zip}
-            />
-          </div>
-          <div className="mb4">
-            <Input
-              name="country"
-              placeholder="Country"
-              onChange={handleInputChange}
-              value={formInputs.country}
-            />
-          </div>
-        </div>
-        <div className="mt4 ph4">
-          <p>Extra comment</p>
-          <div>
-            <Textarea
-              name="extraComment"
-              resize="none"
-              onChange={handleInputChange}
-              maxLength="250"
-              value={formInputs.extraComment}
-            />
-          </div>
-        </div>
-      </div>
     </PageBlock>
   )
 }
