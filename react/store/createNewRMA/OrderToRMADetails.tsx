@@ -23,80 +23,9 @@ import type {
 import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
 import RETURN_APP_SETTINGS from '../../admin/settings/graphql/getAppSettings.gql'
 import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
+import { availableProductsToReturn } from '../utils/filterProductsToReturn'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
-
-type ItemToReturn = {
-  id: number
-  quantity: number
-  available: number
-  isExcluded: boolean
-  name: string
-  imageUrl: string
-}
-
-function availableProductsToReturn(ordersToReturn) {
-  const { invoicedItems, excludedItems, processedItems } = ordersToReturn
-
-  // const processedItems = [
-  //   { itemIndex: 0, quantity: 3 },
-  //   { itemIndex: 1, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
-  // ]
-
-  const filteredItemsToReturn: ItemToReturn[] = []
-
-  invoicedItems.forEach(({ quantity, name, imageUrl, id }) => {
-    const itemToReturn = {
-      id,
-      quantity,
-      available: quantity,
-      isExcluded: false,
-      name,
-      imageUrl,
-    }
-
-    filteredItemsToReturn.push(itemToReturn)
-  })
-
-  excludedItems.forEach((item) => {
-    const { quantity, name, imageUrl, id } = invoicedItems[item.itemIndex]
-
-    const itemToReturn = {
-      id,
-      quantity,
-      available: 0,
-      isExcluded: true,
-      name,
-      imageUrl,
-    }
-
-    filteredItemsToReturn[item.itemIndex] = itemToReturn
-  })
-  processedItems.forEach(({ itemIndex, quantity }) => {
-    const { name, imageUrl, id } = invoicedItems[itemIndex]
-
-    const availableQuantity =
-      filteredItemsToReturn[itemIndex].available - quantity
-
-    const itemToReturn = {
-      id,
-      quantity: filteredItemsToReturn[itemIndex].quantity,
-      available: availableQuantity,
-      isExcluded: false,
-      name,
-      imageUrl,
-    }
-
-    !filteredItemsToReturn[itemIndex].isExcluded
-      ? (filteredItemsToReturn[itemIndex] = itemToReturn)
-      : null
-  })
-
-  return filteredItemsToReturn
-}
 
 type CodeError =
   | 'UNKNOWN_ERROR'

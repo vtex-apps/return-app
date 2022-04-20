@@ -82,3 +82,12 @@ interface ReturnRequestMutationArgs {
   returnRequest: ReturnRequestInput
   returnedItems: ProductReturnedInput[]
 }
+
+type ItemToReturn = {
+  id: number
+  quantity: number
+  available: number
+  isExcluded: boolean
+  name: string
+  imageUrl: string
+}
