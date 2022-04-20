@@ -241,7 +241,7 @@ export const OrderToRMADetails = (
     )
   }
 
-  const renderReasonDropdown = (id) => {
+  const renderReasonDropdown = (id, isExcluded) => {
     const reasonOptions = [
       {
         value: 'reasonAccidentalOrder',
@@ -310,16 +310,30 @@ export const OrderToRMADetails = (
 
     return (
       <div>
-        <Dropdown
-          label=""
-          placeholder="Select reason"
-          size="small"
-          options={reasonOptions}
-          value={reason[id]}
-          onChange={(e) => {
-            handleReason(id, e.target.value)
-          }}
-        />
+        {isExcluded ? (
+          <Dropdown
+            disabled
+            label=""
+            placeholder="Select reason"
+            size="small"
+            options={reasonOptions}
+            value={reason[id]}
+            onChange={(e) => {
+              handleReason(id, e.target.value)
+            }}
+          />
+        ) : (
+          <Dropdown
+            label=""
+            placeholder="Select reason"
+            size="small"
+            options={reasonOptions}
+            value={reason[id]}
+            onChange={(e) => {
+              handleReason(id, e.target.value)
+            }}
+          />
+        )}
       </div>
     )
   }
@@ -385,7 +399,7 @@ export const OrderToRMADetails = (
         title: 'Reason',
         cellRenderer: function reasonDropdown({ rowData }) {
           // eslint-disable-next-line no-console
-          return renderReasonDropdown(rowData.id)
+          return renderReasonDropdown(rowData.id, rowData.isExcluded)
         },
       },
       condition: {

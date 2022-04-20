@@ -6,18 +6,18 @@ import { Table } from 'vtex.styleguide'
 
 function availableProductsToReturn({
   invoicedItems,
-  // processedItems,
+  processedItems,
   excludedItems,
 }) {
   if (excludedItems.length === invoicedItems.length) return 'Not active'
 
-  const processedItems = [
-    { itemIndex: 0, quantity: 3 },
-    { itemIndex: 1, quantity: 1 },
-    { itemIndex: 2, quantity: 1 },
-    { itemIndex: 2, quantity: 1 },
-    { itemIndex: 2, quantity: 1 },
-  ]
+  // const processedItems = [
+  //   { itemIndex: 0, quantity: 3 },
+  //   { itemIndex: 1, quantity: 1 },
+  //   { itemIndex: 2, quantity: 1 },
+  //   { itemIndex: 2, quantity: 1 },
+  //   { itemIndex: 2, quantity: 1 },
+  // ]
 
   const unavailableItems = {}
 
@@ -35,7 +35,7 @@ function availableProductsToReturn({
       unavailableItems[itemIndex] !== Infinity
     ) {
       unavailableItems[itemIndex] =
-        quantity + Number(unavailableItems[itemIndex])
+        Number(quantity) + Number(unavailableItems[itemIndex])
     }
   })
 
