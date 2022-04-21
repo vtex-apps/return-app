@@ -15,12 +15,16 @@ export const createReturnRequest = async (
       /** returnApp, mdFactory, */ returnRequest: returnRequestClient,
     },
     // vtex: { logger },
+    state: { userProfile },
   } = ctx
 
   const { returnRequest } = args
   const { orderId, items } = returnRequest
+  const { firstName, lastName, email } = userProfile
 
   const requestDate = new Date().toISOString()
+  const submittedBy =
+    firstName || firstName ? `${firstName} ${lastName}` : email
 
   if (items.length === 0) {
     throw new UserInputError('There is no items in the request')
@@ -89,7 +93,7 @@ export const createReturnRequest = async (
     refundStatusData: [
       {
         status: 'new',
-        submittedBy: 'John Doe',
+        submittedBy,
         dateSubmitted: requestDate,
       },
     ],

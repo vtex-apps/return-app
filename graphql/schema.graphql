@@ -13,5 +13,6 @@ type Query {
 type Mutation {
   deleteReturnRequest(Id: [ID]!): Boolean
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
+    @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
 }
