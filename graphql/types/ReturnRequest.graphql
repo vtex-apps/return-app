@@ -3,6 +3,8 @@ input ReturnRequestInput {
   items: [ReturnRequestItemInput!]!
   customerProfileData: CustomerProfileDataInput!
   pickupReturnData: PickupReturnDataInput!
+  refundPaymentData: RefundPaymentDataInput!
+  userComment: String
 }
 
 input ReturnRequestItemInput {
@@ -47,4 +49,16 @@ input PickupReturnDataInput {
 enum AddressType {
   PICKUP_POINT
   CUSTOMER_ADDRESS
+}
+
+input RefundPaymentDataInput {
+  refundPaymentMethod: RefundPaymentMethod!
+  iban: String
+  accountHolderName: String
+}
+
+enum RefundPaymentMethod {
+  bank
+  card
+  giftCard
 }

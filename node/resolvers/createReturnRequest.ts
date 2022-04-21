@@ -19,8 +19,14 @@ export const createReturnRequest = async (
   } = ctx
 
   const { returnRequest } = args
-  const { orderId, items, customerProfileData, pickupReturnData } =
-    returnRequest
+  const {
+    orderId,
+    items,
+    customerProfileData,
+    pickupReturnData,
+    refundPaymentData,
+    userComment,
+  } = returnRequest
 
   const { firstName, lastName, email } = userProfile
 
@@ -49,7 +55,7 @@ export const createReturnRequest = async (
   // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
   // TODO: VALIDATE ITEMS. Are the items available to be returned?
   // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
-  // TODO: VALIDATE configutarion on settings - payment methods allowed, other reasons or custom reasons
+  // TODO: VALIDATE configutarion on settings - payment methods allowed (also bank should have iban and accountHolder name), other reasons or custom reasons
 
   const {
     pagination: { total },
@@ -82,20 +88,8 @@ export const createReturnRequest = async (
       email: customerProfileData.email ?? email,
       phoneNumber: customerProfileData.phoneNumber,
     },
-    pickupReturnData: {
-      addressId: pickupReturnData.addressId,
-      address: pickupReturnData.address,
-      city: pickupReturnData.city,
-      state: pickupReturnData.state,
-      country: pickupReturnData.country,
-      zipCode: pickupReturnData.zipCode,
-      addressType: pickupReturnData.addressType,
-    },
-    refundPaymentData: {
-      refundPaymentMethod: 'bank',
-      iban: '123456789',
-      accountHolderName: 'John Doe',
-    },
+    pickupReturnData,
+    refundPaymentData,
     items: items.map((item) => {
       return {
         ...item,
@@ -104,7 +98,7 @@ export const createReturnRequest = async (
     }),
     dateSubmitted: requestDate,
     refundData: null,
-    userComment: 'This is a test',
+    userComment,
     refundStatusData: [
       {
         status: 'new',
