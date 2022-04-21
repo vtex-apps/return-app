@@ -19,13 +19,16 @@ export const createReturnRequest = async (
   } = ctx
 
   const { returnRequest } = args
-  const { orderId, items, customerProfileData } = returnRequest
+  const { orderId, items, customerProfileData, pickupReturnData } =
+    returnRequest
+
   const { firstName, lastName, email } = userProfile
 
   const requestDate = new Date().toISOString()
   const submittedBy =
     firstName || firstName ? `${firstName} ${lastName}` : email
 
+  // Graphql validation doesn't prevent user to send empty items
   if (items.length === 0) {
     throw new UserInputError('There is no items in the request')
   }
@@ -80,13 +83,13 @@ export const createReturnRequest = async (
       phoneNumber: customerProfileData.phoneNumber,
     },
     pickupReturnData: {
-      addressId: '123',
-      address: 'Rua Teste',
-      city: 'São Paulo',
-      state: 'SP',
-      country: 'BRA',
-      zipCode: '12345678',
-      addressType: 'pickup-point',
+      addressId: pickupReturnData.addressId,
+      address: pickupReturnData.address,
+      city: pickupReturnData.city,
+      state: pickupReturnData.state,
+      country: pickupReturnData.country,
+      zipCode: pickupReturnData.zipCode,
+      addressType: pickupReturnData.addressType,
     },
     refundPaymentData: {
       refundPaymentMethod: 'bank',

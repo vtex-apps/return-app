@@ -2,6 +2,7 @@ input ReturnRequestInput {
   orderId: String!
   items: [ReturnRequestItemInput!]!
   customerProfileData: CustomerProfileDataInput!
+  pickupReturnData: PickupReturnDataInput!
 }
 
 input ReturnRequestItemInput {
@@ -31,4 +32,19 @@ input CustomerProfileDataInput {
   """
   email: String
   phoneNumber: String!
+}
+
+input PickupReturnDataInput {
+  addressId: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  addressType: AddressType!
+}
+
+enum AddressType {
+  PICKUP_POINT
+  CUSTOMER_ADDRESS
 }

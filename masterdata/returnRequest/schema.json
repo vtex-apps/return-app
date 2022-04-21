@@ -79,7 +79,7 @@
         "addressType": {
           "type": "string",
           "required": true,
-          "enum": ["pickup-point", "customer-address"]
+          "enum": ["PICKUP_POINT", "CUSTOMER_ADDRESS"]
         },
         "returnLabel": {
           "type": "string"
