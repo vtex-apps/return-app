@@ -1,14 +1,9 @@
 import type { ApolloError } from 'apollo-client'
 import React, { useEffect, useState } from 'react'
-import { FormattedDate } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
+import { FormattedDate, FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-apollo'
-import {
-  Table,
-  PageHeader,
-  PageBlock,
-  NumericStepper,
-  Dropdown,
-} from 'vtex.styleguide'
+import { Table, PageHeader, PageBlock, NumericStepper } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
 import type {
   OrderToReturnSummary,
@@ -21,6 +16,8 @@ import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
 import RETURN_APP_SETTINGS from './graphql/getAppSettings.gql'
 import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
 import { availableProductsToReturn } from '../utils/filterProductsToReturn'
+import { RenderConditionDropdown } from './components/RenderConditionDropdown'
+import { RenderReasonDropdown } from './components/RenderReasonDropdown'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -63,6 +60,8 @@ export const OrderToRMADetails = (
       params: { orderId },
     },
   } = props
+
+  const { navigate } = useRuntime()
 
   const [order, setOrder] = useState<ItemToReturn[]>([])
   const [selectedQuantity, setSelectedQuantity] = useState({})
@@ -120,143 +119,12 @@ export const OrderToRMADetails = (
     }))
   }
 
-  const renderConditionDropdown = (id) => {
-    const conditionOptions = [
-      {
-        value: 'New With Box',
-        label: 'New With Box',
-      },
-      {
-        value: 'New Without Box',
-        label: 'New Without Box',
-      },
-      {
-        value: 'Used With Box',
-        label: 'Used With Box',
-      },
-      {
-        value: 'Used Without Box',
-        label: 'Used Without Box',
-      },
-    ]
-
-    return (
-      <div>
-        <Dropdown
-          label=""
-          placeholder="Select Condition"
-          size="small"
-          options={conditionOptions}
-          value={condition[id]}
-          onChange={(e) => {
-            handleCondition(id, e.target.value)
-          }}
-        />
-      </div>
-    )
-  }
-
-  const renderReasonDropdown = (id, isExcluded) => {
-    const reasonOptions = [
-      {
-        value: 'reasonAccidentalOrder',
-        label: 'reasonAccidentalOrder',
-      },
-      {
-        value: 'reasonBetterPrice',
-        label: 'reasonBetterPrice',
-      },
-      {
-        value: 'reasonPerformance',
-        label: 'reasonPerformance',
-      },
-      {
-        value: 'reasonIncompatible',
-        label: 'reasonIncompatible',
-      },
-      {
-        value: 'reasonItemDamaged',
-        label: 'reasonItemDamaged',
-      },
-      {
-        value: 'reasonMissedDelivery',
-        label: 'reasonMissedDelivery',
-      },
-      {
-        value: 'reasonMissingParts',
-        label: 'reasonMissingParts',
-      },
-      {
-        value: 'reasonBoxDamaged',
-        label: 'reasonBoxDamaged',
-      },
-      {
-        value: 'reasonDifferentProduct',
-        label: 'reasonDifferentProduct',
-      },
-      {
-        value: 'reasonDefective',
-        label: 'reasonDefective',
-      },
-      {
-        value: 'reasonArrivedInAddition',
-        label: 'reasonArrivedInAddition',
-      },
-      {
-        value: 'reasonNoLongerNeeded',
-        label: 'reasonNoLongerNeeded',
-      },
-      {
-        value: 'reasonUnauthorizedPurchase',
-        label: 'reasonUnauthorizedPurchase',
-      },
-      {
-        value: 'reasonDifferentFromWebsite',
-        label: 'reasonDifferentFromWebsite',
-      },
-    ]
-
-    if (settings?.returnAppSettings.options?.enableOtherOptionSelection) {
-      reasonOptions.push({
-        value: 'Other reason',
-        label: 'Other reason',
-      })
-    }
-
-    return (
-      <div>
-        {isExcluded ? (
-          <Dropdown
-            disabled
-            label=""
-            placeholder="Select reason"
-            size="small"
-            options={reasonOptions}
-            value={reason[id]}
-            onChange={(e) => {
-              handleReason(id, e.target.value)
-            }}
-          />
-        ) : (
-          <Dropdown
-            label=""
-            placeholder="Select reason"
-            size="small"
-            options={reasonOptions}
-            value={reason[id]}
-            onChange={(e) => {
-              handleReason(id, e.target.value)
-            }}
-          />
-        )}
-      </div>
-    )
-  }
-
   const tableSchema = {
     properties: {
       product: {
-        title: 'Product',
+        title: (
+          <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
+        ),
         width: 350,
         cellRenderer: function renderProduct({ rowData }) {
           // eslint-disable-next-line no-console
@@ -276,7 +144,7 @@ export const OrderToRMADetails = (
                 <p style={{ margin: '0px' }}>{rowData.name}</p>
                 {rowData.isExcluded ? (
                   <p style={{ margin: '3px' }}>
-                    The product category is excluded from being returned
+                    <FormattedMessage id="store/return-app.return-order-details.table-paragraph.exluded-category" />
                   </p>
                 ) : null}
               </div>
@@ -285,14 +153,27 @@ export const OrderToRMADetails = (
         },
       },
       quantity: {
-        title: 'Quantity',
+        title: (
+          <FormattedMessage id="store/return-app.return-order-details.table-header.quantity" />
+        ),
         cellRenderer: function quantity({ rowData }) {
           // eslint-disable-next-line no-console
           return <p>{rowData.quantity}</p>
         },
       },
       availableToReturn: {
-        title: 'Available to Return',
+        title: (
+          <FormattedMessage id="store/return-app.return-order-details.table-header.available-to-return" />
+        ),
+        width: 250,
+        cellRenderer: function availableToReturn({ rowData }) {
+          return <p>{rowData.available}</p>
+        },
+      },
+      quantityAvailable: {
+        title: (
+          <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-available-to-return" />
+        ),
         width: 250,
         cellRenderer: function availableToReturn({ rowData }) {
           return (
@@ -311,17 +192,34 @@ export const OrderToRMADetails = (
         },
       },
       reason: {
-        title: 'Reason',
+        title: (
+          <FormattedMessage id="store/return-app.return-order-details.table-header.reason" />
+        ),
         cellRenderer: function reasonDropdown({ rowData }) {
-          // eslint-disable-next-line no-console
-          return renderReasonDropdown(rowData.id, rowData.isExcluded)
+          return (
+            <RenderReasonDropdown
+              id={rowData.id}
+              settings={settings}
+              isExcluded={rowData.isExcluded}
+              handleReason={handleReason}
+              reason={reason}
+            />
+          )
         },
       },
       condition: {
-        title: 'Condition',
+        title: (
+          <FormattedMessage id="store/return-app.return-order-details.table-header.condition" />
+        ),
         cellRenderer: function conditionDropdown({ rowData }) {
           // eslint-disable-next-line no-console
-          return renderConditionDropdown(rowData.id)
+          return (
+            <RenderConditionDropdown
+              handleCondition={handleCondition}
+              condition={condition}
+              id={rowData.id}
+            />
+          )
         },
       },
     },
@@ -362,8 +260,17 @@ export const OrderToRMADetails = (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
       <PageHeader
         className="ph0 mh0 nl5"
-        title="My Returns"
-        linkLabel="Back to Orders"
+        title={
+          <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+        }
+        linkLabel={
+          <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
+        }
+        onLinkClick={() =>
+          navigate({
+            to: `#/my-returns/add`,
+          })
+        }
       />
       <Table
         emptyStateLabel={errorCase}

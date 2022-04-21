@@ -1,46 +1,72 @@
-export function productsStatusToReturn({
-  invoicedItems,
-  processedItems,
-  excludedItems,
-}) {
-  if (excludedItems.length === invoicedItems.length) return 'Not active'
+type FilteredItems = {
+  quantity: number
+  available: number
+  isExcluded: boolean
+}
+
+export function productsStatusToReturn(orderToReturn) {
+  const { invoicedItems, excludedItems, processedItems } = orderToReturn
 
   // const processedItems = [
-  //   { itemIndex: 0, quantity: 3 },
   //   { itemIndex: 1, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
   //   { itemIndex: 2, quantity: 1 },
   //   { itemIndex: 2, quantity: 1 },
   // ]
 
-  const unavailableItems = {}
+  const filteredItemsToReturn: FilteredItems[] = []
+
+  invoicedItems.forEach(({ quantity }) => {
+    const itemToReturn = {
+      quantity,
+      available: quantity,
+      isExcluded: false,
+    }
+
+    filteredItemsToReturn.push(itemToReturn)
+  })
 
   excludedItems.forEach((item) => {
-    unavailableItems[item.itemIndex] = Infinity
+    const { quantity } = filteredItemsToReturn[item.itemIndex]
+
+    const itemToReturn = {
+      quantity,
+      available: 0,
+      isExcluded: true,
+    }
+
+    filteredItemsToReturn[item.itemIndex] = itemToReturn
   })
 
   processedItems.forEach(({ itemIndex, quantity }) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (!unavailableItems.hasOwnProperty(itemIndex)) {
-      unavailableItems[itemIndex] = quantity
-    } else if (
-      // eslint-disable-next-line no-prototype-builtins
-      unavailableItems.hasOwnProperty(itemIndex) &&
-      unavailableItems[itemIndex] !== Infinity
-    ) {
-      unavailableItems[itemIndex] =
-        Number(quantity) + Number(unavailableItems[itemIndex])
+    if (filteredItemsToReturn[itemIndex]) {
+      let availableQuantity =
+        filteredItemsToReturn[itemIndex].available - quantity
+
+      if (availableQuantity < 0) {
+        availableQuantity = 0
+      }
+
+      const itemToReturn = {
+        quantity: filteredItemsToReturn[itemIndex].quantity,
+        available: availableQuantity,
+        isExcluded: false,
+      }
+
+      return !filteredItemsToReturn[itemIndex].isExcluded
+        ? (filteredItemsToReturn[itemIndex] = itemToReturn)
+        : null
     }
+
+    return null
   })
 
-  const isActive = invoicedItems.some(({ quantity }, index) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (unavailableItems.hasOwnProperty(index)) {
-      return quantity > unavailableItems[Number(index)]
-    }
+  const quantity = filteredItemsToReturn.reduce((acc, value) => {
+    return acc + value.quantity
+  }, 0)
 
-    return true
-  })
+  const availableQuantity = filteredItemsToReturn.reduce((acc, value) => {
+    return value.isExcluded ? acc + 0 : acc + value.available
+  }, 0)
 
-  return isActive ? 'Active' : 'Not active'
+  return { quantity, availableQuantity }
 }

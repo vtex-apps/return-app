@@ -1,5 +1,5 @@
-export function availableProductsToReturn(ordersToReturn) {
-  const { invoicedItems, excludedItems, processedItems } = ordersToReturn
+export function availableProductsToReturn(orderToReturn) {
+  const { invoicedItems, excludedItems, processedItems } = orderToReturn
 
   // const processedItems = [
   //   { itemIndex: 0, quantity: 3 },

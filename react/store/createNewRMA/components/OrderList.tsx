@@ -38,10 +38,10 @@ const tableSchema = {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-header.status" />
       ),
-      cellRenderer: function isActive({ rowData }) {
-        const message = productsStatusToReturn(rowData)
+      cellRenderer: function availableProducts({ rowData }) {
+        const { availableQuantity, quantity } = productsStatusToReturn(rowData)
 
-        return <p>{message}</p>
+        return <p>{`${availableQuantity} / ${quantity}`}</p>
       },
     },
     selectOrder: {
@@ -87,6 +87,9 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
   return (
     <Table
       fullWidth
+      emptyStateLabel={
+        <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
+      }
       schema={tableSchema}
       items={orders.list}
       loading={fetchMoreState === 'LOADING'}
@@ -98,7 +101,9 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
           perPage * currentPage > totalItems
             ? totalItems
             : perPage * currentPage,
-        textOf: 'of',
+        textOf: (
+          <FormattedMessage id="store/return-app.return-order-list.table-pagination.text-of" />
+        ),
         totalItems,
       }}
     />
