@@ -100,9 +100,6 @@
         },
         "accountHolderName": {
           "type": "string"
-        },
-        "paidWithCc": {
-          "type": "boolean"
         }
       }
     },
@@ -115,8 +112,19 @@
           "orderItemIndex": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
           "verifiedItems": { "type": ["integer", "null"], "required": true },
-          "reasonCode": { "type": "string", "required": true },
-          "reason": { "type": "string", "required": true },
+          "returnReason": {
+            "type": "object",
+            "required": true,
+            "properties": {
+              "reason": {
+                "type": "string",
+                "required": true
+              },
+              "otherReason": {
+                "type": "string"
+              }
+            }
+          },
           "condition": {
             "type": "string",
             "required": true,
