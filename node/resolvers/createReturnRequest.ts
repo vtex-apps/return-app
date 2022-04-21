@@ -19,7 +19,7 @@ export const createReturnRequest = async (
   } = ctx
 
   const { returnRequest } = args
-  const { orderId, items } = returnRequest
+  const { orderId, items, customerProfileData } = returnRequest
   const { firstName, lastName, email } = userProfile
 
   const requestDate = new Date().toISOString()
@@ -52,8 +52,13 @@ export const createReturnRequest = async (
     pagination: { total },
   } = searchRMA
 
+  const {
+    sequence,
+    clientProfileData: { userProfileId },
+  } = order
+
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
-  const sequenceNumber = `${order.sequence}-${total + 1}`
+  const sequenceNumber = `${sequence}-${total + 1}`
 
   const rmaDocument = await returnRequestClient.save({
     orderId,
@@ -62,10 +67,17 @@ export const createReturnRequest = async (
     status: 'new',
     returnTotals: [{ id: 'items', value: 1234 }],
     customerProfileData: {
-      userId: '123',
-      name: 'John Doe',
-      email: 'JohnDoe@gmail.com',
-      phoneNumber: '+5511999999999',
+      userId: userProfileId,
+      name: customerProfileData.name,
+      /**
+       * Why using email from args and not for userProfile (session)?
+       * When submitting a request via GraphQL IDE (or postman), there is no profile from session.
+       * It would use the admin email, instead of the user one.
+       * Also, we cannot use the email in the order because it might be masked.
+       * However, email is an optional field in the mutation input, so it's ok the front end doesn't send it.
+       */
+      email: customerProfileData.email ?? email,
+      phoneNumber: customerProfileData.phoneNumber,
     },
     pickupReturnData: {
       addressId: '123',
