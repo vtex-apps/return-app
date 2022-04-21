@@ -1,3 +1,24 @@
 input ReturnRequestInput {
   orderId: String!
+  items: [ReturnRequestItemInput!]!
+}
+
+input ReturnRequestItemInput {
+  orderItemIndex: Int!
+  quantity: Int!
+  verifiedItems: Int
+  condition: ItemCondition!
+  returnReason: ReturnReasonInput!
+}
+
+input ReturnReasonInput {
+  reason: String!
+  otherReason: String
+}
+
+enum ItemCondition {
+  newWithBox
+  newWithoutBox
+  usedWithBox
+  usedWithoutBox
 }

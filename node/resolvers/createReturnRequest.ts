@@ -1,6 +1,7 @@
 // import { createReturnProductFields } from '../utils/createReturnProductFields'
 // import { createReturnRequestFields } from '../utils/createReturnRequestFields'
 // import { createStatusHistoryFields } from '../utils/createStatusHistoryFields'
+import { UserInputError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
 export const createReturnRequest = async (
@@ -17,7 +18,13 @@ export const createReturnRequest = async (
   } = ctx
 
   const { returnRequest } = args
-  const { orderId } = returnRequest
+  const { orderId, items } = returnRequest
+
+  const requestDate = new Date().toISOString()
+
+  if (items.length === 0) {
+    throw new UserInputError('There is no items in the request')
+  }
 
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
@@ -41,6 +48,7 @@ export const createReturnRequest = async (
     pagination: { total },
   } = searchRMA
 
+  // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   const sequenceNumber = `${order.sequence}-${total + 1}`
 
   const rmaDocument = await returnRequestClient.save({
@@ -69,27 +77,25 @@ export const createReturnRequest = async (
       iban: '123456789',
       accountHolderName: 'John Doe',
     },
-    items: [
-      {
-        orderItemIndex: 0,
-        quantity: 1,
-        verifiedItems: null,
-        reasonCode: 'other',
-        reason: 'Other',
-        condition: 'newWithBox',
-      },
-    ],
-    dateSubmitted: new Date().toISOString(),
+    items: items.map((item) => {
+      return {
+        ...item,
+        verifiedItems: item.verifiedItems ?? null,
+      }
+    }),
+    dateSubmitted: requestDate,
     refundData: null,
     userComment: 'This is a test',
     refundStatusData: [
       {
         status: 'new',
         submittedBy: 'John Doe',
-        dateSubmitted: new Date().toISOString(),
+        dateSubmitted: requestDate,
       },
     ],
   })
+
+  // TODO: Send confirmation email.
 
   // const totalPrice = returnedItems.reduce((totalValue, item) => {
   //   return totalValue + item.quantity * item.unitPrice
@@ -175,5 +181,9 @@ export const createReturnRequest = async (
 
   //   throw new Error(e)
   // }
+
+  // eslint-disable-next-line no-console
+  console.log('@@@@@@@@', rmaDocument.DocumentId, requestDate)
+
   return { returnRequestId: rmaDocument.DocumentId }
 }

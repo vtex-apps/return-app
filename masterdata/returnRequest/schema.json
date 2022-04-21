@@ -121,7 +121,7 @@
                 "required": true
               },
               "otherReason": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             }
           },
