@@ -15,7 +15,18 @@ const createUserProfile = (sessionData: SessionData): UserProfile => {
     throw new ResolverError('Invalid session data')
   }
 
-  return { email, userId, role }
+  const { firstName, lastName } = profile
+
+  const firstNameValue = firstName?.value ?? ''
+  const lastNameValue = lastName?.value ?? ''
+
+  return {
+    email,
+    userId,
+    role,
+    firstName: firstNameValue,
+    lastName: lastNameValue,
+  }
 }
 
 export const getUserProfileFromSession = async (
@@ -27,6 +38,8 @@ export const getUserProfileFromSession = async (
   const { sessionData } = (await session.getSession(sessionCookie, [
     'profile.id',
     'profile.email',
+    'profile.firstName',
+    'profile.lastName',
     'authentication.adminUserEmail',
     'authentication.adminUserId',
   ])) as {

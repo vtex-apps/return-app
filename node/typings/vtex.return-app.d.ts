@@ -1,6 +1,8 @@
 interface UserProfile {
   email: string
   userId: string
+  firstName: string
+  lastName: string
   role: 'admin' | 'store-user'
 }
 
@@ -17,6 +19,12 @@ interface ProfileSession {
     value: string
   }
   email?: {
+    value: string
+  }
+  firstName?: {
+    value: string
+  }
+  lastName?: {
     value: string
   }
 }
