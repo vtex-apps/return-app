@@ -281,7 +281,9 @@ export const OrderToRMADetails = (
             value: `${orderId}`,
           },
           {
-            label: 'Creation Date',
+            label: formatMessage({
+              id: 'store/return-app.return-order-details.page-header.creation-date',
+            }),
             value: !data ? null : (
               <FormattedDate
                 value={`${data.orderToReturnSummary.creationDate}`}
