@@ -79,7 +79,7 @@
         "addressType": {
           "type": "string",
           "required": true,
-          "enum": ["pickup-point", "customer-address"]
+          "enum": ["PICKUP_POINT", "CUSTOMER_ADDRESS"]
         },
         "returnLabel": {
           "type": "string"
@@ -96,13 +96,10 @@
           "enum": ["bank", "card", "giftCard"]
         },
         "iban": {
-          "type": "string"
+          "type": ["string", "null"]
         },
         "accountHolderName": {
-          "type": "string"
-        },
-        "paidWithCc": {
-          "type": "boolean"
+          "type": ["string", "null"]
         }
       }
     },
@@ -115,8 +112,19 @@
           "orderItemIndex": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
           "verifiedItems": { "type": ["integer", "null"], "required": true },
-          "reasonCode": { "type": "string", "required": true },
-          "reason": { "type": "string", "required": true },
+          "returnReason": {
+            "type": "object",
+            "required": true,
+            "properties": {
+              "reason": {
+                "type": "string",
+                "required": true
+              },
+              "otherReason": {
+                "type": ["string", "null"]
+              }
+            }
+          },
           "condition": {
             "type": "string",
             "required": true,
@@ -131,7 +139,7 @@
       }
     },
     "dateSubmitted": { "type": "string", "format": "date-time" },
-    "userComment": { "type": "string", "maxLength": 300 },
+    "userComment": { "type": ["string", "null"], "maxLength": 300 },
     "refundData": {
       "type": ["object", "null"],
       "required": true,

@@ -1,44 +1,64 @@
 input ReturnRequestInput {
-  userId: String!
   orderId: String!
-  name: String!
-  email: String!
-  phoneNumber: String!
-  country: String!
-  locality: String!
-  state: String!
-  zip: String!
-  address: String!
-  paymentMethod: String!
-  extraComment: String!
-  giftCardCode: String!
-  giftCardId: String!
-  refundedAmount: Int!
-  iban: String!
-  accountHolder: String!
+  items: [ReturnRequestItemInput!]!
+  customerProfileData: CustomerProfileDataInput!
+  pickupReturnData: PickupReturnDataInput!
+  refundPaymentData: RefundPaymentDataInput!
+  userComment: String
 }
 
-type ReturnRequest {
-  userId: String!
-  orderId: String!
+input ReturnRequestItemInput {
+  orderItemIndex: Int!
+  quantity: Int!
+  verifiedItems: Int
+  condition: ItemCondition!
+  returnReason: ReturnReasonInput!
+}
+
+input ReturnReasonInput {
+  reason: String!
+  otherReason: String
+}
+
+enum ItemCondition {
+  newWithBox
+  newWithoutBox
+  usedWithBox
+  usedWithoutBox
+}
+
+input CustomerProfileDataInput {
   name: String!
-  email: String!
+  """
+  email: If it is not provided, the email from session will be used. When calling from store front, it's ok not pass, but calling from GraphQL IDE or Postman, it's required.
+  """
+  email: String
   phoneNumber: String!
-  country: String!
-  locality: String!
-  state: String!
-  zip: String!
+}
+
+input PickupReturnDataInput {
+  addressId: String!
   address: String!
-  totalPrice: Int!
-  paymentMethod: String!
-  extraComment: String!
-  giftCardCode: String!
-  giftCardId: String!
-  refundedAmount: Int!
-  iban: String!
-  accountHolder: String!
-  status: String!
-  dateSubmitted: String!
-  type: String!
-  sequenceNumber: String
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  addressType: AddressType!
+}
+
+enum AddressType {
+  PICKUP_POINT
+  CUSTOMER_ADDRESS
+}
+
+input RefundPaymentDataInput {
+  refundPaymentMethod: RefundPaymentMethod!
+  iban: String
+  accountHolderName: String
+}
+
+enum RefundPaymentMethod {
+  bank
+  card
+  giftCard
 }
