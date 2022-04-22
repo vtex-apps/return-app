@@ -82,7 +82,7 @@ export const OrdersAvailableToRMA = () => {
 
   return (
     <>
-      {loading || error ? (
+      {loading || error || !ordersToReturn.length ? (
         <BaseLoading
           queryData={{ loading, error, fetchMore }}
           headerConfig={headerConfig}
@@ -91,7 +91,7 @@ export const OrdersAvailableToRMA = () => {
             <SkeletonPiece height={40} />
           </SkeletonBox>
         </BaseLoading>
-      ) : !ordersToReturn.length ? null : (
+      ) : (
         <ContentWrapper {...headerConfig}>
           {() => (
             <OrderList
