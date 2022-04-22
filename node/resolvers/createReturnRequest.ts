@@ -64,6 +64,7 @@ export const createReturnRequest = async (
 
   const rmaDocument = await returnRequestClient.save({
     orderId,
+    // Rename field to: totalAvailableReturnAmount (on masterdata schema, then here)
     totalReturnAmount: 1234,
     sequenceNumber,
     status: 'new',
