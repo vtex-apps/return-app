@@ -36,7 +36,7 @@ const tableSchema = {
     },
     status: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-header.status" />
+        <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
       ),
       cellRenderer: function availableProducts({ rowData }) {
         const { availableQuantity, quantity } = productsStatusToReturn(rowData)
