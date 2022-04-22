@@ -1,0 +1,58 @@
+import type { OrderToReturnSummary } from 'vtex.return-app'
+
+export function availableProductsToReturn(
+  orderToReturn: OrderToReturnSummary
+): ItemToReturn[] {
+  const { invoicedItems, excludedItems, processedItems } = orderToReturn
+
+  const filteredItemsToReturn: ItemToReturn[] = []
+
+  invoicedItems.forEach(({ quantity, name, imageUrl, id }) => {
+    const itemToReturn = {
+      id,
+      quantity,
+      available: quantity,
+      isExcluded: false,
+      name,
+      imageUrl,
+    }
+
+    filteredItemsToReturn.push(itemToReturn)
+  })
+
+  excludedItems.forEach((item) => {
+    const { quantity, name, imageUrl, id } = invoicedItems[item.itemIndex]
+
+    const itemToReturn = {
+      id,
+      quantity,
+      available: 0,
+      isExcluded: true,
+      name,
+      imageUrl,
+    }
+
+    filteredItemsToReturn[item.itemIndex] = itemToReturn
+  })
+  processedItems.forEach(({ itemIndex, quantity }) => {
+    const { name, imageUrl, id } = invoicedItems[itemIndex]
+
+    const availableQuantity =
+      filteredItemsToReturn[itemIndex].available - quantity
+
+    const itemToReturn = {
+      id,
+      quantity: filteredItemsToReturn[itemIndex].quantity,
+      available: availableQuantity,
+      isExcluded: false,
+      name,
+      imageUrl,
+    }
+
+    !filteredItemsToReturn[itemIndex].isExcluded
+      ? (filteredItemsToReturn[itemIndex] = itemToReturn)
+      : null
+  })
+
+  return filteredItemsToReturn
+}

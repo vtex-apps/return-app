@@ -9,17 +9,17 @@ type OrderToReturnSummary {
   """
   Items invoiced / sent to costumer with items details.
   """
-  invoicedItems: [InvoicedItem]!
+  invoicedItems: [InvoicedItem!]!
   """
   Items committed to return or already returned (invoiced as Input) that cannot be considered to be returned anymore.
   The itemIndex property is used to identify the item in the list of invoiced items.
   """
-  processedItems: [ProcessedItem]!
+  processedItems: [ProcessedItem!]!
   """
   Items forbidden to be return.
   The itemIndex property is used to identify the item in the list of invoiced items.
   """
-  excludedItems: [excludedItem]!
+  excludedItems: [excludedItem!]!
 }
 
 type Pagination {
@@ -33,6 +33,8 @@ type InvoicedItem {
   id: String!
   productId: String!
   quantity: Int!
+  name: String!
+  imageUrl: String!
 }
 
 type ProcessedItem {

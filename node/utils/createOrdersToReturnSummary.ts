@@ -48,6 +48,8 @@ export const createOrdersToReturnSummary = (
     const {
       id,
       productId,
+      name,
+      imageUrl,
       additionalInfo: { categoriesIds },
     } = items[index]
 
@@ -56,6 +58,8 @@ export const createOrdersToReturnSummary = (
       id,
       productId,
       quantity,
+      name,
+      imageUrl,
     })
 
     const categoryIdList = categoriesIds.split('/').filter(Boolean)
