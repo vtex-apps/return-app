@@ -14,10 +14,6 @@ query ordersAvailableToReturn($page: Int!) {
       }
       excludedItems {
         itemIndex
-        reason {
-          key
-          value
-        }
       }
     }
     paging {
