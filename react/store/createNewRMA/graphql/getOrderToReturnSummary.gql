@@ -16,10 +16,6 @@ query orderToReturnSummary($orderId: ID!) {
     }
     excludedItems {
       itemIndex
-      reason {
-        key
-        value
-      }
     }
   }
 }
