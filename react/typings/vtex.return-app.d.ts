@@ -84,7 +84,7 @@ interface ReturnRequestMutationArgs {
 }
 
 type ItemToReturn = {
-  id: number
+  id: string
   quantity: number
   available: number
   isExcluded: boolean

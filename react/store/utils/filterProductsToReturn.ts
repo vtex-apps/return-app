@@ -1,13 +1,9 @@
-export function availableProductsToReturn(orderToReturn) {
-  const { invoicedItems, excludedItems, processedItems } = orderToReturn
+import type { OrderToReturnSummary } from 'vtex.return-app'
 
-  // const processedItems = [
-  //   { itemIndex: 0, quantity: 3 },
-  //   { itemIndex: 1, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
-  //   { itemIndex: 2, quantity: 1 },
-  // ]
+export function availableProductsToReturn(
+  orderToReturn: OrderToReturnSummary
+): ItemToReturn[] {
+  const { invoicedItems, excludedItems, processedItems } = orderToReturn
 
   const filteredItemsToReturn: ItemToReturn[] = []
 
