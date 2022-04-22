@@ -282,9 +282,9 @@ export const OrderToRMADetails = (
           },
           {
             label: 'Creation Date',
-            value: (
+            value: !data ? null : (
               <FormattedDate
-                value={`${data?.orderToReturnSummary.creationDate}`}
+                value={`${data.orderToReturnSummary.creationDate}`}
                 day="numeric"
                 month="long"
                 year="numeric"
