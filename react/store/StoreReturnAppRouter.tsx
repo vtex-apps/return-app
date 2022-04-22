@@ -1,12 +1,9 @@
 import React from 'react'
 import { Route, Switch } from 'vtex.my-account-commons/Router'
 
-import { StoreMyReturnsPageWrapper } from './store/StoreMyReturnsPage'
-import { StoreMyReturnsDetailsWrapper } from './store/StoreMyReturnsDetails'
-import {
-  OrdersAvailableToRMA,
-  OrderToRMADetails,
-} from './store/StoreMyReturnsAdd'
+import { StoreMyReturnsPageWrapper } from './StoreMyReturnsPage'
+import { StoreMyReturnsDetailsWrapper } from './StoreMyReturnsDetails'
+import { OrdersAvailableToRMA, OrderToRMADetails } from './StoreMyReturnsAdd'
 
 export const AppRouter = () => {
   return (
