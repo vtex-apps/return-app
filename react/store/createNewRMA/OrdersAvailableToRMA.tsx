@@ -26,7 +26,7 @@ const headerConfig = {
 }
 
 export const OrdersAvailableToRMA = () => {
-  const [mergeData, setMergeData] = useState<OrdersToReturnList[]>([])
+  const [ordersToReturn, setOrdersToReturn] = useState<OrdersToReturnList[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const { data, loading, error, fetchMore } = useQuery<
@@ -40,7 +40,7 @@ export const OrdersAvailableToRMA = () => {
 
   useEffect(() => {
     if (data) {
-      setMergeData([data.ordersAvailableToReturn])
+      setOrdersToReturn([data.ordersAvailableToReturn])
     }
   }, [data])
 
@@ -48,7 +48,7 @@ export const OrdersAvailableToRMA = () => {
     page: number,
     operation: 'next' | 'previous'
   ): Promise<void> => {
-    const alreadyFetched = mergeData.find((ordersItem) => {
+    const alreadyFetched = ordersToReturn.find((ordersItem) => {
       return ordersItem.paging?.currentPage === page
     })
 
@@ -60,7 +60,7 @@ export const OrdersAvailableToRMA = () => {
         updateQuery: (prevResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prevResult
 
-          setMergeData((prevState) => [
+          setOrdersToReturn((prevState) => [
             ...prevState,
             fetchMoreResult.ordersAvailableToReturn,
           ])
@@ -91,11 +91,11 @@ export const OrdersAvailableToRMA = () => {
             <SkeletonPiece height={40} />
           </SkeletonBox>
         </BaseLoading>
-      ) : !mergeData.length ? null : (
+      ) : !ordersToReturn.length ? null : (
         <ContentWrapper {...headerConfig}>
           {() => (
             <OrderList
-              orders={mergeData[currentPage - 1]}
+              orders={ordersToReturn[currentPage - 1]}
               handlePagination={handlePagination}
             />
           )}
