@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'vtex.render-runtime'
-import type { OrdersToReturnList } from 'vtex.return-app'
+import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { Table } from 'vtex.styleguide'
 
@@ -38,7 +38,11 @@ const tableSchema = {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
       ),
-      cellRenderer: function availableProducts({ rowData }) {
+      cellRenderer: function availableProducts({
+        rowData,
+      }: {
+        rowData: OrderToReturnSummary
+      }) {
         const { availableQuantity, quantity } = productsStatusToReturn(rowData)
 
         return <p>{`${availableQuantity} / ${quantity}`}</p>
