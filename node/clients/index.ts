@@ -1,11 +1,12 @@
 import { IOClients } from '@vtex/api'
-import { vbaseFor, OMS } from '@vtex/clients'
+import { vbaseFor } from '@vtex/clients'
 import { ReturnAppSettings } from 'vtex.return-app'
 
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { MDFactory } from './mdFactory'
 import { Catalog } from './catalog'
+import { OMSCustom as OMS } from './oms'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 

@@ -1,3 +1,35 @@
+interface UserProfile {
+  email: string
+  userId: string
+  role: 'admin' | 'store-user'
+}
+
+interface SessionData {
+  id: string
+  namespaces: {
+    profile: ProfileSession
+    authentication: AuthenticationSession
+  }
+}
+
+interface ProfileSession {
+  id?: {
+    value: string
+  }
+  email?: {
+    value: string
+  }
+}
+
+interface AuthenticationSession {
+  adminUserEmail?: {
+    value: string
+  }
+  adminUserId?: {
+    value: string
+  }
+}
+
 interface ReturnRequest {
   id: string
   createdIn: string
