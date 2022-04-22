@@ -1,7 +1,12 @@
 import type { ApolloError } from 'apollo-client'
 import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
-import { FormattedDate, FormattedMessage } from 'react-intl'
+import {
+  defineMessages,
+  FormattedDate,
+  FormattedMessage,
+  useIntl,
+} from 'react-intl'
 import { useQuery } from 'react-apollo'
 import { Table, PageHeader, PageBlock, NumericStepper } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
@@ -52,6 +57,24 @@ const getErrorCode = (error: ApolloError): CodeError => {
   return knownError ?? 'UNKNOWN_ERROR'
 }
 
+const errorMessages = defineMessages({
+  [ORDER_NOT_INVOICED]: {
+    id: 'store/return-app.return-order-details.error.order-not-invoiced',
+  },
+  [OUT_OF_MAX_DAYS]: {
+    id: 'store/return-app.return-order-details.error.out-of-max-days',
+  },
+  E_HTTP_404: {
+    id: 'store/return-app.return-order-details.error.order-not-found',
+  },
+  FORBIDDEN: {
+    id: 'store/return-app.return-order-details.error.forbidden',
+  },
+  UNKNOWN_ERROR: {
+    id: 'store/return-app.return-order-details.error.unknown',
+  },
+})
+
 export const OrderToRMADetails = (
   props: RouteComponentProps<{ orderId: string }>
 ) => {
@@ -62,6 +85,7 @@ export const OrderToRMADetails = (
   } = props
 
   const { navigate } = useRuntime()
+  const { formatMessage } = useIntl()
 
   const [order, setOrder] = useState<ItemToReturn[]>([])
   const [selectedQuantity, setSelectedQuantity] = useState({})
@@ -69,12 +93,13 @@ export const OrderToRMADetails = (
   const [reason, setReason] = useState({})
   const [errorCase, setErrorCase] = useState('')
 
-  const { data, loading, error } = useQuery<
+  const { data, loading } = useQuery<
     { orderToReturnSummary: OrderToReturnSummary },
     QueryOrderToReturnSummaryArgs
   >(ORDER_TO_RETURN_SUMMARY, {
     variables: { orderId },
     skip: !orderId,
+    onError: (error) => setErrorCase(getErrorCode(error)),
   })
 
   const {
@@ -225,36 +250,8 @@ export const OrderToRMADetails = (
     },
   }
 
-  if (error && !errorCase.length) {
-    const errorCode = getErrorCode(error)
-    let errorString = ''
-
-    switch (errorCode) {
-      case ORDER_NOT_INVOICED:
-        errorString = 'The order is not invoiced'
-        break
-
-      case OUT_OF_MAX_DAYS:
-        errorString = 'The order exceeds the maximum return period'
-        break
-
-      case 'E_HTTP_404':
-        errorString = 'Order not found'
-        break
-
-      case 'FORBIDDEN':
-        errorString = 'You don´t have access to this order'
-        break
-
-      default:
-        errorString = 'Something failed, please try again.'
-    }
-
-    setErrorCase(errorString)
-  }
-
   // eslint-disable-next-line no-console
-  console.log({ data, loading, error })
+  console.log({ data, loading })
 
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
@@ -273,7 +270,7 @@ export const OrderToRMADetails = (
         }
       />
       <Table
-        emptyStateLabel={errorCase}
+        emptyStateLabel={errorCase && formatMessage(errorMessages[errorCase])}
         loading={loading}
         fullWidth
         schema={tableSchema}
