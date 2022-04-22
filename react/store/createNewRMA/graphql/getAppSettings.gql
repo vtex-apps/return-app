@@ -1,0 +1,16 @@
+query appSettings {
+  returnAppSettings @context(provider: "vtex.return-app") {
+    termsUrl
+    customReturnReasons {
+      reason
+      maxDays
+      translations {
+        locale
+        translation
+      }
+    }
+    options {
+      enableOtherOptionSelection
+    }
+  }
+}

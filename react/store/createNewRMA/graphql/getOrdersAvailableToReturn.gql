@@ -3,6 +3,18 @@ query ordersAvailableToReturn($page: Int!) {
     list {
       orderId
       creationDate
+      invoicedItems {
+        id
+        productId
+        quantity
+      }
+      processedItems {
+        itemIndex
+        quantity
+      }
+      excludedItems {
+        itemIndex
+      }
     }
     paging {
       total

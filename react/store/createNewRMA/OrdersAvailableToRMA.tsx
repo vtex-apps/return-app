@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
-import type { OrdersToReturnList } from 'vtex.return-app'
+import type {
+  OrdersToReturnList,
+  QueryOrdersAvailableToReturnArgs,
+} from 'vtex.return-app'
 import {
   ContentWrapper,
   BaseLoading,
@@ -23,29 +26,79 @@ const headerConfig = {
 }
 
 export const OrdersAvailableToRMA = () => {
-  const { data, loading, error, refetch } = useQuery<
+  const [ordersToReturn, setOrdersToReturn] = useState<OrdersToReturnList[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
+  const { data, loading, error, fetchMore } = useQuery<
     { ordersAvailableToReturn: OrdersToReturnList },
-    { page: number }
+    QueryOrdersAvailableToReturnArgs
   >(ORDERS_AVAILABLE_TO_RETURN, {
     variables: {
       page: 1,
     },
   })
 
+  useEffect(() => {
+    if (data) {
+      setOrdersToReturn([data.ordersAvailableToReturn])
+    }
+  }, [data])
+
+  const handlePagination = async (
+    page: number,
+    operation: 'next' | 'previous'
+  ): Promise<void> => {
+    const alreadyFetched = ordersToReturn.find((ordersItem) => {
+      return ordersItem.paging?.currentPage === page
+    })
+
+    if (!alreadyFetched) {
+      await fetchMore({
+        variables: {
+          page,
+        },
+        updateQuery: (prevResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prevResult
+
+          setOrdersToReturn((prevState) => [
+            ...prevState,
+            fetchMoreResult.ordersAvailableToReturn,
+          ])
+
+          setCurrentPage(
+            Number(fetchMoreResult.ordersAvailableToReturn.paging?.currentPage)
+          )
+
+          return prevResult
+        },
+      })
+
+      return
+    }
+
+    operation === 'next' && setCurrentPage(page)
+    operation === 'previous' && setCurrentPage(page)
+  }
+
   return (
     <>
-      {loading || error ? (
+      {loading || error || !ordersToReturn.length ? (
         <BaseLoading
-          queryData={{ loading, error, refetch }}
+          queryData={{ loading, error, fetchMore }}
           headerConfig={headerConfig}
         >
           <SkeletonBox shouldAllowGrowing shouldShowLowerButton>
             <SkeletonPiece height={40} />
           </SkeletonBox>
         </BaseLoading>
-      ) : !data ? null : (
+      ) : (
         <ContentWrapper {...headerConfig}>
-          {() => <OrderList orders={data.ordersAvailableToReturn} />}
+          {() => (
+            <OrderList
+              orders={ordersToReturn[currentPage - 1]}
+              handlePagination={handlePagination}
+            />
+          )}
         </ContentWrapper>
       )}
     </>
