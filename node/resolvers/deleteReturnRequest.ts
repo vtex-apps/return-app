@@ -5,12 +5,12 @@ export const deleteReturnRequest = async (
 ) => {
   const { Id } = args
   const {
-    clients: { mdFactory },
+    clients: { returnRequest: returnRequestClient },
     vtex: { logger },
   } = ctx
 
   const promises = Id.map((id) => {
-    return mdFactory.deleteRMADocument(id)
+    return returnRequestClient.delete(id)
   })
 
   try {
