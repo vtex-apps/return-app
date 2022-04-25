@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages } from 'react-intl'
 import { Input } from 'vtex.styleguide'
+import type { CustomerProfileDataInput } from 'vtex.return-app'
 
 const messages = defineMessages({
   contactDetails: {
@@ -20,10 +21,10 @@ const messages = defineMessages({
 
 export const ContactDetails = () => {
   const { formatMessage } = useIntl()
-  const [formInputs, setFormInputs] = useState({
+  const [formInputs, setFormInputs] = useState<CustomerProfileDataInput>({
     name: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,10 +56,11 @@ export const ContactDetails = () => {
       </div>
       <div className="mb4">
         <Input
-          name="phone"
+          name="phoneNumber"
           placeholder="Phone"
           onChange={handleInputChange}
-          value={formInputs.phone}
+          value={formInputs.phoneNumber}
+          maxLength={50}
         />
       </div>
     </div>

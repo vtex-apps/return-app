@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages } from 'react-intl'
-import { Input, Textarea } from 'vtex.styleguide'
+import { Input } from 'vtex.styleguide'
+import type { PickupReturnDataInput } from 'vtex.return-app'
 
 const messages = defineMessages({
   pickupAddress: {
@@ -29,13 +30,15 @@ const messages = defineMessages({
 
 export const AddressDetails = () => {
   const { formatMessage } = useIntl()
-  const [formInputs, setFormInputs] = useState({
+  const [formInputs, setFormInputs] = useState<PickupReturnDataInput>({
     country: '',
-    locality: '',
+    city: '',
     address: '',
+    addressId: 'ABC',
+    addressType: 'PICKUP_POINT',
     state: '',
-    zip: '',
-    extraComment: '',
+    zipCode: '',
+    // extraComment: null,
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +65,7 @@ export const AddressDetails = () => {
             name="locality"
             placeholder={formatMessage(messages.localityInput)}
             onChange={handleInputChange}
-            value={formInputs.locality}
+            value={formInputs.city}
           />
         </div>
         <div className="mb4">
@@ -78,7 +81,7 @@ export const AddressDetails = () => {
             name="zip"
             placeholder={formatMessage(messages.zipInput)}
             onChange={handleInputChange}
-            value={formInputs.zip}
+            value={formInputs.zipCode}
           />
         </div>
         <div className="mb4">
@@ -93,13 +96,13 @@ export const AddressDetails = () => {
       <div className="mt4 ph4">
         <p>{formatMessage(messages.extraComment)}</p>
         <div>
-          <Textarea
+          {/* <Textarea
             name="extraComment"
             resize="none"
             onChange={handleInputChange}
-            maxLength="250"
-            value={formInputs.extraComment}
-          />
+            maxLength="300"
+            value={formInputs.extraComment ?? ''}
+          /> */}
         </div>
       </div>
     </>
