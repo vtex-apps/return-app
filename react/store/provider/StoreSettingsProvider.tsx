@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import React, { createContext, useState } from 'react'
 import { useQuery } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import type { ReturnAppSettings } from 'vtex.return-app'
 import { Alert } from 'vtex.styleguide'
 
@@ -41,11 +42,13 @@ export const StoreSettingsPovider: FC = ({ children }) => {
         <Alert
           type="error"
           action={{
-            label: 'Recarregar',
+            label: (
+              <FormattedMessage id="store/return-app.return-order-details.setting-provider.error.retry-action" />
+            ),
             onClick: () => handleRefetching(),
           }}
         >
-          There was an error loading app settings. Please refresh the page
+          <FormattedMessage id="store/return-app.return-order-details.setting-provider.error" />
         </Alert>
       ) : (
         children
