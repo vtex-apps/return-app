@@ -48,7 +48,7 @@ export const ContactDetails = () => {
         <Input
           disabled
           name="email"
-          placeholder="email"
+          placeholder={formatMessage(messages.emailInput)}
           onChange={handleInputChange}
           value={formInputs.email}
         />
@@ -56,7 +56,7 @@ export const ContactDetails = () => {
       <div className="mb4">
         <Input
           name="phoneNumber"
-          placeholder="Phone"
+          placeholder={formatMessage(messages.phoneInput)}
           onChange={handleInputChange}
           value={formInputs.phoneNumber}
           maxLength={50}
