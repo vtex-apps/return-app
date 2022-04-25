@@ -111,7 +111,7 @@
   "store/return-app.return-order-details.title.pickup-address": "Pickup address",
   "store/return-app.return-order-details.title.extra-comment": "Extra comment",
   "store/return-app.return-order-details.inputs.address-input": "Address",
-  "store/return-app.return-order-details.inputs.locality-input": "Locality",
+  "store/return-app.return-order-details.inputs.city-input": "City",
   "store/return-app.return-order-details.inputs.state-input": "State",
   "store/return-app.return-order-details.inputs.zip-input": "Zip",
   "store/return-app.return-order-details.inputs.country-input": "Country",

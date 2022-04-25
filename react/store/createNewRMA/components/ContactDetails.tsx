@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
-import { useIntl, defineMessages } from 'react-intl'
+import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
 import type { CustomerProfileDataInput } from 'vtex.return-app'
 
 const messages = defineMessages({
-  contactDetails: {
-    id: 'store/return-app.return-order-details.title.contact-details',
-  },
   nameInput: {
     id: 'store/return-app.return-order-details.inputs.name-input',
   },
@@ -36,7 +33,9 @@ export const ContactDetails = () => {
 
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
-      <p>{formatMessage(messages.contactDetails)}</p>
+      <p>
+        <FormattedMessage id="store/return-app.return-order-details.title.contact-details" />
+      </p>
       <div className="mb4">
         <Input
           name="name"

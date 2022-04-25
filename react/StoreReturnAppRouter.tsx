@@ -3,10 +3,7 @@ import { Route, Switch } from 'vtex.my-account-commons/Router'
 
 import { StoreMyReturnsPageWrapper } from './store/StoreMyReturnsPage'
 import { StoreMyReturnsDetailsWrapper } from './store/StoreMyReturnsDetails'
-import {
-  OrdersAvailableToRMA,
-  OrderToRMADetails,
-} from './store/StoreMyReturnsAdd'
+import { OrdersAvailableToRMA, OrderDetails } from './store/StoreMyReturnsAdd'
 
 export const AppRouter = () => {
   return (
@@ -18,11 +15,7 @@ export const AppRouter = () => {
         component={StoreMyReturnsDetailsWrapper}
       />
       <Route exact path="/my-returns/add" component={OrdersAvailableToRMA} />
-      <Route
-        exact
-        path="/my-returns/add/:orderId"
-        component={OrderToRMADetails}
-      />
+      <Route exact path="/my-returns/add/:orderId" component={OrderDetails} />
     </Switch>
   )
 }

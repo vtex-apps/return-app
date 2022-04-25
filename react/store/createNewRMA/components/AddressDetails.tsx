@@ -1,21 +1,15 @@
 import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
-import { useIntl, defineMessages } from 'react-intl'
+import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
 import type { PickupReturnDataInput } from 'vtex.return-app'
 
 const messages = defineMessages({
-  pickupAddress: {
-    id: 'store/return-app.return-order-details.title.pickup-address',
-  },
-  extraComment: {
-    id: 'store/return-app.return-order-details.title.extra-comment',
-  },
   addressInput: {
     id: 'store/return-app.return-order-details.inputs.address-input',
   },
-  localityInput: {
-    id: 'store/return-app.return-order-details.inputs.locality-input',
+  cityInput: {
+    id: 'store/return-app.return-order-details.inputs.city-input',
   },
   stateInput: {
     id: 'store/return-app.return-order-details.inputs.state-input',
@@ -38,7 +32,6 @@ export const AddressDetails = () => {
     addressType: 'PICKUP_POINT',
     state: '',
     zipCode: '',
-    // extraComment: null,
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -49,62 +42,50 @@ export const AddressDetails = () => {
   }
 
   return (
-    <>
-      <div className="flex-ns flex-wrap flex-auto flex-column pa4">
-        <p>{formatMessage(messages.pickupAddress)}</p>
-        <div className="mb4">
-          <Input
-            name="address"
-            placeholder={formatMessage(messages.addressInput)}
-            onChange={handleInputChange}
-            value={formInputs.address}
-          />
-        </div>
-        <div className="mb4">
-          <Input
-            name="locality"
-            placeholder={formatMessage(messages.localityInput)}
-            onChange={handleInputChange}
-            value={formInputs.city}
-          />
-        </div>
-        <div className="mb4">
-          <Input
-            name="state"
-            placeholder={formatMessage(messages.stateInput)}
-            onChange={handleInputChange}
-            value={formInputs.state}
-          />
-        </div>
-        <div className="mb4">
-          <Input
-            name="zip"
-            placeholder={formatMessage(messages.zipInput)}
-            onChange={handleInputChange}
-            value={formInputs.zipCode}
-          />
-        </div>
-        <div className="mb4">
-          <Input
-            name="country"
-            placeholder={formatMessage(messages.countryInput)}
-            onChange={handleInputChange}
-            value={formInputs.country}
-          />
-        </div>
+    <div className="flex-ns flex-wrap flex-auto flex-column pa4">
+      <p>
+        <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
+      </p>
+      <div className="mb4">
+        <Input
+          name="address"
+          placeholder={formatMessage(messages.addressInput)}
+          onChange={handleInputChange}
+          value={formInputs.address}
+        />
       </div>
-      <div className="mt4 ph4">
-        <p>{formatMessage(messages.extraComment)}</p>
-        <div>
-          {/* <Textarea
-            name="extraComment"
-            resize="none"
-            onChange={handleInputChange}
-            maxLength="300"
-            value={formInputs.extraComment ?? ''}
-          /> */}
-        </div>
+      <div className="mb4">
+        <Input
+          name="city"
+          placeholder={formatMessage(messages.cityInput)}
+          onChange={handleInputChange}
+          value={formInputs.city}
+        />
       </div>
-    </>
+      <div className="mb4">
+        <Input
+          name="state"
+          placeholder={formatMessage(messages.stateInput)}
+          onChange={handleInputChange}
+          value={formInputs.state}
+        />
+      </div>
+      <div className="mb4">
+        <Input
+          name="zip"
+          placeholder={formatMessage(messages.zipInput)}
+          onChange={handleInputChange}
+          value={formInputs.zipCode}
+        />
+      </div>
+      <div className="mb4">
+        <Input
+          name="country"
+          placeholder={formatMessage(messages.countryInput)}
+          onChange={handleInputChange}
+          value={formInputs.country}
+        />
+      </div>
+    </div>
   )
 }
