@@ -21,6 +21,9 @@ import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
 import { availableProductsToReturn } from '../utils/filterProductsToReturn'
 import { RenderConditionDropdown } from './components/RenderConditionDropdown'
 import { RenderReasonDropdown } from './components/RenderReasonDropdown'
+import { ContactDetails } from './components/ContactDetails'
+import { AddressDetails } from './components/AddressDetails'
+import { UserCommentDetails } from './components/UserCommentDetails'
 import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
@@ -282,6 +285,11 @@ export const OrderToRMADetails = (
           },
         ]}
       />
+      <div className="flex-ns flex-wrap flex-row mt5">
+        <ContactDetails />
+        <AddressDetails />
+        <UserCommentDetails />
+      </div>
     </PageBlock>
   )
 }
