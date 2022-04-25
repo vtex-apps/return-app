@@ -2,6 +2,8 @@ import React from 'react'
 import { useIntl, defineMessages } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
 
+import { useStoreSettings } from '../../hooks/useStoreSettings'
+
 const messages = defineMessages({
   reasonAccidentalOrder: {
     id: 'store/return-app.return-order-details.dropdown-reasons.accidental-order',
@@ -54,13 +56,14 @@ const messages = defineMessages({
 })
 
 export const RenderReasonDropdown = ({
-  settings,
   reason,
   handleReason,
   id,
   isExcluded,
 }) => {
   const { formatMessage } = useIntl()
+
+  const { data: settings } = useStoreSettings()
 
   const reasonOptions = [
     {
@@ -121,7 +124,7 @@ export const RenderReasonDropdown = ({
     },
   ]
 
-  if (settings?.returnAppSettings.options?.enableOtherOptionSelection) {
+  if (settings?.options?.enableOtherOptionSelection) {
     reasonOptions.push({
       value: 'Other reason',
       label: formatMessage(messages.reasonOtherReason),

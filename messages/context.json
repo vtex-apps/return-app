@@ -115,6 +115,8 @@
   "store/return-app.return-order-details.inputs.state-input": "State",
   "store/return-app.return-order-details.inputs.zip-input": "Zip",
   "store/return-app.return-order-details.inputs.country-input": "Country",
+  "store/return-app.return-order-details.setting-provider.error.retry-action": "Try again",
+  "store/return-app.return-order-details.setting-provider.error": "There was an error loading app settings.",
   "returns.addReturn": "Add a new return form",
   "returns.pageTitle": "My requests",
   "returns.total": "total",

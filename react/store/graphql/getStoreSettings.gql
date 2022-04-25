@@ -1,4 +1,4 @@
-query appSettings {
+query storeAppSettings {
   returnAppSettings @context(provider: "vtex.return-app") {
     termsUrl
     customReturnReasons {

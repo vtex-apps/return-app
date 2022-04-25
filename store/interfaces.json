@@ -3,6 +3,6 @@
     "component": "StoreMyReturnsLink"
   },
   "my-account-link.my-returns-app": {
-    "component": "StoreReturnAppRouter"
+    "component": "StoreReturnApp"
   }
 }
