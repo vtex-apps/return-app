@@ -125,10 +125,7 @@ const emailValidation = (email: string) => {
 type TODO = any
 interface Props {
   creatReturnRequest: {
-    sendRequest: ({
-      returnRequest,
-      returnedItems,
-    }: ReturnRequestMutationArgs) => Promise<
+    sendRequest: ({ returnRequest, returnedItems }: any) => Promise<
       ExecutionResult<{
         returnRequestId: string
       }>

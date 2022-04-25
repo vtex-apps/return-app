@@ -25,6 +25,8 @@ import { ContactDetails } from './components/ContactDetails'
 import { AddressDetails } from './components/AddressDetails'
 import { UserCommentDetails } from './components/UserCommentDetails'
 import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
+import { OrderToReturnProvider } from '../provider/OrderToReturnProvider'
+import { useReturnRequest } from '../hooks/useReturnRequest'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -95,6 +97,10 @@ export const OrderToRMADetails = (
   const [reason, setReason] = useState({})
   const [errorCase, setErrorCase] = useState('')
 
+  const {
+    actions: { updateReturnRequest },
+  } = useReturnRequest()
+
   const { data, loading } = useQuery<
     { orderToReturnSummary: OrderToReturnSummary },
     QueryOrderToReturnSummaryArgs
@@ -105,14 +111,41 @@ export const OrderToRMADetails = (
   })
 
   useEffect(() => {
-    if (data) {
-      const orderToReturnOutput = availableProductsToReturn(
-        data.orderToReturnSummary
-      )
-
-      setOrder(orderToReturnOutput)
+    if (!data) {
+      return
     }
-  }, [data])
+
+    const { orderToReturnSummary } = data
+    const { orderId: id } = orderToReturnSummary
+
+    const orderToReturnOutput = availableProductsToReturn(orderToReturnSummary)
+
+    setOrder(orderToReturnOutput)
+
+    updateReturnRequest({
+      type: 'newReturnRequestState',
+      payload: {
+        orderId: id,
+        customerProfileData: {
+          name: 'John Dee',
+          email: 'johnDee@google.com',
+          phoneNumber: '55221221',
+        },
+        pickupReturnData: {
+          addressId: 'ABC',
+          address: '',
+          city: '',
+          state: '',
+          country: '',
+          zipCode: '',
+          addressType: 'PICKUP_POINT',
+        },
+        refundPaymentData: {
+          refundPaymentMethod: 'bank',
+        },
+      },
+    })
+  }, [data, updateReturnRequest])
 
   const handleQuantity = (id: number, e) => {
     setSelectedQuantity((prevState) => ({
@@ -299,7 +332,9 @@ export const OrderDetails = (
 ) => {
   return (
     <StoreSettingsPovider>
-      <OrderToRMADetails {...props} />
+      <OrderToReturnProvider>
+        <OrderToRMADetails {...props} />
+      </OrderToReturnProvider>
     </StoreSettingsPovider>
   )
 }

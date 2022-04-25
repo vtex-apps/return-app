@@ -29,16 +29,11 @@ export const StoreMyReturnsPageAddWrapper: FC = (props: any) => {
       loading: submittingRequest,
       called: requestSubmitted,
     },
-  ] = useMutation<{ returnRequestId: string }, ReturnRequestMutationArgs>(
-    CREATE_RETURN_REQUEST
-  )
+  ] = useMutation<{ returnRequestId: string }, any>(CREATE_RETURN_REQUEST)
 
   const handles = useCssHandles(CSS_HANDLES)
 
-  const sendRequest = ({
-    returnRequest,
-    returnedItems,
-  }: ReturnRequestMutationArgs) =>
+  const sendRequest = ({ returnRequest, returnedItems }: any) =>
     createReturnRequest({
       variables: {
         returnRequest,
