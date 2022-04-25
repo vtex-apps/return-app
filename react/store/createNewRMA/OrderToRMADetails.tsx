@@ -14,15 +14,14 @@ import type {
   OrderToReturnSummary,
   QueryOrderToReturnSummaryArgs,
   OrderToReturnValidation,
-  ReturnAppSettings,
 } from 'vtex.return-app'
 
 import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
-import RETURN_APP_SETTINGS from './graphql/getAppSettings.gql'
 import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
 import { availableProductsToReturn } from '../utils/filterProductsToReturn'
 import { RenderConditionDropdown } from './components/RenderConditionDropdown'
 import { RenderReasonDropdown } from './components/RenderReasonDropdown'
+import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -101,17 +100,6 @@ export const OrderToRMADetails = (
     skip: !orderId,
     onError: (error) => setErrorCase(getErrorCode(error)),
   })
-
-  const {
-    data: settings,
-    loading: loadingSettings,
-    error: errorSettings,
-  } = useQuery<{
-    returnAppSettings: ReturnAppSettings
-  }>(RETURN_APP_SETTINGS)
-
-  // eslint-disable-next-line no-console
-  console.log(settings, loadingSettings, errorSettings)
 
   useEffect(() => {
     if (data) {
@@ -224,7 +212,6 @@ export const OrderToRMADetails = (
           return (
             <RenderReasonDropdown
               id={rowData.id}
-              settings={settings}
               isExcluded={rowData.isExcluded}
               handleReason={handleReason}
               reason={reason}
@@ -296,5 +283,15 @@ export const OrderToRMADetails = (
         ]}
       />
     </PageBlock>
+  )
+}
+
+export const OrderDetails = (
+  props: RouteComponentProps<{ orderId: string }>
+) => {
+  return (
+    <StoreSettingsPovider>
+      <OrderToRMADetails {...props} />
+    </StoreSettingsPovider>
   )
 }
