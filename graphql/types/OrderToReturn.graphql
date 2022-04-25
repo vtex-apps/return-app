@@ -35,6 +35,10 @@ type InvoicedItem {
   quantity: Int!
   name: String!
   imageUrl: String!
+  """
+  The index of the item in the Order.
+  """
+  orderItemIndex: Int!
 }
 
 type ProcessedItem {

@@ -60,6 +60,7 @@ export const createOrdersToReturnSummary = (
       quantity,
       name,
       imageUrl,
+      orderItemIndex: index,
     })
 
     const categoryIdList = categoriesIds.split('/').filter(Boolean)
