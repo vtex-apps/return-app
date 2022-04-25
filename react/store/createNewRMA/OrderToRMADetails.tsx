@@ -23,6 +23,7 @@ import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
 import { availableProductsToReturn } from '../utils/filterProductsToReturn'
 import { RenderConditionDropdown } from './components/RenderConditionDropdown'
 import { RenderReasonDropdown } from './components/RenderReasonDropdown'
+import { ContactDetails } from './components/ContactDetails'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -92,6 +93,17 @@ export const OrderToRMADetails = (
   const [condition, setCondition] = useState({})
   const [reason, setReason] = useState({})
   const [errorCase, setErrorCase] = useState('')
+  const [formInputs, setFormInputs] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    locality: '',
+    address: '',
+    state: '',
+    zip: '',
+    extraComment: '',
+  })
 
   const { data, loading } = useQuery<
     { orderToReturnSummary: OrderToReturnSummary },
@@ -253,6 +265,14 @@ export const OrderToRMADetails = (
   // eslint-disable-next-line no-console
   console.log({ data, loading })
 
+  const handleInputChange = (event) => {
+    const { target } = event
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const { name } = target
+
+    setFormInputs((prevState) => ({ ...prevState, [name]: value }))
+  }
+
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
       <PageHeader
@@ -294,6 +314,10 @@ export const OrderToRMADetails = (
             ),
           },
         ]}
+      />
+      <ContactDetails
+        handleInputChange={handleInputChange}
+        formInputs={formInputs}
       />
     </PageBlock>
   )
