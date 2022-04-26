@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Table, NumericStepper } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
-import { RenderConditionDropdown } from './RenderConditionDropdown'
 import { ItemsDetails } from './ItemsDetails'
 
 interface Props {
@@ -15,19 +14,11 @@ interface Props {
 
 export const ItemsList = ({ errorLabel, loading, items }: Props) => {
   const [selectedQuantity, setSelectedQuantity] = useState({})
-  const [condition, setCondition] = useState({})
 
   const handleQuantity = (id: number, e) => {
     setSelectedQuantity((prevState) => ({
       ...prevState,
       [id]: e.value,
-    }))
-  }
-
-  const handleCondition = (id: number, value: string) => {
-    setCondition((prevState) => ({
-      ...prevState,
-      [id]: value,
     }))
   }
 
@@ -109,15 +100,6 @@ export const ItemsList = ({ errorLabel, loading, items }: Props) => {
         title: (
           <FormattedMessage id="store/return-app.return-order-details.table-header.condition" />
         ),
-        cellRenderer: function conditionDropdown({ rowData }) {
-          return (
-            <RenderConditionDropdown
-              handleCondition={handleCondition}
-              condition={condition}
-              id={rowData.id}
-            />
-          )
-        },
       },
     },
   }
