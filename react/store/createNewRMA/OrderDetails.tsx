@@ -27,6 +27,7 @@ import { UserCommentDetails } from './components/UserCommentDetails'
 import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
 import { OrderToReturnProvider } from '../provider/OrderToReturnProvider'
 import { useReturnRequest } from '../hooks/useReturnRequest'
+import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -122,22 +123,14 @@ export const OrderToRMADetails = (
 
     setOrder(orderToReturnOutput)
 
-    const { clientProfileData } = orderToReturnSummary
+    const { clientProfileData, shippingData } = orderToReturnSummary
 
     updateReturnRequest({
       type: 'newReturnRequestState',
       payload: {
         orderId: id,
         customerProfileData: clientProfileData,
-        pickupReturnData: {
-          addressId: 'ABC',
-          address: '',
-          city: '',
-          state: '',
-          country: '',
-          zipCode: '',
-          addressType: 'PICKUP_POINT',
-        },
+        pickupReturnData: setInitialPickupAddress(shippingData),
         refundPaymentData: {
           refundPaymentMethod: 'bank',
         },

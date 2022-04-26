@@ -23,5 +23,14 @@ query orderToReturnSummary($orderId: ID!) {
       email
       phoneNumber
     }
+    shippingData {
+      addressId
+      address
+      city
+      state
+      country
+      zipCode
+      addressType
+    }
   }
 }

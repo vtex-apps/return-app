@@ -10,6 +10,7 @@ import type {
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
+import { transformShippingData } from './transformShippingData'
 
 export const createOrdersToReturnSummary = (
   order: OrderDetailResponse,
@@ -101,5 +102,6 @@ export const createOrdersToReturnSummary = (
       order.clientProfileData,
       email
     ),
+    shippingData: transformShippingData(order.shippingData),
   }
 }

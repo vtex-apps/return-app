@@ -21,6 +21,7 @@ type OrderToReturnSummary {
   """
   excludedItems: [excludedItem!]!
   clientProfileData: ClientProfileData!
+  shippingData: ShippingData!
 }
 
 type Pagination {
@@ -70,4 +71,14 @@ type ClientProfileData {
   name: String!
   email: String!
   phoneNumber: String!
+}
+
+type ShippingData {
+  addressId: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  addressType: AddressType!
 }
