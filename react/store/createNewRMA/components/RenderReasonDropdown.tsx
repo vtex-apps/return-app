@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl, defineMessages } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
@@ -57,13 +58,18 @@ const messages = defineMessages({
 
 export const RenderReasonDropdown = ({
   reason,
-  handleReason,
-  id,
+  onReasonChange,
   isExcluded,
 }) => {
   const { formatMessage } = useIntl()
 
   const { data: settings } = useStoreSettings()
+
+  const handleReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    onReasonChange(value)
+  }
 
   const reasonOptions = [
     {
@@ -126,7 +132,7 @@ export const RenderReasonDropdown = ({
 
   if (settings?.options?.enableOtherOptionSelection) {
     reasonOptions.push({
-      value: 'Other reason',
+      value: 'otherReason',
       label: formatMessage(messages.reasonOtherReason),
     })
   }
@@ -138,10 +144,8 @@ export const RenderReasonDropdown = ({
       placeholder={formatMessage(messages.reasonSelectReason)}
       size="small"
       options={reasonOptions}
-      value={reason[id]}
-      onChange={(e) => {
-        handleReason(id, e.target.value)
-      }}
+      value={reason}
+      onChange={handleReasonChange}
     />
   )
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { NumericStepper } from 'vtex.styleguide'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import { RenderReasonDropdown } from './RenderReasonDropdown'
 
 export const ItemsDetails = (itemToReturn: ItemToReturn) => {
   const { quantity, quantityAvailable, isExcluded, orderItemIndex } =
@@ -37,6 +38,27 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
     })
   }
 
+  const handleReasonChange = (reason: string) => {
+    if (!currentItem) return
+    const updatedItems = items.map((item) => {
+      if (item.orderItemIndex !== orderItemIndex) {
+        return item
+      }
+
+      return {
+        ...item,
+        returnReason: {
+          reason,
+        },
+      }
+    })
+
+    updateReturnRequest({
+      type: 'updateItems',
+      payload: updatedItems,
+    })
+  }
+
   return (
     <tr>
       <td>Item</td>
@@ -57,7 +79,13 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           onChange={(e: { value: number }) => handleQuantityChange(e.value)}
         />
       </td>
-      <td>Reason</td>
+      <td>
+        <RenderReasonDropdown
+          isExcluded={isExcluded}
+          reason={currentItem?.returnReason?.reason ?? ''}
+          onReasonChange={handleReasonChange}
+        />
+      </td>
       <td>Condition</td>
     </tr>
   )

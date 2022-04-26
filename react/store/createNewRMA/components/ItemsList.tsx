@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Table, NumericStepper } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
-import { RenderReasonDropdown } from './RenderReasonDropdown'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
 import { ItemsDetails } from './ItemsDetails'
 
@@ -16,20 +15,12 @@ interface Props {
 
 export const ItemsList = ({ errorLabel, loading, items }: Props) => {
   const [selectedQuantity, setSelectedQuantity] = useState({})
-  const [reason, setReason] = useState({})
   const [condition, setCondition] = useState({})
 
   const handleQuantity = (id: number, e) => {
     setSelectedQuantity((prevState) => ({
       ...prevState,
       [id]: e.value,
-    }))
-  }
-
-  const handleReason = (id: number, value: string) => {
-    setReason((prevState) => ({
-      ...prevState,
-      [id]: value,
     }))
   }
 
@@ -113,16 +104,6 @@ export const ItemsList = ({ errorLabel, loading, items }: Props) => {
         title: (
           <FormattedMessage id="store/return-app.return-order-details.table-header.reason" />
         ),
-        cellRenderer: function reasonDropdown({ rowData }) {
-          return (
-            <RenderReasonDropdown
-              id={rowData.id}
-              isExcluded={rowData.isExcluded}
-              handleReason={handleReason}
-              reason={reason}
-            />
-          )
-        },
       },
       condition: {
         title: (
