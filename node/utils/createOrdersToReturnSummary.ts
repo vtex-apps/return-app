@@ -9,9 +9,11 @@ import type {
 
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
+import { transformOrderClientProfileData } from './transformOrderClientProfileData'
 
 export const createOrdersToReturnSummary = (
   order: OrderDetailResponse,
+  email: string,
   {
     excludedCategories,
   }: { excludedCategories: ReturnAppSettings['excludedCategories'] }
@@ -64,7 +66,6 @@ export const createOrdersToReturnSummary = (
     })
 
     const categoryIdList = categoriesIds.split('/').filter(Boolean)
-
     const excludedCategory = excludedCategories.filter((categoryId) =>
       categoryIdList.includes(categoryId)
     )
@@ -96,5 +97,9 @@ export const createOrdersToReturnSummary = (
     invoicedItems,
     processedItems,
     excludedItems,
+    clientProfileData: transformOrderClientProfileData(
+      order.clientProfileData,
+      email
+    ),
   }
 }

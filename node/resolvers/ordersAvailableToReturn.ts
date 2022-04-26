@@ -82,7 +82,7 @@ export const ordersAvailableToReturn = async (
   const orderList: OrderToReturnSummary[] = []
 
   for (const order of orders) {
-    const orderToReturnSummary = createOrdersToReturnSummary(order, {
+    const orderToReturnSummary = createOrdersToReturnSummary(order, email, {
       excludedCategories,
     })
 

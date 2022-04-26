@@ -122,15 +122,13 @@ export const OrderToRMADetails = (
 
     setOrder(orderToReturnOutput)
 
+    const { clientProfileData } = orderToReturnSummary
+
     updateReturnRequest({
       type: 'newReturnRequestState',
       payload: {
         orderId: id,
-        customerProfileData: {
-          name: 'John Dee',
-          email: 'johnDee@google.com',
-          phoneNumber: '55221221',
-        },
+        customerProfileData: clientProfileData,
         pickupReturnData: {
           addressId: 'ABC',
           address: '',
@@ -272,9 +270,6 @@ export const OrderToRMADetails = (
       },
     },
   }
-
-  // eslint-disable-next-line no-console
-  console.log({ data, loading })
 
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">

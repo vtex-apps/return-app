@@ -25,7 +25,7 @@ export const orderToReturnSummary = async (
   }
 
   const { maxDays, excludedCategories } = settings
-  const { userId, role } = userProfile
+  const { userId, role, email } = userProfile
 
   const order = await oms.order(orderId)
 
@@ -55,5 +55,5 @@ export const orderToReturnSummary = async (
     throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
   }
 
-  return createOrdersToReturnSummary(order, { excludedCategories })
+  return createOrdersToReturnSummary(order, email, { excludedCategories })
 }

@@ -20,6 +20,7 @@ type OrderToReturnSummary {
   The itemIndex property is used to identify the item in the list of invoiced items.
   """
   excludedItems: [excludedItem!]!
+  clientProfileData: ClientProfileData!
 }
 
 type Pagination {
@@ -63,4 +64,10 @@ enum ExcludedReasonEnum {
 enum OrderToReturnValidation {
   OUT_OF_MAX_DAYS
   ORDER_NOT_INVOICED
+}
+
+type ClientProfileData {
+  name: String!
+  email: String!
+  phoneNumber: String!
 }

@@ -9,7 +9,7 @@ import {
 } from './OrderToReturnReducer'
 
 interface OrderToReturnContextInterface {
-  returnRequest: ReturnRequestInput | null
+  returnRequest: ReturnRequestInput
   actions: {
     updateReturnRequest: Dispatch<ReturnRequestActions>
   }
