@@ -1,8 +1,10 @@
 import type { ShippingData } from 'vtex.return-app'
 
+import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
+
 export const setInitialPickupAddress = (
   shippingData: ShippingData
-): ShippingData => {
+): OrderDetailsState['pickupReturnData'] => {
   if (shippingData.addressType === 'CUSTOMER_ADDRESS') return shippingData
 
   /**
@@ -16,7 +18,5 @@ export const setInitialPickupAddress = (
     state: '',
     country: '',
     zipCode: '',
-    // Set to customer address. It will only change if the user set to use a pickup point to drop off the items.
-    addressType: 'CUSTOMER_ADDRESS',
   }
 }

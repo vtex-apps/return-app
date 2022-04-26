@@ -12,7 +12,7 @@ export interface OrderDetailsState {
   orderId: string
   items: Array<PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>>
   customerProfileData: CustomerProfileDataInput
-  pickupReturnData: PickupReturnDataInput
+  pickupReturnData: PartialBy<PickupReturnDataInput, 'addressType'>
   refundPaymentData?: RefundPaymentDataInput
   userComment?: Maybe<string> | undefined
 }
@@ -32,7 +32,6 @@ export const initialOrderToReturnState: OrderDetailsState = {
     state: '',
     country: '',
     zipCode: '',
-    addressType: 'CUSTOMER_ADDRESS' as const,
   },
   userComment: null,
 }
