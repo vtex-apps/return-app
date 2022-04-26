@@ -25,6 +25,7 @@ import { ContactDetails } from './components/ContactDetails'
 import { AddressDetails } from './components/AddressDetails'
 import { UserCommentDetails } from './components/UserCommentDetails'
 import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
+import { PaymentMethods } from './components/PaymentMethods'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -290,6 +291,7 @@ export const OrderToRMADetails = (
         <AddressDetails />
         <UserCommentDetails />
       </div>
+      <PaymentMethods />
     </PageBlock>
   )
 }

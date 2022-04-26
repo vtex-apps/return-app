@@ -25,8 +25,7 @@ export const ContactDetails = () => {
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event
-    const { name, value } = target
+    const { name, value } = event.target
 
     setFormInputs((prevState) => ({ ...prevState, [name]: value }))
   }
