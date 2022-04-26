@@ -1,8 +1,9 @@
-type ItemToReturn = {
+interface ItemToReturn {
   id: string
   quantity: number
-  available: number
+  quantityAvailable: number
   isExcluded: boolean
   name: string
   imageUrl: string
+  orderItemIndex: number
 }

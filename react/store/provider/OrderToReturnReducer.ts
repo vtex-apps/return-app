@@ -2,10 +2,22 @@ import type {
   CustomerProfileDataInput,
   PickupReturnDataInput,
   RefundPaymentDataInput,
-  ReturnRequestInput,
+  ReturnRequestItemInput,
+  Maybe,
 } from 'vtex.return-app'
 
-export const initialOrderToReturnState: ReturnRequestInput = {
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+
+interface OrderDetailState {
+  orderId: string
+  items: Array<PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>>
+  customerProfileData: CustomerProfileDataInput
+  pickupReturnData: PickupReturnDataInput
+  refundPaymentData: RefundPaymentDataInput
+  userComment?: Maybe<string> | undefined
+}
+
+export const initialOrderToReturnState: OrderDetailState = {
   orderId: '',
   items: [],
   customerProfileData: {
@@ -28,7 +40,7 @@ export const initialOrderToReturnState: ReturnRequestInput = {
   userComment: null,
 }
 
-export const costumerProfileDataAction = (
+const costumerProfileDataAction = (
   customerProfileData: CustomerProfileDataInput
 ) => {
   return {
@@ -37,28 +49,31 @@ export const costumerProfileDataAction = (
   }
 }
 
-export const pickupReturnDataAction = (
-  pickupReturnData: PickupReturnDataInput
-) => {
+const pickupReturnDataAction = (pickupReturnData: PickupReturnDataInput) => {
   return {
     type: 'updatePickupReturnData' as const,
     payload: pickupReturnData,
   }
 }
 
-export const refundPaymentDataAction = (
-  refundPaymentData: RefundPaymentDataInput
-) => {
+const refundPaymentDataAction = (refundPaymentData: RefundPaymentDataInput) => {
   return {
     type: 'updateRefundPaymentData' as const,
     payload: refundPaymentData,
   }
 }
 
-export const userCommentAction = (userComment: string) => {
+const userCommentAction = (userComment: string) => {
   return {
     type: 'updateUserComment' as const,
     payload: userComment,
+  }
+}
+
+const itemsAction = (items: OrderDetailState['items']) => {
+  return {
+    type: 'updateItems' as const,
+    payload: items,
   }
 }
 
@@ -67,12 +82,8 @@ export const newReturnRequestState = ({
   customerProfileData,
   pickupReturnData,
   refundPaymentData,
-}: {
-  orderId: string
-  customerProfileData: CustomerProfileDataInput
-  pickupReturnData: PickupReturnDataInput
-  refundPaymentData: RefundPaymentDataInput
-}) => {
+  items,
+}: OrderDetailState) => {
   return {
     type: 'newReturnRequestState' as const,
     payload: {
@@ -80,6 +91,7 @@ export const newReturnRequestState = ({
       customerProfileData,
       pickupReturnData,
       refundPaymentData,
+      items,
     },
   }
 }
@@ -90,9 +102,10 @@ export type ReturnRequestActions =
   | ReturnType<typeof refundPaymentDataAction>
   | ReturnType<typeof userCommentAction>
   | ReturnType<typeof newReturnRequestState>
+  | ReturnType<typeof itemsAction>
 
 export const orderToReturnReducer = (
-  state: ReturnRequestInput,
+  state: OrderDetailState,
   action: ReturnRequestActions
 ) => {
   switch (action.type) {
@@ -124,13 +137,20 @@ export const orderToReturnReducer = (
       }
     }
 
+    case 'updateItems': {
+      return {
+        ...state,
+        items: action.payload,
+      }
+    }
+
     case 'newReturnRequestState': {
       return {
         orderId: action.payload.orderId,
         customerProfileData: action.payload.customerProfileData,
         pickupReturnData: action.payload.pickupReturnData,
         refundPaymentData: action.payload.refundPaymentData,
-        items: [],
+        items: action.payload.items,
       }
     }
 

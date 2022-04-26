@@ -74,7 +74,7 @@
   "store/return-app.return-order-details.table-header.product": "Product",
   "store/return-app.return-order-details.table-header.quantity": "Quantity",
   "store/return-app.return-order-details.table-header.available-to-return": "Available to return",
-  "store/return-app.return-order-details.table-header.quantity-available-to-return": "Quantity available to return",
+  "store/return-app.return-order-details.table-header.quantity-to-return": "Quantity to return",
   "store/return-app.return-order-details.table-header.reason": "Reason",
   "store/return-app.return-order-details.table-header.condition": "Condition",
   "store/return-app.return-order-details.table-paragraph.exluded-category": "The product category is excluded from being returned",

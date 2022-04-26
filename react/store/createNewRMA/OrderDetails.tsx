@@ -1,7 +1,12 @@
 import type { ApolloError } from 'apollo-client'
 import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedDate,
+  FormattedMessage,
+  useIntl,
+} from 'react-intl'
 import { useQuery } from 'react-apollo'
 import { PageHeader, PageBlock } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
@@ -13,7 +18,7 @@ import type {
 
 import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
 import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
-import { availableProductsToReturn } from '../utils/filterProductsToReturn'
+import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { ContactDetails } from './components/ContactDetails'
 import { AddressDetails } from './components/AddressDetails'
 import { UserCommentDetails } from './components/UserCommentDetails'
@@ -86,7 +91,7 @@ export const OrderToRMADetails = (
   const { navigate } = useRuntime()
   const { formatMessage } = useIntl()
 
-  const [order, setOrder] = useState<ItemToReturn[]>([])
+  const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
   const [errorCase, setErrorCase] = useState('')
 
   const {
@@ -110,9 +115,9 @@ export const OrderToRMADetails = (
     const { orderToReturnSummary } = data
     const { orderId: id } = orderToReturnSummary
 
-    const orderToReturnOutput = availableProductsToReturn(orderToReturnSummary)
+    const itemsToReturn = formatItemsToReturn(orderToReturnSummary)
 
-    setOrder(orderToReturnOutput)
+    setItemsToReturn(itemsToReturn)
 
     const { clientProfileData, shippingData } = orderToReturnSummary
 
@@ -125,6 +130,10 @@ export const OrderToRMADetails = (
         refundPaymentData: {
           refundPaymentMethod: 'bank',
         },
+        items: itemsToReturn.map(({ orderItemIndex }) => ({
+          orderItemIndex,
+          quantity: 0,
+        })),
       },
     })
   }, [data, updateReturnRequest])
@@ -145,10 +154,41 @@ export const OrderToRMADetails = (
           })
         }
       />
+      <div className="mb5">
+        <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
+          <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
+            <div>
+              <div className="c-muted-2 f6">OrderId</div>
+              <div className="w-100 mt2">
+                <div className="f4 fw5 c-on-base">{orderId}</div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
+            <div>
+              <div className="c-muted-2 f6">
+                <FormattedMessage id="store/return-app.return-order-details.page-header.creation-date" />
+              </div>
+              <div className="w-100 mt2">
+                <div className="f4 fw5 c-on-base">
+                  {data?.orderToReturnSummary.creationDate ? (
+                    <FormattedDate
+                      value={data.orderToReturnSummary.creationDate}
+                      day="numeric"
+                      month="long"
+                      year="numeric"
+                    />
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <ItemsList
         errorLabel={errorCase && formatMessage(errorMessages[errorCase])}
         loading={loading}
-        order={order}
+        items={items}
         orderId={orderId}
         creationDate={data?.orderToReturnSummary.creationDate}
       />

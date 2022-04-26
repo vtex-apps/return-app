@@ -1,29 +1,23 @@
 import React, { useState } from 'react'
 import { Table, NumericStepper } from 'vtex.styleguide'
-import { FormattedMessage, FormattedDate, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 import { RenderReasonDropdown } from './RenderReasonDropdown'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
+import { ItemsDetails } from './ItemsDetails'
 
 interface Props {
   errorLabel: string
   loading: boolean
-  order: any
+  items: ItemToReturn[]
   orderId: string
   creationDate?: string
 }
 
-export const ItemsList = ({
-  errorLabel,
-  loading,
-  order,
-  orderId,
-  creationDate,
-}: Props) => {
+export const ItemsList = ({ errorLabel, loading, items }: Props) => {
   const [selectedQuantity, setSelectedQuantity] = useState({})
   const [reason, setReason] = useState({})
   const [condition, setCondition] = useState({})
-  const { formatMessage } = useIntl()
 
   const handleQuantity = (id: number, e) => {
     setSelectedQuantity((prevState) => ({
@@ -96,7 +90,7 @@ export const ItemsList = ({
       },
       quantityAvailable: {
         title: (
-          <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-available-to-return" />
+          <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
         ),
         width: 250,
         cellRenderer: function availableToReturn({ rowData }) {
@@ -148,31 +142,43 @@ export const ItemsList = ({
   }
 
   return (
-    <Table
-      emptyStateLabel={errorLabel}
-      loading={loading}
-      fullWidth
-      schema={tableSchema}
-      items={order}
-      totalizers={[
-        {
-          label: 'OrderId',
-          value: `${orderId}`,
-        },
-        {
-          label: formatMessage({
-            id: 'store/return-app.return-order-details.page-header.creation-date',
-          }),
-          value: !creationDate ? null : (
-            <FormattedDate
-              value={creationDate}
-              day="numeric"
-              month="long"
-              year="numeric"
-            />
-          ),
-        },
-      ]}
-    />
+    <>
+      <table className="w-100">
+        <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
+          <tr className="w-100 truncate overflow-x-hidden">
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
+            </th>
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.quantity" />
+            </th>
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.available-to-return" />
+            </th>
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
+            </th>
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.reason" />
+            </th>
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.condition" />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <ItemsDetails key={item.id} {...item} />
+          ))}
+        </tbody>
+      </table>
+      <Table
+        emptyStateLabel={errorLabel}
+        loading={loading}
+        fullWidth
+        schema={tableSchema}
+        items={items}
+      />
+    </>
   )
 }
