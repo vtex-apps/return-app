@@ -1,15 +1,17 @@
 import type { Dispatch, FC } from 'react'
 import React, { createContext, useReducer } from 'react'
-import type { ReturnRequestInput } from 'vtex.return-app'
 
-import type { ReturnRequestActions } from './OrderToReturnReducer'
+import type {
+  ReturnRequestActions,
+  OrderDetailsState,
+} from './OrderToReturnReducer'
 import {
   initialOrderToReturnState,
   orderToReturnReducer,
 } from './OrderToReturnReducer'
 
 interface OrderToReturnContextInterface {
-  returnRequest: ReturnRequestInput
+  returnRequest: OrderDetailsState
   actions: {
     updateReturnRequest: Dispatch<ReturnRequestActions>
   }

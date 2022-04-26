@@ -127,9 +127,6 @@ export const OrderToRMADetails = (
         orderId: id,
         customerProfileData: clientProfileData,
         pickupReturnData: setInitialPickupAddress(shippingData),
-        refundPaymentData: {
-          refundPaymentMethod: 'bank',
-        },
         items: itemsToReturn.map(({ orderItemIndex }) => ({
           orderItemIndex,
           quantity: 0,

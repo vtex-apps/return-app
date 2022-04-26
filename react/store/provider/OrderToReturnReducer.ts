@@ -8,16 +8,16 @@ import type {
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
-interface OrderDetailState {
+export interface OrderDetailsState {
   orderId: string
   items: Array<PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>>
   customerProfileData: CustomerProfileDataInput
   pickupReturnData: PickupReturnDataInput
-  refundPaymentData: RefundPaymentDataInput
+  refundPaymentData?: RefundPaymentDataInput
   userComment?: Maybe<string> | undefined
 }
 
-export const initialOrderToReturnState: OrderDetailState = {
+export const initialOrderToReturnState: OrderDetailsState = {
   orderId: '',
   items: [],
   customerProfileData: {
@@ -33,9 +33,6 @@ export const initialOrderToReturnState: OrderDetailState = {
     country: '',
     zipCode: '',
     addressType: 'CUSTOMER_ADDRESS' as const,
-  },
-  refundPaymentData: {
-    refundPaymentMethod: 'sameAsPurchase' as const,
   },
   userComment: null,
 }
@@ -70,7 +67,7 @@ const userCommentAction = (userComment: string) => {
   }
 }
 
-const itemsAction = (items: OrderDetailState['items']) => {
+const itemsAction = (items: OrderDetailsState['items']) => {
   return {
     type: 'updateItems' as const,
     payload: items,
@@ -81,16 +78,14 @@ export const newReturnRequestState = ({
   orderId,
   customerProfileData,
   pickupReturnData,
-  refundPaymentData,
   items,
-}: OrderDetailState) => {
+}: OrderDetailsState) => {
   return {
     type: 'newReturnRequestState' as const,
     payload: {
       orderId,
       customerProfileData,
       pickupReturnData,
-      refundPaymentData,
       items,
     },
   }
@@ -105,7 +100,7 @@ export type ReturnRequestActions =
   | ReturnType<typeof itemsAction>
 
 export const orderToReturnReducer = (
-  state: OrderDetailState,
+  state: OrderDetailsState,
   action: ReturnRequestActions
 ) => {
   switch (action.type) {
@@ -149,7 +144,6 @@ export const orderToReturnReducer = (
         orderId: action.payload.orderId,
         customerProfileData: action.payload.customerProfileData,
         pickupReturnData: action.payload.pickupReturnData,
-        refundPaymentData: action.payload.refundPaymentData,
         items: action.payload.items,
       }
     }
