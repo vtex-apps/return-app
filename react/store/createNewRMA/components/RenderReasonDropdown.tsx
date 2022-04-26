@@ -56,11 +56,17 @@ const messages = defineMessages({
   },
 })
 
+interface Props {
+  reason: string
+  onReasonChange: (reason: string) => void
+  isExcluded: boolean
+}
+
 export const RenderReasonDropdown = ({
   reason,
   onReasonChange,
   isExcluded,
-}) => {
+}: Props) => {
   const { formatMessage } = useIntl()
 
   const { data: settings } = useStoreSettings()
