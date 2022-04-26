@@ -31,9 +31,6 @@ export const PaymentMethods = () => {
   const { data } = useContext(StoreSettingsContext)
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(data, 'data from payment')
-
     if (data) {
       const { bank, card, giftCard } = data?.paymentOptions.allowedPaymentTypes
 
