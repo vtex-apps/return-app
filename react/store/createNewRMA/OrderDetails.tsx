@@ -1,12 +1,7 @@
 import type { ApolloError } from 'apollo-client'
 import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
-import {
-  defineMessages,
-  FormattedDate,
-  FormattedMessage,
-  useIntl,
-} from 'react-intl'
+import { defineMessages, FormattedDate, FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-apollo'
 import { PageHeader, PageBlock } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
