@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import { Checkbox } from 'vtex.styleguide'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 
