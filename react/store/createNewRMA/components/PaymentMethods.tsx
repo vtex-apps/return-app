@@ -69,9 +69,8 @@ export const PaymentMethods = () => {
     return output
   }
 
-  const enablePaymentMethodSelection = data
-    ? data?.paymentOptions.enablePaymentMethodSelection
-    : true
+  const enablePaymentMethodSelection =
+    data?.paymentOptions.enablePaymentMethodSelection
 
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4 mb6">
