@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
-import type { RefundPaymentDataInput } from 'vtex.return-app'
+import type { RefundPaymentDataInput, PaymentType } from 'vtex.return-app'
 import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 
 type PaymentMethodsOptions = {
-  value: string
+  value: keyof PaymentType
   label: React.ReactElement
 }
 
