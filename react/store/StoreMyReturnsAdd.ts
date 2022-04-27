@@ -1,2 +1,2 @@
 export { OrderListContainer } from './createReturnRequest/OrderListContainer'
-export { OrderDetails } from './createReturnRequest/OrderDetails'
+export { ReturnDetailsContainer } from './createReturnRequest/ReturnDetailsContainer'
