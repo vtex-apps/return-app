@@ -10,6 +10,7 @@ query storeAppSettings {
       }
     }
     paymentOptions {
+      enablePaymentMethodSelection
       allowedPaymentTypes {
         bank
         card

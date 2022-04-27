@@ -69,15 +69,19 @@ export const PaymentMethods = () => {
     return output
   }
 
-  const settings = { hidePaymentMethodSelection: false }
+  const enablePaymentMethodSelection = data
+    ? data?.paymentOptions.enablePaymentMethodSelection
+    : true
 
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4 mb6">
       <p>
         <FormattedMessage id="store/return-app.return-order-details.payment-method.subtitle" />
       </p>
-      {settings.hidePaymentMethodSelection ? (
-        <FormattedMessage id="store/return-app.return-order-details.payment-method.default" />
+      {!enablePaymentMethodSelection ? (
+        <p className="i-s">
+          <FormattedMessage id="store/return-app.return-order-details.payment-method.default" />
+        </p>
       ) : (
         <RadioGroup
           hideBorder

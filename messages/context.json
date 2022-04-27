@@ -121,7 +121,7 @@
   "store/return-app.return-order-details.payment-options.bank": "Bank",
   "store/return-app.return-order-details.payment-options.gift-card": "Gift card",
   "store/return-app.return-order-details.payment-method.subtitle": "Refund Method",
-  "store/return-app.return-order-details.payment-method.default": "Message explaining the refund method will be the same as the order",
+  "store/return-app.return-order-details.payment-method.default": "The refund will be emitted to the payment method used for this order",
   "store/return-app.return-order-details.payment-method.account-holder": "Account holder name",
   "store/return-app.return-order-details.payment-method.iban": "IBAN",
   "store/return-app.return-order-details.terms-and-conditions.form-agree": "I have read and accept the {link}",
