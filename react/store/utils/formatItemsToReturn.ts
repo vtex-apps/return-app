@@ -27,7 +27,6 @@ export function formatItemsToReturn(
       quantityAvailable:
         invoicedItem.quantity -
         (processedItemsQuantityIndexMap.get(index) ?? 0),
-      orderItemIndex: invoicedItem.orderItemIndex,
     }
   })
 }
