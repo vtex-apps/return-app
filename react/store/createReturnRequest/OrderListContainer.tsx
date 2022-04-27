@@ -25,7 +25,7 @@ const headerConfig = {
   },
 }
 
-export const OrdersAvailableToRMA = () => {
+export const OrderListContainer = () => {
   const [ordersToReturn, setOrdersToReturn] = useState<OrdersToReturnList[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
 
