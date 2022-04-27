@@ -26,7 +26,7 @@ export const initialOrderToReturnState: OrderDetailsState = {
     phoneNumber: '',
   },
   pickupReturnData: {
-    addressId: 'ABC',
+    addressId: '',
     address: '',
     city: '',
     state: '',
@@ -45,7 +45,9 @@ const costumerProfileDataAction = (
   }
 }
 
-const pickupReturnDataAction = (pickupReturnData: PickupReturnDataInput) => {
+const pickupReturnDataAction = (
+  pickupReturnData: OrderDetailsState['pickupReturnData']
+) => {
   return {
     type: 'updatePickupReturnData' as const,
     payload: pickupReturnData,

@@ -43,6 +43,10 @@ export const AddressDetails = () => {
     })
   }
 
+  /**
+   * Important note: If the address from order has type PICKUP_POINT, the fields will be empty in the initial render.
+   * More explanation on setInitialPickupAddress util function
+   */
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
       <p>

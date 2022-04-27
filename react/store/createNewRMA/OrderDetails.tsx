@@ -89,7 +89,6 @@ export const OrderToRMADetails = (
   } = props
 
   const { navigate } = useRuntime()
-  const { formatMessage } = useIntl()
 
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
   const [errorCase, setErrorCase] = useState('')
@@ -106,6 +105,11 @@ export const OrderToRMADetails = (
     skip: !orderId,
     onError: (error) => setErrorCase(getErrorCode(error)),
   })
+
+  // Use this loading label to create a loading state for the whole component
+  // Use the errorCase to create a error handler for the whole component (use errorMessages )
+  // eslint-disable-next-line no-console
+  console.log({ loading, errorCase, errorMessages })
 
   useEffect(() => {
     if (!data) {
@@ -183,8 +187,6 @@ export const OrderToRMADetails = (
         </div>
       </div>
       <ItemsList
-        errorLabel={errorCase && formatMessage(errorMessages[errorCase])}
-        loading={loading}
         items={items}
         orderId={orderId}
         creationDate={data?.orderToReturnSummary.creationDate}
