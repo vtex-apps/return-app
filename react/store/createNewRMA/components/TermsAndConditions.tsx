@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Checkbox } from 'vtex.styleguide'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 
-import { StoreSettingsContext } from '../../provider/StoreSettingsProvider'
+import { useStoreSettings } from '../../hooks/useStoreSettings'
 
 const messages = defineMessages({
   formAgree: {
@@ -13,18 +13,12 @@ const messages = defineMessages({
 export const TermsAndConditions = () => {
   const { formatMessage } = useIntl()
   const [termsAndConditions, setTermsAndConditions] = useState(false)
-  const [termsAndConditionsSettings, setTermsAndConditionsSettings] =
-    useState('')
 
-  const { data } = useContext(StoreSettingsContext)
-
-  useEffect(() => {
-    if (data) {
-      setTermsAndConditionsSettings(data?.termsUrl)
-    }
-  }, [data])
+  const { data } = useStoreSettings()
 
   const renderTermsAndConditions = () => {
+    if (!data) return
+
     return formatMessage(
       {
         id: messages.formAgree.id,
@@ -32,11 +26,7 @@ export const TermsAndConditions = () => {
       {
         link: (
           <span>
-            <a
-              rel="noopener noreferrer"
-              target="_blank"
-              href={termsAndConditionsSettings}
-            >
+            <a rel="noopener noreferrer" target="_blank" href={data.termsUrl}>
               <FormattedMessage id="store/return-app.return-order-details.terms-and-conditions.link" />
             </a>
           </span>
@@ -55,6 +45,7 @@ export const TermsAndConditions = () => {
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
       <Checkbox
         checked={termsAndConditions}
+        required
         id="agree"
         key="formAgreeCheckbox"
         label={renderTermsAndConditions()}
