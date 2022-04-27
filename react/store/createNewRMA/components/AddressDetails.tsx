@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
-import type { PickupReturnDataInput } from 'vtex.return-app'
+
+import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 const messages = defineMessages({
   addressInput: {
@@ -24,22 +25,27 @@ const messages = defineMessages({
 
 export const AddressDetails = () => {
   const { formatMessage } = useIntl()
-  const [formInputs, setFormInputs] = useState<PickupReturnDataInput>({
-    country: '',
-    city: '',
-    address: '',
-    addressId: 'ABC',
-    addressType: 'PICKUP_POINT',
-    state: '',
-    zipCode: '',
-  })
+
+  const {
+    returnRequest,
+    actions: { updateReturnRequest },
+  } = useReturnRequest()
+
+  const { pickupReturnData } = returnRequest
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
 
-    setFormInputs((prevState) => ({ ...prevState, [name]: value }))
+    updateReturnRequest({
+      type: 'updatePickupReturnData',
+      payload: { ...pickupReturnData, [name]: value },
+    })
   }
 
+  /**
+   * Important note: If the address from order has type PICKUP_POINT, the fields will be empty in the initial render.
+   * More explanation on setInitialPickupAddress util function
+   */
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
       <p>
@@ -48,41 +54,46 @@ export const AddressDetails = () => {
       <div className="mb4">
         <Input
           name="address"
+          required
           placeholder={formatMessage(messages.addressInput)}
           onChange={handleInputChange}
-          value={formInputs.address}
+          value={pickupReturnData.address}
         />
       </div>
       <div className="mb4">
         <Input
           name="city"
+          required
           placeholder={formatMessage(messages.cityInput)}
           onChange={handleInputChange}
-          value={formInputs.city}
+          value={pickupReturnData.city}
         />
       </div>
       <div className="mb4">
         <Input
           name="state"
+          requiered
           placeholder={formatMessage(messages.stateInput)}
           onChange={handleInputChange}
-          value={formInputs.state}
+          value={pickupReturnData.state}
         />
       </div>
       <div className="mb4">
         <Input
           name="zip"
+          required
           placeholder={formatMessage(messages.zipInput)}
           onChange={handleInputChange}
-          value={formInputs.zipCode}
+          value={pickupReturnData.zipCode}
         />
       </div>
       <div className="mb4">
         <Input
           name="country"
+          required
           placeholder={formatMessage(messages.countryInput)}
           onChange={handleInputChange}
-          value={formInputs.country}
+          value={pickupReturnData.country}
         />
       </div>
     </div>

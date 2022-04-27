@@ -93,7 +93,7 @@
         "refundPaymentMethod": {
           "type": "string",
           "required": true,
-          "enum": ["bank", "card", "giftCard"]
+          "enum": ["bank", "card", "giftCard", "sameAsPurchase"]
         },
         "iban": {
           "type": ["string", "null"]

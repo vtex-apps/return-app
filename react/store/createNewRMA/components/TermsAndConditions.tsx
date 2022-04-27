@@ -1,41 +1,16 @@
+import type { ChangeEvent } from 'react'
 import React, { useState } from 'react'
 import { Checkbox } from 'vtex.styleguide'
-import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 
-const messages = defineMessages({
-  formAgree: {
-    id: 'store/return-app.return-order-details.terms-and-conditions.form-agree',
-  },
-})
-
 export const TermsAndConditions = () => {
-  const { formatMessage } = useIntl()
   const [termsAndConditions, setTermsAndConditions] = useState(false)
 
   const { data } = useStoreSettings()
 
-  const renderTermsAndConditions = () => {
-    if (!data) return
-
-    return formatMessage(
-      {
-        id: messages.formAgree.id,
-      },
-      {
-        link: (
-          <span>
-            <a rel="noopener noreferrer" target="_blank" href={data.termsUrl}>
-              <FormattedMessage id="store/return-app.return-order-details.terms-and-conditions.link" />
-            </a>
-          </span>
-        ),
-      }
-    )
-  }
-
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target
 
     setTermsAndConditions(checked)
@@ -48,7 +23,24 @@ export const TermsAndConditions = () => {
         required
         id="agree"
         key="formAgreeCheckbox"
-        label={renderTermsAndConditions()}
+        label={
+          <FormattedMessage
+            id="store/return-app.return-order-details.terms-and-conditions.form-agree"
+            values={{
+              link: (
+                <span>
+                  <a
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={data?.termsUrl}
+                  >
+                    <FormattedMessage id="store/return-app.return-order-details.terms-and-conditions.link" />
+                  </a>
+                </span>
+              ),
+            }}
+          />
+        }
         name="agree"
         onChange={handleInputChange}
         value={termsAndConditions}

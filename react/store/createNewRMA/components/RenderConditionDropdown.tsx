@@ -1,5 +1,7 @@
+import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl, defineMessages } from 'react-intl'
+import type { ItemCondition } from 'vtex.return-app'
 import { Dropdown } from 'vtex.styleguide'
 
 const messages = defineMessages({
@@ -20,23 +22,40 @@ const messages = defineMessages({
   },
 })
 
-export const RenderConditionDropdown = ({ condition, handleCondition, id }) => {
+interface Props {
+  condition: string
+  onConditionChange: (condition: ItemCondition) => void
+  isExcluded: boolean
+}
+
+export const RenderConditionDropdown = ({
+  condition,
+  onConditionChange,
+  isExcluded,
+}: Props) => {
   const { formatMessage } = useIntl()
+
+  const handleConditionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    onConditionChange(value as ItemCondition)
+  }
+
   const conditionOptions = [
     {
-      value: 'New With Box',
+      value: 'newWithBox',
       label: formatMessage(messages.conditionNewWithBox),
     },
     {
-      value: 'New Without Box',
+      value: 'newWithoutBox',
       label: formatMessage(messages.conditionNewWithoutBox),
     },
     {
-      value: 'Used With Box',
+      value: 'usedWithBox',
       label: formatMessage(messages.conditionUsedWithBox),
     },
     {
-      value: 'Used Without Box',
+      value: 'usedWithoutBox',
       label: formatMessage(messages.conditionUsedWithoutBox),
     },
   ]
@@ -44,14 +63,13 @@ export const RenderConditionDropdown = ({ condition, handleCondition, id }) => {
   return (
     <div>
       <Dropdown
+        disabled={isExcluded}
         label=""
         placeholder={formatMessage(messages.conditionSelectCondition)}
         size="small"
         options={conditionOptions}
-        value={condition[id]}
-        onChange={(e) => {
-          handleCondition(id, e.target.value)
-        }}
+        value={condition}
+        onChange={handleConditionChange}
       />
     </div>
   )

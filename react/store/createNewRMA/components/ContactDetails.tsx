@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
-import type { CustomerProfileDataInput } from 'vtex.return-app'
+
+import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 const messages = defineMessages({
   nameInput: {
@@ -17,17 +18,25 @@ const messages = defineMessages({
 })
 
 export const ContactDetails = () => {
+  const {
+    returnRequest: { customerProfileData },
+    actions: { updateReturnRequest },
+  } = useReturnRequest()
+
+  const { name, email, phoneNumber } = customerProfileData
+
   const { formatMessage } = useIntl()
-  const [formInputs, setFormInputs] = useState<CustomerProfileDataInput>({
-    name: '',
-    email: '',
-    phoneNumber: '',
-  })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
+    const { name: fieldName, value } = event.target
 
-    setFormInputs((prevState) => ({ ...prevState, [name]: value }))
+    updateReturnRequest({
+      type: 'updateCustomerProfileData',
+      payload: {
+        ...customerProfileData,
+        [fieldName]: value,
+      },
+    })
   }
 
   return (
@@ -38,9 +47,10 @@ export const ContactDetails = () => {
       <div className="mb4">
         <Input
           name="name"
+          required
           placeholder={formatMessage(messages.nameInput)}
           onChange={handleInputChange}
-          value={formInputs.name}
+          value={name}
         />
       </div>
       <div className="mb4">
@@ -49,15 +59,16 @@ export const ContactDetails = () => {
           name="email"
           placeholder={formatMessage(messages.emailInput)}
           onChange={handleInputChange}
-          value={formInputs.email}
+          value={email}
         />
       </div>
       <div className="mb4">
         <Input
           name="phoneNumber"
+          required
           placeholder={formatMessage(messages.phoneInput)}
           onChange={handleInputChange}
-          value={formInputs.phoneNumber}
+          value={phoneNumber}
           maxLength={50}
         />
       </div>

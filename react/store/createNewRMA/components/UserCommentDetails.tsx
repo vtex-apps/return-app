@@ -1,15 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import type { ChangeEvent } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Textarea } from 'vtex.styleguide'
 
+import { useReturnRequest } from '../../hooks/useReturnRequest'
+
 export const UserCommentDetails = () => {
-  const [comment, setComment] = useState<string | null>(null)
+  const {
+    returnRequest,
+    actions: { updateReturnRequest },
+  } = useReturnRequest()
+
+  const { userComment } = returnRequest
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
 
-    setComment(value)
+    updateReturnRequest({
+      type: 'updateUserComment',
+      payload: value,
+    })
   }
 
   return (
@@ -23,7 +33,7 @@ export const UserCommentDetails = () => {
           resize="none"
           onChange={handleInputChange}
           maxLength="300"
-          value={comment ?? ''}
+          value={userComment ?? ''}
         />
       </div>
     </div>

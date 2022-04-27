@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
-import type { RefundPaymentDataInput, PaymentType } from 'vtex.return-app'
+import type {
+  RefundPaymentDataInput,
+  PaymentType,
+  RefundPaymentMethod,
+} from 'vtex.return-app'
 import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
+import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 type PaymentMethodsOptions = {
   value: keyof PaymentType
@@ -20,18 +25,41 @@ const messages = defineMessages({
 
 export const PaymentMethods = () => {
   const { formatMessage } = useIntl()
-  const [paymentInputs, setPaymentInputs] = useState<RefundPaymentDataInput>({
-    refundPaymentMethod: 'bank',
-    iban: '',
-    accountHolderName: '',
-  })
 
   const { data } = useStoreSettings()
+  const {
+    returnRequest,
+    actions: { updateReturnRequest },
+  } = useReturnRequest()
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const { refundPaymentData } = returnRequest
+
+  const handleRefundPaymentChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+
+    const refundPaymentPayload = {
+      ...refundPaymentData,
+      refundPaymentMethod: value as RefundPaymentMethod,
+    }
+
+    updateReturnRequest({
+      type: 'updateRefundPaymentData',
+      payload: refundPaymentPayload,
+    })
+  }
+
+  const handleBankDetailsChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
+    const refundPaymentPayload = {
+      ...refundPaymentData,
+      refundPaymentMethod: refundPaymentData?.refundPaymentMethod ?? 'bank',
+      [name as keyof RefundPaymentDataInput]: value,
+    }
 
-    setPaymentInputs((prevState) => ({ ...prevState, [name]: value }))
+    updateReturnRequest({
+      type: 'updateRefundPaymentData',
+      payload: refundPaymentPayload,
+    })
   }
 
   const paymentMethods = () => {
@@ -86,26 +114,26 @@ export const PaymentMethods = () => {
           hideBorder
           name="refundPaymentMethod"
           options={paymentMethods()}
-          value={paymentInputs.refundPaymentMethod}
-          onChange={handleInputChange}
+          value={refundPaymentData?.refundPaymentMethod ?? ''}
+          onChange={handleRefundPaymentChange}
         />
       )}
-      {paymentInputs.refundPaymentMethod === 'bank' ? (
+      {refundPaymentData?.refundPaymentMethod === 'bank' ? (
         <div>
           <div className="flex-ns flex-wrap flex-auto flex-column mt6 mw6">
             <Input
               name="accountHolderName"
               placeholder={formatMessage(messages.formAccountHolder)}
-              onChange={handleInputChange}
-              value={paymentInputs.accountHolderName}
+              onChange={handleBankDetailsChange}
+              value={refundPaymentData.accountHolderName ?? ''}
             />
           </div>
           <div className="flex-ns flex-wrap flex-auto flex-column mt4 mw6">
             <Input
               name="iban"
               placeholder={formatMessage(messages.formIBAN)}
-              onChange={handleInputChange}
-              value={paymentInputs.iban}
+              onChange={handleBankDetailsChange}
+              value={refundPaymentData.iban ?? ''}
             />
           </div>
         </div>
