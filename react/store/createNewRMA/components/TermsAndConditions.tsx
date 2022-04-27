@@ -5,7 +5,9 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { StoreSettingsContext } from '../../provider/StoreSettingsProvider'
 
 const messages = defineMessages({
-  formAgree: { id: 'returns.formAgree' },
+  formAgree: {
+    id: 'store/return-app.return-order-details.terms-and-conditions.form-agree',
+  },
 })
 
 export const TermsAndConditions = () => {
@@ -30,7 +32,6 @@ export const TermsAndConditions = () => {
       {
         link: (
           <span>
-            {' '}
             <a
               rel="noopener noreferrer"
               target="_blank"

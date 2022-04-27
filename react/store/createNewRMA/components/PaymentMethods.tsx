@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
-import type { RefundPaymentDataInput, PaymentTypeInput } from 'vtex.return-app'
+import type { RefundPaymentDataInput } from 'vtex.return-app'
 import { Input, RadioGroup } from 'vtex.styleguide'
 
-import { StoreSettingsContext } from '../../provider/StoreSettingsProvider'
+import { useStoreSettings } from '../../hooks/useStoreSettings'
 
 type PaymentMethodsOptions = {
   value: string
@@ -26,21 +26,7 @@ export const PaymentMethods = () => {
     accountHolderName: '',
   })
 
-  const [paymentSettings, setPaymentSettings] = useState<PaymentTypeInput>({})
-
-  const { data } = useContext(StoreSettingsContext)
-
-  useEffect(() => {
-    if (data) {
-      const { bank, card, giftCard } = data?.paymentOptions.allowedPaymentTypes
-
-      setPaymentSettings({
-        bank,
-        card,
-        giftCard,
-      })
-    }
-  }, [data])
+  const { data } = useStoreSettings()
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -49,9 +35,11 @@ export const PaymentMethods = () => {
   }
 
   const paymentMethods = () => {
+    if (!data) return []
+    const { bank, card, giftCard } = data?.paymentOptions.allowedPaymentTypes
     const output: PaymentMethodsOptions[] = []
 
-    if (paymentSettings.card) {
+    if (card) {
       output.push({
         value: 'card',
         label: (
@@ -60,7 +48,7 @@ export const PaymentMethods = () => {
       })
     }
 
-    if (paymentSettings.giftCard) {
+    if (giftCard) {
       output.push({
         value: 'giftCard',
         label: (
@@ -69,7 +57,7 @@ export const PaymentMethods = () => {
       })
     }
 
-    if (paymentSettings.bank) {
+    if (bank) {
       output.push({
         value: 'bank',
         label: (

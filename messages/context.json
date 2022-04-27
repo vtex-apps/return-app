@@ -124,7 +124,7 @@
   "store/return-app.return-order-details.payment-method.default": "Message explaining the refund method will be the same as the order",
   "store/return-app.return-order-details.payment-method.account-holder": "Account holder name",
   "store/return-app.return-order-details.payment-method.iban": "IBAN",
-  "store/return-app.return-order-details.terms-and-conditions.formAgree": "I have read and accept the {link}",
+  "store/return-app.return-order-details.terms-and-conditions.form-agree": "I have read and accept the {link}",
   "store/return-app.return-order-details.terms-and-conditions.link": "terms and conditions",
   "returns.addReturn": "Add a new return form",
   "returns.pageTitle": "My requests",
