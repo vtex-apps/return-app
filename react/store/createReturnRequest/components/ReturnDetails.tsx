@@ -1,9 +1,7 @@
 import type { ApolloError } from 'apollo-client'
 import React, { useEffect, useState } from 'react'
-import { useRuntime } from 'vtex.render-runtime'
 import { defineMessages, FormattedDate, FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-apollo'
-import { PageHeader, PageBlock } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
 import type {
   OrderToReturnSummary,
@@ -11,19 +9,18 @@ import type {
   OrderToReturnValidation,
 } from 'vtex.return-app'
 
-import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
-import { ORDER_TO_RETURN_VALIDATON } from '../utils/constants'
-import { formatItemsToReturn } from '../utils/formatItemsToReturn'
-import { ContactDetails } from './components/ContactDetails'
-import { AddressDetails } from './components/AddressDetails'
-import { UserCommentDetails } from './components/UserCommentDetails'
-import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
-import { OrderToReturnProvider } from '../provider/OrderToReturnProvider'
-import { useReturnRequest } from '../hooks/useReturnRequest'
-import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
-import { ItemsList } from './components/ItemsList'
-import { PaymentMethods } from './components/PaymentMethods'
-import { TermsAndConditions } from './components/TermsAndConditions'
+import ORDER_TO_RETURN_SUMMARY from '../graphql/getOrderToReturnSummary.gql'
+import { ORDER_TO_RETURN_VALIDATON } from '../../utils/constants'
+import { formatItemsToReturn } from '../../utils/formatItemsToReturn'
+import { ContactDetails } from './ContactDetails'
+import { AddressDetails } from './AddressDetails'
+import { UserCommentDetails } from './UserCommentDetails'
+import { useReturnRequest } from '../../hooks/useReturnRequest'
+import { setInitialPickupAddress } from '../../utils/setInitialPickupAddress'
+import { ItemsList } from './ItemsList'
+import { PaymentMethods } from './PaymentMethods'
+import { TermsAndConditions } from './TermsAndConditions'
+import type { Page } from '../ReturnDetailsContainer'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -76,16 +73,19 @@ const errorMessages = defineMessages({
   },
 })
 
-export const OrderToRMADetails = (
-  props: RouteComponentProps<{ orderId: string }>
+interface Props {
+  onPageChange: (page: Page) => void
+}
+
+export const ReturnDetails = (
+  props: RouteComponentProps<{ orderId: string }> & Props
 ) => {
   const {
     match: {
       params: { orderId },
     },
+    onPageChange,
   } = props
-
-  const { navigate } = useRuntime()
 
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
   const [errorCase, setErrorCase] = useState('')
@@ -137,21 +137,7 @@ export const OrderToRMADetails = (
   }, [data, updateReturnRequest])
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <PageHeader
-        className="ph0 mh0 nl5"
-        title={
-          <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
-        }
-        linkLabel={
-          <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
-        }
-        onLinkClick={() =>
-          navigate({
-            to: `#/my-returns/add`,
-          })
-        }
-      />
+    <>
       <div className="mb5">
         <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
           <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
@@ -195,18 +181,7 @@ export const OrderToRMADetails = (
       </div>
       <PaymentMethods />
       <TermsAndConditions />
-    </PageBlock>
-  )
-}
-
-export const OrderDetails = (
-  props: RouteComponentProps<{ orderId: string }>
-) => {
-  return (
-    <StoreSettingsPovider>
-      <OrderToReturnProvider>
-        <OrderToRMADetails {...props} />
-      </OrderToReturnProvider>
-    </StoreSettingsPovider>
+      <button onClick={() => onPageChange('submit-form')}>Next</button>
+    </>
   )
 }
