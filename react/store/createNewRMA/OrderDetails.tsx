@@ -22,6 +22,8 @@ import { OrderToReturnProvider } from '../provider/OrderToReturnProvider'
 import { useReturnRequest } from '../hooks/useReturnRequest'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 import { ItemsList } from './components/ItemsList'
+import { PaymentMethods } from './components/PaymentMethods'
+import { TermsAndConditions } from './components/TermsAndConditions'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -191,6 +193,8 @@ export const OrderToRMADetails = (
         <AddressDetails />
         <UserCommentDetails />
       </div>
+      <PaymentMethods />
+      <TermsAndConditions />
     </PageBlock>
   )
 }

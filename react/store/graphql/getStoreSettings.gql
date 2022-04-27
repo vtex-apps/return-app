@@ -9,6 +9,14 @@ query storeAppSettings {
         translation
       }
     }
+    paymentOptions {
+      enablePaymentMethodSelection
+      allowedPaymentTypes {
+        bank
+        card
+        giftCard
+      }
+    }
     options {
       enableOtherOptionSelection
     }

@@ -28,8 +28,7 @@ export const ContactDetails = () => {
   const { formatMessage } = useIntl()
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event
-    const { name: fieldName, value } = target
+    const { name: fieldName, value } = event.target
 
     updateReturnRequest({
       type: 'updateCustomerProfileData',

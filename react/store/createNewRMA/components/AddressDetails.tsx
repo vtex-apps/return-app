@@ -34,8 +34,7 @@ export const AddressDetails = () => {
   const { pickupReturnData } = returnRequest
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event
-    const { name, value } = target
+    const { name, value } = event.target
 
     updateReturnRequest({
       type: 'updatePickupReturnData',
