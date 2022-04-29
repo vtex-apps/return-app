@@ -886,7 +886,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
       let metaDataImage = ''
 
       // When imageUrl is null we use the ImageUrl from itemMetadata.
-      if (item.imageUrl) {
+      if (!item.imageUrl) {
         this.state.selectedOrder.itemMetadata.Items.forEach((metaDataItem) => {
           metaDataItem.ProductId === item.productId
             ? (metaDataImage = metaDataItem.ImageUrl)
