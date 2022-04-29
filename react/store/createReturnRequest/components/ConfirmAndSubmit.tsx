@@ -1,34 +1,34 @@
 import React from 'react'
 import { useMutation } from 'react-apollo'
-import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
+import type {
+  MutationCreateReturnRequestArgs,
+  ReturnRequestInput,
+} from 'vtex.return-app'
 
-import { useReturnRequest } from '../../hooks/useReturnRequest'
 import type { Page } from '../ReturnDetailsContainer'
 import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
-import { isReturnRequestArgs } from '../../utils/isReturnRequestArgs'
 
 interface Props {
   onPageChange: (page: Page) => void
+  validatedReturnRequest: ReturnRequestInput | null
 }
 
-export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
-  const { returnRequest } = useReturnRequest()
-
+export const ConfirmAndSubmit = ({
+  onPageChange,
+  validatedReturnRequest,
+}: Props) => {
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
     { returnRequestId: string },
     MutationCreateReturnRequestArgs
   >(CREATE_RETURN_REQUEST)
 
   const handleCreateReturnRequest = async () => {
-    if (!isReturnRequestArgs(returnRequest) || creatingReturnRequest) return
+    if (!validatedReturnRequest || creatingReturnRequest) return
 
     try {
       const { errors } = await createReturnRequest({
         variables: {
-          returnRequest: {
-            ...returnRequest,
-            items: returnRequest.items.filter(({ quantity }) => quantity > 0),
-          },
+          returnRequest: validatedReturnRequest,
         },
       })
 
