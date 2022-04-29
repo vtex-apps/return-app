@@ -21,7 +21,6 @@ import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
 import type { Page } from '../ReturnDetailsContainer'
-import type { OrderDetailsState } from '../../provider/OrderToReturnReducer'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -76,7 +75,6 @@ const errorMessages = defineMessages({
 
 interface Props {
   onPageChange: (page: Page) => void
-  onValidateFields: (returnRequest: OrderDetailsState) => void
 }
 
 export const ReturnDetails = (
@@ -87,15 +85,13 @@ export const ReturnDetails = (
       params: { orderId },
     },
     onPageChange,
-    onValidateFields,
   } = props
 
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
   const [errorCase, setErrorCase] = useState('')
 
   const {
-    returnRequest,
-    actions: { updateReturnRequest },
+    actions: { updateReturnRequest, areFieldsValid },
   } = useReturnRequest()
 
   const { data, loading } = useQuery<
@@ -141,9 +137,9 @@ export const ReturnDetails = (
   }, [data, updateReturnRequest])
 
   const handleFieldsValidation = () => {
-    // TODO: handle non valid case
-    onValidateFields(returnRequest)
-    onPageChange('submit-form')
+    if (areFieldsValid()) {
+      onPageChange('submit-form')
+    }
   }
 
   return (
@@ -191,6 +187,7 @@ export const ReturnDetails = (
       </div>
       <PaymentMethods />
       <TermsAndConditions />
+      {/* TODO INTL */}
       <button onClick={handleFieldsValidation}>Next</button>
     </>
   )
