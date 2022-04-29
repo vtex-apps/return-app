@@ -93,6 +93,8 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
   const conditionError =
     noReasonOrCondition && selected && !currentItem?.condition
 
+  const availableToReturn = isExcluded ? 0 : quantityAvailable
+
   return (
     <tr>
       <td>Item</td>
@@ -100,7 +102,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         <p>{quantity}</p>
       </td>
       <td>
-        <p>{quantityAvailable}</p>
+        <p>{availableToReturn}</p>
         {/* TODO Intl */}
         {isExcluded ? (
           <p>Store does not allow this product to be returned</p>
@@ -109,7 +111,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
       <td>
         <NumericStepper
           size="smaill"
-          maxValue={isExcluded ? 0 : quantityAvailable}
+          maxValue={availableToReturn}
           value={currentItem?.quantity ?? 0}
           onChange={(e: { value: number }) => handleQuantityChange(e.value)}
         />
