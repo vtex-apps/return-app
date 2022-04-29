@@ -5,8 +5,6 @@ import { ItemsDetails } from './ItemsDetails'
 
 interface Props {
   items: ItemToReturn[]
-  orderId: string
-  creationDate?: string
 }
 
 export const ItemsList = ({ items }: Props) => {
