@@ -29,6 +29,7 @@ export const PaymentMethods = () => {
   const { data } = useStoreSettings()
   const {
     returnRequest,
+    inputErrors,
     actions: { updateReturnRequest },
   } = useReturnRequest()
 
@@ -100,6 +101,12 @@ export const PaymentMethods = () => {
   const enablePaymentMethodSelection =
     data?.paymentOptions.enablePaymentMethodSelection
 
+  const paymentMethodError = inputErrors.some(
+    (error) => error === 'refund-payment-data'
+  )
+
+  const bankDetailsError = inputErrors.some((error) => error === 'bank-details')
+
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4 mb6">
       <p>
@@ -110,13 +117,18 @@ export const PaymentMethods = () => {
           <FormattedMessage id="store/return-app.return-order-details.payment-method.default" />
         </p>
       ) : (
-        <RadioGroup
-          hideBorder
-          name="refundPaymentMethod"
-          options={paymentMethods()}
-          value={refundPaymentData?.refundPaymentMethod ?? ''}
-          onChange={handleRefundPaymentChange}
-        />
+        <>
+          <RadioGroup
+            hideBorder
+            name="refundPaymentMethod"
+            options={paymentMethods()}
+            value={refundPaymentData?.refundPaymentMethod ?? ''}
+            onChange={handleRefundPaymentChange}
+          />
+          {paymentMethodError && !refundPaymentData?.refundPaymentMethod ? (
+            <div>Required</div>
+          ) : null}
+        </>
       )}
       {refundPaymentData?.refundPaymentMethod === 'bank' ? (
         <div>
@@ -127,6 +139,9 @@ export const PaymentMethods = () => {
               onChange={handleBankDetailsChange}
               value={refundPaymentData.accountHolderName ?? ''}
             />
+            {bankDetailsError && !refundPaymentData.accountHolderName ? (
+              <div>Required</div>
+            ) : null}
           </div>
           <div className="flex-ns flex-wrap flex-auto flex-column mt4 mw6">
             <Input
@@ -135,6 +150,9 @@ export const PaymentMethods = () => {
               onChange={handleBankDetailsChange}
               value={refundPaymentData.iban ?? ''}
             />
+            {bankDetailsError && !refundPaymentData.iban ? (
+              <div>Required</div>
+            ) : null}
           </div>
         </div>
       ) : null}

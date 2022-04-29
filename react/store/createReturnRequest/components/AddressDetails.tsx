@@ -28,6 +28,7 @@ export const AddressDetails = () => {
 
   const {
     returnRequest,
+    inputErrors,
     actions: { updateReturnRequest },
   } = useReturnRequest()
 
@@ -41,6 +42,8 @@ export const AddressDetails = () => {
       payload: { ...pickupReturnData, [name]: value },
     })
   }
+
+  const addressError = inputErrors.some((error) => error === 'pickup-data')
 
   /**
    * Important note: If the address from order has type PICKUP_POINT, the fields will be empty in the initial render.
@@ -59,6 +62,7 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.address}
         />
+        {addressError && !pickupReturnData.address ? <div>Required</div> : null}
       </div>
       <div className="mb4">
         <Input
@@ -68,6 +72,7 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.city}
         />
+        {addressError && !pickupReturnData.city ? <div>Required</div> : null}
       </div>
       <div className="mb4">
         <Input
@@ -77,6 +82,7 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.state}
         />
+        {addressError && !pickupReturnData.state ? <div>Required</div> : null}
       </div>
       <div className="mb4">
         <Input
@@ -86,6 +92,7 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.zipCode}
         />
+        {addressError && !pickupReturnData.zipCode ? <div>Required</div> : null}
       </div>
       <div className="mb4">
         <Input
@@ -95,6 +102,7 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.country}
         />
+        {addressError && !pickupReturnData.country ? <div>Required</div> : null}
       </div>
     </div>
   )

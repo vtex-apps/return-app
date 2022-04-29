@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
+import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { ItemsDetails } from './ItemsDetails'
 
 interface Props {
@@ -8,6 +9,12 @@ interface Props {
 }
 
 export const ItemsList = ({ items }: Props) => {
+  const { inputErrors } = useReturnRequest()
+
+  const noItemSelected = inputErrors.some(
+    (error) => error === 'no-item-selected'
+  )
+
   return (
     <table className="w-100">
       <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
@@ -37,6 +44,8 @@ export const ItemsList = ({ items }: Props) => {
           <ItemsDetails key={item.id} {...item} />
         ))}
       </tbody>
+      {/* TODO Intl */}
+      {noItemSelected ? <div>No item selected</div> : null}
     </table>
   )
 }

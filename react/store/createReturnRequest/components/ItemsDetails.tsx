@@ -12,6 +12,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
 
   const {
     returnRequest,
+    inputErrors,
     actions: { updateReturnRequest },
   } = useReturnRequest()
 
@@ -80,6 +81,18 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
     })
   }
 
+  const noReasonOrCondition = inputErrors.some(
+    (error) => error === 'reason-or-condition'
+  )
+
+  const selected = !isExcluded && currentItem?.quantity
+
+  const reasonError =
+    noReasonOrCondition && selected && !currentItem?.returnReason?.reason
+
+  const conditionError =
+    noReasonOrCondition && selected && !currentItem?.condition
+
   return (
     <tr>
       <td>Item</td>
@@ -88,6 +101,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
       </td>
       <td>
         <p>{quantityAvailable}</p>
+        {/* TODO Intl */}
         {isExcluded ? (
           <p>Store does not allow this product to be returned</p>
         ) : null}
@@ -106,6 +120,9 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           reason={currentItem?.returnReason?.reason ?? ''}
           onReasonChange={handleReasonChange}
         />
+        {/* TODO Intl */}
+        {reasonError ? 'Reason is required' : null}
+        {/* TODO user input when other & error */}
       </td>
       <td>
         <RenderConditionDropdown
@@ -113,6 +130,8 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           condition={currentItem?.condition ?? ''}
           onConditionChange={handleConditionChange}
         />
+        {/* TODO Intl */}
+        {conditionError ? 'Condition is required' : null}
       </td>
     </tr>
   )
