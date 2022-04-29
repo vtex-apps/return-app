@@ -883,7 +883,8 @@ class MyReturnsPageAdd extends Component<Props, State> {
     }
 
     const returnedItems = orderProducts.map((item) => ({
-      imageUrl: item.imageUrl,
+      // The data:, is to render an empty img src when imageUrl is null.
+      imageUrl: item.imageUrl ? item.imageUrl : 'data:,',
       skuId: item.refId ?? '',
       sku: item.id,
       productId: item.productId,
