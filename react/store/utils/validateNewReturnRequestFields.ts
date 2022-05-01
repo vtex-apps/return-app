@@ -21,6 +21,7 @@ const itemHasConditionAndReason = (
 }
 
 export type ErrorsValidation =
+  | 'terms-and-conditions'
   | 'no-item-selected'
   | 'reason-or-condition'
   | 'customer-data'
@@ -39,12 +40,20 @@ interface ValidationSuccess {
 }
 
 export const validateNewReturnRequestFields = (
+  termsAndConditionsAccepted: boolean,
   returnRequest: OrderDetailsState
 ): ValidationError | ValidationSuccess => {
   const { items, pickupReturnData, customerProfileData, refundPaymentData } =
     returnRequest
 
   const errors: ErrorsValidation[] = []
+
+  if (!termsAndConditionsAccepted) {
+    errors.push('terms-and-conditions')
+
+    // return the error on checkbox to make sure this error is the only one when happening
+    return { errors }
+  }
 
   const itemsToReturn = items.filter((item) => item.quantity > 0)
 

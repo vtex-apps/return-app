@@ -1,4 +1,4 @@
-import type { Dispatch, FC } from 'react'
+import type { Dispatch, FC, SetStateAction } from 'react'
 import React, { createContext, useReducer, useState } from 'react'
 import type { ReturnRequestInput } from 'vtex.return-app'
 
@@ -17,9 +17,11 @@ interface OrderToReturnContextInterface {
   returnRequest: OrderDetailsState
   validatedRmaFields: ReturnRequestInput | null
   inputErrors: ErrorsValidation[]
+  termsAndConditions: boolean
   actions: {
     updateReturnRequest: Dispatch<ReturnRequestActions>
     areFieldsValid: () => boolean
+    toogleTermsAndConditions: Dispatch<SetStateAction<boolean>>
   }
 }
 
@@ -34,13 +36,17 @@ export const OrderToReturnProvider: FC = ({ children }) => {
     initialOrderToReturnState
   )
 
+  const [termsAndConditions, setTermsAndConditions] = useState(false)
+
   const [inputErrors, setInputErrors] = useState<ErrorsValidation[]>([])
   const [validatedRmaFields, setValidatedRmaFields] =
     useState<ReturnRequestInput | null>(null)
 
   const areFieldsValid = (): boolean => {
-    const { errors, validatedFields } =
-      validateNewReturnRequestFields(returnRequest)
+    const { errors, validatedFields } = validateNewReturnRequestFields(
+      termsAndConditions,
+      returnRequest
+    )
 
     if (errors) {
       setValidatedRmaFields(null)
@@ -55,16 +61,18 @@ export const OrderToReturnProvider: FC = ({ children }) => {
     return true
   }
 
-  // eslint-disable-next-line no-console
-  console.log({ inputErrors })
-
   return (
     <OrderToReturnContext.Provider
       value={{
         returnRequest,
         validatedRmaFields,
         inputErrors,
-        actions: { updateReturnRequest, areFieldsValid },
+        termsAndConditions,
+        actions: {
+          updateReturnRequest,
+          areFieldsValid,
+          toogleTermsAndConditions: setTermsAndConditions,
+        },
       }}
     >
       {children}

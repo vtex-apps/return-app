@@ -1,19 +1,23 @@
 import type { ChangeEvent } from 'react'
-import React, { useState } from 'react'
+import React from 'react'
 import { Checkbox } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
+import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 export const TermsAndConditions = () => {
-  const [termsAndConditions, setTermsAndConditions] = useState(false)
+  const {
+    termsAndConditions,
+    actions: { toogleTermsAndConditions },
+  } = useReturnRequest()
 
   const { data } = useStoreSettings()
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target
 
-    setTermsAndConditions(checked)
+    toogleTermsAndConditions(checked)
   }
 
   return (
