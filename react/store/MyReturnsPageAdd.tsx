@@ -19,7 +19,6 @@ import { isValidIBANNumber } from '../common/validations'
 import { countries } from '../common/countries'
 import styles from '../styles.css'
 import { fetchHeaders, fetchMethod, fetchPath } from '../common/fetch'
-import EligibleOrdersTable from '../components/EligibleOrdersTable'
 import RequestInformation from '../components/RequestInformation'
 import RequestForm from '../components/RequestForm'
 import { SAME_AS_ORDER } from '../components/RequestInfo'
@@ -929,7 +928,6 @@ class MyReturnsPageAdd extends Component<Props, State> {
       extraComment,
       agree,
       errors,
-      eligibleOrders,
       orderProducts,
       loading,
       errorSubmit,
@@ -983,12 +981,6 @@ class MyReturnsPageAdd extends Component<Props, State> {
 
           return (
             <div>
-              {showOrdersTable ? (
-                <EligibleOrdersTable
-                  eligibleOrders={eligibleOrders}
-                  selectOrder={(order) => this.selectOrder(order)}
-                />
-              ) : null}
               {showForm ? (
                 <RequestForm
                   settings={settings}
