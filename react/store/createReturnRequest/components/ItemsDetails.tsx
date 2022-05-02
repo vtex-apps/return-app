@@ -95,7 +95,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
     !currentItem?.returnReason?.otherReason
 
   const reasonErrorEmptyValue =
-    !currentItem?.returnReason?.reason && emptyTextareaError
+    !currentItem?.returnReason?.reason || emptyTextareaError
 
   const conditionError =
     noReasonOrCondition && selected && !currentItem?.condition
@@ -131,7 +131,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           onReasonChange={handleReasonChange}
         />
         {/* TODO Intl */}
-        {reasonError || reasonErrorEmptyValue ? 'Reason is required' : null}
+        {reasonError && reasonErrorEmptyValue ? 'Reason is required' : null}
         {/* TODO user input when other & error */}
       </td>
       <td>
