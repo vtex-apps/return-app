@@ -40,7 +40,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
     })
   }
 
-  const handleReasonChange = (reason: string) => {
+  const handleReasonChange = (reason: string, otherReason = '') => {
     if (!currentItem) return
     const updatedItems = items.map((item) => {
       if (item.orderItemIndex !== orderItemIndex) {
@@ -51,6 +51,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         ...item,
         returnReason: {
           reason,
+          otherReason,
         },
       }
     })
@@ -104,6 +105,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         <RenderReasonDropdown
           isExcluded={isExcluded}
           reason={currentItem?.returnReason?.reason ?? ''}
+          otherReason={currentItem?.returnReason?.otherReason ?? ''}
           onReasonChange={handleReasonChange}
         />
       </td>

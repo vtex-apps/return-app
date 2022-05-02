@@ -1,9 +1,10 @@
 import type { ChangeEvent } from 'react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useIntl, defineMessages } from 'react-intl'
-import { Dropdown } from 'vtex.styleguide'
+import { Dropdown, Textarea } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
+import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 const messages = defineMessages({
   reasonAccidentalOrder: {
@@ -58,23 +59,39 @@ const messages = defineMessages({
 
 interface Props {
   reason: string
-  onReasonChange: (reason: string) => void
+  otherReason: string
+  onReasonChange: (reason: string, otherReason?: string) => void
   isExcluded: boolean
 }
 
 export const RenderReasonDropdown = ({
   reason,
+  otherReason,
   onReasonChange,
   isExcluded,
 }: Props) => {
   const { formatMessage } = useIntl()
+  const [isOtherReason, setIsOtherReason] = useState(false)
 
   const { data: settings } = useStoreSettings()
+  const { returnRequest } = useReturnRequest()
+
+  // eslint-disable-next-line no-console
+  console.log(returnRequest)
 
   const handleReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
+    const showTextarea = value === 'otherReason'
+
+    setIsOtherReason(showTextarea)
 
     onReasonChange(value)
+  }
+
+  const handleOtherReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    onReasonChange('otherReason', value)
   }
 
   const reasonOptions = [
@@ -144,14 +161,24 @@ export const RenderReasonDropdown = ({
   }
 
   return (
-    <Dropdown
-      disabled={isExcluded}
-      label=""
-      placeholder={formatMessage(messages.reasonSelectReason)}
-      size="small"
-      options={reasonOptions}
-      value={reason}
-      onChange={handleReasonChange}
-    />
+    <>
+      <Dropdown
+        disabled={isExcluded}
+        placeholder={formatMessage(messages.reasonSelectReason)}
+        size="small"
+        options={reasonOptions}
+        value={reason}
+        onChange={handleReasonChange}
+      />
+      {isOtherReason ? (
+        <div className="mv3">
+          <Textarea
+            resize="none"
+            value={otherReason}
+            onChange={handleOtherReasonChange}
+          />
+        </div>
+      ) : null}
+    </>
   )
 }

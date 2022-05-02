@@ -34,7 +34,7 @@ export const ItemsList = ({ items }: Props) => {
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="v-base">
         {items.map((item) => (
           <ItemsDetails key={item.id} {...item} />
         ))}
