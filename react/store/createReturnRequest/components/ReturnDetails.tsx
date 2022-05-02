@@ -36,6 +36,7 @@ export const ReturnDetails = (
   const handleFieldsValidation = () => {
     if (areFieldsValid()) {
       onPageChange('submit-form')
+      typeof window !== 'undefined' && window.scrollTo(0, 0)
     }
   }
 

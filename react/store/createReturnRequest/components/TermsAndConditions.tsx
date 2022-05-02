@@ -9,6 +9,7 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 export const TermsAndConditions = () => {
   const {
     termsAndConditions,
+    inputErrors,
     actions: { toogleTermsAndConditions },
   } = useReturnRequest()
 
@@ -19,6 +20,10 @@ export const TermsAndConditions = () => {
 
     toogleTermsAndConditions(checked)
   }
+
+  const hasntAcceptedTermsAndConditions = inputErrors.some(
+    (error) => error === 'terms-and-conditions'
+  )
 
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
@@ -49,6 +54,8 @@ export const TermsAndConditions = () => {
         onChange={handleInputChange}
         value={termsAndConditions}
       />
+      {/* TODO: Intl */}
+      {hasntAcceptedTermsAndConditions ? <div>Required</div> : null}
     </div>
   )
 }

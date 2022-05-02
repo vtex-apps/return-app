@@ -911,7 +911,6 @@ class MyReturnsPageAdd extends Component<Props, State> {
 
   render() {
     const {
-      showOrdersTable,
       showForm,
       showInfo,
       name,
