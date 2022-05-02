@@ -52,7 +52,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         ...item,
         returnReason: {
           reason,
-          otherReason,
+          ...(reason === 'otherReason' ? { otherReason } : null),
         },
       }
     })

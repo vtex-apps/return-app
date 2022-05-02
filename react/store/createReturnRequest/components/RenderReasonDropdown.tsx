@@ -1,10 +1,9 @@
 import type { ChangeEvent } from 'react'
-import React, { useState } from 'react'
+import React from 'react'
 import { useIntl, defineMessages } from 'react-intl'
 import { Dropdown, Textarea } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
-import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 const messages = defineMessages({
   reasonAccidentalOrder: {
@@ -71,19 +70,11 @@ export const RenderReasonDropdown = ({
   isExcluded,
 }: Props) => {
   const { formatMessage } = useIntl()
-  const [isOtherReason, setIsOtherReason] = useState(false)
 
   const { data: settings } = useStoreSettings()
-  const { returnRequest } = useReturnRequest()
-
-  // eslint-disable-next-line no-console
-  console.log(returnRequest)
 
   const handleReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    const showTextarea = value === 'otherReason'
-
-    setIsOtherReason(showTextarea)
 
     onReasonChange(value)
   }
@@ -170,7 +161,7 @@ export const RenderReasonDropdown = ({
         value={reason}
         onChange={handleReasonChange}
       />
-      {isOtherReason ? (
+      {reason === 'otherReason' ? (
         <div className="mv3">
           <Textarea
             resize="none"
