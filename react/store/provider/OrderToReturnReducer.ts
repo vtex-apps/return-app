@@ -8,6 +8,7 @@ import type {
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
+// When adding PartialBy in a field, it's necessary to the validation in the function isReturnRequestArgs
 export interface OrderDetailsState {
   orderId: string
   items: Array<PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>>

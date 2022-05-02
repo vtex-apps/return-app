@@ -20,6 +20,7 @@ const messages = defineMessages({
 export const ContactDetails = () => {
   const {
     returnRequest: { customerProfileData },
+    inputErrors,
     actions: { updateReturnRequest },
   } = useReturnRequest()
 
@@ -39,6 +40,8 @@ export const ContactDetails = () => {
     })
   }
 
+  const contactError = inputErrors.some((error) => error === 'customer-data')
+
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
       <p>
@@ -52,6 +55,7 @@ export const ContactDetails = () => {
           onChange={handleInputChange}
           value={name}
         />
+        {contactError && !name ? <div>Required</div> : null}
       </div>
       <div className="mb4">
         <Input
@@ -71,6 +75,7 @@ export const ContactDetails = () => {
           value={phoneNumber}
           maxLength={50}
         />
+        {contactError && !phoneNumber ? <div>Required</div> : null}
       </div>
     </div>
   )
