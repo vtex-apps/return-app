@@ -65,7 +65,7 @@ type State = {
   errors: Errors
   eligibleOrders: string[]
   selectedOrderId: string
-  selectedOrder: any[]
+  selectedOrder: any[any]
   orderProducts: any[]
   loading: boolean
   settings: any
@@ -882,22 +882,39 @@ class MyReturnsPageAdd extends Component<Props, State> {
       accountHolder,
     }
 
-    const returnedItems = orderProducts.map((item) => ({
-      imageUrl: item.imageUrl,
-      skuId: item.refId ?? '',
-      sku: item.id,
-      productId: item.productId,
-      ean: item.ean ?? '',
-      brandId: item.additionalInfo.brandId,
-      brandName: item.additionalInfo.brandName,
-      skuName: item.name,
-      unitPrice: parseInt(item.sellingPrice, 10),
-      quantity: parseInt(item.selectedQuantity, 10),
-      goodProducts: 0,
-      reasonCode: item.reasonCode,
-      condition: item.condition,
-      reason: item.reason,
-    }))
+    const returnedItems = orderProducts.map((item) => {
+      let metaDataImage = ''
+
+      // When imageUrl is null we use the ImageUrl from itemMetadata.
+      if (!item.imageUrl) {
+        const found = this.state.selectedOrder.itemMetadata.Items.find(
+          (metaDataItem) => {
+            return metaDataItem.ProductId === item.productId
+          }
+        )
+
+        if (found) {
+          metaDataImage = found.ImageUrl
+        }
+      }
+
+      return {
+        imageUrl: item.imageUrl ?? metaDataImage,
+        skuId: item.refId ?? '',
+        sku: item.id,
+        productId: item.productId,
+        ean: item.ean ?? '',
+        brandId: item.additionalInfo.brandId,
+        brandName: item.additionalInfo.brandName,
+        skuName: item.name,
+        unitPrice: parseInt(item.sellingPrice, 10),
+        quantity: parseInt(item.selectedQuantity, 10),
+        goodProducts: 0,
+        reasonCode: item.reasonCode,
+        condition: item.condition,
+        reason: item.reason,
+      }
+    })
 
     try {
       const { errors } = await sendRequest({
