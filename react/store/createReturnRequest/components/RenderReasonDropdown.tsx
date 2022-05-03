@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl, defineMessages } from 'react-intl'
-import { Dropdown } from 'vtex.styleguide'
+import { Dropdown, Textarea } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 
@@ -58,12 +58,14 @@ const messages = defineMessages({
 
 interface Props {
   reason: string
-  onReasonChange: (reason: string) => void
+  otherReason: string
+  onReasonChange: (reason: string, otherReason?: string) => void
   isExcluded: boolean
 }
 
 export const RenderReasonDropdown = ({
   reason,
+  otherReason,
   onReasonChange,
   isExcluded,
 }: Props) => {
@@ -75,6 +77,12 @@ export const RenderReasonDropdown = ({
     const { value } = e.target
 
     onReasonChange(value)
+  }
+
+  const handleOtherReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    onReasonChange('otherReason', value)
   }
 
   const reasonOptions = [
@@ -144,14 +152,24 @@ export const RenderReasonDropdown = ({
   }
 
   return (
-    <Dropdown
-      disabled={isExcluded}
-      label=""
-      placeholder={formatMessage(messages.reasonSelectReason)}
-      size="small"
-      options={reasonOptions}
-      value={reason}
-      onChange={handleReasonChange}
-    />
+    <>
+      <Dropdown
+        disabled={isExcluded}
+        placeholder={formatMessage(messages.reasonSelectReason)}
+        size="small"
+        options={reasonOptions}
+        value={reason}
+        onChange={handleReasonChange}
+      />
+      {reason === 'otherReason' ? (
+        <div className="mv3">
+          <Textarea
+            resize="none"
+            value={otherReason}
+            onChange={handleOtherReasonChange}
+          />
+        </div>
+      ) : null}
+    </>
   )
 }

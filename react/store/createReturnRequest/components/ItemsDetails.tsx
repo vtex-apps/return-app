@@ -41,7 +41,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
     })
   }
 
-  const handleReasonChange = (reason: string) => {
+  const handleReasonChange = (reason: string, otherReason = '') => {
     if (!currentItem) return
     const updatedItems = items.map((item) => {
       if (item.orderItemIndex !== orderItemIndex) {
@@ -52,6 +52,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         ...item,
         returnReason: {
           reason,
+          ...(reason === 'otherReason' ? { otherReason } : null),
         },
       }
     })
@@ -87,8 +88,14 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
 
   const selected = !isExcluded && currentItem?.quantity
 
-  const reasonError =
-    noReasonOrCondition && selected && !currentItem?.returnReason?.reason
+  const reasonError = noReasonOrCondition && selected
+
+  const emptyTextareaError =
+    currentItem?.returnReason?.reason === 'otherReason' &&
+    !currentItem?.returnReason?.otherReason
+
+  const reasonErrorEmptyValue =
+    !currentItem?.returnReason?.reason || emptyTextareaError
 
   const conditionError =
     noReasonOrCondition && selected && !currentItem?.condition
@@ -120,10 +127,11 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         <RenderReasonDropdown
           isExcluded={isExcluded}
           reason={currentItem?.returnReason?.reason ?? ''}
+          otherReason={currentItem?.returnReason?.otherReason ?? ''}
           onReasonChange={handleReasonChange}
         />
         {/* TODO Intl */}
-        {reasonError ? 'Reason is required' : null}
+        {reasonError && reasonErrorEmptyValue ? 'Reason is required' : null}
         {/* TODO user input when other & error */}
       </td>
       <td>
