@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import type {
@@ -27,6 +27,10 @@ export const PaymentMethods = () => {
   const { formatMessage } = useIntl()
 
   const { data } = useStoreSettings()
+  const { paymentOptions } = data ?? {}
+  const { allowedPaymentTypes, enablePaymentMethodSelection } =
+    paymentOptions ?? {}
+
   const {
     returnRequest,
     inputErrors,
@@ -34,6 +38,18 @@ export const PaymentMethods = () => {
   } = useReturnRequest()
 
   const { refundPaymentData } = returnRequest
+
+  useEffect(() => {
+    if (!enablePaymentMethodSelection) {
+      updateReturnRequest({
+        type: 'updateRefundPaymentData',
+        payload: {
+          ...refundPaymentData,
+          refundPaymentMethod: 'sameAsPurchase',
+        },
+      })
+    }
+  }, [enablePaymentMethodSelection, updateReturnRequest, refundPaymentData])
 
   const handleRefundPaymentChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -64,8 +80,8 @@ export const PaymentMethods = () => {
   }
 
   const paymentMethods = () => {
-    if (!data) return []
-    const { bank, card, giftCard } = data?.paymentOptions.allowedPaymentTypes
+    if (!allowedPaymentTypes) return []
+    const { bank, card, giftCard } = allowedPaymentTypes
     const output: PaymentMethodsOptions[] = []
 
     if (card) {
@@ -97,9 +113,6 @@ export const PaymentMethods = () => {
 
     return output
   }
-
-  const enablePaymentMethodSelection =
-    data?.paymentOptions.enablePaymentMethodSelection
 
   const paymentMethodError = inputErrors.some(
     (error) => error === 'refund-payment-data'
