@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.19.4] - 2022-05-04
+
+### Refactor
+
+- Move sendEmail promise on `createReturnRequest.ts` resolver to avoid sending an email when the request failed.
+
 ## [2.19.4] - 2022-05-02
 
 ## [2.19.3] - 2022-03-25
