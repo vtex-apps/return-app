@@ -4,12 +4,16 @@ import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { Table } from 'vtex.styleguide'
 
-import { productsStatusToReturn } from '../../utils/filterProductStatus'
+import { createItemsSummary } from '../../utils/createItemsSummary'
 
 type Operation = 'next' | 'previous'
 interface Props {
   orders: OrdersToReturnList
   handlePagination: (page: number, operation: Operation) => Promise<void>
+}
+
+interface RowData {
+  rowData: OrderToReturnSummary
 }
 
 const tableSchema = {
@@ -38,21 +42,17 @@ const tableSchema = {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
       ),
-      cellRenderer: function availableProducts({
-        rowData,
-      }: {
-        rowData: OrderToReturnSummary
-      }) {
-        const { availableQuantity, quantity } = productsStatusToReturn(rowData)
+      cellRenderer: function availableProducts({ rowData }: RowData) {
+        const { quantityAvailable, quantity } = createItemsSummary(rowData)
 
-        return <p>{`${availableQuantity} / ${quantity}`}</p>
+        return <p>{`${quantityAvailable} / ${quantity}`}</p>
       },
     },
     selectOrder: {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
       ),
-      cellRenderer: function selectOrderButton({ rowData }) {
+      cellRenderer: function selectOrderButton({ rowData }: RowData) {
         return (
           <Link
             to={`#/my-returns/add/${rowData.orderId}`}

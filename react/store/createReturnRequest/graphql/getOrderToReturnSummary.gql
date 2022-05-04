@@ -32,5 +32,8 @@ query orderToReturnSummary($orderId: ID!) {
       zipCode
       addressType
     }
+    paymentData {
+      canRefundCard
+    }
   }
 }

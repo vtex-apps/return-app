@@ -103,5 +103,10 @@ export const createOrdersToReturnSummary = (
       email
     ),
     shippingData: transformShippingData(order.shippingData),
+    paymentData: {
+      canRefundCard: order.paymentData.transactions.some((transactions) =>
+        transactions.payments.some((transaction) => transaction.lastDigits)
+      ),
+    },
   }
 }

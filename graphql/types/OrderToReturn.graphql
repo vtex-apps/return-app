@@ -22,6 +22,7 @@ type OrderToReturnSummary {
   excludedItems: [excludedItem!]!
   clientProfileData: ClientProfileData!
   shippingData: ShippingData!
+  paymentData: PaymentData!
 }
 
 type Pagination {
@@ -81,4 +82,8 @@ type ShippingData {
   country: String!
   zipCode: String!
   addressType: AddressType!
+}
+
+type PaymentData {
+  canRefundCard: Boolean!
 }
