@@ -18,6 +18,7 @@ import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
 import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 import { getErrorCode, errorMessages } from '../utils/getErrorCode'
+import { useStoreSettings } from '../hooks/useStoreSettings'
 
 export type Page = 'form-details' | 'submit-form'
 
@@ -39,6 +40,10 @@ export const CreateReturnRequest = (props: RouteProps) => {
     actions: { updateReturnRequest },
   } = useReturnRequest()
 
+  const { data: storeSettings } = useStoreSettings()
+  const { paymentOptions } = storeSettings ?? {}
+  const { enablePaymentMethodSelection } = paymentOptions ?? {}
+
   const { data, loading } = useQuery<
     { orderToReturnSummary: OrderToReturnSummary },
     QueryOrderToReturnSummaryArgs
@@ -54,7 +59,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
   console.log({ loading, errorCase, errorMessages })
 
   useEffect(() => {
-    if (!data) {
+    if (!data || !storeSettings) {
       return
     }
 
@@ -77,9 +82,19 @@ export const CreateReturnRequest = (props: RouteProps) => {
           orderItemIndex,
           quantity: 0,
         })),
+        refundPaymentData: {
+          refundPaymentMethod: 'sameAsPurchase',
+        },
+        ...(enablePaymentMethodSelection
+          ? null
+          : {
+              refundPaymentData: {
+                refundPaymentMethod: 'sameAsPurchase',
+              },
+            }),
       },
     })
-  }, [data, updateReturnRequest])
+  }, [data, storeSettings, updateReturnRequest, enablePaymentMethodSelection])
 
   const handlePageChange = (selectedPage: Page) => {
     setPage(selectedPage)

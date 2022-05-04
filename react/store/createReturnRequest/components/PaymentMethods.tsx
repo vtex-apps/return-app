@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import type {
@@ -42,18 +42,6 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
   } = useReturnRequest()
 
   const { refundPaymentData } = returnRequest
-
-  useEffect(() => {
-    if (!enablePaymentMethodSelection) {
-      updateReturnRequest({
-        type: 'updateRefundPaymentData',
-        payload: {
-          ...refundPaymentData,
-          refundPaymentMethod: 'sameAsPurchase',
-        },
-      })
-    }
-  }, [enablePaymentMethodSelection, updateReturnRequest, refundPaymentData])
 
   const handleRefundPaymentChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
