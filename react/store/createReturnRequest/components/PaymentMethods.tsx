@@ -88,8 +88,6 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
     const { bank, card, giftCard } = allowedPaymentTypes
     const output: PaymentMethodsOptions[] = []
 
-    // eslint-disable-next-line no-console
-    console.log({ canRefundCard })
     if (card && canRefundCard) {
       output.push({
         value: 'card',
