@@ -11,6 +11,10 @@ import { Input, RadioGroup } from 'vtex.styleguide'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 
+interface Props {
+  canRefundCard?: boolean
+}
+
 type PaymentMethodsOptions = {
   value: keyof PaymentType
   label: React.ReactElement
@@ -23,7 +27,7 @@ const messages = defineMessages({
   },
 })
 
-export const PaymentMethods = () => {
+export const PaymentMethods = ({ canRefundCard }: Props) => {
   const { formatMessage } = useIntl()
 
   const { data } = useStoreSettings()
@@ -84,7 +88,9 @@ export const PaymentMethods = () => {
     const { bank, card, giftCard } = allowedPaymentTypes
     const output: PaymentMethodsOptions[] = []
 
-    if (card) {
+    // eslint-disable-next-line no-console
+    console.log({ canRefundCard })
+    if (card && canRefundCard) {
       output.push({
         value: 'card',
         label: (

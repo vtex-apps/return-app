@@ -107,6 +107,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
           onPageChange={handlePageChange}
           items={items}
           creationDate={data?.orderToReturnSummary?.creationDate}
+          canRefundCard={data?.orderToReturnSummary?.paymentData.canRefundCard}
         />
       ) : null}
       {page === 'submit-form' ? (
