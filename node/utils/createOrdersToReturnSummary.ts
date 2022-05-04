@@ -56,7 +56,7 @@ export const createOrdersToReturnSummary = async (
     for (const item of rmaItems ?? []) {
       const { orderItemIndex, quantity } = item
 
-      if (!orderItemIndex || !quantity) continue
+      if (orderItemIndex === undefined || quantity === undefined) continue
 
       const committedItem = {
         itemIndex: orderItemIndex,
@@ -140,10 +140,12 @@ export const createOrdersToReturnSummary = async (
     const returnedQuantity = returnedQuantityInvoiced.get(index) ?? 0
     const committedQuantity = committedQuantityMap.get(index) ?? 0
 
-    if (returnedQuantityInvoiced.has(index)) {
+    const processedQuantity = returnedQuantity + committedQuantity
+
+    if (processedQuantity) {
       processedItems.push({
         itemIndex: currentLength - 1,
-        quantity: returnedQuantity + committedQuantity,
+        quantity: processedQuantity,
       })
     }
   }
