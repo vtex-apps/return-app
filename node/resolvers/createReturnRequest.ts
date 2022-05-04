@@ -81,20 +81,6 @@ export const createReturnRequest = async (
 
       documentIdCollection.push(productReturnId)
     }
-
-    await returnApp.sendMail(ctx, {
-      TemplateName: 'oms-return-request',
-      applicationName: 'email',
-      logEvidence: false,
-      jsonData: {
-        data: { ...rmaRequestFields, DocumentId },
-        products: returnedItems.map((item) => ({
-          name: item.skuName,
-          selectedQuantity: item.quantity,
-          sellingPrice: item.unitPrice,
-        })),
-      },
-    })
   } catch (e) {
     logger.error({
       message: `Error creating return request ${DocumentId} for order id ${orderId}`,
@@ -114,6 +100,20 @@ export const createReturnRequest = async (
 
     throw new Error(e)
   }
+
+  await returnApp.sendMail(ctx, {
+    TemplateName: 'oms-return-request',
+    applicationName: 'email',
+    logEvidence: false,
+    jsonData: {
+      data: { ...rmaRequestFields, DocumentId },
+      products: returnedItems.map((item) => ({
+        name: item.skuName,
+        selectedQuantity: item.quantity,
+        sellingPrice: item.unitPrice,
+      })),
+    },
+  })
 
   return { returnRequestId: DocumentId }
 }
