@@ -46,7 +46,7 @@ export const ordersAvailableToReturn = async (
 ): Promise<OrdersToReturnList> => {
   const {
     state: { userProfile },
-    clients: { appSettings, oms },
+    clients: { appSettings, oms, returnRequest: returnRequestClient },
   } = ctx
 
   const { page } = args
@@ -79,15 +79,18 @@ export const ordersAvailableToReturn = async (
 
   const orders = await Promise.all(orderListPromises)
 
-  const orderList: OrderToReturnSummary[] = []
+  const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
 
   for (const order of orders) {
     const orderToReturnSummary = createOrdersToReturnSummary(order, email, {
       excludedCategories,
+      returnRequestClient,
     })
 
-    orderList.push(orderToReturnSummary)
+    orderSummaryPromises.push(orderToReturnSummary)
   }
+
+  const orderList = await Promise.all(orderSummaryPromises)
 
   return { list: orderList, paging }
 }
