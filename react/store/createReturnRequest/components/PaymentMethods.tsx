@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import type {
@@ -10,6 +10,10 @@ import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+
+interface Props {
+  canRefundCard?: boolean
+}
 
 type PaymentMethodsOptions = {
   value: keyof PaymentType
@@ -23,10 +27,14 @@ const messages = defineMessages({
   },
 })
 
-export const PaymentMethods = () => {
+export const PaymentMethods = ({ canRefundCard }: Props) => {
   const { formatMessage } = useIntl()
 
   const { data } = useStoreSettings()
+  const { paymentOptions } = data ?? {}
+  const { allowedPaymentTypes, enablePaymentMethodSelection } =
+    paymentOptions ?? {}
+
   const {
     returnRequest,
     inputErrors,
@@ -34,6 +42,18 @@ export const PaymentMethods = () => {
   } = useReturnRequest()
 
   const { refundPaymentData } = returnRequest
+
+  useEffect(() => {
+    if (!enablePaymentMethodSelection) {
+      updateReturnRequest({
+        type: 'updateRefundPaymentData',
+        payload: {
+          ...refundPaymentData,
+          refundPaymentMethod: 'sameAsPurchase',
+        },
+      })
+    }
+  }, [enablePaymentMethodSelection, updateReturnRequest, refundPaymentData])
 
   const handleRefundPaymentChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -64,11 +84,11 @@ export const PaymentMethods = () => {
   }
 
   const paymentMethods = () => {
-    if (!data) return []
-    const { bank, card, giftCard } = data?.paymentOptions.allowedPaymentTypes
+    if (!allowedPaymentTypes) return []
+    const { bank, card, giftCard } = allowedPaymentTypes
     const output: PaymentMethodsOptions[] = []
 
-    if (card) {
+    if (card && canRefundCard) {
       output.push({
         value: 'card',
         label: (
@@ -97,9 +117,6 @@ export const PaymentMethods = () => {
 
     return output
   }
-
-  const enablePaymentMethodSelection =
-    data?.paymentOptions.enablePaymentMethodSelection
 
   const paymentMethodError = inputErrors.some(
     (error) => error === 'refund-payment-data'

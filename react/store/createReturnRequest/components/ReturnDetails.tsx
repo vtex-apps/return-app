@@ -15,6 +15,7 @@ interface Props {
   onPageChange: (page: Page) => void
   items: ItemToReturn[]
   creationDate?: string
+  canRefundCard?: boolean
 }
 
 export const ReturnDetails = (
@@ -27,6 +28,7 @@ export const ReturnDetails = (
     onPageChange,
     items,
     creationDate,
+    canRefundCard,
   } = props
 
   const {
@@ -79,7 +81,7 @@ export const ReturnDetails = (
         <AddressDetails />
         <UserCommentDetails />
       </div>
-      <PaymentMethods />
+      <PaymentMethods canRefundCard={canRefundCard} />
       <TermsAndConditions />
       {/* TODO INTL */}
       <button onClick={handleFieldsValidation}>Next</button>
