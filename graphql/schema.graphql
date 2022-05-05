@@ -8,6 +8,9 @@ type Query {
   orderToReturnSummary(orderId: ID!): OrderToReturnSummary
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  returnRequest(requestId: ID!): ReturnRequestResponse
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
 }
 
 type Mutation {
