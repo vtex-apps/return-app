@@ -10,7 +10,6 @@ import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
-import { CustomMessage } from './layout/CustomMessage'
 
 interface Props {
   canRefundCard?: boolean
@@ -144,10 +143,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
             onChange={handleRefundPaymentChange}
           />
           {paymentMethodError && !refundPaymentData?.refundPaymentMethod ? (
-            <CustomMessage
-              status="error"
-              message="store/return-app.return-payment-methods.input-payment-method.error"
-            />
+            <div>Required</div>
           ) : null}
         </>
       )}
@@ -161,10 +157,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
               value={refundPaymentData.accountHolderName ?? ''}
             />
             {bankDetailsError && !refundPaymentData.accountHolderName ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-payment-methods.input-account-holder.error"
-              />
+              <div>Required</div>
             ) : null}
           </div>
           <div className="flex-ns flex-wrap flex-auto flex-column mt4 mw6">
@@ -175,10 +168,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
               value={refundPaymentData.iban ?? ''}
             />
             {bankDetailsError && !refundPaymentData.iban ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-payment-methods.input-iban.error"
-              />
+              <div>Required</div>
             ) : null}
           </div>
         </div>

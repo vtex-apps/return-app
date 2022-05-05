@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { ItemsDetails } from './ItemsDetails'
-import { CustomMessage } from './layout/CustomMessage'
 
 interface Props {
   items: ItemToReturn[]
@@ -23,19 +22,19 @@ export const ItemsList = ({ items }: Props) => {
           <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
           </th>
-          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <FormattedMessage id="store/return-app.return-order-details.table-header.quantity" />
           </th>
-          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <FormattedMessage id="store/return-app.return-order-details.table-header.available-to-return" />
           </th>
-          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
           </th>
-          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <FormattedMessage id="store/return-app.return-order-details.table-header.reason" />
           </th>
-          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <FormattedMessage id="store/return-app.return-order-details.table-header.condition" />
           </th>
         </tr>
@@ -45,12 +44,8 @@ export const ItemsList = ({ items }: Props) => {
           <ItemsDetails key={item.id} {...item} />
         ))}
       </tbody>
-      {noItemSelected ? (
-        <CustomMessage
-          status="error"
-          message="store/return-app.return-items-list.no-items-selected.error"
-        />
-      ) : null}
+      {/* TODO Intl */}
+      {noItemSelected ? <div>No item selected</div> : null}
     </table>
   )
 }
