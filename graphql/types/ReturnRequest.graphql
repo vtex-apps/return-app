@@ -157,3 +157,20 @@ type RefundStatusComment {
   value: String
   visibleForCustomer: Boolean
 }
+
+input ReturnRequestFilters {
+  status: Status
+  sequenceNumber: String
+  id: String
+  createdIn: DateRangeInput
+}
+
+input DateRangeInput {
+  from: String
+  to: String
+}
+
+type ReturnRequestList {
+  list: [ReturnRequestResponse]
+  paging: Pagination
+}
