@@ -39,7 +39,10 @@ export const createOrdersToReturnSummary = async (
 
   for (const returnRequest of returnRequestSameOrder) {
     const { refundData, items: rmaItems } =
-      (returnRequest as ReturnRequest) ?? {}
+      (returnRequest as Pick<
+        ReturnRequest,
+        'items' | 'refundData' | 'refundPaymentData'
+      >) ?? {}
 
     const { invoiceNumber } = refundData ?? {}
 
