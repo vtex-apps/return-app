@@ -3,12 +3,19 @@ import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import { CustomMessage } from './layout/CustomMessage'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
 import { RenderReasonDropdown } from './RenderReasonDropdown'
 
 export const ItemsDetails = (itemToReturn: ItemToReturn) => {
-  const { quantity, quantityAvailable, isExcluded, orderItemIndex } =
-    itemToReturn
+  const {
+    quantity,
+    quantityAvailable,
+    isExcluded,
+    orderItemIndex,
+    imageUrl,
+    name,
+  } = itemToReturn
 
   const {
     returnRequest,
@@ -104,16 +111,25 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
 
   return (
     <tr>
-      <td>Item</td>
       <td>
-        <p>{quantity}</p>
+        <section className="ml3">
+          <p className="t-body fw5">{name}</p>
+          <div className="flex">
+            <img src={imageUrl} alt="Product" />
+            {isExcluded ? (
+              <CustomMessage
+                status="warning"
+                message="store/return-app.return-item-details.excluded-items.warning"
+              />
+            ) : null}
+          </div>
+        </section>
       </td>
       <td>
-        <p>{availableToReturn}</p>
-        {/* TODO Intl */}
-        {isExcluded ? (
-          <p>Store does not allow this product to be returned</p>
-        ) : null}
+        <p className="tc">{quantity}</p>
+      </td>
+      <td>
+        <p className="tc">{availableToReturn}</p>
       </td>
       <td>
         <NumericStepper
@@ -130,8 +146,12 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           otherReason={currentItem?.returnReason?.otherReason ?? ''}
           onReasonChange={handleReasonChange}
         />
-        {/* TODO Intl */}
-        {reasonError && reasonErrorEmptyValue ? 'Reason is required' : null}
+        {reasonError && reasonErrorEmptyValue ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-item-details.dropdown-reason.error"
+          />
+        ) : null}
         {/* TODO user input when other & error */}
       </td>
       <td>
@@ -140,8 +160,12 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           condition={currentItem?.condition ?? ''}
           onConditionChange={handleConditionChange}
         />
-        {/* TODO Intl */}
-        {conditionError ? 'Condition is required' : null}
+        {conditionError ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-item-details.dropdown-condition.error"
+          />
+        ) : null}
       </td>
     </tr>
   )
