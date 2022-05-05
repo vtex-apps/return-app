@@ -133,6 +133,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
         {/* TODO Intl */}
         {reasonError && reasonErrorEmptyValue ? 'Reason is required' : null}
         {/* TODO user input when other & error */}
+        {/* comment */}
       </td>
       <td>
         <RenderConditionDropdown
