@@ -153,6 +153,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           />
         ) : null}
         {/* TODO user input when other & error */}
+        {/* comment */}
       </td>
       <td>
         <RenderConditionDropdown
