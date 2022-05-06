@@ -1,7 +1,7 @@
 import type { ReturnRequest } from 'vtex.return-app'
 
 // This resolver allows the parent one to fetch just the root fields for a ReturnRequest.
-// In a search, it can save some kb transfering data.
+// This stategy can save some kb when transfering data, since that in a search, we don't need all the fields.
 export const ReturnRequestResponse = {
   customerProfileData: async (
     root: ReturnRequest,
