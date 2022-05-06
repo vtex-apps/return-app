@@ -166,8 +166,8 @@ input ReturnRequestFilters {
 }
 
 input DateRangeInput {
-  from: String
-  to: String
+  from: String!
+  to: String!
 }
 
 type ReturnRequestList {
