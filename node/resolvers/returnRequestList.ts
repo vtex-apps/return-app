@@ -59,13 +59,14 @@ export const returnRequestList = async (
   } = ctx
 
   const { page, filter } = args
-  const { userId } = userProfile
+  const { userId, role } = userProfile
 
   // vtexProduct is undefined when coming from GraphQL IDE
   const vtexProduct = header['x-vtex-product'] as 'admin' | 'store' | undefined
 
   // This is useful to apply user filter when an admin is impersonating a store user.
-  const filterUser = vtexProduct === 'store' ? userId : undefined
+  const filterUser =
+    vtexProduct === 'store' || role === 'store-user' ? userId : undefined
 
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
