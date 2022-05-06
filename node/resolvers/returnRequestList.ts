@@ -74,10 +74,10 @@ export const returnRequestList = async (
     },
     [
       'id',
+      'orderId',
       'sequenceNumber',
       'createdIn',
       'status',
-      'orderId',
       'dateSubmitted',
       'userComment',
     ],

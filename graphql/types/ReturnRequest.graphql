@@ -68,14 +68,14 @@ type ReturnRequestResponse {
   id: ID!
   orderId: String!
   sequenceNumber: String!
+  createdIn: String!
   status: Status!
+  dateSubmitted: String!
+  userComment: String
   customerProfileData: CustomerProfileData!
   pickupReturnData: PickupReturnData!
   refundPaymentData: RefundPaymentData!
   items: [ReturnRequestItem!]!
-  dateSubmitted: String!
-  createdIn: String!
-  userComment: String
   refundData: RefundData
   refundStatusData: [RefundStatusData!]!
 }
