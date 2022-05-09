@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import { CustomMessage } from './layout/CustomMessage'
 
 export const TermsAndConditions = () => {
   const {
@@ -54,8 +55,12 @@ export const TermsAndConditions = () => {
         onChange={handleInputChange}
         value={termsAndConditions}
       />
-      {/* TODO: Intl */}
-      {hasntAcceptedTermsAndConditions ? <div>Required</div> : null}
+      {hasntAcceptedTermsAndConditions ? (
+        <CustomMessage
+          status="error"
+          message="store/return-app.return-terms-and-conditions.checkbox.error"
+        />
+      ) : null}
     </div>
   )
 }
