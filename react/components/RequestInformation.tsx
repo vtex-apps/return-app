@@ -41,7 +41,6 @@ const messages = defineMessages({
 
 class RequestInformation extends Component<Props> {
   componentDidMount(): void {
-    console.log(this.props.info.paymentMethod, 'props info payment')
     typeof window !== 'undefined' && window.scrollTo(0, 0)
   }
 
