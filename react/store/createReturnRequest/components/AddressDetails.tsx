@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
 
+import { CustomMessage } from './layout/CustomMessage'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 const messages = defineMessages({
@@ -62,7 +63,12 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.address}
         />
-        {addressError && !pickupReturnData.address ? <div>Required</div> : null}
+        {addressError && !pickupReturnData.address ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.address-input.error"
+          />
+        ) : null}
       </div>
       <div className="mb4">
         <Input
@@ -72,7 +78,12 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.city}
         />
-        {addressError && !pickupReturnData.city ? <div>Required</div> : null}
+        {addressError && !pickupReturnData.city ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.city-input.error"
+          />
+        ) : null}
       </div>
       <div className="mb4">
         <Input
@@ -82,17 +93,27 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.state}
         />
-        {addressError && !pickupReturnData.state ? <div>Required</div> : null}
+        {addressError && !pickupReturnData.state ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.state-input.error"
+          />
+        ) : null}
       </div>
       <div className="mb4">
         <Input
-          name="zip"
+          name="zipCode"
           required
           placeholder={formatMessage(messages.zipInput)}
           onChange={handleInputChange}
           value={pickupReturnData.zipCode}
         />
-        {addressError && !pickupReturnData.zipCode ? <div>Required</div> : null}
+        {addressError && !pickupReturnData.zipCode ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.zip-input.error"
+          />
+        ) : null}
       </div>
       <div className="mb4">
         <Input
@@ -102,7 +123,12 @@ export const AddressDetails = () => {
           onChange={handleInputChange}
           value={pickupReturnData.country}
         />
-        {addressError && !pickupReturnData.country ? <div>Required</div> : null}
+        {addressError && !pickupReturnData.country ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.country-input.error"
+          />
+        ) : null}
       </div>
     </div>
   )
