@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import { useMutation } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
 } from 'vtex.return-app'
+import { PageBlock, PageHeader, Card } from 'vtex.styleguide'
 
 import type { Page } from '../ReturnDetailsContainer'
-import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
 
 interface Props {
   onPageChange: (page: Page) => void
 }
 
 export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
-  const { validatedRmaFields } = useReturnRequest()
+  const { returnRequest, validatedRmaFields } = useReturnRequest()
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
     { createReturnRequest: ReturnRequestCreated },
     MutationCreateReturnRequestArgs
@@ -46,13 +48,92 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
     }
   }
 
+  // eslint-disable-next-line no-console
+  console.log(returnRequest, 'returnRequest')
+
   return (
-    <div>
-      <h1>ConfirmReturnDetails</h1>
+    <PageBlock className="ph0 mh0 pa0 pa0-ns">
+      {/* TODO INTL */}
+      <PageHeader className="ph0 mh0 nl5" title="Confirm Return Details" />
       {requestId ? (
         <div>{requestId}</div>
       ) : (
         <>
+          <table className="w-100">
+            <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
+              <tr className="w-100 truncate overflow-x-hidden">
+                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+                  <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
+                </th>
+                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+                  <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
+                </th>
+              </tr>
+            </thead>
+            <tbody className="v-base">
+              {returnRequest.items.map(({ name, quantity, imageUrl }) => {
+                return quantity ? (
+                  <tr>
+                    <td>
+                      <div className="flex">
+                        <img src={imageUrl} alt="Product" />
+                        <p>{name}</p>
+                      </div>
+                    </td>
+                    <td className="v-base">
+                      <p>{quantity}</p>
+                    </td>
+                  </tr>
+                ) : null
+              })}
+            </tbody>
+          </table>
+          <div className="mv8">
+            <Card>
+              <div className="flex flex-wrap">
+                <section className="w-100 flex flex-wrap justify-between">
+                  <section className="w-40">
+                    <h2 className="mt0 mb6">Contact Details</h2>
+                    <p className="f6 gray">
+                      {returnRequest.customerProfileData.name}
+                    </p>
+                    <p className="f6 gray">
+                      {returnRequest.customerProfileData.email}
+                    </p>
+                    <p className="f6 gray">
+                      {returnRequest.customerProfileData.phoneNumber}
+                    </p>
+                  </section>
+                  <div className="w-40">
+                    <h2 className="mt0 mb6">Pickup Address</h2>
+                    <p className="f6 gray">
+                      {returnRequest.pickupReturnData.address}
+                    </p>
+                    <p className="f6 gray">
+                      {returnRequest.pickupReturnData.city}
+                    </p>
+                    <p className="f6 gray">
+                      {returnRequest.pickupReturnData.state}
+                    </p>
+                    <p className="f6 gray">
+                      {returnRequest.pickupReturnData.zipCode}
+                    </p>
+                    <p className="f6 gray">
+                      {returnRequest.pickupReturnData.country}
+                    </p>
+                  </div>
+                </section>
+                <section className="w-100 flex mt5">
+                  <div className="w-40">
+                    <h2 className="mt0 mb6">Refund Method</h2>
+                    <p className="f6 gray ">
+                      {returnRequest.refundPaymentData.refundPaymentMethod}
+                    </p>
+                  </div>
+                </section>
+              </div>
+            </Card>
+          </div>
           <button onClick={() => onPageChange('form-details')}>Prev</button>
           <button onClick={handleCreateReturnRequest}>
             {/* TODO INTL */}
@@ -60,6 +141,6 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
           </button>
         </>
       )}
-    </div>
+    </PageBlock>
   )
 }

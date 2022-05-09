@@ -73,9 +73,11 @@ export const CreateReturnRequest = (props: RouteProps) => {
         orderId: id,
         customerProfileData: clientProfileData,
         pickupReturnData: setInitialPickupAddress(shippingData),
-        items: itemsToReturn.map(({ orderItemIndex }) => ({
+        items: itemsToReturn.map(({ orderItemIndex, name, imageUrl }) => ({
           orderItemIndex,
           quantity: 0,
+          name,
+          imageUrl,
         })),
       },
     })
