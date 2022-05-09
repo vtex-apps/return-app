@@ -36,10 +36,12 @@ const messages = defineMessages({
   formSubmit: { id: 'returns.formSubmit' },
   goBack: { id: 'returns.goBack' },
   condition: { id: 'returns.condition.label' },
+  sameAsOrder: { id: 'returns.formSameAsOrder' },
 })
 
 class RequestInformation extends Component<Props> {
   componentDidMount(): void {
+    console.log(this.props.info.paymentMethod, 'props info payment')
     typeof window !== 'undefined' && window.scrollTo(0, 0)
   }
 
@@ -224,12 +226,14 @@ class RequestInformation extends Component<Props> {
               >
                 {formatMessage({ id: messages.formVoucher.id })}
               </p>
-            ) : (
+            ) : info.paymentMethod === 'sameAsOrder' ? (
               <p
                 className={`ma1 t-small c-on-base ${styles.requestInformationSelectedPayment}`}
               >
-                {info.paymentMethod}
+                {formatMessage({ id: messages.sameAsOrder.id })}
               </p>
+            ) : (
+              info.paymentMethod
             )}
           </div>
           {info.extraComment && info.extraComment !== '' && (
