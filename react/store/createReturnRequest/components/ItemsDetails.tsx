@@ -152,8 +152,6 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
             message="store/return-app.return-item-details.dropdown-reason.error"
           />
         ) : null}
-        {/* TODO user input when other & error */}
-        {/* comment */}
       </td>
       <td>
         <RenderConditionDropdown

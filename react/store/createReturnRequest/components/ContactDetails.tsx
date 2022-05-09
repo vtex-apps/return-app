@@ -4,6 +4,7 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import { CustomMessage } from './layout/CustomMessage'
 
 const messages = defineMessages({
   nameInput: {
@@ -55,7 +56,12 @@ export const ContactDetails = () => {
           onChange={handleInputChange}
           value={name}
         />
-        {contactError && !name ? <div>Required</div> : null}
+        {contactError && !name ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-contact-details.name-input.error"
+          />
+        ) : null}
       </div>
       <div className="mb4">
         <Input
@@ -75,7 +81,12 @@ export const ContactDetails = () => {
           value={phoneNumber}
           maxLength={50}
         />
-        {contactError && !phoneNumber ? <div>Required</div> : null}
+        {contactError && !phoneNumber ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-contact-details.phone-input.error"
+          />
+        ) : null}
       </div>
     </div>
   )
