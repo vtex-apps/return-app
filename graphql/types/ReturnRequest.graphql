@@ -163,6 +163,7 @@ input ReturnRequestFilters {
   sequenceNumber: String
   id: String
   createdIn: DateRangeInput
+  orderId: String
 }
 
 input DateRangeInput {
@@ -171,6 +172,6 @@ input DateRangeInput {
 }
 
 type ReturnRequestList {
-  list: [ReturnRequestResponse]
+  list: [ReturnRequestResponse!]
   paging: Pagination
 }
