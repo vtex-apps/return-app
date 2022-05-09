@@ -5,11 +5,12 @@ import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
 } from 'vtex.return-app'
-import { PageBlock, PageHeader, Card } from 'vtex.styleguide'
+import { PageBlock, PageHeader, Card, Button } from 'vtex.styleguide'
 
 import type { Page } from '../ReturnDetailsContainer'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
+// import { ReturnInformationTable } from './ReturnInformationTable'
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -59,28 +60,29 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
         <div>{requestId}</div>
       ) : (
         <>
+          {/* <ReturnInformationTable items={returnRequest.items} /> */}
           <table className="w-100">
             <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
               <tr className="w-100 truncate overflow-x-hidden">
-                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
                   <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
                 </th>
-                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
                   <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
                 </th>
               </tr>
             </thead>
-            <tbody className="v-base">
+            <tbody className="v-mid">
               {returnRequest.items.map(({ name, quantity, imageUrl }) => {
                 return quantity ? (
-                  <tr>
-                    <td>
-                      <div className="flex">
+                  <tr className="ph5">
+                    <td className="w-50 pv5">
+                      <div className="flex ml2">
                         <img src={imageUrl} alt="Product" />
                         <p>{name}</p>
                       </div>
                     </td>
-                    <td className="v-base">
+                    <td className="w-50 tc pv5">
                       <p>{quantity}</p>
                     </td>
                   </tr>
@@ -134,11 +136,27 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
               </div>
             </Card>
           </div>
-          <button onClick={() => onPageChange('form-details')}>Prev</button>
-          <button onClick={handleCreateReturnRequest}>
-            {/* TODO INTL */}
-            {creatingReturnRequest ? 'Submitting' : 'Submit'}
-          </button>
+          <section className="flex justify-center">
+            <div className="mr3">
+              <Button
+                size="small"
+                variation="secondary"
+                onClick={() => onPageChange('form-details')}
+              >
+                Prev
+              </Button>
+            </div>
+            <div className="ml3">
+              <Button
+                size="small"
+                onClick={handleCreateReturnRequest}
+                isLoading={creatingReturnRequest}
+              >
+                {/* TODO INTL */}
+                Submit
+              </Button>
+            </div>
+          </section>
         </>
       )}
     </PageBlock>

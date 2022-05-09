@@ -88,34 +88,39 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <PageHeader
-        className="ph0 mh0 nl5"
-        title={
-          <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
-        }
-        linkLabel={
-          <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
-        }
-        onLinkClick={() =>
-          navigate({
-            to: `#/my-returns/add`,
-          })
-        }
-      />
-      {page === 'form-details' ? (
-        <ReturnDetails
-          {...props}
-          onPageChange={handlePageChange}
-          items={items}
-          creationDate={data?.orderToReturnSummary?.creationDate}
-          canRefundCard={data?.orderToReturnSummary?.paymentData.canRefundCard}
-        />
-      ) : null}
+    <>
       {page === 'submit-form' ? (
         <ConfirmAndSubmit onPageChange={handlePageChange} />
-      ) : null}
-    </PageBlock>
+      ) : (
+        <PageBlock className="ph0 mh0 pa0 pa0-ns">
+          <PageHeader
+            className="ph0 mh0 nl5"
+            title={
+              <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+            }
+            linkLabel={
+              <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
+            }
+            onLinkClick={() =>
+              navigate({
+                to: `#/my-returns/add`,
+              })
+            }
+          />
+          {page === 'form-details' ? (
+            <ReturnDetails
+              {...props}
+              onPageChange={handlePageChange}
+              items={items}
+              creationDate={data?.orderToReturnSummary?.creationDate}
+              canRefundCard={
+                data?.orderToReturnSummary?.paymentData.canRefundCard
+              }
+            />
+          ) : null}
+        </PageBlock>
+      )}
+    </>
   )
 }
 
