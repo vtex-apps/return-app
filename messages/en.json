@@ -64,6 +64,7 @@
   "returns.formBank": "Bank Transfer",
   "returns.formIBAN": "IBAN",
   "returns.formAccountHolder": "Beneficiary name",
+  "returns.formSameAsOrder": "Same as order",
   "returns.formAgree": "I have read and accept the {link}",
   "returns.TermsConditions": "terms and conditions",
   "returns.formExtraComment": "Additional comments",

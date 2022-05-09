@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import React, { Component } from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import {
   Button,
   Checkbox,
@@ -652,7 +652,12 @@ class RequestForm extends Component<Props> {
                 {formatMessage({ id: messages.formPaymentMethod.id })}
               </p>
               {settings.hidePaymentMethodSelection ? (
-                formatMessage({ id: messages.defaultPaymentMethod.id })
+                <FormattedMessage
+                  id="returns.defaultPaymentMethod"
+                  values={{
+                    linebreak: <br />,
+                  }}
+                />
               ) : (
                 <RadioGroup
                   hideBorder
