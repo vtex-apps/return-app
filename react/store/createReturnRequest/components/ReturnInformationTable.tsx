@@ -1,23 +1,17 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import type { ReturnRequestItemInput } from 'vtex.return-app'
 
-// interface ItemInformationDetails {
-//   name: string
-//   imageUrl: string
-//   quantity: number
-//   orderItemIndex: number
-//   condition: string
-//   returnReason: {
-//     reason: string
-//     otherReason: string
-//   }
-// }
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
-// interface Props {
-//   items: ItemInformationDetails[]
-// }
+interface Props {
+  items: ItemToReturn[]
+  selectedItems: Array<
+    PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>
+  >
+}
 
-export const ReturnInformationTable = () => {
+export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
   return (
     <table className="w-100">
       <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
@@ -31,13 +25,13 @@ export const ReturnInformationTable = () => {
         </tr>
       </thead>
       <tbody className="v-mid">
-        {/* {items.map(({ name, quantity, imageUrl }) => {
+        {selectedItems.map(({ quantity, orderItemIndex }) => {
           return quantity ? (
             <tr className="ph5">
               <td className="w-50 pv5">
                 <div className="flex ml2">
-                  <img src={imageUrl} alt="Product" />
-                  <p>{name}</p>
+                  <img src={items[orderItemIndex].imageUrl} alt="Product" />
+                  <p>{items[orderItemIndex].name}</p>
                 </div>
               </td>
               <td className="w-50 tc pv5">
@@ -45,7 +39,7 @@ export const ReturnInformationTable = () => {
               </td>
             </tr>
           ) : null
-        })} */}
+        })}
       </tbody>
     </table>
   )

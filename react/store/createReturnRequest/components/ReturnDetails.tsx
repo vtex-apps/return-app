@@ -1,6 +1,8 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
+import { useRuntime } from 'vtex.render-runtime'
+import { PageHeader, PageBlock } from 'vtex.styleguide'
 
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
@@ -35,6 +37,8 @@ export const ReturnDetails = (
     actions: { areFieldsValid },
   } = useReturnRequest()
 
+  const { navigate } = useRuntime()
+
   const handleFieldsValidation = () => {
     if (areFieldsValid()) {
       onPageChange('submit-form')
@@ -43,7 +47,21 @@ export const ReturnDetails = (
   }
 
   return (
-    <>
+    <PageBlock className="ph0 mh0 pa0 pa0-ns">
+      <PageHeader
+        className="ph0 mh0 nl5"
+        title={
+          <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+        }
+        linkLabel={
+          <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
+        }
+        onLinkClick={() =>
+          navigate({
+            to: `#/my-returns/add`,
+          })
+        }
+      />
       <div className="mb5">
         <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
           <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
@@ -85,6 +103,6 @@ export const ReturnDetails = (
       <TermsAndConditions />
       {/* TODO INTL */}
       <button onClick={handleFieldsValidation}>Next</button>
-    </>
+    </PageBlock>
   )
 }

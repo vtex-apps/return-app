@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRuntime } from 'vtex.render-runtime'
-import { PageHeader, PageBlock } from 'vtex.styleguide'
 import type { RouteComponentProps } from 'react-router'
-import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-apollo'
 import type {
   OrderToReturnSummary,
@@ -34,7 +31,6 @@ export const CreateReturnRequest = (props: RouteProps) => {
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
   const [errorCase, setErrorCase] = useState('')
 
-  const { navigate } = useRuntime()
   const {
     actions: { updateReturnRequest },
   } = useReturnRequest()
@@ -73,11 +69,9 @@ export const CreateReturnRequest = (props: RouteProps) => {
         orderId: id,
         customerProfileData: clientProfileData,
         pickupReturnData: setInitialPickupAddress(shippingData),
-        items: itemsToReturn.map(({ orderItemIndex, name, imageUrl }) => ({
+        items: itemsToReturn.map(({ orderItemIndex }) => ({
           orderItemIndex,
           quantity: 0,
-          name,
-          imageUrl,
         })),
       },
     })
@@ -89,37 +83,18 @@ export const CreateReturnRequest = (props: RouteProps) => {
 
   return (
     <>
+      {page === 'form-details' ? (
+        <ReturnDetails
+          {...props}
+          onPageChange={handlePageChange}
+          items={items}
+          creationDate={data?.orderToReturnSummary?.creationDate}
+          canRefundCard={data?.orderToReturnSummary?.paymentData.canRefundCard}
+        />
+      ) : null}
       {page === 'submit-form' ? (
-        <ConfirmAndSubmit onPageChange={handlePageChange} />
-      ) : (
-        <PageBlock className="ph0 mh0 pa0 pa0-ns">
-          <PageHeader
-            className="ph0 mh0 nl5"
-            title={
-              <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
-            }
-            linkLabel={
-              <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
-            }
-            onLinkClick={() =>
-              navigate({
-                to: `#/my-returns/add`,
-              })
-            }
-          />
-          {page === 'form-details' ? (
-            <ReturnDetails
-              {...props}
-              onPageChange={handlePageChange}
-              items={items}
-              creationDate={data?.orderToReturnSummary?.creationDate}
-              canRefundCard={
-                data?.orderToReturnSummary?.paymentData.canRefundCard
-              }
-            />
-          ) : null}
-        </PageBlock>
-      )}
+        <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
+      ) : null}
     </>
   )
 }

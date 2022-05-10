@@ -10,13 +10,16 @@ import { PageBlock, PageHeader, Card, Button } from 'vtex.styleguide'
 import type { Page } from '../ReturnDetailsContainer'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
-// import { ReturnInformationTable } from './ReturnInformationTable'
+import { ReturnInformationTable } from './ReturnInformationTable'
+import { ConfirmContactDetails } from './ConfirmContactDetails'
+import { ConfirmPickupAddressDetails } from './ConfirmPickupAddressDetails'
 
 interface Props {
   onPageChange: (page: Page) => void
+  items: ItemToReturn[]
 }
 
-export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
+export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { returnRequest, validatedRmaFields } = useReturnRequest()
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
     { createReturnRequest: ReturnRequestCreated },
@@ -49,87 +52,41 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
     }
   }
 
-  // eslint-disable-next-line no-console
-  console.log(returnRequest, 'returnRequest')
-
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
       {/* TODO INTL */}
-      <PageHeader className="ph0 mh0 nl5" title="Confirm Return Details" />
+      <PageHeader
+        className="ph0 mh0 nl5"
+        title={
+          <FormattedMessage id="store/return-app.confirm-and-submit.page-header.title" />
+        }
+      />
       {requestId ? (
         <div>{requestId}</div>
       ) : (
         <>
-          {/* <ReturnInformationTable items={returnRequest.items} /> */}
-          <table className="w-100">
-            <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
-              <tr className="w-100 truncate overflow-x-hidden">
-                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
-                  <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
-                </th>
-                <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
-                  <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
-                </th>
-              </tr>
-            </thead>
-            <tbody className="v-mid">
-              {returnRequest.items.map(({ name, quantity, imageUrl }) => {
-                return quantity ? (
-                  <tr className="ph5">
-                    <td className="w-50 pv5">
-                      <div className="flex ml2">
-                        <img src={imageUrl} alt="Product" />
-                        <p>{name}</p>
-                      </div>
-                    </td>
-                    <td className="w-50 tc pv5">
-                      <p>{quantity}</p>
-                    </td>
-                  </tr>
-                ) : null
-              })}
-            </tbody>
-          </table>
+          <ReturnInformationTable
+            items={items}
+            selectedItems={returnRequest.items}
+          />
           <div className="mv8">
             <Card>
               <div className="flex flex-wrap">
                 <section className="w-100 flex flex-wrap justify-between">
-                  <section className="w-40">
-                    <h2 className="mt0 mb6">Contact Details</h2>
-                    <p className="f6 gray">
-                      {returnRequest.customerProfileData.name}
-                    </p>
-                    <p className="f6 gray">
-                      {returnRequest.customerProfileData.email}
-                    </p>
-                    <p className="f6 gray">
-                      {returnRequest.customerProfileData.phoneNumber}
-                    </p>
-                  </section>
-                  <div className="w-40">
-                    <h2 className="mt0 mb6">Pickup Address</h2>
-                    <p className="f6 gray">
-                      {returnRequest.pickupReturnData.address}
-                    </p>
-                    <p className="f6 gray">
-                      {returnRequest.pickupReturnData.city}
-                    </p>
-                    <p className="f6 gray">
-                      {returnRequest.pickupReturnData.state}
-                    </p>
-                    <p className="f6 gray">
-                      {returnRequest.pickupReturnData.zipCode}
-                    </p>
-                    <p className="f6 gray">
-                      {returnRequest.pickupReturnData.country}
-                    </p>
-                  </div>
+                  <ConfirmContactDetails
+                    contactDetails={returnRequest.customerProfileData}
+                  />
+                  <ConfirmPickupAddressDetails
+                    pickupReturnData={returnRequest.pickupReturnData}
+                  />
                 </section>
                 <section className="w-100 flex mt5">
                   <div className="w-40">
-                    <h2 className="mt0 mb6">Refund Method</h2>
+                    <h2 className="mt0 mb6">
+                      <FormattedMessage id="store/return-app.confirm-and-submit.refund-method.title" />
+                    </h2>
                     <p className="f6 gray ">
-                      {returnRequest.refundPaymentData.refundPaymentMethod}
+                      {returnRequest?.refundPaymentData?.refundPaymentMethod}
                     </p>
                   </div>
                 </section>
@@ -143,7 +100,7 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
                 variation="secondary"
                 onClick={() => onPageChange('form-details')}
               >
-                Prev
+                <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
               </Button>
             </div>
             <div className="ml3">
@@ -152,8 +109,7 @@ export const ConfirmAndSubmit = ({ onPageChange }: Props) => {
                 onClick={handleCreateReturnRequest}
                 isLoading={creatingReturnRequest}
               >
-                {/* TODO INTL */}
-                Submit
+                <FormattedMessage id="store/return-app.confirm-and-submit.button.submit" />
               </Button>
             </div>
           </section>
