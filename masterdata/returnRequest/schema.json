@@ -215,6 +215,13 @@
     "dateSubmitted",
     "status"
   ],
-  "v-indexed": ["id", "createdIn", "orderId", "customerProfileData", "status"],
+  "v-indexed": [
+    "id",
+    "createdIn",
+    "orderId",
+    "customerProfileData",
+    "status",
+    "sequenceNumber"
+  ],
   "v-immediate-indexing": true
 }

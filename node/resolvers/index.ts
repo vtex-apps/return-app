@@ -7,6 +7,9 @@ import {
 import { categoryTreeName } from './categoryTreeName'
 import { ordersAvailableToReturn } from './ordersAvailableToReturn'
 import { orderToReturnSummary } from './orderToReturnSummary'
+import { returnRequest } from './returnRequest'
+import { returnRequestList } from './returnRequestList'
+import { ReturnRequestResponse } from './ReturnRequestResponse'
 
 export const mutations = {
   deleteReturnRequest,
@@ -18,4 +21,8 @@ export const queries = {
   categoryTreeName,
   ordersAvailableToReturn,
   orderToReturnSummary,
+  returnRequest,
+  returnRequestList,
 }
+
+export const resolvers = { ReturnRequestResponse }
