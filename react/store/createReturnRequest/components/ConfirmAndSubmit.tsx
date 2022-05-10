@@ -55,7 +55,6 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
 
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      {/* TODO INTL */}
       <PageHeader
         className="ph0 mh0 nl5"
         title={
