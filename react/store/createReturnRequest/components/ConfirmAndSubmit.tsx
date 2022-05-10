@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import type {
@@ -14,6 +14,7 @@ import { ReturnInformationTable } from './ReturnInformationTable'
 import { ConfirmContactDetails } from './ConfirmContactDetails'
 import { ConfirmPickupAddressDetails } from './ConfirmPickupAddressDetails'
 import { ConfirmPaymentMethods } from './ConfirmPaymentMethods'
+import { validateNewReturnRequestFields } from '../../utils/validateNewReturnRequestFields'
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -21,7 +22,7 @@ interface Props {
 }
 
 export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
-  const { returnRequest, validatedRmaFields } = useReturnRequest()
+  const { returnRequest, termsAndConditions } = useReturnRequest()
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
     { createReturnRequest: ReturnRequestCreated },
     MutationCreateReturnRequestArgs
@@ -30,13 +31,22 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   // temp state just to show request id on UI
   const [requestId, setRequestId] = useState('')
 
+  const returnRequestValidated = useMemo(() => {
+    const { validatedFields } = validateNewReturnRequestFields(
+      termsAndConditions,
+      returnRequest
+    )
+
+    return validatedFields
+  }, [termsAndConditions, returnRequest])
+
   const handleCreateReturnRequest = async () => {
-    if (!validatedRmaFields || creatingReturnRequest) return
+    if (creatingReturnRequest || !returnRequestValidated) return
 
     try {
       const { errors, data } = await createReturnRequest({
         variables: {
-          returnRequest: validatedRmaFields,
+          returnRequest: returnRequestValidated,
         },
       })
 
@@ -63,26 +73,26 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
       />
       {requestId ? (
         <div>{requestId}</div>
-      ) : (
+      ) : !returnRequestValidated ? null : (
         <>
           <ReturnInformationTable
             items={items}
-            selectedItems={returnRequest.items}
+            selectedItems={returnRequestValidated.items}
           />
           <div className="mv8">
             <Card>
               <div className="flex flex-wrap">
                 <section className="w-100 flex flex-wrap justify-between">
                   <ConfirmContactDetails
-                    contactDetails={returnRequest.customerProfileData}
+                    contactDetails={returnRequestValidated.customerProfileData}
                   />
                   <ConfirmPickupAddressDetails
-                    pickupReturnData={returnRequest.pickupReturnData}
+                    pickupReturnData={returnRequestValidated.pickupReturnData}
                   />
                 </section>
                 <section className="w-100 flex mt5">
                   <ConfirmPaymentMethods
-                    refundPaymentData={returnRequest?.refundPaymentData}
+                    refundPaymentData={returnRequestValidated.refundPaymentData}
                   />
                 </section>
               </div>

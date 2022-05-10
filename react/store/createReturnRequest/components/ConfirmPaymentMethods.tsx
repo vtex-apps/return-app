@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import type { RefundPaymentDataInput } from 'vtex.return-app'
 
 interface Props {
-  refundPaymentData?: RefundPaymentDataInput
+  refundPaymentData: RefundPaymentDataInput
 }
 
 export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {

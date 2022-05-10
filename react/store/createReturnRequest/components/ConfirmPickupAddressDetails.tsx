@@ -2,10 +2,8 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import type { PickupReturnDataInput } from 'vtex.return-app'
 
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
-
 interface Props {
-  pickupReturnData: PartialBy<PickupReturnDataInput, 'addressType'>
+  pickupReturnData: PickupReturnDataInput
 }
 
 export const ConfirmPickupAddressDetails = ({ pickupReturnData }: Props) => {

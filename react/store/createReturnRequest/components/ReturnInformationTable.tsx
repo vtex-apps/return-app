@@ -2,13 +2,9 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import type { ReturnRequestItemInput } from 'vtex.return-app'
 
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
-
 interface Props {
   items: ItemToReturn[]
-  selectedItems: Array<
-    PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>
-  >
+  selectedItems: ReturnRequestItemInput[]
 }
 
 export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
