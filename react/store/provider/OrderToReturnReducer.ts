@@ -81,6 +81,7 @@ export const newReturnRequestState = ({
   customerProfileData,
   pickupReturnData,
   items,
+  refundPaymentData,
 }: OrderDetailsState) => {
   return {
     type: 'newReturnRequestState' as const,
@@ -89,6 +90,7 @@ export const newReturnRequestState = ({
       customerProfileData,
       pickupReturnData,
       items,
+      refundPaymentData,
     },
   }
 }
@@ -147,6 +149,7 @@ export const orderToReturnReducer = (
         customerProfileData: action.payload.customerProfileData,
         pickupReturnData: action.payload.pickupReturnData,
         items: action.payload.items,
+        refundPaymentData: action.payload.refundPaymentData,
       }
     }
 

@@ -15,7 +15,7 @@ export const orderToReturnSummary = async (
   const { orderId } = args
   const {
     state: { userProfile },
-    clients: { appSettings, oms },
+    clients: { appSettings, oms, returnRequest: returnRequestClient },
   } = ctx
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
@@ -55,5 +55,8 @@ export const orderToReturnSummary = async (
     throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
   }
 
-  return createOrdersToReturnSummary(order, email, { excludedCategories })
+  return createOrdersToReturnSummary(order, email, {
+    excludedCategories,
+    returnRequestClient,
+  })
 }
