@@ -1,1 +1,2 @@
-export { ReturnRequestList } from './ReturnRequest/ReturnRequestList'
+export { StoreReturnList } from './ReturnRequest/StoreReturnList'
+export { StoreReturnDetails } from './ReturnRequest/StoreReturnDetails'

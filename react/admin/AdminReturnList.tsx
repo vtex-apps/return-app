@@ -22,7 +22,7 @@ export const AdminReturnList = () => {
           <p>Sequence Number: {returnRequest.sequenceNumber}</p>
           <p>Order id: {returnRequest.orderId}</p>
           <p>Created at: {returnRequest.createdIn}</p>
-          <Link href={`#/my-returns/details/${returnRequest.id}`}>
+          <Link href={`/admin/app/returns/${returnRequest.id}/details`}>
             See details
           </Link>
         </div>

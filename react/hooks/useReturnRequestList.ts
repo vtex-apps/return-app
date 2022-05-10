@@ -4,7 +4,7 @@ import type {
   QueryReturnRequestListArgs,
 } from 'vtex.return-app'
 
-import RETURN_REQUEST_LIST from '../graphql/getStoreReturnRequest.gql'
+import RETURN_REQUEST_LIST from '../graphql/getReturnRequestList.gql'
 
 export const useReturnRequestList = () => {
   const { data, loading, error } = useQuery<

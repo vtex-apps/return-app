@@ -133,7 +133,7 @@ type RefundData {
   refundedItemsValue: Int!
   refundedShippingValue: Int!
   giftCard: GiftCard
-  Items: [RefundItem!]!
+  items: [RefundItem!]!
 }
 
 type GiftCard {

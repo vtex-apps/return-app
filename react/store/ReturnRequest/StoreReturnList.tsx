@@ -4,7 +4,7 @@ import { Button } from 'vtex.styleguide'
 
 import { useReturnRequestList } from '../../hooks/useReturnRequestList'
 
-export const ReturnRequestList = () => {
+export const StoreReturnList = () => {
   const { returnRequestData } = useReturnRequestList()
   const { data, loading, error } = returnRequestData
   const { returnRequestList } = data ?? {}

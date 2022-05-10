@@ -1,4 +1,4 @@
-query getStoreReturnRequest($filter: ReturnRequestFilters, $page: Int!) {
+query getReturnRequestList($filter: ReturnRequestFilters, $page: Int!) {
   returnRequestList(filter: $filter, page: $page)
     @context(provider: "vtex.return-app") {
     list {
