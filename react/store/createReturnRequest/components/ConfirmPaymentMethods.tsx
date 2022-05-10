@@ -6,7 +6,7 @@ interface Props {
   refundPaymentData?: RefundPaymentDataInput
 }
 
-const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
+export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
   return (
     <div className="w-40">
       <h2 className="mt0 mb6">
@@ -14,8 +14,18 @@ const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
       </h2>
       {refundPaymentData?.refundPaymentMethod === 'bank' ? (
         <>
-          <p className="f6 gray ">{refundPaymentData.iban}</p>
-          <p className="f6 gray ">{refundPaymentData.accountHolderName}</p>
+          <div className="flex">
+            <p className="f6 gray b">
+              <FormattedMessage id="store/return-app.confirm-payment-methods.refund-method.p-account-holder-name" />
+            </p>
+            <p className="f6 gray ">{refundPaymentData.accountHolderName}</p>
+          </div>
+          <div className="flex">
+            <p className="f6 gray b">
+              <FormattedMessage id="store/return-app.confirm-payment-methods.refund-method.p-iban" />
+            </p>
+            <p className="f6 gray ">{refundPaymentData.iban}</p>
+          </div>
         </>
       ) : (
         <p className="f6 gray ">
@@ -27,5 +37,3 @@ const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
     </div>
   )
 }
-
-export default ConfirmPaymentMethods

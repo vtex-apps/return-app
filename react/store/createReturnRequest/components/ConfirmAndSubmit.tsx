@@ -13,7 +13,7 @@ import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
 import { ReturnInformationTable } from './ReturnInformationTable'
 import { ConfirmContactDetails } from './ConfirmContactDetails'
 import { ConfirmPickupAddressDetails } from './ConfirmPickupAddressDetails'
-import ConfirmPaymentMethods from './ConfirmPaymentMethods'
+import { ConfirmPaymentMethods } from './ConfirmPaymentMethods'
 
 interface Props {
   onPageChange: (page: Page) => void

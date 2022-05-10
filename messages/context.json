@@ -147,6 +147,8 @@
   "store/return-app.confirm-and-submit.button.submit": "Submit",
   "store/return-app.confirm-and-submit.pickup-address.title": "Pickup address",
   "store/return-app.confirm-and-submit.contact-details.title": "Contact details",
+  "store/return-app.confirm-payment-methods.refund-method.p-account-holder-name": "Beneficiary name: ",
+  "store/return-app.confirm-payment-methods.refund-method.p-iban": "Bank transfer into account: ",
   "store/return-app.confirm-payment-methods.refund-method.p-giftCard": "Gift card",
   "store/return-app.confirm-payment-methods.refund-method.p-card": "Card",
   "store/return-app.confirm-payment-methods.refund-method.p-sameAsPurchase": "Same as purchase",
