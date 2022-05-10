@@ -1,15 +1,12 @@
 import React from 'react'
+import type { RouteComponentProps } from 'react-router'
 
 import { useReturnRequestDetails } from '../../hooks/useReturnRequestDetails'
 
-interface CustomRouteProps {
-  params: {
-    id: string
-  }
-}
-
-export const StoreReturnDetails = (props: CustomRouteProps) => {
-  const { returnDetailsData } = useReturnRequestDetails(props.params.id)
+export const StoreReturnDetails = (
+  props: RouteComponentProps<{ id: string }>
+) => {
+  const { returnDetailsData } = useReturnRequestDetails(props.match.params.id)
 
   // eslint-disable-next-line no-console
   console.log({ returnDetailsData })
