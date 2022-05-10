@@ -152,6 +152,8 @@
   "store/return-app.confirm-payment-methods.refund-method.p-giftCard": "Gift card",
   "store/return-app.confirm-payment-methods.refund-method.p-card": "Card",
   "store/return-app.confirm-payment-methods.refund-method.p-sameAsPurchase": "Same as purchase",
+  "store/return-app.return-information-table.table-row.p-condition": "Condition:",
+  "store/return-app.return-information-table.table-row.p-reason": "Reason:",
   "returns.addReturn": "Add a new return form",
   "returns.pageTitle": "My requests",
   "returns.total": "total",
