@@ -13,6 +13,7 @@ import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
 import { ReturnInformationTable } from './ReturnInformationTable'
 import { ConfirmContactDetails } from './ConfirmContactDetails'
 import { ConfirmPickupAddressDetails } from './ConfirmPickupAddressDetails'
+import ConfirmPaymentMethods from './ConfirmPaymentMethods'
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -81,14 +82,9 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                   />
                 </section>
                 <section className="w-100 flex mt5">
-                  <div className="w-40">
-                    <h2 className="mt0 mb6">
-                      <FormattedMessage id="store/return-app.confirm-and-submit.refund-method.title" />
-                    </h2>
-                    <p className="f6 gray ">
-                      {returnRequest?.refundPaymentData?.refundPaymentMethod}
-                    </p>
-                  </div>
+                  <ConfirmPaymentMethods
+                    refundPaymentData={returnRequest?.refundPaymentData}
+                  />
                 </section>
               </div>
             </Card>
