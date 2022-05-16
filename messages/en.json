@@ -126,6 +126,8 @@
   "store/return-app.return-order-details.payment-method.iban": "IBAN",
   "store/return-app.return-order-details.terms-and-conditions.form-agree": "I have read and accept the {link}",
   "store/return-app.return-order-details.terms-and-conditions.link": "terms and conditions",
+  "store/return-app.return-order-details.button.next": "Next",
+  "store/return-app.return-order-details.page-header.order-id": "Order ID",
   "store/return-app.return-item-details.excluded-items.warning": "Store does not allow this product to be returned",
   "store/return-app.return-item-details.dropdown-reason.error": "Reason is required",
   "store/return-app.return-item-details.dropdown-condition.error": "Condition is required",
