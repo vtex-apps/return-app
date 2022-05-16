@@ -1,26 +1,10 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
-import { useIntl, defineMessages } from 'react-intl'
+import { useIntl } from 'react-intl'
 import type { ItemCondition } from 'vtex.return-app'
 import { Dropdown } from 'vtex.styleguide'
 
-const messages = defineMessages({
-  conditionNewWithBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.new-with-box',
-  },
-  conditionNewWithoutBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.new-without-box',
-  },
-  conditionUsedWithBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.used-with-box',
-  },
-  conditionUsedWithoutBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.used-without-box',
-  },
-  conditionSelectCondition: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.placeholder.select-condition',
-  },
-})
+import { defaultReturnConditionsMessages } from '../../utils/defaultReturnConditionsMessages'
 
 interface Props {
   condition: string
@@ -44,19 +28,19 @@ export const RenderConditionDropdown = ({
   const conditionOptions = [
     {
       value: 'newWithBox',
-      label: formatMessage(messages.conditionNewWithBox),
+      label: formatMessage(defaultReturnConditionsMessages.newWithBox),
     },
     {
       value: 'newWithoutBox',
-      label: formatMessage(messages.conditionNewWithoutBox),
+      label: formatMessage(defaultReturnConditionsMessages.newWithoutBox),
     },
     {
       value: 'usedWithBox',
-      label: formatMessage(messages.conditionUsedWithBox),
+      label: formatMessage(defaultReturnConditionsMessages.usedWithBox),
     },
     {
       value: 'usedWithoutBox',
-      label: formatMessage(messages.conditionUsedWithoutBox),
+      label: formatMessage(defaultReturnConditionsMessages.usedWithoutBox),
     },
   ]
 
@@ -65,7 +49,9 @@ export const RenderConditionDropdown = ({
       <Dropdown
         disabled={isExcluded}
         label=""
-        placeholder={formatMessage(messages.conditionSelectCondition)}
+        placeholder={formatMessage(
+          defaultReturnConditionsMessages.selectCondition
+        )}
         size="small"
         options={conditionOptions}
         value={condition}
