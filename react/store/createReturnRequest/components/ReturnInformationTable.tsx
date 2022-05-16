@@ -1,69 +1,9 @@
 import React from 'react'
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import type { ReturnRequestItemInput } from 'vtex.return-app'
 
-const messages = defineMessages({
-  reasonAccidentalOrder: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.accidental-order',
-  },
-  reasonBetterPrice: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.better-price',
-  },
-  reasonPerformance: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.performance',
-  },
-  reasonIncompatible: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.incompatible',
-  },
-  reasonItemDamaged: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.item-damaged',
-  },
-  reasonMissedDelivery: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.missed-delivery',
-  },
-  reasonMissingParts: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.missing-parts',
-  },
-  reasonBoxDamaged: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.box-damaged',
-  },
-  reasonDifferentProduct: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.different-product',
-  },
-  reasonDefective: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.defective',
-  },
-  reasonArrivedInAddition: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.arrived-in-addition',
-  },
-  reasonNoLongerNeeded: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.no-longer-needed',
-  },
-  reasonUnauthorizedPurchase: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.unauthorized-purchase',
-  },
-  reasonDifferentFromWebsite: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.different-from-website',
-  },
-  reasonOtherReason: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.other-reason',
-  },
-  reasonSelectReason: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.placeholder.select-reason',
-  },
-  newWithBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.new-with-box',
-  },
-  newWithoutBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.new-without-box',
-  },
-  usedWithBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.used-with-box',
-  },
-  usedWithoutBox: {
-    id: 'store/return-app.return-order-details.dropdown-conditions.used-without-box',
-  },
-})
+import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
+import { defaultReturnConditionsMessages } from '../../utils/defaultReturnConditionsMessages'
 
 interface Props {
   items: ItemToReturn[]
@@ -104,7 +44,9 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                           <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
                         </p>
                         <p className="f6 mt0 gray ">
-                          {formatMessage(messages[condition])}
+                          {formatMessage(
+                            defaultReturnConditionsMessages[condition]
+                          )}
                         </p>
                       </div>
                       <div className="flex">
@@ -113,7 +55,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                           <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{' '}
                         </p>
                         <p className="f6 mv0 gray ">
-                          {formatMessage(messages[reason])}{' '}
+                          {formatMessage(defaultReturnReasonsMessages[reason])}{' '}
                           {returnReason?.otherReason
                             ? returnReason?.otherReason
                             : null}
