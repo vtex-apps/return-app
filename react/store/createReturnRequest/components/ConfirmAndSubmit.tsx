@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
 } from 'vtex.return-app'
-import { PageBlock, PageHeader, Card, Button } from 'vtex.styleguide'
+import { PageBlock, PageHeader, Card, Button, Alert } from 'vtex.styleguide'
 
 import type { Page } from '../ReturnDetailsContainer'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
@@ -28,8 +29,10 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     MutationCreateReturnRequestArgs
   >(CREATE_RETURN_REQUEST)
 
-  // temp state just to show request id on UI
-  const [requestId, setRequestId] = useState('')
+  const { navigate } = useRuntime()
+
+  const [showSubmittedStatus, setShowSubmittedStatus] = useState(false)
+  const [confirmationStatus, setConfirmationStatus] = useState('success')
 
   const returnRequestValidated = useMemo(() => {
     const { validatedFields } = validateNewReturnRequestFields(
@@ -44,7 +47,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     if (creatingReturnRequest || !returnRequestValidated) return
 
     try {
-      const { errors, data } = await createReturnRequest({
+      const { errors } = await createReturnRequest({
         variables: {
           returnRequest: returnRequestValidated,
         },
@@ -55,8 +58,9 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
         throw new Error('Error creating return request')
       }
 
-      if (data?.createReturnRequest?.returnRequestId) {
-        setRequestId(data.createReturnRequest.returnRequestId)
+      setShowSubmittedStatus(true)
+      if (errors) {
+        setConfirmationStatus('error')
       }
     } catch (error) {
       console.error({ error })
@@ -71,9 +75,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
           <FormattedMessage id="store/return-app.confirm-and-submit.page-header.title" />
         }
       />
-      {requestId ? (
-        <div>{requestId}</div>
-      ) : !returnRequestValidated ? null : (
+      {!returnRequestValidated ? null : (
         <>
           <ReturnInformationTable
             items={items}
@@ -99,24 +101,47 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
             </Card>
           </div>
           <section className="flex justify-center">
-            <div className="mr3">
-              <Button
-                size="small"
-                variation="secondary"
-                onClick={() => onPageChange('form-details')}
+            {showSubmittedStatus ? (
+              <Alert
+                type={confirmationStatus}
+                action={{
+                  label: (
+                    <FormattedMessage id="store/return-app.confirm-and-submit.alert.label" />
+                  ),
+                  onClick: () =>
+                    navigate({
+                      to: `#/my-returns`,
+                    }),
+                }}
               >
-                <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
-              </Button>
-            </div>
-            <div className="ml3">
-              <Button
-                size="small"
-                onClick={handleCreateReturnRequest}
-                isLoading={creatingReturnRequest}
-              >
-                <FormattedMessage id="store/return-app.confirm-and-submit.button.submit" />
-              </Button>
-            </div>
+                {confirmationStatus === 'success' ? (
+                  <FormattedMessage id="store/return-app.confirm-and-submit.alert.success" />
+                ) : (
+                  <FormattedMessage id="store/return-app.confirm-and-submit.alert.error" />
+                )}
+              </Alert>
+            ) : (
+              <>
+                <div className="mr3">
+                  <Button
+                    size="small"
+                    variation="secondary"
+                    onClick={() => onPageChange('form-details')}
+                  >
+                    <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
+                  </Button>
+                </div>
+                <div className="ml3">
+                  <Button
+                    size="small"
+                    onClick={handleCreateReturnRequest}
+                    isLoading={creatingReturnRequest}
+                  >
+                    <FormattedMessage id="store/return-app.confirm-and-submit.button.submit" />
+                  </Button>
+                </div>
+              </>
+            )}
           </section>
         </>
       )}

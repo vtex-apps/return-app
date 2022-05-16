@@ -7,9 +7,6 @@ interface Props {
 }
 
 const messages = defineMessages({
-  bank: {
-    id: 'store/return-app.confirm-payment-methods.refund-method.p-bank',
-  },
   card: {
     id: 'store/return-app.confirm-payment-methods.refund-method.p-card',
   },
