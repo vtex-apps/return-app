@@ -84,12 +84,7 @@ export const createReturnRequest = async (
     },
     pickupReturnData,
     refundPaymentData,
-    items: items.map((item) => {
-      return {
-        ...item,
-        verifiedItems: item.verifiedItems ?? null,
-      }
-    }),
+    items,
     dateSubmitted: requestDate,
     refundData: null,
     userComment,
@@ -97,7 +92,8 @@ export const createReturnRequest = async (
       {
         status: 'new',
         submittedBy,
-        dateSubmitted: requestDate,
+        createdAt: requestDate,
+        comments: [],
       },
     ],
   })

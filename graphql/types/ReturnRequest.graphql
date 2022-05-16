@@ -10,7 +10,6 @@ input ReturnRequestInput {
 input ReturnRequestItemInput {
   orderItemIndex: Int!
   quantity: Int!
-  verifiedItems: Int
   condition: ItemCondition!
   returnReason: ReturnReasonInput!
 }
@@ -117,7 +116,6 @@ type RefundPaymentData {
 type ReturnRequestItem {
   orderItemIndex: Int!
   quantity: Int!
-  verifiedItems: Int
   condition: ItemCondition!
   returnReason: ReturnReason!
 }
@@ -150,12 +148,15 @@ type RefundItem {
 type RefundStatusData {
   status: Status!
   submittedBy: String!
-  comment: RefundStatusComment
+  createdAt: String!
+  comments: [RefundStatusComment!]!
 }
 
 type RefundStatusComment {
-  value: String
+  comment: String!
+  createdAt: String!
   visibleForCustomer: Boolean
+  submittedBy: String!
 }
 
 input ReturnRequestFilters {

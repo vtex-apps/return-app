@@ -28,7 +28,6 @@ query getReturnRequestDetails($requestId: ID!) {
     items {
       orderItemIndex
       quantity
-      verifiedItems
       condition
       returnReason {
         reason
@@ -53,9 +52,12 @@ query getReturnRequestDetails($requestId: ID!) {
     refundStatusData {
       status
       submittedBy
-      comment {
-        value
+      createdAt
+      comments {
+        comment
+        createdAt
         visibleForCustomer
+        submittedBy
       }
     }
   }
