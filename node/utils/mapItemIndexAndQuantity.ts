@@ -1,11 +1,13 @@
 import type { ItemPackage } from '@vtex/clients'
 
 export const mapItemIndexAndQuantity = (
-  itemPAckages: ItemPackage[]
+  itemPackages: Array<
+    Omit<ItemPackage, 'description' | 'price' | 'unitMultiplier'>
+  >
 ): Map<number, number> => {
   const itemIndexAndQuantityMap = new Map<number, number>()
 
-  for (const invoicedItem of itemPAckages) {
+  for (const invoicedItem of itemPackages) {
     const { itemIndex, quantity } = invoicedItem
 
     if (itemIndexAndQuantityMap.has(itemIndex)) {
