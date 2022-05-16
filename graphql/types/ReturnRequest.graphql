@@ -176,3 +176,14 @@ type ReturnRequestList {
   list: [ReturnRequestResponse!]
   paging: Pagination
 }
+
+input RefundDataInput {
+  items: [RefundItemInput!]!
+  refundedShippingValue: Int!
+}
+
+input RefundItemInput {
+  orderItemIndex: Int!
+  quantity: Int!
+  restockFee: Int
+}
