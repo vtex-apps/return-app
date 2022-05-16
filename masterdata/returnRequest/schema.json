@@ -111,7 +111,6 @@
         "properties": {
           "orderItemIndex": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
-          "verifiedItems": { "type": ["integer", "null"], "required": true },
           "returnReason": {
             "type": "object",
             "required": true,
@@ -180,12 +179,27 @@
         "type": "object",
         "properties": {
           "status": { "$ref": "#/$defs/status", "required": true },
-          "submittedBy": { "type": "string" },
-          "comment": {
-            "type": "object",
-            "properties": {
-              "value": { "type": "string" },
-              "visibleForCustomer": { "type": "boolean" }
+          "submittedBy": { "type": "string", "required": true },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "comments": {
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "comment": { "type": "string", "required": true },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "required": true
+                },
+                "submittedBy": { "type": "string", "required": true },
+                "visibleForCustomer": { "type": "boolean" }
+              }
             }
           }
         }
