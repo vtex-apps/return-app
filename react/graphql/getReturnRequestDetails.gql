@@ -1,0 +1,62 @@
+query getReturnRequestDetails($requestId: ID!) {
+  returnRequestDetails: returnRequest(requestId: $requestId) {
+    id
+    orderId
+    sequenceNumber
+    createdIn
+    status
+    userComment
+    customerProfileData {
+      name
+      email
+      phoneNumber
+    }
+    pickupReturnData {
+      address
+      city
+      state
+      country
+      zipCode
+      addressType
+      returnLabel
+    }
+    refundPaymentData {
+      refundPaymentMethod
+      iban
+      accountHolderName
+    }
+    items {
+      orderItemIndex
+      quantity
+      verifiedItems
+      condition
+      returnReason {
+        reason
+        otherReason
+      }
+    }
+    refundData {
+      invoiceNumber
+      invoiceValue
+      refundedItemsValue
+      refundedShippingValue
+      giftCard {
+        id
+        code
+      }
+      items {
+        orderItemIndex
+        quantity
+        restockFee
+      }
+    }
+    refundStatusData {
+      status
+      submittedBy
+      comment {
+        value
+        visibleForCustomer
+      }
+    }
+  }
+}

@@ -29,7 +29,7 @@ export const OrderListContainer = () => {
   const [ordersToReturn, setOrdersToReturn] = useState<OrdersToReturnList[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
 
-  const { data, loading, error, fetchMore } = useQuery<
+  const { data, loading, error, fetchMore, refetch } = useQuery<
     { ordersAvailableToReturn: OrdersToReturnList },
     QueryOrdersAvailableToReturnArgs
   >(ORDERS_AVAILABLE_TO_RETURN, {
@@ -84,7 +84,7 @@ export const OrderListContainer = () => {
     <>
       {loading || error || !ordersToReturn.length ? (
         <BaseLoading
-          queryData={{ loading, error, fetchMore }}
+          queryData={{ loading, error, refetch }}
           headerConfig={headerConfig}
         >
           <SkeletonBox shouldAllowGrowing shouldShowLowerButton>

@@ -1,3 +1,3 @@
-import ReturnsRequests from './admin'
+import { AdminReturnList } from './admin/AdminReturnList'
 
-export default ReturnsRequests
+export default AdminReturnList
