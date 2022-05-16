@@ -1,60 +1,10 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
-import { useIntl, defineMessages } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { Dropdown, Textarea } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
-
-const messages = defineMessages({
-  reasonAccidentalOrder: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.accidental-order',
-  },
-  reasonBetterPrice: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.better-price',
-  },
-  reasonPerformance: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.performance',
-  },
-  reasonIncompatible: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.incompatible',
-  },
-  reasonItemDamaged: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.item-damaged',
-  },
-  reasonMissedDelivery: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.missed-delivery',
-  },
-  reasonMissingParts: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.missing-parts',
-  },
-  reasonBoxDamaged: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.box-damaged',
-  },
-  reasonDifferentProduct: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.different-product',
-  },
-  reasonDefective: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.defective',
-  },
-  reasonArrivedInAddition: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.arrived-in-addition',
-  },
-  reasonNoLongerNeeded: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.no-longer-needed',
-  },
-  reasonUnauthorizedPurchase: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.unauthorized-purchase',
-  },
-  reasonDifferentFromWebsite: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.different-from-website',
-  },
-  reasonOtherReason: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.other-reason',
-  },
-  reasonSelectReason: {
-    id: 'store/return-app.return-order-details.dropdown-reasons.placeholder.select-reason',
-  },
-})
+import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
 
 interface Props {
   reason: string
@@ -88,66 +38,72 @@ export const RenderReasonDropdown = ({
   const reasonOptions = [
     {
       value: 'reasonAccidentalOrder',
-      label: formatMessage(messages.reasonAccidentalOrder),
+      label: formatMessage(defaultReturnReasonsMessages.reasonAccidentalOrder),
     },
     {
       value: 'reasonBetterPrice',
-      label: formatMessage(messages.reasonBetterPrice),
+      label: formatMessage(defaultReturnReasonsMessages.reasonBetterPrice),
     },
     {
       value: 'reasonPerformance',
-      label: formatMessage(messages.reasonPerformance),
+      label: formatMessage(defaultReturnReasonsMessages.reasonPerformance),
     },
     {
       value: 'reasonIncompatible',
-      label: formatMessage(messages.reasonIncompatible),
+      label: formatMessage(defaultReturnReasonsMessages.reasonIncompatible),
     },
     {
       value: 'reasonItemDamaged',
-      label: formatMessage(messages.reasonItemDamaged),
+      label: formatMessage(defaultReturnReasonsMessages.reasonItemDamaged),
     },
     {
       value: 'reasonMissedDelivery',
-      label: formatMessage(messages.reasonMissedDelivery),
+      label: formatMessage(defaultReturnReasonsMessages.reasonMissedDelivery),
     },
     {
       value: 'reasonMissingParts',
-      label: formatMessage(messages.reasonMissingParts),
+      label: formatMessage(defaultReturnReasonsMessages.reasonMissingParts),
     },
     {
       value: 'reasonBoxDamaged',
-      label: formatMessage(messages.reasonBoxDamaged),
+      label: formatMessage(defaultReturnReasonsMessages.reasonBoxDamaged),
     },
     {
       value: 'reasonDifferentProduct',
-      label: formatMessage(messages.reasonDifferentProduct),
+      label: formatMessage(defaultReturnReasonsMessages.reasonDifferentProduct),
     },
     {
       value: 'reasonDefective',
-      label: formatMessage(messages.reasonDefective),
+      label: formatMessage(defaultReturnReasonsMessages.reasonDefective),
     },
     {
       value: 'reasonArrivedInAddition',
-      label: formatMessage(messages.reasonArrivedInAddition),
+      label: formatMessage(
+        defaultReturnReasonsMessages.reasonArrivedInAddition
+      ),
     },
     {
       value: 'reasonNoLongerNeeded',
-      label: formatMessage(messages.reasonNoLongerNeeded),
+      label: formatMessage(defaultReturnReasonsMessages.reasonNoLongerNeeded),
     },
     {
       value: 'reasonUnauthorizedPurchase',
-      label: formatMessage(messages.reasonUnauthorizedPurchase),
+      label: formatMessage(
+        defaultReturnReasonsMessages.reasonUnauthorizedPurchase
+      ),
     },
     {
       value: 'reasonDifferentFromWebsite',
-      label: formatMessage(messages.reasonDifferentFromWebsite),
+      label: formatMessage(
+        defaultReturnReasonsMessages.reasonDifferentFromWebsite
+      ),
     },
   ]
 
   if (settings?.options?.enableOtherOptionSelection) {
     reasonOptions.push({
       value: 'otherReason',
-      label: formatMessage(messages.reasonOtherReason),
+      label: formatMessage(defaultReturnReasonsMessages.reasonOtherReason),
     })
   }
 
@@ -155,7 +111,9 @@ export const RenderReasonDropdown = ({
     <>
       <Dropdown
         disabled={isExcluded}
-        placeholder={formatMessage(messages.reasonSelectReason)}
+        placeholder={formatMessage(
+          defaultReturnReasonsMessages.reasonSelectReason
+        )}
         size="small"
         options={reasonOptions}
         value={reason}
