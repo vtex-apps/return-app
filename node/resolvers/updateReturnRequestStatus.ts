@@ -7,7 +7,7 @@ import type {
 } from 'vtex.return-app'
 
 import { validateStatusUpdate } from '../utils/validateStatusUpdate'
-import { createOrUpdateStatusPayload } from './createOrUpdateStatusPayload'
+import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
