@@ -1,33 +1,13 @@
-import { ForbiddenError, ResolverError, UserInputError } from '@vtex/api'
+import { ForbiddenError, UserInputError } from '@vtex/api'
 import type {
   MutationUpdateReturnRequestStatusArgs,
+  RefundItemInput,
   ReturnRequest,
   Status,
 } from 'vtex.return-app'
 
-const previousStatusAllowed: Record<Status, Status[]> = {
-  new: ['new'],
-  processing: ['new', 'processing'],
-  pickedUpFromClient: ['processing', 'pickedUpFromClient'],
-  pendingVerification: ['pickedUpFromClient', 'pendingVerification'],
-  packageVerified: ['pendingVerification', 'packageVerified'],
-  amountRefunded: ['packageVerified', 'amountRefunded'],
-  denied: [
-    'new',
-    'processing',
-    'pickedUpFromClient',
-    'pendingVerification',
-    'denied',
-  ],
-}
-
-const validateStatus = (newStatus: Status, currentStatus: Status) => {
-  if (!previousStatusAllowed[newStatus].includes(currentStatus)) {
-    throw new ResolverError(
-      `Status transition from ${currentStatus} to ${newStatus} is not allowed`
-    )
-  }
-}
+import { validateStatusUpdate } from '../utils/validateStatusUpdate'
+import { createOrUpdateStatusPayload } from './createOrUpdateStatusPayload'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -64,6 +44,12 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
   return partialUpdate
 }
 
+const acceptOrDenyPackage = (refundItemList?: RefundItemInput[]) => {
+  return refundItemList?.some(({ quantity }) => quantity > 0)
+    ? 'packageVerified'
+    : 'denied'
+}
+
 export const updateReturnRequestStatus = async (
   _: unknown,
   args: MutationUpdateReturnRequestStatusArgs,
@@ -91,15 +77,11 @@ export const updateReturnRequestStatus = async (
     '_all',
   ])) as ReturnRequest
 
-  validateStatus(status, request.status as Status)
+  validateStatusUpdate(status, request.status as Status)
 
   // when a request is made for the same status, it means user is adding a new comment
   if (status === request.status && !comment) {
     throw new UserInputError('Missing comment')
-  }
-
-  if (!request.refundStatusData) {
-    throw new ResolverError('Request does not have refundStatusData')
   }
 
   const isPackageVerified = status === 'packageVerified'
@@ -108,47 +90,18 @@ export const updateReturnRequestStatus = async (
     throw new UserInputError('Missing refundData')
   }
 
-  const updatedStatus = !isPackageVerified
-    ? status
-    : refundData?.items.some(({ quantity }) => quantity > 0)
-    ? status
-    : 'denied'
+  // When status is packageVerified, the final status is based on the quantity of items. If none is approved, status is denied.
+  const requestStatus = isPackageVerified
+    ? acceptOrDenyPackage(refundData?.items)
+    : status
 
-  const newComment = comment
-    ? {
-        comment: comment.value,
-        createdAt: requestDate,
-        submittedBy,
-        visibleForCustomer: comment.visibleForCustomer,
-      }
-    : null
-
-  const hasStatusObject = request.refundStatusData.find(
-    ({ status: statusRequest }) => statusRequest === updatedStatus
-  )
-
-  const statusPayload: ReturnRequest['refundStatusData'] = hasStatusObject
-    ? request.refundStatusData.map((statusObject) => {
-        if (statusObject.status !== updatedStatus) return statusObject
-        const updatedStatusObject = {
-          ...statusObject,
-          comments: [
-            ...(statusObject?.comments ?? []),
-            ...(newComment ? [newComment] : []),
-          ],
-        }
-
-        return updatedStatusObject
-      })
-    : [
-        ...request.refundStatusData,
-        {
-          status: updatedStatus,
-          submittedBy,
-          createdAt: requestDate,
-          comments: [...(newComment ? [newComment] : [])],
-        },
-      ]
+  const refundStatusData = createOrUpdateStatusPayload({
+    refundStatusData: request.refundStatusData,
+    requestStatus,
+    comment,
+    submittedBy,
+    createdAt: requestDate,
+  })
 
   const refundDataObject: ReturnRequest['refundData'] = !isPackageVerified
     ? null
@@ -160,16 +113,16 @@ export const updateReturnRequestStatus = async (
         items: refundData?.items ?? [],
       }
 
-  if (updatedStatus === 'amountRefunded') {
+  if (requestStatus === 'amountRefunded') {
     // handle gift card and credit card
   }
 
   await returnRequestClient.update(requestId, {
     ...formatRequestToPartialUpdate(request),
-    status: updatedStatus,
-    refundStatusData: statusPayload,
+    status: requestStatus,
+    refundStatusData,
     refundData: refundDataObject,
   })
 
-  return statusPayload
+  return refundStatusData
 }
