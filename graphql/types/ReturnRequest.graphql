@@ -185,7 +185,7 @@ input RefundDataInput {
 input RefundItemInput {
   orderItemIndex: Int!
   quantity: Int!
-  restockFee: Int
+  restockFee: Int!
 }
 
 input ReturnRequestCommentInput {
