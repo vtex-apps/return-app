@@ -4,7 +4,8 @@ import type {
   ReturnRequest,
 } from 'vtex.return-app'
 
-// A partial update on MD requires all required field to be sent. If any new field is added to the ReturnRequest as required, it has to be added here too.
+// A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
+// If any new field is added to the ReturnRequest as required, it has to be added here too.
 const formatRequestToPartialUpdate = (request: ReturnRequest) => {
   const {
     orderId,
@@ -41,7 +42,7 @@ export const updateReturnRequestStatus = async (
   _: unknown,
   args: MutationUpdateReturnRequestStatusArgs,
   ctx: Context
-) => {
+): Promise<ReturnRequest['refundStatusData']> => {
   const {
     state: { userProfile },
     clients: { returnRequest: returnRequestClient },
@@ -64,6 +65,9 @@ export const updateReturnRequestStatus = async (
     '_all',
   ])) as ReturnRequest
 
+  /**
+   * Start flow to add comment, without changing the status
+   */
   if (status === request.status) {
     if (!comment) {
       throw new UserInputError('Missing comment')
@@ -97,6 +101,9 @@ export const updateReturnRequestStatus = async (
 
     return statusPayload
   }
+  /**
+   * Finish flow to add comment, without changing the status
+   */
 
   // placeholder for return value. It should return the updated object
   return request.refundStatusData
