@@ -134,7 +134,7 @@ export const updateReturnRequestStatus = async (
           ...statusObject,
           comments: [
             ...(statusObject?.comments ?? []),
-            { ...(newComment ? { newComment } : null) },
+            ...(newComment ? [newComment] : []),
           ],
         }
 
@@ -146,7 +146,7 @@ export const updateReturnRequestStatus = async (
           status: updatedStatus,
           submittedBy,
           createdAt: requestDate,
-          comments: [{ ...(newComment ? { newComment } : null) }],
+          comments: [...(newComment ? [newComment] : [])],
         },
       ]
 
@@ -159,6 +159,10 @@ export const updateReturnRequestStatus = async (
         refundedShippingValue: refundData?.refundedShippingValue ?? 0,
         items: refundData?.items ?? [],
       }
+
+  if (updatedStatus === 'amountRefunded') {
+    // handle gift card and credit card
+  }
 
   await returnRequestClient.update(requestId, {
     ...formatRequestToPartialUpdate(request),
