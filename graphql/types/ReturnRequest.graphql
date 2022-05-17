@@ -187,3 +187,8 @@ input RefundItemInput {
   quantity: Int!
   restockFee: Int
 }
+
+input ReturnRequestCommentInput {
+  value: String!
+  visibleForCustomer: Boolean!
+}

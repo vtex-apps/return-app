@@ -70,33 +70,21 @@ export const updateReturnRequestStatus = async (
     }
 
     if (!request.refundStatusData) {
-      throw new ResolverError('Request does not have redundStatusData')
+      throw new ResolverError('Request does not have refundStatusData')
     }
 
     const statusPayload = request.refundStatusData.map((statusObject) => {
       if (statusObject.status !== status) return statusObject
       const newComment = {
-        comment,
+        comment: comment.value,
         createdAt: requestDate,
         submittedBy,
-        visibleForCustomer: false,
+        visibleForCustomer: comment.visibleForCustomer,
       }
-
-      const commentsUpdated =
-        statusObject?.comments?.map((commentArg) => {
-          if (!commentArg.visibleForCustomer) {
-            return {
-              ...commentArg,
-              visibleForCustomer: false,
-            }
-          }
-
-          return commentArg
-        }) ?? []
 
       const updatedStatusObject = {
         ...statusObject,
-        comments: [...commentsUpdated, newComment],
+        comments: [...(statusObject?.comments ?? []), newComment],
       }
 
       return updatedStatusObject

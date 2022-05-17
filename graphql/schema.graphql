@@ -27,7 +27,7 @@ type Mutation {
   updateReturnRequestStatus(
     requestId: ID!
     status: Status!
-    comment: String
+    comment: ReturnRequestCommentInput
     refundData: RefundDataInput
   ): [RefundStatusData] @withUserProfile
 }
