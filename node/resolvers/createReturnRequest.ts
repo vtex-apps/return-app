@@ -2,8 +2,7 @@ import { UserInputError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
 import { createItemsToReturn } from '../utils/createItemsToReturn'
-
-// const createRefundableTotals = (itemsToReturn: ReturnRequest['items']): Record<ReturnRequest['']
+import { createRefundableTotals } from '../utils/createRefundableTotals'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -69,13 +68,20 @@ export const createReturnRequest = async (
 
   const itemsToReturn = createItemsToReturn(items, orderItems)
 
+  const refundableAmountTotals = createRefundableTotals(itemsToReturn)
+
+  const refundableAmount = refundableAmountTotals.reduce(
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    (amount, cur) => amount + cur.value,
+    0
+  )
+
   const rmaDocument = await returnRequestClient.save({
     orderId,
-    // Rename field to: totalAvailableReturnAmount (on masterdata schema, then here)
-    refundableAmount: 1234,
+    refundableAmount,
     sequenceNumber,
     status: 'new',
-    refundableAmountTotals: [{ id: 'items', value: 1234 }],
+    refundableAmountTotals,
     customerProfileData: {
       userId: userProfileId,
       name: customerProfileData.name,
