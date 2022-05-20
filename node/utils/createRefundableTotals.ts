@@ -1,18 +1,8 @@
-import type { ReturnRequest } from 'vtex.return-app'
-
-type RequiredTotals = Required<
-  Required<ReturnRequest>['refundableAmountTotals'][number]
->
-
-interface Totals {
-  [k: string]: unknown
-  id: RequiredTotals['id']
-  value: RequiredTotals['value']
-}
+import type { RefundableAmountTotal, ReturnRequest } from 'vtex.return-app'
 
 export const createRefundableTotals = (
   itemsToReturn: ReturnRequest['items']
-): Totals[] => {
+): RefundableAmountTotal[] => {
   const itemsAmount =
     itemsToReturn?.reduce((total, item) => {
       const { quantity, sellingPrice } = item
