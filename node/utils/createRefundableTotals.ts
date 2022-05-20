@@ -1,7 +1,8 @@
 import type { RefundableAmountTotal, ReturnRequest } from 'vtex.return-app'
 
 export const createRefundableTotals = (
-  itemsToReturn: ReturnRequest['items']
+  itemsToReturn: ReturnRequest['items'],
+  shippingAmount: number
 ): RefundableAmountTotal[] => {
   const itemsAmount =
     itemsToReturn?.reduce((total, item) => {
@@ -21,8 +22,7 @@ export const createRefundableTotals = (
 
   const taxTotal = { id: 'tax' as const, value: taxAmount }
 
-  // TODO: Calculate shipping based on flag on admin (total or partial)
-  const shippingTotal = { id: 'shipping' as const, value: 0 }
+  const shippingTotal = { id: 'shipping' as const, value: shippingAmount }
 
   return [itemsTotal, shippingTotal, taxTotal]
 }

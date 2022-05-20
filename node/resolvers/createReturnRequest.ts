@@ -60,6 +60,7 @@ export const createReturnRequest = async (
     sequence,
     clientProfileData: { userProfileId },
     items: orderItems,
+    totals,
   } = order
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
@@ -68,7 +69,13 @@ export const createReturnRequest = async (
 
   const itemsToReturn = createItemsToReturn(items, orderItems)
 
-  const refundableAmountTotals = createRefundableTotals(itemsToReturn)
+  // TODO: Apply the flag to return proportional shipping from admin
+  const shippingAmount = totals.find(({ id }) => id === 'Shipping')?.value ?? 0
+
+  const refundableAmountTotals = createRefundableTotals(
+    itemsToReturn,
+    shippingAmount
+  )
 
   const refundableAmount = refundableAmountTotals.reduce(
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
