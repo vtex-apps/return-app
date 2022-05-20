@@ -2,11 +2,17 @@ import { UserInputError } from '@vtex/api'
 import type { OrderItemDetailResponse, PriceTag } from '@vtex/clients'
 import type { ReturnRequest, ReturnRequestItemInput } from 'vtex.return-app'
 
-const calculateItemTax = (
-  tax: number,
-  priceTags: PriceTag[],
-  totalQuantity: number
-): number => {
+const calculateItemTax = ({
+  tax,
+  priceTags,
+  quantity,
+  sellingPrice,
+}: {
+  tax: number
+  priceTags: PriceTag[]
+  quantity: number
+  sellingPrice: number
+}): number => {
   if (tax) return tax
 
   const taxHubItems = priceTags.filter((priceTag) =>
@@ -15,12 +21,16 @@ const calculateItemTax = (
 
   if (taxHubItems.length === 0) return 0
 
-  const taxValueFromTaxHub = taxHubItems.reduce(
-    (acc, cur) => acc + cur.value,
-    0
-  )
+  const taxValueFromTaxHub = taxHubItems.reduce((acc, priceTag) => {
+    const { isPercentual, value, rawValue } = priceTag
+    // value for TAXHUB is total (not per unit).
+    // When it's percentual, the rawValue is the % to be applied. Since we divide the total ammount per quantity in the return, we
+    const taxValue = isPercentual ? rawValue * sellingPrice * quantity : value
 
-  return parseFloat((taxValueFromTaxHub / totalQuantity).toFixed(2)) * 100
+    return acc + taxValue
+  }, 0)
+
+  return parseFloat((taxValueFromTaxHub / quantity).toFixed(2)) * 100
 }
 
 export const createItemsToReturn = (
@@ -42,7 +52,7 @@ export const createItemsToReturn = (
       ...item,
       id,
       sellingPrice,
-      tax: calculateItemTax(tax, priceTags, quantity),
+      tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
     }
   })
 }
