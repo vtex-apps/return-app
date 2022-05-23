@@ -22,6 +22,8 @@ interface Props {
   items: ItemToReturn[]
 }
 
+type SubmissionStatus = 'success' | 'error' | ''
+
 export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { returnRequest, termsAndConditions } = useReturnRequest()
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
@@ -31,8 +33,8 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
 
   const { navigate } = useRuntime()
 
-  const [showSubmittedStatus, setShowSubmittedStatus] = useState(false)
-  const [confirmationStatus, setConfirmationStatus] = useState('success')
+  const [confirmationStatus, setConfirmationStatus] =
+    useState<SubmissionStatus>('')
 
   const returnRequestValidated = useMemo(() => {
     const { validatedFields } = validateNewReturnRequestFields(
@@ -58,13 +60,23 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
         throw new Error('Error creating return request')
       }
 
-      setShowSubmittedStatus(true)
-      if (errors) {
-        setConfirmationStatus('error')
-      }
+      setConfirmationStatus('success')
     } catch (error) {
       console.error({ error })
+      setConfirmationStatus('error')
     }
+  }
+
+  const handleAlertRedirect = () => {
+    setConfirmationStatus('')
+    navigate({
+      to: `#/my-returns`,
+    })
+  }
+
+  const handlePageChange = () => {
+    setConfirmationStatus('')
+    onPageChange('form-details')
   }
 
   return (
@@ -101,17 +113,14 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
             </Card>
           </div>
           <section className="flex justify-center">
-            {showSubmittedStatus ? (
+            {confirmationStatus ? (
               <Alert
                 type={confirmationStatus}
                 action={{
                   label: (
                     <FormattedMessage id="store/return-app.confirm-and-submit.alert.label" />
                   ),
-                  onClick: () =>
-                    navigate({
-                      to: `#/my-returns`,
-                    }),
+                  onClick: () => handleAlertRedirect,
                 }}
               >
                 {confirmationStatus === 'success' ? (
@@ -126,7 +135,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                   <Button
                     size="small"
                     variation="secondary"
-                    onClick={() => onPageChange('form-details')}
+                    onClick={() => handlePageChange}
                   >
                     <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
                   </Button>

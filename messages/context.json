@@ -155,8 +155,6 @@
   "store/return-app.confirm-and-submit.contact-details.title": "Contact details",
   "store/return-app.confirm-payment-methods.refund-method.p-account-holder-name": "Beneficiary name: ",
   "store/return-app.confirm-payment-methods.refund-method.p-iban": "Bank transfer into account: ",
-  "store/return-app.confirm-payment-methods.refund-method.p-gift-card": "Gift card",
-  "store/return-app.confirm-payment-methods.refund-method.p-card": "Card",
   "store/return-app.confirm-payment-methods.refund-method.p-same-as-purchase": "Same as purchase",
   "store/return-app.return-information-table.table-row.p-condition": "Condition:",
   "store/return-app.return-information-table.table-row.p-reason": "Reason:",
