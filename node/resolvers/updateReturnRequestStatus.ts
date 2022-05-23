@@ -103,15 +103,16 @@ export const updateReturnRequestStatus = async (
     createdAt: requestDate,
   })
 
-  const refundDataObject: ReturnRequest['refundData'] = !isPackageVerified
-    ? null
-    : {
-        invoiceNumber: requestId,
-        invoiceValue: 1234,
-        refundedItemsValue: 1234,
-        refundedShippingValue: refundData?.refundedShippingValue ?? 0,
-        items: refundData?.items ?? [],
-      }
+  const refundDataObject: ReturnRequest['refundData'] =
+    requestStatus !== 'packageVerified'
+      ? request.refundData
+      : {
+          invoiceNumber: requestId,
+          invoiceValue: 1234,
+          refundedItemsValue: 1234,
+          refundedShippingValue: refundData?.refundedShippingValue ?? 0,
+          items: refundData?.items ?? [],
+        }
 
   if (requestStatus === 'amountRefunded') {
     // handle gift card and credit card
