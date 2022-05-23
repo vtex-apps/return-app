@@ -168,7 +168,7 @@
             "type": "object",
             "properties": {
               "orderItemIndex": { "type": "integer", "required": true },
-              "id": { "type": "integer", "required": true },
+              "id": { "type": "string", "required": true },
               "price": { "type": "integer", "required": true },
               "quantity": { "type": "integer", "required": true },
               "restockFee": { "type": "integer", "required": true }

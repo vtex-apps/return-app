@@ -8,6 +8,7 @@ import type {
 
 import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
+import { createRefundData } from '../utils/createRefundData'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -73,14 +74,14 @@ export const updateReturnRequestStatus = async (
     throw new ForbiddenError('Not authorized')
   }
 
-  const request = (await returnRequestClient.get(requestId, [
+  const returnRequest = (await returnRequestClient.get(requestId, [
     '_all',
   ])) as ReturnRequest
 
-  validateStatusUpdate(status, request.status as Status)
+  validateStatusUpdate(status, returnRequest.status as Status)
 
   // when a request is made for the same status, it means user is adding a new comment
-  if (status === request.status && !comment) {
+  if (status === returnRequest.status && !comment) {
     throw new UserInputError('Missing comment')
   }
 
@@ -96,33 +97,31 @@ export const updateReturnRequestStatus = async (
     : status
 
   const refundStatusData = createOrUpdateStatusPayload({
-    refundStatusData: request.refundStatusData,
+    refundStatusData: returnRequest.refundStatusData,
     requestStatus,
     comment,
     submittedBy,
     createdAt: requestDate,
   })
 
-  const refundDataObject: ReturnRequest['refundData'] =
+  const refundInvoice =
     requestStatus !== 'packageVerified'
-      ? request.refundData
-      : {
-          invoiceNumber: requestId,
-          invoiceValue: 1234,
-          refundedItemsValue: 1234,
-          refundedShippingValue: refundData?.refundedShippingValue ?? 0,
-          items: refundData?.items ?? [],
-        }
+      ? returnRequest.refundData
+      : createRefundData({
+          requestId,
+          refundData,
+          requestItems: returnRequest.items,
+        })
 
   if (requestStatus === 'amountRefunded') {
     // handle gift card and credit card
   }
 
   await returnRequestClient.update(requestId, {
-    ...formatRequestToPartialUpdate(request),
+    ...formatRequestToPartialUpdate(returnRequest),
     status: requestStatus,
     refundStatusData,
-    refundData: refundDataObject,
+    refundData: refundInvoice,
   })
 
   return refundStatusData
