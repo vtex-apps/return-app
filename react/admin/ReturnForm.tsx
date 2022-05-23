@@ -985,7 +985,7 @@ class ReturnForm extends Component<any, any> {
             product={product}
             totalRefundAmount={request.refundedAmount}
             // This is a quick (and ugly) fix for the issue where the refunded amount is not being displayed for admins.
-            productsValue={totalAmount || request.totalPrice}
+            productsValue={request.totalPrice || totalAmount}
           />
           <p className="mt7">
             <strong className="mr6">
