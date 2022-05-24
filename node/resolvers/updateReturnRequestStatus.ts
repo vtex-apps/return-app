@@ -91,12 +91,16 @@ export const updateReturnRequestStatus = async (
 
   const isPackageVerified = status === 'packageVerified'
 
-  if (isPackageVerified && !refundData) {
+  // This is need in case a user wants to add a comment when status is packageVerified.
+  // It avoids recreating a new refundData object and updating the request status
+  const createRefundInvoice = isPackageVerified && !returnRequest.refundData
+
+  if (createRefundInvoice && !refundData) {
     throw new UserInputError('Missing refundData')
   }
 
   // When status is packageVerified, the final status is based on the quantity of items. If none is approved, status is denied.
-  const requestStatus = isPackageVerified
+  const requestStatus = createRefundInvoice
     ? acceptOrDenyPackage(refundData?.items)
     : status
 
@@ -108,14 +112,13 @@ export const updateReturnRequestStatus = async (
     createdAt: requestDate,
   })
 
-  const refundInvoice =
-    requestStatus !== 'packageVerified'
-      ? returnRequest.refundData
-      : createRefundData({
-          requestId,
-          refundData,
-          requestItems: returnRequest.items,
-        })
+  const refundInvoice = createRefundInvoice
+    ? createRefundData({
+        requestId,
+        refundData,
+        requestItems: returnRequest.items,
+      })
+    : returnRequest.refundData
 
   if (requestStatus === 'amountRefunded') {
     // handle gift card and credit card
