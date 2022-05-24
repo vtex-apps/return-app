@@ -22,7 +22,7 @@ interface Props {
   items: ItemToReturn[]
 }
 
-type SubmissionStatus = 'success' | 'error' | ''
+type SubmissionStatus = 'success' | 'error' | 'idle'
 
 export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { returnRequest, termsAndConditions } = useReturnRequest()
@@ -34,7 +34,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { navigate } = useRuntime()
 
   const [confirmationStatus, setConfirmationStatus] =
-    useState<SubmissionStatus>('')
+    useState<SubmissionStatus>('idle')
 
   const returnRequestValidated = useMemo(() => {
     const { validatedFields } = validateNewReturnRequestFields(
@@ -68,14 +68,14 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   }
 
   const handleAlertRedirect = () => {
-    setConfirmationStatus('')
+    setConfirmationStatus('idle')
     navigate({
       to: `#/my-returns`,
     })
   }
 
   const handlePageChange = () => {
-    setConfirmationStatus('')
+    setConfirmationStatus('idle')
     onPageChange('form-details')
   }
 
@@ -113,31 +113,31 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
             </Card>
           </div>
           <section className="flex justify-center">
-            {confirmationStatus ? (
-              confirmationStatus === 'success' ? (
-                <Alert
-                  type={confirmationStatus}
-                  action={{
-                    label: (
-                      <FormattedMessage id="store/return-app.confirm-and-submit.alert.label" />
-                    ),
-                    onClick: () => handleAlertRedirect,
-                  }}
-                >
-                  <FormattedMessage id="store/return-app.confirm-and-submit.alert.success" />
-                </Alert>
-              ) : (
-                <Alert type={confirmationStatus}>
-                  <FormattedMessage id="store/return-app.confirm-and-submit.alert.error" />
-                </Alert>
-              )
-            ) : (
+            {confirmationStatus !== 'success' ? null : (
+              <Alert
+                type={confirmationStatus}
+                action={{
+                  label: (
+                    <FormattedMessage id="store/return-app.confirm-and-submit.alert.label" />
+                  ),
+                  onClick: () => handleAlertRedirect(),
+                }}
+              >
+                <FormattedMessage id="store/return-app.confirm-and-submit.alert.success" />
+              </Alert>
+            )}
+            {confirmationStatus !== 'error' ? null : (
+              <Alert type={confirmationStatus}>
+                <FormattedMessage id="store/return-app.confirm-and-submit.alert.error" />
+              </Alert>
+            )}
+            {confirmationStatus !== 'idle' ? null : (
               <>
                 <div className="mr3">
                   <Button
                     size="small"
                     variation="secondary"
-                    onClick={() => handlePageChange}
+                    onClick={() => handlePageChange()}
                   >
                     <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
                   </Button>
