@@ -103,7 +103,6 @@ export const ReturnDetails = (
       </div>
       <PaymentMethods canRefundCard={canRefundCard} />
       <TermsAndConditions />
-      {/* TODO INTL */}
       <button onClick={handleFieldsValidation}>
         <FormattedMessage id="store/return-app.return-order-details.button.next" />
       </button>
