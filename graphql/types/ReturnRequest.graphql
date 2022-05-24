@@ -66,11 +66,13 @@ enum RefundPaymentMethod {
 type ReturnRequestResponse {
   id: ID!
   orderId: String!
+  refundableAmount: Int!
   sequenceNumber: String!
   createdIn: String!
   status: Status!
   dateSubmitted: String!
   userComment: String
+  refundableAmountTotals: [RefundableAmountTotal!]!
   customerProfileData: CustomerProfileData!
   pickupReturnData: PickupReturnData!
   refundPaymentData: RefundPaymentData!
@@ -118,6 +120,12 @@ type ReturnRequestItem {
   quantity: Int!
   condition: ItemCondition!
   returnReason: ReturnReason!
+  """
+  id: SKU id
+  """
+  id: String!
+  sellingPrice: Int!
+  tax: Int!
 }
 
 type ReturnReason {
@@ -175,4 +183,15 @@ input DateRangeInput {
 type ReturnRequestList {
   list: [ReturnRequestResponse!]
   paging: Pagination
+}
+
+type RefundableAmountTotal {
+  id: RefundableAmountId!
+  value: Int!
+}
+
+enum RefundableAmountId {
+  items
+  shipping
+  tax
 }

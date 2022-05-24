@@ -4,7 +4,7 @@
       "type": "string",
       "required": true
     },
-    "totalReturnAmount": {
+    "refundableAmount": {
       "type": "integer",
       "required": true
     },
@@ -13,7 +13,7 @@
       "required": true
     },
     "status": { "$ref": "#/$defs/status", "required": true },
-    "returnTotals": {
+    "refundableAmountTotals": {
       "type": "array",
       "required": true,
       "items": {
@@ -110,6 +110,9 @@
         "type": "object",
         "properties": {
           "orderItemIndex": { "type": "integer", "required": true },
+          "id": { "type": "string", "required": true },
+          "sellingPrice": { "type": "integer", "required": true },
+          "tax": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
           "returnReason": {
             "type": "object",
@@ -165,8 +168,10 @@
             "type": "object",
             "properties": {
               "orderItemIndex": { "type": "integer", "required": true },
+              "id": { "type": "integer", "required": true },
+              "price": { "type": "integer", "required": true },
               "quantity": { "type": "integer", "required": true },
-              "restockFee": { "type": "integer" }
+              "restockFee": { "type": "integer", "required": true }
             }
           }
         }

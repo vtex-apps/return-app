@@ -1,6 +1,9 @@
 import { UserInputError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
+import { createItemsToReturn } from '../utils/createItemsToReturn'
+import { createRefundableTotals } from '../utils/createRefundableTotals'
+
 export const createReturnRequest = async (
   _: unknown,
   args: MutationCreateReturnRequestArgs,
@@ -41,7 +44,7 @@ export const createReturnRequest = async (
   )
 
   // If order doesn't exist, it throws an error and stop the process.
-  // If there is no request created for that order, requests will be an empty array.
+  // If there is no request created for that order, request searchRMA will be an empty array.
   const [order, searchRMA] = await Promise.all([orderPromise, searchRMAPromise])
 
   // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
@@ -56,19 +59,36 @@ export const createReturnRequest = async (
   const {
     sequence,
     clientProfileData: { userProfileId },
+    items: orderItems,
+    totals,
   } = order
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
   const sequenceNumber = `${sequence}-${total + 1}`
 
+  const itemsToReturn = createItemsToReturn(items, orderItems)
+
+  // TODO: Apply the flag to return proportional shipping from admin
+  const shippingAmount = totals.find(({ id }) => id === 'Shipping')?.value ?? 0
+
+  const refundableAmountTotals = createRefundableTotals(
+    itemsToReturn,
+    shippingAmount
+  )
+
+  const refundableAmount = refundableAmountTotals.reduce(
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    (amount, cur) => amount + cur.value,
+    0
+  )
+
   const rmaDocument = await returnRequestClient.save({
     orderId,
-    // Rename field to: totalAvailableReturnAmount (on masterdata schema, then here)
-    totalReturnAmount: 1234,
+    refundableAmount,
     sequenceNumber,
     status: 'new',
-    returnTotals: [{ id: 'items', value: 1234 }],
+    refundableAmountTotals,
     customerProfileData: {
       userId: userProfileId,
       name: customerProfileData.name,
@@ -84,7 +104,7 @@ export const createReturnRequest = async (
     },
     pickupReturnData,
     refundPaymentData,
-    items,
+    items: itemsToReturn,
     dateSubmitted: requestDate,
     refundData: null,
     userComment,

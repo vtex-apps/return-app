@@ -2,10 +2,15 @@ query getReturnRequestDetails($requestId: ID!) {
   returnRequestDetails: returnRequest(requestId: $requestId) {
     id
     orderId
+    refundableAmount
     sequenceNumber
     createdIn
     status
     userComment
+    refundableAmountTotals {
+      id
+      value
+    }
     customerProfileData {
       name
       email
@@ -29,6 +34,9 @@ query getReturnRequestDetails($requestId: ID!) {
       orderItemIndex
       quantity
       condition
+      id
+      sellingPrice
+      tax
       returnReason {
         reason
         otherReason
