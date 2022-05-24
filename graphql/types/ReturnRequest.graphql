@@ -143,8 +143,8 @@ type RefundData {
 }
 
 type GiftCard {
-  id: String
-  code: String
+  id: String!
+  code: String!
 }
 
 type RefundItem {

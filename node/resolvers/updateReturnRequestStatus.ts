@@ -9,6 +9,7 @@ import type {
 import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
+import { handleRefund } from '../utils/handleRefund'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -58,7 +59,7 @@ export const updateReturnRequestStatus = async (
 ): Promise<ReturnRequest['refundStatusData']> => {
   const {
     state: { userProfile },
-    clients: { returnRequest: returnRequestClient },
+    clients: { returnRequest: returnRequestClient, oms },
   } = ctx
 
   const { status, requestId, comment, refundData } = args
@@ -120,15 +121,23 @@ export const updateReturnRequestStatus = async (
       })
     : returnRequest.refundData
 
-  if (requestStatus === 'amountRefunded') {
-    // handle gift card and credit card
-  }
+  const refundReturn = await handleRefund({
+    currentStatus: requestStatus,
+    previousStatus: returnRequest.status,
+    refundPaymentData: returnRequest.refundPaymentData ?? {},
+    orderId: returnRequest.orderId as string,
+    clients: {
+      omsClient: oms,
+    },
+  })
+
+  const giftCard = refundReturn?.giftCard
 
   await returnRequestClient.update(requestId, {
     ...formatRequestToPartialUpdate(returnRequest),
     status: requestStatus,
     refundStatusData,
-    refundData: refundInvoice,
+    refundData: { ...refundInvoice, ...(giftCard ? { giftCard } : null) },
   })
 
   return refundStatusData

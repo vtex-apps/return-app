@@ -12,6 +12,7 @@ import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
 import { transformShippingData } from './transformShippingData'
+import { canRefundCard } from './canRefundCard'
 
 export const createOrdersToReturnSummary = async (
   order: OrderDetailResponse,
@@ -165,9 +166,7 @@ export const createOrdersToReturnSummary = async (
     ),
     shippingData: transformShippingData(order.shippingData),
     paymentData: {
-      canRefundCard: order.paymentData.transactions.some((transactions) =>
-        transactions.payments.some((transaction) => transaction.lastDigits)
-      ),
+      canRefundCard: canRefundCard(order.paymentData.transactions),
     },
   }
 }
