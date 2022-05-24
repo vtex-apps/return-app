@@ -64,7 +64,7 @@ export const handleRefund = async ({
           refundInvoice?.items?.map((item) => {
             return {
               id: item.id as string,
-              price: item.price as number,
+              price: (item.price as number) - (item.restockFee as number),
               quantity: item.quantity as number,
             }
           }) ?? [],
