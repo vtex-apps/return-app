@@ -3,6 +3,24 @@ import type { ReturnRequest } from 'vtex.return-app'
 // This resolver allows the parent one to fetch just the root fields for a ReturnRequest.
 // This stategy can save some kb when transfering data, since that in a search, we don't need all the fields.
 export const ReturnRequestResponse = {
+  refundableAmount: async (
+    root: ReturnRequest,
+    _args: unknown,
+    ctx: Context
+  ) => {
+    const { id, refundableAmount } = root
+
+    if (refundableAmount) return refundableAmount
+
+    const {
+      clients: { returnRequest: returnRequestClient },
+    } = ctx
+
+    const { refundableAmount: refundableAmountValue } =
+      await returnRequestClient.get(id as string, ['refundableAmount'])
+
+    return refundableAmountValue
+  },
   customerProfileData: async (
     root: ReturnRequest,
     _args: unknown,
@@ -20,6 +38,24 @@ export const ReturnRequestResponse = {
       await returnRequestClient.get(id as string, ['customerProfileData'])
 
     return customerProfile
+  },
+  refundableAmountTotals: async (
+    root: ReturnRequest,
+    _args: unknown,
+    ctx: Context
+  ) => {
+    const { id, refundableAmountTotals } = root
+
+    if (refundableAmountTotals) return refundableAmountTotals
+
+    const {
+      clients: { returnRequest: returnRequestClient },
+    } = ctx
+
+    const { refundableAmountTotals: refundableAmountTotalsData } =
+      await returnRequestClient.get(id as string, ['refundableAmountTotals'])
+
+    return refundableAmountTotalsData
   },
   pickupReturnData: async (
     root: ReturnRequest,

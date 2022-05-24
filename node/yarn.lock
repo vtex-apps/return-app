@@ -6155,9 +6155,15 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
+<<<<<<< HEAD
 "vtex.return-app@https://info--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.5+build1652707455/public/@types/vtex.return-app":
   version "3.0.0-beta.5"
   resolved "https://info--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.5+build1652707455/public/@types/vtex.return-app#5c85e9256b10f0c69a7046124c29baeedc87f26c"
+=======
+"vtex.return-app@https://v3rmavalues--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.5+build1653036446/public/@types/vtex.return-app":
+  version "3.0.0-beta.5"
+  resolved "https://v3rmavalues--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.5+build1653036446/public/@types/vtex.return-app#68d5bf05befa0277c434a99fe4478f898c210615"
+>>>>>>> v3-store
 
 "vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.0/public/@types/vtex.store-graphql":
   version "2.152.0"
