@@ -11,6 +11,7 @@ import { Input, RadioGroup } from 'vtex.styleguide'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
+import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 
 interface Props {
   canRefundCard?: boolean
@@ -18,7 +19,7 @@ interface Props {
 
 type PaymentMethodsOptions = {
   value: keyof PaymentType
-  label: React.ReactElement
+  label: string
 }
 
 const messages = defineMessages({
@@ -80,27 +81,21 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
     if (card && canRefundCard) {
       output.push({
         value: 'card',
-        label: (
-          <FormattedMessage id="store/return-app.return-order-details.payment-options.card" />
-        ),
+        label: formatMessage(defaultPaymentMethodsMessages.card),
       })
     }
 
     if (giftCard) {
       output.push({
         value: 'giftCard',
-        label: (
-          <FormattedMessage id="store/return-app.return-order-details.payment-options.gift-card" />
-        ),
+        label: formatMessage(defaultPaymentMethodsMessages.giftCard),
       })
     }
 
     if (bank) {
       output.push({
         value: 'bank',
-        label: (
-          <FormattedMessage id="store/return-app.return-order-details.payment-options.bank" />
-        ),
+        label: formatMessage(defaultPaymentMethodsMessages.bank),
       })
     }
 

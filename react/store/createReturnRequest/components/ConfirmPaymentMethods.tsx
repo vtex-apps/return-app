@@ -1,25 +1,12 @@
 import React from 'react'
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import type { RefundPaymentDataInput } from 'vtex.return-app'
+
+import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 
 interface Props {
   refundPaymentData: RefundPaymentDataInput
 }
-
-const messages = defineMessages({
-  bank: {
-    id: 'store/return-app.confirm-payment-methods.refund-method.p-bank',
-  },
-  card: {
-    id: 'store/return-app.confirm-payment-methods.refund-method.p-card',
-  },
-  giftCard: {
-    id: 'store/return-app.confirm-payment-methods.refund-method.p-gift-card',
-  },
-  sameAsPurchase: {
-    id: 'store/return-app.confirm-payment-methods.refund-method.p-same-as-purchase',
-  },
-})
 
 export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
   const { formatMessage } = useIntl()
@@ -46,7 +33,11 @@ export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
         </>
       ) : (
         <p className="f6 gray ">
-          {formatMessage(messages[refundPaymentData?.refundPaymentMethod])}
+          {formatMessage(
+            defaultPaymentMethodsMessages[
+              refundPaymentData?.refundPaymentMethod
+            ]
+          )}
         </p>
       )}
     </div>
