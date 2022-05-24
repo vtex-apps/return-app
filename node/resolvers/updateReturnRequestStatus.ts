@@ -16,7 +16,7 @@ import { createRefundData } from '../utils/createRefundData'
 const formatRequestToPartialUpdate = (request: ReturnRequest) => {
   const {
     orderId,
-    totalReturnAmount,
+    refundableAmount,
     sequenceNumber,
     status,
     customerProfileData,
@@ -24,13 +24,13 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundPaymentData,
     items,
     refundData,
-    returnTotals,
+    refundableAmountTotals,
     refundStatusData,
   } = request
 
   const partialUpdate = {
     orderId,
-    totalReturnAmount,
+    refundableAmount,
     sequenceNumber,
     status,
     customerProfileData,
@@ -38,7 +38,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundPaymentData,
     items,
     refundData,
-    returnTotals,
+    refundableAmountTotals,
     refundStatusData,
   }
 

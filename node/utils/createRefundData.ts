@@ -35,8 +35,6 @@ export const createRefundData = ({
 
     const { orderItemIndex, sellingPrice, tax, id } = requestedItem
 
-    if (!orderItemIndex || !sellingPrice || !tax || !id) continue
-
     items.push({
       orderItemIndex,
       id,

@@ -135,7 +135,7 @@ type ReturnReason {
 
 type RefundData {
   invoiceNumber: String!
-  invoiceValue: String!
+  invoiceValue: Int!
   refundedItemsValue: Int!
   refundedShippingValue: Int!
   giftCard: GiftCard
@@ -150,7 +150,8 @@ type GiftCard {
 type RefundItem {
   orderItemIndex: Int!
   quantity: Int!
-  restockFee: Int
+  restockFee: Int!
+  price: Int!
 }
 
 type RefundStatusData {
