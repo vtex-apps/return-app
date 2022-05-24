@@ -1,10 +1,12 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
+import type { NotificationResponse, NotificationInput } from '@vtex/clients'
 import { OMS } from '@vtex/clients'
 
 const baseURL = '/api/oms'
 
 const routes = {
   orders: `${baseURL}/pvt/orders`,
+  invoice: (orderId: string) => `${baseURL}/pvt/orders/${orderId}/invoice`,
 }
 
 interface OrderList {
@@ -17,6 +19,11 @@ interface OrderList {
     perPage: number
   }
 }
+
+type InputInvoiceFields = Omit<
+  NotificationInput,
+  'invoiceKey' | 'invoiceUrl' | 'courier' | 'trackingNumber' | 'trackingUrl'
+>
 
 interface OrderListParams {
   clientEmail: string
@@ -32,7 +39,7 @@ export class OMSCustom extends OMS {
     super(ctx, {
       ...options,
       headers: {
-        VtexIdClientAutCookie: ctx.authToken,
+        VtexIdClientAutCookie: ctx.adminUserAuthToken ?? ctx.authToken,
       },
     })
   }
@@ -42,5 +49,15 @@ export class OMSCustom extends OMS {
       metric: 'oms-list-order-with-params',
       ...(params ? { params } : {}),
     })
+  }
+
+  public createInvoice(orderId: string, invoice: InputInvoiceFields) {
+    return this.http.post<NotificationResponse>(
+      routes.invoice(orderId),
+      invoice,
+      {
+        metric: 'oms-create-invoice',
+      }
+    )
   }
 }

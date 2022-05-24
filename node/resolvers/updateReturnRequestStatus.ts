@@ -126,6 +126,8 @@ export const updateReturnRequestStatus = async (
     previousStatus: returnRequest.status,
     refundPaymentData: returnRequest.refundPaymentData ?? {},
     orderId: returnRequest.orderId as string,
+    createdAt: requestDate,
+    refundInvoice,
     clients: {
       omsClient: oms,
     },

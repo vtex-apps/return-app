@@ -1,4 +1,5 @@
 import type { Status, Maybe, ReturnRequest, GiftCard } from 'vtex.return-app'
+import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'
 import { canRefundCard } from './canRefundCard'
@@ -8,6 +9,8 @@ interface HandleRefundProps {
   previousStatus?: Status
   refundPaymentData: ReturnRequest['refundPaymentData']
   orderId: string
+  createdAt: string
+  refundInvoice: ReturnRequest['refundData']
   clients: {
     omsClient: OMSCustom
   }
@@ -18,15 +21,18 @@ export const handleRefund = async ({
   previousStatus,
   refundPaymentData,
   orderId,
+  createdAt,
+  refundInvoice,
   clients,
 }: HandleRefundProps): Promise<Maybe<{ giftCard: GiftCard }>> => {
   // To avoid handling the amountRefunded after it has been already done, we check the previous status.
   // If the current status is already amountRefunded, it means the refund has already been done and we don't need to do it again.
   const shouldHandle =
-    currentStatus === 'amountRefunded' && previousStatus !== 'amountRefunded'
+    currentStatus === 'amountRefunded' &&
+    previousStatus !== 'amountRefunded' &&
+    refundInvoice
 
   if (!shouldHandle) {
-    // do something
     return null
   }
 
@@ -48,8 +54,26 @@ export const handleRefund = async ({
       canRefundCard(order.paymentData.transactions))
 
   if (refundCard) {
-    // handle credit card''
-    return null
+    try {
+      await omsClient.createInvoice(orderId, {
+        type: 'Input',
+        issuanceDate: createdAt,
+        invoiceNumber: refundInvoice?.invoiceNumber as string,
+        invoiceValue: refundInvoice?.invoiceValue as number,
+        items:
+          refundInvoice?.items?.map((item) => {
+            return {
+              id: item.id as string,
+              price: item.price as number,
+              quantity: item.quantity as number,
+            }
+          }) ?? [],
+      })
+
+      return null
+    } catch (error) {
+      throw new ResolverError('Error creating refund invoice')
+    }
   }
 
   return null
