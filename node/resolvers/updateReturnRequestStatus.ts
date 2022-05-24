@@ -1,4 +1,4 @@
-import { ForbiddenError, UserInputError } from '@vtex/api'
+import { ForbiddenError, UserInputError, NotFoundError } from '@vtex/api'
 import type {
   MutationUpdateReturnRequestStatusArgs,
   RefundItemInput,
@@ -77,6 +77,10 @@ export const updateReturnRequestStatus = async (
   const returnRequest = (await returnRequestClient.get(requestId, [
     '_all',
   ])) as ReturnRequest
+
+  if (!returnRequest) {
+    throw new NotFoundError('Request not found')
+  }
 
   validateStatusUpdate(status, returnRequest.status as Status)
 
