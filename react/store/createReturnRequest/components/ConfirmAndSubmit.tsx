@@ -114,21 +114,23 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
           </div>
           <section className="flex justify-center">
             {confirmationStatus ? (
-              <Alert
-                type={confirmationStatus}
-                action={{
-                  label: (
-                    <FormattedMessage id="store/return-app.confirm-and-submit.alert.label" />
-                  ),
-                  onClick: () => handleAlertRedirect,
-                }}
-              >
-                {confirmationStatus === 'success' ? (
+              confirmationStatus === 'success' ? (
+                <Alert
+                  type={confirmationStatus}
+                  action={{
+                    label: (
+                      <FormattedMessage id="store/return-app.confirm-and-submit.alert.label" />
+                    ),
+                    onClick: () => handleAlertRedirect,
+                  }}
+                >
                   <FormattedMessage id="store/return-app.confirm-and-submit.alert.success" />
-                ) : (
+                </Alert>
+              ) : (
+                <Alert type={confirmationStatus}>
                   <FormattedMessage id="store/return-app.confirm-and-submit.alert.error" />
-                )}
-              </Alert>
+                </Alert>
+              )
             ) : (
               <>
                 <div className="mr3">
