@@ -1,6 +1,7 @@
 import { UserInputError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
+import { SETTINGS_PATH } from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 
@@ -10,7 +11,7 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const {
-    clients: { oms, returnRequest: returnRequestClient },
+    clients: { oms, returnRequest: returnRequestClient, appSettings },
     state: { userProfile },
   } = ctx
 
@@ -69,12 +70,12 @@ export const createReturnRequest = async (
 
   const itemsToReturn = createItemsToReturn(items, orderItems)
 
-  // TODO: Apply the flag to return proportional shipping from admin
-  const shippingAmount = totals.find(({ id }) => id === 'Shipping')?.value ?? 0
+  const settings = await appSettings.get(SETTINGS_PATH, true)
 
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
-    shippingAmount
+    totals,
+    settings?.options?.enableProportionalShippingValue as boolean
   )
 
   const refundableAmount = refundableAmountTotals.reduce(
