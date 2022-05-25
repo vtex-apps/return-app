@@ -6,6 +6,7 @@ import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
+import { GiftCard } from './giftCard'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -33,5 +34,9 @@ export class Clients extends IOClients {
 
   public get returnRequest() {
     return this.getOrSet('returnRequest', ReturnRequest)
+  }
+
+  public get giftCard() {
+    return this.getOrSet('giftCard', GiftCard)
   }
 }
