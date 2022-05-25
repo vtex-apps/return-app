@@ -59,7 +59,11 @@ export const updateReturnRequestStatus = async (
 ): Promise<ReturnRequest['refundStatusData']> => {
   const {
     state: { userProfile },
-    clients: { returnRequest: returnRequestClient, oms },
+    clients: {
+      returnRequest: returnRequestClient,
+      oms,
+      giftCard: giftCardClient,
+    },
   } = ctx
 
   const { status, requestId, comment, refundData } = args
@@ -128,8 +132,10 @@ export const updateReturnRequestStatus = async (
     orderId: returnRequest.orderId as string,
     createdAt: requestDate,
     refundInvoice,
+    userEmail: returnRequest.customerProfileData?.email as string,
     clients: {
       omsClient: oms,
+      giftCardClient,
     },
   })
 

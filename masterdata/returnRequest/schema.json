@@ -154,10 +154,12 @@
           "type": "object",
           "properties": {
             "id": {
-              "type": "string"
+              "type": "string",
+              "required": true
             },
-            "code": {
-              "type": "string"
+            "redemptionCode": {
+              "type": "string",
+              "required": true
             }
           }
         },
