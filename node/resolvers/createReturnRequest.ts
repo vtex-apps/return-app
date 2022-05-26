@@ -44,9 +44,15 @@ export const createReturnRequest = async (
     `orderId=${orderId}`
   )
 
+  const settingsPromise = appSettings.get(SETTINGS_PATH, true)
+
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
-  const [order, searchRMA] = await Promise.all([orderPromise, searchRMAPromise])
+  const [order, searchRMA, settings] = await Promise.all([
+    orderPromise,
+    searchRMAPromise,
+    settingsPromise,
+  ])
 
   // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
   // TODO: VALIDATE ITEMS. Are the items available to be returned?
@@ -70,12 +76,10 @@ export const createReturnRequest = async (
 
   const itemsToReturn = createItemsToReturn(items, orderItems)
 
-  const settings = await appSettings.get(SETTINGS_PATH, true)
-
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
     totals,
-    settings?.options?.enableProportionalShippingValue as boolean
+    settings?.options?.enableProportionalShippingValue
   )
 
   const refundableAmount = refundableAmountTotals.reduce(

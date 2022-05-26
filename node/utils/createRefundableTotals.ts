@@ -4,9 +4,11 @@ import type { ItemTotal } from '@vtex/clients'
 export const createRefundableTotals = (
   itemsToReturn: ReturnRequest['items'],
   totals: ItemTotal[],
-  proportionalShippingSetting: boolean
+  proportionalShippingSetting?: boolean | null
 ): RefundableAmountTotal[] => {
-  const shippingTotal = totals.find(({ id }) => id === 'Shipping')?.value ?? 0
+  const orderShippingTotal =
+    totals.find(({ id }) => id === 'Shipping')?.value ?? 0
+
   const orderItemsTotal = totals.find(({ id }) => id === 'Items')?.value ?? 0
   const orderDiscountsTotal =
     totals.find(({ id }) => id === 'Discounts')?.value ?? 0
@@ -29,22 +31,16 @@ export const createRefundableTotals = (
 
   const taxTotal = { id: 'tax' as const, value: taxAmount }
 
-  let proportionalShippingAmount = 0
+  const shippingAmount = proportionalShippingSetting
+    ? parseFloat(
+        (
+          (itemsAmount * orderShippingTotal) /
+          (orderItemsTotal + orderDiscountsTotal)
+        ).toFixed(0)
+      )
+    : orderShippingTotal
 
-  if (proportionalShippingSetting) {
-    proportionalShippingAmount =
-      (itemsAmount * shippingTotal) /
-      (orderItemsTotal + orderDiscountsTotal) /
-      100
-  }
+  const shippingTotal = { id: 'shipping' as const, value: shippingAmount }
 
-  const shippingAmount =
-    proportionalShippingAmount !== 0
-      ? {
-          id: 'shipping' as const,
-          value: parseFloat(proportionalShippingAmount.toFixed(2)) * 100,
-        }
-      : { id: 'shipping' as const, value: shippingTotal }
-
-  return [itemsTotal, shippingAmount, taxTotal]
+  return [itemsTotal, shippingTotal, taxTotal]
 }
