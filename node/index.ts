@@ -27,7 +27,7 @@ import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations } from './resolvers'
 
-const TIMEOUT_MS = 5000
+const TIMEOUT_MS = 20000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
 
 const clients: ClientsConfig<Clients> = {
