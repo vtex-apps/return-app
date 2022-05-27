@@ -1,9 +1,10 @@
-import { ForbiddenError, ResolverError } from '@vtex/api'
+import { ResolverError } from '@vtex/api'
 import type { OrderToReturnSummary } from 'vtex.return-app'
 
 import { ORDER_TO_RETURN_VALIDATON, SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isWithinMaxDaysToReturn } from '../utils/dateHelpers'
+import { isUserAllowed } from '../utils/isUserAllowed'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -25,23 +26,16 @@ export const orderToReturnSummary = async (
   }
 
   const { maxDays, excludedCategories } = settings
-  const { userId, role, email } = userProfile
+  const { email } = userProfile
 
   const order = await oms.order(orderId)
 
-  const {
-    creationDate,
-    clientProfileData: { userProfileId },
-    status,
-  } = order
+  const { creationDate, clientProfileData, status } = order
 
-  const orderBelongsToUser = userId === userProfileId
-  const userIsAdmin = role === 'admin'
-
-  // User should only be able to see their order.
-  if (!orderBelongsToUser && !userIsAdmin) {
-    throw new ForbiddenError('User cannot access this order')
-  }
+  isUserAllowed({
+    requesterUser: userProfile,
+    clientProfile: clientProfileData,
+  })
 
   if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
     throw new ResolverError(

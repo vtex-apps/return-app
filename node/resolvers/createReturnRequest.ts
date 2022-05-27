@@ -4,6 +4,7 @@ import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 import { SETTINGS_PATH } from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
+import { isUserAllowed } from '../utils/isUserAllowed'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -55,7 +56,7 @@ export const createReturnRequest = async (
   ])
 
   if (!settings) {
-    throw new ResolverError('Missing return request settings')
+    throw new ResolverError('Return App settings is not configured', 500)
   }
 
   // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
@@ -67,12 +68,12 @@ export const createReturnRequest = async (
     pagination: { total },
   } = searchRMA
 
-  const {
-    sequence,
-    clientProfileData: { userProfileId },
-    items: orderItems,
-    totals,
-  } = order
+  const { sequence, clientProfileData, items: orderItems, totals } = order
+
+  isUserAllowed({
+    requesterUser: userProfile,
+    clientProfile: clientProfileData,
+  })
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
@@ -99,7 +100,7 @@ export const createReturnRequest = async (
     status: 'new',
     refundableAmountTotals,
     customerProfileData: {
-      userId: userProfileId,
+      userId: clientProfileData.userProfileId,
       name: customerProfileData.name,
       /**
        * Why using email from args and not for userProfile (session)?
