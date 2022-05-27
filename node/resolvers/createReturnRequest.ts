@@ -5,6 +5,7 @@ import { SETTINGS_PATH } from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
+import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -59,7 +60,6 @@ export const createReturnRequest = async (
     throw new ResolverError('Return App settings is not configured', 500)
   }
 
-  // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
   // TODO: VALIDATE ITEMS. Are the items available to be returned?
   // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
   // TODO: VALIDATE configutarion on settings - payment methods allowed (also bank should have iban and accountHolder name), other reasons or custom reasons
@@ -68,11 +68,24 @@ export const createReturnRequest = async (
     pagination: { total },
   } = searchRMA
 
-  const { sequence, clientProfileData, items: orderItems, totals } = order
+  const {
+    sequence,
+    clientProfileData,
+    items: orderItems,
+    totals,
+    creationDate,
+    status,
+  } = order
 
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
+  })
+
+  canOrderBeReturned({
+    creationDate,
+    maxDays: settings.maxDays,
+    status,
   })
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.

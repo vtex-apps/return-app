@@ -1,12 +1,10 @@
 import { ResolverError } from '@vtex/api'
 import type { OrderToReturnSummary } from 'vtex.return-app'
 
-import { ORDER_TO_RETURN_VALIDATON, SETTINGS_PATH } from '../utils/constants'
+import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
-import { isWithinMaxDaysToReturn } from '../utils/dateHelpers'
 import { isUserAllowed } from '../utils/isUserAllowed'
-
-const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
+import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -37,17 +35,11 @@ export const orderToReturnSummary = async (
     clientProfile: clientProfileData,
   })
 
-  if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
-    throw new ResolverError(
-      'Order is not within max days to return',
-      400,
-      OUT_OF_MAX_DAYS
-    )
-  }
-
-  if (status !== 'invoiced') {
-    throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
-  }
+  canOrderBeReturned({
+    creationDate,
+    maxDays,
+    status,
+  })
 
   return createOrdersToReturnSummary(order, email, {
     excludedCategories,
