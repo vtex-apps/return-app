@@ -1,7 +1,7 @@
 {
   "memory": 256,
-  "ttl": 10,
-  "timeout": 5000,
+  "ttl": 60,
+  "timeout": 30000,
   "minReplicas": 2,
   "maxReplicas": 4,
   "routes": {
