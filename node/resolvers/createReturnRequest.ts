@@ -1,4 +1,4 @@
-import { UserInputError } from '@vtex/api'
+import { UserInputError, ResolverError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
@@ -53,6 +53,10 @@ export const createReturnRequest = async (
     searchRMAPromise,
     settingsPromise,
   ])
+
+  if (!settings) {
+    throw new ResolverError('Missing return request settings')
+  }
 
   // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
   // TODO: VALIDATE ITEMS. Are the items available to be returned?
