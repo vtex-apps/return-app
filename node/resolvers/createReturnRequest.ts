@@ -6,6 +6,8 @@ import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
+import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
+import { canReturnAllItems } from '../utils/canReturnAllItems'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -60,8 +62,6 @@ export const createReturnRequest = async (
     throw new ResolverError('Return App settings is not configured', 500)
   }
 
-  // TODO: VALIDATE ITEMS. Are the items available to be returned?
-  // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
   // TODO: VALIDATE configutarion on settings - payment methods allowed (also bank should have iban and accountHolder name), other reasons or custom reasons
 
   const {
@@ -77,6 +77,8 @@ export const createReturnRequest = async (
     status,
   } = order
 
+  const { maxDays, excludedCategories } = settings
+
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
@@ -84,9 +86,14 @@ export const createReturnRequest = async (
 
   canOrderBeReturned({
     creationDate,
-    maxDays: settings.maxDays,
+    maxDays,
     status,
   })
+
+  // Validate if all items are available to be returned
+  canReturnAllItems(items, { order, excludedCategories, returnRequestClient })
+
+  // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
