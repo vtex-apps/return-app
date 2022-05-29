@@ -7,9 +7,6 @@ export async function getExtraSettings(ctx: Context, next: () => Promise<any>) {
   const appId = process.env.VTEX_APP_ID as string
   const settings = (await apps.getAppSettings(appId)) as Settings
 
-  console.log(appId)
-  console.log(settings)
-
   ctx.status = 200
   ctx.body = settings
 

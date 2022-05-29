@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Manifest settingsSchema
+- Get settings endpoint
+- New setting 'displayConditionSelector' which hides the product's condition select
+
 ## [2.19.6] - 2022-05-26
 
 ### Changed
