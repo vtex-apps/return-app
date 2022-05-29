@@ -1,9 +1,11 @@
 import React from 'react'
 import type { FunctionComponent } from 'react'
+import { useIntl } from 'react-intl'
 import { SkeletonPiece, BaseLoading } from 'vtex.my-account-commons'
 import type { OrderToReturnSummary } from 'vtex.return-app'
 import { PageBlock } from 'vtex.styleguide'
-import { FormattedMessage } from 'react-intl'
+
+import { returnDetailsPageHeaderConfig } from '../../../utils/returnDetailsPageHeaderConfig'
 
 interface Data {
   loading: boolean
@@ -15,21 +17,23 @@ interface Props {
 }
 
 export const ReturnDetailsLoader: FunctionComponent<Props> = ({ data }) => {
-  const headerConfig = {
-    namespace: 'vtex-account__return-details',
-    title: (
-      <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
-    ),
-    titleId: 'store/return-app.request-return.page.header"',
-    backButton: {
-      titleId: 'store/return-app.return-order-details.page-header.link',
-      path: '#/my-returns/add',
-    },
+  const { formatMessage } = useIntl()
+
+  const backButton = {
+    titleId: formatMessage(returnDetailsPageHeaderConfig.backButton.titleId),
+    path: returnDetailsPageHeaderConfig.backButton.path,
   }
 
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <BaseLoading queryData={data} headerConfig={headerConfig}>
+      <BaseLoading
+        queryData={data}
+        headerConfig={{
+          ...returnDetailsPageHeaderConfig,
+          backButton,
+          title: formatMessage(returnDetailsPageHeaderConfig.title),
+        }}
+      >
         <div className="mb5 w-100">
           <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
             <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
