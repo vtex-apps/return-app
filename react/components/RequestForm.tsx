@@ -53,6 +53,7 @@ const messages = defineMessages({
   formBank: { id: 'returns.formBank' },
   formAgree: { id: 'returns.formAgree' },
   termsAndConditions: { id: 'returns.TermsConditions' },
+  reasonDropdownPlaceholder: { id: 'returns.reasonDropdownPlaceholder' },
   reasonAccidentalOrder: { id: 'returns.reasonAccidentalOrder' },
   reasonBetterPrice: { id: 'returns.reasonBetterPrice' },
   reasonPerformance: { id: 'returns.reasonPerformance' },
@@ -90,6 +91,9 @@ const messages = defineMessages({
   formNextStep: { id: 'returns.formNextStep' },
   formErrorReasonMissing: { id: 'returns.formErrorReasonMissing' },
   formExtraComment: { id: 'returns.formExtraComment' },
+  textareaExtraCommentCharactersLeft: {
+    id: 'returns.textareaExtraCommentCharactersLeft',
+  },
   backToOrders: { id: 'returns.backToOrders' },
   orderDate: { id: 'returns.orderDate' },
   thOrderId: { id: 'returns.thOrderId' },
@@ -98,6 +102,7 @@ const messages = defineMessages({
   thReason: { id: 'returns.thReason' },
   condition: { id: 'returns.condition.label' },
   formErrorConditionMissing: { id: 'returns.formErrorConditionMissing' },
+  conditionDropdownPlaceholder: { id: 'returns.conditionDropdownPlaceholder' },
   conditionNewWithBox: { id: 'returns.newWithBox' },
   conditionNewWithoutBox: { id: 'returns.newWithoutBox' },
   conditionUsedWithBox: { id: 'returns.usedWithBox' },
@@ -281,7 +286,9 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
-          placeholder="Select Reason"
+          placeholder={formatMessage({
+            id: messages.reasonDropdownPlaceholder.id,
+          })}
           size="small"
           options={returnOptions}
           value={product.reasonCode}
@@ -350,7 +357,9 @@ class RequestForm extends Component<Props> {
       <div className={styles.reasonHolder}>
         <Dropdown
           label=""
-          placeholder="Select Condition"
+          placeholder={formatMessage({
+            id: messages.conditionDropdownPlaceholder.id,
+          })}
           size="small"
           options={conditionOptions}
           value={product.condition}
@@ -640,6 +649,9 @@ class RequestForm extends Component<Props> {
                     resize="none"
                     onChange={handleInputChange}
                     maxLength="250"
+                    characterCountdownText={formatMessage({
+                      id: messages.textareaExtraCommentCharactersLeft.id,
+                    })}
                     value={formInputs.extraComment}
                   />
                 </div>
