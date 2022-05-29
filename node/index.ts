@@ -25,6 +25,7 @@ import { checkStatus } from './middlewares/api/checkStatus'
 import { updateStatus } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
+import { getExtraSettings } from './middlewares/getExtraSettings'
 import { mutations } from './resolvers'
 
 const TIMEOUT_MS = 20000
@@ -117,6 +118,9 @@ export default new Service({
     }),
     createRefund: method({
       POST: [errorHandler, createRefund],
+    }),
+    getExtraSettings: method({
+      GET: [errorHandler, getExtraSettings],
     }),
   },
   graphql: {
