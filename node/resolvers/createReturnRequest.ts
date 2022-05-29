@@ -1,6 +1,7 @@
 import { UserInputError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
+import { SETTINGS_PATH } from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 
@@ -10,7 +11,7 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const {
-    clients: { oms, returnRequest: returnRequestClient },
+    clients: { oms, returnRequest: returnRequestClient, appSettings },
     state: { userProfile },
   } = ctx
 
@@ -43,9 +44,15 @@ export const createReturnRequest = async (
     `orderId=${orderId}`
   )
 
+  const settingsPromise = appSettings.get(SETTINGS_PATH, true)
+
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
-  const [order, searchRMA] = await Promise.all([orderPromise, searchRMAPromise])
+  const [order, searchRMA, settings] = await Promise.all([
+    orderPromise,
+    searchRMAPromise,
+    settingsPromise,
+  ])
 
   // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
   // TODO: VALIDATE ITEMS. Are the items available to be returned?
@@ -69,12 +76,10 @@ export const createReturnRequest = async (
 
   const itemsToReturn = createItemsToReturn(items, orderItems)
 
-  // TODO: Apply the flag to return proportional shipping from admin
-  const shippingAmount = totals.find(({ id }) => id === 'Shipping')?.value ?? 0
-
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
-    shippingAmount
+    totals,
+    settings?.options?.enableProportionalShippingValue
   )
 
   const refundableAmount = refundableAmountTotals.reduce(
