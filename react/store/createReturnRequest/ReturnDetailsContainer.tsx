@@ -16,6 +16,7 @@ import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 import { getErrorCode, errorMessages } from '../utils/getErrorCode'
 import { useStoreSettings } from '../hooks/useStoreSettings'
+import { ReturnDetailsLoader } from './components/loaders/ReturnDetailsLoader'
 
 export type Page = 'form-details' | 'submit-form'
 
@@ -97,20 +98,24 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <>
+    <ReturnDetailsLoader data={{ loading }}>
       {page === 'form-details' ? (
-        <ReturnDetails
-          {...props}
-          onPageChange={handlePageChange}
-          items={items}
-          creationDate={data?.orderToReturnSummary?.creationDate}
-          canRefundCard={data?.orderToReturnSummary?.paymentData.canRefundCard}
-        />
+        <>
+          <ReturnDetails
+            {...props}
+            onPageChange={handlePageChange}
+            items={items}
+            creationDate={data?.orderToReturnSummary?.creationDate}
+            canRefundCard={
+              data?.orderToReturnSummary?.paymentData.canRefundCard
+            }
+          />
+        </>
       ) : null}
       {page === 'submit-form' ? (
         <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
       ) : null}
-    </>
+    </ReturnDetailsLoader>
   )
 }
 

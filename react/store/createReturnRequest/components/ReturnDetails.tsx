@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedDate, FormattedMessage } from 'react-intl'
+import { FormattedDate, FormattedMessage, useIntl } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
 import { useRuntime } from 'vtex.render-runtime'
 import { PageHeader, PageBlock } from 'vtex.styleguide'
@@ -12,6 +12,7 @@ import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
 import type { Page } from '../ReturnDetailsContainer'
+import { returnDetailsPageHeaderConfig } from '../../utils/returnDetailsPageHeaderConfig'
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -39,6 +40,8 @@ export const ReturnDetails = (
 
   const { navigate } = useRuntime()
 
+  const { formatMessage } = useIntl()
+
   const handleFieldsValidation = () => {
     if (areFieldsValid()) {
       onPageChange('submit-form')
@@ -50,15 +53,13 @@ export const ReturnDetails = (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
       <PageHeader
         className="ph0 mh0 nl5"
-        title={
-          <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
-        }
-        linkLabel={
-          <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
-        }
+        title={formatMessage(returnDetailsPageHeaderConfig.title)}
+        linkLabel={formatMessage(
+          returnDetailsPageHeaderConfig.backButton.titleId
+        )}
         onLinkClick={() =>
           navigate({
-            to: `#/my-returns/add`,
+            to: `#${returnDetailsPageHeaderConfig.backButton.path}`,
           })
         }
       />

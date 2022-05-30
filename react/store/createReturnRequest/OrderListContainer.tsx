@@ -4,16 +4,12 @@ import type {
   OrdersToReturnList,
   QueryOrdersAvailableToReturnArgs,
 } from 'vtex.return-app'
-import {
-  ContentWrapper,
-  BaseLoading,
-  SkeletonPiece,
-  SkeletonBox,
-} from 'vtex.my-account-commons'
+import { ContentWrapper, BaseLoading } from 'vtex.my-account-commons'
 import { FormattedMessage } from 'react-intl'
 
 import ORDERS_AVAILABLE_TO_RETURN from './graphql/getOrdersAvailableToReturn.gql'
 import { OrderList } from './components/OrderList'
+import { OrderListStructureLoader } from './components/loaders/OrderListStructureLoader'
 
 const headerConfig = {
   namespace: 'vtex-account__return-order-list',
@@ -87,9 +83,7 @@ export const OrderListContainer = () => {
           queryData={{ loading, error, refetch }}
           headerConfig={headerConfig}
         >
-          <SkeletonBox shouldAllowGrowing shouldShowLowerButton>
-            <SkeletonPiece height={40} />
-          </SkeletonBox>
+          <OrderListStructureLoader />
         </BaseLoading>
       ) : (
         <ContentWrapper {...headerConfig}>
