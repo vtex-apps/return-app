@@ -521,7 +521,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
     Promise.all([this.getSettings(), this.getExtraSettings()]).then(
       ([settings, extraSettings]) => {
         if (settings !== null) {
-          this.setState({ ...settings, ...extraSettings })
+          this.setState({ settings: { ...settings, ...extraSettings } })
           this.getProfile().then((user) => {
             this.getOrders(user.Email, settings.maxDays).then((orders) => {
               if ('list' in orders) {
