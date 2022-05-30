@@ -7,6 +7,7 @@ import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
+import { validateReturnReason } from '../utils/validateReturnReason'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -76,7 +77,7 @@ export const createReturnRequest = async (
     status,
   } = order
 
-  const { maxDays, excludedCategories } = settings
+  const { maxDays, excludedCategories, customReturnReasons } = settings
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -96,7 +97,8 @@ export const createReturnRequest = async (
     returnRequestClient,
   })
 
-  // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
+  // Validate maxDays for custom reasons.
+  validateReturnReason(items, creationDate, customReturnReasons)
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
