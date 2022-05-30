@@ -145,7 +145,9 @@ export const updateReturnRequestStatus = async (
     ...formatRequestToPartialUpdate(returnRequest),
     status: requestStatus,
     refundStatusData,
-    refundData: { ...refundInvoice, ...(giftCard ? { giftCard } : null) },
+    refundData: refundInvoice
+      ? { ...refundInvoice, ...(giftCard ? { giftCard } : null) }
+      : null,
   })
 
   return refundStatusData
