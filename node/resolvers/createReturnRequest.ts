@@ -100,7 +100,7 @@ export const createReturnRequest = async (
   // Validate maxDays for custom reasons.
   validateReturnReason(items, creationDate, customReturnReasons)
 
-  // TODO: VALIDATE payment methods allowed (also bank should have iban and accountHolder name)
+  // Validate payment methods
   validatePaymentMethod(refundPaymentData, paymentOptions)
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
