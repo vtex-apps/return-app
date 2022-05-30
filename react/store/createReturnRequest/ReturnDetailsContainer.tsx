@@ -98,24 +98,24 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <>
-      {page === 'form-details' && !loading ? (
-        <ReturnDetails
-          {...props}
-          onPageChange={handlePageChange}
-          items={items}
-          creationDate={data?.orderToReturnSummary?.creationDate}
-          canRefundCard={data?.orderToReturnSummary?.paymentData.canRefundCard}
-        />
-      ) : (
-        <ReturnDetailsLoader
-          data={{ loading, data: data?.orderToReturnSummary }}
-        />
-      )}
+    <ReturnDetailsLoader data={{ loading }}>
+      {page === 'form-details' ? (
+        <>
+          <ReturnDetails
+            {...props}
+            onPageChange={handlePageChange}
+            items={items}
+            creationDate={data?.orderToReturnSummary?.creationDate}
+            canRefundCard={
+              data?.orderToReturnSummary?.paymentData.canRefundCard
+            }
+          />
+        </>
+      ) : null}
       {page === 'submit-form' ? (
         <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
       ) : null}
-    </>
+    </ReturnDetailsLoader>
   )
 }
 
