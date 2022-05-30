@@ -8,6 +8,7 @@ import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
+import { validatePaymentMethod } from '../utils/validatePaymentMethod'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -62,8 +63,6 @@ export const createReturnRequest = async (
     throw new ResolverError('Return App settings is not configured', 500)
   }
 
-  // TODO: VALIDATE configutarion on settings - payment methods allowed (also bank should have iban and accountHolder name), other reasons or custom reasons
-
   const {
     pagination: { total },
   } = searchRMA
@@ -77,7 +76,8 @@ export const createReturnRequest = async (
     status,
   } = order
 
-  const { maxDays, excludedCategories, customReturnReasons } = settings
+  const { maxDays, excludedCategories, customReturnReasons, paymentOptions } =
+    settings
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -99,6 +99,9 @@ export const createReturnRequest = async (
 
   // Validate maxDays for custom reasons.
   validateReturnReason(items, creationDate, customReturnReasons)
+
+  // TODO: VALIDATE payment methods allowed (also bank should have iban and accountHolder name)
+  validatePaymentMethod(refundPaymentData, paymentOptions)
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
