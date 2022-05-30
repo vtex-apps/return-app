@@ -90,7 +90,11 @@ export const createReturnRequest = async (
   })
 
   // Validate if all items are available to be returned
-  canReturnAllItems(items, { order, excludedCategories, returnRequestClient })
+  await canReturnAllItems(items, {
+    order,
+    excludedCategories,
+    returnRequestClient,
+  })
 
   // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
 
