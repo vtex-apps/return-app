@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Get settings endpoint
 - New setting 'displayConditionSelector' which hides the product's condition select
 - Translate select reason, select condition and characters left messages.
+- Provide min-width to quantity input on store and admin.
 
 ## [2.19.6] - 2022-05-26
 
