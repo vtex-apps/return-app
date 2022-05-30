@@ -16,6 +16,7 @@ export const fetchPath = {
   getOrder: '/returns/getOrder/',
   renderTemplates: '/api/template-render/pvt/templates',
   createRefund: '/returns/createRefund/',
+  getExtraSettings: '/returns/getExtraSettings',
 }
 
 export const fetchMethod = {

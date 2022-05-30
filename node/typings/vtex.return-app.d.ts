@@ -77,3 +77,7 @@ type ProductReturnedInput = Omit<
   | 'totalPrice'
   | 'status'
 >
+
+interface Settings {
+  displayConditionSelector: boolean
+}

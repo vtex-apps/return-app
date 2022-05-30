@@ -393,6 +393,7 @@ class RequestForm extends Component<Props> {
     } = this.props
 
     const isLoadingProducts = !orderProducts.length
+    const shouldRenderCondition = settings.displayConditionSelector ?? true
 
     return (
       <div>
@@ -457,9 +458,11 @@ class RequestForm extends Component<Props> {
                     <th className={styles.tableTh}>
                       {formatMessage({ id: messages.thReason.id })}
                     </th>
-                    <th className={styles.tableTh}>
-                      {formatMessage({ id: messages.condition.id })}
-                    </th>
+                    {shouldRenderCondition && (
+                      <th className={styles.tableTh}>
+                        {formatMessage({ id: messages.condition.id })}
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className={styles.tableTbody}>
@@ -507,11 +510,13 @@ class RequestForm extends Component<Props> {
                       >
                         {this.renderReasonsDropdown(product)}
                       </td>
-                      <td
-                        className={`${styles.tableTd} ${styles.tableTdReason}`}
-                      >
-                        {this.renderConditionDropdown(product)}
-                      </td>
+                      {shouldRenderCondition && (
+                        <td
+                          className={`${styles.tableTd} ${styles.tableTdReason}`}
+                        >
+                          {this.renderConditionDropdown(product)}
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

@@ -100,13 +100,15 @@ class RequestInformation extends Component<Props> {
                           : null}
                       </div>
 
-                      <div className={`${styles.reasonStyle} ${styles.mt10}`}>
-                        <span className={styles.strongText}>
-                          {formatMessage({ id: messages.condition.id })}
-                          {': '}
-                        </span>
-                        {product.condition}{' '}
-                      </div>
+                      {product.condition && (
+                        <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                          <span className={styles.strongText}>
+                            {formatMessage({ id: messages.condition.id })}
+                            {': '}
+                          </span>
+                          {product.condition}{' '}
+                        </div>
+                      )}
                     </td>
                     <td className={`${styles.tableTd}`}>
                       {product.selectedQuantity} / {product.quantity}
