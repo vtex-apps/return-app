@@ -207,6 +207,21 @@ class MyReturnsPageAdd extends Component<Props, State> {
       })
   }
 
+  async getExtraSettings() {
+    return fetch(`${fetchPath.getExtraSettings}`, {
+      method: fetchMethod.get,
+      headers: fetchHeaders,
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (Object.keys(json).length > 0) {
+          return Promise.resolve(json)
+        }
+
+        return Promise.resolve(null)
+      })
+  }
+
   async getProfile() {
     const { rootPath } = this.props
     const profileUrl = fetchPath.getProfile(rootPath)
@@ -503,31 +518,33 @@ class MyReturnsPageAdd extends Component<Props, State> {
 
   prepareData = () => {
     this.setState({ loading: true })
-    this.getSettings().then((settings) => {
-      if (settings !== null) {
-        this.setState({ settings })
-        this.getProfile().then((user) => {
-          this.getOrders(user.Email, settings.maxDays).then((orders) => {
-            if ('list' in orders) {
-              if (orders.list.length) {
-                orders.list.forEach((order: any) => {
-                  this.getOrder(order.orderId).then((currentOrder) => {
-                    this.prepareOrderData(currentOrder, settings, true)
+    Promise.all([this.getSettings(), this.getExtraSettings()]).then(
+      ([settings, extraSettings]) => {
+        if (settings !== null) {
+          this.setState({ settings: { ...settings, ...extraSettings } })
+          this.getProfile().then((user) => {
+            this.getOrders(user.Email, settings.maxDays).then((orders) => {
+              if ('list' in orders) {
+                if (orders.list.length) {
+                  orders.list.forEach((order: any) => {
+                    this.getOrder(order.orderId).then((currentOrder) => {
+                      this.prepareOrderData(currentOrder, settings, true)
+                    })
                   })
-                })
-                setTimeout(() => {
+                  setTimeout(() => {
+                    this.setState({ loading: false })
+                  }, 1000)
+                } else {
                   this.setState({ loading: false })
-                }, 1000)
-              } else {
-                this.setState({ loading: false })
+                }
               }
-            }
+            })
           })
-        })
-      } else {
-        this.setState({ loading: false })
+        } else {
+          this.setState({ loading: false })
+        }
       }
-    })
+    )
   }
 
   componentDidMount() {
@@ -557,7 +574,10 @@ class MyReturnsPageAdd extends Component<Props, State> {
       accountHolder,
       agree,
       orderProducts,
+      settings,
     } = this.state
+
+    const shouldConsiderCondition = settings.displayConditionSelector ?? true
 
     if (!name) {
       this.setState((prevState) => ({
@@ -689,6 +709,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
         errors = true
       } else if (
         parseInt(product.selectedQuantity, 10) > 0 &&
+        shouldConsiderCondition &&
         product.condition === ''
       ) {
         errors = true

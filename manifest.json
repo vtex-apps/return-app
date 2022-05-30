@@ -35,6 +35,18 @@
     "postreleasy": "vtex publish --verbose"
   },
   "credentialType": "absolute",
+  "settingsSchema": {
+    "title": "Return app",
+    "type": "object",
+    "properties": {
+      "displayConditionSelector": {
+        "title": "Display 'CONDITION' selector",
+        "description": "Display, in the return request, the selector for the condition of the product",
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
   "policies": [
     {
       "name": "outbound-access",
