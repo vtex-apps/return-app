@@ -14,7 +14,7 @@ export const canOrderBeReturned = ({
   maxDays: number
   status: string
 }) => {
-  if (isWithinMaxDaysToReturn(creationDate, maxDays)) {
+  if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
     throw new ResolverError(
       'Order is not within max days to return',
       400,

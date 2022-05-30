@@ -6,7 +6,6 @@ import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
-import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 
 export const createReturnRequest = async (
