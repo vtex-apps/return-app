@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import type { FunctionComponent } from 'react'
 import React from 'react'
 import { FormattedCurrency } from 'vtex.format-currency'
@@ -117,13 +118,15 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                     : null}
                 </div>
 
-                <div className={`${styles.reasonStyle} ${styles.mt10}`}>
-                  <span className={styles.strongText}>
-                    {formatMessage({ id: messages.condition.id })}
-                    {': '}
-                  </span>
-                  {currentProduct.condition}{' '}
-                </div>
+                {currentProduct.condition && (
+                  <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                    <span className={styles.strongText}>
+                      {formatMessage({ id: messages.condition.id })}
+                      {': '}
+                    </span>
+                    {currentProduct.condition}{' '}
+                  </div>
+                )}
               </td>
               <td className={`${styles.tableTd} ${styles.tableReasonQty}`}>
                 {currentProduct.quantity}
@@ -173,7 +176,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
           <td className={`${styles.tableTd}`} />
           <td className={`${styles.tableTd}`} colSpan={2}>
             <strong>
-              <FormattedCurrency value={productsValue/100} />
+              <FormattedCurrency value={productsValue / 100} />
             </strong>
           </td>
         </tr>
@@ -192,7 +195,9 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
               <FormattedCurrency
                 value={product.reduce(
                   (acc, el) =>
-                    acc + (el.unitPrice / 100 + (el.tax ? el.tax : 0)) * el.goodProducts,
+                    acc +
+                    (el.unitPrice / 100 + (el.tax ? el.tax : 0)) *
+                      el.goodProducts,
                   0
                 )}
               />
