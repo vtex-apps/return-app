@@ -196,6 +196,7 @@
 }
 
 .smallCell {
+  min-width: 100px;
   width: 100px;
 }
 
@@ -338,6 +339,7 @@
 .tableTdReason {
 }
 .tableTdQuantity {
+  min-width: 150px;
   width: 170px;
 }
 .tableTbody {
