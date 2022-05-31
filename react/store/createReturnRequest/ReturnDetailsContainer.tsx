@@ -5,6 +5,9 @@ import type {
   OrderToReturnSummary,
   QueryOrderToReturnSummaryArgs,
 } from 'vtex.return-app'
+import { PageHeader, PageBlock } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
 import { OrderToReturnProvider } from '../provider/OrderToReturnProvider'
@@ -14,13 +17,36 @@ import { useReturnRequest } from '../hooks/useReturnRequest'
 import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
 import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
-import { getErrorCode, errorMessages } from '../utils/getErrorCode'
 import { useStoreSettings } from '../hooks/useStoreSettings'
 import { ReturnDetailsLoader } from './components/loaders/ReturnDetailsLoader'
 
 export type Page = 'form-details' | 'submit-form'
 
 type RouteProps = RouteComponentProps<{ orderId: string }>
+
+const createPageHeaderProps = (page: Page, navigate: any) => {
+  if (page === 'submit-form') {
+    return {
+      title: (
+        <FormattedMessage id="store/return-app.confirm-and-submit.page-header.title" />
+      ),
+    }
+  }
+
+  return {
+    title: (
+      <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+    ),
+    linkLabel: (
+      <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+    ),
+    onLinkClick: () => {
+      navigate({
+        to: '#/my-returns/add',
+      })
+    },
+  }
+}
 
 export const CreateReturnRequest = (props: RouteProps) => {
   const {
@@ -31,7 +57,6 @@ export const CreateReturnRequest = (props: RouteProps) => {
 
   const [page, setPage] = useState<Page>('form-details')
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
-  const [errorCase, setErrorCase] = useState('')
 
   const {
     actions: { updateReturnRequest },
@@ -41,19 +66,15 @@ export const CreateReturnRequest = (props: RouteProps) => {
   const { paymentOptions } = storeSettings ?? {}
   const { enablePaymentMethodSelection } = paymentOptions ?? {}
 
-  const { data, loading } = useQuery<
+  const { navigate } = useRuntime()
+
+  const { data, loading, error } = useQuery<
     { orderToReturnSummary: OrderToReturnSummary },
     QueryOrderToReturnSummaryArgs
   >(ORDER_TO_RETURN_SUMMARY, {
     variables: { orderId },
     skip: !orderId,
-    onError: (error) => setErrorCase(getErrorCode(error)),
   })
-
-  // Use this loading label to create a loading state for the whole component
-  // Use the errorCase to create a error handler for the whole component (use errorMessages )
-  // eslint-disable-next-line no-console
-  console.log({ loading, errorCase, errorMessages })
 
   useEffect(() => {
     if (!data || !storeSettings) {
@@ -98,24 +119,30 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <ReturnDetailsLoader data={{ loading }}>
-      {page === 'form-details' ? (
-        <>
-          <ReturnDetails
-            {...props}
-            onPageChange={handlePageChange}
-            items={items}
-            creationDate={data?.orderToReturnSummary?.creationDate}
-            canRefundCard={
-              data?.orderToReturnSummary?.paymentData.canRefundCard
-            }
-          />
-        </>
-      ) : null}
-      {page === 'submit-form' ? (
-        <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
-      ) : null}
-    </ReturnDetailsLoader>
+    <PageBlock className="ph0 mh0 pa0 pa0-ns">
+      <PageHeader
+        className="ph0 mh0 nl5"
+        {...createPageHeaderProps(page, navigate)}
+      />
+      <ReturnDetailsLoader data={{ loading, error }}>
+        {page === 'form-details' ? (
+          <>
+            <ReturnDetails
+              {...props}
+              onPageChange={handlePageChange}
+              items={items}
+              creationDate={data?.orderToReturnSummary?.creationDate}
+              canRefundCard={
+                data?.orderToReturnSummary?.paymentData.canRefundCard
+              }
+            />
+          </>
+        ) : null}
+        {page === 'submit-form' ? (
+          <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
+        ) : null}
+      </ReturnDetailsLoader>
+    </PageBlock>
   )
 }
 

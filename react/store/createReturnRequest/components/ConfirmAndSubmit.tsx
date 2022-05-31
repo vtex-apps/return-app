@@ -6,7 +6,7 @@ import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
 } from 'vtex.return-app'
-import { PageBlock, PageHeader, Card, Button, Alert } from 'vtex.styleguide'
+import { Card, Button, Alert } from 'vtex.styleguide'
 
 import type { Page } from '../ReturnDetailsContainer'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
@@ -80,13 +80,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   }
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <PageHeader
-        className="ph0 mh0 nl5"
-        title={
-          <FormattedMessage id="store/return-app.confirm-and-submit.page-header.title" />
-        }
-      />
+    <>
       {!returnRequestValidated ? null : (
         <>
           <ReturnInformationTable
@@ -156,6 +150,6 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
           </section>
         </>
       )}
-    </PageBlock>
+    </>
   )
 }
