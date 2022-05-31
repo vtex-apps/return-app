@@ -100,16 +100,11 @@ export const CreateReturnRequest = (props: RouteProps) => {
           orderItemIndex,
           quantity: 0,
         })),
-        refundPaymentData: {
-          refundPaymentMethod: 'sameAsPurchase',
-        },
-        ...(enablePaymentMethodSelection
-          ? null
+        refundPaymentData: enablePaymentMethodSelection
+          ? undefined
           : {
-              refundPaymentData: {
-                refundPaymentMethod: 'sameAsPurchase',
-              },
-            }),
+              refundPaymentMethod: 'sameAsPurchase',
+            },
       },
     })
   }, [data, storeSettings, updateReturnRequest, enablePaymentMethodSelection])
