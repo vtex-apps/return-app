@@ -1,4 +1,4 @@
-import { ResolverError } from '@vtex/api'
+import { ResolverError, UserInputError } from '@vtex/api'
 import type { OrderToReturnSummary } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
@@ -25,6 +25,11 @@ export const orderToReturnSummary = async (
 
   const { maxDays, excludedCategories } = settings
   const { email } = userProfile
+
+  // For requests where orderId is an empty string
+  if (!orderId) {
+    throw new UserInputError('Order ID is missing')
+  }
 
   const order = await oms.order(orderId)
 

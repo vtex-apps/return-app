@@ -40,6 +40,11 @@ export const createReturnRequest = async (
     throw new UserInputError('There is no items in the request')
   }
 
+  // For requests where orderId is an empty string
+  if (!orderId) {
+    throw new UserInputError('Order ID is missing')
+  }
+
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
   const searchRMAPromise = returnRequestClient.searchRaw(
