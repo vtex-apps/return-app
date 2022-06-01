@@ -10,7 +10,6 @@ import { renderIcon } from '../common/utils'
 interface Props {
   product: any
   totalRefundAmount: any
-  productsValue: any
   intl: any
   totalShippingValue: any
   refundedShippingValue: any
@@ -22,9 +21,21 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
     refundedShippingValue,
     product,
     totalRefundAmount,
-    productsValue,
     intl: { formatMessage },
   } = props
+
+  const calculateTotalProductsValue = product.length
+    ? product.reduce((total, currentProduct) => {
+        const currentValue =
+          (currentProduct.unitPrice / 100 +
+            (parseFloat(currentProduct.tax) || 0)) *
+          currentProduct.quantity
+
+        console.log(currentValue, 'current value')
+
+        return (total += currentValue)
+      }, 0)
+    : 0
 
   const messages = defineMessages({
     product: { id: `returns.product` },
@@ -176,7 +187,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
           <td className={`${styles.tableTd}`} />
           <td className={`${styles.tableTd}`} colSpan={2}>
             <strong>
-              <FormattedCurrency value={productsValue / 100} />
+              <FormattedCurrency value={calculateTotalProductsValue} />
             </strong>
           </td>
         </tr>
