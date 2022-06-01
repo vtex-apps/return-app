@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react'
 import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
@@ -7,15 +8,23 @@ import { CustomMessage } from './layout/CustomMessage'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
 import { RenderReasonDropdown } from './RenderReasonDropdown'
 
-export const ItemsDetails = (itemToReturn: ItemToReturn) => {
+interface Props {
+  itemToReturn: ItemToReturn
+  creationDate?: string
+}
+
+export const ItemsDetails = (props: Props) => {
   const {
-    quantity,
-    quantityAvailable,
-    isExcluded,
-    orderItemIndex,
-    imageUrl,
-    name,
-  } = itemToReturn
+    itemToReturn: {
+      quantity,
+      quantityAvailable,
+      isExcluded,
+      orderItemIndex,
+      imageUrl,
+      name,
+    },
+    creationDate,
+  } = props
 
   const {
     returnRequest,
@@ -145,6 +154,7 @@ export const ItemsDetails = (itemToReturn: ItemToReturn) => {
           reason={currentItem?.returnReason?.reason ?? ''}
           otherReason={currentItem?.returnReason?.otherReason ?? ''}
           onReasonChange={handleReasonChange}
+          creationDate={creationDate}
         />
         {reasonError && reasonErrorEmptyValue ? (
           <CustomMessage

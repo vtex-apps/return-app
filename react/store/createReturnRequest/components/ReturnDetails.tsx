@@ -77,7 +77,7 @@ export const ReturnDetails = (
           </div>
         </div>
       </div>
-      <ItemsList items={items} />
+      <ItemsList items={items} creationDate={creationDate} />
       <div className="flex-ns flex-wrap flex-row mt5">
         <ContactDetails />
         <AddressDetails />
