@@ -31,9 +31,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
             (parseFloat(currentProduct.tax) || 0)) *
           currentProduct.quantity
 
-        console.log(currentValue, 'current value')
-
-        return (total += currentValue)
+        return total + currentValue
       }, 0)
     : 0
 
