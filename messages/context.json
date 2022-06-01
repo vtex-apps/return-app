@@ -329,5 +329,9 @@
   "returns.newWithBox": "New With Box",
   "returns.newWithoutBox": "New Without Box",
   "returns.usedWithBox": "Used With Box",
-  "returns.usedWithoutBox": "Used Without Box"
+  "returns.usedWithoutBox": "Used Without Box",
+  "admin/return-app.return-request-details.page-header.title": "Return Request Details",
+  "admin/return-app.return-request-details.page-header.link-label": "Return Request List",
+  "admin/return-app.return-request-details.error.title": "Error loading request",
+  "admin/return-app.return-request-details.error.description": "An error occured while loading the request. Please try again."
 }
