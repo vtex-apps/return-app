@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [2.19.7] - 2022-05-30
-
 ### Fixed
 
 - Fix total amount of products price by calculating directly the sum of each product value instead of relying on the totalPrice from the return request.
+
+## [2.19.7] - 2022-05-30
 
 ### Added
 
