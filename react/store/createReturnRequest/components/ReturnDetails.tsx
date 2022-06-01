@@ -1,8 +1,6 @@
 import React from 'react'
-import { FormattedDate, FormattedMessage, useIntl } from 'react-intl'
+import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
-import { useRuntime } from 'vtex.render-runtime'
-import { PageHeader, PageBlock } from 'vtex.styleguide'
 
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
@@ -12,7 +10,6 @@ import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
 import type { Page } from '../ReturnDetailsContainer'
-import { returnDetailsPageHeaderConfig } from '../../utils/returnDetailsPageHeaderConfig'
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -38,10 +35,6 @@ export const ReturnDetails = (
     actions: { areFieldsValid },
   } = useReturnRequest()
 
-  const { navigate } = useRuntime()
-
-  const { formatMessage } = useIntl()
-
   const handleFieldsValidation = () => {
     if (areFieldsValid()) {
       onPageChange('submit-form')
@@ -50,19 +43,7 @@ export const ReturnDetails = (
   }
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <PageHeader
-        className="ph0 mh0 nl5"
-        title={formatMessage(returnDetailsPageHeaderConfig.title)}
-        linkLabel={formatMessage(
-          returnDetailsPageHeaderConfig.backButton.titleId
-        )}
-        onLinkClick={() =>
-          navigate({
-            to: `#${returnDetailsPageHeaderConfig.backButton.path}`,
-          })
-        }
-      />
+    <>
       <div className="mb5">
         <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
           <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
@@ -107,6 +88,6 @@ export const ReturnDetails = (
       <button onClick={handleFieldsValidation}>
         <FormattedMessage id="store/return-app.return-order-details.button.next" />
       </button>
-    </PageBlock>
+    </>
   )
 }
