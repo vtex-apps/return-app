@@ -333,5 +333,11 @@
   "admin/return-app.return-request-details.page-header.title": "Return Request Details",
   "admin/return-app.return-request-details.page-header.link-label": "Return Request List",
   "admin/return-app.return-request-details.error.title": "Error loading request",
-  "admin/return-app.return-request-details.error.description": "An error occured while loading the request. Please try again."
+  "admin/return-app.return-request-details.error.description": "An error occured while loading the request. Please try again.",
+  "admin/return-app.return-request-details.update-status.title": "Update status or add comment",
+  "admin/return-app.return-request-details.update-status.dropdown.placeholder": "Select Status",
+  "admin/return-app.return-request-details.update-status.textarea.label": "Add comment",
+  "admin/return-app.return-request-details.update-status.checkbox.label": "Comment visible to client",
+  "admin/return-app.return-request-details.update-status.button.comment": "Add comment",
+  "admin/return-app.return-request-details.update-status.button.update-status": "Update status"
 }
