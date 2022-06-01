@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { useReturnRequestDetails } from '../../hooks/useReturnRequestDetails'
+import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 
 interface CustomRouteProps {
   params: {
@@ -25,6 +26,7 @@ export const ReturnDetailsContainer = (props: CustomRouteProps) => {
 
   return (
     <Layout
+      fullWidth
       pageHeader={
         <PageHeader
           title={
@@ -41,7 +43,7 @@ export const ReturnDetailsContainer = (props: CustomRouteProps) => {
         />
       }
     >
-      <PageBlock variation="full">
+      <PageBlock variation="full" fit="fill">
         {!error ? null : (
           <EmptyState
             title={
@@ -53,7 +55,10 @@ export const ReturnDetailsContainer = (props: CustomRouteProps) => {
         )}
         {loading ? <Spinner /> : null}
         {!data?.returnRequestDetails ? null : (
-          <div>Status {data.returnRequestDetails.status}</div>
+          <>
+            <div>Status {data.returnRequestDetails.status}</div>
+            <UpdateRequestStatus />
+          </>
         )}
       </PageBlock>
     </Layout>
