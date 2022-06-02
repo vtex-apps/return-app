@@ -44,6 +44,7 @@
   "returns.thOrderId": "Order ID",
   "returns.thCreationDate": "Creation Date",
   "returns.thStatus": "Status",
+  "returns.thSellerName": "Seller",
   "returns.thReason": "Reason",
   "returns.thRefId": "Ref ID",
   "returns.formContactDetails": "Contact Details",

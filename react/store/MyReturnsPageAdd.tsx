@@ -345,8 +345,10 @@ class MyReturnsPageAdd extends Component<Props, State> {
     })
 
     order.packageAttachment.packages.forEach((pack: any) => {
-      if (Object.keys(pack.restitutions).length) {
-        pack.restitutions.Refund.items.forEach((prod: any) => {
+      const items = pack?.restitutions?.Refound?.items
+
+      if (items?.length) {
+        items.forEach((prod: any) => {
           let currentProduct = refundedProducts.find(
             (elem) => elem.id === prod.id
           )
@@ -480,8 +482,20 @@ class MyReturnsPageAdd extends Component<Props, State> {
          * overwrite the products if user has already selected an order to view.
          */
         if (isSelectingOrder) {
+          const productsWithSellerName = products.map((product: any) => {
+            const sellerName = this.state.selectedOrder?.sellers?.find(
+              (seller) => seller.id === product.seller
+            )?.name
+
+            if (sellerName) {
+              product.sellerName = sellerName
+            }
+
+            return product
+          })
+
           this.setState({
-            orderProducts: products,
+            orderProducts: productsWithSellerName,
           })
         }
 
@@ -931,6 +945,8 @@ class MyReturnsPageAdd extends Component<Props, State> {
         reasonCode: item.reasonCode,
         condition: item.condition,
         reason: item.reason,
+        seller: item.seller,
+        sellerName: item.sellerName,
       }
     })
 

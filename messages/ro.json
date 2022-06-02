@@ -180,6 +180,7 @@
   "returns.reasonUnauthorizedPurchase": "Achiziție neautorizată",
   "returns.reasonDifferentFromWebsite": "Diferit de descrierea de pe site",
   "returns.thRefId": "Ref ID",
+  "returns.thSellerName": "Vânzător",
   "returns.thReason": "Motiv",
   "returns.changeStatusComment": "Schimba statusul sau adauga comentariu"
 }

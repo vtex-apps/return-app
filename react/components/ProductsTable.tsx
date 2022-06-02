@@ -40,6 +40,7 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
     quantity: { id: `returns.quantity` },
     unitPrice: { id: `returns.unitPrice` },
     subtotalRefund: { id: `returns.subtotalRefund` },
+    sellerName: { id: `returns.thSellerName` },
     reason: { id: `returns.thReason` },
     refId: { id: `returns.thRefId` },
     productsValue: { id: `returns.totalProductsValue` },
@@ -111,6 +112,16 @@ const ProductsTable: FunctionComponent<Props> = (props) => {
                   </span>
                   {currentProduct.skuId}
                 </div>
+
+                {currentProduct.sellerName && (
+                  <div className={`${styles.reasonStyle} ${styles.mt10}`}>
+                    <span className={styles.strongText}>
+                      {formatMessage({ id: messages.sellerName.id })}
+                      {': '}
+                    </span>
+                    {currentProduct.sellerName}
+                  </div>
+                )}
 
                 <div className={`${styles.reasonStyle} ${styles.mt10}`}>
                   <span className={styles.strongText}>
