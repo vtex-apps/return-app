@@ -3,7 +3,14 @@ import React, { useState } from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown, Textarea, Checkbox, Button } from 'vtex.styleguide'
-import type { Status } from 'vtex.return-app'
+import type {
+  Status,
+  RefundStatusData,
+  MutationUpdateReturnRequestStatusArgs,
+} from 'vtex.return-app'
+import { useMutation } from 'react-apollo'
+
+import UPDATE_RETURN_STATUS from '../../../graphql/updateReturnRequestStatus.gql'
 
 const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'denied'],
@@ -40,16 +47,55 @@ const createStatusOptions = (
 
 interface Props {
   currentStatus: Status
+  requestId: string
 }
 
-export const UpdateRequestStatus = ({ currentStatus }: Props) => {
+export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
   const [selectedStatus, setSelectedStatus] = useState<Status | ''>('')
   const [comment, setComment] = useState('')
-  const [visibleToClient, setVisibleToClient] = useState(false)
+  const [visibleForCustomer, setVisibleForCustomer] = useState(false)
   const { formatMessage } = useIntl()
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [updateReturnStatus, { loading }] = useMutation<
+    {
+      updateReturnRequestStatus: RefundStatusData
+    },
+    MutationUpdateReturnRequestStatusArgs
+  >(UPDATE_RETURN_STATUS)
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (loading || selectedStatus === '') return
+
+    const newComment = !comment
+      ? null
+      : {
+          value: comment,
+          visibleForCustomer,
+        }
+
+    try {
+      const { errors, data } = await updateReturnStatus({
+        variables: {
+          requestId,
+          status: selectedStatus,
+          ...(newComment ? { comment: newComment } : {}),
+        },
+      })
+
+      if (errors) {
+        throw new Error('Error updating return request status')
+      }
+
+      // eslint-disable-next-line no-console
+      console.log({ data })
+    } catch {
+      // eslint-disable-next-line no-console
+      console.log('Error updating status')
+    } finally {
+      setVisibleForCustomer(false)
+      setComment('')
+    }
   }
 
   const handleStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -64,12 +110,12 @@ export const UpdateRequestStatus = ({ currentStatus }: Props) => {
     setComment(value)
   }
 
-  const handleVisibleToClientChange = (
+  const handleVisibleToCustomerChange = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     const { checked } = event.target
 
-    setVisibleToClient(checked)
+    setVisibleForCustomer(checked)
   }
 
   const updateStatus = selectedStatus && selectedStatus !== currentStatus
@@ -105,11 +151,11 @@ export const UpdateRequestStatus = ({ currentStatus }: Props) => {
         </div>
         <div className="mb6">
           <Checkbox
-            checked={visibleToClient}
+            checked={visibleForCustomer}
             label={
               <FormattedMessage id="admin/return-app.return-request-details.update-status.checkbox.label" />
             }
-            onChange={handleVisibleToClientChange}
+            onChange={handleVisibleToCustomerChange}
           />
         </div>
         <div className="mb6">
@@ -118,6 +164,7 @@ export const UpdateRequestStatus = ({ currentStatus }: Props) => {
             variation="primary"
             size="small"
             disabled={!selectedStatus}
+            isLoading={loading}
           >
             {updateStatus ? (
               <FormattedMessage id="admin/return-app.return-request-details.update-status.button.update-status" />

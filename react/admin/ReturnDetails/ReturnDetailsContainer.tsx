@@ -59,6 +59,7 @@ export const ReturnDetailsContainer = (props: CustomRouteProps) => {
             <div>Status {data.returnRequestDetails.status}</div>
             <UpdateRequestStatus
               currentStatus={data.returnRequestDetails.status}
+              requestId={props.params.id}
             />
           </>
         )}
