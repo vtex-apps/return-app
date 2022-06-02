@@ -44,6 +44,8 @@ interface Props {
 
 export const UpdateRequestStatus = ({ currentStatus }: Props) => {
   const [selectedStatus, setSelectedStatus] = useState<Status | ''>('')
+  const [comment, setComment] = useState('')
+  const [visibleToClient, setVisibleToClient] = useState(false)
   const { formatMessage } = useIntl()
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -54,6 +56,20 @@ export const UpdateRequestStatus = ({ currentStatus }: Props) => {
     const { value } = event.target
 
     setSelectedStatus(value as Status)
+  }
+
+  const handleCommentsChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+
+    setComment(value)
+  }
+
+  const handleVisibleToClientChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const { checked } = event.target
+
+    setVisibleToClient(checked)
   }
 
   const updateStatus = selectedStatus && selectedStatus !== currentStatus
@@ -83,17 +99,17 @@ export const UpdateRequestStatus = ({ currentStatus }: Props) => {
             label={
               <FormattedMessage id="admin/return-app.return-request-details.update-status.textarea.label" />
             }
-            value=""
-            onChange={() => {}}
+            value={comment}
+            onChange={handleCommentsChange}
           />
         </div>
         <div className="mb6">
           <Checkbox
-            checked={false}
+            checked={visibleToClient}
             label={
               <FormattedMessage id="admin/return-app.return-request-details.update-status.checkbox.label" />
             }
-            onChange={() => {}}
+            onChange={handleVisibleToClientChange}
           />
         </div>
         <div className="mb6">
