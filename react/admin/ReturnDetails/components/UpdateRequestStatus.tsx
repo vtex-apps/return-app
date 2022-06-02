@@ -11,6 +11,7 @@ import type {
 import { useMutation } from 'react-apollo'
 
 import UPDATE_RETURN_STATUS from '../../../graphql/updateReturnRequestStatus.gql'
+import { useAlert } from '../../hooks/userAlert'
 
 const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'denied'],
@@ -55,6 +56,7 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
   const [comment, setComment] = useState('')
   const [visibleForCustomer, setVisibleForCustomer] = useState(false)
   const { formatMessage } = useIntl()
+  const { openAlert } = useAlert()
 
   const [updateReturnStatus, { loading }] = useMutation<
     {
@@ -87,14 +89,19 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
         throw new Error('Error updating return request status')
       }
 
+      openAlert(
+        'success',
+        <FormattedMessage id="admin/return-app.return-request-details.update-status.alert.success" />
+      )
+      setVisibleForCustomer(false)
+      setComment('')
       // eslint-disable-next-line no-console
       console.log({ data })
     } catch {
-      // eslint-disable-next-line no-console
-      console.log('Error updating status')
-    } finally {
-      setVisibleForCustomer(false)
-      setComment('')
+      openAlert(
+        'error',
+        <FormattedMessage id="admin/return-app.return-request-details.update-status.alert.error" />
+      )
     }
   }
 
@@ -163,7 +170,9 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
             type="submit"
             variation="primary"
             size="small"
-            disabled={!selectedStatus}
+            disabled={
+              !selectedStatus || (selectedStatus === currentStatus && !comment)
+            }
             isLoading={loading}
           >
             {updateStatus ? (

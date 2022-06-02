@@ -340,6 +340,8 @@
   "admin/return-app.return-request-details.update-status.checkbox.label": "Comment visible to client",
   "admin/return-app.return-request-details.update-status.button.comment": "Add comment",
   "admin/return-app.return-request-details.update-status.button.update-status": "Update status",
+  "admin/return-app.return-request-details.update-status.alert.success": "Status Updated successfully",
+  "admin/return-app.return-request-details.update-status.alert.error": "There was an error updating status",
   "admin/return-app-status.new": "New",
   "admin/return-app-status.processing": "Processing",
   "admin/return-app-status.pickedup-from-client": "Picked up from client",
