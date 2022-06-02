@@ -1,5 +1,5 @@
 type NearPickupPointQueryResponse {
-  items: [CheckoutPickupPoint]
+  items: [CheckoutPickupPoint]!
 }
 
 type CheckoutPickupPoint {
@@ -13,15 +13,15 @@ type PickupPoint {
 }
 
 type CheckoutAddress {
-  addressType: String
-  addressId: String
-  isDisposable: Boolean
-  postalCode: String
-  city: String
-  state: String
-  country: String
-  street: String
-  number: String
+  addressType: String!
+  addressId: String!
+  isDisposable: Boolean!
+  postalCode: String!
+  city: String!
+  state: String!
+  country: String!
+  street: String!
+  number: String!
   neighborhood: String
   complement: String
   reference: String
