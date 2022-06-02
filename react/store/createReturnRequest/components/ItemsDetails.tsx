@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react'
 import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'

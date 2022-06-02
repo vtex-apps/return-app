@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl } from 'react-intl'

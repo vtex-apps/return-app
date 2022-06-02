@@ -1,6 +1,10 @@
+import type { IntlFormatters } from 'react-intl'
+
 import { defaultReturnReasonsMessages } from '../../store/utils/defaultReturnReasonsMessages'
 
-export function getReasonOptions(formatMessage) {
+export function getReasonOptions(
+  formatMessage: IntlFormatters['formatMessage']
+) {
   return [
     {
       value: 'reasonAccidentalOrder',
