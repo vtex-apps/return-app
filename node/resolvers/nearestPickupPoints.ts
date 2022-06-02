@@ -1,8 +1,13 @@
+import type {
+  QueryNearestPickupPointsArgs,
+  NearPickupPointQueryResponse,
+} from 'vtex.return-app'
+
 export const nearestPickupPoints = async (
   _: unknown,
-  { lat, long }: CheckoutPickupPointsArgs,
+  { lat, long }: QueryNearestPickupPointsArgs,
   ctx: Context
-): Promise<CheckoutOutput> => {
+): Promise<NearPickupPointQueryResponse> => {
   const {
     clients: { checkout },
   } = ctx

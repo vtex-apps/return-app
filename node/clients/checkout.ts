@@ -1,5 +1,6 @@
 import type { InstanceOptions, IOContext, RequestConfig } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
+import type { NearPickupPointQueryResponse } from 'vtex.return-app'
 
 export default class Checkout extends JanusClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
@@ -15,7 +16,7 @@ export default class Checkout extends JanusClient {
   }
 
   public getNearestPickupPoints = (lat: string, long: string) => {
-    return this.get<CheckoutOutput>(
+    return this.get<NearPickupPointQueryResponse>(
       this.routes.getNearestPickupPoints(lat, long),
       {
         metric: 'checkout-nearestPickupPoints',
