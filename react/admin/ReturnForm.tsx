@@ -947,7 +947,6 @@ class ReturnForm extends Component<any, any> {
       giftCardValue,
       totalShippingValue,
       refundedShippingValue,
-      totalAmount,
     } = this.state
 
     const { formatMessage } = this.props.intl
@@ -984,8 +983,6 @@ class ReturnForm extends Component<any, any> {
             refundedShippingValue={refundedShippingValue}
             product={product}
             totalRefundAmount={request.refundedAmount}
-            // This is a quick (and ugly) fix for the issue where the refunded amount is not being displayed for admins.
-            productsValue={request.totalPrice || totalAmount}
           />
           <p className="mt7">
             <strong className="mr6">

@@ -305,7 +305,6 @@ class ReturnsDetails extends Component<any, any> {
                 totalShippingValue={totalShippingValue}
                 refundedShippingValue={request.refundedShippingValue}
                 product={product}
-                productsValue={request.totalPrice}
                 totalRefundAmount={request.refundedAmount}
               />
               <p className={`mt7 ${styles.requestInfoOrder}`}>
