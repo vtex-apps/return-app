@@ -11,12 +11,7 @@ import { useRuntime } from 'vtex.render-runtime'
 
 import { useReturnRequestDetails } from '../../hooks/useReturnRequestDetails'
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
-
-interface CustomRouteProps {
-  params: {
-    id: string
-  }
-}
+import type { CustomRouteProps } from '../AdminReturnDetails'
 
 export const ReturnDetailsContainer = (props: CustomRouteProps) => {
   const { returnDetailsData } = useReturnRequestDetails(props.params.id)
