@@ -1,16 +1,62 @@
-import type { FormEvent } from 'react'
-import React from 'react'
+import type { FormEvent, ChangeEvent } from 'react'
+import React, { useState } from 'react'
+import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown, Textarea, Checkbox, Button } from 'vtex.styleguide'
+import type { Status } from 'vtex.return-app'
 
-export const UpdateRequestStatus = () => {
+const statusAllowed: Record<Status, Status[]> = {
+  new: ['new', 'processing', 'denied'],
+  processing: ['processing', 'pickedUpFromClient', 'denied'],
+  pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'denied'],
+  // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
+  pendingVerification: ['pendingVerification'],
+  packageVerified: ['packageVerified', 'amountRefunded'],
+  amountRefunded: ['amountRefunded'],
+  denied: ['denied'],
+}
+
+const statusMessageId: Record<Status, string> = {
+  new: 'admin/return-app-status.new',
+  processing: 'admin/return-app-status.processing',
+  pickedUpFromClient: 'admin/return-app-status.pickedup-from-client',
+  pendingVerification: 'admin/return-app-status.pending-verification',
+  packageVerified: 'admin/return-app-status.package-verified',
+  amountRefunded: 'admin/return-app-status.refunded',
+  denied: 'admin/return-app-status.denied',
+}
+
+const createStatusOptions = (
+  currentStatus: Status,
+  formatMessage: IntlFormatters['formatMessage']
+): Array<{ value: string; label: string }> => {
+  const allowedStatus = statusAllowed[currentStatus]
+
+  return allowedStatus.map((status) => ({
+    value: status,
+    label: formatMessage({ id: statusMessageId[status] }),
+  }))
+}
+
+interface Props {
+  currentStatus: Status
+}
+
+export const UpdateRequestStatus = ({ currentStatus }: Props) => {
+  const [selectedStatus, setSelectedStatus] = useState<Status | ''>('')
   const { formatMessage } = useIntl()
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
   }
 
-  const updateStatus = false
+  const handleStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+
+    setSelectedStatus(value as Status)
+  }
+
+  const updateStatus = selectedStatus && selectedStatus !== currentStatus
 
   return (
     <section>
@@ -27,9 +73,9 @@ export const UpdateRequestStatus = () => {
             placeholder={formatMessage({
               id: 'admin/return-app.return-request-details.update-status.dropdown.placeholder',
             })}
-            options={[{ value: 1, label: 'test' }]}
-            value=""
-            onChange={() => {}}
+            options={createStatusOptions(currentStatus, formatMessage)}
+            value={selectedStatus}
+            onChange={handleStatusChange}
           />
         </div>
         <div className="mb6">
@@ -51,7 +97,12 @@ export const UpdateRequestStatus = () => {
           />
         </div>
         <div className="mb6">
-          <Button type="submit" variation="primary" size="small">
+          <Button
+            type="submit"
+            variation="primary"
+            size="small"
+            disabled={!selectedStatus}
+          >
             {updateStatus ? (
               <FormattedMessage id="admin/return-app.return-request-details.update-status.button.update-status" />
             ) : (

@@ -57,7 +57,9 @@ export const ReturnDetailsContainer = (props: CustomRouteProps) => {
         {!data?.returnRequestDetails ? null : (
           <>
             <div>Status {data.returnRequestDetails.status}</div>
-            <UpdateRequestStatus />
+            <UpdateRequestStatus
+              currentStatus={data.returnRequestDetails.status}
+            />
           </>
         )}
       </PageBlock>

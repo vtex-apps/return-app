@@ -338,5 +338,12 @@
   "admin/return-app.return-request-details.update-status.textarea.label": "Add comment",
   "admin/return-app.return-request-details.update-status.checkbox.label": "Comment visible to client",
   "admin/return-app.return-request-details.update-status.button.comment": "Add comment",
-  "admin/return-app.return-request-details.update-status.button.update-status": "Update status"
+  "admin/return-app.return-request-details.update-status.button.update-status": "Update status",
+  "admin/return-app-status.new": "New",
+  "admin/return-app-status.processing": "Processing",
+  "admin/return-app-status.pickedup-from-client": "pickedUpFromClient",
+  "admin/return-app-status.pending-verification": "Pending verification",
+  "admin/return-app-status.package-verified": "Package Verified",
+  "admin/return-app-status.refunded": "Refunded",
+  "admin/return-app-status.denied": "Denied"
 }
