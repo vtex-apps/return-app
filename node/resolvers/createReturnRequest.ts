@@ -1,9 +1,14 @@
-import { UserInputError } from '@vtex/api'
+import { UserInputError, ResolverError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
+import { isUserAllowed } from '../utils/isUserAllowed'
+import { canOrderBeReturned } from '../utils/canOrderBeReturned'
+import { canReturnAllItems } from '../utils/canReturnAllItems'
+import { validateReturnReason } from '../utils/validateReturnReason'
+import { validatePaymentMethod } from '../utils/validatePaymentMethod'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -35,6 +40,11 @@ export const createReturnRequest = async (
     throw new UserInputError('There is no items in the request')
   }
 
+  // For requests where orderId is an empty string
+  if (!orderId) {
+    throw new UserInputError('Order ID is missing')
+  }
+
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
   const searchRMAPromise = returnRequestClient.searchRaw(
@@ -54,10 +64,9 @@ export const createReturnRequest = async (
     settingsPromise,
   ])
 
-  // TODO: VALIDATE ORDER. Is the user allowed to place the order? Is the order invoiced? Is the order within the max days?
-  // TODO: VALIDATE ITEMS. Are the items available to be returned?
-  // TODO: VALIDATE REASONS and Max days. Are the items avaible to be returned?
-  // TODO: VALIDATE configutarion on settings - payment methods allowed (also bank should have iban and accountHolder name), other reasons or custom reasons
+  if (!settings) {
+    throw new ResolverError('Return App settings is not configured', 500)
+  }
 
   const {
     pagination: { total },
@@ -65,10 +74,39 @@ export const createReturnRequest = async (
 
   const {
     sequence,
-    clientProfileData: { userProfileId },
+    clientProfileData,
     items: orderItems,
     totals,
+    creationDate,
+    status,
   } = order
+
+  const { maxDays, excludedCategories, customReturnReasons, paymentOptions } =
+    settings
+
+  isUserAllowed({
+    requesterUser: userProfile,
+    clientProfile: clientProfileData,
+  })
+
+  canOrderBeReturned({
+    creationDate,
+    maxDays,
+    status,
+  })
+
+  // Validate if all items are available to be returned
+  await canReturnAllItems(items, {
+    order,
+    excludedCategories,
+    returnRequestClient,
+  })
+
+  // Validate maxDays for custom reasons.
+  validateReturnReason(items, creationDate, customReturnReasons)
+
+  // Validate payment methods
+  validatePaymentMethod(refundPaymentData, paymentOptions)
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
@@ -95,7 +133,7 @@ export const createReturnRequest = async (
     status: 'new',
     refundableAmountTotals,
     customerProfileData: {
-      userId: userProfileId,
+      userId: clientProfileData.userProfileId,
       name: customerProfileData.name,
       /**
        * Why using email from args and not for userProfile (session)?

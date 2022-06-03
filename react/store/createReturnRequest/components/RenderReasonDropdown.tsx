@@ -1,27 +1,33 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 import { Dropdown, Textarea } from 'vtex.styleguide'
 
+import { getReasonOptions } from '../../../common/constants/returnsRequest'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
+import { generateCustomReasonOptions } from '../../utils/generateCustomReasonOptions'
 
 interface Props {
   reason: string
   otherReason: string
   onReasonChange: (reason: string, otherReason?: string) => void
   isExcluded: boolean
+  creationDate?: string
 }
 
-export const RenderReasonDropdown = ({
-  reason,
-  otherReason,
-  onReasonChange,
-  isExcluded,
-}: Props) => {
-  const { formatMessage } = useIntl()
+export const RenderReasonDropdown = (props: Props) => {
+  const { reason, otherReason, onReasonChange, isExcluded, creationDate } =
+    props
 
+  const { formatMessage } = useIntl()
   const { data: settings } = useStoreSettings()
+  const {
+    culture: { locale },
+  } = useRuntime()
+
+  const customReturnReasons = settings?.customReturnReasons
 
   const handleReasonChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -35,70 +41,17 @@ export const RenderReasonDropdown = ({
     onReasonChange('otherReason', value)
   }
 
-  const reasonOptions = [
-    {
-      value: 'reasonAccidentalOrder',
-      label: formatMessage(defaultReturnReasonsMessages.reasonAccidentalOrder),
-    },
-    {
-      value: 'reasonBetterPrice',
-      label: formatMessage(defaultReturnReasonsMessages.reasonBetterPrice),
-    },
-    {
-      value: 'reasonPerformance',
-      label: formatMessage(defaultReturnReasonsMessages.reasonPerformance),
-    },
-    {
-      value: 'reasonIncompatible',
-      label: formatMessage(defaultReturnReasonsMessages.reasonIncompatible),
-    },
-    {
-      value: 'reasonItemDamaged',
-      label: formatMessage(defaultReturnReasonsMessages.reasonItemDamaged),
-    },
-    {
-      value: 'reasonMissedDelivery',
-      label: formatMessage(defaultReturnReasonsMessages.reasonMissedDelivery),
-    },
-    {
-      value: 'reasonMissingParts',
-      label: formatMessage(defaultReturnReasonsMessages.reasonMissingParts),
-    },
-    {
-      value: 'reasonBoxDamaged',
-      label: formatMessage(defaultReturnReasonsMessages.reasonBoxDamaged),
-    },
-    {
-      value: 'reasonDifferentProduct',
-      label: formatMessage(defaultReturnReasonsMessages.reasonDifferentProduct),
-    },
-    {
-      value: 'reasonDefective',
-      label: formatMessage(defaultReturnReasonsMessages.reasonDefective),
-    },
-    {
-      value: 'reasonArrivedInAddition',
-      label: formatMessage(
-        defaultReturnReasonsMessages.reasonArrivedInAddition
-      ),
-    },
-    {
-      value: 'reasonNoLongerNeeded',
-      label: formatMessage(defaultReturnReasonsMessages.reasonNoLongerNeeded),
-    },
-    {
-      value: 'reasonUnauthorizedPurchase',
-      label: formatMessage(
-        defaultReturnReasonsMessages.reasonUnauthorizedPurchase
-      ),
-    },
-    {
-      value: 'reasonDifferentFromWebsite',
-      label: formatMessage(
-        defaultReturnReasonsMessages.reasonDifferentFromWebsite
-      ),
-    },
-  ]
+  let reasonOptions: Array<{ value: string; label: string }>
+
+  if (customReturnReasons && customReturnReasons.length > 0 && creationDate) {
+    reasonOptions = generateCustomReasonOptions(
+      customReturnReasons,
+      locale,
+      creationDate
+    )
+  } else {
+    reasonOptions = getReasonOptions(formatMessage)
+  }
 
   if (settings?.options?.enableOtherOptionSelection) {
     reasonOptions.push({
