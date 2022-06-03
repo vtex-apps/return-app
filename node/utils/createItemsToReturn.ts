@@ -30,7 +30,7 @@ const calculateItemTax = ({
     return acc + taxValue
   }, 0)
 
-  return parseFloat((taxValueFromTaxHub / quantity).toFixed(2)) * 100
+  return parseFloat((taxValueFromTaxHub / quantity).toFixed(0))
 }
 
 export const createItemsToReturn = (

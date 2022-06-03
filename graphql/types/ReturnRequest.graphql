@@ -135,7 +135,7 @@ type ReturnReason {
 
 type RefundData {
   invoiceNumber: String!
-  invoiceValue: String!
+  invoiceValue: Int!
   refundedItemsValue: Int!
   refundedShippingValue: Int!
   giftCard: GiftCard
@@ -143,14 +143,15 @@ type RefundData {
 }
 
 type GiftCard {
-  id: String
-  code: String
+  id: String!
+  redemptionCode: String!
 }
 
 type RefundItem {
   orderItemIndex: Int!
   quantity: Int!
-  restockFee: Int
+  restockFee: Int!
+  price: Int!
 }
 
 type RefundStatusData {
@@ -183,6 +184,22 @@ input DateRangeInput {
 type ReturnRequestList {
   list: [ReturnRequestResponse!]
   paging: Pagination
+}
+
+input RefundDataInput {
+  items: [RefundItemInput!]!
+  refundedShippingValue: Int!
+}
+
+input RefundItemInput {
+  orderItemIndex: Int!
+  quantity: Int!
+  restockFee: Int!
+}
+
+input ReturnRequestCommentInput {
+  value: String!
+  visibleForCustomer: Boolean!
 }
 
 type RefundableAmountTotal {

@@ -154,10 +154,12 @@
           "type": "object",
           "properties": {
             "id": {
-              "type": "string"
+              "type": "string",
+              "required": true
             },
-            "code": {
-              "type": "string"
+            "redemptionCode": {
+              "type": "string",
+              "required": true
             }
           }
         },
@@ -168,7 +170,7 @@
             "type": "object",
             "properties": {
               "orderItemIndex": { "type": "integer", "required": true },
-              "id": { "type": "integer", "required": true },
+              "id": { "type": "string", "required": true },
               "price": { "type": "integer", "required": true },
               "quantity": { "type": "integer", "required": true },
               "restockFee": { "type": "integer", "required": true }
@@ -203,7 +205,7 @@
                   "required": true
                 },
                 "submittedBy": { "type": "string", "required": true },
-                "visibleForCustomer": { "type": "boolean" }
+                "visibleForCustomer": { "type": "boolean", "required": true }
               }
             }
           }

@@ -24,4 +24,10 @@ type Mutation {
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
     @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
+  updateReturnRequestStatus(
+    requestId: ID!
+    status: Status!
+    comment: ReturnRequestCommentInput
+    refundData: RefundDataInput
+  ): [RefundStatusData] @withUserProfile
 }
