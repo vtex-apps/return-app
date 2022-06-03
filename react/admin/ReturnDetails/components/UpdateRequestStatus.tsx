@@ -3,15 +3,8 @@ import React, { useState } from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown, Textarea, Checkbox, Button } from 'vtex.styleguide'
-import type {
-  Status,
-  RefundStatusData,
-  MutationUpdateReturnRequestStatusArgs,
-} from 'vtex.return-app'
-import { useMutation } from 'react-apollo'
+import type { Status } from 'vtex.return-app'
 
-import UPDATE_RETURN_STATUS from '../../../graphql/updateReturnRequestStatus.gql'
-import { useAlert } from '../../hooks/userAlert'
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 
 const statusAllowed: Record<Status, Status[]> = {
@@ -52,54 +45,32 @@ export const UpdateRequestStatus = () => {
   const [comment, setComment] = useState('')
   const [visibleForCustomer, setVisibleForCustomer] = useState(false)
   const { formatMessage } = useIntl()
-  const { openAlert } = useAlert()
-  const { data } = useReturnDetails()
+  const { data, submitting, handleStatusUpdate } = useReturnDetails()
 
-  const [updateReturnStatus, { loading }] = useMutation<
-    {
-      updateReturnRequestStatus: RefundStatusData
-    },
-    MutationUpdateReturnRequestStatusArgs
-  >(UPDATE_RETURN_STATUS)
+  const cleanUp = () => {
+    setComment('')
+    setVisibleForCustomer(false)
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (loading || selectedStatus === '' || !data?.returnRequestDetails) return
+    if (submitting || selectedStatus === '' || !data?.returnRequestDetails) {
+      return
+    }
 
     const newComment = !comment
-      ? null
+      ? undefined
       : {
           value: comment,
           visibleForCustomer,
         }
 
-    try {
-      const { errors, data: mutationData } = await updateReturnStatus({
-        variables: {
-          requestId: data?.returnRequestDetails?.id,
-          status: selectedStatus,
-          ...(newComment ? { comment: newComment } : {}),
-        },
-      })
-
-      if (errors) {
-        throw new Error('Error updating return request status')
-      }
-
-      openAlert(
-        'success',
-        <FormattedMessage id="admin/return-app.return-request-details.update-status.alert.success" />
-      )
-      setVisibleForCustomer(false)
-      setComment('')
-      // eslint-disable-next-line no-console
-      console.log({ mutationData })
-    } catch {
-      openAlert(
-        'error',
-        <FormattedMessage id="admin/return-app.return-request-details.update-status.alert.error" />
-      )
-    }
+    handleStatusUpdate({
+      id: data.returnRequestDetails?.id,
+      status: selectedStatus,
+      comment: newComment,
+      cleanUp,
+    })
   }
 
   const handleStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -177,7 +148,7 @@ export const UpdateRequestStatus = () => {
               !selectedStatus ||
               (selectedStatus === data.returnRequestDetails.status && !comment)
             }
-            isLoading={loading}
+            isLoading={submitting}
           >
             {updateStatus ? (
               <FormattedMessage id="admin/return-app.return-request-details.update-status.button.update-status" />
