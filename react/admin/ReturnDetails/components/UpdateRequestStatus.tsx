@@ -12,6 +12,7 @@ import { useMutation } from 'react-apollo'
 
 import UPDATE_RETURN_STATUS from '../../../graphql/updateReturnRequestStatus.gql'
 import { useAlert } from '../../hooks/userAlert'
+import { useReturnDetails } from '../../hooks/useReturnDetails'
 
 const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'denied'],
@@ -46,17 +47,13 @@ const createStatusOptions = (
   }))
 }
 
-interface Props {
-  currentStatus: Status
-  requestId: string
-}
-
-export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
+export const UpdateRequestStatus = () => {
   const [selectedStatus, setSelectedStatus] = useState<Status | ''>('')
   const [comment, setComment] = useState('')
   const [visibleForCustomer, setVisibleForCustomer] = useState(false)
   const { formatMessage } = useIntl()
   const { openAlert } = useAlert()
+  const { data } = useReturnDetails()
 
   const [updateReturnStatus, { loading }] = useMutation<
     {
@@ -67,7 +64,7 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (loading || selectedStatus === '') return
+    if (loading || selectedStatus === '' || !data?.returnRequestDetails) return
 
     const newComment = !comment
       ? null
@@ -77,9 +74,9 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
         }
 
     try {
-      const { errors, data } = await updateReturnStatus({
+      const { errors, data: mutationData } = await updateReturnStatus({
         variables: {
-          requestId,
+          requestId: data?.returnRequestDetails?.id,
           status: selectedStatus,
           ...(newComment ? { comment: newComment } : {}),
         },
@@ -96,7 +93,7 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
       setVisibleForCustomer(false)
       setComment('')
       // eslint-disable-next-line no-console
-      console.log({ data })
+      console.log({ mutationData })
     } catch {
       openAlert(
         'error',
@@ -125,7 +122,10 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
     setVisibleForCustomer(checked)
   }
 
-  const updateStatus = selectedStatus && selectedStatus !== currentStatus
+  const updateStatus =
+    selectedStatus && selectedStatus !== data?.returnRequestDetails.status
+
+  if (!data) return null
 
   return (
     <section>
@@ -142,7 +142,10 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
             placeholder={formatMessage({
               id: 'admin/return-app.return-request-details.update-status.dropdown.placeholder',
             })}
-            options={createStatusOptions(currentStatus, formatMessage)}
+            options={createStatusOptions(
+              data.returnRequestDetails.status,
+              formatMessage
+            )}
             value={selectedStatus}
             onChange={handleStatusChange}
           />
@@ -171,7 +174,8 @@ export const UpdateRequestStatus = ({ currentStatus, requestId }: Props) => {
             variation="primary"
             size="small"
             disabled={
-              !selectedStatus || (selectedStatus === currentStatus && !comment)
+              !selectedStatus ||
+              (selectedStatus === data.returnRequestDetails.status && !comment)
             }
             isLoading={loading}
           >
