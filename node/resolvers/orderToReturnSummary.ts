@@ -1,11 +1,10 @@
-import { ForbiddenError, ResolverError } from '@vtex/api'
+import { ResolverError, UserInputError } from '@vtex/api'
 import type { OrderToReturnSummary } from 'vtex.return-app'
 
-import { ORDER_TO_RETURN_VALIDATON, SETTINGS_PATH } from '../utils/constants'
+import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
-import { isWithinMaxDaysToReturn } from '../utils/dateHelpers'
-
-const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
+import { isUserAllowed } from '../utils/isUserAllowed'
+import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -25,35 +24,27 @@ export const orderToReturnSummary = async (
   }
 
   const { maxDays, excludedCategories } = settings
-  const { userId, role, email } = userProfile
+  const { email } = userProfile
+
+  // For requests where orderId is an empty string
+  if (!orderId) {
+    throw new UserInputError('Order ID is missing')
+  }
 
   const order = await oms.order(orderId)
 
-  const {
+  const { creationDate, clientProfileData, status } = order
+
+  isUserAllowed({
+    requesterUser: userProfile,
+    clientProfile: clientProfileData,
+  })
+
+  canOrderBeReturned({
     creationDate,
-    clientProfileData: { userProfileId },
+    maxDays,
     status,
-  } = order
-
-  const orderBelongsToUser = userId === userProfileId
-  const userIsAdmin = role === 'admin'
-
-  // User should only be able to see their order.
-  if (!orderBelongsToUser && !userIsAdmin) {
-    throw new ForbiddenError('User cannot access this order')
-  }
-
-  if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
-    throw new ResolverError(
-      'Order is not within max days to return',
-      400,
-      OUT_OF_MAX_DAYS
-    )
-  }
-
-  if (status !== 'invoiced') {
-    throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
-  }
+  })
 
   return createOrdersToReturnSummary(order, email, {
     excludedCategories,
