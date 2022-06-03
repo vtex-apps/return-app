@@ -1,0 +1,7 @@
+query getRequestDetailsAdmin($requestId: ID!) {
+  returnRequestDetails: returnRequest(requestId: $requestId)
+    @context(provider: "vtex.return-app") {
+    id
+    status
+  }
+}

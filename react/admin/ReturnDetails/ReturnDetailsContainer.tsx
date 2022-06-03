@@ -9,13 +9,11 @@ import {
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
-import { useReturnRequestDetails } from '../../hooks/useReturnRequestDetails'
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
-import type { CustomRouteProps } from '../AdminReturnDetails'
+import { useReturnDetails } from '../hooks/useReturnDetails'
 
-export const ReturnDetailsContainer = (props: CustomRouteProps) => {
-  const { returnDetailsData } = useReturnRequestDetails(props.params.id)
-  const { loading, error, data } = returnDetailsData
+export const ReturnDetailsContainer = () => {
+  const { data, error, loading } = useReturnDetails()
 
   const { navigate } = useRuntime()
 
@@ -52,10 +50,7 @@ export const ReturnDetailsContainer = (props: CustomRouteProps) => {
         {!data?.returnRequestDetails ? null : (
           <>
             <div>Status {data.returnRequestDetails.status}</div>
-            <UpdateRequestStatus
-              currentStatus={data.returnRequestDetails.status}
-              requestId={props.params.id}
-            />
+            <UpdateRequestStatus />
           </>
         )}
       </PageBlock>
