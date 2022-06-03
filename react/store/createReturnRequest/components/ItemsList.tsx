@@ -7,9 +7,12 @@ import { CustomMessage } from './layout/CustomMessage'
 
 interface Props {
   items: ItemToReturn[]
+  creationDate?: string
 }
 
-export const ItemsList = ({ items }: Props) => {
+export const ItemsList = (props: Props) => {
+  const { items, creationDate } = props
+
   const { inputErrors } = useReturnRequest()
 
   const noItemSelected = inputErrors.some(
@@ -42,7 +45,11 @@ export const ItemsList = ({ items }: Props) => {
       </thead>
       <tbody className="v-mid">
         {items.map((item) => (
-          <ItemsDetails key={item.id} {...item} />
+          <ItemsDetails
+            key={item.id}
+            itemToReturn={item}
+            creationDate={creationDate}
+          />
         ))}
       </tbody>
       {noItemSelected ? (
