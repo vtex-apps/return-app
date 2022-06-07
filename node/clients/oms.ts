@@ -25,15 +25,6 @@ type InputInvoiceFields = Omit<
   'invoiceKey' | 'invoiceUrl' | 'courier' | 'trackingNumber' | 'trackingUrl'
 >
 
-interface OrderListParams {
-  clientEmail: string
-  orderBy: 'creationDate,desc'
-  f_status: 'invoiced'
-  f_creationDate: string
-  page: number
-  per_page: 10
-}
-
 export class OMSCustom extends OMS {
   constructor(ctx: IOContext, options?: InstanceOptions) {
     super(ctx, {
@@ -44,10 +35,9 @@ export class OMSCustom extends OMS {
     })
   }
 
-  public listOrdersWithParams(params?: OrderListParams) {
-    return this.http.get<OrderList>(routes.orders, {
+  public listOrdersWithParams(params?: string) {
+    return this.http.get<OrderList>(`${routes.orders}?${params}`, {
       metric: 'oms-list-order-with-params',
-      ...(params ? { params } : {}),
     })
   }
 

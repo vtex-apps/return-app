@@ -26,17 +26,12 @@ const createParams = ({
 }) => {
   const currentDate = getCurrentDate()
 
-  return {
-    clientEmail: userEmail,
-    orderBy: 'creationDate,desc' as const,
-    f_status: 'invoiced' as const,
-    f_creationDate: `creationDate:[${substractDays(
-      currentDate,
-      maxDays
-    )} TO ${currentDate}]`,
-    page,
-    per_page: 10 as const,
-  }
+  const encodedEmail = encodeURIComponent(userEmail)
+
+  return `clientEmail=${encodedEmail}&orderBy=creationDate,desc&f_status=invoiced&f_creationDate=creationDate:[${substractDays(
+    currentDate,
+    maxDays
+  )} TO ${currentDate}]&page=${page}&per_page=100`
 }
 
 export const ordersAvailableToReturn = async (
