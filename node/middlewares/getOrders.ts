@@ -6,7 +6,14 @@ export async function getOrders(ctx: Context, next: () => Promise<any>) {
 
   const { where } = ctx.vtex.route.params
 
-  const response = await returnAppClient.getOrders(ctx, where)
+  const whereWithEncodedClientEmail = encodeURIComponent(
+    where.slice(where.indexOf('clientEmail='), where.indexOf('&')) as string
+  )
+
+  const response = await returnAppClient.getOrders(
+    ctx,
+    whereWithEncodedClientEmail
+  )
 
   if (!response) {
     throw new Error(`Error getting orders`)
