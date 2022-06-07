@@ -3,5 +3,12 @@ query getRequestDetailsAdmin($requestId: ID!) {
     @context(provider: "vtex.return-app") {
     id
     status
+    items {
+      orderItemIndex
+      name
+      sellingPrice
+      tax
+      quantity
+    }
   }
 }

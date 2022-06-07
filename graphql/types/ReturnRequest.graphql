@@ -126,6 +126,7 @@ type ReturnRequestItem {
   id: String!
   sellingPrice: Int!
   tax: Int!
+  name: String!
 }
 
 type ReturnReason {
