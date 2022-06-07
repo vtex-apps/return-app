@@ -11,16 +11,18 @@ import { useRuntime } from 'vtex.render-runtime'
 
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 import { useReturnDetails } from '../hooks/useReturnDetails'
-import { VerifyItemsModal } from './components/VerifyItemsModal'
+import { VerifyItemsPage } from './components/VerifyItemsPage'
+
+type Pages = 'return-details' | 'verify-items'
 
 export const ReturnDetailsContainer = () => {
-  const [viewVerifyItems, setViewVerifyItems] = useState(false)
+  const [detailsPage, setDetailsPage] = useState<Pages>('return-details')
   const { data, error, loading } = useReturnDetails()
 
   const { navigate } = useRuntime()
 
-  const handleViewVerifyItems = () => {
-    setViewVerifyItems(!viewVerifyItems)
+  const handleViewVerifyItems = (page: Pages) => {
+    setDetailsPage(page)
   }
 
   return (
@@ -43,7 +45,7 @@ export const ReturnDetailsContainer = () => {
       }
     >
       <PageBlock variation="full" fit="fill">
-        {!error ? null : (
+        {error ? (
           <EmptyState
             title={
               <FormattedMessage id="admin/return-app.return-request-details.error.title" />
@@ -51,18 +53,29 @@ export const ReturnDetailsContainer = () => {
           >
             <FormattedMessage id="admin/return-app.return-request-details.error.description" />
           </EmptyState>
-        )}
-        {loading ? <Spinner /> : null}
-        {!data?.returnRequestDetails ? null : (
+        ) : loading ? (
+          <Spinner />
+        ) : !data?.returnRequestDetails ? null : (
           <>
-            <div>Status {data.returnRequestDetails.status}</div>
-            <UpdateRequestStatus onViewVerifyItems={handleViewVerifyItems} />
+            {detailsPage !== 'return-details' ? null : (
+              <>
+                <div>Status {data.returnRequestDetails.status}</div>
+                <UpdateRequestStatus
+                  onViewVerifyItems={() =>
+                    handleViewVerifyItems('verify-items')
+                  }
+                />
+              </>
+            )}
+            {detailsPage !== 'verify-items' ? null : (
+              <VerifyItemsPage
+                onViewVerifyItems={() =>
+                  handleViewVerifyItems('return-details')
+                }
+              />
+            )}
           </>
         )}
-        <VerifyItemsModal
-          isOpen={viewVerifyItems}
-          onViewVerifyItems={handleViewVerifyItems}
-        />
       </PageBlock>
     </Layout>
   )
