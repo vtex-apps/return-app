@@ -40,7 +40,11 @@ const createStatusOptions = (
   }))
 }
 
-export const UpdateRequestStatus = () => {
+interface Props {
+  onViewVerifyItems: () => void
+}
+
+export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
   const [selectedStatus, setSelectedStatus] = useState<Status | ''>('')
   const [comment, setComment] = useState('')
   const [visibleForCustomer, setVisibleForCustomer] = useState(false)
@@ -156,6 +160,13 @@ export const UpdateRequestStatus = () => {
               <FormattedMessage id="admin/return-app.return-request-details.update-status.button.comment" />
             )}
           </Button>
+          {data.returnRequestDetails.status === 'pendingVerification' ? (
+            <span className="ml4">
+              <Button type="button" onClick={onViewVerifyItems} size="small">
+                <FormattedMessage id="admin/return-app.return-request-details.verify-items.button" />
+              </Button>
+            </span>
+          ) : null}
         </div>
       </form>
     </section>

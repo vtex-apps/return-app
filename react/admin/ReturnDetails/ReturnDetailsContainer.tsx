@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Layout,
   PageHeader,
@@ -11,11 +11,17 @@ import { useRuntime } from 'vtex.render-runtime'
 
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 import { useReturnDetails } from '../hooks/useReturnDetails'
+import { VerifyItemsModal } from './components/VerifyItemsModal'
 
 export const ReturnDetailsContainer = () => {
+  const [viewVerifyItems, setViewVerifyItems] = useState(false)
   const { data, error, loading } = useReturnDetails()
 
   const { navigate } = useRuntime()
+
+  const handleViewVerifyItems = () => {
+    setViewVerifyItems(!viewVerifyItems)
+  }
 
   return (
     <Layout
@@ -50,9 +56,13 @@ export const ReturnDetailsContainer = () => {
         {!data?.returnRequestDetails ? null : (
           <>
             <div>Status {data.returnRequestDetails.status}</div>
-            <UpdateRequestStatus />
+            <UpdateRequestStatus onViewVerifyItems={handleViewVerifyItems} />
           </>
         )}
+        <VerifyItemsModal
+          isOpen={viewVerifyItems}
+          onViewVerifyItems={handleViewVerifyItems}
+        />
       </PageBlock>
     </Layout>
   )

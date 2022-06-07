@@ -347,5 +347,8 @@
   "admin/return-app-status.pending-verification": "Pending verification",
   "admin/return-app-status.package-verified": "Package Verified",
   "admin/return-app-status.refunded": "Refunded",
-  "admin/return-app-status.denied": "Denied"
+  "admin/return-app-status.denied": "Denied",
+  "admin/return-app.return-request-details.verify-items.button": "verify Items",
+  "admin/return-app.return-request-details.verify-items.modal.confirm": "Update status",
+  "admin/return-app.return-request-details.verify-items.modal.cancel": "Cancel"
 }
