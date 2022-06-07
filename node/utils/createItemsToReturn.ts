@@ -46,13 +46,14 @@ export const createItemsToReturn = (
       )
     }
 
-    const { id, sellingPrice, tax, priceTags, quantity } = orderItem
+    const { id, sellingPrice, tax, priceTags, quantity, name } = orderItem
 
     return {
       ...item,
       id,
       sellingPrice,
       tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
+      name,
     }
   })
 }

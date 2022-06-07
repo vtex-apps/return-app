@@ -350,6 +350,7 @@
   "admin/return-app-status.refunded": "Refunded",
   "admin/return-app-status.denied": "Denied",
   "admin/return-app.return-request-details.verify-items.button": "verify Items",
-  "admin/return-app.return-request-details.verify-items.modal.confirm": "Update status",
-  "admin/return-app.return-request-details.verify-items.modal.cancel": "Cancel"
+  "admin/return-app.return-request-details.verify-items.action.confirm": "Update status",
+  "admin/return-app.return-request-details.verify-items.action.cancel": "Cancel",
+  "admin/return-app.return-request-details.verify-items.title": "Verify Items"
 }

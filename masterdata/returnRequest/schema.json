@@ -111,6 +111,7 @@
         "properties": {
           "orderItemIndex": { "type": "integer", "required": true },
           "id": { "type": "string", "required": true },
+          "name": { "type": "string", "required": true },
           "sellingPrice": { "type": "integer", "required": true },
           "tax": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
