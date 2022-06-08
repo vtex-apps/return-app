@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react'
 import React, { useState } from 'react'
 import {
   Table,
@@ -39,19 +40,19 @@ const ProductActionStatus = ({
       {actionStatus !== 'approve' ? null : (
         <div>
           <IconSuccess size={14} />
-          <p>Approve</p>
+          <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.approve" />
         </div>
       )}
       {actionStatus !== 'deny' ? null : (
         <div>
           <IconFailure size={14} />
-          <p>Deny</p>
+          <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.deny" />
         </div>
       )}
       {actionStatus !== 'partially-approve' ? null : (
         <div>
           <IconWarning size={14} />
-          <p>Partially approve</p>
+          <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.partially-approve" />
         </div>
       )}
     </>
@@ -60,13 +61,24 @@ const ProductActionStatus = ({
 
 type RefundItemMap = Map<number, { quantity: number; restockFee: number }>
 
-const verifyItemsTableSchema = (refundItemMap: RefundItemMap) => ({
+const verifyItemsTableSchema = (
+  refundItemMap: RefundItemMap,
+  updateChanges: (args: {
+    orderItemIndex: number
+    restockFee?: number
+    quantity?: number
+  }) => void
+) => ({
   properties: {
     name: {
-      title: 'Product',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.product" />
+      ),
     },
     sellingPrice: {
-      title: 'Price',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.price" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -79,7 +91,9 @@ const verifyItemsTableSchema = (refundItemMap: RefundItemMap) => ({
       },
     },
     tax: {
-      title: 'unitTax',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.tax" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -92,7 +106,9 @@ const verifyItemsTableSchema = (refundItemMap: RefundItemMap) => ({
       },
     },
     totalPrice: {
-      title: 'Total',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { sellingPrice, tax } = rowData
@@ -102,7 +118,9 @@ const verifyItemsTableSchema = (refundItemMap: RefundItemMap) => ({
       },
     },
     quantity: {
-      title: 'Quantity',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.quantity" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -114,50 +132,90 @@ const verifyItemsTableSchema = (refundItemMap: RefundItemMap) => ({
       },
     },
     verified: {
-      title: 'Verified',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.verified" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
-        const { quantity } = rowData
+        const { orderItemIndex, quantity } = rowData
 
-        return <NumericStepper maxValue={quantity} />
+        const handleChange = ({ value }: { value: number }) => {
+          updateChanges({ quantity: value, orderItemIndex })
+        }
+
+        const selectedQuantity =
+          refundItemMap.get(orderItemIndex)?.quantity ?? 0
+
+        return (
+          <NumericStepper
+            value={selectedQuantity}
+            maxValue={quantity}
+            onChange={handleChange}
+          />
+        )
       },
     },
     restockFee: {
-      title: 'Restock Fee',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.restock-fee" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
-        const { sellingPrice, tax } = rowData
+        const { sellingPrice, tax, orderItemIndex } = rowData
+
+        const refundItem = refundItemMap.get(orderItemIndex)
+        const restockFee = refundItem?.restockFee ?? 0
+        const selectedQuantity = refundItem?.quantity ?? 0
+
+        const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+          const { value } = event.target
+          const restockFeeInput = Number(value)
+
+          if (Number.isNaN(restockFeeInput)) return
+
+          const restockFeeCents = parseFloat((restockFeeInput * 100).toFixed(0))
+
+          if (restockFeeCents > (sellingPrice + tax) * selectedQuantity) return
+
+          updateChanges({ restockFee: restockFeeCents, orderItemIndex })
+        }
 
         // TODO: Refactor this with right currency symbol and locale
         return (
           <InputCurrency
-            value={100}
+            value={restockFee / 100}
             currencyCode="EUR"
             locale="es-ES"
-            max={(sellingPrice + tax) / 100}
+            onChange={handleChange}
+            disabled={selectedQuantity === 0}
           />
         )
       },
     },
     totalRefund: {
-      title: 'Total',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.refund-product-total" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { sellingPrice, tax, orderItemIndex } = rowData
 
-        const selectedQuantity =
-          refundItemMap.get(orderItemIndex)?.quantity ?? 0
+        const refundItem = refundItemMap.get(orderItemIndex)
+        const selectedQuantity = refundItem?.quantity ?? 0
+        const restockFee = refundItem?.restockFee ?? 0
 
         // TODO: Refactor this with right currency symbol and locale
         return (
           <FormattedCurrency
-            value={((sellingPrice + tax) * selectedQuantity) / 100}
+            value={((sellingPrice + tax) * selectedQuantity - restockFee) / 100}
           />
         )
       },
     },
     action: {
-      title: 'Action',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.action" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { quantity, orderItemIndex } = rowData
@@ -179,9 +237,33 @@ interface Props {
 
 export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
   const { submitting, data } = useReturnDetails()
-  const [refundItemsInput] = useState<RefundItemMap>(new Map())
+  const [refundItemsInput, setRefundItemsInput] = useState<RefundItemMap>(
+    new Map()
+  )
 
   const { items = [] } = data?.returnRequestDetails ?? {}
+
+  const handleChanges = ({
+    orderItemIndex,
+    restockFee,
+    quantity,
+  }: {
+    orderItemIndex: number
+    restockFee?: number
+    quantity?: number
+  }) => {
+    const updatedRefundItemMap = new Map(refundItemsInput)
+    const item = updatedRefundItemMap.get(orderItemIndex)
+    const itemQuantity = quantity ?? item?.quantity ?? 0
+    const itemRestockFee = restockFee ?? item?.restockFee ?? 0
+
+    updatedRefundItemMap.set(orderItemIndex, {
+      quantity: itemQuantity,
+      restockFee: itemQuantity === 0 ? 0 : itemRestockFee,
+    })
+
+    setRefundItemsInput(updatedRefundItemMap)
+  }
 
   return (
     <>
@@ -191,7 +273,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
         </h2>
         <Table
           fullWidth
-          schema={verifyItemsTableSchema(refundItemsInput)}
+          schema={verifyItemsTableSchema(refundItemsInput, handleChanges)}
           items={items}
         />
       </section>

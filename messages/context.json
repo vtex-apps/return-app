@@ -352,5 +352,17 @@
   "admin/return-app.return-request-details.verify-items.button": "verify Items",
   "admin/return-app.return-request-details.verify-items.action.confirm": "Update status",
   "admin/return-app.return-request-details.verify-items.action.cancel": "Cancel",
-  "admin/return-app.return-request-details.verify-items.title": "Verify Items"
+  "admin/return-app.return-request-details.verify-items.title": "Verify Items",
+  "admin/return-app.return-request-details.verify-items.action.approve": "Approve",
+  "admin/return-app.return-request-details.verify-items.action.partially-approve": "Partially Approve",
+  "admin/return-app.return-request-details.verify-items.action.deny": "Deny",
+  "admin/return-app.return-request-details.verify-items.table.header.product": "Product",
+  "admin/return-app.return-request-details.verify-items.table.header.price": "Price",
+  "admin/return-app.return-request-details.verify-items.table.header.tax": "Tax",
+  "admin/return-app.return-request-details.verify-items.table.header.total": "Total",
+  "admin/return-app.return-request-details.verify-items.table.header.quantity": "Quantity",
+  "admin/return-app.return-request-details.verify-items.table.header.verified": "Verified",
+  "admin/return-app.return-request-details.verify-items.table.header.restock-fee": "Restock Fee",
+  "admin/return-app.return-request-details.verify-items.table.header.refund-product-total": "Refund total",
+  "admin/return-app.return-request-details.verify-items.table.header.action": "Action"
 }
