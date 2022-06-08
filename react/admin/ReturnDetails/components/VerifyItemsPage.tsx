@@ -171,13 +171,20 @@ const verifyItemsTableSchema = (
           const { value } = event.target
           const restockFeeInput = Number(value)
 
-          if (Number.isNaN(restockFeeInput)) return
+          const restockFeeInputParsed = Number.isNaN(restockFeeInput)
+            ? 0
+            : restockFeeInput
 
-          const restockFeeCents = parseFloat((restockFeeInput * 100).toFixed(0))
+          const restockFeeCents = parseFloat(
+            (restockFeeInputParsed * 100).toFixed(0)
+          )
 
-          if (restockFeeCents > (sellingPrice + tax) * selectedQuantity) return
+          const maxRestockFee = (sellingPrice + tax) * selectedQuantity
 
-          updateChanges({ restockFee: restockFeeCents, orderItemIndex })
+          const restockFeeChecked =
+            restockFeeCents > maxRestockFee ? maxRestockFee : restockFeeCents
+
+          updateChanges({ restockFee: restockFeeChecked, orderItemIndex })
         }
 
         // TODO: Refactor this with right currency symbol and locale
