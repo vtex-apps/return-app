@@ -10,5 +10,9 @@ query getRequestDetailsAdmin($requestId: ID!) {
       tax
       quantity
     }
+    refundableAmountTotals {
+      id
+      value
+    }
   }
 }
