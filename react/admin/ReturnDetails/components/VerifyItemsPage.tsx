@@ -238,6 +238,75 @@ const verifyItemsTableSchema = (
   },
 })
 
+const totalsSchema = (
+  handleShippingChanges: (shippingToRefundInput: number) => void
+) => ({
+  properties: {
+    refundableShipping: {
+      title: 'Refundable Shipping',
+      // eslint-disable-next-line react/display-name
+      cellRenderer: ({ cellData }: { cellData: number }) => {
+        // TODO: Refactor this with right currency symbol and locale
+        return <FormattedCurrency value={cellData / 100} />
+      },
+    },
+    shippingToRefund: {
+      title: 'Total Shipping to refund',
+      // eslint-disable-next-line react/display-name
+      cellRenderer: ({
+        cellData,
+        rowData,
+      }: {
+        cellData: number
+        rowData: { refundableShipping: number }
+      }) => {
+        const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+          const { refundableShipping } = rowData
+          const { value } = event.target
+          const shippingToRefundInput = Number(value)
+
+          const shippingToRefundParsed = Number.isNaN(shippingToRefundInput)
+            ? 0
+            : shippingToRefundInput * 100
+
+          const shippingToRefundChecked =
+            shippingToRefundParsed > refundableShipping
+              ? refundableShipping
+              : shippingToRefundParsed
+
+          handleShippingChanges(shippingToRefundChecked)
+        }
+
+        // TODO: Refactor this with right currency symbol and locale
+        return (
+          <InputCurrency
+            value={cellData / 100}
+            currencyCode="EUR"
+            locale="es-ES"
+            onChange={handleChange}
+          />
+        )
+      },
+    },
+    totalRefundItems: {
+      title: 'Total Products',
+      // eslint-disable-next-line react/display-name
+      cellRenderer: ({ cellData }: { cellData: number }) => {
+        // TODO: Refactor this with right currency symbol and locale
+        return <FormattedCurrency value={cellData / 100} />
+      },
+    },
+    totalRefund: {
+      title: 'Refund Total',
+      // eslint-disable-next-line react/display-name
+      cellRenderer: ({ cellData }: { cellData: number }) => {
+        // TODO: Refactor this with right currency symbol and locale
+        return <FormattedCurrency value={cellData / 100} />
+      },
+    },
+  },
+})
+
 interface Props {
   onViewVerifyItems: () => void
 }
@@ -248,9 +317,12 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
     new Map()
   )
 
-  const { items = [] } = data?.returnRequestDetails ?? {}
+  const [shippingToRefund, setShippingToRefund] = useState(0)
 
-  const handleChanges = ({
+  const { items = [], refundableAmountTotals = [] } =
+    data?.returnRequestDetails ?? {}
+
+  const handleItemChanges = ({
     orderItemIndex,
     restockFee,
     quantity,
@@ -272,17 +344,51 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
     setRefundItemsInput(updatedRefundItemMap)
   }
 
+  const handleShippingChanges = (shippingToRefundInput: number) => {
+    setShippingToRefund(shippingToRefundInput)
+  }
+
+  const refundableShipping =
+    refundableAmountTotals.find(({ id }) => id === 'shipping')?.value ?? 0
+
+  const totalRefundItems = items.reduce((total, item) => {
+    const { orderItemIndex, sellingPrice, tax } = item
+    const returningItem = refundItemsInput.get(orderItemIndex)
+    const { quantity = 0, restockFee = 0 } = returningItem ?? {}
+    const itemTotal = (sellingPrice + tax) * quantity - restockFee
+
+    return total + itemTotal
+  }, 0)
+
   return (
     <>
       <section>
         <h2>
           <FormattedMessage id="admin/return-app.return-request-details.verify-items.title" />
         </h2>
-        <Table
-          fullWidth
-          schema={verifyItemsTableSchema(refundItemsInput, handleChanges)}
-          items={items}
-        />
+        <div>
+          <h3>Items</h3>
+          <Table
+            fullWidth
+            schema={verifyItemsTableSchema(refundItemsInput, handleItemChanges)}
+            items={items}
+          />
+        </div>
+        <div>
+          <h3>Totals</h3>
+          <Table
+            fullWidth
+            schema={totalsSchema(handleShippingChanges)}
+            items={[
+              {
+                refundableShipping,
+                shippingToRefund,
+                totalRefundItems,
+                totalRefund: shippingToRefund + totalRefundItems,
+              },
+            ]}
+          />
+        </div>
       </section>
       <FloatingActionBar
         save={{
