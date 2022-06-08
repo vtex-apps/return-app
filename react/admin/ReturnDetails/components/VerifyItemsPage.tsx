@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Table,
   FloatingActionBar,
   InputCurrency,
   NumericStepper,
+  IconSuccess,
+  IconFailure,
+  IconWarning,
 } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 import type { ReturnRequestItem } from 'vtex.return-app'
@@ -11,7 +14,53 @@ import { FormattedCurrency } from 'vtex.format-currency'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 
-const verifyItemsTableSchema = {
+type ActionStatus = 'deny' | 'approve' | 'partially-approve'
+
+const getActionStatus = ({
+  quantity,
+  selectedQuantity,
+}: {
+  quantity: number
+  selectedQuantity: number
+}): ActionStatus =>
+  selectedQuantity === 0
+    ? 'deny'
+    : selectedQuantity === quantity
+    ? 'approve'
+    : 'partially-approve'
+
+const ProductActionStatus = ({
+  actionStatus,
+}: {
+  actionStatus: ActionStatus
+}) => {
+  return (
+    <>
+      {actionStatus !== 'approve' ? null : (
+        <div>
+          <IconSuccess size={14} />
+          <p>Approve</p>
+        </div>
+      )}
+      {actionStatus !== 'deny' ? null : (
+        <div>
+          <IconFailure size={14} />
+          <p>Deny</p>
+        </div>
+      )}
+      {actionStatus !== 'partially-approve' ? null : (
+        <div>
+          <IconWarning size={14} />
+          <p>Partially approve</p>
+        </div>
+      )}
+    </>
+  )
+}
+
+type RefundItemMap = Map<number, { quantity: number; restockFee: number }>
+
+const verifyItemsTableSchema = (refundItemMap: RefundItemMap) => ({
   properties: {
     name: {
       title: 'Product',
@@ -92,12 +141,37 @@ const verifyItemsTableSchema = {
     },
     totalRefund: {
       title: 'Total',
+      // eslint-disable-next-line react/display-name
+      cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
+        const { sellingPrice, tax, orderItemIndex } = rowData
+
+        const selectedQuantity =
+          refundItemMap.get(orderItemIndex)?.quantity ?? 0
+
+        // TODO: Refactor this with right currency symbol and locale
+        return (
+          <FormattedCurrency
+            value={((sellingPrice + tax) * selectedQuantity) / 100}
+          />
+        )
+      },
     },
-    status: {
-      title: 'status',
+    action: {
+      title: 'Action',
+      // eslint-disable-next-line react/display-name
+      cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
+        const { quantity, orderItemIndex } = rowData
+
+        const selectedQuantity =
+          refundItemMap.get(orderItemIndex)?.quantity ?? 0
+
+        const actionStatus = getActionStatus({ quantity, selectedQuantity })
+
+        return <ProductActionStatus actionStatus={actionStatus} />
+      },
     },
   },
-}
+})
 
 interface Props {
   onViewVerifyItems: () => void
@@ -105,6 +179,7 @@ interface Props {
 
 export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
   const { submitting, data } = useReturnDetails()
+  const [refundItemsInput] = useState<RefundItemMap>(new Map())
 
   const { items = [] } = data?.returnRequestDetails ?? {}
 
@@ -114,7 +189,11 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
         <h2>
           <FormattedMessage id="admin/return-app.return-request-details.verify-items.title" />
         </h2>
-        <Table fullWidth schema={verifyItemsTableSchema} items={items} />
+        <Table
+          fullWidth
+          schema={verifyItemsTableSchema(refundItemsInput)}
+          items={items}
+        />
       </section>
       <FloatingActionBar
         save={{
