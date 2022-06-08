@@ -243,7 +243,9 @@ const totalsSchema = (
 ) => ({
   properties: {
     refundableShipping: {
-      title: 'Refundable Shipping',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.refundable-shipping" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ cellData }: { cellData: number }) => {
         // TODO: Refactor this with right currency symbol and locale
@@ -251,7 +253,9 @@ const totalsSchema = (
       },
     },
     shippingToRefund: {
-      title: 'Total Shipping to refund',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -289,7 +293,9 @@ const totalsSchema = (
       },
     },
     totalRefundItems: {
-      title: 'Total Products',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ cellData }: { cellData: number }) => {
         // TODO: Refactor this with right currency symbol and locale
@@ -297,7 +303,9 @@ const totalsSchema = (
       },
     },
     totalRefund: {
-      title: 'Refund Total',
+      title: (
+        <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
+      ),
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ cellData }: { cellData: number }) => {
         // TODO: Refactor this with right currency symbol and locale
