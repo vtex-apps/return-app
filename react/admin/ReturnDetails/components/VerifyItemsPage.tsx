@@ -10,7 +10,7 @@ import {
   IconWarning,
 } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
-import type { ReturnRequestItem } from 'vtex.return-app'
+import type { ReturnRequestItem, RefundItemInput } from 'vtex.return-app'
 import { FormattedCurrency } from 'vtex.format-currency'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
@@ -320,15 +320,18 @@ interface Props {
 }
 
 export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
-  const { submitting, data } = useReturnDetails()
+  const { submitting, data, handleStatusUpdate } = useReturnDetails()
   const [refundItemsInput, setRefundItemsInput] = useState<RefundItemMap>(
     new Map()
   )
 
   const [shippingToRefund, setShippingToRefund] = useState(0)
 
-  const { items = [], refundableAmountTotals = [] } =
-    data?.returnRequestDetails ?? {}
+  const {
+    id: requestId,
+    items = [],
+    refundableAmountTotals = [],
+  } = data?.returnRequestDetails ?? {}
 
   const handleItemChanges = ({
     orderItemIndex,
@@ -354,6 +357,33 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
 
   const handleShippingChanges = (shippingToRefundInput: number) => {
     setShippingToRefund(shippingToRefundInput)
+  }
+
+  const onSave = async () => {
+    if (!requestId || submitting) return
+
+    const itemsToRefund: RefundItemInput[] = []
+
+    for (const [
+      orderItemIndex,
+      { quantity, restockFee },
+    ] of refundItemsInput.entries()) {
+      itemsToRefund.push({
+        orderItemIndex,
+        quantity,
+        restockFee,
+      })
+    }
+
+    handleStatusUpdate({
+      status: 'packageVerified',
+      id: requestId,
+      refundData: {
+        refundedShippingValue: shippingToRefund,
+        items: itemsToRefund,
+      },
+      cleanUp: onViewVerifyItems,
+    })
   }
 
   const refundableShipping =
@@ -404,7 +434,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
             <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.confirm" />
           ),
           isLoading: submitting,
-          onClick: () => {},
+          onClick: onSave,
         }}
         cancel={{
           label: (

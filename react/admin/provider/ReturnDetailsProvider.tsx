@@ -9,6 +9,7 @@ import type {
   MutationUpdateReturnRequestStatusArgs,
   ReturnRequestCommentInput,
   Status,
+  RefundDataInput,
 } from 'vtex.return-app'
 import { FormattedMessage } from 'react-intl'
 
@@ -29,6 +30,7 @@ interface HandleStatusUpdateArgs {
   id: string
   comment?: ReturnRequestCommentInput
   cleanUp?: () => void
+  refundData?: RefundDataInput
 }
 export interface CustomRouteProps {
   requestId: string
@@ -61,7 +63,7 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
   >(UPDATE_RETURN_STATUS)
 
   const handleStatusUpdate = async (args: HandleStatusUpdateArgs) => {
-    const { id, status, comment, cleanUp } = args
+    const { id, status, comment, cleanUp, refundData } = args
 
     try {
       const { errors, data: mutationData } = await updateReturnStatus({
@@ -69,6 +71,7 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
           requestId: id,
           status,
           ...(comment ? { comment } : {}),
+          ...(refundData ? { refundData } : {}),
         },
       })
 
