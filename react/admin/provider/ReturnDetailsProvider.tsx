@@ -5,7 +5,6 @@ import { useQuery, useMutation } from 'react-apollo'
 import type {
   ReturnRequestResponse,
   QueryReturnRequestArgs,
-  RefundStatusData,
   MutationUpdateReturnRequestStatusArgs,
   ReturnRequestCommentInput,
   Status,
@@ -45,7 +44,7 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
   children,
 }) => {
   const { openAlert } = useAlert()
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, updateQuery } = useQuery<
     { returnRequestDetails: ReturnRequestResponse },
     QueryReturnRequestArgs
   >(GET_REQUEST_DETAILS_ADMIN, {
@@ -57,7 +56,7 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
 
   const [updateReturnStatus, { loading: submitting }] = useMutation<
     {
-      updateReturnRequestStatus: RefundStatusData
+      updateReturnRequestStatus: ReturnRequestResponse
     },
     MutationUpdateReturnRequestStatusArgs
   >(UPDATE_RETURN_STATUS)
@@ -85,8 +84,10 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
       )
 
       cleanUp?.()
-      // eslint-disable-next-line no-console
-      console.log({ mutationData })
+      if (!mutationData) return
+      updateQuery(() => ({
+        returnRequestDetails: mutationData.updateReturnRequestStatus,
+      }))
     } catch {
       openAlert(
         'error',
