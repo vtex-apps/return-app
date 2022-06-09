@@ -367,5 +367,7 @@
   "admin/return-app.return-request-details.verify-items.table.header.refundable-shipping": "Refundable Shipping",
   "admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund": "Shipping to Refund",
   "admin/return-app.return-request-details.verify-items.table.header.total-refund-items": "Total Products",
-  "admin/return-app.return-request-details.verify-items.table.header.total-refund": "Refund Total"
+  "admin/return-app.return-request-details.verify-items.table.header.total-refund": "Refund Total",
+  "admin/return-app.return-request-details.verify-items.table.title.items": "Items",
+  "admin/return-app.return-request-details.verify-items.table.title.totals": "Totals"
 }

@@ -11,7 +11,7 @@ import { useRuntime } from 'vtex.render-runtime'
 
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 import { useReturnDetails } from '../hooks/useReturnDetails'
-import { VerifyItemsPage } from './components/VerifyItemsPage'
+import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 
 type Pages = 'return-details' | 'verify-items'
 
