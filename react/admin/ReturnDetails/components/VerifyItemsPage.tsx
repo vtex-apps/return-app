@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, FC } from 'react'
 import React, { useState } from 'react'
 import {
   Table,
@@ -30,6 +30,10 @@ const getActionStatus = ({
     ? 'approve'
     : 'partially-approve'
 
+const AlignItemRight: FC = ({ children }) => (
+  <span className="flex justify-end w-100">{children}</span>
+)
+
 const ProductActionStatus = ({
   actionStatus,
 }: {
@@ -38,20 +42,26 @@ const ProductActionStatus = ({
   return (
     <>
       {actionStatus !== 'approve' ? null : (
-        <div>
-          <IconSuccess size={14} />
+        <div className="c-success flex items-center">
+          <span className="mr2 flex">
+            <IconSuccess size={14} />
+          </span>
           <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.approve" />
         </div>
       )}
       {actionStatus !== 'deny' ? null : (
-        <div>
-          <IconFailure size={14} />
+        <div className="c-danger flex items-center">
+          <span className="mr2 flex">
+            <IconFailure size={14} />
+          </span>
           <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.deny" />
         </div>
       )}
       {actionStatus !== 'partially-approve' ? null : (
-        <div>
-          <IconWarning size={14} />
+        <div className="c-warning flex items-center">
+          <span className="mr2 flex">
+            <IconWarning size={14} />
+          </span>
           <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.partially-approve" />
         </div>
       )}
@@ -74,11 +84,14 @@ const verifyItemsTableSchema = (
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.product" />
       ),
+      minWidth: 320,
     },
     sellingPrice: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.price" />
       ),
+      width: 90,
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -87,13 +100,19 @@ const verifyItemsTableSchema = (
         cellData: ReturnRequestItem['sellingPrice']
       }) => {
         // TODO: Refactor this with right currency symbol and locale
-        return <FormattedCurrency value={cellData / 100} />
+        return (
+          <AlignItemRight>
+            <FormattedCurrency value={cellData / 100} />
+          </AlignItemRight>
+        )
       },
     },
     tax: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.tax" />
       ),
+      width: 90,
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -102,25 +121,36 @@ const verifyItemsTableSchema = (
         cellData: ReturnRequestItem['tax']
       }) => {
         // TODO: Refactor this with right currency symbol and locale
-        return <FormattedCurrency value={cellData / 100} />
+        return (
+          <AlignItemRight>
+            <FormattedCurrency value={cellData / 100} />
+          </AlignItemRight>
+        )
       },
     },
     totalPrice: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total" />
       ),
+      width: 90,
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { sellingPrice, tax } = rowData
 
         // TODO: Refactor this with right currency symbol and locale
-        return <FormattedCurrency value={(sellingPrice + tax) / 100} />
+        return (
+          <AlignItemRight>
+            <FormattedCurrency value={(sellingPrice + tax) / 100} />
+          </AlignItemRight>
+        )
       },
     },
     quantity: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.quantity" />
       ),
+      width: 80,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -128,13 +158,14 @@ const verifyItemsTableSchema = (
         rowData: ReturnRequestItem
         cellData: ReturnRequestItem['quantity']
       }) => {
-        return cellData
+        return <span className="w-100 flex justify-center">{cellData}</span>
       },
     },
     verified: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.verified" />
       ),
+      width: 160,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { orderItemIndex, quantity } = rowData
@@ -159,6 +190,7 @@ const verifyItemsTableSchema = (
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.restock-fee" />
       ),
+      width: 150,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { sellingPrice, tax, orderItemIndex } = rowData
@@ -203,6 +235,8 @@ const verifyItemsTableSchema = (
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.refund-product-total" />
       ),
+      headerRight: true,
+      width: 90,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ rowData }: { rowData: ReturnRequestItem }) => {
         const { sellingPrice, tax, orderItemIndex } = rowData
@@ -213,9 +247,13 @@ const verifyItemsTableSchema = (
 
         // TODO: Refactor this with right currency symbol and locale
         return (
-          <FormattedCurrency
-            value={((sellingPrice + tax) * selectedQuantity - restockFee) / 100}
-          />
+          <AlignItemRight>
+            <FormattedCurrency
+              value={
+                ((sellingPrice + tax) * selectedQuantity - restockFee) / 100
+              }
+            />
+          </AlignItemRight>
         )
       },
     },
@@ -246,16 +284,22 @@ const totalsSchema = (
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.refundable-shipping" />
       ),
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ cellData }: { cellData: number }) => {
         // TODO: Refactor this with right currency symbol and locale
-        return <FormattedCurrency value={cellData / 100} />
+        return (
+          <AlignItemRight>
+            <FormattedCurrency value={cellData / 100} />
+          </AlignItemRight>
+        )
       },
     },
     shippingToRefund: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
       ),
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({
         cellData,
@@ -283,12 +327,14 @@ const totalsSchema = (
 
         // TODO: Refactor this with right currency symbol and locale
         return (
-          <InputCurrency
-            value={cellData / 100}
-            currencyCode="EUR"
-            locale="es-ES"
-            onChange={handleChange}
-          />
+          <AlignItemRight>
+            <InputCurrency
+              value={cellData / 100}
+              currencyCode="EUR"
+              locale="es-ES"
+              onChange={handleChange}
+            />
+          </AlignItemRight>
         )
       },
     },
@@ -296,20 +342,30 @@ const totalsSchema = (
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
       ),
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ cellData }: { cellData: number }) => {
         // TODO: Refactor this with right currency symbol and locale
-        return <FormattedCurrency value={cellData / 100} />
+        return (
+          <AlignItemRight>
+            <FormattedCurrency value={cellData / 100} />
+          </AlignItemRight>
+        )
       },
     },
     totalRefund: {
       title: (
         <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
       ),
+      headerRight: true,
       // eslint-disable-next-line react/display-name
       cellRenderer: ({ cellData }: { cellData: number }) => {
         // TODO: Refactor this with right currency symbol and locale
-        return <FormattedCurrency value={cellData / 100} />
+        return (
+          <AlignItemRight>
+            <FormattedCurrency value={cellData / 100} />
+          </AlignItemRight>
+        )
       },
     },
   },
@@ -408,6 +464,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
           <h3>Items</h3>
           <Table
             fullWidth
+            fixFirstColumn
             schema={verifyItemsTableSchema(refundItemsInput, handleItemChanges)}
             items={items}
           />
