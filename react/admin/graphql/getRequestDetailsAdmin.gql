@@ -1,18 +1,8 @@
+#import './returnDetailsAdminFragment.gql'
+
 query getRequestDetailsAdmin($requestId: ID!) {
   returnRequestDetails: returnRequest(requestId: $requestId)
     @context(provider: "vtex.return-app") {
-    id
-    status
-    items {
-      orderItemIndex
-      name
-      sellingPrice
-      tax
-      quantity
-    }
-    refundableAmountTotals {
-      id
-      value
-    }
+    ...ReturnDetailsAdminFragment
   }
 }

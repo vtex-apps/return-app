@@ -56,7 +56,7 @@ export const updateReturnRequestStatus = async (
   _: unknown,
   args: MutationUpdateReturnRequestStatusArgs,
   ctx: Context
-): Promise<ReturnRequest['refundStatusData']> => {
+): Promise<ReturnRequest> => {
   const {
     state: { userProfile },
     clients: {
@@ -141,14 +141,16 @@ export const updateReturnRequestStatus = async (
 
   const giftCard = refundReturn?.giftCard
 
-  await returnRequestClient.update(requestId, {
+  const updatedRequest = {
     ...formatRequestToPartialUpdate(returnRequest),
     status: requestStatus,
     refundStatusData,
     refundData: refundInvoice
       ? { ...refundInvoice, ...(giftCard ? { giftCard } : null) }
       : null,
-  })
+  }
 
-  return refundStatusData
+  await returnRequestClient.update(requestId, updatedRequest)
+
+  return { id: requestId, ...updatedRequest }
 }
