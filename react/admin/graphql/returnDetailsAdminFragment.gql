@@ -12,4 +12,9 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     id
     value
   }
+  customerProfileData {
+    name
+    email
+    phoneNumber
+  }
 }
