@@ -10,7 +10,7 @@ export const PickupAddress = () => {
 
   const {
     returnRequestDetails: {
-      pickupReturnData: { country, state, address, zipCode, city },
+      pickupReturnData: { country, state, address, zipCode, city, addressType },
     },
   } = data
 
@@ -19,6 +19,16 @@ export const PickupAddress = () => {
       <h3>
         <FormattedMessage id="admin/return-app.return-request-details.pickup-address.title" />
       </h3>
+      <div className="mb5">
+        <p className="ma0">
+          <FormattedMessage id="returns.pickup-address-type" />:{' '}
+          {addressType === 'PICKUP_POINT' ? (
+            <FormattedMessage id="returns.pickup-address-types.pickup-point" />
+          ) : (
+            <FormattedMessage id="returns.pickup-address-types.customer-address" />
+          )}
+        </p>
+      </div>
       <div className="mb5">
         <p className="ma0">
           <FormattedMessage id="returns.country" />: {country}
