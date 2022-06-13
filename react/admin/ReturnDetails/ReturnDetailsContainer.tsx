@@ -13,6 +13,7 @@ import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ContactDetails } from './components/ContactDetails'
+import { PickupAddress } from './components/PickupAddress'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -60,7 +61,11 @@ export const ReturnDetailsContainer = () => {
           <>
             {detailsPage !== 'return-details' ? null : (
               <>
-                <ContactDetails />
+                <div className="flex-ns flex-wrap flex-row">
+                  <ContactDetails />
+                  <PickupAddress />
+                </div>
+
                 <div>Status {data.returnRequestDetails.status}</div>
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
