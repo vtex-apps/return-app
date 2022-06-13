@@ -21,37 +21,43 @@ export const PickupAddress = () => {
       </h3>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.pickup-address-type" />:{' '}
+          <FormattedMessage id="admin/return-app.return-request-details.pickup-address.pickup-type" />
+          :{' '}
           {addressType === 'PICKUP_POINT' ? (
-            <FormattedMessage id="returns.pickup-address-types.pickup-point" />
+            <FormattedMessage id="admin/return-app.return-request-details.pickup-address.pickup-type.pickup-point" />
           ) : (
-            <FormattedMessage id="returns.pickup-address-types.customer-address" />
+            <FormattedMessage id="admin/return-app.return-request-details.pickup-address.pickup-type.customer-address" />
           )}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.country" />: {country}
+          <FormattedMessage id="admin/return-app.return-request-details.pickup-address.country" />
+          : {country}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.locality" />: {city}
+          <FormattedMessage id="admin/return-app.return-request-details.pickup-address.locality" />
+          : {city}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.address" />: {address}
+          <FormattedMessage id="admin/return-app.return-request-details.pickup-address.address" />
+          : {address}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.state" />: {state}
+          <FormattedMessage id="admin/return-app.return-request-details.pickup-address.state" />
+          : {state}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.zip" />: {zipCode}
+          <FormattedMessage id="admin/return-app.return-request-details.pickup-address.zip" />
+          : {zipCode}
         </p>
       </div>
     </section>

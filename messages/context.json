@@ -373,7 +373,12 @@
   "admin/return-app.return-request-details.verify-items.table.title.totals": "Totals",
   "admin/return-app.return-request-details.contact-details.title": "Contact Details",
   "admin/return-app.return-request-details.pickup-address.title": "Pickup Address",
-  "returns.pickup-address-type": "Pickup Type",
-  "returns.pickup-address-types.pickup-point": "Pickup Point",
-  "returns.pickup-address-types.customer-address": "Customer Address"
+  "admin/return-app.return-request-details.pickup-address.pickup-type": "Pickup Type",
+  "admin/return-app.return-request-details.pickup-address.pickup-type.pickup-point": "Pickup Point",
+  "admin/return-app.return-request-details.pickup-address.pickup-type.customer-address": "Customer Address",
+  "admin/return-app.return-request-details.pickup-address.country": "Country",
+  "admin/return-app.return-request-details.pickup-address.locality": "City",
+  "admin/return-app.return-request-details.pickup-address.state": "State",
+  "admin/return-app.return-request-details.pickup-address.address": "Address",
+  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code"
 }
