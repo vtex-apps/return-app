@@ -79,6 +79,9 @@ export const createReturnRequest = async (
     totals,
     creationDate,
     status,
+    sellers,
+    // @ts-expect-error itemMetadata is not typed in the OMS client project
+    itemMetadata,
   } = order
 
   const { maxDays, excludedCategories, customReturnReasons, paymentOptions } =
@@ -112,7 +115,12 @@ export const createReturnRequest = async (
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
   const sequenceNumber = `${sequence}-${total + 1}`
 
-  const itemsToReturn = createItemsToReturn(items, orderItems)
+  const itemsToReturn = createItemsToReturn({
+    itemsToReturn: items,
+    orderItems,
+    sellers,
+    itemMetadata,
+  })
 
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,

@@ -115,6 +115,12 @@
           "sellingPrice": { "type": "integer", "required": true },
           "tax": { "type": "integer", "required": true },
           "quantity": { "type": "integer", "required": true },
+          "imageUrl": { "type": "string", "required": true },
+          "unitMultiplier": { "type": "number", "required": true },
+          "sellerId": { "type": "string", "required": true },
+          "sellerName": { "type": "string", "required": true },
+          "productId": { "type": "string", "required": true },
+          "refId": { "type": "string", "required": true },
           "returnReason": {
             "type": "object",
             "required": true,
