@@ -23,5 +23,6 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     address
     state
     zipCode
+    addressType
   }
 }
