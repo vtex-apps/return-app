@@ -60,7 +60,9 @@ export const ReturnDetailsContainer = () => {
           <>
             {detailsPage !== 'return-details' ? null : (
               <>
-                <ContactDetails />
+                <div>
+                  <ContactDetails />
+                </div>
                 <div>Status {data.returnRequestDetails.status}</div>
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
