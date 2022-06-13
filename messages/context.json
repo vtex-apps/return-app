@@ -372,5 +372,8 @@
   "admin/return-app.return-request-details.verify-items.table.title.items": "Items",
   "admin/return-app.return-request-details.verify-items.table.title.totals": "Totals",
   "admin/return-app.return-request-details.contact-details.title": "Contact Details",
-  "admin/return-app.return-request-details.pickup-address.title": "Pickup Address"
+  "admin/return-app.return-request-details.pickup-address.title": "Pickup Address",
+  "returns.pickup-address-type": "Pickup Type",
+  "returns.pickup-address-types.pickup-point": "Pickup Point",
+  "returns.pickup-address-types.customer-address": "Customer Address"
 }
