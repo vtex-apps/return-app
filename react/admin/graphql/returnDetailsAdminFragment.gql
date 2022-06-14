@@ -1,0 +1,15 @@
+fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
+  id
+  status
+  items {
+    orderItemIndex
+    name
+    sellingPrice
+    tax
+    quantity
+  }
+  refundableAmountTotals {
+    id
+    value
+  }
+}

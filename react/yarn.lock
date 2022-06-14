@@ -5198,13 +5198,13 @@ verror@1.10.0:
   version "1.25.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account#3bc46389c0aa28f4e3e2e008fe3690f5901b1f2a"
 
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.5/public/@types/vtex.render-runtime":
-  version "8.132.5"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.5/public/@types/vtex.render-runtime#b24290325054fa6b796ba2ff084e6d2c44ef925a"
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
+  version "8.132.4"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1654087084/public/@types/vtex.return-app":
+"vtex.return-app@https://rmav3updatestausui--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1654613779/public/@types/vtex.return-app":
   version "3.0.0-beta.6"
-  resolved "https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1654087084/public/@types/vtex.return-app#b5286cb2f0572f0ffefad6c203ecde117c7c75d1"
+  resolved "https://rmav3updatestausui--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1654613779/public/@types/vtex.return-app#64b71c741b7bf0d227e92fee053ec3c9bdcc47e3"
 
 "vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.0/public/@types/vtex.store-graphql":
   version "2.152.0"

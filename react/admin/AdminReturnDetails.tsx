@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { useReturnRequestDetails } from '../hooks/useReturnRequestDetails'
+import { ReturnDetailsContainer } from './ReturnDetails/ReturnDetailsContainer'
+import { AlertProvider } from './provider/AlertProvider'
+import { ReturnDetailsProvider } from './provider/ReturnDetailsProvider'
 
 interface CustomRouteProps {
   params: {
@@ -8,16 +10,12 @@ interface CustomRouteProps {
   }
 }
 
-export const AdminReturnDetails = (props: CustomRouteProps) => {
-  const { returnDetailsData } = useReturnRequestDetails(props.params.id)
-
-  // eslint-disable-next-line no-console
-  console.log({ returnDetailsData })
-
+export const AdminReturnDetails = ({ params }: CustomRouteProps) => {
   return (
-    <div>
-      <h2>ReturnDetails</h2>
-      <code>{JSON.stringify(returnDetailsData, null, 2)}</code>
-    </div>
+    <AlertProvider>
+      <ReturnDetailsProvider requestId={params.id}>
+        <ReturnDetailsContainer />
+      </ReturnDetailsProvider>
+    </AlertProvider>
   )
 }

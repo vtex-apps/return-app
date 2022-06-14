@@ -29,5 +29,5 @@ type Mutation {
     status: Status!
     comment: ReturnRequestCommentInput
     refundData: RefundDataInput
-  ): [RefundStatusData] @withUserProfile
+  ): ReturnRequestResponse @withUserProfile
 }
