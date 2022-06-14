@@ -1,88 +1,16 @@
-import React from 'react'
 import type { ReactElement } from 'react'
-import {
-  Table,
-  IconFailure,
-  IconSuccess,
-  IconWarning,
-  IconClock,
-} from 'vtex.styleguide'
-import type {
-  ReturnRequestItem,
-  RefundData,
-  Status,
-  Maybe,
-} from 'vtex.return-app'
-import { FormattedCurrency } from 'vtex.format-currency'
+import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import type { ReturnRequestItem } from 'vtex.return-app'
+import { FormattedCurrency } from 'vtex.format-currency'
 
-import { useReturnDetails } from '../../hooks/useReturnDetails'
-import { AlignItemRight } from './AlignItemRight'
-
-type ItemStatus = 'new' | 'denied' | 'approved' | 'partiallyApproved'
-
-interface ItemStatusInterface {
-  status: ItemStatus
-  quantity: number
-  quantityRefunded: number
-}
+import type { ItemStatusInterface } from './ItemDetailsList'
+import { AlignItemRight } from '../AlignItemRight'
+import { ItemVerificationStatus } from './ItemVerificationStatus'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 
-const ItemStatusVerification = (props: ItemStatusInterface) => {
-  const { status, quantity, quantityRefunded } = props
-
-  switch (status) {
-    case 'denied': {
-      return (
-        <div className="c-danger flex items-center">
-          <span className="mr2 flex">
-            <IconFailure size={14} />
-          </span>
-          <FormattedMessage id="admin/return-app.return-request-details.table.verification-status.denied" />
-        </div>
-      )
-    }
-
-    case 'approved': {
-      return (
-        <div className="c-success flex items-center">
-          <span className="mr2 flex">
-            <IconSuccess size={14} />
-          </span>
-          <FormattedMessage id="admin/return-app.return-request-details.table.verification-status.approved" />
-        </div>
-      )
-    }
-
-    case 'partiallyApproved': {
-      return (
-        <div className="c-warning flex items-center">
-          <span className="mr2 flex">
-            <IconWarning size={14} />
-          </span>
-          <FormattedMessage
-            id="admin/return-app.return-request-details.table.verification-status.partially-approved"
-            values={{ quantityRefunded, quantity }}
-          />
-        </div>
-      )
-    }
-
-    default: {
-      return (
-        <div className="c-warning flex items-center">
-          <span className="mr2 flex">
-            <IconClock size={14} />
-          </span>
-          <FormattedMessage id="admin/return-app.return-request-details.table.verification-status.new" />
-        </div>
-      )
-    }
-  }
-}
-
-const itemDetailsSchema = (
+export const itemDetailsSchema = (
   itemVerificationStatus: Map<number, ItemStatusInterface>
 ) => ({
   properties: {
@@ -227,92 +155,8 @@ const itemDetailsSchema = (
 
         if (!itemStatus) return null
 
-        return <ItemStatusVerification {...itemStatus} />
+        return <ItemVerificationStatus {...itemStatus} />
       },
     },
   },
 })
-
-const calculateStatus = (
-  status: Status,
-  returnQuantity: number,
-  refundedQuantity: number
-): ItemStatus => {
-  switch (status) {
-    case 'denied': {
-      return 'denied'
-    }
-
-    case 'packageVerified': {
-      return refundedQuantity === 0
-        ? 'denied'
-        : returnQuantity > refundedQuantity
-        ? 'partiallyApproved'
-        : 'approved'
-    }
-
-    case 'amountRefunded': {
-      return refundedQuantity === 0
-        ? 'denied'
-        : returnQuantity > refundedQuantity
-        ? 'partiallyApproved'
-        : 'approved'
-    }
-
-    default: {
-      return 'new'
-    }
-  }
-}
-
-const getItemVerificationStatus = (
-  items: ReturnRequestItem[],
-  refundData: Maybe<RefundData | undefined>,
-  status: Status
-) => {
-  const refundItemsMap = new Map<number, number>()
-
-  for (const item of refundData?.items ?? []) {
-    refundItemsMap.set(item.orderItemIndex, item.quantity)
-  }
-
-  const itemVerificationStatusMap = new Map<number, ItemStatusInterface>()
-
-  for (const item of items) {
-    const { quantity } = item
-    const quantityRefunded = refundItemsMap.get(item.orderItemIndex) ?? 0
-
-    itemVerificationStatusMap.set(item.orderItemIndex, {
-      status: calculateStatus(status, quantity, quantityRefunded),
-      quantity,
-      quantityRefunded,
-    })
-  }
-
-  return itemVerificationStatusMap
-}
-
-export const ItemDetailsList = () => {
-  const { data } = useReturnDetails()
-
-  if (!data) return null
-
-  const { items, status, refundData } = data.returnRequestDetails
-
-  const itemsVerificationStatus = getItemVerificationStatus(
-    items,
-    refundData,
-    status
-  )
-
-  return (
-    <section>
-      <Table
-        fullWidth
-        dynamicRowHeight
-        items={items}
-        schema={itemDetailsSchema(itemsVerificationStatus)}
-      />
-    </section>
-  )
-}
