@@ -14,6 +14,7 @@ import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ContactDetails } from './components/ContactDetails'
 import { PickupAddress } from './components/PickupAddress'
+// import { PaymentMethod } from './components/PaymentMethod'
 
 type Pages = 'return-details' | 'verify-items'
 

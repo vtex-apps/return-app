@@ -380,5 +380,6 @@
   "admin/return-app.return-request-details.pickup-address.locality": "City",
   "admin/return-app.return-request-details.pickup-address.state": "State",
   "admin/return-app.return-request-details.pickup-address.address": "Address",
-  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code"
+  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code",
+  "admin/return-app.return-request-details.payent-method.title": "Refund Payment Method"
 }
