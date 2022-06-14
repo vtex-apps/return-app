@@ -7,9 +7,22 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     sellingPrice
     tax
     quantity
+    imageUrl
+    sellerName
+    refId
+    returnReason {
+      reason
+      otherReason
+    }
   }
   refundableAmountTotals {
     id
     value
+  }
+  refundData {
+    items {
+      orderItemIndex
+      quantity
+    }
   }
 }

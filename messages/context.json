@@ -370,5 +370,19 @@
   "admin/return-app.return-request-details.verify-items.table.header.total-refund-items": "Total Products",
   "admin/return-app.return-request-details.verify-items.table.header.total-refund": "Refund Total",
   "admin/return-app.return-request-details.verify-items.table.title.items": "Items",
-  "admin/return-app.return-request-details.verify-items.table.title.totals": "Totals"
+  "admin/return-app.return-request-details.verify-items.table.title.totals": "Totals",
+  "admin/return-app.return-request-details.table.product-info.ref-id": "<b>Ref id:</b> {refId}",
+  "admin/return-app.return-request-details.table.product-info.reason": "<b>Reason:</b> {reason}",
+  "admin/return-app.return-request-details.table.product-info.sold-by": "<b>Sold by:</b> {seller}",
+  "admin/return-app.return-request-details.table.verification-status.denied": "Denied",
+  "admin/return-app.return-request-details.table.verification-status.approved": "Approved",
+  "admin/return-app.return-request-details.table.verification-status.new": "New",
+  "admin/return-app.return-request-details.table.verification-status.partially-approved": "Partially Approved {quantityRefunded}/{quantity}",
+  "admin/return-app.return-request-details.table.header.product": "Product",
+  "admin/return-app.return-request-details.table.header.product-info": "Name",
+  "admin/return-app.return-request-details.table.header.quantity": "Quantity",
+  "admin/return-app.return-request-details.table.header.unit-price": "Unit Price",
+  "admin/return-app.return-request-details.table.header.tax": "Tax",
+  "admin/return-app.return-request-details.table.header.total-price": "Total Price",
+  "admin/return-app.return-request-details.table.header.verification-status": "Verification Status"
 }

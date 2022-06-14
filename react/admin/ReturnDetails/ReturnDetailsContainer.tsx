@@ -12,6 +12,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
+import { ItemDetailsList } from './components/ItemDetailsList'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -60,6 +61,7 @@ export const ReturnDetailsContainer = () => {
             {detailsPage !== 'return-details' ? null : (
               <>
                 <div>Status {data.returnRequestDetails.status}</div>
+                <ItemDetailsList />
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
                     handleViewVerifyItems('verify-items')
