@@ -384,5 +384,18 @@
   "admin/return-app.return-request-details.table.header.unit-price": "Unit Price",
   "admin/return-app.return-request-details.table.header.tax": "Tax",
   "admin/return-app.return-request-details.table.header.total-price": "Total Price",
-  "admin/return-app.return-request-details.table.header.verification-status": "Verification Status"
+  "admin/return-app.return-request-details.table.header.verification-status": "Verification Status",
+  "admin/return-app.return-request-details.contact-details.title": "Contact Details",
+  "admin/return-app.return-request-details.pickup-address.title": "Pickup Address",
+  "admin/return-app.return-request-details.pickup-address.pickup-type": "Pickup Type",
+  "admin/return-app.return-request-details.pickup-address.pickup-type.pickup-point": "Pickup Point",
+  "admin/return-app.return-request-details.pickup-address.pickup-type.customer-address": "Customer Address",
+  "admin/return-app.return-request-details.pickup-address.country": "Country: {country}",
+  "admin/return-app.return-request-details.pickup-address.locality": "City: {city}",
+  "admin/return-app.return-request-details.pickup-address.state": "State: {state}",
+  "admin/return-app.return-request-details.pickup-address.address": "Address: {address}",
+  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code: {zipCode}",
+  "admin/return-app.return-request-details.contact-details.name": "Name",
+  "admin/return-app.return-request-details.contact-details.email": "Email",
+  "admin/return-app.return-request-details.contact-details.phone": "Phone"
 }

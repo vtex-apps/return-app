@@ -25,4 +25,17 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
       quantity
     }
   }
+  customerProfileData {
+    name
+    email
+    phoneNumber
+  }
+  pickupReturnData {
+    country
+    city
+    address
+    state
+    zipCode
+    addressType
+  }
 }
