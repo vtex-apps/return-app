@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.19.9] - 2022-06-15
 ### Fixed
 - Doesn't show message about user not having order to return while the app is still preparing the order to show.
 ## [2.19.8] - 2022-06-02
