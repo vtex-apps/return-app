@@ -14,7 +14,7 @@ import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ContactDetails } from './components/ContactDetails'
 import { PickupAddress } from './components/PickupAddress'
-// import { PaymentMethod } from './components/PaymentMethod'
+import { RefundMethodDetail } from './components/RefundMethodDetail'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -65,6 +65,10 @@ export const ReturnDetailsContainer = () => {
                 <div className="flex-ns flex-wrap flex-row">
                   <ContactDetails />
                   <PickupAddress />
+                </div>
+
+                <div className="flex-ns flex-wrap flex-row">
+                  <RefundMethodDetail />
                 </div>
 
                 <div>Status {data.returnRequestDetails.status}</div>
