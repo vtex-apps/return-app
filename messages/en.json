@@ -393,5 +393,18 @@
   "admin/return-app.return-request-details.refund-total.item-tax": "Item (with taxes)",
   "admin/return-app.return-request-details.refund-total.restock-fee": "Restock Fee",
   "admin/return-app.return-request-details.refund-total.shipping": "Shipping",
-  "admin/return-app.return-request-details.refund-total.total": "Total"
+  "admin/return-app.return-request-details.refund-total.total": "Total",
+  "admin/return-app.return-request-details.contact-details.title": "Contact Details",
+  "admin/return-app.return-request-details.pickup-address.title": "Pickup Address",
+  "admin/return-app.return-request-details.pickup-address.pickup-type": "Pickup Type",
+  "admin/return-app.return-request-details.pickup-address.pickup-type.pickup-point": "Pickup Point",
+  "admin/return-app.return-request-details.pickup-address.pickup-type.customer-address": "Customer Address",
+  "admin/return-app.return-request-details.pickup-address.country": "Country: {country}",
+  "admin/return-app.return-request-details.pickup-address.locality": "City: {city}",
+  "admin/return-app.return-request-details.pickup-address.state": "State: {state}",
+  "admin/return-app.return-request-details.pickup-address.address": "Address: {address}",
+  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code: {zipCode}",
+  "admin/return-app.return-request-details.contact-details.name": "Name",
+  "admin/return-app.return-request-details.contact-details.email": "Email",
+  "admin/return-app.return-request-details.contact-details.phone": "Phone"
 }

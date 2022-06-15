@@ -30,4 +30,17 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
       restockFee
     }
   }
+  customerProfileData {
+    name
+    email
+    phoneNumber
+  }
+  pickupReturnData {
+    country
+    city
+    address
+    state
+    zipCode
+    addressType
+  }
 }

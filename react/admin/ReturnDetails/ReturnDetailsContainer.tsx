@@ -7,6 +7,8 @@ import { UpdateRequestStatus } from './components/UpdateRequestStatus'
 import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ItemDetailsList } from './components/ItemDetails/ItemDetailsList'
+import { ContactDetails } from './components/ContactDetails'
+import { PickupAddress } from './components/PickupAddress'
 import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from './components/ReturnValues/ReturnValues'
 
@@ -58,6 +60,10 @@ export const ReturnDetailsContainer = () => {
               <>
                 <ItemDetailsList />
                 <ReturnValues />
+                <div className="flex-ns flex-wrap flex-row">
+                  <ContactDetails />
+                  <PickupAddress />
+                </div>
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
                     handleViewVerifyItems('verify-items')
