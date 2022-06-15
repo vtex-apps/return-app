@@ -371,5 +371,8 @@
   "admin/return-app.return-request-details.verify-items.table.header.total-refund": "Refund Total",
   "admin/return-app.return-request-details.verify-items.table.title.items": "Items",
   "admin/return-app.return-request-details.verify-items.table.title.totals": "Totals",
-  "admin/return-app.return-request-details.contact-details.title": "Contact Details"
+  "admin/return-app.return-request-details.contact-details.title": "Contact Details",
+  "admin/return-app.return-request-details.contact-details.name": "Name",
+  "admin/return-app.return-request-details.contact-details.email": "Email",
+  "admin/return-app.return-request-details.contact-details.phone": "Phone"
 }

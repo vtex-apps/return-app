@@ -14,24 +14,27 @@ export const ContactDetails = () => {
     },
   } = data
 
+  const messagesRoute =
+    'admin/return-app.return-request-details.contact-details'
+
   return (
     <section className="flex-ns flex-wrap flex-auto flex-column pt4 pb4">
       <h3>
-        <FormattedMessage id="admin/return-app.return-request-details.contact-details.title" />
+        <FormattedMessage id={`${messagesRoute}.title`} />
       </h3>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.name" />: {name}
+          <FormattedMessage id={`${messagesRoute}.name`} />: {name}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.email" />: {email}
+          <FormattedMessage id={`${messagesRoute}.email`} />: {email}
         </p>
       </div>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage id="returns.phone" />: {phoneNumber}
+          <FormattedMessage id={`${messagesRoute}.phone`} />: {phoneNumber}
         </p>
       </div>
     </section>
