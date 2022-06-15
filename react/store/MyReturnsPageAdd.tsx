@@ -531,9 +531,6 @@ class MyReturnsPageAdd extends Component<Props, State> {
                       this.prepareOrderData(currentOrder, settings, true)
                     })
                   })
-                  setTimeout(() => {
-                    this.setState({ loading: false })
-                  }, 1000)
                 } else {
                   this.setState({ loading: false })
                 }
