@@ -17,4 +17,12 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     email
     phoneNumber
   }
+  pickupReturnData {
+    country
+    city
+    address
+    state
+    zipCode
+    addressType
+  }
 }
