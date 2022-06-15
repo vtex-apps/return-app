@@ -381,5 +381,13 @@
   "admin/return-app.return-request-details.pickup-address.state": "State",
   "admin/return-app.return-request-details.pickup-address.address": "Address",
   "admin/return-app.return-request-details.pickup-address.zip": "Zip Code",
-  "admin/return-app.return-request-details.payent-method.title": "Refund Payment Method"
+  "admin/return-app.return-request-details.payent-method.title": "Refund Payment Method",
+  "admin/return-app.return-request-details.payent-method.refund-option.name": "Refund Method",
+  "admin/return-app.return-request-details.payent-method.refund-option.gift-card": "Gift Card",
+  "admin/return-app.return-request-details.payent-method.refund-option.gift-card-number": "Gift Card Number",
+  "admin/return-app.return-request-details.payent-method.refund-option.same-as-purchase": "Same as Purchase",
+  "admin/return-app.return-request-details.payent-method.refund-option.bank": "Bank Transfer",
+  "admin/return-app.return-request-details.payent-method.refund-option.card": "Credit Card",
+  "admin/return-app.return-request-details.payent-method.refund-option.iban": "IBAN",
+  "admin/return-app.return-request-details.payent-method.refund-option.account-holder": "Account Holder"
 }
