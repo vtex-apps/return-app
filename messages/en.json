@@ -379,5 +379,8 @@
   "admin/return-app.return-request-details.pickup-address.locality": "City",
   "admin/return-app.return-request-details.pickup-address.state": "State",
   "admin/return-app.return-request-details.pickup-address.address": "Address",
-  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code"
+  "admin/return-app.return-request-details.pickup-address.zip": "Zip Code",
+  "admin/return-app.return-request-details.contact-details.name": "Name",
+  "admin/return-app.return-request-details.contact-details.email": "Email",
+  "admin/return-app.return-request-details.contact-details.phone": "Phone"
 }

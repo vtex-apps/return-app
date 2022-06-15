@@ -1,11 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Layout,
-  PageHeader,
-  PageBlock,
-  Spinner,
-  EmptyState,
-} from 'vtex.styleguide'
+import { Layout, PageHeader, PageBlock } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
@@ -14,12 +8,13 @@ import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ContactDetails } from './components/ContactDetails'
 import { PickupAddress } from './components/PickupAddress'
+import { AdminLoader } from '../AdminLoader'
 
 type Pages = 'return-details' | 'verify-items'
 
 export const ReturnDetailsContainer = () => {
   const [detailsPage, setDetailsPage] = useState<Pages>('return-details')
-  const { data, error, loading } = useReturnDetails()
+  const returnDetails = useReturnDetails()
 
   const { navigate } = useRuntime()
 
@@ -47,17 +42,17 @@ export const ReturnDetailsContainer = () => {
       }
     >
       <PageBlock variation="full" fit="fill">
-        {error ? (
-          <EmptyState
-            title={
+        <AdminLoader
+          {...returnDetails}
+          errorMessages={{
+            errorTitle: (
               <FormattedMessage id="admin/return-app.return-request-details.error.title" />
-            }
-          >
-            <FormattedMessage id="admin/return-app.return-request-details.error.description" />
-          </EmptyState>
-        ) : loading ? (
-          <Spinner />
-        ) : !data?.returnRequestDetails ? null : (
+            ),
+            errorDescription: (
+              <FormattedMessage id="admin/return-app.return-request-details.error.description" />
+            ),
+          }}
+        >
           <>
             {detailsPage !== 'return-details' ? null : (
               <>
@@ -65,8 +60,6 @@ export const ReturnDetailsContainer = () => {
                   <ContactDetails />
                   <PickupAddress />
                 </div>
-
-                <div>Status {data.returnRequestDetails.status}</div>
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
                     handleViewVerifyItems('verify-items')
@@ -82,7 +75,7 @@ export const ReturnDetailsContainer = () => {
               />
             )}
           </>
-        )}
+        </AdminLoader>
       </PageBlock>
     </Layout>
   )
