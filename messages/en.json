@@ -387,5 +387,8 @@
   "admin/return-app.return-request-details.payent-method.refund-option.bank": "Bank Transfer",
   "admin/return-app.return-request-details.payent-method.refund-option.card": "Credit Card",
   "admin/return-app.return-request-details.payent-method.refund-option.iban": "IBAN",
-  "admin/return-app.return-request-details.payent-method.refund-option.account-holder": "Account Holder"
+  "admin/return-app.return-request-details.payent-method.refund-option.account-holder": "Account Holder",
+  "admin/return-app.return-request-details.contact-details.name": "Name",
+  "admin/return-app.return-request-details.contact-details.email": "Email",
+  "admin/return-app.return-request-details.contact-details.phone": "Phone"
 }
