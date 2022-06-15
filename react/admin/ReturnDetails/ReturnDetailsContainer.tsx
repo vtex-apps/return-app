@@ -8,6 +8,7 @@ import { useReturnDetails } from '../hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ItemDetailsList } from './components/ItemDetails/ItemDetailsList'
 import { AdminLoader } from '../AdminLoader'
+import { ReturnValues } from './components/ReturnValues/ReturnValues'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -56,6 +57,7 @@ export const ReturnDetailsContainer = () => {
             {detailsPage !== 'return-details' ? null : (
               <>
                 <ItemDetailsList />
+                <ReturnValues />
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
                     handleViewVerifyItems('verify-items')
