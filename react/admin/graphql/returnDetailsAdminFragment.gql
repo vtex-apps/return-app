@@ -25,4 +25,10 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     zipCode
     addressType
   }
+  refundPaymentData {
+    refundPaymentMethod
+  }
+  refundData {
+    invoiceNumber
+  }
 }
