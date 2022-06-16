@@ -1,6 +1,7 @@
 fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
   id
   status
+  refundableAmount
   items {
     orderItemIndex
     name
@@ -20,9 +21,13 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     value
   }
   refundData {
+    refundedShippingValue
+    invoiceValue
     items {
       orderItemIndex
       quantity
+      price
+      restockFee
     }
   }
   customerProfileData {

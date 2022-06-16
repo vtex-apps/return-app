@@ -132,11 +132,13 @@ export const itemDetailsSchema = (
       }: {
         rowData: ReturnRequestItem
       }) {
-        const { sellingPrice, tax } = rowData
+        const { sellingPrice, tax, quantity } = rowData
 
         return (
           <AlignItemRight>
-            <FormattedCurrency value={(sellingPrice + tax) / 100} />
+            <FormattedCurrency
+              value={((sellingPrice + tax) * quantity) / 100}
+            />
           </AlignItemRight>
         )
       },
