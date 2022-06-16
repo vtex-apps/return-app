@@ -27,8 +27,15 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
   }
   refundPaymentData {
     refundPaymentMethod
+    iban
+    accountHolderName
   }
   refundData {
     invoiceNumber
+    invoiceValue
+    giftCard {
+      id
+      redemptionCode
+    }
   }
 }
