@@ -43,4 +43,15 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     zipCode
     addressType
   }
+  refundStatusData {
+    status
+    submittedBy
+    createdAt
+    comments {
+      comment
+      createdAt
+      visibleForCustomer
+      submittedBy
+    }
+  }
 }
