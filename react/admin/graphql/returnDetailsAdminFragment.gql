@@ -1,16 +1,34 @@
 fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
   id
   status
+  refundableAmount
   items {
     orderItemIndex
     name
     sellingPrice
     tax
     quantity
+    imageUrl
+    sellerName
+    refId
+    returnReason {
+      reason
+      otherReason
+    }
   }
   refundableAmountTotals {
     id
     value
+  }
+  refundData {
+    refundedShippingValue
+    invoiceValue
+    items {
+      orderItemIndex
+      quantity
+      price
+      restockFee
+    }
   }
   customerProfileData {
     name

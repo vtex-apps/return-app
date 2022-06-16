@@ -6,7 +6,7 @@ import { FormattedCurrency } from 'vtex.format-currency'
 import { NumericStepper, InputCurrency } from 'vtex.styleguide'
 
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'
-import { AlignItemRight } from './AlignItemRight'
+import { AlignItemRight } from '../AlignItemRight'
 import { ProductActionStatus } from './ProductActionStatus'
 
 export const verifyItemsTableSchema = (
