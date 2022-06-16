@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { InputCurrency } from 'vtex.styleguide'
 
-import { AlignItemRight } from './AlignItemRight'
+import { AlignItemRight } from '../AlignItemRight'
 
 export const verifyTotalsTableSchema = (
   handleShippingChanges: (shippingToRefundInput: number) => void

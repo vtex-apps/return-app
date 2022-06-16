@@ -1,6 +1,17 @@
 import { UserInputError } from '@vtex/api'
-import type { OrderItemDetailResponse, PriceTag } from '@vtex/clients'
-import type { ReturnRequest, ReturnRequestItemInput } from 'vtex.return-app'
+import type {
+  OrderItemDetailResponse,
+  PriceTag,
+  SellerDetail,
+} from '@vtex/clients'
+import type { ReturnRequestItemInput, ReturnRequestItem } from 'vtex.return-app'
+
+interface ItemMetadata {
+  Items: Array<{
+    Id: string
+    ImageUrl: string
+  }>
+}
 
 const calculateItemTax = ({
   tax,
@@ -33,10 +44,17 @@ const calculateItemTax = ({
   return parseFloat((taxValueFromTaxHub / quantity).toFixed(0))
 }
 
-export const createItemsToReturn = (
-  itemsToReturn: ReturnRequestItemInput[],
+export const createItemsToReturn = ({
+  itemsToReturn,
+  orderItems,
+  sellers,
+  itemMetadata,
+}: {
+  itemsToReturn: ReturnRequestItemInput[]
   orderItems: OrderItemDetailResponse[]
-): ReturnRequest['items'] => {
+  sellers: SellerDetail[]
+  itemMetadata: ItemMetadata
+}): ReturnRequestItem[] => {
   return itemsToReturn.map((item) => {
     const orderItem = orderItems[item.orderItemIndex]
 
@@ -46,7 +64,27 @@ export const createItemsToReturn = (
       )
     }
 
-    const { id, sellingPrice, tax, priceTags, quantity, name } = orderItem
+    const {
+      id,
+      sellingPrice,
+      tax,
+      priceTags,
+      quantity,
+      name,
+      imageUrl,
+      unitMultiplier,
+      seller,
+      refId,
+      productId,
+    } = orderItem
+
+    const sellerName =
+      sellers.find((sellerInfo) => sellerInfo.id === seller)?.name ?? ''
+
+    const productImage =
+      imageUrl ??
+      itemMetadata.Items.find((itemMeta) => itemMeta.Id === id)?.ImageUrl ??
+      ''
 
     return {
       ...item,
@@ -54,6 +92,12 @@ export const createItemsToReturn = (
       sellingPrice,
       tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
       name,
+      imageUrl: productImage,
+      unitMultiplier,
+      sellerId: seller,
+      refId,
+      productId,
+      sellerName,
     }
   })
 }
