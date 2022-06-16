@@ -11,6 +11,7 @@ import { ContactDetails } from './components/ContactDetails'
 import { PickupAddress } from './components/PickupAddress'
 import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from './components/ReturnValues/ReturnValues'
+import { StatusTimeline } from './components/StatusTimeline'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -64,6 +65,7 @@ export const ReturnDetailsContainer = () => {
                   <ContactDetails />
                   <PickupAddress />
                 </div>
+                <StatusTimeline />
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
                     handleViewVerifyItems('verify-items')
