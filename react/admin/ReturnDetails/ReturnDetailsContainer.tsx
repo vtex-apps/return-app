@@ -66,11 +66,7 @@ export const ReturnDetailsContainer = () => {
                   <ContactDetails />
                   <PickupAddress />
                 </div>
-
-                <div className="flex-ns flex-wrap flex-row">
-                  <RefundMethodDetail />
-                </div>
-
+                <RefundMethodDetail />
                 <StatusTimeline />
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
