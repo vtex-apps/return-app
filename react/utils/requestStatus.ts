@@ -3,6 +3,7 @@ import type {
   RefundStatusData,
   RefundStatusComment,
 } from 'vtex.return-app'
+import { defineMessages } from 'react-intl'
 
 const statusSequence: Status[] = [
   'new',
@@ -24,15 +25,29 @@ export const statusAllowed: Record<Status, Status[]> = {
   denied: ['denied'],
 }
 
-export const statusMessageIdAdmin: Record<Status, string> = {
-  new: 'admin/return-app-status.new',
-  processing: 'admin/return-app-status.processing',
-  pickedUpFromClient: 'admin/return-app-status.pickedup-from-client',
-  pendingVerification: 'admin/return-app-status.pending-verification',
-  packageVerified: 'admin/return-app-status.package-verified',
-  amountRefunded: 'admin/return-app-status.refunded',
-  denied: 'admin/return-app-status.denied',
-}
+export const statusMessageIdAdmin = defineMessages({
+  new: { id: 'admin/return-app-status.new' },
+  processing: { id: 'admin/return-app-status.processing' },
+  pickedUpFromClient: { id: 'admin/return-app-status.pickedup-from-client' },
+  pendingVerification: { id: 'admin/return-app-status.pending-verification' },
+  packageVerified: { id: 'admin/return-app-status.package-verified' },
+  amountRefunded: { id: 'admin/return-app-status.refunded' },
+  denied: { id: 'admin/return-app-status.denied' },
+})
+
+export const timelineStatusMessageId = defineMessages({
+  new: { id: 'admin/return-app-status.timeline.new' },
+  processing: { id: 'admin/return-app-status.timeline.processing' },
+  pickedUpFromClient: {
+    id: 'admin/return-app-status.timeline.pickedup-from-client',
+  },
+  pendingVerification: {
+    id: 'admin/return-app-status.timeline.pending-verification',
+  },
+  packageVerified: { id: 'admin/return-app-status.timeline.package-verified' },
+  amountRefunded: { id: 'admin/return-app-status.timeline.refunded' },
+  denied: { id: 'admin/return-app-status.timeline.denied' },
+})
 
 type Comments = RefundStatusComment[]
 interface VisitedStatus {

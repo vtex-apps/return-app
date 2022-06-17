@@ -19,7 +19,7 @@ const createStatusOptions = (
 
   return allowedStatus.map((status) => ({
     value: status,
-    label: formatMessage({ id: statusMessageIdAdmin[status] }),
+    label: formatMessage(statusMessageIdAdmin[status]),
   }))
 }
 

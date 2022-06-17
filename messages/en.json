@@ -408,5 +408,12 @@
   "admin/return-app.return-request-details.contact-details.email": "Email",
   "admin/return-app.return-request-details.contact-details.phone": "Phone",
   "admin/return-app.return-request-details.status-timeline.comment": "{ts, date, ::yyyyMMdd} {ts, time, ::HHmmss} - {comment} - ({submittedBy})",
-  "admin/return-app.return-request-details.status-timeline.header": "Status"
+  "admin/return-app.return-request-details.status-timeline.header": "Status",
+  "admin/return-app-status.timeline.new": "Return form registered on {ts, date, ::yyyyMMdd} {ts, time, ::HHmmss}",
+  "admin/return-app-status.timeline.processing": "Processing",
+  "admin/return-app-status.timeline.pickedup-from-client": "Picked up from client",
+  "admin/return-app-status.timeline.pending-verification": "Pending verification",
+  "admin/return-app-status.timeline.package-verified": "Package Verified",
+  "admin/return-app-status.timeline.refunded": "Refunded",
+  "admin/return-app-status.timeline.denied": "Denied"
 }

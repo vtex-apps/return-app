@@ -26,6 +26,7 @@ export const StatusTimeline = () => {
             <StatusTag
               status={statusDetails.status}
               visited={statusDetails.visited}
+              createdAt={statusDetails.createdAt}
             />
             <CommentList
               comments={statusDetails?.comments ?? []}
