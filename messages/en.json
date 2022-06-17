@@ -406,5 +406,6 @@
   "admin/return-app.return-request-details.pickup-address.zip": "Zip Code: {zipCode}",
   "admin/return-app.return-request-details.contact-details.name": "Name",
   "admin/return-app.return-request-details.contact-details.email": "Email",
-  "admin/return-app.return-request-details.contact-details.phone": "Phone"
+  "admin/return-app.return-request-details.contact-details.phone": "Phone",
+  "admin/return-app.return-request-details.status-timeline.comment": "{ts, date, ::yyyyMMdd} {ts, time, ::HHmmss} - {comment} - ({submittedBy})"
 }

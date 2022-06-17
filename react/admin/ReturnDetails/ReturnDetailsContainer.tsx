@@ -38,7 +38,7 @@ export const ReturnDetailsContainer = () => {
           }
           onLinkClick={() => {
             navigate({
-              to: '/admin/returns/requests',
+              to: '/admin/app/returns/requests',
             })
           }}
         />
