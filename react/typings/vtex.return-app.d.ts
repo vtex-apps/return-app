@@ -62,6 +62,8 @@ interface ProductReturned {
   refundId: string
   dateSubmitted: string
   type: string
+  seller: string
+  sellerName: string
 }
 
 type ProductReturnedInput = Omit<

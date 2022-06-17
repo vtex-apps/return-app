@@ -41,6 +41,7 @@
   "returns.thOrderId": "ID ordine",
   "returns.thCreationDate": "Data di creazione",
   "returns.thStatus": "Stato",
+  "returns.thSellerName": "Venditore",
   "returns.thReason": "Motivo",
   "returns.thRefId": "ID di rif.",
   "returns.formContactDetails": "Dettagli di contatto",

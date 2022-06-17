@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+# Added
+
+- Save seller information for new requests and display it to the customer and admin
+
 ## [2.19.10] - 2022-06-16
 
 ### Fixed

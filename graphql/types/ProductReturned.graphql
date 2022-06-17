@@ -13,6 +13,8 @@ input ProductReturnedInput {
   reason: String!
   reasonCode: String!
   condition: String!
+  seller: String!
+  sellerName: String!
 }
 
 type ProductReturned {
@@ -40,6 +42,8 @@ type ProductReturned {
   status: String!
   dateSubmitted: String!
   type: String!
+  seller: String!
+  sellerName: String!
 }
 
 type returnRequestCreated {

@@ -98,6 +98,7 @@ const messages = defineMessages({
   orderDate: { id: 'returns.orderDate' },
   thOrderId: { id: 'returns.thOrderId' },
   thProduct: { id: 'returns.thProduct' },
+  sellerName: { id: `returns.thSellerName` },
   thQuantity: { id: 'returns.thQuantity' },
   thReason: { id: 'returns.thReason' },
   condition: { id: 'returns.condition.label' },
@@ -489,6 +490,14 @@ class RequestForm extends Component<Props> {
                         >
                           {product.name}
                         </a>
+                        {product.sellerName && (
+                          <div>
+                            <span>
+                              {formatMessage({ id: messages.sellerName.id })}
+                            </span>
+                            : {product.sellerName}
+                          </div>
+                        )}
                       </td>
                       <td
                         className={`${styles.tableTd} ${styles.tableTdQuantity}`}
