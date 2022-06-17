@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.19.11] - 2022-06-17
+
 ### Fixed
 
 - Revert fix encode URI email.
