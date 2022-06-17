@@ -19,7 +19,7 @@ const createStatusOptions = (
 
   return allowedStatus.map((status) => ({
     value: status,
-    label: formatMessage({ id: statusMessageIdAdmin[status] }),
+    label: formatMessage(statusMessageIdAdmin[status]),
   }))
 }
 
@@ -86,7 +86,7 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
   if (!data) return null
 
   return (
-    <section>
+    <section className="mv4">
       <h3>
         <FormattedMessage id="admin/return-app.return-request-details.update-status.title" />
       </h3>

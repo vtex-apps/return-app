@@ -1,5 +1,21 @@
 import type { ReturnRequest } from 'vtex.return-app'
 
+const filterCommentsNotVisibleForCustomer = (
+  refundStatusDataList: ReturnRequest['refundStatusData'],
+  vtexProduct: 'admin' | 'store' | undefined
+) => {
+  return (
+    refundStatusDataList?.map((statusData) => {
+      return {
+        ...statusData,
+        comments: statusData.comments?.filter((comment) => {
+          return vtexProduct !== 'store' || comment.visibleForCustomer
+        }),
+      }
+    }) ?? []
+  )
+}
+
 // This resolver allows the parent one to fetch just the root fields for a ReturnRequest.
 // This stategy can save some kb when transfering data, since that in a search, we don't need all the fields.
 export const ReturnRequestResponse = {
@@ -134,16 +150,23 @@ export const ReturnRequestResponse = {
     ctx: Context
   ) => {
     const { id, refundStatusData } = root
-
-    if (refundStatusData) return refundStatusData
-
     const {
       clients: { returnRequest: returnRequestClient },
+      request: { header },
     } = ctx
 
-    const { refundStatusData: refundStatusDataList } =
-      await returnRequestClient.get(id as string, ['refundStatusData'])
+    const vtexProduct = header['x-vtex-product'] as
+      | 'admin'
+      | 'store'
+      | undefined
 
-    return refundStatusDataList
+    const { refundStatusData: refundStatusDataList } = refundStatusData
+      ? { refundStatusData }
+      : await returnRequestClient.get(id as string, ['refundStatusData'])
+
+    return filterCommentsNotVisibleForCustomer(
+      refundStatusDataList,
+      vtexProduct
+    )
   },
 }

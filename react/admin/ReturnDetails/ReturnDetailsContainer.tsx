@@ -12,7 +12,7 @@ import { PickupAddress } from './components/PickupAddress'
 import { RefundMethodDetail } from './components/RefundMethodDetail'
 import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from './components/ReturnValues/ReturnValues'
-import { StatusTimeline } from './components/StatusTimeline'
+import { StatusTimeline } from './components/StatusTimeline/StatusTimeline'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -39,7 +39,7 @@ export const ReturnDetailsContainer = () => {
           }
           onLinkClick={() => {
             navigate({
-              to: '/admin/returns/requests',
+              to: '/admin/app/returns/requests',
             })
           }}
         />
@@ -66,11 +66,7 @@ export const ReturnDetailsContainer = () => {
                   <ContactDetails />
                   <PickupAddress />
                 </div>
-
-                <div className="flex-ns flex-wrap flex-row">
-                  <RefundMethodDetail />
-                </div>
-
+                <RefundMethodDetail />
                 <StatusTimeline />
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
