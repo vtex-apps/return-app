@@ -9,6 +9,7 @@ import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
 import { ItemDetailsList } from './components/ItemDetails/ItemDetailsList'
 import { ContactDetails } from './components/ContactDetails'
 import { PickupAddress } from './components/PickupAddress'
+import { RefundMethodDetail } from './components/RefundMethodDetail'
 import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from './components/ReturnValues/ReturnValues'
 import { StatusTimeline } from './components/StatusTimeline/StatusTimeline'
@@ -65,6 +66,11 @@ export const ReturnDetailsContainer = () => {
                   <ContactDetails />
                   <PickupAddress />
                 </div>
+
+                <div className="flex-ns flex-wrap flex-row">
+                  <RefundMethodDetail />
+                </div>
+
                 <StatusTimeline />
                 <UpdateRequestStatus
                   onViewVerifyItems={() =>
