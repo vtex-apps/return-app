@@ -130,6 +130,9 @@ export const CreateReturnRequest = (props: RouteProps) => {
               canRefundCard={
                 data?.orderToReturnSummary?.paymentData.canRefundCard
               }
+              geoCoordinates={
+                data?.orderToReturnSummary?.shippingData.geoCoordinates
+              }
             />
           </>
         ) : null}

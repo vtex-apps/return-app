@@ -7,3 +7,7 @@ interface ItemToReturn {
   imageUrl: string
   orderItemIndex: number
 }
+
+type MaybeGlobal<T> = T | null
+
+type GeoCoordinates = Array<MaybeGlobal<number>>

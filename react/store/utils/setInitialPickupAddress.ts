@@ -5,7 +5,11 @@ import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
 export const setInitialPickupAddress = (
   shippingData: ShippingData
 ): OrderDetailsState['pickupReturnData'] => {
-  if (shippingData.addressType === 'CUSTOMER_ADDRESS') return shippingData
+  const { geoCoordinates, ...shippingDataWithoutGeoCoordinates } = shippingData
+
+  if (shippingData.addressType === 'CUSTOMER_ADDRESS') {
+    return shippingDataWithoutGeoCoordinates
+  }
 
   /**
    * If addressType is PICKUP_POINT, we set empty values to state.

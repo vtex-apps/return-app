@@ -16,6 +16,7 @@ interface Props {
   items: ItemToReturn[]
   creationDate?: string
   canRefundCard?: boolean
+  geoCoordinates?: GeoCoordinates
 }
 
 export const ReturnDetails = (
@@ -29,6 +30,7 @@ export const ReturnDetails = (
     items,
     creationDate,
     canRefundCard,
+    geoCoordinates,
   } = props
 
   const {
@@ -80,7 +82,7 @@ export const ReturnDetails = (
       <ItemsList items={items} creationDate={creationDate} />
       <div className="flex-ns flex-wrap flex-row mt5">
         <ContactDetails />
-        <AddressDetails />
+        <AddressDetails geoCoordinates={geoCoordinates} />
         <UserCommentDetails />
       </div>
       <PaymentMethods canRefundCard={canRefundCard} />

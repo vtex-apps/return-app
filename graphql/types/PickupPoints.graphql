@@ -25,4 +25,5 @@ type CheckoutAddress {
   neighborhood: String
   complement: String
   reference: String
+  geoCoordinates: [Float]!
 }

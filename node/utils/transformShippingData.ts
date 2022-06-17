@@ -1,8 +1,9 @@
-import type { ShippingDetail } from '@vtex/clients'
 import type { ShippingData } from 'vtex.return-app'
 
+import type { ShippingDetailWithGeoCoordinates } from '../clients/oms'
+
 export const transformShippingData = (
-  shippingData: ShippingDetail
+  shippingData: ShippingDetailWithGeoCoordinates
 ): ShippingData => {
   const { address } = shippingData
 
@@ -16,6 +17,9 @@ export const transformShippingData = (
   const addressType =
     address.addressType === 'pickup' ? 'PICKUP_POINT' : 'CUSTOMER_ADDRESS'
 
+  // eslint-disable-next-line no-console
+  console.log(typeof address.geoCoordinates[0])
+
   return {
     addressId: address.addressId ?? '',
     country: address.country,
@@ -24,5 +28,6 @@ export const transformShippingData = (
     state: address.state,
     zipCode: address.postalCode,
     addressType,
+    geoCoordinates: address.geoCoordinates,
   }
 }

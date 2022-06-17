@@ -1,12 +1,28 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import type { NotificationResponse, NotificationInput } from '@vtex/clients'
 import { OMS } from '@vtex/clients'
+import type {
+  OrderDetailResponse,
+  AddressDetail,
+  ShippingDetail,
+} from '@vtex/clients'
 
 const baseURL = '/api/oms'
 
 const routes = {
   orders: `${baseURL}/pvt/orders`,
   invoice: (orderId: string) => `${baseURL}/pvt/orders/${orderId}/invoice`,
+}
+
+export interface AddressDetailWithGeoCoordinates extends AddressDetail {
+  geoCoordinates: number[]
+}
+export interface ShippingDetailWithGeoCoordinates extends ShippingDetail {
+  address: AddressDetailWithGeoCoordinates
+}
+export interface OrderDetailResponseWithGeoCoordinates
+  extends OrderDetailResponse {
+  shippingData: ShippingDetailWithGeoCoordinates
 }
 
 interface OrderList {
