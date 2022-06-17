@@ -1,7 +1,13 @@
 .status-icon {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #134cd8;
+  padding-top: 3px;
+  padding-left: 3px;
+  margin-right: 20px;
+}
+
+.status-icon-not-visited {
+  width: 26px;
+  height: 26px;
+  border: 3px solid #134cd8;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
@@ -9,10 +15,16 @@
   padding-left: 3px;
   background: #fff;
   margin-right: 20px;
+  margin-left: 5px;
 }
 
 .status-icon-checked {
   background: #134cd8;
+}
+
+.status-denied {
+  border: 1px solid red;
+  background: #f21515a1;
 }
 
 ul.status {
@@ -27,6 +39,6 @@ ul.status {
   padding-bottom: 0;
 }
 
-div.timeline:last-of-type ul.status {
+div.timeline:last-of-type ul.last-of {
   background-image: none;
-}
+} 

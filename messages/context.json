@@ -408,5 +408,7 @@
   "admin/return-app.return-request-details.contact-details.name": "Name",
   "admin/return-app.return-request-details.contact-details.email": "Email",
   "admin/return-app.return-request-details.contact-details.phone": "Phone",
-  "admin/return-app.return-request-details.status-timeline.comment": "{ts, date, ::yyyyMMdd} {ts, time, ::HHmmss} - {comment} - ({submittedBy})"
+  "admin/return-app.return-request-details.status-timeline.comment": "{ts, date, ::yyyyMMdd} {ts, time, ::HHmmss} - {comment} - ({submittedBy})",
+  "store/return-app.return-request-details.status-timeline.comment": "{ts, date, ::yyyyMMdd} {ts, time, ::HHmmss} - {comment}",
+  "admin/return-app.return-request-details.status-timeline.header": "Status"
 }

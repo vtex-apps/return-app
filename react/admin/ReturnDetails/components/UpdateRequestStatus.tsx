@@ -86,7 +86,7 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
   if (!data) return null
 
   return (
-    <section>
+    <section className="mv4">
       <h3>
         <FormattedMessage id="admin/return-app.return-request-details.update-status.title" />
       </h3>
