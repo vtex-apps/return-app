@@ -6155,9 +6155,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://rmav3updatestausui--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1655219193/public/@types/vtex.return-app":
+"vtex.return-app@https://rmav3timelinestatus--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1655482593/public/@types/vtex.return-app":
   version "3.0.0-beta.6"
-  resolved "https://rmav3updatestausui--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1655219193/public/@types/vtex.return-app#99138860fb914a2209dede3cefc5a5756c45199e"
+  resolved "https://rmav3timelinestatus--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1655482593/public/@types/vtex.return-app#4d4c6f914e6b39433d916757e86777da927ba43f"
 
 "vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.0/public/@types/vtex.store-graphql":
   version "2.152.0"
