@@ -5,6 +5,8 @@ query nearestPickupPoints($lat: String!, $long: String!) {
       pickupPoint {
         friendlyName
         address {
+          addressId
+          addressType
           postalCode
           city
           state
