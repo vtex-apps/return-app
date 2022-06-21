@@ -134,6 +134,17 @@ export const createReturnRequest = async (
     0
   )
 
+  const userCommentData = userComment
+    ? [
+        {
+          comment: userComment,
+          createdAt: requestDate,
+          submittedBy: userProfile.email,
+          visibleForCustomer: true,
+        },
+      ]
+    : []
+
   const rmaDocument = await returnRequestClient.save({
     orderId,
     refundableAmount,
@@ -164,7 +175,7 @@ export const createReturnRequest = async (
         status: 'new',
         submittedBy,
         createdAt: requestDate,
-        comments: [],
+        comments: userCommentData,
       },
     ],
   })
