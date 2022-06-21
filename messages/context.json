@@ -349,6 +349,7 @@
   "admin/return-app-status.package-verified": "Package Verified",
   "admin/return-app-status.refunded": "Refunded",
   "admin/return-app-status.denied": "Denied",
+  "admin/return-app-status.approved": "Status for approved requests",
   "admin/return-app.return-request-details.verify-items.button": "verify Items",
   "admin/return-app.return-request-details.verify-items.action.confirm": "Update status",
   "admin/return-app.return-request-details.verify-items.action.cancel": "Cancel",
@@ -427,5 +428,8 @@
   "admin/return-app-status.timeline.pending-verification": "Pending verification",
   "admin/return-app-status.timeline.package-verified": "Package Verified",
   "admin/return-app-status.timeline.refunded": "Refunded",
-  "admin/return-app-status.timeline.denied": "Denied"
+  "admin/return-app-status.timeline.denied": "Denied",
+  "admin/return-app.return-request-list.page-header.title": "The list of return requests",
+  "admin/return-app.return-request-list.error.title": "Title when the return request list has an error loading",
+  "admin/return-app.return-request-list.error.description": "Description of the error when the return request list fails to load"
 }
