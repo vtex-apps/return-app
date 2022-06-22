@@ -1,4 +1,4 @@
-import type { MasterDataEntity, OrderDetailResponse } from '@vtex/clients'
+import type { OrderDetailResponse, MasterDataEntity } from '@vtex/clients'
 import type {
   ReturnRequestItemInput,
   ReturnAppSettings,

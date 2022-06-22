@@ -1,5 +1,5 @@
-import type { ShippingData } from 'vtex.return-app'
 import type { ShippingDetail } from '@vtex/clients'
+import type { ShippingData } from 'vtex.return-app'
 
 export const transformShippingData = (
   shippingData: ShippingDetail
