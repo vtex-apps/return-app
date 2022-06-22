@@ -1,7 +1,6 @@
 import { ResolverError } from '@vtex/api'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 
-import type { OrderDetailResponseWithGeoCoordinates } from '../clients/oms'
 import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { getCurrentDate, substractDays } from '../utils/dateHelpers'
@@ -70,9 +69,7 @@ export const ordersAvailableToReturn = async (
 
   for (const order of list) {
     // Fetch order details to get items and packages
-    const orderPromise = oms.order(
-      order.orderId
-    ) as Promise<OrderDetailResponseWithGeoCoordinates>
+    const orderPromise = oms.order(order.orderId)
 
     orderListPromises.push(orderPromise)
 

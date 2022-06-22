@@ -25,7 +25,6 @@ export const AddressDetailsPickupPoints = ({ geoCoordinates }: Props) => {
   const [lat, long] = geoCoordinates.toString().split(',')
 
   const {
-    returnRequest,
     actions: { updateReturnRequest },
   } = useReturnRequest()
 

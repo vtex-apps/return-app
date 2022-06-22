@@ -1,4 +1,4 @@
-import type { MasterDataEntity } from '@vtex/clients'
+import type { MasterDataEntity, OrderDetailResponse } from '@vtex/clients'
 import type {
   OrderToReturnSummary,
   InvoicedItem,
@@ -8,7 +8,6 @@ import type {
   ReturnRequest,
 } from 'vtex.return-app'
 
-import type { OrderDetailResponseWithGeoCoordinates } from '../clients/oms'
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
@@ -16,7 +15,7 @@ import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
 
 export const createOrdersToReturnSummary = async (
-  order: OrderDetailResponseWithGeoCoordinates,
+  order: OrderDetailResponse,
   email: string,
   {
     excludedCategories,
@@ -154,9 +153,6 @@ export const createOrdersToReturnSummary = async (
       })
     }
   }
-
-  // eslint-disable-next-line no-console
-  console.log(order.shippingData.address.geoCoordinates)
 
   return {
     orderId,

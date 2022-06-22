@@ -6,10 +6,7 @@ import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
-<<<<<<< HEAD
 import { GiftCard } from './giftCard'
-=======
->>>>>>> feat: add dropoff points backend
 import Checkout from './checkout'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')

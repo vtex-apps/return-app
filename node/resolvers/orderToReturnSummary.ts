@@ -30,10 +30,8 @@ export const orderToReturnSummary = async (
   if (!orderId) {
     throw new UserInputError('Order ID is missing')
   }
-  const order = (await oms.order(
-    orderId
-  )) as OrderDetailResponseWithGeoCoordinates
 
+  const order = await oms.order(orderId)
 
   const { creationDate, clientProfileData, status } = order
 

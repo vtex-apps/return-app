@@ -1,9 +1,8 @@
 import type { ShippingData } from 'vtex.return-app'
-
-import type { ShippingDetailWithGeoCoordinates } from '../clients/oms'
+import type { ShippingDetail } from '@vtex/clients'
 
 export const transformShippingData = (
-  shippingData: ShippingDetailWithGeoCoordinates
+  shippingData: ShippingDetail
 ): ShippingData => {
   const { address } = shippingData
 
@@ -17,9 +16,6 @@ export const transformShippingData = (
   const addressType =
     address.addressType === 'pickup' ? 'PICKUP_POINT' : 'CUSTOMER_ADDRESS'
 
-  // eslint-disable-next-line no-console
-  console.log(typeof address.geoCoordinates[0])
-
   return {
     addressId: address.addressId ?? '',
     country: address.country,
@@ -28,6 +24,7 @@ export const transformShippingData = (
     state: address.state,
     zipCode: address.postalCode,
     addressType,
+    // @ts-expect-error geoCoordinates is not typed in the OMS client project
     geoCoordinates: address.geoCoordinates,
   }
 }
