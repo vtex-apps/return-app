@@ -7,63 +7,69 @@ export function getReasonOptions(
 ) {
   return [
     {
-      value: 'reasonAccidentalOrder',
+      value: formatMessage(defaultReturnReasonsMessages.reasonAccidentalOrder),
       label: formatMessage(defaultReturnReasonsMessages.reasonAccidentalOrder),
     },
     {
-      value: 'reasonBetterPrice',
+      value: formatMessage(defaultReturnReasonsMessages.reasonBetterPrice),
       label: formatMessage(defaultReturnReasonsMessages.reasonBetterPrice),
     },
     {
-      value: 'reasonPerformance',
+      value: formatMessage(defaultReturnReasonsMessages.reasonPerformance),
       label: formatMessage(defaultReturnReasonsMessages.reasonPerformance),
     },
     {
-      value: 'reasonIncompatible',
+      value: formatMessage(defaultReturnReasonsMessages.reasonIncompatible),
       label: formatMessage(defaultReturnReasonsMessages.reasonIncompatible),
     },
     {
-      value: 'reasonItemDamaged',
+      value: formatMessage(defaultReturnReasonsMessages.reasonItemDamaged),
       label: formatMessage(defaultReturnReasonsMessages.reasonItemDamaged),
     },
     {
-      value: 'reasonMissedDelivery',
+      value: formatMessage(defaultReturnReasonsMessages.reasonMissedDelivery),
       label: formatMessage(defaultReturnReasonsMessages.reasonMissedDelivery),
     },
     {
-      value: 'reasonMissingParts',
+      value: formatMessage(defaultReturnReasonsMessages.reasonMissingParts),
       label: formatMessage(defaultReturnReasonsMessages.reasonMissingParts),
     },
     {
-      value: 'reasonBoxDamaged',
+      value: formatMessage(defaultReturnReasonsMessages.reasonBoxDamaged),
       label: formatMessage(defaultReturnReasonsMessages.reasonBoxDamaged),
     },
     {
-      value: 'reasonDifferentProduct',
+      value: formatMessage(defaultReturnReasonsMessages.reasonDifferentProduct),
       label: formatMessage(defaultReturnReasonsMessages.reasonDifferentProduct),
     },
     {
-      value: 'reasonDefective',
+      value: formatMessage(defaultReturnReasonsMessages.reasonDefective),
       label: formatMessage(defaultReturnReasonsMessages.reasonDefective),
     },
     {
-      value: 'reasonArrivedInAddition',
+      value: formatMessage(
+        defaultReturnReasonsMessages.reasonArrivedInAddition
+      ),
       label: formatMessage(
         defaultReturnReasonsMessages.reasonArrivedInAddition
       ),
     },
     {
-      value: 'reasonNoLongerNeeded',
+      value: formatMessage(defaultReturnReasonsMessages.reasonNoLongerNeeded),
       label: formatMessage(defaultReturnReasonsMessages.reasonNoLongerNeeded),
     },
     {
-      value: 'reasonUnauthorizedPurchase',
+      value: formatMessage(
+        defaultReturnReasonsMessages.reasonUnauthorizedPurchase
+      ),
       label: formatMessage(
         defaultReturnReasonsMessages.reasonUnauthorizedPurchase
       ),
     },
     {
-      value: 'reasonDifferentFromWebsite',
+      value: formatMessage(
+        defaultReturnReasonsMessages.reasonDifferentFromWebsite
+      ),
       label: formatMessage(
         defaultReturnReasonsMessages.reasonDifferentFromWebsite
       ),
