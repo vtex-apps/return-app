@@ -3,22 +3,28 @@ import { FormattedMessage } from 'react-intl'
 import {
   IconClock,
   IconFailure,
-  IconSuccess,
   IconVisibilityOn,
   IconCheck,
+  IconSuccess,
   IconExternalLinkMini,
 } from 'vtex.styleguide'
+import type { Status } from 'vtex.return-app'
 
 const status = {
-  new: 'New',
-  processing: 'Processing',
-  picked: 'Picked up from client',
-  pendingVerification: 'Pending verification',
-  approved: 'Approved',
-  denied: 'Denied',
-  refunded: 'Refunded',
+  new: 'new',
+  processing: 'processing',
+  picked: 'pickedUpFromClient',
+  pendingVerification: 'pendingVerification',
+  verified: 'packageVerified',
+  denied: 'denied',
+  refunded: 'amountRefunded',
 } as const
 
+/**
+ * @todo
+ * - Resolve messages
+ * - Resolve STATUS variable
+ */
 const ReturnListSchema = () => {
   return {
     properties: {
@@ -43,20 +49,19 @@ const ReturnListSchema = () => {
         title: <FormattedMessage id="returns.status" />,
         // eslint-disable-next-line react/display-name
         cellRenderer: ({ cellData }) => {
-          return <div>{renderIcon(cellData.status)}</div>
+          return <div>{renderIcon(cellData)}</div>
         },
       },
     },
   }
 }
 
-function renderIcon(requestStatus: any) {
+function renderIcon(requestStatus: Status) {
   switch (requestStatus) {
-    case status.approved:
+    case status.verified:
       return (
         <span className="green">
-          <IconSuccess size={14} />{' '}
-          <FormattedMessage id="admin/return-app-status.approved" />
+          <IconSuccess size={14} /> Verified
         </span>
       )
 
