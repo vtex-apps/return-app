@@ -139,8 +139,9 @@ export const createReturnRequest = async (
         {
           comment: userComment,
           createdAt: requestDate,
-          submittedBy: userProfile.email,
+          submittedBy,
           visibleForCustomer: true,
+          role: 'storeUser',
         },
       ]
     : []

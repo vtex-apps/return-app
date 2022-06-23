@@ -210,6 +210,7 @@
                   "format": "date-time",
                   "required": true
                 },
+                "role": { "type": "string", "required": true },
                 "submittedBy": { "type": "string", "required": true },
                 "visibleForCustomer": { "type": "boolean", "required": true }
               }
