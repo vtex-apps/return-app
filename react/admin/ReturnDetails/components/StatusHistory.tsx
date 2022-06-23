@@ -61,6 +61,9 @@ export const StatusHistory = () => {
 
   return (
     <section className="mv4">
+      <h3>
+        <FormattedMessage id="admin/return-app.return-request-details.status-history.title" />
+      </h3>
       <Table
         fullWidth
         schema={statusHistorySchema(formatMessage)}

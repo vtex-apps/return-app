@@ -428,5 +428,6 @@
   "admin/return-app-status.timeline.denied": "Denied",
   "admin/return-app.return-request-details.table.status-history.header.created-at": "Created At",
   "admin/return-app.return-request-details.table.status-history.header.status": "Status",
-  "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By"
+  "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
+  "admin/return-app.return-request-details.status-history.title": "Status History"
 }
