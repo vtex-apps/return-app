@@ -13,6 +13,7 @@ import { RefundMethodDetail } from './components/RefundMethodDetail'
 import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from './components/ReturnValues/ReturnValues'
 import { StatusTimeline } from './components/StatusTimeline/StatusTimeline'
+import { StatusHistory } from './components/StatusHistory'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -73,6 +74,7 @@ export const ReturnDetailsContainer = () => {
                     handleViewVerifyItems('verify-items')
                   }
                 />
+                <StatusHistory />
               </>
             )}
             {detailsPage !== 'verify-items' ? null : (
