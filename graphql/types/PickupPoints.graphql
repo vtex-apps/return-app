@@ -1,15 +1,15 @@
 type NearPickupPointQueryResponse {
-  items: [CheckoutPickupPoint]!
+  items: [CheckoutPickupPoint!]!
 }
 
 type CheckoutPickupPoint {
-  pickupPoint: PickupPoint
+  pickupPoint: PickupPoint!
 }
 
 type PickupPoint {
-  friendlyName: String
-  address: CheckoutAddress
-  id: String
+  friendlyName: String!
+  address: CheckoutAddress!
+  id: String!
 }
 
 type CheckoutAddress {

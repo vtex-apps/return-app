@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input, Tooltip, Toggle, IconInfo } from 'vtex.styleguide'
+import type { AddressType, ShippingData } from 'vtex.return-app'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { CustomMessage } from './layout/CustomMessage'
-import { AddressDetailsPickupPoints } from './AddressDetailsPickupPoints'
+import { PickupPointSelector } from './PickupPointSelector'
+import type { OrderDetailsState } from '../../provider/OrderToReturnReducer'
+import { setInitialPickupAddress } from '../../utils/setInitialPickupAddress'
 
 const messages = defineMessages({
   addressInput: {
@@ -27,13 +30,18 @@ const messages = defineMessages({
 })
 
 interface Props {
-  geoCoordinates?: GeoCoordinates
+  shippingData: ShippingData
 }
 
-export const AddressDetails = ({ geoCoordinates }: Props) => {
+export const AddressDetails = ({ shippingData }: Props) => {
   const { formatMessage } = useIntl()
   const { data: settings } = useStoreSettings()
-  const [isPickupPointSelected, setIsPickupPointSelected] = useState(false)
+
+  const { geoCoordinates } = shippingData ?? {}
+
+  const [customerAddress, setCustomerAddress] = useState<
+    OrderDetailsState['pickupReturnData'] | null
+  >(null)
 
   const {
     returnRequest,
@@ -43,15 +51,34 @@ export const AddressDetails = ({ geoCoordinates }: Props) => {
 
   const { pickupReturnData } = returnRequest
 
-  const handleSelectedToggleAddress = () => {
-    setIsPickupPointSelected(!isPickupPointSelected)
+  const [pickupPointType, setPickupPointType] = useState<AddressType>(
+    pickupReturnData.addressType ?? 'CUSTOMER_ADDRESS'
+  )
 
-    if (!isPickupPointSelected) {
+  const handleSelectedToggleAddress = () => {
+    const addressType =
+      pickupPointType === 'CUSTOMER_ADDRESS'
+        ? 'PICKUP_POINT'
+        : 'CUSTOMER_ADDRESS'
+
+    // When user toggles to select a pickup point, we save the current CUSTOMER_ADDRESS into state in case they come back.
+    if (addressType === 'PICKUP_POINT') {
+      setCustomerAddress(pickupReturnData)
+
       updateReturnRequest({
-        type: 'updatePickupReturnData',
-        payload: { ...pickupReturnData },
+        type: 'resetAddress',
       })
     }
+
+    // When toggling back to CUSTOMER_ADDRESS, we restore the previous entered address.
+    if (addressType === 'CUSTOMER_ADDRESS') {
+      updateReturnRequest({
+        type: 'updatePickupReturnData',
+        payload: customerAddress ?? setInitialPickupAddress(shippingData),
+      })
+    }
+
+    setPickupPointType(addressType)
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -59,11 +86,16 @@ export const AddressDetails = ({ geoCoordinates }: Props) => {
 
     updateReturnRequest({
       type: 'updatePickupReturnData',
-      payload: { ...pickupReturnData, [name]: value },
+      payload: {
+        ...pickupReturnData,
+        addressType: pickupPointType,
+        [name]: value,
+      },
     })
   }
 
   const addressError = inputErrors.some((error) => error === 'pickup-data')
+  const isPickupPoint = pickupPointType === 'PICKUP_POINT'
 
   /**
    * Important note: If the address from order has type PICKUP_POINT, the fields will be empty in the initial render.
@@ -72,120 +104,115 @@ export const AddressDetails = ({ geoCoordinates }: Props) => {
   return (
     <div className="flex-ns flex-wrap flex-auto flex-column pa4">
       <div className="flex items-center justify-between">
-        {!settings?.options?.enablePickupPoints ? (
-          <div>
-            <p>
-              <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
-            </p>
-          </div>
-        ) : (
-          <>
-            <div>
-              <p>
+        <div>
+          <p>
+            <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
+          </p>
+        </div>
+        {!settings?.options?.enablePickupPoints || !geoCoordinates ? null : (
+          <div className="flex items-center">
+            <Tooltip
+              label={
                 <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
-              </p>
-            </div>
-            <div className="flex items-center">
-              <Tooltip
-                label={
-                  <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
-                }
-                position="left"
-              >
-                <span className="flex items-center">
-                  <IconInfo className="ml5 o-50" />
-                  <p className="ml2 mr3">Dropoff Point</p>
-                </span>
-              </Tooltip>
-              <Toggle
-                checked={isPickupPointSelected}
-                onChange={handleSelectedToggleAddress}
-              />
-            </div>
-          </>
+              }
+              position="left"
+            >
+              <span className="flex items-center">
+                <IconInfo className="ml5 o-50" />
+                <p className="ml2 mr3">Select drop off point</p>
+              </span>
+            </Tooltip>
+            <Toggle
+              checked={isPickupPoint}
+              onChange={handleSelectedToggleAddress}
+            />
+          </div>
         )}
       </div>
-      {isPickupPointSelected && geoCoordinates ? (
-        <AddressDetailsPickupPoints geoCoordinates={geoCoordinates} />
-      ) : (
-        <>
-          <div className="mb4">
-            <Input
-              name="address"
-              required
-              placeholder={formatMessage(messages.addressInput)}
-              onChange={handleInputChange}
-              value={pickupReturnData.address}
-            />
-            {addressError && !pickupReturnData.address ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-address-details.address-input.error"
-              />
-            ) : null}
-          </div>
-          <div className="mb4">
-            <Input
-              name="city"
-              required
-              placeholder={formatMessage(messages.cityInput)}
-              onChange={handleInputChange}
-              value={pickupReturnData.city}
-            />
-            {addressError && !pickupReturnData.city ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-address-details.city-input.error"
-              />
-            ) : null}
-          </div>
-          <div className="mb4">
-            <Input
-              name="state"
-              requiered
-              placeholder={formatMessage(messages.stateInput)}
-              onChange={handleInputChange}
-              value={pickupReturnData.state}
-            />
-            {addressError && !pickupReturnData.state ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-address-details.state-input.error"
-              />
-            ) : null}
-          </div>
-          <div className="mb4">
-            <Input
-              name="zipCode"
-              required
-              placeholder={formatMessage(messages.zipInput)}
-              onChange={handleInputChange}
-              value={pickupReturnData.zipCode}
-            />
-            {addressError && !pickupReturnData.zipCode ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-address-details.zip-input.error"
-              />
-            ) : null}
-          </div>
-          <div className="mb4">
-            <Input
-              name="country"
-              required
-              placeholder={formatMessage(messages.countryInput)}
-              onChange={handleInputChange}
-              value={pickupReturnData.country}
-            />
-            {addressError && !pickupReturnData.country ? (
-              <CustomMessage
-                status="error"
-                message="store/return-app.return-address-details.country-input.error"
-              />
-            ) : null}
-          </div>
-        </>
-      )}
+      {isPickupPoint && geoCoordinates ? (
+        <PickupPointSelector geoCoordinates={geoCoordinates} />
+      ) : null}
+
+      <div className="mb4">
+        <Input
+          name="address"
+          required
+          placeholder={formatMessage(messages.addressInput)}
+          onChange={handleInputChange}
+          value={pickupReturnData.address}
+          disabled={isPickupPoint}
+        />
+        {addressError && !pickupReturnData.address ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.address-input.error"
+          />
+        ) : null}
+      </div>
+      <div className="mb4">
+        <Input
+          name="city"
+          required
+          placeholder={formatMessage(messages.cityInput)}
+          onChange={handleInputChange}
+          value={pickupReturnData.city}
+          disabled={isPickupPoint}
+        />
+        {addressError && !pickupReturnData.city ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.city-input.error"
+          />
+        ) : null}
+      </div>
+      <div className="mb4">
+        <Input
+          name="state"
+          requiered
+          placeholder={formatMessage(messages.stateInput)}
+          onChange={handleInputChange}
+          value={pickupReturnData.state}
+          disabled={isPickupPoint}
+        />
+        {addressError && !pickupReturnData.state ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.state-input.error"
+          />
+        ) : null}
+      </div>
+      <div className="mb4">
+        <Input
+          name="zipCode"
+          required
+          placeholder={formatMessage(messages.zipInput)}
+          onChange={handleInputChange}
+          value={pickupReturnData.zipCode}
+          disabled={isPickupPoint}
+        />
+        {addressError && !pickupReturnData.zipCode ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.zip-input.error"
+          />
+        ) : null}
+      </div>
+      <div className="mb4">
+        <Input
+          name="country"
+          required
+          placeholder={formatMessage(messages.countryInput)}
+          onChange={handleInputChange}
+          value={pickupReturnData.country}
+          disabled={isPickupPoint}
+        />
+        {addressError && !pickupReturnData.country ? (
+          <CustomMessage
+            status="error"
+            message="store/return-app.return-address-details.country-input.error"
+          />
+        ) : null}
+      </div>
     </div>
   )
 }
