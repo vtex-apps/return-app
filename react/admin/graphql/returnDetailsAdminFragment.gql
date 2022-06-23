@@ -65,6 +65,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
       createdAt
       visibleForCustomer
       submittedBy
+      role
     }
   }
 }
