@@ -29,7 +29,7 @@ export const createOrUpdateStatusPayload = ({
         createdAt,
         submittedBy,
         visibleForCustomer: comment.visibleForCustomer,
-        role: 'adminUser',
+        role: 'adminUser' as const,
       }
     : null
 
