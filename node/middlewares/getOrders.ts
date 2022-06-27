@@ -4,9 +4,24 @@ export async function getOrders(ctx: Context, next: () => Promise<any>) {
     vtex: { logger },
   } = ctx
 
-  const { where } = ctx.vtex.route.params
+  const { where } = ctx.vtex.route.params as { where: string }
 
-  const response = await returnAppClient.getOrders(ctx, where)
+  const clientEmailKey = 'clientEmail'
+
+  const indexOfClientEmail = where.indexOf(clientEmailKey)
+
+  const nextParam = where.indexOf('&', indexOfClientEmail)
+
+  const clientEmail = where.substring(
+    indexOfClientEmail + clientEmailKey.length + 1,
+    nextParam
+  )
+
+  const encodedEmail = encodeURIComponent(clientEmail)
+
+  const adjustedWhere = where.replace(clientEmail, encodedEmail)
+
+  const response = await returnAppClient.getOrders(ctx, adjustedWhere)
 
   if (!response) {
     throw new Error(`Error getting orders`)
