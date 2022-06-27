@@ -9,6 +9,7 @@ import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
 import { validatePaymentMethod } from '../utils/validatePaymentMethod'
+import { validateCanUsedropoffPoints } from '../utils/validateCanUseDropoffPoints'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -84,8 +85,13 @@ export const createReturnRequest = async (
     itemMetadata,
   } = order
 
-  const { maxDays, excludedCategories, customReturnReasons, paymentOptions } =
-    settings
+  const {
+    maxDays,
+    excludedCategories,
+    customReturnReasons,
+    paymentOptions,
+    options,
+  } = settings
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -110,6 +116,12 @@ export const createReturnRequest = async (
 
   // Validate payment methods
   validatePaymentMethod(refundPaymentData, paymentOptions)
+
+  // validate address type
+  validateCanUsedropoffPoints(
+    pickupReturnData.addressType,
+    options?.enablePickupPoints
+  )
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
