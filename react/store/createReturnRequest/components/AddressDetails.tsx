@@ -102,7 +102,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
    * More explanation on setInitialPickupAddress util function
    */
   return (
-    <div className="flex-ns flex-wrap flex-auto flex-column pa4">
+    <div className="flex-ns flex-wrap flex-auto flex-column pa4 mw6">
       <div className="flex items-center justify-between">
         <div>
           <p>
