@@ -113,13 +113,15 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <div className="flex items-center">
             <Tooltip
               label={
-                <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
+                <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.tooltip" />
               }
               position="left"
             >
               <span className="flex items-center">
                 <IconInfo className="ml5 o-50" />
-                <p className="ml2 mr3">Select drop off point</p>
+                <p className="ml2 mr3">
+                  <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points" />
+                </p>
               </span>
             </Tooltip>
             <Toggle

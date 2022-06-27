@@ -7,6 +7,7 @@ import type {
   PickupPoint,
 } from 'vtex.return-app'
 import { Dropdown } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
 
 import NEAREST_PICKUP_POINTS from '../graphql/nearestPickupPoints.gql'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
@@ -33,7 +34,7 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
 
   const pickupPointsRef = useRef<Map<string, PickupPoint> | null>(null)
 
-  const { data, loading, error } = useQuery<
+  const { loading, error } = useQuery<
     {
       nearestPickupPoints: NearPickupPointQueryResponse
     },
@@ -77,7 +78,7 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
 
     const pickupPoint = pickupPointsRef.current?.get(pickupPointId)
 
-    if (loading || !data || !pickupPoint) return
+    if (loading || !pickupPoint) return
 
     const { address } = pickupPoint
     const { street, number, city, country, state, postalCode, addressId } =
@@ -106,8 +107,14 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
       <Dropdown
         label=""
         error={Boolean(error)}
-        errorMessage={error ? 'Sorry, error' : undefined}
-        placeholder="Select Pickup Point"
+        errorMessage={
+          !error ? (
+            <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
+          ) : undefined
+        }
+        placeholder={
+          <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder" />
+        }
         size="small"
         options={pickupPointsDropdownOptions}
         value={pickupReturnData.addressId}

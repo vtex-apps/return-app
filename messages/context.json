@@ -431,5 +431,9 @@
   "admin/return-app.return-request-details.table.status-history.header.created-at": "Created At",
   "admin/return-app.return-request-details.table.status-history.header.status": "Status",
   "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
-  "admin/return-app.return-request-details.status-history.title": "Status History"
+  "admin/return-app.return-request-details.status-history.title": "Status History",
+  "store/return-app.return-order-details.pickup-address.drop-off-points": "Select a drop off point",
+  "store/return-app.return-order-details.pickup-address.drop-off-points.tooltip": "You can return your items in one of our selected drop off points",
+  "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder": "Select a drop off point",
+  "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error": "There was an error loading the drop off points"
 }
