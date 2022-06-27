@@ -1,5 +1,6 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedDate, FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 import {
   IconClock,
   IconFailure,
@@ -7,6 +8,7 @@ import {
   IconCheck,
   IconSuccess,
   IconExternalLinkMini,
+  ButtonPlain,
 } from 'vtex.styleguide'
 import type { Status } from 'vtex.return-app'
 
@@ -20,48 +22,75 @@ const status = {
   refunded: 'amountRefunded',
 } as const
 
-/**
- * @todo
- * - Resolve messages
- * - Resolve STATUS variable
- */
 const ReturnListSchema = () => {
+  const { navigate } = useRuntime()
+
+  const navigateToRequest = (id: string) => {
+    navigate({
+      to: `/admin/app/returns/${id}/details`,
+    })
+  }
+
   return {
     properties: {
       id: {
-        title: <FormattedMessage id="returns.requestId" />,
-        minWidth: 350,
+        title: (
+          <FormattedMessage id="return-app.return-request-list.table-data.requestId" />
+        ),
+        minWidth: 310,
+        cellRenderer({ cellData }) {
+          return (
+            <ButtonPlain
+              size="small"
+              onClick={() => navigateToRequest(cellData)}
+            >
+              {cellData}
+            </ButtonPlain>
+          )
+        },
       },
       sequenceNumber: {
-        title: <FormattedMessage id="returns.sequenceNumber" />,
-        width: 150,
+        title: (
+          <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber" />
+        ),
       },
       orderId: {
-        title: <FormattedMessage id="returns.orderId" />,
+        title: (
+          <FormattedMessage id="return-app.return-request-list.table-data.orderId" />
+        ),
       },
       createdIn: {
-        title: <FormattedMessage id="returns.submittedDate" />,
-        cellRenderer: ({ cellData }) => {
-          return new Date(cellData).toLocaleString()
+        title: (
+          <FormattedMessage id="return-app.return-request-list.table-data.createdDate" />
+        ),
+        cellRenderer({ cellData }) {
+          return <FormattedDate value={cellData} />
         },
       },
       status: {
-        title: <FormattedMessage id="returns.status" />,
-        // eslint-disable-next-line react/display-name
-        cellRenderer: ({ cellData }) => {
-          return <div>{renderIcon(cellData)}</div>
+        title: (
+          <FormattedMessage id="return-app.return-request-list.table-data.status" />
+        ),
+        cellRenderer({ cellData }) {
+          return (
+            <div className="flex items-center">{renderStatus(cellData)}</div>
+          )
         },
       },
     },
   }
 }
 
-function renderIcon(requestStatus: Status) {
+/**
+ * Renders the status with an icon and color
+ */
+function renderStatus(requestStatus: Status) {
   switch (requestStatus) {
     case status.verified:
       return (
         <span className="green">
-          <IconSuccess size={14} /> Verified
+          <IconSuccess size={14} />{' '}
+          <FormattedMessage id="admin/return-app-status.package-verified" />
         </span>
       )
 

@@ -13,30 +13,29 @@ interface Props {
 const requestsStatuses = {
   new: 'new',
   processing: 'processing',
-  picked: 'pickedUpFromClient',
-  pendingVerification: 'pendingVerification',
-  verified: 'packageVerified',
+  picked: 'pickedup-from-client',
+  pendingVerification: 'pending-verification',
+  verified: 'package-verified',
   denied: 'denied',
-  refunded: 'amountRefunded',
+  refunded: 'refunded',
 } as const
 
-/**
- * @todo
- * - Resolve messages
- * - Resolve STATUS variable
- */
 const StatusActionMenu = (props: Props) => {
   const { handleOnChange, status } = props
 
   const optionList = Object.keys(requestsStatuses).map((key) => {
     return {
-      label: requestsStatuses[key],
-      onClick: () => handleOnChange('status', requestsStatuses[key]),
+      label: (
+        <FormattedMessage
+          id={`admin/return-app-status.${requestsStatuses[key]}`}
+        />
+      ),
+      onClick: () => handleOnChange('status', key),
     }
   })
 
   const allStatusOption = {
-    label: <FormattedMessage id="returns.statusAllStatuses" />,
+    label: <FormattedMessage id="admin/return-app-status.allStatuses" />,
     onClick: () => handleOnChange('status', ''),
   }
 
@@ -44,7 +43,9 @@ const StatusActionMenu = (props: Props) => {
 
   return (
     <ActionMenu
-      label={status || 'ALL'}
+      label={
+        status || <FormattedMessage id="admin/return-app-status.allStatuses" />
+      }
       align="right"
       buttonProps={{
         variation: 'secondary',

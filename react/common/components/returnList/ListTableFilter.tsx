@@ -21,7 +21,7 @@ interface Props {
   loading: boolean
 }
 
-interface CreatedDates {
+interface FilterDates {
   from: string
   to: string
 }
@@ -29,11 +29,11 @@ interface Filters {
   status: Status | ''
   sequenceNumber: string
   id: string
-  createdIn: CreatedDates | undefined
+  createdIn: FilterDates | undefined
   orderId: string
 }
 
-type Keys = keyof Filters | keyof CreatedDates
+type Keys = keyof Filters | keyof FilterDates
 export type FilterKeys = Exclude<Keys, 'createdIn'>
 
 const initialFilters = {
@@ -44,19 +44,17 @@ const initialFilters = {
   orderId: '',
 } as Filters
 
-/**
- * @todo
- * - Resolve messages
- */
 const ListTableFilter = (props: Props) => {
   const { refetch, loading } = props
 
   const [isFiltering, setIsFiltering] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
 
-  const fromDate = filters.createdIn ? new Date(filters.createdIn.from) : ''
-  const toDate = filters.createdIn ? new Date(filters.createdIn.to) : ''
+  const { createdIn } = filters
+  const fromDate = createdIn ? new Date(createdIn.from) : ''
+  const toDate = createdIn ? new Date(createdIn.to) : ''
 
+  // Used solely for refetch's variables
   const selectedFilters = Object.keys(filters)
     .filter((key) => filters[key])
     .reduce((newFilters, key) => {
@@ -65,14 +63,16 @@ const ListTableFilter = (props: Props) => {
       return newFilters
     }, {})
 
-  const handleSubmitFilters = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    !isFiltering && setIsFiltering(true)
+  const hasSelectedFilters = Object.keys(selectedFilters).length > 0
+
+  const handleSubmitFilters = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsFiltering(true)
     refetch({ filter: selectedFilters, page: 1 })
   }
 
   const handleResetFilters = () => {
-    isFiltering && setIsFiltering(false)
+    setIsFiltering(false)
     setFilters(initialFilters)
     refetch({ filter: {}, page: 1 })
   }
@@ -80,19 +80,22 @@ const ListTableFilter = (props: Props) => {
   const handleOnChange = (key: FilterKeys, value: string) => {
     /* Both dates are non nullable */
     if (key === 'to' || key === 'from') {
-      const dates = { ...filters.createdIn, [key]: value } as CreatedDates
+      const filterDates = {
+        ...filters.createdIn,
+        [key]: value,
+      } as FilterDates
 
-      if (!dates.to) {
-        dates.to = new Date().toISOString()
+      if (!filterDates.to) {
+        filterDates.to = new Date().toISOString()
       }
 
-      if (!dates.from) {
-        dates.from = new Date(dates.to).toISOString()
+      if (!filterDates.from) {
+        filterDates.from = new Date(filterDates.to).toISOString()
       }
 
       setFilters({
         ...filters,
-        createdIn: dates,
+        createdIn: filterDates,
       })
 
       return
@@ -108,7 +111,7 @@ const ListTableFilter = (props: Props) => {
     <form onSubmit={handleSubmitFilters}>
       <div className="flex items-center">
         <div className="mr2">
-          <FormattedMessage id="returns.requestId">
+          <FormattedMessage id="return-app.return-request-list.table-data.requestId">
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -122,7 +125,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="returns.sequenceNumber">
+          <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber">
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -136,7 +139,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="returns.orderId">
+          <FormattedMessage id="return-app.return-request-list.table-data.orderId">
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -150,7 +153,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="returns.filterFromDate">
+          <FormattedMessage id="return-app.return-request-list.table-filters.fromDate">
             {(formattedMessage) => (
               <DatePicker
                 maxDate={new Date()}
@@ -166,7 +169,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="returns.filterToDate">
+          <FormattedMessage id="return-app.return-request-list.table-filters.toDate">
             {(formattedMessage) => (
               <DatePicker
                 maxDate={new Date()}
@@ -191,10 +194,10 @@ const ListTableFilter = (props: Props) => {
           <Button
             size="small"
             type="submit"
-            disabled={Object.keys(selectedFilters).length === 0}
+            disabled={!hasSelectedFilters}
             isLoading={loading}
           >
-            <FormattedMessage id="returns.filterResults" />
+            <FormattedMessage id="return-app.return-request-list.table-filters.apply-filters" />
           </Button>
         </div>
         <div className="mh2">
@@ -205,7 +208,7 @@ const ListTableFilter = (props: Props) => {
             variation="danger"
             isLoading={loading}
           >
-            <FormattedMessage id="returns.clearFilters" />
+            <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
           </Button>
         </div>
       </div>
