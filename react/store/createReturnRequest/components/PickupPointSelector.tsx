@@ -6,7 +6,7 @@ import type {
   NearPickupPointQueryResponse,
   PickupPoint,
 } from 'vtex.return-app'
-import { Dropdown } from 'vtex.styleguide'
+import { Dropdown, Spinner } from 'vtex.styleguide'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import NEAREST_PICKUP_POINTS from '../graphql/nearestPickupPoints.gql'
@@ -105,23 +105,29 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
 
   return (
     <div className="mb4">
-      <Dropdown
-        label=""
-        error={Boolean(error)}
-        errorMessage={
-          error ? (
-            <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
-          ) : undefined
-        }
-        placeholder={formatMessage({
-          id: 'store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder',
-        })}
-        size="small"
-        options={pickupPointsDropdownOptions}
-        value={pickupReturnData.addressId}
-        onChange={handlePickupPointSelected}
-        preventTruncate
-      />
+      {loading ? (
+        <div className="h2">
+          <Spinner />
+        </div>
+      ) : (
+        <Dropdown
+          label=""
+          error={Boolean(error)}
+          errorMessage={
+            error ? (
+              <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
+            ) : undefined
+          }
+          placeholder={formatMessage({
+            id: 'store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder',
+          })}
+          size="small"
+          options={pickupPointsDropdownOptions}
+          value={pickupReturnData.addressId}
+          onChange={handlePickupPointSelected}
+          preventTruncate
+        />
+      )}
     </div>
   )
 }
