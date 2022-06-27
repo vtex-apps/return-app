@@ -17,6 +17,7 @@ type Query {
   ): ReturnRequestList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
 }
 
 type Mutation {

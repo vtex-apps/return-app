@@ -11,6 +11,7 @@ import { returnRequest } from './returnRequest'
 import { returnRequestList } from './returnRequestList'
 import { ReturnRequestResponse } from './ReturnRequestResponse'
 import { updateReturnRequestStatus } from './updateReturnRequestStatus'
+import { nearestPickupPoints } from './nearestPickupPoints'
 
 export const mutations = {
   deleteReturnRequest,
@@ -26,6 +27,7 @@ export const queries = {
   orderToReturnSummary,
   returnRequest,
   returnRequestList,
+  nearestPickupPoints,
 }
 
 export const resolvers = { ReturnRequestResponse }
