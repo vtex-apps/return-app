@@ -447,5 +447,8 @@
   "return-app.return-request-list.table-filters.apply-filters": "APPLY",
   "return-app.return-request-list.table-filters.clear-filters": "CLEAR",
   "return-app.return-request-list.table-jumpToPage.pageText": "Page",
-  "return-app.return-request-list.table-jumpToPage.cta": "GO"
+  "return-app.return-request-list.table-jumpToPage.cta": "GO",
+  "store/return-app.return-request-list.page-header.title": "My Returns",
+  "store/return-app.return-request-list.page-header.goBack": "Go Back",
+  "store/return-app.return-request-list.page-header.cta": "New Request"
 }

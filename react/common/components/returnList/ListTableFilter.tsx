@@ -19,6 +19,7 @@ interface Props {
     }>
   >
   loading: boolean
+  isDisabled: boolean
 }
 
 interface FilterDates {
@@ -45,7 +46,7 @@ const initialFilters = {
 } as Filters
 
 const ListTableFilter = (props: Props) => {
-  const { refetch, loading } = props
+  const { refetch, loading, isDisabled } = props
 
   const [isFiltering, setIsFiltering] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
@@ -74,7 +75,7 @@ const ListTableFilter = (props: Props) => {
   const handleResetFilters = () => {
     setIsFiltering(false)
     setFilters(initialFilters)
-    refetch({ filter: {}, page: 1 })
+    refetch({ filter: undefined, page: 1 })
   }
 
   const handleOnChange = (key: FilterKeys, value: string) => {
@@ -120,6 +121,7 @@ const ListTableFilter = (props: Props) => {
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   handleOnChange('id', e.currentTarget.value)
                 }
+                disabled={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
@@ -134,6 +136,7 @@ const ListTableFilter = (props: Props) => {
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   handleOnChange('sequenceNumber', e.currentTarget.value)
                 }
+                disabled={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
@@ -148,6 +151,7 @@ const ListTableFilter = (props: Props) => {
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   handleOnChange('orderId', e.currentTarget.value)
                 }
+                disabled={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
@@ -164,6 +168,7 @@ const ListTableFilter = (props: Props) => {
                   handleOnChange('from', new Date(date).toISOString())
                 }
                 value={fromDate}
+                disabled={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
@@ -180,6 +185,7 @@ const ListTableFilter = (props: Props) => {
                   handleOnChange('to', new Date(date).toISOString())
                 }
                 value={toDate}
+                disabled={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
@@ -188,6 +194,7 @@ const ListTableFilter = (props: Props) => {
           <StatusActionMenu
             handleOnChange={handleOnChange}
             status={filters.status}
+            disabled={isDisabled && !isFiltering}
           />
         </div>
         <div className="mh2">

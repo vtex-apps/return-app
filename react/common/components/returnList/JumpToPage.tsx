@@ -9,21 +9,21 @@ interface Props {
   maxPage: number
 }
 
-/**
- * @todo
- * - min y max page props
- * - test rerender
- */
 const JumpToPage = (props: Props) => {
   const { handleJumpToPage, currentPage, maxPage } = props
 
   const [desiredPage, setDesiredPage] = useState(0)
 
+  const handleOnChange = (page: number) => {
+    if (page > maxPage || page <= 0) return
+    setDesiredPage(page)
+  }
+
   return (
     <div className="relative w-100">
       <div
         className="absolute flex items-center"
-        style={{ right: '40%', top: '-2rem' }}
+        style={{ right: '50%', top: '-2rem' }}
       >
         <div className="mr3">
           <span className="c-muted-2 t-small">
@@ -37,8 +37,9 @@ const JumpToPage = (props: Props) => {
             min={1}
             max={maxPage}
             size="small"
+            value={desiredPage || null}
             onChange={(e: FormEvent<HTMLInputElement>) =>
-              setDesiredPage(Number(e.currentTarget.value))
+              handleOnChange(Number(e.currentTarget.value))
             }
           />
         </div>

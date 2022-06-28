@@ -8,6 +8,7 @@ import type { FilterKeys } from './ListTableFilter'
 interface Props {
   handleOnChange: (key: FilterKeys, value: string) => void
   status: Status | ''
+  disabled: boolean
 }
 
 const requestsStatuses = {
@@ -21,7 +22,7 @@ const requestsStatuses = {
 } as const
 
 const StatusActionMenu = (props: Props) => {
-  const { handleOnChange, status } = props
+  const { handleOnChange, status, disabled } = props
 
   const optionList = Object.keys(requestsStatuses).map((key) => {
     return {
@@ -50,6 +51,7 @@ const StatusActionMenu = (props: Props) => {
       buttonProps={{
         variation: 'secondary',
         size: 'small',
+        disabled,
       }}
       options={optionList}
     />

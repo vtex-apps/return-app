@@ -8,10 +8,6 @@ import ListTableFilter from './ListTableFilter'
 import { useReturnRequestList } from '../../../hooks/useReturnRequestList'
 
 const ListTable = () => {
-  const returnsListSchema = useMemo(() => {
-    ReturnListSchema()
-  }, [])
-
   const {
     returnRequestData: { data, loading, error, refetch },
   } = useReturnRequestList()
@@ -22,7 +18,9 @@ const ListTable = () => {
   let pageItemFrom = 0
   let pageItemTo = 0
 
-  if (paging) {
+  const hasPageAndItems = !!paging && !!list?.length
+
+  if (hasPageAndItems) {
     const { currentPage, total, perPage, pages } = paging
 
     pageItemFrom = currentPage === 1 ? 1 : (currentPage - 1) * perPage + 1
@@ -53,6 +51,8 @@ const ListTable = () => {
     desiredPage && refetch({ page: desiredPage })
   }
 
+  const returnsListSchema = useMemo(() => ReturnListSchema(), [])
+
   if (error) {
     return (
       <EmptyState
@@ -67,7 +67,11 @@ const ListTable = () => {
 
   return (
     <>
-      <ListTableFilter refetch={refetch} loading={loading} />
+      <ListTableFilter
+        refetch={refetch}
+        loading={loading}
+        isDisabled={!hasPageAndItems}
+      />
       <Table
         fullWidth
         fixFirstColumn
@@ -93,7 +97,7 @@ const ListTable = () => {
           totalItems: paging?.total,
         }}
       />
-      {paging ? (
+      {hasPageAndItems ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}
           currentPage={paging.currentPage}

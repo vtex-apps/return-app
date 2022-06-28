@@ -64,7 +64,14 @@ const ReturnListSchema = () => {
           <FormattedMessage id="return-app.return-request-list.table-data.createdDate" />
         ),
         cellRenderer({ cellData }) {
-          return <FormattedDate value={cellData} />
+          return (
+            <FormattedDate
+              value={cellData}
+              day="numeric"
+              month="long"
+              year="numeric"
+            />
+          )
         },
       },
       status: {
@@ -72,9 +79,7 @@ const ReturnListSchema = () => {
           <FormattedMessage id="return-app.return-request-list.table-data.status" />
         ),
         cellRenderer({ cellData }) {
-          return (
-            <div className="flex items-center">{renderStatus(cellData)}</div>
-          )
+          return renderStatus(cellData)
         },
       },
     },
@@ -88,58 +93,72 @@ function renderStatus(requestStatus: Status) {
   switch (requestStatus) {
     case status.verified:
       return (
-        <span className="green">
-          <IconSuccess size={14} />{' '}
+        <div className="green flex items-center">
+          <span className="mr2 flex">
+            <IconSuccess size={14} />
+          </span>
           <FormattedMessage id="admin/return-app-status.package-verified" />
-        </span>
+        </div>
       )
 
     case status.denied:
       return (
-        <span className="red">
-          <IconFailure size={14} />{' '}
+        <div className="red flex items-center">
+          <span className="mr2 flex">
+            <IconFailure size={14} />
+          </span>
           <FormattedMessage id="admin/return-app-status.denied" />
-        </span>
+        </div>
       )
 
     case status.pendingVerification:
       return (
-        <span className="yellow">
-          <IconClock size={14} />{' '}
+        <div className="yellow flex items-center">
+          <span className="mr2 flex">
+            <IconClock size={14} />
+          </span>
           <FormattedMessage id="admin/return-app-status.pending-verification" />
-        </span>
+        </div>
       )
 
     case status.processing:
       return (
-        <span className="yellow">
-          <IconClock size={14} />{' '}
+        <div className="yellow flex items-center">
+          <span className="mr2 flex">
+            <IconClock size={14} />
+          </span>
           <FormattedMessage id="admin/return-app-status.processing" />
-        </span>
+        </div>
       )
 
     case status.refunded:
       return (
-        <span className="green">
-          <IconCheck size={14} />{' '}
+        <div className="green flex items-center">
+          <span className="mr2 flex">
+            <IconCheck size={14} />
+          </span>
           <FormattedMessage id="admin/return-app-status.refunded" />
-        </span>
+        </div>
       )
 
     case status.picked:
       return (
-        <span>
-          <IconExternalLinkMini size={11} />{' '}
+        <div className="flex items-center">
+          <span className="mr2 flex">
+            <IconExternalLinkMini size={11} />
+          </span>
           <FormattedMessage id="admin/return-app-status.picked" />
-        </span>
+        </div>
       )
 
     default:
       return (
-        <span className="light-marine">
-          <IconVisibilityOn size={14} />{' '}
+        <div className="light-marine flex items-center">
+          <span className="mr2 flex">
+            <IconVisibilityOn size={14} />
+          </span>
           <FormattedMessage id="admin/return-app-status.new" />
-        </span>
+        </div>
       )
   }
 }
