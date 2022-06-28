@@ -1,7 +1,7 @@
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
-import { SETTINGS_PATH } from '../utils/constants'
+import { OMS_RETURN_REQUEST, SETTINGS_PATH } from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
@@ -9,6 +9,8 @@ import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
 import { validatePaymentMethod } from '../utils/validatePaymentMethod'
+import { requestsStatuses } from '../utils/utils'
+import { OMS_RETURN_REQUEST_TEMPLATE } from '../utils/templates'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -16,7 +18,7 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const {
-    clients: { oms, returnRequest: returnRequestClient, appSettings },
+    clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
     state: { userProfile },
   } = ctx
 
@@ -82,6 +84,7 @@ export const createReturnRequest = async (
     sellers,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
+    shippingData,
   } = order
 
   const { maxDays, excludedCategories, customReturnReasons, paymentOptions } =
@@ -169,7 +172,49 @@ export const createReturnRequest = async (
     ],
   })
 
-  // TODO: Send confirmation email.
+  try {
+    const templateExists = await mail.getTemplate(OMS_RETURN_REQUEST)
+
+    if (!templateExists) {
+      const template = OMS_RETURN_REQUEST_TEMPLATE
+
+      await mail.publishTemplate(template)
+    }
+
+    const {
+      firstName: clientFirstName,
+      lastName: clientLastName,
+      document,
+      phone,
+    } = clientProfileData
+
+    const {
+      address: { country, city, street },
+    } = shippingData
+
+    const mailData: MailData = {
+      templateName: OMS_RETURN_REQUEST,
+      jsonData: {
+        data: {
+          status: requestsStatuses.new,
+          name: `${clientFirstName} ${clientLastName}`,
+          DocumentId: document,
+          email,
+          phoneNumber: phone,
+          country,
+          locality: city,
+          address: street,
+          paymentMethod: refundPaymentData.refundPaymentMethod,
+        },
+        products: [...itemsToReturn],
+        timeline: [],
+      },
+    }
+
+    await mail.sendMail(mailData)
+  } catch (error) {
+    console.error(error.response.statusText)
+  }
 
   return { returnRequestId: rmaDocument.DocumentId }
 }
