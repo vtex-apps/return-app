@@ -1,37 +1,48 @@
 import React from 'react'
-import { Link } from 'vtex.render-runtime'
-import { Button } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
+import { Button, PageBlock } from 'vtex.styleguide'
+import { ContentWrapper } from 'vtex.my-account-commons'
+import { FormattedMessage } from 'react-intl'
 
+import ListTable from '../../common/components/returnList/ListTable'
 import { useReturnRequestList } from '../../hooks/useReturnRequestList'
 
 export const StoreReturnList = () => {
+  const { navigate } = useRuntime()
+
   const { returnRequestData } = useReturnRequestList()
-  const { data, loading, error } = returnRequestData
-  const { returnRequestList } = data ?? {}
-  const { list, paging } = returnRequestList ?? {}
+  const { loading } = returnRequestData
 
-  // eslint-disable-next-line no-console
-  console.log({ error })
+  const handleNewRequest = () => {
+    navigate({ to: '#/my-returns/add' })
+  }
 
-  return loading ? null : (
-    <div>
-      <p>Total Return {paging?.total}</p>
-      <div>
-        <Button variation="primary" size="small" href="#/my-returns/add">
-          Add new
-        </Button>
-      </div>
-      {list?.map((returnRequest) => (
-        <div key={returnRequest.id}>
-          <p>Id: {returnRequest.id}</p>
-          <p>Status: {returnRequest.status}</p>
-          <p>Sequence number: {returnRequest.sequenceNumber}</p>
-          <p>Created at: {returnRequest.createdIn}</p>
-          <Link href={`#/my-returns/details/${returnRequest.id}`}>
-            See details
-          </Link>
-        </div>
-      ))}
-    </div>
+  const headerContent = (
+    <Button
+      variation="primary"
+      size="small"
+      isLoading={loading}
+      onClick={() => handleNewRequest()}
+    >
+      <FormattedMessage id="store/return-app.return-request-list.page-header.cta" />
+    </Button>
+  )
+
+  return (
+    <ContentWrapper
+      namespace="return-app"
+      titleId="store/return-app.return-request-list.page-header.title"
+      backButton={{
+        path: '/',
+        titleId: 'store/return-app.return-request-list.page-header.goBack',
+      }}
+      headerContent={headerContent}
+    >
+      {() => (
+        <PageBlock variation="full">
+          <ListTable />
+        </PageBlock>
+      )}
+    </ContentWrapper>
   )
 }
