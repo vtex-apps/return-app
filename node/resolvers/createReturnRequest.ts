@@ -20,6 +20,7 @@ export const createReturnRequest = async (
   const {
     clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
     state: { userProfile },
+    vtex: { logger },
   } = ctx
 
   const { returnRequest } = args
@@ -172,6 +173,7 @@ export const createReturnRequest = async (
     ],
   })
 
+  // We add a try/catch here so we avoid sending an error to the browser if only the email fails.
   try {
     const templateExists = await mail.getTemplate(OMS_RETURN_REQUEST)
 
@@ -196,7 +198,7 @@ export const createReturnRequest = async (
       templateName: OMS_RETURN_REQUEST,
       jsonData: {
         data: {
-          status: requestsStatuses.new,
+          status: 'New',
           name: `${clientFirstName} ${clientLastName}`,
           DocumentId: document,
           email,
@@ -213,7 +215,9 @@ export const createReturnRequest = async (
 
     await mail.sendMail(mailData)
   } catch (error) {
-    console.error(error.response.statusText)
+    logger.warn({
+      message: `Failed to send email for return request ${rmaDocument.DocumentId}`,
+    })
   }
 
   return { returnRequestId: rmaDocument.DocumentId }
