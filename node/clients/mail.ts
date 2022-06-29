@@ -1,6 +1,8 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
 
+import type { MailData, Template } from '../typings/mailClient'
+
 const MAIL_SERVICE_PATH = '/api/mail-service/pvt/sendmail'
 const TEMPLATE_RENDER_PATH = '/api/template-render/pvt/templates'
 

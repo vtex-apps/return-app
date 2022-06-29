@@ -1,3 +1,4 @@
+import type { Template } from '../../typings/mailClient'
 import {
   OMS_RETURN_REQUEST_CONFIRMATION,
   OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME,

@@ -13,6 +13,7 @@ import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
 import { validatePaymentMethod } from '../utils/validatePaymentMethod'
 import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
+import type { MailData } from '../typings/mailClient'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -202,7 +203,7 @@ export const createReturnRequest = async (
       templateName: OMS_RETURN_REQUEST_CONFIRMATION,
       jsonData: {
         data: {
-          status: 'New',
+          status: 'new',
           name: `${clientFirstName} ${clientLastName}`,
           DocumentId: document,
           email,

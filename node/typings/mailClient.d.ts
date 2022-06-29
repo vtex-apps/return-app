@@ -1,17 +1,24 @@
-interface MailData {
+import type {
+  ItemCondition,
+  ReturnReason,
+  ReturnRequestItem,
+  Status,
+} from 'vtex.return-app'
+
+export interface MailData {
   templateName: string
   jsonData: JsonData
 }
 
-interface JsonData {
+export interface JsonData {
   data: Data
-  products: any
+  products: ReturnRequestItem[]
   timeline?: TimelineItem[]
   _accountInfo?: AccountInfo
 }
 
-interface Data {
-  status?: string
+export interface Data {
+  status?: Status
   name?: string
   DocumentId?: string
   email?: string
@@ -24,23 +31,22 @@ interface Data {
   refundedAmount?: string
   giftCardCode?: string
   dateSubmitted?: string
-  [key: string]: string
 }
 
-interface TimelineItem {
-  status: string
+export interface TimelineItem {
+  status: Status
   text: any
   step: number
   comments: any
   active: number
 }
 
-interface AccountInfo {
+export interface AccountInfo {
   Id: string
   TradingName: string
   HostName: string
 }
-interface Template {
+export interface Template {
   AccountId: string | null
   AccountName: string | null
   ApplicationId: string | null
