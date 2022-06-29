@@ -10,5 +10,6 @@ export const ORDER_TO_RETURN_VALIDATON: Record<
   ORDER_NOT_INVOICED: 'ORDER_NOT_INVOICED',
 }
 
-export const OMS_RETURN_REQUEST = 'oms-return-request'
-export const OMS_RETURN_REQUEST_FRIENDLY_NAME = '[OMS] Return Request'
+export const OMS_RETURN_REQUEST_CONFIRMATION = 'oms-return-request-confirmation'
+export const OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME =
+  '[OMS] Return Request Confirmation'

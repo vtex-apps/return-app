@@ -1,7 +1,10 @@
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
-import { OMS_RETURN_REQUEST, SETTINGS_PATH } from '../utils/constants'
+import {
+  OMS_RETURN_REQUEST_CONFIRMATION,
+  SETTINGS_PATH,
+} from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
@@ -174,7 +177,9 @@ export const createReturnRequest = async (
 
   // We add a try/catch here so we avoid sending an error to the browser if only the email fails.
   try {
-    const templateExists = await mail.getTemplate(OMS_RETURN_REQUEST)
+    const templateExists = await mail.getTemplate(
+      OMS_RETURN_REQUEST_CONFIRMATION
+    )
 
     if (!templateExists) {
       const template = OMS_RETURN_REQUEST_TEMPLATE
@@ -194,7 +199,7 @@ export const createReturnRequest = async (
     } = shippingData
 
     const mailData: MailData = {
-      templateName: OMS_RETURN_REQUEST,
+      templateName: OMS_RETURN_REQUEST_CONFIRMATION,
       jsonData: {
         data: {
           status: 'New',
