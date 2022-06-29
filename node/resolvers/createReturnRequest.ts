@@ -12,7 +12,7 @@ import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
 import { validatePaymentMethod } from '../utils/validatePaymentMethod'
-import { OMS_RETURN_REQUEST_TEMPLATE } from '../utils/templates'
+import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -182,7 +182,7 @@ export const createReturnRequest = async (
     )
 
     if (!templateExists) {
-      const template = OMS_RETURN_REQUEST_TEMPLATE
+      const template = OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE
 
       await mail.publishTemplate(template)
     }

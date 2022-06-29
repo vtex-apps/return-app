@@ -4,10 +4,10 @@ import {
 } from '../constants'
 import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE_MESSAGE } from './templateMessages'
 
-export const OMS_RETURN_REQUEST_TEMPLATE: Template = {
+export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE: Template = {
   Name: OMS_RETURN_REQUEST_CONFIRMATION,
   FriendlyName: OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME,
-  Description: '[OMS] Return requests status changes',
+  Description: '[OMS] Return requests confirmation message',
   IsDefaultTemplate: false,
   AccountId: null,
   AccountName: null,
@@ -20,7 +20,7 @@ export const OMS_RETURN_REQUEST_TEMPLATE: Template = {
       To: '{{data.email}}',
       CC: null,
       BCC: '{{#compare data.status "==" \'New\'}}{{/compare}}',
-      Subject: 'Formular de returnare {{data.DocumentId}}',
+      Subject: 'Neew Return request {{data.DocumentId}}',
       Message: OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE_MESSAGE,
       Type: 'E',
       ProviderId: '00000000-0000-0000-0000-000000000000',
