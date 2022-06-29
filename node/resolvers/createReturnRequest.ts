@@ -9,7 +9,6 @@ import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
 import { validatePaymentMethod } from '../utils/validatePaymentMethod'
-import { requestsStatuses } from '../utils/utils'
 import { OMS_RETURN_REQUEST_TEMPLATE } from '../utils/templates'
 
 export const createReturnRequest = async (
