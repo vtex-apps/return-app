@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'

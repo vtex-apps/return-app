@@ -450,5 +450,14 @@
   "return-app.return-request-list.table-jumpToPage.cta": "GO",
   "store/return-app.return-request-list.page-header.title": "My Returns",
   "store/return-app.return-request-list.page-header.goBack": "Go Back",
-  "store/return-app.return-request-list.page-header.cta": "New Request"
+  "store/return-app.return-request-list.page-header.cta": "New Request",
+  "return-app.return-request-list.table.status.new": "New",
+  "return-app.return-request-list.table.status.processing": "Processing",
+  "return-app.return-request-list.table.status.pickedup-from-client": "Picked up from client",
+  "return-app.return-request-list.table.status.pending-verification": "Pending verification",
+  "return-app.return-request-list.table.status.package-verified": "Package Verified",
+  "return-app.return-request-list.table.status.refunded": "Refunded",
+  "return-app.return-request-list.table.status.denied": "Denied",
+  "return-app.return-request-list.table.status.approved": "Approved",
+  "return-app.return-request-list.table.status.allStatus": "Status"
 }

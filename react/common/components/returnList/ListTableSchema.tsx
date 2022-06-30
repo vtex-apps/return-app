@@ -97,7 +97,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconSuccess size={14} />
           </span>
-          <FormattedMessage id="admin/return-app-status.package-verified" />
+          <FormattedMessage id="return-app.return-request-list.table.status.package-verified" />
         </div>
       )
 
@@ -107,7 +107,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconFailure size={14} />
           </span>
-          <FormattedMessage id="admin/return-app-status.denied" />
+          <FormattedMessage id="return-app.return-request-list.table.status.denied" />
         </div>
       )
 
@@ -117,7 +117,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconClock size={14} />
           </span>
-          <FormattedMessage id="admin/return-app-status.pending-verification" />
+          <FormattedMessage id="return-app.return-request-list.table.status.pending-verification" />
         </div>
       )
 
@@ -127,7 +127,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconClock size={14} />
           </span>
-          <FormattedMessage id="admin/return-app-status.processing" />
+          <FormattedMessage id="return-app.return-request-list.table.status.processing" />
         </div>
       )
 
@@ -137,7 +137,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconCheck size={14} />
           </span>
-          <FormattedMessage id="admin/return-app-status.refunded" />
+          <FormattedMessage id="return-app.return-request-list.table.status.refunded" />
         </div>
       )
 
@@ -147,7 +147,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconExternalLinkMini size={11} />
           </span>
-          <FormattedMessage id="admin/return-app-status.picked" />
+          <FormattedMessage id="return-app.return-request-list.table.status.picked" />
         </div>
       )
 
@@ -157,7 +157,7 @@ function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconVisibilityOn size={14} />
           </span>
-          <FormattedMessage id="admin/return-app-status.new" />
+          <FormattedMessage id="return-app.return-request-list.table.status.new" />
         </div>
       )
   }

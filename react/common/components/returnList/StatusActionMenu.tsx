@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import type { Status } from 'vtex.return-app'
 import { ActionMenu } from 'vtex.styleguide'
 
@@ -11,32 +11,46 @@ interface Props {
   disabled: boolean
 }
 
-const requestsStatuses = {
-  new: 'new',
-  processing: 'processing',
-  picked: 'pickedup-from-client',
-  pendingVerification: 'pending-verification',
-  verified: 'package-verified',
-  denied: 'denied',
-  refunded: 'refunded',
-} as const
+const keyedStatusMessages = defineMessages({
+  new: {
+    id: 'return-app.return-request-list.table.status.new',
+  },
+  processing: {
+    id: 'return-app.return-request-list.table.status.processing',
+  },
+  picked: {
+    id: 'return-app.return-request-list.table.status.pickedup-from-client',
+  },
+  pendingVerification: {
+    id: 'return-app.return-request-list.table.status.pending-verification',
+  },
+  verified: {
+    id: 'return-app.return-request-list.table.status.package-verified',
+  },
+  denied: {
+    id: 'return-app.return-request-list.table.status.denied',
+  },
+  refunded: {
+    id: 'return-app.return-request-list.table.status.refunded',
+  },
+})
 
 const StatusActionMenu = (props: Props) => {
   const { handleOnChange, status, disabled } = props
 
-  const optionList = Object.keys(requestsStatuses).map((key) => {
+  const { formatMessage } = useIntl()
+
+  const optionList = Object.keys(keyedStatusMessages).map((key) => {
     return {
-      label: (
-        <FormattedMessage
-          id={`admin/return-app-status.${requestsStatuses[key]}`}
-        />
-      ),
+      label: formatMessage({ id: keyedStatusMessages[key].id }),
       onClick: () => handleOnChange('status', key),
     }
   })
 
   const allStatusOption = {
-    label: <FormattedMessage id="admin/return-app-status.allStatuses" />,
+    label: formatMessage({
+      id: 'return-app.return-request-list.table.status.allStatus',
+    }),
     onClick: () => handleOnChange('status', ''),
   }
 
@@ -45,7 +59,10 @@ const StatusActionMenu = (props: Props) => {
   return (
     <ActionMenu
       label={
-        status || <FormattedMessage id="admin/return-app-status.allStatuses" />
+        status ||
+        formatMessage({
+          id: 'return-app.return-request-list.table.status.allStatus',
+        })
       }
       align="right"
       buttonProps={{

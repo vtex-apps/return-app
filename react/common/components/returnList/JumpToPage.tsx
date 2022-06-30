@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, Button } from 'vtex.styleguide'
 
@@ -12,7 +12,11 @@ interface Props {
 const JumpToPage = (props: Props) => {
   const { handleJumpToPage, currentPage, maxPage } = props
 
-  const [desiredPage, setDesiredPage] = useState(0)
+  const [desiredPage, setDesiredPage] = useState(currentPage)
+
+  useEffect(() => {
+    setDesiredPage(currentPage)
+  }, [currentPage])
 
   const handleOnChange = (page: number) => {
     if (page > maxPage || page <= 0) return
