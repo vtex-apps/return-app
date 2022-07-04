@@ -141,7 +141,7 @@ export const createReturnRequest = async (
           createdAt: requestDate,
           submittedBy,
           visibleForCustomer: true,
-          role: 'storeUser',
+          role: 'storeUser' as const,
         },
       ]
     : []
