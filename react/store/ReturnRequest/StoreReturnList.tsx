@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRuntime } from 'vtex.render-runtime'
 import { Button, PageBlock } from 'vtex.styleguide'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { FormattedMessage } from 'react-intl'
@@ -8,21 +7,15 @@ import ListTable from '../../common/components/returnList/ListTable'
 import { useReturnRequestList } from '../../hooks/useReturnRequestList'
 
 export const StoreReturnList = () => {
-  const { navigate } = useRuntime()
-
   const { returnRequestData } = useReturnRequestList()
   const { loading } = returnRequestData
-
-  const handleNewRequest = () => {
-    navigate({ to: '#/my-returns/add' })
-  }
 
   const headerContent = (
     <Button
       variation="primary"
       size="small"
       isLoading={loading}
-      onClick={() => handleNewRequest()}
+      href="#/my-returns/add"
     >
       <FormattedMessage id="store/return-app.return-request-list.page-header.cta" />
     </Button>
