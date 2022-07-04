@@ -69,7 +69,7 @@ const ListTable = () => {
       <ListTableFilter
         refetch={refetch}
         loading={loading}
-        isDisabled={!!paging && !!list?.length}
+        isDisabled={!list?.length}
       />
       <Table
         fullWidth
