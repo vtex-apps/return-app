@@ -1,3 +1,3 @@
-import { AdminReturnList } from './admin/AdminReturnList'
+import AdminReturnList from './admin/AdminReturnList'
 
 export default AdminReturnList

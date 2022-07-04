@@ -190,8 +190,8 @@ input DateRangeInput {
 }
 
 type ReturnRequestList {
-  list: [ReturnRequestResponse!]
-  paging: Pagination
+  list: [ReturnRequestResponse!]!
+  paging: Pagination!
 }
 
 input RefundDataInput {
