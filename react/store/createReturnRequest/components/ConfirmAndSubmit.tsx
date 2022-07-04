@@ -71,6 +71,8 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     setConfirmationStatus('idle')
     navigate({
       to: `#/my-returns`,
+      replace: true,
+      fetchPage: false,
     })
   }
 
