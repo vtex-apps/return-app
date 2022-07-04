@@ -18,9 +18,7 @@ const ListTable = () => {
   let pageItemFrom = 0
   let pageItemTo = 0
 
-  const hasPageAndItems = !!paging && !!list?.length
-
-  if (hasPageAndItems) {
+  if (paging && list?.length) {
     const { currentPage, total, perPage, pages } = paging
 
     pageItemFrom = currentPage === 1 ? 1 : (currentPage - 1) * perPage + 1
@@ -34,6 +32,7 @@ const ListTable = () => {
 
     if (currentPage === pages) return
 
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     refetch({ page: currentPage + 1 })
   }
 
@@ -70,7 +69,7 @@ const ListTable = () => {
       <ListTableFilter
         refetch={refetch}
         loading={loading}
-        isDisabled={!hasPageAndItems}
+        isDisabled={!!paging && !!list?.length}
       />
       <Table
         fullWidth
@@ -97,7 +96,7 @@ const ListTable = () => {
           totalItems: paging?.total,
         }}
       />
-      {hasPageAndItems ? (
+      {paging && list?.length ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}
           currentPage={paging.currentPage}
