@@ -459,5 +459,9 @@
   "return-app.return-request-list.table.status.refunded": "Refunded",
   "return-app.return-request-list.table.status.denied": "Denied",
   "return-app.return-request-list.table.status.approved": "Approved",
-  "return-app.return-request-list.table.status.allStatus": "Status"
+  "return-app.return-request-list.table.status.allStatus": "Status",
+  "admin/return-app.return-request-details.table.status-history.header.created-at": "Created At",
+  "admin/return-app.return-request-details.table.status-history.header.status": "Status",
+  "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
+  "admin/return-app.return-request-details.status-history.title": "Status History"
 }
