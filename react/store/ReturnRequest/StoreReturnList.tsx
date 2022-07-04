@@ -14,7 +14,7 @@ export const StoreReturnList = () => {
     <Button
       variation="primary"
       size="small"
-      isLoading={loading}
+      disabled={loading}
       href="#/my-returns/add"
     >
       <FormattedMessage id="store/return-app.return-request-list.page-header.cta" />
