@@ -72,7 +72,6 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     navigate({
       to: `#/my-returns`,
       replace: true,
-      fetchPage: false,
     })
   }
 
