@@ -18,7 +18,7 @@ import ORDER_TO_RETURN_SUMMARY from './graphql/getOrderToReturnSummary.gql'
 import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 import { useStoreSettings } from '../hooks/useStoreSettings'
-import { ReturnDetailsLoader } from './components/loaders/ReturnDetailsLoader'
+import { OrderDetailsLoader } from './components/loaders/OrderDetailsLoader'
 
 export type Page = 'form-details' | 'submit-form'
 
@@ -119,7 +119,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
         className="ph0 mh0 nl5"
         {...createPageHeaderProps(page, navigate)}
       />
-      <ReturnDetailsLoader data={{ loading, error }}>
+      <OrderDetailsLoader data={{ loading, error }}>
         {page === 'form-details' ? (
           <>
             <ReturnDetails
@@ -136,12 +136,12 @@ export const CreateReturnRequest = (props: RouteProps) => {
         {page === 'submit-form' ? (
           <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
         ) : null}
-      </ReturnDetailsLoader>
+      </OrderDetailsLoader>
     </PageBlock>
   )
 }
 
-export const ReturnDetailsContainer = (props: RouteProps) => {
+export const CreateReturnRequestContainer = (props: RouteProps) => {
   return (
     <OrderToReturnProvider>
       <StoreSettingsPovider>
