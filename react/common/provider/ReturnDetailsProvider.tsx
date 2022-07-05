@@ -7,7 +7,7 @@ import type {
   QueryReturnRequestArgs,
 } from 'vtex.return-app'
 
-import GET_REQUEST_DETAILS_ADMIN from '../graphql/getRequestDetailsAdmin.gql'
+import GET_REQUEST_DETAILS from '../graphql/getRequestDetails.gql'
 
 interface ReturnDetailsSetupInterface {
   data?: { returnRequestDetails: ReturnRequestResponse }
@@ -31,7 +31,7 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
   const { data, loading, error, updateQuery } = useQuery<
     { returnRequestDetails: ReturnRequestResponse },
     QueryReturnRequestArgs
-  >(GET_REQUEST_DETAILS_ADMIN, {
+  >(GET_REQUEST_DETAILS, {
     variables: {
       requestId,
     },

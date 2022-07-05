@@ -9,7 +9,7 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
-import type { Page } from '../ReturnDetailsContainer'
+import type { Page } from '../CreateReturnRequest'
 
 interface Props {
   onPageChange: (page: Page) => void

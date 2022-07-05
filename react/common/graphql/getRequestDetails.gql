@@ -1,6 +1,6 @@
-#import './returnDetailsAdminFragment.gql'
+#import './returnDetailsFragment.gql'
 
-query getRequestDetailsAdmin($requestId: ID!) {
+query getRequestDetails($requestId: ID!) {
   returnRequestDetails: returnRequest(requestId: $requestId)
     @context(provider: "vtex.return-app") {
     ...ReturnDetailsAdminFragment

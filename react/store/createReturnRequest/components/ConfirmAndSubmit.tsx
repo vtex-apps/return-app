@@ -8,7 +8,7 @@ import type {
 } from 'vtex.return-app'
 import { Card, Button, Alert } from 'vtex.styleguide'
 
-import type { Page } from '../ReturnDetailsContainer'
+import type { Page } from '../CreateReturnRequest'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'
 import { ReturnInformationTable } from './ReturnInformationTable'

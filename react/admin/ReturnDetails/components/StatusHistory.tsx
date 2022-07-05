@@ -3,7 +3,7 @@ import { Table } from 'vtex.styleguide'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedDate, useIntl, FormattedMessage } from 'react-intl'
 
-import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
 import {
   createStatusTimeline,
   statusMessageIdAdmin,

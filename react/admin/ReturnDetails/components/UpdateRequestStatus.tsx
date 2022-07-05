@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown, Textarea, Checkbox, Button } from 'vtex.styleguide'
 import type { Status } from 'vtex.return-app'
 
-import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
 import {
   statusAllowed,
   statusMessageIdAdmin,

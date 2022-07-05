@@ -5,7 +5,7 @@ import type { ReturnRequestItem } from 'vtex.return-app'
 import { FormattedCurrency } from 'vtex.format-currency'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
-import { AlignItemRight } from '../AlignItemRight'
+import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>

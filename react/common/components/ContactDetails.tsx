@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { useReturnDetails } from '../hooks/useReturnDetails'
 
 export const ContactDetails = () => {
   const { data } = useReturnDetails()

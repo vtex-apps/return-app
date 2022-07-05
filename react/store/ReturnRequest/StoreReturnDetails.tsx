@@ -4,11 +4,17 @@ import { PageBlock, PageHeader } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { StoreReturnDetailsLoader } from './loaders/StoreReturnDetailsLoader'
-import { ReturnDetailsProvider } from '../../admin/provider/ReturnDetailsProvider'
-import { useReturnDetails } from '../../admin/hooks/useReturnDetails'
+import { ReturnDetailsProvider } from '../../common/provider/ReturnDetailsProvider'
+import { useReturnDetails } from '../../common/hooks/useReturnDetails'
+import { ItemDetailsList } from '../../common/components/ReturnDetails/ItemDetails/ItemDetailsList'
+import { ReturnValues } from '../../common/components/ReturnDetails/ReturnValues/ReturnValues'
+import { ContactDetails } from '../../common/components/ContactDetails'
+import { PickupAddress } from '../../common/components/ReturnDetails/PickupAddress'
+import { RefundMethodDetail } from '../../common/components/ReturnDetails/RefundMethodDetail'
+import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
 
 const StoreReturnDetails = () => {
-  const { data, loading, error } = useReturnDetails()
+  const { loading, error } = useReturnDetails()
   const { navigate } = useRuntime()
 
   return (
@@ -24,7 +30,14 @@ const StoreReturnDetails = () => {
         }}
       />
       <StoreReturnDetailsLoader data={{ loading, error }}>
-        <code>{JSON.stringify(data, null, 2)}</code>
+        <ItemDetailsList />
+        <ReturnValues />
+        <div className="flex-ns flex-wrap flex-row">
+          <ContactDetails />
+          <PickupAddress />
+        </div>
+        <RefundMethodDetail />
+        <StatusTimeline />
       </StoreReturnDetailsLoader>
     </PageBlock>
   )

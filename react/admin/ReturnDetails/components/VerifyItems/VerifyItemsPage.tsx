@@ -3,7 +3,7 @@ import { FloatingActionBar } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 import type { RefundItemInput } from 'vtex.return-app'
 
-import { useReturnDetails } from '../../../hooks/useReturnDetails'
+import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 import { VerifyItemsTable } from './VerifyItemsTable'
 import { VerifyTotalsTable } from './VerifyTotalsTable'
 import { useUpdateRequestStatus } from '../../../hooks/useUpdateRequestStatus'

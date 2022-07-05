@@ -12,7 +12,7 @@ import { FormattedMessage } from 'react-intl'
 
 import UPDATE_RETURN_STATUS from '../graphql/updateReturnRequestStatus.gql'
 import { useAlert } from '../hooks/userAlert'
-import { useReturnDetails } from '../hooks/useReturnDetails'
+import { useReturnDetails } from '../../common/hooks/useReturnDetails'
 
 interface HandleStatusUpdateArgs {
   status: Status
