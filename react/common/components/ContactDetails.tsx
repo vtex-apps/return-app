@@ -14,8 +14,7 @@ export const ContactDetails = () => {
     },
   } = data
 
-  const messagesRoute =
-    'admin/return-app.return-request-details.contact-details'
+  const messagesRoute = 'return-app.return-request-details.contact-details'
 
   return (
     <section className="flex-ns flex-wrap flex-auto flex-column pt4 pb4">
