@@ -10,6 +10,7 @@ import {
   statusAllowed,
   statusMessageIdAdmin,
 } from '../../../utils/requestStatus'
+import { useUpdateRequestStatus } from '../../hooks/useUpdateRequestStatus'
 
 const createStatusOptions = (
   currentStatus: Status,
@@ -32,7 +33,8 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
   const [comment, setComment] = useState('')
   const [visibleForCustomer, setVisibleForCustomer] = useState(false)
   const { formatMessage } = useIntl()
-  const { data, submitting, handleStatusUpdate } = useReturnDetails()
+  const { data } = useReturnDetails()
+  const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
 
   const cleanUp = () => {
     setComment('')

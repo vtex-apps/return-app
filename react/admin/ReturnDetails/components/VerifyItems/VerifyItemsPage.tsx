@@ -6,6 +6,7 @@ import type { RefundItemInput } from 'vtex.return-app'
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { VerifyItemsTable } from './VerifyItemsTable'
 import { VerifyTotalsTable } from './VerifyTotalsTable'
+import { useUpdateRequestStatus } from '../../../hooks/useUpdateRequestStatus'
 
 export type RefundItemMap = Map<
   number,
@@ -25,7 +26,8 @@ interface Props {
 }
 
 export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
-  const { submitting, data, handleStatusUpdate } = useReturnDetails()
+  const { data } = useReturnDetails()
+  const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
   const [refundItemsInput, setRefundItemsInput] = useState<RefundItemMap>(
     new Map()
   )
