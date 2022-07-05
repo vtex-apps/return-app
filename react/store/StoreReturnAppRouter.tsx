@@ -1,7 +1,10 @@
 import React from 'react'
 import { Route, Switch } from 'vtex.my-account-commons/Router'
 
-import { StoreReturnList, StoreReturnDetails } from './StoreMyReturnsPage'
+import {
+  StoreReturnList,
+  StoreReturnDetailsContainer,
+} from './StoreMyReturnsPage'
 import {
   OrderListContainer,
   CreateReturnRequestContainer,
@@ -14,7 +17,7 @@ export const AppRouter = () => {
       <Route
         exact
         path="/my-returns/details/:id"
-        component={StoreReturnDetails}
+        component={StoreReturnDetailsContainer}
       />
       <Route exact path="/my-returns/add" component={OrderListContainer} />
       <Route

@@ -3,16 +3,12 @@ import type { RouteComponentProps } from 'react-router'
 import { PageBlock, PageHeader } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 
-import { useReturnRequestDetails } from '../../hooks/useReturnRequestDetails'
 import { StoreReturnDetailsLoader } from './loaders/StoreReturnDetailsLoader'
+import { ReturnDetailsProvider } from '../../admin/provider/ReturnDetailsProvider'
+import { useReturnDetails } from '../../admin/hooks/useReturnDetails'
 
-export const StoreReturnDetails = (
-  props: RouteComponentProps<{ id: string }>
-) => {
-  const {
-    returnDetailsData: { data, loading, error },
-  } = useReturnRequestDetails(props.match.params.id)
-
+const StoreReturnDetails = () => {
+  const { data, loading, error } = useReturnDetails()
   const { navigate } = useRuntime()
 
   return (
@@ -31,5 +27,15 @@ export const StoreReturnDetails = (
         <code>{JSON.stringify(data, null, 2)}</code>
       </StoreReturnDetailsLoader>
     </PageBlock>
+  )
+}
+
+export const StoreReturnDetailsContainer = (
+  props: RouteComponentProps<{ id: string }>
+) => {
+  return (
+    <ReturnDetailsProvider requestId={props.match.params.id}>
+      <StoreReturnDetails />
+    </ReturnDetailsProvider>
   )
 }
