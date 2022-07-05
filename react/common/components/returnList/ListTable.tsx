@@ -73,7 +73,6 @@ const ListTable = () => {
       />
       <Table
         fullWidth
-        fixFirstColumn
         loading={loading}
         items={list}
         emptyStateLabel={
@@ -96,7 +95,7 @@ const ListTable = () => {
           totalItems: paging?.total,
         }}
       />
-      {paging && list?.length ? (
+      {paging && list?.length && !loading ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}
           currentPage={paging.currentPage}

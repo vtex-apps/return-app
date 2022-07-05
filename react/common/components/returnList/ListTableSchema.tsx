@@ -6,9 +6,11 @@ import {
   IconFailure,
   IconVisibilityOn,
   IconCheck,
+  IconInfo,
   IconSuccess,
   IconExternalLinkMini,
   ButtonPlain,
+  Tooltip,
 } from 'vtex.styleguide'
 import type { Status } from 'vtex.return-app'
 
@@ -23,36 +25,69 @@ const status = {
 } as const
 
 const ReturnListSchema = () => {
-  const { navigate } = useRuntime()
+  const { navigate, route } = useRuntime()
+
+  const adminDomain = route.domain === 'admin'
 
   const navigateToRequest = (id: string) => {
+    const page = adminDomain
+      ? `/admin/app/returns/${id}/details/`
+      : `#/my-returns/details/${id}`
+
     navigate({
-      to: `/admin/app/returns/${id}/details`,
+      to: page,
     })
   }
 
   return {
     properties: {
-      id: {
-        title: (
-          <FormattedMessage id="return-app.return-request-list.table-data.requestId" />
-        ),
-        minWidth: 310,
-        cellRenderer({ cellData }) {
-          return (
-            <ButtonPlain
-              size="small"
-              onClick={() => navigateToRequest(cellData)}
-            >
-              {cellData}
-            </ButtonPlain>
-          )
+      ...(adminDomain && {
+        id: {
+          title: (
+            <FormattedMessage id="return-app.return-request-list.table-data.requestId" />
+          ),
+          headerRenderer({ title }) {
+            return (
+              <div className="flex items-center">
+                {title}
+                <Tooltip
+                  label={
+                    <FormattedMessage id="admin/return-app.return-request-list.table-data.requestId.tooltip" />
+                  }
+                >
+                  <span className="yellow pointer ml3 flex">
+                    <IconInfo />
+                  </span>
+                </Tooltip>
+              </div>
+            )
+          },
+          minWidth: 310,
+          cellRenderer({ cellData }) {
+            return (
+              <ButtonPlain
+                size="small"
+                onClick={() => navigateToRequest(cellData)}
+              >
+                {cellData}
+              </ButtonPlain>
+            )
+          },
         },
-      },
+      }),
       sequenceNumber: {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber" />
         ),
+        ...(!adminDomain && {
+          cellRenderer({ cellData, rowData }) {
+            return (
+              <ButtonPlain onClick={() => navigateToRequest(rowData.id)}>
+                {cellData}
+              </ButtonPlain>
+            )
+          },
+        }),
       },
       orderId: {
         title: (

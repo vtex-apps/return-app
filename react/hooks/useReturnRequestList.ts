@@ -17,6 +17,7 @@ export const useReturnRequestList = () => {
       page: 1,
     },
     notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'no-cache',
   })
 
   return { returnRequestData: { data, loading, error, refetch } }

@@ -18,19 +18,19 @@ const keyedStatusMessages = defineMessages({
   processing: {
     id: 'return-app.return-request-list.table.status.processing',
   },
-  picked: {
+  pickedUpFromClient: {
     id: 'return-app.return-request-list.table.status.pickedup-from-client',
   },
   pendingVerification: {
     id: 'return-app.return-request-list.table.status.pending-verification',
   },
-  verified: {
+  packageVerified: {
     id: 'return-app.return-request-list.table.status.package-verified',
   },
   denied: {
     id: 'return-app.return-request-list.table.status.denied',
   },
-  refunded: {
+  amountRefunded: {
     id: 'return-app.return-request-list.table.status.refunded',
   },
 })

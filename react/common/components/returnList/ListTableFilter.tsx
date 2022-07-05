@@ -8,6 +8,7 @@ import type {
   Status,
 } from 'vtex.return-app'
 import type { ApolloQueryResult } from 'apollo-client'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { StatusActionMenu } from './StatusActionMenu'
 
@@ -47,6 +48,7 @@ const initialFilters = {
 const ListTableFilter = (props: Props) => {
   const { refetch, loading, isDisabled } = props
 
+  const { route } = useRuntime()
   const [isFiltering, setIsFiltering] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
 
@@ -110,21 +112,23 @@ const ListTableFilter = (props: Props) => {
   return (
     <form onSubmit={handleSubmitFilters}>
       <div className="flex items-center">
-        <div className="mr2">
-          <FormattedMessage id="return-app.return-request-list.table-data.requestId">
-            {(formattedMessage) => (
-              <Input
-                placeholder={formattedMessage}
-                size="small"
-                value={filters.id}
-                onChange={(e: FormEvent<HTMLInputElement>) =>
-                  handleOnChange('id', e.currentTarget.value)
-                }
-                disabled={isDisabled && !isFiltering}
-              />
-            )}
-          </FormattedMessage>
-        </div>
+        {route.domain === 'admin' ? (
+          <div className="mr2">
+            <FormattedMessage id="return-app.return-request-list.table-data.requestId">
+              {(formattedMessage) => (
+                <Input
+                  placeholder={formattedMessage}
+                  size="small"
+                  value={filters.id}
+                  onChange={(e: FormEvent<HTMLInputElement>) =>
+                    handleOnChange('id', e.currentTarget.value)
+                  }
+                  disabled={isDisabled && !isFiltering}
+                />
+              )}
+            </FormattedMessage>
+          </div>
+        ) : null}
         <div className="mh2">
           <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber">
             {(formattedMessage) => (
@@ -200,8 +204,7 @@ const ListTableFilter = (props: Props) => {
           <Button
             size="small"
             type="submit"
-            disabled={!hasSelectedFilters}
-            isLoading={loading}
+            disabled={!hasSelectedFilters || loading}
           >
             <FormattedMessage id="return-app.return-request-list.table-filters.apply-filters" />
           </Button>
@@ -210,9 +213,8 @@ const ListTableFilter = (props: Props) => {
           <Button
             size="small"
             onClick={handleResetFilters}
-            disabled={!isFiltering}
+            disabled={!isFiltering || loading}
             variation="danger"
-            isLoading={loading}
           >
             <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
           </Button>
