@@ -2,6 +2,7 @@ import React from 'react'
 import type { RouteComponentProps } from 'react-router'
 import { PageBlock, PageHeader } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
+import { FormattedMessage } from 'react-intl'
 
 import { StoreReturnDetailsLoader } from './loaders/StoreReturnDetailsLoader'
 import { ReturnDetailsProvider } from '../../common/provider/ReturnDetailsProvider'
@@ -22,8 +23,12 @@ const StoreReturnDetails = () => {
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
       <PageHeader
         className="ph0 mh0 nl5"
-        title="Return Details"
-        linkLabel="Link Label"
+        title={
+          <FormattedMessage id="store/return-app.return-request-details.page-header.title" />
+        }
+        linkLabel={
+          <FormattedMessage id="store/return-app.return-request-details.page-header.link-label" />
+        }
         onLinkClick={() => {
           navigate({
             to: '#/my-returns',

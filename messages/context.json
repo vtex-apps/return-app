@@ -464,5 +464,7 @@
   "return-app.return-request-details.table.status-history.header.status": "Status",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
   "return-app.return-request-details.status-history.title": "Status History",
-  "admin/return-app.return-request-list.table-data.requestId.tooltip": "Tooltip with an explanation of how the customer can access the data"
+  "admin/return-app.return-request-list.table-data.requestId.tooltip": "Tooltip with an explanation of how the customer can access the data",
+  "store/return-app.return-request-details.page-header.title": "Return Request Details",
+  "store/return-app.return-request-details.page-header.link-label": "Return Request List"
 }
