@@ -1,1 +1,1 @@
-export * from './omsReturnRequest'
+export * from './templates'

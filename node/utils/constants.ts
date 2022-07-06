@@ -13,3 +13,8 @@ export const ORDER_TO_RETURN_VALIDATON: Record<
 export const OMS_RETURN_REQUEST_CONFIRMATION = 'oms-return-request-confirmation'
 export const OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME =
   '[OMS] Return Request Confirmation'
+
+export const OMS_RETURN_REQUEST_STATUS_UPDATE =
+  'oms-return-request-status-update'
+export const OMS_RETURN_REQUEST_STATUS_UPDATE_FRIENDLY_NAME =
+  '[OMS] Return Request Status Update'

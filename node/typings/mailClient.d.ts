@@ -1,9 +1,4 @@
-import type {
-  ItemCondition,
-  ReturnReason,
-  ReturnRequestItem,
-  Status,
-} from 'vtex.return-app'
+import type { ReturnRequestItem, Status } from 'vtex.return-app'
 
 export interface MailData {
   templateName: string
@@ -12,8 +7,8 @@ export interface MailData {
 
 export interface JsonData {
   data: Data
-  products: ReturnRequestItem[]
-  timeline?: TimelineItem[]
+  products: ReturnRequestItem[] | ReturnRequest['items']
+  refundStatusData?: ReturnRequest['refundStatusData']
   _accountInfo?: AccountInfo
 }
 
@@ -27,18 +22,10 @@ export interface Data {
   locality?: string
   address?: string
   paymentMethod?: string
-  iban?: string
-  refundedAmount?: string
+  iban?: string | null
+  refundedAmount?: number
   giftCardCode?: string
   dateSubmitted?: string
-}
-
-export interface TimelineItem {
-  status: Status
-  text: any
-  step: number
-  comments: any
-  active: number
 }
 
 export interface AccountInfo {
