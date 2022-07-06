@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from 'vtex.styleguide'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedDate, useIntl, FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
 import {
@@ -10,12 +11,13 @@ import {
 } from '../../../utils/requestStatus'
 
 const statusHistorySchema = (
-  formatMessage: IntlFormatters['formatMessage']
+  formatMessage: IntlFormatters['formatMessage'],
+  isAdmin: boolean
 ) => ({
   properties: {
     createdAt: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.status-history.header.created-at" />
+        <FormattedMessage id="return-app.return-request-details.table.status-history.header.created-at" />
       ),
       cellRenderer: function CreatedAt({ cellData }) {
         return (
@@ -33,23 +35,32 @@ const statusHistorySchema = (
     },
     status: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.status-history.header.status" />
+        <FormattedMessage id="return-app.return-request-details.table.status-history.header.status" />
       ),
       cellRenderer: function Status({ cellData }) {
         return formatMessage(statusMessageIdAdmin[cellData])
       },
     },
-    submittedBy: {
-      title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.status-history.header.submitted-by" />
-      ),
-    },
+    ...(isAdmin
+      ? {
+          submittedBy: {
+            title: (
+              <FormattedMessage id="return-app.return-request-details.table.status-history.header.submitted-by" />
+            ),
+          },
+        }
+      : null),
   },
 })
 
 export const StatusHistory = () => {
   const { data } = useReturnDetails()
   const { formatMessage } = useIntl()
+  const {
+    route: { domain },
+  } = useRuntime()
+
+  const isAdmin = domain === 'admin'
 
   if (!data) return null
 
@@ -62,11 +73,11 @@ export const StatusHistory = () => {
   return (
     <section className="mv4">
       <h3>
-        <FormattedMessage id="admin/return-app.return-request-details.status-history.title" />
+        <FormattedMessage id="return-app.return-request-details.status-history.title" />
       </h3>
       <Table
         fullWidth
-        schema={statusHistorySchema(formatMessage)}
+        schema={statusHistorySchema(formatMessage, isAdmin)}
         items={timeline}
       />
     </section>

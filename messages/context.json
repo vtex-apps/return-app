@@ -460,9 +460,9 @@
   "return-app.return-request-list.table.status.denied": "Denied",
   "return-app.return-request-list.table.status.approved": "Approved",
   "return-app.return-request-list.table.status.allStatus": "Status",
-  "admin/return-app.return-request-details.table.status-history.header.created-at": "Created At",
-  "admin/return-app.return-request-details.table.status-history.header.status": "Status",
-  "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
-  "admin/return-app.return-request-details.status-history.title": "Status History",
+  "return-app.return-request-details.table.status-history.header.created-at": "Created At",
+  "return-app.return-request-details.table.status-history.header.status": "Status",
+  "return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
+  "return-app.return-request-details.status-history.title": "Status History",
   "admin/return-app.return-request-list.table-data.requestId.tooltip": "Tooltip with an explanation of how the customer can access the data"
 }

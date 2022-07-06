@@ -5202,9 +5202,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.7/public/@types/vtex.return-app":
+"vtex.return-app@https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.7+build1657100002/public/@types/vtex.return-app":
   version "3.0.0-beta.7"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.7/public/@types/vtex.return-app#5cd90866ff110c219e9efea0068eeb64ecd9ef1f"
+  resolved "https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.7+build1657100002/public/@types/vtex.return-app#5ce7985c98cf99141d67ab9935b9ffc951600a46"
 
 "vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.2/public/@types/vtex.store-graphql":
   version "2.152.2"
