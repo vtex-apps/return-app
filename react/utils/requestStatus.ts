@@ -55,7 +55,7 @@ interface VisitedStatus {
   visited: boolean
   comments?: Comments
   createdAt?: string
-  submittedBy?: string
+  submittedBy?: string | null
 }
 
 export const createStatusTimeline = (

@@ -15,6 +15,7 @@ import { ReturnValues } from '../../common/components/ReturnDetails/ReturnValues
 import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
 import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
+import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -62,6 +63,7 @@ export const ReturnDetailsContainer = () => {
           <>
             {detailsPage !== 'return-details' ? null : (
               <>
+                <CurrentRequestStatus />
                 <OrderLink />
                 <ItemDetailsList />
                 <ReturnValues />

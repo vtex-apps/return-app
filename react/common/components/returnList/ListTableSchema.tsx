@@ -1,28 +1,9 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
-import {
-  IconClock,
-  IconFailure,
-  IconVisibilityOn,
-  IconCheck,
-  IconInfo,
-  IconSuccess,
-  IconExternalLinkMini,
-  ButtonPlain,
-  Tooltip,
-} from 'vtex.styleguide'
-import type { Status } from 'vtex.return-app'
+import { IconInfo, ButtonPlain, Tooltip } from 'vtex.styleguide'
 
-const status = {
-  new: 'new',
-  processing: 'processing',
-  picked: 'pickedUpFromClient',
-  pendingVerification: 'pendingVerification',
-  verified: 'packageVerified',
-  denied: 'denied',
-  refunded: 'amountRefunded',
-} as const
+import { renderStatus } from '../RenderStatus'
 
 const ReturnListSchema = () => {
   const { navigate, route } = useRuntime()
@@ -118,83 +99,6 @@ const ReturnListSchema = () => {
         },
       },
     },
-  }
-}
-
-/**
- * Renders the status with an icon and color
- */
-function renderStatus(requestStatus: Status) {
-  switch (requestStatus) {
-    case status.verified:
-      return (
-        <div className="green flex items-center">
-          <span className="mr2 flex">
-            <IconSuccess size={14} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.package-verified" />
-        </div>
-      )
-
-    case status.denied:
-      return (
-        <div className="red flex items-center">
-          <span className="mr2 flex">
-            <IconFailure size={14} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.denied" />
-        </div>
-      )
-
-    case status.pendingVerification:
-      return (
-        <div className="yellow flex items-center">
-          <span className="mr2 flex">
-            <IconClock size={14} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.pending-verification" />
-        </div>
-      )
-
-    case status.processing:
-      return (
-        <div className="yellow flex items-center">
-          <span className="mr2 flex">
-            <IconClock size={14} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.processing" />
-        </div>
-      )
-
-    case status.refunded:
-      return (
-        <div className="green flex items-center">
-          <span className="mr2 flex">
-            <IconCheck size={14} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.refunded" />
-        </div>
-      )
-
-    case status.picked:
-      return (
-        <div className="flex items-center">
-          <span className="mr2 flex">
-            <IconExternalLinkMini size={11} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.picked" />
-        </div>
-      )
-
-    default:
-      return (
-        <div className="light-marine flex items-center">
-          <span className="mr2 flex">
-            <IconVisibilityOn size={14} />
-          </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.new" />
-        </div>
-      )
   }
 }
 

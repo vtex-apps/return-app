@@ -15,6 +15,7 @@ import { RefundMethodDetail } from '../../common/components/ReturnDetails/Refund
 import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
 import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
+import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 
 const StoreReturnDetails = () => {
   const { loading, error } = useReturnDetails()
@@ -37,6 +38,7 @@ const StoreReturnDetails = () => {
         }}
       />
       <StoreReturnDetailsLoader data={{ loading, error }}>
+        <CurrentRequestStatus />
         <OrderLink />
         <ItemDetailsList />
         <ReturnValues />
