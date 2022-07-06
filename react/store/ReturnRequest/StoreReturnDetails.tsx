@@ -13,7 +13,7 @@ import { ContactDetails } from '../../common/components/ContactDetails'
 import { PickupAddress } from '../../common/components/ReturnDetails/PickupAddress'
 import { RefundMethodDetail } from '../../common/components/ReturnDetails/RefundMethodDetail'
 import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
-import { StatusHistory } from '../../admin/ReturnDetails/components/StatusHistory'
+import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
 
 const StoreReturnDetails = () => {
   const { loading, error } = useReturnDetails()

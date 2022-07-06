@@ -4,7 +4,7 @@ import type { IntlFormatters } from 'react-intl'
 import { FormattedDate, useIntl, FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
-import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
+import { useReturnDetails } from '../../hooks/useReturnDetails'
 import {
   createStatusTimeline,
   statusMessageIdAdmin,

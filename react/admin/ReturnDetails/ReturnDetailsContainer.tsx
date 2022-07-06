@@ -13,7 +13,7 @@ import { RefundMethodDetail } from '../../common/components/ReturnDetails/Refund
 import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from '../../common/components/ReturnDetails/ReturnValues/ReturnValues'
 import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
-import { StatusHistory } from './components/StatusHistory'
+import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
 
 type Pages = 'return-details' | 'verify-items'
 
