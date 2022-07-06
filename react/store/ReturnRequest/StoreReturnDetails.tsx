@@ -14,6 +14,7 @@ import { PickupAddress } from '../../common/components/ReturnDetails/PickupAddre
 import { RefundMethodDetail } from '../../common/components/ReturnDetails/RefundMethodDetail'
 import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
 import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
+import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 
 const StoreReturnDetails = () => {
   const { loading, error } = useReturnDetails()
@@ -36,6 +37,7 @@ const StoreReturnDetails = () => {
         }}
       />
       <StoreReturnDetailsLoader data={{ loading, error }}>
+        <OrderLink />
         <ItemDetailsList />
         <ReturnValues />
         <div className="flex-ns flex-wrap flex-row">

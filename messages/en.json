@@ -464,5 +464,6 @@
   "return-app.return-request-details.status-history.title": "Status History",
   "admin/return-app.return-request-list.table-data.requestId.tooltip": "Customers can see their Request ID inside the request detail",
   "store/return-app.return-request-details.page-header.title": "Return Request Details",
-  "store/return-app.return-request-details.page-header.link-label": "Return Request List"
+  "store/return-app.return-request-details.page-header.link-label": "Return Request List",
+  "return-app.return-request-details.order-id.link": "Order {orderId}"
 }

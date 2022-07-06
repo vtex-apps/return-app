@@ -14,6 +14,7 @@ import { AdminLoader } from '../AdminLoader'
 import { ReturnValues } from '../../common/components/ReturnDetails/ReturnValues/ReturnValues'
 import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
 import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
+import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -61,6 +62,7 @@ export const ReturnDetailsContainer = () => {
           <>
             {detailsPage !== 'return-details' ? null : (
               <>
+                <OrderLink />
                 <ItemDetailsList />
                 <ReturnValues />
                 <div className="flex-ns flex-wrap flex-row">
