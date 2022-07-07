@@ -148,7 +148,6 @@
       }
     },
     "dateSubmitted": { "type": "string", "format": "date-time" },
-    "userComment": { "type": ["string", "null"], "maxLength": 300 },
     "refundData": {
       "type": ["object", "null"],
       "required": true,
@@ -210,6 +209,11 @@
                   "type": "string",
                   "format": "date-time",
                   "required": true
+                },
+                "role": {
+                  "type": "string",
+                  "required": true,
+                  "enum": ["adminUser", "storeUser"]
                 },
                 "submittedBy": { "type": "string", "required": true },
                 "visibleForCustomer": { "type": "boolean", "required": true }

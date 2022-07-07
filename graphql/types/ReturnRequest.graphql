@@ -171,6 +171,7 @@ type RefundStatusData {
 type RefundStatusComment {
   comment: String!
   createdAt: String!
+  role: UserRole!
   visibleForCustomer: Boolean
   submittedBy: String!
 }
@@ -189,8 +190,8 @@ input DateRangeInput {
 }
 
 type ReturnRequestList {
-  list: [ReturnRequestResponse!]
-  paging: Pagination
+  list: [ReturnRequestResponse!]!
+  paging: Pagination!
 }
 
 input RefundDataInput {
@@ -218,4 +219,9 @@ enum RefundableAmountId {
   items
   shipping
   tax
+}
+
+enum UserRole {
+  adminUser
+  storeUser
 }
