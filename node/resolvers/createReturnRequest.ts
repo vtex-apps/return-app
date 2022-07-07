@@ -222,6 +222,7 @@ export const createReturnRequest = async (
   } catch (error) {
     logger.warn({
       message: `Failed to send email for return request ${rmaDocument.DocumentId}`,
+      error,
     })
   }
 
