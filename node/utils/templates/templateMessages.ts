@@ -1,2 +1,468 @@
-export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE_MESSAGE =
-  '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"\n        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"\n      xmlns:v="urn:schemas-microsoft-com:vml"\n      style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; width: 100%; height: 100%; margin: 0; padding: 0; background: #f1f1f1 !important;">\n<head>\n    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>\n    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>\n    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n    <title>{{_accountInfo.TradingName}}</title>\n    <!--[if gte mso 9]>\n    <xml>\n        <o:OfficeDocumentSettings>\n            <o:AllowPNG/>\n            <o:PixelsPerInch>96</o:PixelsPerInch>\n\n        </o:OfficeDocumentSettings>\n    </xml>\n    <![endif]-->\n    <style>\n        .statusIcon {\n            width: 30px;\n            height: 30px;\n            border: 1px solid #134cd8;\n            border-radius: 50%;\n            display: inline-block;\n            box-sizing: border-box;\n            padding-top: 3px;\n            padding-left: 3px;\n            background: #fff;\n            margin-right: 20px;\n        }\n\n        .statusIconChecked {\n            background: #134cd8;\n        }\n\n        .statusLine {\n            display: flex;\n            align-items: center;\n        }\n\n        .statusUl {\n            background-image: linear-gradient(gray 33%, rgba(255, 255, 255, 0) 0%);\n            background-position: left;\n            background-size: 2px 6px;\n            background-repeat: repeat-y;\n            list-style-type: none;\n            margin-left: 15px;\n            min-height: 20px;\n            padding-top: 0;\n            padding-bottom: 0;\n        }\n\n        .statusUl li {\n            padding-bottom: 5px;\n        }\n\n        .statusUlLast {\n            background-image: none;\n        }\n\n        a[x-apple-data-detectors] {\n            color: inherit !important;\n            text-decoration: none !important;\n            font-size: inherit !important;\n            font-family: inherit !important;\n            font-weight: inherit !important;\n            line-height: inherit !important;\n        }\n    </style>\n    <style>\n        @media (max-width: 600px) {\n\n            img {\n                max-width: 100% !important;\n                height: auto !important;\n            }\n        }\n    </style>\n    <style>\n        @media screen and (min-width: 30em) {\n\n            .w-50-ns {\n                width: 50% !important;\n            }\n\n            .pr4-ns {\n                padding-right: 2rem !important;\n            }\n\n            .ph4-ns {\n                padding-left: 2rem !important;\n                padding-right: 2rem !important;\n            }\n\n            .mv1-ns {\n                margin-top: .25rem !important;\n                margin-bottom: .25rem !important;\n            }\n\n            .mv4-ns {\n                margin-top: 2rem !important;\n                margin-bottom: 2rem !important;\n            }\n        }\n    </style>\n</head>\n<body style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; width: 100%; height: 100%; margin: 0; padding: 0; background: #f1f1f1 !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;">\n<table width="100%" border="0" cellpadding="0" cellspacing="0"\n       style="box-sizing: border-box; margin: 0; padding: 0; background: #f1f1f1; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; width: 100%; height: 100%; line-height: 100% !important;">\n    <tr style="box-sizing: border-box !important;">\n        <td align="left" valign="top"\n            style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;">\n            <table class="mv4-ns" width="100%" align="center" border="0" cellpadding="0" cellspacing="0"\n                   style="box-sizing: border-box; max-width: 40rem; width: 100%; background-color: #fff; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                   bgcolor="#fff">\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; width: 100%; padding-bottom: 2rem; text-align: center !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="center">\n                        <div style="box-sizing: border-box; width: 8rem; margin-bottom: 1rem; margin-top: 2rem; margin-right: auto; margin-left: auto !important;">\n                            <a href="http://{{_accountInfo.HostName}}.com.br"\n                               style="box-sizing: border-box !important;">\n                                <img alt="" border="0" width="auto"\n                                     src="http://licensemanager.vtex.com.br/api/site/pub/accounts/{{_accountInfo.Id}}/logos/show"\n                                     style="vertical-align: top; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; max-width: 100%; border: none; max-height: 80px !important;">\n                                </img></a>\n                        </div>\n                        <h1 style="margin: 0; font-size: 25px; line-height: 35px; box-sizing: border-box !important;">\n                            {{#if data.status}}\n                            {{#compare data.status "==" \'New\'}}\n                            New return request <br/>{{data.DocumentId}}\n                            {{else}}\n                            Return request <br/>{{data.DocumentId}}\n                            {{/compare}}\n                            {{/if}}\n                        </h1>\n                    </td>\n                </tr>\n\n                {{#compare data.status "==" \'New\'}}\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="left">\n                        <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                            Products</h3>\n\n                        <table style="border-collapse:collapse;font-size:14px;width: 36rem">\n                            <thead style="text-align:left">\n                            <tr>\n                                <th>Products</th>\n                                <th>Quantity</th>\n                                <th>Unit price</th>\n                            <tr>\n                            </thead>\n                            <tbody>\n                            {{#each products}}\n                            {{#compare quantity \'>\' 0}}\n                            <tr>\n                                <td>{{name}}</td>\n                                <td>{{quantity}}</td>\n                                <td>{{formatCurrency sellingPrice}}</td>\n                            </tr>\n                            {{/compare}}\n                            {{/each}}\n                            </tbody>\n                        </table>\n\n                    </td>\n                </tr>\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="left">\n\n                        <table style="border-collapse:collapse;font-size:14px;width: 36rem">\n                            <tr>\n                                <td>\n                                    <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                                        Contact Details</h3>\n                                    <div>\n                                        Name: {{data.name}}<br>\n                                        E-mail: {{data.email}}<br>\n                                        Phone: {{data.phoneNumber}}\n                                    </div>\n                                </td>\n\n                                <td>\n                                    <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                                        Address</h3>\n                                    <div>\n                                        Country: {{data.country}}<br>\n                                        Locality: {{data.locality}}<br>\n                                        Address: {{data.address}}\n                                    </div>\n                                </td>\n                            </tr>\n                        </table>\n\n                    </td>\n                </tr>\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="left">\n                        <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                            Refund payment method</h3>\n                        Method:\n                        {{#eq data.paymentMethod \'card\'}}\n                        Credit or debit card used when placing the order\n                        {{/eq}}\n                        {{#eq data.paymentMethod \'bank\'}}\n                        Bank transfer<br/>\n                        IBAN: {{data.iban}}\n                        {{/eq}}\n                        {{#eq data.paymentMethod \'giftCard\'}}\n                        Gift Card\n                        {{/eq}}\n                        {{#eq data.paymentMethod \'sameAsPurchase\'}}\n                        Same as purchase\n                        {{/eq}}\n                    </td>\n                </tr>\n\n                {{else compare data.status "==" \'Refunded\'}}\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="left">\n                        <div style="text-align: center;">\n                            <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                                Final state</h3>\n                            <b>Refunded value</b>\n                            {{#eq data.paymentMethod \'giftCard\'}}\n                            <b> in the form of a gift card worth {{formatCurrency data.refundedAmount}}\n                                $</b><br/><br/>\n                            <span style="background-color: red; padding: 0.3rem 1rem; color: #fff; border-radius: 0.3rem">\n                                        <b>{{data.giftCardCode}}</b>\n                                    </span>\n                            {{/eq}}\n                            {{#eq data.paymentMethod \'card\'}}\n                            <b> by bank card in the amount of {{formatCurrency data.refundedAmount}} $</b><br/><br/>\n                            {{/eq}}\n                            {{#eq data.paymentMethod \'bank\'}}\n                            <b> by bank transfer in the amount of {{formatCurrency data.refundedAmount}} $</b><br/>\n                            <b>IBAN: {{data.iban}}</b>\n                            {{/eq}}\n                        </div>\n                        <div>\n                            {{#each timeline}}\n                            {{#compare step \'==\' 5}}\n                            <ul>\n                                {{#each comments}}\n                                {{#if visibleForCustomer}}\n                                <li>{{comment}}</li>\n                                {{/if}}\n                                {{/each}}\n                            </ul>\n                            {{/compare}}\n                            {{/each}}\n                        </div>\n                    </td>\n                </tr>\n\n                {{else compare data.status "==" \'Denied\'}}\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="left">\n                        <div style="text-align: center;">\n                            <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                                Final state</h3>\n                            <b>Return request rejected</b>\n                        </div>\n                        <div>\n                            {{#each timeline}}\n                            {{#compare step \'==\' 4}}\n                            <ul>\n                                {{#each comments}}\n                                {{#if visibleForCustomer}}\n                                <li>{{comment}}</li>\n                                {{/if}}\n                                {{/each}}\n                            </ul>\n                            {{/compare}}\n                            {{/each}}\n                        </div>\n                    </td>\n                </tr>\n\n                {{else}}\n\n                <tr style="box-sizing: border-box !important;">\n                    <td class="ph4-ns"\n                        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif;"\n                        align="left">\n                        <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">\n                            Condition</h3>\n                        <table style="border-collapse:collapse;font-size:14px;width: 36rem">\n                            <tr>\n                                <td>\n                                    <div>\n                                        {{#if timeline}}\n                                        {{#each timeline}}\n\n                                        <div>\n                                            <p class="statusline">\n                                                {{#compare active \'==\' 1}}\n                                                <span class="statusIcon statusIconChecked">\n                                                        {{else}}\n                                                            <span class="statusIcon">\n                                                        {{/compare}}\n                                                            {{#compare active \'==\' 1}}\n                                                                <span style="color: #fff; display: block; width: 1.3rem; height: 1.3rem; text-align: center;"><b>✓</b></span>\n                                                            {{/compare}}\n                                                        </span>\n\n                                                        {{#compare step \'==\' 1}}\n                                                            Return form registered on {{formatDate ../data.dateSubmitted}}\n                                                        {{else}}\n                                                            {{status}}\n                                                        {{/compare}}\n\n                                                        {{#compare step \'==\' 5}}\n                                            <ul class="statusUl statusUlLast">\n                                                {{else}}\n                                                <ul class="statusUl">\n                                                    {{/compare}}\n\n                                                    {{#each comments}}\n                                                    {{#if visibleForCustomer}}\n                                                    <li>{{comment}}</li>\n                                                    {{/if}}\n                                                    {{/each}}\n                                                </ul>\n\n                                                </p>\n                                        </div>\n\n                                        {{/each}}\n                                        {{/if}}\n                                    </div>\n                                </td>\n                            </tr>\n                        </table>\n\n                    </td>\n                </tr>\n\n                {{/compare}}\n\n            </table>\n        </td>\n    </tr>\n</table>\n</body>\n</html>\n'
+import html from 'html-template-tag'
+
+const HEAD_AND_STYLE = html`
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{_accountInfo.TradingName}}</title>
+    <!--[if gte mso 9]>
+      <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG />
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+      </xml>
+    <![endif]-->
+    <style>
+      .statusIcon {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #134cd8;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        padding-top: 3px;
+        padding-left: 3px;
+        background: #fff;
+        margin-right: 20px;
+      }
+
+      .statusIconChecked {
+        background: #134cd8;
+      }
+
+      .statusLine {
+        display: flex;
+        align-items: center;
+      }
+
+      .statusUl {
+        background-image: linear-gradient(gray 33%, rgba(255, 255, 255, 0) 0%);
+        background-position: left;
+        background-size: 2px 6px;
+        background-repeat: repeat-y;
+        list-style-type: none;
+        margin-left: 15px;
+        min-height: 20px;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .statusUl li {
+        padding-bottom: 5px;
+      }
+
+      .statusUlLast {
+        background-image: none;
+      }
+
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+    </style>
+    <style>
+      @media (max-width: 600px) {
+        img {
+          max-width: 100% !important;
+          height: auto !important;
+        }
+      }
+    </style>
+    <style>
+      @media screen and (min-width: 30em) {
+        .w-50-ns {
+          width: 50% !important;
+        }
+
+        .pr4-ns {
+          padding-right: 2rem !important;
+        }
+
+        .ph4-ns {
+          padding-left: 2rem !important;
+          padding-right: 2rem !important;
+        }
+
+        .mv1-ns {
+          margin-top: 0.25rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+
+        .mv4-ns {
+          margin-top: 2rem !important;
+          margin-bottom: 2rem !important;
+        }
+      }
+    </style>
+  </head>
+`
+
+const HEADER = html`
+  <tr style="box-sizing: border-box !important;">
+    <td class="ph4-ns"
+        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; width: 100%; padding-bottom: 2rem; text-align: center !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+        align="center">
+        <div style="box-sizing: border-box; width: 8rem; margin-bottom: 1rem; margin-top: 2rem; margin-right: auto; margin-left: auto !important;">
+            <a href="http://{{_accountInfo.HostName}}.com.br"
+                style="box-sizing: border-box !important;">
+                <img alt="" border="0" width="auto"
+                        src="http://licensemanager.vtex.com.br/api/site/pub/accounts/{{_accountInfo.Id}}/logos/show"
+                        style="vertical-align: top; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; max-width: 100%; border: none; max-height: 80px !important;">
+                </img>
+            </a>
+        </div>
+        <h1 style="margin: 0; font-size: 25px; line-height: 35px; box-sizing: border-box !important;">
+            {{#if data.status}}
+            {{#compare data.status "==" 'new'}}
+            New return request <br/>{{data.DocumentId}}
+            {{else}}
+            Return request <br/>{{data.DocumentId}}
+            {{/compare}}
+            {{/if}}
+        </h1>
+    </td>
+  </tr>
+`
+
+const PRODUCTS = html`
+  {{#compare products.length ">" 0}}
+
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <h3
+        style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+      >
+        Products
+      </h3>
+
+      <table style="border-collapse:collapse;font-size:14px;width: 36rem">
+        <thead style="text-align:left">
+          <tr>
+            <th>Products</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+          </tr>
+
+          <tr></tr>
+        </thead>
+
+        <tbody>
+          {{#each products}} {{#compare quantity '>' 0}}
+          <tr>
+            <td>{{name}}</td>
+            <td>{{quantity}}</td>
+            <td>{{formatCurrency sellingPrice}}</td>
+          </tr>
+          {{/compare}} {{/each}}
+        </tbody>
+      </table>
+    </td>
+  </tr>
+
+  {{/compare}}
+`
+
+const CONTACT_DETAILS = html`
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <table style="border-collapse:collapse;font-size:14px;width: 36rem">
+        <tr>
+          <td>
+            <h3
+              style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+            >
+              Contact Details
+            </h3>
+            <div>
+              Name: {{data.name}}<br />
+              E-mail: {{data.email}}<br />
+              Phone: {{data.phoneNumber}}
+            </div>
+          </td>
+
+          <td>
+            <h3
+              style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+            >
+              Address
+            </h3>
+            <div>
+              Country: {{data.country}}<br />
+              Locality: {{data.locality}}<br />
+              Address: {{data.address}}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+`
+
+const PAYMENT_METHOD = html`
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <h3
+        style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+      >
+        Refund payment method
+      </h3>
+      Method: {{#eq data.paymentMethod 'card'}} Credit or debit card used when
+      placing the order {{/eq}} {{#eq data.paymentMethod 'bank'}} Bank
+      transfer<br />
+      IBAN: {{data.iban}} {{/eq}} {{#eq data.paymentMethod 'giftCard'}} Gift
+      Card {{/eq}} {{#eq data.paymentMethod 'sameAsPurchase'}} Same as purchase
+      {{/eq}}
+    </td>
+  </tr>
+`
+
+const STATUS_UPDATE = html`
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <h3
+        style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+      >
+        Return request status
+      </h3>
+      The current status for your return request is now: <br />
+      <b>
+        {{#eq data.status 'new'}} New {{/eq}} {{#eq data.status 'processing'}}
+        Processing {{/eq}} {{#eq data.status 'pickedUpFromClient'}} Picked up
+        from client {{/eq}} {{#eq data.status 'pendingVerification'}} Pending
+        verification {{/eq}} {{#eq data.status 'packageVerified'}} Package
+        verified {{/eq}} {{#eq data.status 'amountRefunded'}} Amount refunded
+        {{/eq}} {{#eq data.status 'denied'}} Denied {{/eq}}
+      </b>
+    </td>
+  </tr>
+`
+
+const REFUNDED_MESSAGE = html`
+  {{#eq data.status 'refunded'}}
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <div>
+        <h3
+          style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+        >
+          Refund details
+        </h3>
+        Refunded value {{#eq data.paymentMethod 'giftCard'}} in the form of a
+        gift card worth {{formatCurrency data.refundedAmount}}$
+        <br /><br />
+        {{/eq}} {{#eq data.paymentMethod 'card'}} by bank card in the amount of
+        {{formatCurrency data.refundedAmount}}$<br /><br />
+        {{/eq}} {{#eq data.paymentMethod 'bank'}} by bank transfer in the amount
+        of {{formatCurrency data.refundedAmount}}$<br />
+        <b>IBAN: {{data.iban}}</b>
+        {{/eq}}
+      </div>
+    </td>
+  </tr>
+  {{/eq}}
+`
+
+const DENIED_MESSSAGE = html`
+  {{#eq data.status 'denied'}}
+
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <div>
+        <h3
+          style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+        >
+          Final state
+        </h3>
+        <b>Return request rejected</b>
+      </div>
+    </td>
+  </tr>
+  {{/eq}}
+`
+
+const STATUS_TIMELINE = html`
+{{#compare refundStatusData.length ">" 0}}
+
+<tr style="box-sizing: border-box !important;">
+    <td class="ph4-ns"
+        style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+        align="left">
+        <h3 style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;">
+            Request status timeline</h3>
+        <table style="border-collapse:collapse;font-size:14px;width: 36rem">
+            <tr>
+                <td>
+                    <div>
+                        {{#each refundStatusData}}
+                        <div>
+                            <p class="statusLine">
+                                {{#unless @last}}
+
+                                <span class="statusIcon statusIconChecked">
+                                    <span style="color: #fff; display: block; width: 1.3rem; height: 1.3rem; text-align: center;"><b>✓</b></span>
+                                </span>
+                                <span>Status: 
+                                  <b>
+                                    {{#eq status 'new'}} New {{/eq}}
+                                    {{#eq status 'processing'}} Processing {{/eq}}
+                                    {{#eq status 'pickedUpFromClient'}} Picked up from client {{/eq}}
+                                    {{#eq status 'pendingVerification'}} Pending verification {{/eq}}
+                                    {{#eq status 'packageVerified'}} Package verified {{/eq}}
+                                    {{#eq status 'amountRefunded'}} Amount refunded {{/eq}}
+                                    {{#eq status 'denied'}} Denied {{/eq}}
+                                  </b>
+                                </span>
+                                <ul class="statusUl">
+                                  {{#each comments}} 
+                                  {{#if visibleForCustomer}}
+                                  <li>Comment: {{comment}}</li>
+                                  {{/if}}
+                                  {{/each}}
+                                </ul>
+                                
+                                {{else}}
+                                
+                                <span class="statusIcon statusIconChecked">
+                                    <span style="color: #fff; display: block; width: 1.3rem; height: 1.3rem; text-align: center;"><b>✓</b></span>
+                                </span>
+                                <span>Status: 
+                                  <b>
+                                    {{#eq status 'new'}} New {{/eq}}
+                                    {{#eq status 'processing'}} Processing {{/eq}}
+                                    {{#eq status 'pickedUpFromClient'}} Picked up from client {{/eq}}
+                                    {{#eq status 'pendingVerification'}} Pending verification {{/eq}}
+                                    {{#eq status 'packageVerified'}} Package verified {{/eq}}
+                                    {{#eq status 'amountRefunded'}} Amount refunded {{/eq}}
+                                    {{#eq status 'denied'}} Denied {{/eq}}
+                                  </b>
+                                </span>
+                                <ul class="statusUl statusUlLast">
+                                  {{#each comments}} 
+                                  {{#if visibleForCustomer}}
+                                  <li>Comment: {{comment}}</li>
+                                  {{/if}}
+                                  {{/each}}
+                                </ul>
+
+                                {{#compare status '!=' 'amountRefunded'}}
+                                {{#compare status '!=' 'denied'}}
+                                <span class="statusIcon">
+                                    <span style="color: #fff; display: block; width: 1.3rem; height: 1.3rem; text-align: center;"><b>✓</b></span>
+                                </span>
+                                <span>Status: 
+                                  <b>
+                                    {{#eq status 'new'}} Processing {{/eq}} 
+                                    {{#eq status 'processing'}} Picked up from client {{/eq}}
+                                    {{#eq status 'pickedUpFromClient'}} Pending verification {{/eq}}
+                                    {{#eq status 'pendingVerification'}} Package verified {{/eq}}
+                                    {{#eq status 'packageVerified'}} Amount refunded {{/eq}}
+                                  </b>
+                                </span>
+                                {{/compare}}
+                                {{/compare}}
+
+                                {{/unless}}
+                            </p>
+                        </div>
+                        {{/each}}
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </td>
+</tr>
+{{/compare}}
+`
+
+const createTemplate = (headAndStyle: string, ...bodyBlocks: string[]) => {
+  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:v="urn:schemas-microsoft-com:vml"
+      style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; width: 100%; height: 100%; margin: 0; padding: 0; background: #f1f1f1 !important;"
+    >
+      ${headAndStyle}
+      <body
+        style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; width: 100%; height: 100%; margin: 0; padding: 0; background: #f1f1f1 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      >
+        <table
+          width="100%"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          style="box-sizing: border-box; margin: 0; padding: 0; background: #f1f1f1; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; width: 100%; height: 100%; line-height: 100% !important;"
+        >
+          <tr style="box-sizing: border-box !important;">
+            <td
+              align="left"
+              valign="top"
+              style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+            >
+              <table
+                class="mv4-ns"
+                width="100%"
+                align="center"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="box-sizing: border-box; max-width: 40rem; width: 100%; background-color: #fff; border-collapse: collapse; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+                bgcolor="#fff"
+              >
+                ${bodyBlocks.join('\n')}
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `
+}
+
+export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE_MESSAGE = createTemplate(
+  HEAD_AND_STYLE,
+  HEADER,
+  PRODUCTS,
+  CONTACT_DETAILS,
+  PAYMENT_METHOD
+)
+
+export const OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE_MESSAGE = createTemplate(
+  HEAD_AND_STYLE,
+  HEADER,
+  STATUS_UPDATE,
+  REFUNDED_MESSAGE,
+  DENIED_MESSSAGE,
+  STATUS_TIMELINE
+)

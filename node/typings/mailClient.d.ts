@@ -9,7 +9,7 @@ export interface MailData {
 
 export interface JsonData {
   data: Data
-  products: ReturnRequestItem[]
+  products: ReturnRequestItem[] | ReturnRequest['items']
   refundStatusData?: ReturnRequest['refundStatusData']
   _accountInfo?: AccountInfo
 }

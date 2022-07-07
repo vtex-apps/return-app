@@ -188,22 +188,19 @@ export const createReturnRequest = async (
     ],
   })
 
-  // We add a try/catch here so we avoid sending an error to the browser if only the email fails.
+  // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
       OMS_RETURN_REQUEST_CONFIRMATION
     )
 
     if (!templateExists) {
-      const template = OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE
-
-      await mail.publishTemplate(template)
+      await mail.publishTemplate(OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE)
     }
 
     const {
       firstName: clientFirstName,
       lastName: clientLastName,
-      document,
       phone,
     } = clientProfileData
 
@@ -217,7 +214,7 @@ export const createReturnRequest = async (
         data: {
           status: 'new',
           name: `${clientFirstName} ${clientLastName}`,
-          DocumentId: document,
+          DocumentId: rmaDocument.DocumentId,
           email,
           phoneNumber: phone,
           country,
