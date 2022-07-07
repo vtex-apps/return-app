@@ -10,6 +10,9 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
+import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
+import type { MailData } from '../typings/mailClient'
+import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -63,7 +66,9 @@ export const updateReturnRequestStatus = async (
       returnRequest: returnRequestClient,
       oms,
       giftCard: giftCardClient,
+      mail,
     },
+    vtex: { logger },
   } = ctx
 
   const { status, requestId, comment, refundData } = args
@@ -151,6 +156,52 @@ export const updateReturnRequestStatus = async (
   }
 
   await returnRequestClient.update(requestId, updatedRequest)
+
+  // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
+  try {
+    const templateExists = await mail.getTemplate(
+      OMS_RETURN_REQUEST_STATUS_UPDATE
+    )
+
+    if (!templateExists) {
+      await mail.publishTemplate(OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE)
+    }
+
+    const {
+      status: updatedStatus,
+      items,
+      customerProfileData,
+      refundStatusData: updatedRefundStatusData,
+      refundPaymentData,
+      refundData: updatedRefundData,
+    } = updatedRequest
+
+    const mailData: MailData = {
+      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE,
+      jsonData: {
+        data: {
+          status: updatedStatus,
+          name: customerProfileData?.name,
+          DocumentId: requestId,
+          email: customerProfileData?.email,
+          paymentMethod: refundPaymentData?.refundPaymentMethod,
+          iban: refundPaymentData?.iban,
+          refundedAmount:
+            Number(updatedRefundData?.refundedItemsValue) +
+            Number(updatedRefundData?.refundedShippingValue),
+        },
+        products: items,
+        refundStatusData: updatedRefundStatusData,
+      },
+    }
+
+    await mail.sendMail(mailData)
+  } catch (error) {
+    logger.warn({
+      message: `Failed to send email for return request ${requestId}`,
+      error,
+    })
+  }
 
   return { id: requestId, ...updatedRequest }
 }

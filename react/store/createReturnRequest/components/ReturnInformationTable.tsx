@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import type { ReturnRequestItemInput } from 'vtex.return-app'
 
-import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
+// import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
 import { defaultReturnConditionsMessages } from '../../utils/defaultReturnConditionsMessages'
 
 interface Props {
@@ -55,7 +55,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                           <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{' '}
                         </p>
                         <p className="f6 mv0 gray ">
-                          {formatMessage(defaultReturnReasonsMessages[reason])}{' '}
+                          {reason}{' '}
                           {returnReason?.otherReason
                             ? returnReason?.otherReason
                             : null}

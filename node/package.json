@@ -6,6 +6,7 @@
     "co-body": "^6.0.0",
     "graphql": "^14.0.0",
     "graphql-tools": "^4.0.0",
+    "html-template-tag": "^4.0.1",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
