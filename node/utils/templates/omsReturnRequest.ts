@@ -21,7 +21,7 @@ export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE: Template = {
       To: '{{data.email}}',
       CC: null,
       BCC: '{{#compare data.status "==" \'New\'}}{{/compare}}',
-      Subject: 'Neew Return request {{data.DocumentId}}',
+      Subject: 'New Return request {{data.DocumentId}}',
       Message: OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE_MESSAGE,
       Type: 'E',
       ProviderId: '00000000-0000-0000-0000-000000000000',
