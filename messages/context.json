@@ -464,5 +464,11 @@
   "admin/return-app.return-request-details.table.status-history.header.status": "Status",
   "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
   "admin/return-app.return-request-details.status-history.title": "Status History",
-  "admin/return-app.return-request-list.table-data.requestId.tooltip": "Tooltip with an explanation of how the customer can access the data"
+  "admin/return-app.return-request-list.table-data.requestId.tooltip": "Tooltip with an explanation of how the customer can access the data",
+  "admin/return-app.settings.modal-warning.title": "Title of a modal to warn about max days settings",
+  "admin/return-app.settings.modal-warning.first-paragraph": "First parahraph describing the warning",
+  "admin/return-app.settings.modal-warning.second-paragraph": "Second parahraph describing the warning",
+  "admin/return-app.settings.modal-warning.third-paragraph": "Third parahraph describing the warning",
+  "admin/return-app.settings.modal-warning.confirm": "Warning modal confirm CTA",
+  "admin/return-app.settings.modal-warning.cancel": "Warning modal cancel CTA"
 }

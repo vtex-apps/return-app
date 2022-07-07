@@ -1,9 +1,10 @@
 import type { ApolloError } from 'apollo-client'
-import type { FC, Dispatch } from 'react'
-import React, { createContext, useReducer, useEffect } from 'react'
+import type { FC, Dispatch, ReactElement } from 'react'
+import React, { createContext, useReducer, useEffect, useState } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import type { ReturnAppSettings, ReturnAppSettingsInput } from 'vtex.return-app'
+import { ModalDialog } from 'vtex.styleguide'
 
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import SAVE_APP_SETTINGS from '../graphql/saveAppSettings.gql'
@@ -22,6 +23,47 @@ interface SettingsContextInterface {
   savingAppSettings: boolean
 }
 
+interface WarningModalProps {
+  maxDays: number
+  customOptionMaxDays: number
+}
+
+const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
+
+const WarningModalContent = (props: WarningModalProps) => {
+  const { maxDays, customOptionMaxDays } = props
+
+  return (
+    <div>
+      <p className="f3 f3-ns fw3 gray">
+        <FormattedMessage id="admin/return-app.settings.modal-warning.title" />
+      </p>
+      <p>
+        <FormattedMessage
+          id="admin/return-app.settings.modal-warning.first-paragraph"
+          values={{
+            b: StrongChunk,
+            maxDays,
+          }}
+        />
+      </p>
+      <p>
+        <FormattedMessage id="admin/return-app.settings.modal-warning.second-paragraph" />
+      </p>
+      <p>
+        <FormattedMessage
+          id="admin/return-app.settings.modal-warning.third-paragraph"
+          values={{
+            b: StrongChunk,
+            maxDays,
+            customOptionMaxDays,
+          }}
+        />
+      </p>
+    </div>
+  )
+}
+
 export const SettingsContext = createContext<SettingsContextInterface>(
   {} as SettingsContextInterface
 )
@@ -31,6 +73,11 @@ export const SettingsProvider: FC = ({ children }) => {
     settingsReducer,
     initialSettingsState
   )
+
+  const [maxDaysWarning, setWarning] = useState({
+    openModal: false,
+    customMaxDays: 0,
+  })
 
   const { openAlert } = useAlert()
 
@@ -52,6 +99,19 @@ export const SettingsProvider: FC = ({ children }) => {
   }, [data])
 
   const handleSaveAppSettings = async () => {
+    const { customReturnReasons, maxDays } = appSettings
+
+    const maxCustomOptionsDays = customReturnReasons?.reduce(
+      (maxDay, option) => (maxDay > option.maxDays ? maxDay : option.maxDays),
+      0
+    )
+
+    if (maxCustomOptionsDays && maxCustomOptionsDays < maxDays) {
+      setWarning({ openModal: true, customMaxDays: maxCustomOptionsDays })
+
+      return
+    }
+
     try {
       const { data: mutationResult, errors } = await saveAppSettings({
         variables: { settings: appSettings },
@@ -75,6 +135,19 @@ export const SettingsProvider: FC = ({ children }) => {
     }
   }
 
+  const handleWarningModal = (overrideMaxDays: boolean) => {
+    overrideMaxDays &&
+      dispatch({
+        type: 'updateMaxDays',
+        payload: maxDaysWarning.customMaxDays,
+      })
+
+    setWarning({
+      openModal: false,
+      customMaxDays: 0,
+    })
+  }
+
   return (
     <SettingsContext.Provider
       value={{
@@ -85,6 +158,37 @@ export const SettingsProvider: FC = ({ children }) => {
         actions: { dispatch, handleSaveAppSettings },
       }}
     >
+      {maxDaysWarning.openModal ? (
+        <ModalDialog
+          centered
+          confirmation={{
+            onClick: () => {
+              handleWarningModal(true)
+            },
+            label: (
+              <FormattedMessage id="admin/return-app.settings.modal-warning.confirm" />
+            ),
+            isDangerous: true,
+          }}
+          cancelation={{
+            onClick: () => {
+              handleWarningModal(false)
+            },
+            label: (
+              <FormattedMessage id="admin/return-app.settings.modal-warning.cancel" />
+            ),
+          }}
+          isOpen={maxDaysWarning.openModal}
+          onClose={() => {
+            handleWarningModal(false)
+          }}
+        >
+          <WarningModalContent
+            maxDays={appSettings.maxDays}
+            customOptionMaxDays={maxDaysWarning.customMaxDays}
+          />
+        </ModalDialog>
+      ) : null}
       {children}
     </SettingsContext.Provider>
   )

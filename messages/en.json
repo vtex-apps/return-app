@@ -462,5 +462,11 @@
   "admin/return-app.return-request-details.table.status-history.header.status": "Status",
   "admin/return-app.return-request-details.table.status-history.header.submitted-by": "Submitted By",
   "admin/return-app.return-request-details.status-history.title": "Status History",
-  "admin/return-app.return-request-list.table-data.requestId.tooltip": "Customers can see their Request ID inside the request detail"
+  "admin/return-app.return-request-list.table-data.requestId.tooltip": "Customers can see their Request ID inside the request detail",
+  "admin/return-app.settings.modal-warning.title": "Please review your settings",
+  "admin/return-app.settings.modal-warning.first-paragraph": "Looks like you are trying to save custom return options where none of them reach <b>{maxDays}</b>; the max day stipulated for a return.",
+  "admin/return-app.settings.modal-warning.second-paragraph": "A store user could potentially initiate the flow to create a return, but be unable to continue if their order date falls outside any of your custom options.",
+  "admin/return-app.settings.modal-warning.third-paragraph": "If you click modify, the max days value for a return will be reduced from <b>{maxDays}</b> to <b>{customOptionMaxDays}</b>; the max days encountered in your custom return options.",
+  "admin/return-app.settings.modal-warning.confirm": "Modify",
+  "admin/return-app.settings.modal-warning.cancel": "Cancel"
 }
