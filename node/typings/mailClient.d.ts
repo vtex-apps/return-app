@@ -1,7 +1,9 @@
 import type { ReturnRequestItem, Status } from 'vtex.return-app'
 
 export interface MailData {
-  templateName: string
+  templateName:
+    | 'oms-return-request-confirmation'
+    | 'oms-return-request-status-update'
   jsonData: JsonData
 }
 
