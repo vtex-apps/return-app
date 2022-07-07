@@ -1,12 +1,26 @@
 import React from 'react'
-import type { RefundStatusComment } from 'vtex.return-app'
+import type { RefundStatusComment, UserRole } from 'vtex.return-app'
 import { useRuntime } from 'vtex.render-runtime'
 import { FormattedMessage } from 'react-intl'
+import { Tag } from 'vtex.styleguide'
 
 interface Props {
   comments: RefundStatusComment[]
   isLast: boolean
 }
+
+interface UserCommentTagProps {
+  userRole: UserRole
+}
+
+const UserCommentTag = ({ userRole }: UserCommentTagProps) => {
+  return userRole === 'storeUser' ? (
+    <Tag bgColor="#57bf96">Customer</Tag>
+  ) : (
+    <Tag bgColor="#3e60bd">Admin</Tag>
+  )
+}
+
 export const CommentList = ({ comments, isLast }: Props) => {
   const {
     route: { domain },
@@ -19,14 +33,19 @@ export const CommentList = ({ comments, isLast }: Props) => {
       {comments?.map((comment) => (
         <li key={comment.createdAt}>
           {contextDomain === 'admin' ? (
-            <FormattedMessage
-              id="admin/return-app.return-request-details.status-timeline.comment"
-              values={{
-                ts: new Date(comment.createdAt),
-                comment: comment.comment,
-                submittedBy: comment.submittedBy,
-              }}
-            />
+            <div className="pa2">
+              <span className="mr3">
+                <FormattedMessage
+                  id="admin/return-app.return-request-details.status-timeline.comment"
+                  values={{
+                    ts: new Date(comment.createdAt),
+                    comment: comment.comment,
+                    submittedBy: comment.submittedBy,
+                  }}
+                />
+              </span>
+              <UserCommentTag userRole={comment.role} />
+            </div>
           ) : null}
           {contextDomain === 'store' ? (
             <FormattedMessage

@@ -7,7 +7,7 @@ import type {
 import RETURN_REQUEST_LIST from '../graphql/getReturnRequestList.gql'
 
 export const useReturnRequestList = () => {
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     {
       returnRequestList: ReturnRequestListResponse
     },
@@ -16,7 +16,9 @@ export const useReturnRequestList = () => {
     variables: {
       page: 1,
     },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'no-cache',
   })
 
-  return { returnRequestData: { data, loading, error } }
+  return { returnRequestData: { data, loading, error, refetch } }
 }

@@ -8,6 +8,7 @@ import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
 import { GiftCard } from './giftCard'
 import { MailClient } from './mail'
+import Checkout from './checkout'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -43,5 +44,9 @@ export class Clients extends IOClients {
 
   public get mail() {
     return this.getOrSet('mail', MailClient)
+  }
+
+  public get checkout() {
+    return this.getOrSet('checkout', Checkout)
   }
 }
