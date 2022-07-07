@@ -226,7 +226,14 @@ export const createReturnRequest = async (
           paymentMethod: refundPaymentData.refundPaymentMethod,
         },
         products: [...itemsToReturn],
-        timeline: [],
+        refundStatusData: [
+          {
+            status: 'new',
+            submittedBy,
+            createdAt: requestDate,
+            comments: userCommentData,
+          },
+        ],
       },
     }
 
