@@ -9,3 +9,7 @@ export const ORDER_TO_RETURN_VALIDATON: Record<
   OUT_OF_MAX_DAYS: 'OUT_OF_MAX_DAYS',
   ORDER_NOT_INVOICED: 'ORDER_NOT_INVOICED',
 }
+
+export const OMS_RETURN_REQUEST_CONFIRMATION = 'oms-return-request-confirmation'
+export const OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME =
+  '[OMS] Return Request Confirmation'
