@@ -199,6 +199,7 @@ export const updateReturnRequestStatus = async (
   } catch (error) {
     logger.warn({
       message: `Failed to send email for return request ${requestId}`,
+      error,
     })
   }
 
