@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react'
 import type { FormEvent } from 'react'
-import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
   Layout,
@@ -19,6 +19,12 @@ import { RequiredOptions } from './components/RequiredOptions'
 import { WarningModal } from './components/WarningModal'
 import { useSettings } from './hooks/useSettings'
 
+export interface ModalWarningState {
+  openModal: boolean
+  customMaxDays: number
+  attemptNewSave: boolean
+}
+
 export const RMASettings = () => {
   const {
     appSettings,
@@ -28,10 +34,22 @@ export const RMASettings = () => {
     actions: { handleSaveAppSettings },
   } = useSettings()
 
-  const [maxDaysWarning, setWarning] = useState({
+  const [maxDaysWarning, setWarning] = useState<ModalWarningState>({
     openModal: false,
     customMaxDays: 0,
+    attemptNewSave: false,
   })
+
+  useEffect(() => {
+    if (!maxDaysWarning.attemptNewSave) return
+
+    handleSaveAppSettings()
+
+    setWarning({
+      ...maxDaysWarning,
+      attemptNewSave: false,
+    })
+  }, [handleSaveAppSettings, maxDaysWarning])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -44,7 +62,11 @@ export const RMASettings = () => {
     )
 
     if (maxCustomOptionsDays && maxCustomOptionsDays < maxDays) {
-      setWarning({ openModal: true, customMaxDays: maxCustomOptionsDays })
+      setWarning({
+        ...maxDaysWarning,
+        openModal: true,
+        customMaxDays: maxCustomOptionsDays,
+      })
 
       return
     }

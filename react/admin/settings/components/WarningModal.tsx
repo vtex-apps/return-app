@@ -4,6 +4,7 @@ import { ModalDialog } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
 import { useSettings } from '../hooks/useSettings'
+import type { ModalWarningState } from '../RMASettings'
 
 interface WarningModalContentProps {
   maxDays: number
@@ -11,12 +12,7 @@ interface WarningModalContentProps {
 }
 
 interface WarningModalProps {
-  setWarning: React.Dispatch<
-    React.SetStateAction<{
-      openModal: boolean
-      customMaxDays: number
-    }>
-  >
+  setWarning: React.Dispatch<React.SetStateAction<ModalWarningState>>
   customMaxDays: number
 }
 
@@ -64,8 +60,8 @@ export const WarningModal = (props: WarningModalProps) => {
     actions: { dispatch },
   } = useSettings()
 
-  const handleWarningModal = (overrideMaxDays: boolean) => {
-    overrideMaxDays &&
+  const handleWarningModal = (overrideAndSave: boolean) => {
+    overrideAndSave &&
       dispatch({
         type: 'updateMaxDays',
         payload: customMaxDays,
@@ -74,6 +70,7 @@ export const WarningModal = (props: WarningModalProps) => {
     setWarning({
       openModal: false,
       customMaxDays: 0,
+      attemptNewSave: overrideAndSave,
     })
   }
 
