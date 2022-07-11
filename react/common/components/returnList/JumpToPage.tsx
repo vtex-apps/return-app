@@ -13,14 +13,24 @@ const JumpToPage = (props: Props) => {
   const { handleJumpToPage, currentPage, maxPage } = props
 
   const [desiredPage, setDesiredPage] = useState(currentPage)
+  const [canSubmit, setEnableSubmit] = useState(true)
 
   useEffect(() => {
-    setDesiredPage(currentPage)
-  }, [currentPage])
+    if (desiredPage > maxPage || desiredPage <= 0) {
+      setEnableSubmit(false)
+
+      return
+    }
+
+    setEnableSubmit(true)
+  }, [desiredPage, maxPage])
 
   const handleOnChange = (page: number) => {
-    if (page > maxPage || page <= 0) return
     setDesiredPage(page)
+  }
+
+  const handleSubmit = () => {
+    handleJumpToPage(desiredPage)
   }
 
   return (
@@ -51,8 +61,8 @@ const JumpToPage = (props: Props) => {
           <Button
             variation="secondary"
             size="small"
-            onClick={() => handleJumpToPage(desiredPage)}
-            disabled={!desiredPage}
+            onClick={handleSubmit}
+            disabled={!desiredPage || !canSubmit}
           >
             <FormattedMessage id="return-app.return-request-list.table-jumpToPage.cta" />
           </Button>
