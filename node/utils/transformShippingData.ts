@@ -24,5 +24,7 @@ export const transformShippingData = (
     state: address.state,
     zipCode: address.postalCode,
     addressType,
+    // @ts-expect-error geoCoordinates is not typed in the OMS client project
+    geoCoordinates: address.geoCoordinates,
   }
 }
