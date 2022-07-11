@@ -163,7 +163,7 @@ type RefundItem {
 
 type RefundStatusData {
   status: Status!
-  submittedBy: String!
+  submittedBy: String
   createdAt: String!
   comments: [RefundStatusComment!]!
 }

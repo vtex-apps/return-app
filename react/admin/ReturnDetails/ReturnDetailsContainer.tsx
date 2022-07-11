@@ -4,16 +4,18 @@ import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { UpdateRequestStatus } from './components/UpdateRequestStatus'
-import { useReturnDetails } from '../hooks/useReturnDetails'
+import { useReturnDetails } from '../../common/hooks/useReturnDetails'
 import { VerifyItemsPage } from './components/VerifyItems/VerifyItemsPage'
-import { ItemDetailsList } from './components/ItemDetails/ItemDetailsList'
-import { ContactDetails } from './components/ContactDetails'
-import { PickupAddress } from './components/PickupAddress'
-import { RefundMethodDetail } from './components/RefundMethodDetail'
+import { ItemDetailsList } from '../../common/components/ReturnDetails/ItemDetails/ItemDetailsList'
+import { ContactDetails } from '../../common/components/ContactDetails'
+import { PickupAddress } from '../../common/components/ReturnDetails/PickupAddress'
+import { RefundMethodDetail } from '../../common/components/ReturnDetails/RefundMethodDetail'
 import { AdminLoader } from '../AdminLoader'
-import { ReturnValues } from './components/ReturnValues/ReturnValues'
-import { StatusTimeline } from './components/StatusTimeline/StatusTimeline'
-import { StatusHistory } from './components/StatusHistory'
+import { ReturnValues } from '../../common/components/ReturnDetails/ReturnValues/ReturnValues'
+import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTimeline/StatusTimeline'
+import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
+import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
+import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -61,6 +63,8 @@ export const ReturnDetailsContainer = () => {
           <>
             {detailsPage !== 'return-details' ? null : (
               <>
+                <CurrentRequestStatus />
+                <OrderLink />
                 <ItemDetailsList />
                 <ReturnValues />
                 <div className="flex-ns flex-wrap flex-row">

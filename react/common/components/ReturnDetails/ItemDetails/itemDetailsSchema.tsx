@@ -5,7 +5,7 @@ import type { ReturnRequestItem } from 'vtex.return-app'
 import { FormattedCurrency } from 'vtex.format-currency'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
-import { AlignItemRight } from '../AlignItemRight'
+import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
@@ -16,7 +16,7 @@ export const itemDetailsSchema = (
   properties: {
     imageUrl: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.product" />
+        <FormattedMessage id="return-app.return-request-details.table.header.product" />
       ),
       width: 80,
       cellRenderer: function ProductImage({
@@ -31,7 +31,7 @@ export const itemDetailsSchema = (
     },
     name: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.product-info" />
+        <FormattedMessage id="return-app.return-request-details.table.header.product-info" />
       ),
       minWidth: 500,
       cellRenderer: function ProductName({
@@ -48,7 +48,7 @@ export const itemDetailsSchema = (
             <span className="mv2">{cellData}</span>
             <div className="mv2">
               <FormattedMessage
-                id="admin/return-app.return-request-details.table.product-info.ref-id"
+                id="return-app.return-request-details.table.product-info.ref-id"
                 values={{
                   refId,
                   b: StrongChunk,
@@ -57,7 +57,7 @@ export const itemDetailsSchema = (
             </div>
             <div className="mv2">
               <FormattedMessage
-                id="admin/return-app.return-request-details.table.product-info.reason"
+                id="return-app.return-request-details.table.product-info.reason"
                 values={{
                   reason: returnReason.otherReason ?? returnReason.reason,
                   b: StrongChunk,
@@ -66,7 +66,7 @@ export const itemDetailsSchema = (
             </div>
             <div className="mv2">
               <FormattedMessage
-                id="admin/return-app.return-request-details.table.product-info.sold-by"
+                id="return-app.return-request-details.table.product-info.sold-by"
                 values={{
                   seller: sellerName,
                   b: StrongChunk,
@@ -79,13 +79,13 @@ export const itemDetailsSchema = (
     },
     quantity: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.quantity" />
+        <FormattedMessage id="return-app.return-request-details.table.header.quantity" />
       ),
       width: 80,
     },
     sellingPrice: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.unit-price" />
+        <FormattedMessage id="return-app.return-request-details.table.header.unit-price" />
       ),
       width: 90,
       headerRight: true,
@@ -104,7 +104,7 @@ export const itemDetailsSchema = (
     },
     tax: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.tax" />
+        <FormattedMessage id="return-app.return-request-details.table.header.tax" />
       ),
       width: 90,
       headerRight: true,
@@ -123,7 +123,7 @@ export const itemDetailsSchema = (
     },
     totalItems: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.total-price" />
+        <FormattedMessage id="return-app.return-request-details.table.header.total-price" />
       ),
       width: 90,
       headerRight: true,
@@ -145,7 +145,7 @@ export const itemDetailsSchema = (
     },
     verificationStatus: {
       title: (
-        <FormattedMessage id="admin/return-app.return-request-details.table.header.verification-status" />
+        <FormattedMessage id="return-app.return-request-details.table.header.verification-status" />
       ),
       cellRenderer: function VerificationStatus({
         rowData,

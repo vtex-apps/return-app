@@ -1,8 +1,14 @@
 import React from 'react'
 import { Route, Switch } from 'vtex.my-account-commons/Router'
 
-import { StoreReturnList, StoreReturnDetails } from './StoreMyReturnsPage'
-import { OrderListContainer, ReturnDetailsContainer } from './StoreMyReturnsAdd'
+import {
+  StoreReturnList,
+  StoreReturnDetailsContainer,
+} from './StoreMyReturnsPage'
+import {
+  OrderListContainer,
+  CreateReturnRequestContainer,
+} from './StoreMyReturnsAdd'
 
 export const AppRouter = () => {
   return (
@@ -11,13 +17,13 @@ export const AppRouter = () => {
       <Route
         exact
         path="/my-returns/details/:id"
-        component={StoreReturnDetails}
+        component={StoreReturnDetailsContainer}
       />
       <Route exact path="/my-returns/add" component={OrderListContainer} />
       <Route
         exact
         path="/my-returns/add/:orderId"
-        component={ReturnDetailsContainer}
+        component={CreateReturnRequestContainer}
       />
     </Switch>
   )

@@ -26,27 +26,27 @@ export const statusAllowed: Record<Status, Status[]> = {
 }
 
 export const statusMessageIdAdmin = defineMessages({
-  new: { id: 'admin/return-app-status.new' },
-  processing: { id: 'admin/return-app-status.processing' },
-  pickedUpFromClient: { id: 'admin/return-app-status.pickedup-from-client' },
-  pendingVerification: { id: 'admin/return-app-status.pending-verification' },
-  packageVerified: { id: 'admin/return-app-status.package-verified' },
-  amountRefunded: { id: 'admin/return-app-status.refunded' },
-  denied: { id: 'admin/return-app-status.denied' },
+  new: { id: 'return-app-status.new' },
+  processing: { id: 'return-app-status.processing' },
+  pickedUpFromClient: { id: 'return-app-status.pickedup-from-client' },
+  pendingVerification: { id: 'return-app-status.pending-verification' },
+  packageVerified: { id: 'return-app-status.package-verified' },
+  amountRefunded: { id: 'return-app-status.refunded' },
+  denied: { id: 'return-app-status.denied' },
 })
 
 export const timelineStatusMessageId = defineMessages({
-  new: { id: 'admin/return-app-status.timeline.new' },
-  processing: { id: 'admin/return-app-status.timeline.processing' },
+  new: { id: 'return-app-status.timeline.new' },
+  processing: { id: 'return-app-status.timeline.processing' },
   pickedUpFromClient: {
-    id: 'admin/return-app-status.timeline.pickedup-from-client',
+    id: 'return-app-status.timeline.pickedup-from-client',
   },
   pendingVerification: {
-    id: 'admin/return-app-status.timeline.pending-verification',
+    id: 'return-app-status.timeline.pending-verification',
   },
-  packageVerified: { id: 'admin/return-app-status.timeline.package-verified' },
-  amountRefunded: { id: 'admin/return-app-status.timeline.refunded' },
-  denied: { id: 'admin/return-app-status.timeline.denied' },
+  packageVerified: { id: 'return-app-status.timeline.package-verified' },
+  amountRefunded: { id: 'return-app-status.timeline.refunded' },
+  denied: { id: 'return-app-status.timeline.denied' },
 })
 
 type Comments = RefundStatusComment[]
@@ -55,7 +55,7 @@ interface VisitedStatus {
   visited: boolean
   comments?: Comments
   createdAt?: string
-  submittedBy?: string
+  submittedBy?: string | null
 }
 
 export const createStatusTimeline = (

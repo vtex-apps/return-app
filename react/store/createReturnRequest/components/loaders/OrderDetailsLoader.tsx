@@ -14,7 +14,7 @@ interface Props {
   }
 }
 
-export const ReturnDetailsLoader: FC<Props> = ({ data, children }) => {
+export const OrderDetailsLoader: FC<Props> = ({ data, children }) => {
   const { formatMessage } = useIntl()
   const { loading, error } = data
 

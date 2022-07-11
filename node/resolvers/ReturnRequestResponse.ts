@@ -1,13 +1,30 @@
 import type { ReturnRequest } from 'vtex.return-app'
 
-const filterCommentsNotVisibleForCustomer = (
+type VtexProduct = 'admin' | 'store' | undefined
+
+const removeSubmittedByForStoreUser = (
+  statusData: Required<ReturnRequest>['refundStatusData'][number],
+  vtexProduct: VtexProduct
+) => {
+  if (vtexProduct === 'store') {
+    return {
+      ...statusData,
+      submittedBy: undefined,
+    }
+  }
+
+  return statusData
+}
+
+// This function hides the submittedBy field and removes the comments that should not be visible to the store user
+const transformStatusForStoreUser = (
   refundStatusDataList: ReturnRequest['refundStatusData'],
-  vtexProduct: 'admin' | 'store' | undefined
+  vtexProduct: VtexProduct
 ) => {
   return (
     refundStatusDataList?.map((statusData) => {
       return {
-        ...statusData,
+        ...removeSubmittedByForStoreUser(statusData, vtexProduct),
         comments: statusData.comments?.filter((comment) => {
           return vtexProduct !== 'store' || comment.visibleForCustomer
         }),
@@ -155,18 +172,12 @@ export const ReturnRequestResponse = {
       request: { header },
     } = ctx
 
-    const vtexProduct = header['x-vtex-product'] as
-      | 'admin'
-      | 'store'
-      | undefined
+    const vtexProduct = header['x-vtex-product'] as VtexProduct
 
     const { refundStatusData: refundStatusDataList } = refundStatusData
       ? { refundStatusData }
       : await returnRequestClient.get(id as string, ['refundStatusData'])
 
-    return filterCommentsNotVisibleForCustomer(
-      refundStatusDataList,
-      vtexProduct
-    )
+    return transformStatusForStoreUser(refundStatusDataList, vtexProduct)
   },
 }

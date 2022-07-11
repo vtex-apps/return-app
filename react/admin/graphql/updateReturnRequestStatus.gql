@@ -1,4 +1,4 @@
-#import './returnDetailsAdminFragment.gql'
+#import '../../common/graphql/returnDetailsFragment.gql'
 
 mutation updateReturnRequestStatus(
   $requestId: ID!

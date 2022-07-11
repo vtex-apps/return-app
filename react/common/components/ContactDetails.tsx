@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { useReturnDetails } from '../hooks/useReturnDetails'
 
 export const ContactDetails = () => {
   const { data } = useReturnDetails()
@@ -14,8 +14,7 @@ export const ContactDetails = () => {
     },
   } = data
 
-  const messagesRoute =
-    'admin/return-app.return-request-details.contact-details'
+  const messagesRoute = 'return-app.return-request-details.contact-details'
 
   return (
     <section className="flex-ns flex-wrap flex-auto flex-column pt4 pb4">

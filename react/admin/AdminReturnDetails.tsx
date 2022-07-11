@@ -2,7 +2,8 @@ import React from 'react'
 
 import { ReturnDetailsContainer } from './ReturnDetails/ReturnDetailsContainer'
 import { AlertProvider } from './provider/AlertProvider'
-import { ReturnDetailsProvider } from './provider/ReturnDetailsProvider'
+import { ReturnDetailsProvider } from '../common/provider/ReturnDetailsProvider'
+import { UpdateRequestStatusProvider } from './provider/UpdateRequestStatusProvider'
 
 interface CustomRouteProps {
   params: {
@@ -14,7 +15,9 @@ export const AdminReturnDetails = ({ params }: CustomRouteProps) => {
   return (
     <AlertProvider>
       <ReturnDetailsProvider requestId={params.id}>
-        <ReturnDetailsContainer />
+        <UpdateRequestStatusProvider>
+          <ReturnDetailsContainer />
+        </UpdateRequestStatusProvider>
       </ReturnDetailsProvider>
     </AlertProvider>
   )

@@ -24,24 +24,24 @@ export const RequestedValues = () => {
   return (
     <div className="mb5">
       <h3>
-        <FormattedMessage id="admin/return-app.return-request-details.request-total.header" />
+        <FormattedMessage id="return-app.return-request-details.request-total.header" />
       </h3>
       <TotalContainer>
         <TotalWrapper
           title={
-            <FormattedMessage id="admin/return-app.return-request-details.request-total.item-tax" />
+            <FormattedMessage id="return-app.return-request-details.request-total.item-tax" />
           }
           value={totalRefundableItems + totalRefundableTaxes}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="admin/return-app.return-request-details.request-total.shipping" />
+            <FormattedMessage id="return-app.return-request-details.request-total.shipping" />
           }
           value={totalRefundableShipping}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="admin/return-app.return-request-details.request-total.total" />
+            <FormattedMessage id="return-app.return-request-details.request-total.total" />
           }
           value={refundableAmount}
         />

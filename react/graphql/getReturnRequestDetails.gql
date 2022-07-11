@@ -1,6 +1,0 @@
-query getReturnRequestDetails($requestId: ID!) {
-  returnRequestDetails: returnRequest(requestId: $requestId) {
-    id
-    status
-  }
-}

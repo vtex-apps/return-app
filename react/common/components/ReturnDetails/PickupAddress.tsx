@@ -15,7 +15,7 @@ export const PickupAddress = () => {
   } = data
 
   const pickupAddressMessageRoute =
-    'admin/return-app.return-request-details.pickup-address'
+    'return-app.return-request-details.pickup-address'
 
   return (
     <section className="flex-ns flex-wrap flex-auto flex-column pt4 pb4">

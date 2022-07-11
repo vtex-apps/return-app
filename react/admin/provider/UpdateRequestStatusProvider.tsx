@@ -1,28 +1,18 @@
 import type { FC } from 'react'
 import React, { createContext } from 'react'
-import type { ApolloError } from 'apollo-client'
-import { useQuery, useMutation } from 'react-apollo'
 import type {
-  ReturnRequestResponse,
-  QueryReturnRequestArgs,
-  MutationUpdateReturnRequestStatusArgs,
-  ReturnRequestCommentInput,
   Status,
+  ReturnRequestCommentInput,
   RefundDataInput,
+  ReturnRequestResponse,
+  MutationUpdateReturnRequestStatusArgs,
 } from 'vtex.return-app'
+import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 
-import GET_REQUEST_DETAILS_ADMIN from '../graphql/getRequestDetailsAdmin.gql'
 import UPDATE_RETURN_STATUS from '../graphql/updateReturnRequestStatus.gql'
 import { useAlert } from '../hooks/userAlert'
-
-interface ReturnDetailsSetupInterface {
-  data?: { returnRequestDetails: ReturnRequestResponse }
-  loading: boolean
-  error?: ApolloError
-  submitting: boolean
-  handleStatusUpdate: (args: HandleStatusUpdateArgs) => Promise<void>
-}
+import { useReturnDetails } from '../../common/hooks/useReturnDetails'
 
 interface HandleStatusUpdateArgs {
   status: Status
@@ -31,28 +21,19 @@ interface HandleStatusUpdateArgs {
   cleanUp?: () => void
   refundData?: RefundDataInput
 }
-export interface CustomRouteProps {
-  requestId: string
+
+interface UpdateRequestInterface {
+  handleStatusUpdate: (args: HandleStatusUpdateArgs) => Promise<void>
+  submitting: boolean
 }
 
-export const ReturnDetailsContext = createContext<ReturnDetailsSetupInterface>(
-  {} as ReturnDetailsSetupInterface
+export const UpdateRequestStatusContext = createContext<UpdateRequestInterface>(
+  {} as UpdateRequestInterface
 )
 
-export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
-  requestId,
-  children,
-}) => {
+export const UpdateRequestStatusProvider: FC = ({ children }) => {
   const { openAlert } = useAlert()
-  const { data, loading, error, updateQuery } = useQuery<
-    { returnRequestDetails: ReturnRequestResponse },
-    QueryReturnRequestArgs
-  >(GET_REQUEST_DETAILS_ADMIN, {
-    variables: {
-      requestId,
-    },
-    skip: !requestId,
-  })
+  const { _handleUpdateQuery } = useReturnDetails()
 
   const [updateReturnStatus, { loading: submitting }] = useMutation<
     {
@@ -85,9 +66,7 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
 
       cleanUp?.()
       if (!mutationData) return
-      updateQuery(() => ({
-        returnRequestDetails: mutationData.updateReturnRequestStatus,
-      }))
+      _handleUpdateQuery(mutationData.updateReturnRequestStatus)
     } catch {
       openAlert(
         'error',
@@ -97,10 +76,10 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
   }
 
   return (
-    <ReturnDetailsContext.Provider
-      value={{ data, loading, error, submitting, handleStatusUpdate }}
+    <UpdateRequestStatusContext.Provider
+      value={{ handleStatusUpdate, submitting }}
     >
       {children}
-    </ReturnDetailsContext.Provider>
+    </UpdateRequestStatusContext.Provider>
   )
 }
