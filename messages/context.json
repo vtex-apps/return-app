@@ -147,6 +147,7 @@
   "store/return-app.confirm-and-submit.page-header.title": "Confirm Return Details",
   "store/return-app.confirm-and-submit.refund-method.title": "Refund payment method",
   "store/return-app.confirm-and-submit.alert.label": "See your returns list",
+  "store/return-app.confirm-and-submit.alert.error.label": "Retry",
   "store/return-app.confirm-and-submit.alert.success": "The return request was created successfully.",
   "store/return-app.confirm-and-submit.alert.error": "Something went wrong, please try again.",
   "store/return-app.confirm-and-submit.button.back": "Back",

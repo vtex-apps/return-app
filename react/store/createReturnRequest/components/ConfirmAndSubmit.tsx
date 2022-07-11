@@ -122,7 +122,15 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
               </Alert>
             )}
             {confirmationStatus !== 'error' ? null : (
-              <Alert type={confirmationStatus}>
+              <Alert
+                type={confirmationStatus}
+                action={{
+                  label: (
+                    <FormattedMessage id="store/return-app.confirm-and-submit.alert.error.label" />
+                  ),
+                  onClick: () => handleCreateReturnRequest(),
+                }}
+              >
                 <FormattedMessage id="store/return-app.confirm-and-submit.alert.error" />
               </Alert>
             )}
