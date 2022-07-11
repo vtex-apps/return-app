@@ -27,6 +27,17 @@ export const validateMaxDaysCustomReasons = (
 
   if (customReturnReasons.length === 0) return
 
+  const maxCustomOptionsDays = customReturnReasons.reduce(
+    (maxDay, option) => (maxDay > option.maxDays ? maxDay : option.maxDays),
+    0
+  )
+
+  if (maxCustomOptionsDays && maxCustomOptionsDays < maxDays) {
+    throw new Error(
+      `No custom reason found having max days equal or greater than the general max days of ${maxDays}`
+    )
+  }
+
   for (const customReason of customReturnReasons) {
     if (customReason.maxDays > maxDays) {
       throw new Error(

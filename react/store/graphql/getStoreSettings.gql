@@ -19,6 +19,7 @@ query storeAppSettings {
     }
     options {
       enableOtherOptionSelection
+      enablePickupPoints
     }
   }
 }
