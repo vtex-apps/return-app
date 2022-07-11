@@ -90,12 +90,14 @@ export const CreateReturnRequest = (props: RouteProps) => {
 
     const { clientProfileData, shippingData } = orderToReturnSummary
 
+    const initialPickupAddress = setInitialPickupAddress(shippingData)
+
     updateReturnRequest({
       type: 'newReturnRequestState',
       payload: {
         orderId: id,
         customerProfileData: clientProfileData,
-        pickupReturnData: setInitialPickupAddress(shippingData),
+        pickupReturnData: initialPickupAddress,
         items: itemsToReturn.map(({ orderItemIndex }) => ({
           orderItemIndex,
           quantity: 0,
@@ -120,16 +122,17 @@ export const CreateReturnRequest = (props: RouteProps) => {
         {...createPageHeaderProps(page, navigate)}
       />
       <OrderDetailsLoader data={{ loading, error }}>
-        {page === 'form-details' ? (
+        {page === 'form-details' && data ? (
           <>
             <ReturnDetails
               {...props}
               onPageChange={handlePageChange}
               items={items}
-              creationDate={data?.orderToReturnSummary?.creationDate}
+              creationDate={data.orderToReturnSummary.creationDate}
               canRefundCard={
-                data?.orderToReturnSummary?.paymentData.canRefundCard
+                data?.orderToReturnSummary.paymentData.canRefundCard
               }
+              shippingData={data.orderToReturnSummary.shippingData}
             />
           </>
         ) : null}

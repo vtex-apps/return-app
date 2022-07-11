@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
+import type { ShippingData } from 'vtex.return-app'
 
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
@@ -14,8 +15,9 @@ import type { Page } from '../CreateReturnRequest'
 interface Props {
   onPageChange: (page: Page) => void
   items: ItemToReturn[]
-  creationDate?: string
-  canRefundCard?: boolean
+  creationDate: string
+  canRefundCard: boolean
+  shippingData: ShippingData
 }
 
 export const ReturnDetails = (
@@ -29,6 +31,7 @@ export const ReturnDetails = (
     items,
     creationDate,
     canRefundCard,
+    shippingData,
   } = props
 
   const {
@@ -63,14 +66,12 @@ export const ReturnDetails = (
               </div>
               <div className="w-100 mt2">
                 <div className="f4 fw5 c-on-base">
-                  {creationDate ? (
-                    <FormattedDate
-                      value={creationDate}
-                      day="numeric"
-                      month="long"
-                      year="numeric"
-                    />
-                  ) : null}
+                  <FormattedDate
+                    value={creationDate}
+                    day="numeric"
+                    month="long"
+                    year="numeric"
+                  />
                 </div>
               </div>
             </div>
@@ -80,7 +81,7 @@ export const ReturnDetails = (
       <ItemsList items={items} creationDate={creationDate} />
       <div className="flex-ns flex-wrap flex-row mt5">
         <ContactDetails />
-        <AddressDetails />
+        <AddressDetails shippingData={shippingData} />
         <UserCommentDetails />
       </div>
       <PaymentMethods canRefundCard={canRefundCard} />

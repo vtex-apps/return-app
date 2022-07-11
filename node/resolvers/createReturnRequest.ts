@@ -1,7 +1,10 @@
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
 
-import { SETTINGS_PATH } from '../utils/constants'
+import {
+  OMS_RETURN_REQUEST_CONFIRMATION,
+  SETTINGS_PATH,
+} from '../utils/constants'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { isUserAllowed } from '../utils/isUserAllowed'
@@ -9,6 +12,9 @@ import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
 import { validatePaymentMethod } from '../utils/validatePaymentMethod'
+import { validateCanUsedropoffPoints } from '../utils/validateCanUseDropoffPoints'
+import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
+import type { MailData } from '../typings/mailClient'
 
 export const createReturnRequest = async (
   _: unknown,
@@ -16,8 +22,9 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const {
-    clients: { oms, returnRequest: returnRequestClient, appSettings },
+    clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
     state: { userProfile },
+    vtex: { logger },
   } = ctx
 
   const { returnRequest } = args
@@ -82,10 +89,16 @@ export const createReturnRequest = async (
     sellers,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
+    shippingData,
   } = order
 
-  const { maxDays, excludedCategories, customReturnReasons, paymentOptions } =
-    settings
+  const {
+    maxDays,
+    excludedCategories,
+    customReturnReasons,
+    paymentOptions,
+    options,
+  } = settings
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -110,6 +123,12 @@ export const createReturnRequest = async (
 
   // Validate payment methods
   validatePaymentMethod(refundPaymentData, paymentOptions)
+
+  // validate address type
+  validateCanUsedropoffPoints(
+    pickupReturnData.addressType,
+    options?.enablePickupPoints
+  )
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
@@ -181,7 +200,59 @@ export const createReturnRequest = async (
     ],
   })
 
-  // TODO: Send confirmation email.
+  // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
+  try {
+    const templateExists = await mail.getTemplate(
+      OMS_RETURN_REQUEST_CONFIRMATION
+    )
+
+    if (!templateExists) {
+      await mail.publishTemplate(OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE)
+    }
+
+    const {
+      firstName: clientFirstName,
+      lastName: clientLastName,
+      phone,
+    } = clientProfileData
+
+    const {
+      address: { country, city, street },
+    } = shippingData
+
+    const mailData: MailData = {
+      templateName: OMS_RETURN_REQUEST_CONFIRMATION,
+      jsonData: {
+        data: {
+          status: 'new',
+          name: `${clientFirstName} ${clientLastName}`,
+          DocumentId: rmaDocument.DocumentId,
+          email,
+          phoneNumber: phone,
+          country,
+          locality: city,
+          address: street,
+          paymentMethod: refundPaymentData.refundPaymentMethod,
+        },
+        products: [...itemsToReturn],
+        refundStatusData: [
+          {
+            status: 'new',
+            submittedBy,
+            createdAt: requestDate,
+            comments: userCommentData,
+          },
+        ],
+      },
+    }
+
+    await mail.sendMail(mailData)
+  } catch (error) {
+    logger.warn({
+      message: `Failed to send email for return request ${rmaDocument.DocumentId}`,
+      error,
+    })
+  }
 
   return { returnRequestId: rmaDocument.DocumentId }
 }

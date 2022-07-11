@@ -5201,14 +5201,13 @@ verror@1.10.0:
 "vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
+"vtex.return-app@https://dropstore--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1656002237/public/@types/vtex.return-app":
+  version "3.0.0-beta.6"
+  resolved "https://dropstore--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.6+build1656002237/public/@types/vtex.return-app#90c74fe842b34e9e40c67d8d2487cc391b356fa3"
 
-"vtex.return-app@https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.7+build1657100002/public/@types/vtex.return-app":
-  version "3.0.0-beta.7"
-  resolved "https://fila--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.7+build1657100002/public/@types/vtex.return-app#5ce7985c98cf99141d67ab9935b9ffc951600a46"
-
-"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.2/public/@types/vtex.store-graphql":
-  version "2.152.2"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.2/public/@types/vtex.store-graphql#fc9699766e34fa77d75c69072f577818bfd5f6fb"
+"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.0/public/@types/vtex.store-graphql":
+  version "2.152.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.0/public/@types/vtex.store-graphql#ca31214db7b9c3522ae45701732ea79022674ef8"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide":
   version "9.146.1"
