@@ -18,6 +18,15 @@ export interface OrderDetailsState {
   userComment?: Maybe<string> | undefined
 }
 
+const initialPickupReturnData = {
+  addressId: '',
+  address: '',
+  city: '',
+  state: '',
+  country: '',
+  zipCode: '',
+}
+
 export const initialOrderToReturnState: OrderDetailsState = {
   orderId: '',
   items: [],
@@ -26,14 +35,7 @@ export const initialOrderToReturnState: OrderDetailsState = {
     email: '',
     phoneNumber: '',
   },
-  pickupReturnData: {
-    addressId: '',
-    address: '',
-    city: '',
-    state: '',
-    country: '',
-    zipCode: '',
-  },
+  pickupReturnData: initialPickupReturnData,
   userComment: null,
 }
 
@@ -95,6 +97,10 @@ export const newReturnRequestState = ({
   }
 }
 
+const resetAddress = () => ({
+  type: 'resetAddress' as const,
+})
+
 export type ReturnRequestActions =
   | ReturnType<typeof costumerProfileDataAction>
   | ReturnType<typeof pickupReturnDataAction>
@@ -102,6 +108,7 @@ export type ReturnRequestActions =
   | ReturnType<typeof userCommentAction>
   | ReturnType<typeof newReturnRequestState>
   | ReturnType<typeof itemsAction>
+  | ReturnType<typeof resetAddress>
 
 export const orderToReturnReducer = (
   state: OrderDetailsState,
@@ -119,6 +126,13 @@ export const orderToReturnReducer = (
       return {
         ...state,
         pickupReturnData: action.payload,
+      }
+    }
+
+    case 'resetAddress': {
+      return {
+        ...state,
+        pickupReturnData: initialPickupReturnData,
       }
     }
 

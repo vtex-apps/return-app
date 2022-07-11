@@ -82,6 +82,7 @@ type ShippingData {
   country: String!
   zipCode: String!
   addressType: AddressType!
+  geoCoordinates: [Float]!
 }
 
 type PaymentData {

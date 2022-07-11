@@ -14,7 +14,7 @@ import { CustomMessage } from './layout/CustomMessage'
 import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 
 interface Props {
-  canRefundCard?: boolean
+  canRefundCard: boolean
 }
 
 type PaymentMethodsOptions = {
