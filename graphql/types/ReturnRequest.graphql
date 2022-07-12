@@ -30,7 +30,7 @@ enum ItemCondition {
 input CustomerProfileDataInput {
   name: String!
   """
-  email: If it is not provided, the email from session will be used. When calling from store front, it's ok not pass, but calling from GraphQL IDE or Postman, it's required.
+  email: If it is not provided, the email from session will be used. When calling from store front, it's ok not to pass it, but calling from GraphQL IDE or Postman, it's required.
   """
   email: String
   phoneNumber: String!

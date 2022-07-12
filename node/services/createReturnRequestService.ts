@@ -22,7 +22,7 @@ export const createReturnRequestService = async (
 ): Promise<ReturnRequestCreated> => {
   const {
     clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
-    state: { userProfile },
+    state: { userProfile, appkey },
     vtex: { logger },
   } = ctx
 
@@ -36,10 +36,24 @@ export const createReturnRequestService = async (
     locale,
   } = args
 
-  const { firstName, lastName, email } = userProfile
+  if (!appkey && !userProfile) {
+    throw new ResolverError('Missing appkey or userProfile')
+  }
+
+  const { firstName, lastName, email } = userProfile ?? {}
+
+  // If request was validated using appkey and apptoken, we assign the appkey as a sender
+  // Otherwise, we try to use requester name. Email is the last resort.
+  const submittedBy =
+    appkey ?? (firstName || lastName) ? `${firstName} ${lastName}` : email
+
+  if (!submittedBy) {
+    throw new ResolverError(
+      'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
+    )
+  }
 
   const requestDate = new Date().toISOString()
-  const submittedBy = firstName || lastName ? `${firstName} ${lastName}` : email
 
   // Graphql validation doesn't prevent user to send empty items
   if (items.length === 0) {
@@ -97,12 +111,13 @@ export const createReturnRequestService = async (
     excludedCategories,
     customReturnReasons,
     paymentOptions,
-    options,
+    options: settingsOptions,
   } = settings
 
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
+    appkey,
   })
 
   canOrderBeReturned({
@@ -127,7 +142,7 @@ export const createReturnRequestService = async (
   // validate address type
   validateCanUsedropoffPoints(
     pickupReturnData.addressType,
-    options?.enablePickupPoints
+    settingsOptions?.enablePickupPoints
   )
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
@@ -165,6 +180,12 @@ export const createReturnRequestService = async (
       ]
     : []
 
+  const customerEmail = customerProfileData.email ?? email
+
+  if (!customerEmail) {
+    throw new ResolverError('Missing costumer email')
+  }
+
   const rmaDocument = await returnRequestClient.save({
     orderId,
     refundableAmount,
@@ -181,7 +202,7 @@ export const createReturnRequestService = async (
        * Also, we cannot use the email in the order because it might be masked.
        * However, email is an optional field in the mutation input, so it's ok the front end doesn't send it.
        */
-      email: customerProfileData.email ?? email,
+      email: customerEmail,
       phoneNumber: customerProfileData.phoneNumber,
     },
     pickupReturnData,
@@ -231,7 +252,7 @@ export const createReturnRequestService = async (
           status: 'new',
           name: `${clientFirstName} ${clientLastName}`,
           DocumentId: rmaDocument.DocumentId,
-          email,
+          email: customerEmail,
           phoneNumber: phone,
           country,
           locality: city,

@@ -24,6 +24,11 @@ export const orderToReturnSummary = async (
   }
 
   const { maxDays, excludedCategories } = settings
+
+  if (!userProfile) {
+    throw new ResolverError('Missing userProfile', 500)
+  }
+
   const { email } = userProfile
 
   // For requests where orderId is an empty string
