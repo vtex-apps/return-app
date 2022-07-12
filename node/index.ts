@@ -57,7 +57,7 @@ declare global {
     // Added in the state via graphql directive
     userProfile: UserProfile
     // Added in the state via auth middleware
-    token: string
+    apptoken: string
   }
 }
 
