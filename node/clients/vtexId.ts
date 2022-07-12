@@ -32,7 +32,7 @@ export class VtexId extends JanusClient {
         apptoken,
       },
       {
-        metric: 'vtexid-validate',
+        metric: 'vtexid-login',
       }
     )
   }
