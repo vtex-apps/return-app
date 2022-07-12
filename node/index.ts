@@ -56,8 +56,9 @@ declare global {
   interface State extends RecorderState {
     // Added in the state via graphql directive
     userProfile: UserProfile
-    // Added in the state via auth middleware
-    apptoken: string
+    // Added in the state via auth middleware.
+    // It's either the authenticated user (when request has vtexidclientautcookie) or the appkey.
+    user: string
   }
 }
 

@@ -7,6 +7,12 @@ interface VtexIdLoginResponse {
   expires: number
 }
 
+interface AuthenticatedUser {
+  userId: string
+  user: string
+  userType: string
+}
+
 export class VtexId extends JanusClient {
   constructor(context: IOContext, options?: InstanceOptions) {
     super(context, {
@@ -35,5 +41,16 @@ export class VtexId extends JanusClient {
         metric: 'vtexid-login',
       }
     )
+  }
+
+  public getAuthenticatedUser(
+    authToken: string
+  ): Promise<AuthenticatedUser | null> {
+    return this.http.get('/api/vtexid/pub/authenticated/user/', {
+      metric: 'vtexid-get-authenticated-user',
+      params: {
+        authToken,
+      },
+    })
   }
 }
