@@ -1,8 +1,8 @@
 interface UserProfile {
   email: string
   userId: string
-  firstName: string
-  lastName: string
+  firstName?: string
+  lastName?: string
   role: 'admin' | 'store-user'
 }
 

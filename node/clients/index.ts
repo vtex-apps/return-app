@@ -1,4 +1,4 @@
-import { IOClients } from '@vtex/api'
+import { IOClients, Sphinx } from '@vtex/api'
 import { vbaseFor, masterDataFor } from '@vtex/clients'
 import { ReturnAppSettings, ReturnRequest } from 'vtex.return-app'
 
@@ -53,5 +53,9 @@ export class Clients extends IOClients {
 
   public get vtexId() {
     return this.getOrSet('vtexId', VtexId)
+  }
+
+  public get sphinx() {
+    return this.getOrSet('sphinx', Sphinx)
   }
 }

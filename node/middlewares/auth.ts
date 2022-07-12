@@ -3,7 +3,7 @@ import { AuthenticationError } from '@vtex/api'
 export async function auth(ctx: Context, next: () => Promise<void>) {
   const {
     header,
-    clients: { vtexId },
+    clients: { vtexId, sphinx },
     state,
   } = ctx
 
@@ -11,33 +11,36 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
   const apptoken = header['x-vtex-api-apptoken'] as string | undefined
   const authCookie = header.vtexidclientautcookie as string | undefined
 
-  let authUser: string | undefined
-
-  // authCookie takes precedence over appkey and apptoken
   if (authCookie) {
     const authenticatedUser = await vtexId.getAuthenticatedUser(authCookie)
 
     // When the auth cookie is invalid, the API returns null
-    if (!authenticatedUser) {
-      throw new AuthenticationError('Request failed with status code 401')
+    if (authenticatedUser) {
+      const isAdmin = await sphinx.isAdmin(authenticatedUser.user)
+
+      const { user, userId } = authenticatedUser
+
+      state.userProfile = {
+        userId,
+        email: user,
+        role: isAdmin ? 'admin' : 'store-user',
+      }
     }
+  }
 
-    const { user } = authenticatedUser
-
-    authUser = user
-  } else if (appkey && apptoken) {
+  if (appkey && apptoken) {
     // If appkey and apptoken are not valid, the method throws a 401 error
     await vtexId.login({ appkey, apptoken })
 
-    authUser = appkey
+    state.appkey = appkey
   }
 
-  // authUser is either the authenticated user or the appkey. If it's undefined, it means all checks to validate failed.
-  if (!authUser) {
+  const { userProfile, appkey: appKeyState } = state
+
+  // Either userProfile or appKeyState must be on state to continue
+  if (!userProfile && !appKeyState) {
     throw new AuthenticationError('Request failed with status code 401')
   }
-
-  state.user = authUser
 
   ctx.body = 'success'
 

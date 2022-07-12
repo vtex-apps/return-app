@@ -54,11 +54,10 @@ declare global {
   type Context = ServiceContext<Clients, State>
 
   interface State extends RecorderState {
-    // Added in the state via graphql directive
+    // Added in the state via graphql directive or auth middleware when request has vtexidclientautcookie
     userProfile: UserProfile
-    // Added in the state via auth middleware.
-    // It's either the authenticated user (when request has vtexidclientautcookie) or the appkey.
-    user: string
+    // Added in the state via auth middleware when request has appkey and apptoken.
+    appkey: string
   }
 }
 
