@@ -35,6 +35,7 @@ export const createReturnRequest = async (
     pickupReturnData,
     refundPaymentData,
     userComment,
+    locale,
   } = returnRequest
 
   const { firstName, lastName, email } = userProfile
@@ -90,6 +91,7 @@ export const createReturnRequest = async (
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
     shippingData,
+    storePreferencesData: { currencyCode },
   } = order
 
   const {
@@ -198,6 +200,10 @@ export const createReturnRequest = async (
         comments: userCommentData,
       },
     ],
+    cultureInfoData: {
+      currencyCode,
+      locale,
+    },
   })
 
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
