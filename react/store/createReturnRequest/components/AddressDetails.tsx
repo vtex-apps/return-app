@@ -123,8 +123,8 @@ export const AddressDetails = ({ shippingData }: Props) => {
               }
               position="left"
             >
-              <span className="flex items-center">
-                <IconInfo yellow className="ml5 o-50" />
+              <span className="yellow flex items-center">
+                <IconInfo className="ml5 o-50" />
                 <p className="ml2 mr3">
                   <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points" />
                 </p>
