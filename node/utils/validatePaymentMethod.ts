@@ -2,19 +2,21 @@ import type { RefundPaymentDataInput, PaymentOptions } from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
 export const validatePaymentMethod = (
-  refundPaymentMethodRequest: RefundPaymentDataInput,
+  refundPaymentData: RefundPaymentDataInput,
   paymentSettings: PaymentOptions
 ) => {
   const { enablePaymentMethodSelection, allowedPaymentTypes } = paymentSettings
-  const { refundPaymentMethod, iban, accountHolderName } =
-    refundPaymentMethodRequest
+  const { refundPaymentMethod, iban, accountHolderName } = refundPaymentData
 
   // When admin doesn't allow selection, PM request has to be sameAsPurchase
   if (
     !enablePaymentMethodSelection &&
     refundPaymentMethod !== 'sameAsPurchase'
   ) {
-    throw new ResolverError('Payment method selection is not allowed', 400)
+    throw new ResolverError(
+      `Payment method ${refundPaymentMethod} is not allowed`,
+      400
+    )
   }
 
   // sameAsPurchase isn't a field on allowedPaymentTypes. Return here to satisfy TS.

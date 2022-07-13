@@ -1,5 +1,6 @@
 import type { ReturnRequestCreated, ReturnRequestInput } from 'vtex.return-app'
 import { UserInputError, ResolverError } from '@vtex/api'
+import type { DocumentResponse } from '@vtex/clients'
 
 import {
   SETTINGS_PATH,
@@ -43,10 +44,12 @@ export const createReturnRequestService = async (
 
   const { firstName, lastName, email } = userProfile ?? {}
 
+  const submittedByNameOrEmail =
+    firstName || lastName ? `${firstName} ${lastName}` : email
+
   // If request was validated using appkey and apptoken, we assign the appkey as a sender
   // Otherwise, we try to use requester name. Email is the last resort.
-  const submittedBy =
-    appkey ?? (firstName || lastName) ? `${firstName} ${lastName}` : email
+  const submittedBy = appkey ?? submittedByNameOrEmail
 
   if (!submittedBy) {
     throw new ResolverError(
@@ -56,8 +59,9 @@ export const createReturnRequestService = async (
 
   const requestDate = new Date().toISOString()
 
+  // Check items since a request via endpoint might not have it.
   // Graphql validation doesn't prevent user to send empty items
-  if (items.length === 0) {
+  if (!items || items.length === 0) {
     throw new UserInputError('There is no items in the request')
   }
 
@@ -142,7 +146,7 @@ export const createReturnRequestService = async (
 
   // validate address type
   validateCanUsedropoffPoints(
-    pickupReturnData.addressType,
+    pickupReturnData,
     settingsOptions?.enablePickupPoints
   )
 
@@ -181,49 +185,70 @@ export const createReturnRequestService = async (
       ]
     : []
 
+  // customerProfileData can be undefined when coming from a endpoint request
+  const { email: inputEmail } = customerProfileData ?? {}
+
   const customerEmail = getCustomerEmail(
     clientProfileData,
     {
       userProfile,
       appkey,
-      inputEmail: customerProfileData.email,
+      inputEmail,
     },
     {
       logger,
     }
   )
 
-  const rmaDocument = await returnRequestClient.save({
-    orderId,
-    refundableAmount,
-    sequenceNumber,
-    status: 'new',
-    refundableAmountTotals,
-    customerProfileData: {
-      userId: clientProfileData.userProfileId,
-      name: customerProfileData.name,
-      email: customerEmail,
-      phoneNumber: customerProfileData.phoneNumber,
-    },
-    pickupReturnData,
-    refundPaymentData,
-    items: itemsToReturn,
-    dateSubmitted: requestDate,
-    refundData: null,
-    userComment,
-    refundStatusData: [
-      {
-        status: 'new',
-        submittedBy,
-        createdAt: requestDate,
-        comments: userCommentData,
+  let rmaDocument: DocumentResponse
+
+  try {
+    rmaDocument = await returnRequestClient.save({
+      orderId,
+      refundableAmount,
+      sequenceNumber,
+      status: 'new',
+      refundableAmountTotals,
+      customerProfileData: {
+        userId: clientProfileData.userProfileId,
+        name: customerProfileData.name,
+        email: customerEmail,
+        phoneNumber: customerProfileData.phoneNumber,
       },
-    ],
-    cultureInfoData: {
-      currencyCode,
-      locale,
-    },
-  })
+      pickupReturnData,
+      refundPaymentData,
+      items: itemsToReturn,
+      dateSubmitted: requestDate,
+      refundData: null,
+      refundStatusData: [
+        {
+          status: 'new',
+          submittedBy,
+          createdAt: requestDate,
+          comments: userCommentData,
+        },
+      ],
+      cultureInfoData: {
+        currencyCode,
+        locale,
+      },
+    })
+  } catch (error) {
+    const mdValidationErrors = error?.response?.data?.errors[0]?.errors
+
+    const errorMessageString = mdValidationErrors
+      ? JSON.stringify(
+          {
+            message: 'Schema Validation error',
+            errors: mdValidationErrors,
+          },
+          null,
+          2
+        )
+      : error.message
+
+    throw new ResolverError(errorMessageString, error.response?.status || 500)
+  }
 
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {

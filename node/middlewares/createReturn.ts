@@ -8,5 +8,5 @@ export async function createReturn(ctx: Context) {
   const body = await json(req)
 
   ctx.body = await createReturnRequestService(ctx, body)
-  ctx.status = 204
+  ctx.status = 201
 }

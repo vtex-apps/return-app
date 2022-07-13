@@ -40,13 +40,14 @@
           "required": true
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "required": true
         },
         "email": {
           "type": "string",
           "format": "email"
         },
-        "phoneNumber": { "type": "string", "maxLength": 50 }
+        "phoneNumber": { "type": "string", "maxLength": 50, "required": true }
       }
     },
     "pickupReturnData": {

@@ -81,8 +81,10 @@ export const updateReturnRequestStatus = async (
   const { role, firstName, lastName, email } = userProfile ?? {}
 
   const requestDate = new Date().toISOString()
-  const submittedBy =
-    appkey ?? (firstName || lastName) ? `${firstName} ${lastName}` : email
+  const submittedByNameOrEmail =
+    firstName || lastName ? `${firstName} ${lastName}` : email
+
+  const submittedBy = appkey ?? submittedByNameOrEmail
 
   if (!submittedBy) {
     throw new ResolverError(
