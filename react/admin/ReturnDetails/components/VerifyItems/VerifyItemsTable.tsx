@@ -5,6 +5,7 @@ import type { ReturnRequestItem } from 'vtex.return-app'
 
 import { verifyItemsTableSchema } from './verifyItemsTableSchema'
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'
+import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 
 interface Props {
   items: ReturnRequestItem[]
@@ -17,6 +18,12 @@ export const VerifyItemsTable = ({
   refundItemsInput,
   onItemChange,
 }: Props) => {
+  const { data } = useReturnDetails()
+
+  if (!data) return null
+
+  const { cultureInfoData } = data.returnRequestDetails
+
   return (
     <div>
       <h3>
@@ -25,7 +32,11 @@ export const VerifyItemsTable = ({
       <Table
         fullWidth
         fixFirstColumn
-        schema={verifyItemsTableSchema(refundItemsInput, onItemChange)}
+        schema={verifyItemsTableSchema(
+          refundItemsInput,
+          onItemChange,
+          cultureInfoData
+        )}
         items={items}
       />
     </div>

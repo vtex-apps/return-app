@@ -180,4 +180,24 @@ export const ReturnRequestResponse = {
 
     return transformStatusForStoreUser(refundStatusDataList, vtexProduct)
   },
+  cultureInfoData: async (
+    root: ReturnRequest,
+    _args: unknown,
+    ctx: Context
+  ) => {
+    const { id, cultureInfoData } = root
+
+    if (cultureInfoData) return cultureInfoData
+
+    const {
+      clients: { returnRequest: returnRequestClient },
+    } = ctx
+
+    const { cultureInfoData: cultureInfo } = await returnRequestClient.get(
+      id as string,
+      ['cultureInfoData']
+    )
+
+    return cultureInfo
+  },
 }
