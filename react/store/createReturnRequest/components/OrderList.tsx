@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
-import { Table } from 'vtex.styleguide'
+import { Table, Button } from 'vtex.styleguide'
 
 import { createItemsSummary } from '../../utils/createItemsSummary'
 
@@ -31,8 +30,8 @@ const tableSchema = {
         return (
           <FormattedDate
             value={cellData}
-            day="numeric"
-            month="long"
+            day="2-digit"
+            month="2-digit"
             year="numeric"
           />
         )
@@ -53,13 +52,24 @@ const tableSchema = {
         <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
       ),
       cellRenderer: function selectOrderButton({ rowData }: RowData) {
+        const { quantityAvailable } = createItemsSummary(rowData)
+
         return (
-          <Link
-            to={`#/my-returns/add/${rowData.orderId}`}
-            className="pointer c-link active-c-link no-underline bg-transparent b--transparent c-action-primary hover-b--transparent hover-bg-action-secondary hover-b--action-secondary t-action br2 pa3-s"
-          >
-            <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
-          </Link>
+          <div>
+            {quantityAvailable ? (
+              <Button
+                href={`#/my-returns/add/${rowData.orderId}`}
+                variation="tertiary"
+                collapseLeft
+              >
+                <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+              </Button>
+            ) : (
+              <Button variation="tertiary" disabled collapseLeft>
+                <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+              </Button>
+            )}
+          </div>
         )
       },
     },
@@ -89,27 +99,32 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
   }
 
   return (
-    <Table
-      fullWidth
-      emptyStateLabel={
-        <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
-      }
-      schema={tableSchema}
-      items={orders.list}
-      loading={fetchMoreState === 'LOADING'}
-      pagination={{
-        onNextClick: () => handlePaginationClick('next'),
-        onPrevClick: () => handlePaginationClick('previous'),
-        currentItemFrom: perPage * currentPage - perPage + 1,
-        currentItemTo:
-          perPage * currentPage > totalItems
-            ? totalItems
-            : perPage * currentPage,
-        textOf: (
-          <FormattedMessage id="store/return-app.return-order-list.table-pagination.text-of" />
-        ),
-        totalItems,
-      }}
-    />
+    <>
+      <div className="t-body lh-copy c-muted-1 mb3 ml3 w-two-thirds-ns w-100">
+        <FormattedMessage id="store/return-app.request-return.page.header.subtitle" />
+      </div>
+      <Table
+        fullWidth
+        emptyStateLabel={
+          <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
+        }
+        schema={tableSchema}
+        items={orders.list}
+        loading={fetchMoreState === 'LOADING'}
+        pagination={{
+          onNextClick: () => handlePaginationClick('next'),
+          onPrevClick: () => handlePaginationClick('previous'),
+          currentItemFrom: perPage * currentPage - perPage + 1,
+          currentItemTo:
+            perPage * currentPage > totalItems
+              ? totalItems
+              : perPage * currentPage,
+          textOf: (
+            <FormattedMessage id="store/return-app.return-order-list.table-pagination.text-of" />
+          ),
+          totalItems,
+        }}
+      />
+    </>
   )
 }
