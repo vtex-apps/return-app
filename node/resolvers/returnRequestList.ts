@@ -69,7 +69,7 @@ export const returnRequestList = async (
   const filterUser =
     vtexProduct === 'store' || role === 'store-user' ? userId : undefined
 
-  const userIsAdmin = Boolean(appkey) ?? role === 'admin'
+  const userIsAdmin = Boolean(appkey) || role === 'admin'
 
   // If user is not admin it's necessary to filter the query by userId
   if (!userIsAdmin && !filterUser) {
