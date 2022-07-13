@@ -209,11 +209,13 @@ export const createReturnRequest = async (
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_CONFIRMATION
+      OMS_RETURN_REQUEST_CONFIRMATION(locale)
     )
 
     if (!templateExists) {
-      await mail.publishTemplate(OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE)
+      await mail.publishTemplate(
+        OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE(locale)
+      )
     }
 
     const {
@@ -227,7 +229,7 @@ export const createReturnRequest = async (
     } = shippingData
 
     const mailData: MailData = {
-      templateName: OMS_RETURN_REQUEST_CONFIRMATION,
+      templateName: OMS_RETURN_REQUEST_CONFIRMATION(locale),
       jsonData: {
         data: {
           status: 'new',
@@ -249,6 +251,10 @@ export const createReturnRequest = async (
             comments: userCommentData,
           },
         ],
+        cultureInfoData: {
+          currencyCode,
+          locale,
+        },
       },
     }
 

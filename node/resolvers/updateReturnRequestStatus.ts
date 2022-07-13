@@ -157,14 +157,20 @@ export const updateReturnRequestStatus = async (
 
   await returnRequestClient.update(requestId, updatedRequest)
 
+  const {
+    cultureInfoData: { currencyCode, locale },
+  } = updatedRequest
+
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_STATUS_UPDATE
+      OMS_RETURN_REQUEST_STATUS_UPDATE(locale)
     )
 
     if (!templateExists) {
-      await mail.publishTemplate(OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE)
+      await mail.publishTemplate(
+        OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE(locale)
+      )
     }
 
     const {
@@ -177,7 +183,7 @@ export const updateReturnRequestStatus = async (
     } = updatedRequest
 
     const mailData: MailData = {
-      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE,
+      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE(locale),
       jsonData: {
         data: {
           status: updatedStatus,
