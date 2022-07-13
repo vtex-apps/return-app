@@ -1,4 +1,9 @@
-import { ForbiddenError, UserInputError, NotFoundError } from '@vtex/api'
+import {
+  ForbiddenError,
+  UserInputError,
+  NotFoundError,
+  ResolverError,
+} from '@vtex/api'
 import type {
   MutationUpdateReturnRequestStatusArgs,
   RefundItemInput,
@@ -61,7 +66,7 @@ export const updateReturnRequestStatus = async (
   ctx: Context
 ): Promise<ReturnRequest> => {
   const {
-    state: { userProfile },
+    state: { userProfile, appkey },
     clients: {
       returnRequest: returnRequestClient,
       oms,
@@ -73,12 +78,19 @@ export const updateReturnRequestStatus = async (
 
   const { status, requestId, comment, refundData } = args
 
-  const { role, firstName, lastName, email } = userProfile
+  const { role, firstName, lastName, email } = userProfile ?? {}
 
   const requestDate = new Date().toISOString()
-  const submittedBy = firstName || lastName ? `${firstName} ${lastName}` : email
+  const submittedBy =
+    appkey ?? (firstName || lastName) ? `${firstName} ${lastName}` : email
 
-  const userIsAdmin = role === 'admin'
+  if (!submittedBy) {
+    throw new ResolverError(
+      'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
+    )
+  }
+
+  const userIsAdmin = Boolean(appkey) || role === 'admin'
 
   if (!userIsAdmin) {
     throw new ForbiddenError('Not authorized')

@@ -8,11 +8,11 @@ export const returnRequest = async (
 ) => {
   const {
     clients: { returnRequest: returnRequestClient },
-    state: { userProfile },
+    state: { userProfile, appkey },
   } = ctx
 
-  const { userId, role } = userProfile
-  const userIsAdmin = role === 'admin'
+  const { userId, role } = userProfile ?? {}
+  const userIsAdmin = Boolean(appkey) ?? role === 'admin'
 
   const returnRequestResult = await returnRequestClient.get(requestId, ['_all'])
 

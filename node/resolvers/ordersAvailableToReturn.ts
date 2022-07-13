@@ -41,7 +41,7 @@ const createParams = ({
 
 export const ordersAvailableToReturn = async (
   _: unknown,
-  args: { page: number },
+  args: { page: number; storeUserEmail?: string },
   ctx: Context
 ): Promise<OrdersToReturnList> => {
   const {
@@ -49,7 +49,7 @@ export const ordersAvailableToReturn = async (
     clients: { appSettings, oms, returnRequest: returnRequestClient },
   } = ctx
 
-  const { page } = args
+  const { page, storeUserEmail } = args
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
 
@@ -58,11 +58,17 @@ export const ordersAvailableToReturn = async (
   }
 
   const { maxDays, excludedCategories } = settings
-  const { email } = userProfile
+  const { email } = userProfile ?? {}
+
+  const userEmail = storeUserEmail ?? email
+
+  if (!userEmail) {
+    throw new ResolverError('Missing user email', 400)
+  }
 
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
-    createParams({ maxDays, userEmail: email, page })
+    createParams({ maxDays, userEmail, page })
   )
 
   const orderListPromises = []
@@ -82,7 +88,7 @@ export const ordersAvailableToReturn = async (
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
 
   for (const order of orders) {
-    const orderToReturnSummary = createOrdersToReturnSummary(order, email, {
+    const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
       excludedCategories,
       returnRequestClient,
     })

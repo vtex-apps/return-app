@@ -15,6 +15,7 @@ import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { MailData } from '../typings/mailClient'
+import { getCustomerEmail } from '../utils/getCostumerEmail'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -180,11 +181,17 @@ export const createReturnRequestService = async (
       ]
     : []
 
-  const customerEmail = customerProfileData.email ?? email
-
-  if (!customerEmail) {
-    throw new ResolverError('Missing costumer email')
-  }
+  const customerEmail = getCustomerEmail(
+    clientProfileData,
+    {
+      userProfile,
+      appkey,
+      inputEmail: customerProfileData.email,
+    },
+    {
+      logger,
+    }
+  )
 
   const rmaDocument = await returnRequestClient.save({
     orderId,

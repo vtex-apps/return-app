@@ -3,6 +3,7 @@ import type {
   ReturnRequestFilters,
   Maybe,
 } from 'vtex.return-app'
+import { ForbiddenError } from '@vtex/api'
 
 const filterDate = (date: string): string => {
   const newDate = new Date(date)
@@ -55,11 +56,11 @@ export const returnRequestList = async (
   const {
     clients: { returnRequest: returnRequestClient },
     request: { header },
-    state: { userProfile },
+    state: { userProfile, appkey },
   } = ctx
 
   const { page, filter } = args
-  const { userId, role } = userProfile
+  const { userId, role } = userProfile ?? {}
 
   // vtexProduct is undefined when coming from GraphQL IDE
   const vtexProduct = header['x-vtex-product'] as 'admin' | 'store' | undefined
@@ -67,6 +68,13 @@ export const returnRequestList = async (
   // This is useful to apply user filter when an admin is impersonating a store user.
   const filterUser =
     vtexProduct === 'store' || role === 'store-user' ? userId : undefined
+
+  const userIsAdmin = Boolean(appkey) ?? role === 'admin'
+
+  // If user is not admin it's necessary to filter the query by userId
+  if (!userIsAdmin && !filterUser) {
+    throw new ForbiddenError('User cannot access this request')
+  }
 
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
