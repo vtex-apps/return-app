@@ -4,6 +4,7 @@ import { Table } from 'vtex.styleguide'
 
 import { verifyTotalsTableSchema } from './verifyTotalsTableSchema'
 import type { UpdateRefundShipping } from './VerifyItemsPage'
+import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 
 interface Props {
   refundableShipping: number
@@ -18,6 +19,12 @@ export const VerifyTotalsTable = ({
   totalRefundItems,
   onRefundShippingChange,
 }: Props) => {
+  const { data } = useReturnDetails()
+
+  if (!data) return null
+
+  const { cultureInfoData } = data.returnRequestDetails
+
   return (
     <div>
       <h3>
@@ -25,7 +32,10 @@ export const VerifyTotalsTable = ({
       </h3>
       <Table
         fullWidth
-        schema={verifyTotalsTableSchema(onRefundShippingChange)}
+        schema={verifyTotalsTableSchema(
+          onRefundShippingChange,
+          cultureInfoData
+        )}
         items={[
           {
             refundableShipping,

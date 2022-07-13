@@ -81,7 +81,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconExternalLinkMini size={11} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.picked" />
+          <FormattedMessage id="return-app.return-request-list.table.status.pickedup-from-client" />
         </div>
       )
 

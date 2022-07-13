@@ -5202,9 +5202,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://sanzcurrency--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.9+build1657632530/public/@types/vtex.return-app":
+"vtex.return-app@https://sanzcurrency--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.9+build1657698342/public/@types/vtex.return-app":
   version "3.0.0-beta.9"
-  resolved "https://sanzcurrency--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.9+build1657632530/public/@types/vtex.return-app#b00cd6258d079c42212a71d3b7b69097dfc71808"
+  resolved "https://sanzcurrency--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.0.0-beta.9+build1657698342/public/@types/vtex.return-app#f4f99a8375b156686a22dca198152b2f615a3819"
 
 "vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.2/public/@types/vtex.store-graphql":
   version "2.152.2"
