@@ -30,6 +30,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundData,
     refundableAmountTotals,
     refundStatusData,
+    cultureInfoData,
   } = request
 
   const partialUpdate = {
@@ -44,6 +45,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundData,
     refundableAmountTotals,
     refundStatusData,
+    cultureInfoData,
   }
 
   return partialUpdate
@@ -157,19 +159,17 @@ export const updateReturnRequestStatus = async (
 
   await returnRequestClient.update(requestId, updatedRequest)
 
-  const {
-    cultureInfoData: { currencyCode, locale },
-  } = updatedRequest
+  const { cultureInfoData } = updatedRequest
 
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_STATUS_UPDATE(locale)
+      OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale)
     )
 
     if (!templateExists) {
       await mail.publishTemplate(
-        OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE(locale)
+        OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE(cultureInfoData?.locale)
       )
     }
 
@@ -183,7 +183,7 @@ export const updateReturnRequestStatus = async (
     } = updatedRequest
 
     const mailData: MailData = {
-      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE(locale),
+      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale),
       jsonData: {
         data: {
           status: updatedStatus,
@@ -199,8 +199,8 @@ export const updateReturnRequestStatus = async (
         products: items,
         refundStatusData: updatedRefundStatusData,
         cultureInfoData: {
-          currencyCode,
-          locale,
+          currencyCode: cultureInfoData?.currencyCode || 'EUR',
+          locale: cultureInfoData?.locale || 'en-GB',
         },
       },
     }

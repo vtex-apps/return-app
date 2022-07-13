@@ -10,13 +10,14 @@ export const ORDER_TO_RETURN_VALIDATON: Record<
   ORDER_NOT_INVOICED: 'ORDER_NOT_INVOICED',
 }
 
-export const OMS_RETURN_REQUEST_CONFIRMATION = (locale: string) =>
+export const OMS_RETURN_REQUEST_CONFIRMATION = (locale = 'en-GB') =>
   `oms-return-request-confirmation-${locale}`
-export const OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME = (locale: string) =>
-  `[OMS] Return Request Confirmation-${locale}`
+export const OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME = (
+  locale = 'en-GB'
+) => `[OMS] Return Request Confirmation-${locale}`
 
-export const OMS_RETURN_REQUEST_STATUS_UPDATE = (locale: string) =>
+export const OMS_RETURN_REQUEST_STATUS_UPDATE = (locale = 'en-GB') =>
   `oms-return-request-status-update_${locale}`
 export const OMS_RETURN_REQUEST_STATUS_UPDATE_FRIENDLY_NAME = (
-  locale: string
+  locale = 'en-GB'
 ) => `[OMS] Return Request Status Update_${locale}`

@@ -11,7 +11,7 @@ import {
 } from './templateMessages'
 
 export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE = (
-  locale: string
+  locale = 'en-GB'
 ): Template => ({
   Name: OMS_RETURN_REQUEST_CONFIRMATION(locale),
   FriendlyName: OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME(locale),
@@ -48,7 +48,7 @@ export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE = (
 })
 
 export const OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE = (
-  locale: string
+  locale = 'en-GB'
 ): Template => ({
   Name: OMS_RETURN_REQUEST_STATUS_UPDATE(locale),
   FriendlyName: OMS_RETURN_REQUEST_STATUS_UPDATE_FRIENDLY_NAME(locale),
