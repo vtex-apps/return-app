@@ -13,6 +13,7 @@ export const isUserAllowed = ({
   // If appkey is in the request, it means that the request was authenticated with appkey and apptoken
   if (appkey) return
 
+  // if appkey doesn't exist, we need a UserProfile
   if (!requesterUser) {
     throw new ResolverError('Missing User Profile data')
   }

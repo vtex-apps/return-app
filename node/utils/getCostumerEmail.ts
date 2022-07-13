@@ -2,6 +2,12 @@ import type { ClientProfileDetail } from '@vtex/clients'
 import type { Logger } from '@vtex/api'
 import { ResolverError } from '@vtex/api'
 
+/**
+ * Why not ALWAYS using email for userProfile?
+ * userProfile is parsed from session cookie or created when a request is made using AuthCookie token.
+ * When submitting a request via GraphQL IDE or calling the endpoint using APP-KEY and APP-TOKEN, we don't have the userProfile.
+ * Also, we cannot use the email in the order because it might be masked.
+ */
 export const getCustomerEmail = (
   clientProfileData: ClientProfileDetail,
   {

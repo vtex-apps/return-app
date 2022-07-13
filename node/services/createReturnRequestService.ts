@@ -202,13 +202,6 @@ export const createReturnRequestService = async (
     customerProfileData: {
       userId: clientProfileData.userProfileId,
       name: customerProfileData.name,
-      /**
-       * Why using email from args and not for userProfile (session)?
-       * When submitting a request via GraphQL IDE (or postman), there is no profile from session.
-       * It would use the admin email, instead of the user one.
-       * Also, we cannot use the email in the order because it might be masked.
-       * However, email is an optional field in the mutation input, so it's ok the front end doesn't send it.
-       */
       email: customerEmail,
       phoneNumber: customerProfileData.phoneNumber,
     },
