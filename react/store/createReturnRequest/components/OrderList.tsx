@@ -57,7 +57,7 @@ const tableSchema = {
         return (
           <div>
             <Button
-              {...(quantityAvailable
+              {...(!quantityAvailable
                 ? null
                 : { href: `#/my-returns/add/${rowData.orderId}` })}
               variation="tertiary"
