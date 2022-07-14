@@ -1,4 +1,4 @@
-import { IOClients } from '@vtex/api'
+import { IOClients, Sphinx } from '@vtex/api'
 import { vbaseFor, masterDataFor } from '@vtex/clients'
 import { ReturnAppSettings, ReturnRequest } from 'vtex.return-app'
 
@@ -9,6 +9,7 @@ import { OMSCustom as OMS } from './oms'
 import { GiftCard } from './giftCard'
 import { MailClient } from './mail'
 import Checkout from './checkout'
+import { VtexId } from './vtexId'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -48,5 +49,13 @@ export class Clients extends IOClients {
 
   public get checkout() {
     return this.getOrSet('checkout', Checkout)
+  }
+
+  public get vtexId() {
+    return this.getOrSet('vtexId', VtexId)
+  }
+
+  public get sphinx() {
+    return this.getOrSet('sphinx', Sphinx)
   }
 }
