@@ -32,6 +32,7 @@ export const OrderListContainer = () => {
     variables: {
       page: 1,
     },
+    fetchPolicy: 'no-cache',
   })
 
   useEffect(() => {
