@@ -57,7 +57,8 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
 
 export const returnRequestListService = async (
   ctx: Context,
-  args: QueryReturnRequestListArgs
+  args: QueryReturnRequestListArgs,
+  getAllFields = false
 ) => {
   const {
     clients: { returnRequest: returnRequestClient },
@@ -96,12 +97,23 @@ export const returnRequestListService = async (
     ? { ...filter, userId, userEmail }
     : filter
 
+  const resultFields = getAllFields
+    ? ['_all']
+    : [
+        'id',
+        'orderId',
+        'sequenceNumber',
+        'createdIn',
+        'status',
+        'dateSubmitted',
+      ]
+
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,
       pageSize: 25,
     },
-    ['id', 'orderId', 'sequenceNumber', 'createdIn', 'status', 'dateSubmitted'],
+    resultFields,
     'createdIn DESC',
     buildWhereClause(adjustedFilter)
   )
