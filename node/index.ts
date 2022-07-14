@@ -35,6 +35,7 @@ import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
 import { createReturn } from './middlewares/createReturn'
 import { getRequest } from './middlewares/getRequest'
+import { getRequestList } from './middlewares/getRequestList'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -134,6 +135,7 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     returnRequest: method({
       POST: [errorHandler, auth, createReturn],
+      GET: [errorHandler, auth, getRequestList],
     }),
     getReturnRequest: method({
       GET: [errorHandler, auth, getRequest],
