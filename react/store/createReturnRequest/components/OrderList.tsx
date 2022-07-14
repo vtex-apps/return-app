@@ -56,19 +56,16 @@ const tableSchema = {
 
         return (
           <div>
-            {quantityAvailable ? (
-              <Button
-                href={`#/my-returns/add/${rowData.orderId}`}
-                variation="tertiary"
-                collapseLeft
-              >
-                <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
-              </Button>
-            ) : (
-              <Button variation="tertiary" disabled collapseLeft>
-                <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
-              </Button>
-            )}
+            <Button
+              {...(quantityAvailable
+                ? null
+                : `#/my-returns/add/${rowData.orderId}`)}
+              variation="tertiary"
+              collapseLeft
+              disabled={!quantityAvailable}
+            >
+              <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+            </Button>
           </div>
         )
       },
