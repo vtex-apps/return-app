@@ -59,7 +59,7 @@ const tableSchema = {
             <Button
               {...(quantityAvailable
                 ? null
-                : `#/my-returns/add/${rowData.orderId}`)}
+                : { href: `#/my-returns/add/${rowData.orderId}` })}
               variation="tertiary"
               collapseLeft
               disabled={!quantityAvailable}
