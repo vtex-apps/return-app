@@ -5,6 +5,7 @@ input ReturnRequestInput {
   pickupReturnData: PickupReturnDataInput!
   refundPaymentData: RefundPaymentDataInput!
   userComment: String
+  locale: String!
 }
 
 input ReturnRequestItemInput {
@@ -79,6 +80,7 @@ type ReturnRequestResponse {
   items: [ReturnRequestItem!]!
   refundData: RefundData
   refundStatusData: [RefundStatusData!]!
+  cultureInfoData: CultureInfoData!
 }
 
 enum Status {
@@ -224,4 +226,9 @@ enum RefundableAmountId {
 enum UserRole {
   adminUser
   storeUser
+}
+
+type CultureInfoData {
+  currencyCode: String!
+  locale: String!
 }

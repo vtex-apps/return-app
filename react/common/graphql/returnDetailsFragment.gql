@@ -69,4 +69,8 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
       role
     }
   }
+  cultureInfoData {
+    currencyCode
+    locale
+  }
 }

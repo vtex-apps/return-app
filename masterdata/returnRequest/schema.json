@@ -222,6 +222,18 @@
           }
         }
       }
+    },
+    "cultureInfoData": {
+      "type": "object",
+      "required": true,
+      "properties": {
+        "currencyCode": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        }
+      }
     }
   },
   "$defs": {

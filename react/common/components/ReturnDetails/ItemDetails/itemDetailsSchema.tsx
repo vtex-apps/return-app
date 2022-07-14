@@ -1,8 +1,7 @@
 import type { ReactElement } from 'react'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { ReturnRequestItem } from 'vtex.return-app'
-import { FormattedCurrency } from 'vtex.format-currency'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
@@ -11,7 +10,8 @@ import { ItemVerificationStatus } from './ItemVerificationStatus'
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 
 export const itemDetailsSchema = (
-  itemVerificationStatus: Map<number, ItemStatusInterface>
+  itemVerificationStatus: Map<number, ItemStatusInterface>,
+  currency: string
 ) => ({
   properties: {
     imageUrl: {
@@ -94,10 +94,13 @@ export const itemDetailsSchema = (
       }: {
         cellData: ReturnRequestItem['sellingPrice']
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={currency}
+            />
           </AlignItemRight>
         )
       },
@@ -113,10 +116,13 @@ export const itemDetailsSchema = (
       }: {
         cellData: ReturnRequestItem['tax']
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={currency}
+            />
           </AlignItemRight>
         )
       },
@@ -136,8 +142,10 @@ export const itemDetailsSchema = (
 
         return (
           <AlignItemRight>
-            <FormattedCurrency
+            <FormattedNumber
               value={((sellingPrice + tax) * quantity) / 100}
+              style="currency"
+              currency={currency}
             />
           </AlignItemRight>
         )

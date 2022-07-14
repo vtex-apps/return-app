@@ -27,12 +27,16 @@ type SubmissionStatus = 'success' | 'error' | 'idle'
 
 export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { returnRequest, termsAndConditions } = useReturnRequest()
+
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
     { createReturnRequest: ReturnRequestCreated },
     MutationCreateReturnRequestArgs
   >(CREATE_RETURN_REQUEST)
 
-  const { navigate } = useRuntime()
+  const {
+    navigate,
+    culture: { locale },
+  } = useRuntime()
 
   const [confirmationStatus, setConfirmationStatus] =
     useState<SubmissionStatus>('idle')
@@ -52,7 +56,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     try {
       const { errors } = await createReturnRequest({
         variables: {
-          returnRequest: returnRequestValidated,
+          returnRequest: { ...returnRequestValidated, locale },
         },
       })
 

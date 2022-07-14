@@ -62,6 +62,9 @@
         "host": "api.vtex.com",
         "path": "/dataentities/*"
       }
+    },
+    {
+      "name": "sphinx-is-admin"
     }
   ],
   "billingOptions": {
