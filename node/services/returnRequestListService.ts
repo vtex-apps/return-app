@@ -16,13 +16,8 @@ const filterDate = (date: string): string => {
   }`
 }
 
-const buildWhereClause = (
-  filter: Maybe<ReturnRequestFilters> | undefined,
-  userId?: string
-) => {
-  const userFilter = userId && `customerProfileData.userId = "${userId}"`
-
-  if (!filter) return userFilter
+const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
+  if (!filter) return
 
   const returnFilters = Object.entries(filter)
   const whereFilter = returnFilters.reduce((where, [key, value]) => {
@@ -30,6 +25,18 @@ const buildWhereClause = (
 
     if (where.length) {
       where += ` AND `
+    }
+
+    if (key === 'userId') {
+      where += `customerProfileData.userId = "${value}"`
+
+      return where
+    }
+
+    if (key === 'userEmail') {
+      where += `customerProfileData.email = "${value}"`
+
+      return where
     }
 
     if (key === 'createdIn' && typeof value !== 'string') {
@@ -45,7 +52,7 @@ const buildWhereClause = (
     return where
   }, '')
 
-  return userFilter ? `${userFilter} AND ${whereFilter}` : whereFilter
+  return whereFilter
 }
 
 export const returnRequestListService = async (
@@ -59,38 +66,44 @@ export const returnRequestListService = async (
   } = ctx
 
   const { page, filter } = args
-  const { userId, role } = userProfile ?? {}
+  const {
+    userId: userIdProfile,
+    email: userEmailProfile,
+    role,
+  } = userProfile ?? {}
+
+  const { userId: userIdArg, userEmail: userEmailArg } = filter ?? {}
+
+  const userId = userIdArg ?? userIdProfile
+  const userEmail = userEmailArg ?? userEmailProfile
 
   // vtexProduct is undefined when coming from GraphQL IDE
   const vtexProduct = header['x-vtex-product'] as 'admin' | 'store' | undefined
 
   // This is useful to apply user filter when an admin is impersonating a store user.
-  const filterUser =
-    vtexProduct === 'store' || role === 'store-user' ? userId : undefined
+  const requireFilterByUser = vtexProduct === 'store' || role === 'store-user'
 
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
-  // If user is not admin it's necessary to filter the query by userId
-  if (!userIsAdmin && !filterUser) {
+  const hasUserIdOrEmail = Boolean(userId || userEmail)
+
+  // If user is not admin it's necessary to filter the query by userId or userEmail
+  if (!userIsAdmin && requireFilterByUser && !hasUserIdOrEmail) {
     throw new ForbiddenError('User cannot access this request')
   }
+
+  const adjustedFilter = requireFilterByUser
+    ? { ...filter, userId, userEmail }
+    : filter
 
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,
       pageSize: 25,
     },
-    [
-      'id',
-      'orderId',
-      'sequenceNumber',
-      'createdIn',
-      'status',
-      'dateSubmitted',
-      'userComment',
-    ],
+    ['id', 'orderId', 'sequenceNumber', 'createdIn', 'status', 'dateSubmitted'],
     'createdIn DESC',
-    buildWhereClause(filter, filterUser)
+    buildWhereClause(adjustedFilter)
   )
 
   const { data, pagination } = rmaSearchResult
