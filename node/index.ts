@@ -21,7 +21,7 @@ import { getOrder } from './middlewares/getOrder'
 import { getGiftCard } from './middlewares/getGiftCard'
 import { getSkuById } from './middlewares/getSkuById'
 import { sendMail } from './middlewares/sendMail'
-import { getRequest } from './middlewares/api/getRequest'
+import { getRequest as getRequestV2 } from './middlewares/api/getRequest'
 import { getList } from './middlewares/api/getList'
 import { addComment } from './middlewares/api/addComment'
 import { verifyPackage } from './middlewares/api/verifyPackage'
@@ -34,6 +34,7 @@ import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
 import { createReturn } from './middlewares/createReturn'
+import { getRequest } from './middlewares/getRequest'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -108,7 +109,7 @@ export default new Service<Clients, State, ParamsContext>({
       POST: [errorHandler, sendMail],
     }),
     apiGetRequest: method({
-      GET: [errorHandler, getRequest],
+      GET: [errorHandler, getRequestV2],
     }),
     apiGetList: method({
       GET: [errorHandler, getList],
@@ -133,6 +134,9 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     returnRequest: method({
       POST: [errorHandler, auth, createReturn],
+    }),
+    getReturnRequest: method({
+      GET: [errorHandler, auth, getRequest],
     }),
   },
   graphql: {
