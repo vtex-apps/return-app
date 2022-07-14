@@ -1,8 +1,7 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
-import type { ReturnRequestItem } from 'vtex.return-app'
-import { FormattedCurrency } from 'vtex.format-currency'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
+import type { ReturnRequestItem, CultureInfoData } from 'vtex.return-app'
 import { NumericStepper, InputCurrency } from 'vtex.styleguide'
 
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'
@@ -11,7 +10,8 @@ import { ProductActionStatus } from './ProductActionStatus'
 
 export const verifyItemsTableSchema = (
   refundItemMap: RefundItemMap,
-  updateChanges: UpdateItemsChange
+  updateChanges: UpdateItemsChange,
+  cultureInfoData: CultureInfoData
 ) => ({
   properties: {
     name: {
@@ -32,10 +32,13 @@ export const verifyItemsTableSchema = (
         rowData: ReturnRequestItem
         cellData: ReturnRequestItem['sellingPrice']
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={cultureInfoData.currencyCode}
+            />
           </AlignItemRight>
         )
       },
@@ -52,10 +55,13 @@ export const verifyItemsTableSchema = (
         rowData: ReturnRequestItem
         cellData: ReturnRequestItem['tax']
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={cultureInfoData.currencyCode}
+            />
           </AlignItemRight>
         )
       },
@@ -73,10 +79,13 @@ export const verifyItemsTableSchema = (
       }) {
         const { sellingPrice, tax } = rowData
 
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={(sellingPrice + tax) / 100} />
+            <FormattedNumber
+              value={(sellingPrice + tax) / 100}
+              style="currency"
+              currency={cultureInfoData.currencyCode}
+            />
           </AlignItemRight>
         )
       },
@@ -159,12 +168,11 @@ export const verifyItemsTableSchema = (
           updateChanges({ restockFee: restockFeeChecked, orderItemIndex })
         }
 
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <InputCurrency
             value={restockFee / 100}
-            currencyCode="EUR"
-            locale="es-ES"
+            currencyCode={cultureInfoData.currencyCode}
+            locale={cultureInfoData.locale}
             onChange={handleChange}
             disabled={selectedQuantity === 0}
           />
@@ -188,13 +196,14 @@ export const verifyItemsTableSchema = (
         const selectedQuantity = refundItem?.quantity ?? 0
         const restockFee = refundItem?.restockFee ?? 0
 
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency
+            <FormattedNumber
               value={
                 ((sellingPrice + tax) * selectedQuantity - restockFee) / 100
               }
+              style="currency"
+              currency={cultureInfoData.currencyCode}
             />
           </AlignItemRight>
         )

@@ -35,6 +35,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundData,
     refundableAmountTotals,
     refundStatusData,
+    cultureInfoData,
   } = request
 
   const partialUpdate = {
@@ -49,6 +50,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundData,
     refundableAmountTotals,
     refundStatusData,
+    cultureInfoData,
   }
 
   return partialUpdate

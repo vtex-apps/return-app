@@ -82,7 +82,8 @@ export const ItemDetailsList = () => {
 
   if (!data) return null
 
-  const { items, status, refundData } = data.returnRequestDetails
+  const { items, status, refundData, cultureInfoData } =
+    data.returnRequestDetails
 
   const itemsVerificationStatus = getItemVerificationStatus(
     items,
@@ -90,13 +91,15 @@ export const ItemDetailsList = () => {
     status
   )
 
+  const { currencyCode } = cultureInfoData
+
   return (
     <section>
       <Table
         fullWidth
         dynamicRowHeight
         items={items}
-        schema={itemDetailsSchema(itemsVerificationStatus)}
+        schema={itemDetailsSchema(itemsVerificationStatus, currencyCode)}
       />
     </section>
   )

@@ -1,13 +1,14 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { FormattedCurrency } from 'vtex.format-currency'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import { InputCurrency } from 'vtex.styleguide'
+import type { CultureInfoData } from 'vtex.return-app'
 
 import { AlignItemRight } from '../AlignItemRight'
 
 export const verifyTotalsTableSchema = (
-  handleShippingChanges: (shippingToRefundInput: number) => void
+  handleShippingChanges: (shippingToRefundInput: number) => void,
+  cultureInfoData: CultureInfoData
 ) => ({
   properties: {
     refundableShipping: {
@@ -20,10 +21,13 @@ export const verifyTotalsTableSchema = (
       }: {
         cellData: number
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={cultureInfoData.currencyCode}
+            />
           </AlignItemRight>
         )
       },
@@ -57,13 +61,12 @@ export const verifyTotalsTableSchema = (
           handleShippingChanges(shippingToRefundChecked)
         }
 
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
             <InputCurrency
               value={cellData / 100}
-              currencyCode="EUR"
-              locale="es-ES"
+              currencyCode={cultureInfoData.currencyCode}
+              locale={cultureInfoData.locale}
               onChange={handleChange}
             />
           </AlignItemRight>
@@ -80,10 +83,13 @@ export const verifyTotalsTableSchema = (
       }: {
         cellData: number
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={cultureInfoData.currencyCode}
+            />
           </AlignItemRight>
         )
       },
@@ -98,10 +104,13 @@ export const verifyTotalsTableSchema = (
       }: {
         cellData: number
       }) {
-        // TODO: Refactor this with right currency symbol and locale
         return (
           <AlignItemRight>
-            <FormattedCurrency value={cellData / 100} />
+            <FormattedNumber
+              value={cellData / 100}
+              style="currency"
+              currency={cultureInfoData.currencyCode}
+            />
           </AlignItemRight>
         )
       },

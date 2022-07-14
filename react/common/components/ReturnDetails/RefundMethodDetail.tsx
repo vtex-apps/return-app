@@ -1,6 +1,5 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { FormattedCurrency } from 'vtex.format-currency'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { GiftCard, Maybe, RefundPaymentData } from 'vtex.return-app'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
@@ -12,13 +11,12 @@ interface RefundMethodProps {
   refundPaymentData: RefundPaymentData
   giftCard: Maybe<GiftCard> | undefined
   refundValue: Maybe<number> | undefined
+  currency: string
 }
 
-const RefundPayment = ({
-  refundPaymentData,
-  giftCard,
-  refundValue,
-}: RefundMethodProps) => {
+const RefundPayment = (props: RefundMethodProps) => {
+  const { refundPaymentData, giftCard, refundValue, currency } = props
+
   const { refundPaymentMethod, iban, accountHolderName } = refundPaymentData
 
   if (refundPaymentMethod === 'giftCard') {
@@ -47,7 +45,13 @@ const RefundPayment = ({
               <FormattedMessage
                 id={`${messageId}.gift-card-value`}
                 values={{
-                  value: <FormattedCurrency value={refundValue / 100} />,
+                  value: (
+                    <FormattedNumber
+                      value={refundValue / 100}
+                      style="currency"
+                      currency={currency}
+                    />
+                  ),
                 }}
               />
             </p>
@@ -129,7 +133,7 @@ export const RefundMethodDetail = () => {
   if (!data) return null
 
   const {
-    returnRequestDetails: { refundPaymentData, refundData },
+    returnRequestDetails: { refundPaymentData, refundData, cultureInfoData },
   } = data
 
   if (!refundPaymentData) return null
@@ -143,6 +147,7 @@ export const RefundMethodDetail = () => {
         refundPaymentData={refundPaymentData}
         giftCard={refundData?.giftCard}
         refundValue={refundData?.invoiceValue}
+        currency={cultureInfoData.currencyCode}
       />
     </section>
   )
