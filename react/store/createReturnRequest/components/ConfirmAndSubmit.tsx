@@ -6,6 +6,7 @@ import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
 } from 'vtex.return-app'
+import { useCssHandles } from 'vtex.css-handles'
 import { Card, Button, Alert } from 'vtex.styleguide'
 
 import type { Page } from '../CreateReturnRequest'
@@ -24,6 +25,15 @@ interface Props {
 
 type SubmissionStatus = 'success' | 'error' | 'idle'
 
+const CSS_HANDLES = [
+  'submitDetailsContainer',
+  'contactAddressWrapper',
+  'paymentCommentWrapper',
+  'confirmationActionsContainer',
+  'backButtonWrapper',
+  'submitButtonWrapper',
+] as const
+
 export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { returnRequest, termsAndConditions } = useReturnRequest()
 
@@ -39,6 +49,8 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
 
   const [confirmationStatus, setConfirmationStatus] =
     useState<SubmissionStatus>('idle')
+
+  const handles = useCssHandles(CSS_HANDLES)
 
   const returnRequestValidated = useMemo(() => {
     const { validatedFields } = validateNewReturnRequestFields(
@@ -94,8 +106,12 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
           />
           <div className="mv8">
             <Card>
-              <div className="flex flex-wrap">
-                <section className="w-100 flex flex-wrap justify-between">
+              <div
+                className={`${handles.confirmationActionsContainer} flex flex-wrap`}
+              >
+                <section
+                  className={`${handles.contactAddressWrapper} w-100 flex flex-wrap justify-between`}
+                >
                   <ConfirmContactDetails
                     contactDetails={returnRequestValidated.customerProfileData}
                   />
@@ -103,7 +119,9 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                     pickupReturnData={returnRequestValidated.pickupReturnData}
                   />
                 </section>
-                <section className="w-100 flex mt5">
+                <section
+                  className={`${handles.paymentCommentWrapper} w-100 flex mt5`}
+                >
                   <ConfirmPaymentMethods
                     refundPaymentData={returnRequestValidated.refundPaymentData}
                   />
@@ -111,7 +129,9 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
               </div>
             </Card>
           </div>
-          <section className="flex justify-center">
+          <section
+            className={`${handles.confirmationActionsContainer} flex justify-center`}
+          >
             {confirmationStatus !== 'success' ? null : (
               <Alert
                 type={confirmationStatus}
@@ -140,7 +160,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
             )}
             {confirmationStatus !== 'idle' ? null : (
               <>
-                <div className="mr3">
+                <div className={`${handles.backButtonWrapper} mr3`}>
                   <Button
                     size="small"
                     variation="secondary"
@@ -149,7 +169,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                     <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
                   </Button>
                 </div>
-                <div className="ml3">
+                <div className={`${handles.submitButtonWrapper} ml3`}>
                   <Button
                     size="small"
                     onClick={handleCreateReturnRequest}

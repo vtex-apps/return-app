@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input, Tooltip, Toggle, IconInfo } from 'vtex.styleguide'
 import type { AddressType, ShippingData } from 'vtex.return-app'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
@@ -33,9 +34,22 @@ interface Props {
   shippingData: ShippingData
 }
 
+const CSS_HANDLES = [
+  'addressContainer',
+  'addressHeaderWrapper',
+  'pickupAddressTitle',
+  'tooltipToggleWrapper',
+  'addressInputContainer',
+  'cityInputContainer',
+  'stateInputContainer',
+  'zipCodeInputContainer',
+  'countryInputContainer',
+] as const
+
 export const AddressDetails = ({ shippingData }: Props) => {
   const { formatMessage } = useIntl()
   const { data: settings } = useStoreSettings()
+  const handles = useCssHandles(CSS_HANDLES)
 
   const { geoCoordinates } = shippingData ?? {}
 
@@ -102,15 +116,19 @@ export const AddressDetails = ({ shippingData }: Props) => {
    * More explanation on setInitialPickupAddress util function
    */
   return (
-    <div className="flex-ns flex-wrap flex-auto flex-column pa4 mw6">
-      <div className="flex items-center justify-between">
+    <div
+      className={`${handles.addressContainer} flex-ns flex-wrap flex-auto flex-column pa4 mw6`}
+    >
+      <div
+        className={`${handles.addressHeaderWrapper}flex items-center justify-between`}
+      >
         <div>
-          <p>
+          <p className={handles.pickupAddressTitle}>
             <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
           </p>
         </div>
         {!settings?.options?.enablePickupPoints || !geoCoordinates ? null : (
-          <div className="flex items-center">
+          <div className={`${handles.tooltipToggleWrapper} flex items-center`}>
             <Tooltip
               label={
                 <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.tooltip" />
@@ -135,7 +153,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
         <PickupPointSelector geoCoordinates={geoCoordinates} />
       ) : null}
 
-      <div className="mb4">
+      <div className={`${handles.addressInputContainer} mb4`}>
         <Input
           name="address"
           required
@@ -151,7 +169,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           />
         ) : null}
       </div>
-      <div className="mb4">
+      <div className={`${handles.cityInputContainer} mb4`}>
         <Input
           name="city"
           required
@@ -167,7 +185,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           />
         ) : null}
       </div>
-      <div className="mb4">
+      <div className={`${handles.stateInputContainer} mb4`}>
         <Input
           name="state"
           requiered
@@ -183,7 +201,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           />
         ) : null}
       </div>
-      <div className="mb4">
+      <div className={`${handles.zipCodeInputContainer} mb4`}>
         <Input
           name="zipCode"
           required
@@ -199,7 +217,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           />
         ) : null}
       </div>
-      <div className="mb4">
+      <div className={`${handles.countryInputContainer} mb4`}>
         <Input
           name="country"
           required
