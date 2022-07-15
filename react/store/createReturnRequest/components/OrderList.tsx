@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useCssHandles } from 'vtex.css-handles'
 import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
@@ -16,8 +15,6 @@ interface Props {
 interface RowData {
   rowData: OrderToReturnSummary
 }
-
-const CSS_HANDLES = ['orderListTableText'] as const
 
 const tableSchema = {
   properties: {
@@ -45,15 +42,10 @@ const tableSchema = {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
       ),
-      cellRenderer: function AvailableProducts({ rowData }: RowData) {
+      cellRenderer: function availableProducts({ rowData }: RowData) {
         const { quantityAvailable, quantity } = createItemsSummary(rowData)
-        const handles = useCssHandles(CSS_HANDLES)
 
-        return (
-          <p
-            className={handles.orderListTableText}
-          >{`${quantityAvailable} / ${quantity}`}</p>
-        )
+        return <p>{`${quantityAvailable} / ${quantity}`}</p>
       },
     },
     selectOrder: {
