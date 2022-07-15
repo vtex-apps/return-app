@@ -1,8 +1,6 @@
 import type { Maybe, RefundDataInput, ReturnRequest } from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
-type RequiredReturnRequest = Required<ReturnRequest>
-
 export const createRefundData = ({
   requestId,
   refundData,
@@ -11,11 +9,8 @@ export const createRefundData = ({
   requestId: string
   refundData?: Maybe<RefundDataInput>
   requestItems: ReturnRequest['items']
-}): RequiredReturnRequest['refundData'] => {
-  const requestItemsMap = new Map<
-    number,
-    Required<ReturnRequest>['items'][number]
-  >()
+}): ReturnRequest['refundData'] => {
+  const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
   for (const requestedItem of requestItems ?? []) {
     requestItemsMap.set(requestedItem.orderItemIndex as number, requestedItem)
@@ -38,7 +33,7 @@ export const createRefundData = ({
     items.push({
       orderItemIndex,
       id,
-      price: (sellingPrice ?? 0) + (tax ?? 0),
+      price: (Number(sellingPrice) ?? 0) + (Number(tax) ?? 0),
       quantity: refundItem.quantity,
       restockFee: refundItem.restockFee,
     })

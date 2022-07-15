@@ -3,7 +3,7 @@ import type { ReturnRequest } from 'vtex.return-app'
 type VtexProduct = 'admin' | 'store' | undefined
 
 const removeSubmittedByForStoreUser = (
-  statusData: Required<ReturnRequest>['refundStatusData'][number],
+  statusData: ReturnRequest['refundStatusData'][number],
   vtexProduct: VtexProduct
 ) => {
   if (vtexProduct === 'store') {

@@ -22,7 +22,9 @@ import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
 // If any new field is added to the ReturnRequest as required, it has to be added here too.
-const formatRequestToPartialUpdate = (request: ReturnRequest) => {
+const formatRequestToPartialUpdate = (
+  request: ReturnRequest
+): ReturnRequest => {
   const {
     orderId,
     refundableAmount,
@@ -36,6 +38,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundableAmountTotals,
     refundStatusData,
     cultureInfoData,
+    dateSubmitted,
   } = request
 
   const partialUpdate = {
@@ -51,6 +54,7 @@ const formatRequestToPartialUpdate = (request: ReturnRequest) => {
     refundableAmountTotals,
     refundStatusData,
     cultureInfoData,
+    dateSubmitted,
   }
 
   return partialUpdate
