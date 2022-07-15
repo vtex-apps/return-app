@@ -138,13 +138,14 @@ export const updateReturnRequestStatus = async (
     createdAt: requestDate,
   })
 
-  const refundInvoice = createRefundInvoice
-    ? createRefundData({
-        requestId,
-        refundData,
-        requestItems: returnRequest.items,
-      })
-    : returnRequest.refundData
+  const refundInvoice =
+    createRefundInvoice && requestStatus !== 'denied'
+      ? createRefundData({
+          requestId,
+          refundData,
+          requestItems: returnRequest.items,
+        })
+      : returnRequest.refundData
 
   const refundReturn = await handleRefund({
     currentStatus: requestStatus,

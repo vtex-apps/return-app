@@ -52,6 +52,8 @@ export const createRefundData = ({
   const refundedShippingValue = refundData?.refundedShippingValue ?? 0
 
   return {
+    // invoiceNumber has to match the requestId.
+    // This values is used to filter the invoices created via Return app when calculating the items avaialble to be returned.
     invoiceNumber: requestId,
     invoiceValue: refundedItemsValue + refundedShippingValue,
     refundedItemsValue,
