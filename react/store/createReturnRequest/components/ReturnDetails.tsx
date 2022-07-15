@@ -2,6 +2,7 @@ import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
 import type { ShippingData } from 'vtex.return-app'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
@@ -11,6 +12,12 @@ import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
 import type { Page } from '../CreateReturnRequest'
+
+const CSS_HANDLES = [
+  'returnDetailsContainer',
+  'orderIdDetailsWrapper',
+  'creationDateDetailsWrapper',
+] as const
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -34,6 +41,7 @@ export const ReturnDetails = (
     shippingData,
   } = props
 
+  const handles = useCssHandles(CSS_HANDLES)
   const {
     actions: { areFieldsValid },
   } = useReturnRequest()
@@ -47,9 +55,11 @@ export const ReturnDetails = (
 
   return (
     <>
-      <div className="mb5">
+      <div className={`${handles.returnDetailsContainer} mb5`}>
         <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
-          <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
+          <div
+            className={`${handles.orderIdDetailsWrapper} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}
+          >
             <div>
               <div className="c-muted-2 f6">
                 <FormattedMessage id="store/return-app.return-order-details.page-header.order-id" />
@@ -59,7 +69,9 @@ export const ReturnDetails = (
               </div>
             </div>
           </div>
-          <div className="flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns">
+          <div
+            className={`${handles.creationDateDetailsWrapper} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}
+          >
             <div>
               <div className="c-muted-2 f6">
                 <FormattedMessage id="store/return-app.return-order-details.page-header.creation-date" />

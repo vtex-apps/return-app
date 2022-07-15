@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useCssHandles } from 'vtex.css-handles'
 import { Link } from 'vtex.render-runtime'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
@@ -15,6 +16,8 @@ interface Props {
 interface RowData {
   rowData: OrderToReturnSummary
 }
+
+const CSS_HANDLES = ['orderListTableText'] as const
 
 const tableSchema = {
   properties: {
@@ -42,10 +45,15 @@ const tableSchema = {
       title: (
         <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
       ),
-      cellRenderer: function availableProducts({ rowData }: RowData) {
+      cellRenderer: function AvailableProducts({ rowData }: RowData) {
         const { quantityAvailable, quantity } = createItemsSummary(rowData)
+        const handles = useCssHandles(CSS_HANDLES)
 
-        return <p>{`${quantityAvailable} / ${quantity}`}</p>
+        return (
+          <p
+            className={handles.orderListTableText}
+          >{`${quantityAvailable} / ${quantity}`}</p>
+        )
       },
     },
     selectOrder: {
@@ -81,7 +89,8 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
       return
     }
 
-    const newPage = operation === 'next' ? currentPage + 1 : currentPage - 1
+    const newPage =
+      operation === 'next' ? Number(currentPage) + 1 : Number(currentPage) - 1
 
     setFetchMoreState('LOADING')
     await handlePagination(newPage, 'next')
