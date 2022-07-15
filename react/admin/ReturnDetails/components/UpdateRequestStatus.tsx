@@ -2,7 +2,14 @@ import type { FormEvent, ChangeEvent } from 'react'
 import React, { useState } from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Textarea, Checkbox, Button } from 'vtex.styleguide'
+import {
+  Dropdown,
+  Textarea,
+  Checkbox,
+  Button,
+  Tooltip,
+  IconInfo,
+} from 'vtex.styleguide'
 import type { Status } from 'vtex.return-app'
 
 import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
@@ -89,9 +96,20 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
 
   return (
     <section className="mv4">
-      <h3>
-        <FormattedMessage id="admin/return-app.return-request-details.update-status.title" />
-      </h3>
+      <div className="flex items-center">
+        <h3>
+          <FormattedMessage id="admin/return-app.return-request-details.update-status.title" />
+        </h3>
+        <Tooltip
+          label={
+            <FormattedMessage id="admin/return-app.return-request-details.update-status.tooltip" />
+          }
+        >
+          <span className="yellow pointer ml3 flex">
+            <IconInfo />
+          </span>
+        </Tooltip>
+      </div>
       <form
         className="flex flex-column items-stretch w-50"
         onSubmit={handleSubmit}
