@@ -10,9 +10,11 @@ import {
   OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE_MESSAGE,
 } from './templateMessages'
 
-export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE: Template = {
-  Name: OMS_RETURN_REQUEST_CONFIRMATION,
-  FriendlyName: OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME,
+export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE = (
+  locale = 'en-GB'
+): Template => ({
+  Name: OMS_RETURN_REQUEST_CONFIRMATION(locale),
+  FriendlyName: OMS_RETURN_REQUEST_CONFIRMATION_FRIENDLY_NAME(locale),
   Description: '[OMS] Return requests confirmation message',
   IsDefaultTemplate: false,
   AccountId: null,
@@ -43,11 +45,13 @@ export const OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE: Template = {
       Parameters: [],
     },
   },
-}
+})
 
-export const OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE: Template = {
-  Name: OMS_RETURN_REQUEST_STATUS_UPDATE,
-  FriendlyName: OMS_RETURN_REQUEST_STATUS_UPDATE_FRIENDLY_NAME,
+export const OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE = (
+  locale = 'en-GB'
+): Template => ({
+  Name: OMS_RETURN_REQUEST_STATUS_UPDATE(locale),
+  FriendlyName: OMS_RETURN_REQUEST_STATUS_UPDATE_FRIENDLY_NAME(locale),
   Description: '[OMS] Return requests status update message',
   IsDefaultTemplate: false,
   AccountId: null,
@@ -78,4 +82,4 @@ export const OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE: Template = {
       Parameters: [],
     },
   },
-}
+})

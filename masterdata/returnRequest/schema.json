@@ -228,10 +228,12 @@
       "required": true,
       "properties": {
         "currencyCode": {
-          "type": "string"
+          "type": "string",
+          "required": true
         },
         "locale": {
-          "type": "string"
+          "type": "string",
+          "required": true
         }
       }
     }
