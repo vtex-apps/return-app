@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Send confirmation email with return request details to customer when the request is created.
+- Send email with return request details to customer when the requests changes status.
+- Add the possibility to have different templates for different languages.
 
 ## [2.19.1] - 2022-03-15
 
