@@ -123,12 +123,14 @@ export const AddressDetails = ({ shippingData }: Props) => {
               }
               position="left"
             >
-              <span className="yellow flex items-center">
-                <IconInfo className="ml5 o-50" />
+              <div className="flex items-center">
+                <span className="yellow">
+                  <IconInfo className=" ml5 o-50" />
+                </span>
                 <p className="ml2 mr3">
                   <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points" />
                 </p>
-              </span>
+              </div>
             </Tooltip>
             <Toggle
               checked={isPickupPoint}
