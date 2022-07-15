@@ -198,10 +198,6 @@ export const updateReturnRequestStatus = async (
         },
         products: items,
         refundStatusData: updatedRefundStatusData,
-        cultureInfoData: {
-          currencyCode: cultureInfoData?.currencyCode || 'EUR',
-          locale: cultureInfoData?.locale || 'en-GB',
-        },
       },
     }
 

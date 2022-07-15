@@ -251,10 +251,6 @@ export const createReturnRequest = async (
             comments: userCommentData,
           },
         ],
-        cultureInfoData: {
-          currencyCode,
-          locale,
-        },
       },
     }
 
