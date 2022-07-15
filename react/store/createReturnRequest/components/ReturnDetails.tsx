@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
 import type { ShippingData } from 'vtex.return-app'
-import { Divider } from 'vtex.styleguide'
+import { Divider, Button } from 'vtex.styleguide'
 
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
@@ -111,9 +111,11 @@ export const ReturnDetails = (
       </div>
       <PaymentMethods canRefundCard={canRefundCard} />
       <TermsAndConditions />
-      <button onClick={handleFieldsValidation}>
-        <FormattedMessage id="store/return-app.return-order-details.button.next" />
-      </button>
+      <div className="flex justify-center mt6">
+        <Button onClick={handleFieldsValidation} size="small">
+          <FormattedMessage id="store/return-app.return-order-details.button.next" />
+        </Button>
+      </div>
     </>
   )
 }
