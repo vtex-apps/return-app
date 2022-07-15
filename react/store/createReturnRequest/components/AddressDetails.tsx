@@ -123,9 +123,15 @@ export const AddressDetails = ({ shippingData }: Props) => {
         className={`${handles.addressHeaderWrapper}flex items-center justify-between`}
       >
         <div>
-          <p className={handles.pickupAddressTitle}>
-            <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
-          </p>
+          <Tooltip
+            label={
+              <FormattedMessage id="store/return-app.return-order-details.title.tooltip.pickup-address" />
+            }
+          >
+            <p className={handles.pickupAddressTitle}>
+              <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
+            </p>
+          </Tooltip>
         </div>
         {!settings?.options?.enablePickupPoints || !geoCoordinates ? null : (
           <div className={`${handles.tooltipToggleWrapper} flex items-center`}>
@@ -135,7 +141,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
               }
               position="left"
             >
-              <span className="flex items-center">
+              <span className="yellow flex items-center">
                 <IconInfo className="ml5 o-50" />
                 <p className="ml2 mr3">
                   <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points" />

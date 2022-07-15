@@ -1,9 +1,7 @@
 import type { ReturnRequestItem, Status } from 'vtex.return-app'
 
 export interface MailData {
-  templateName:
-    | 'oms-return-request-confirmation'
-    | 'oms-return-request-status-update'
+  templateName: string
   jsonData: JsonData
 }
 
@@ -12,6 +10,7 @@ export interface JsonData {
   products: ReturnRequestItem[] | ReturnRequest['items']
   refundStatusData?: ReturnRequest['refundStatusData']
   _accountInfo?: AccountInfo
+  cultureInfoData?: CultureInfoData
 }
 
 export interface Data {
@@ -34,6 +33,11 @@ export interface AccountInfo {
   Id: string
   TradingName: string
   HostName: string
+}
+
+export interface CultureInfoData {
+  currencyCode: string
+  locale: string
 }
 export interface Template {
   AccountId: string | null

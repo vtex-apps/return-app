@@ -38,7 +38,7 @@ const createPageHeaderProps = (page: Page, navigate: any) => {
       <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
     ),
     linkLabel: (
-      <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+      <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
     ),
     onLinkClick: () => {
       navigate({

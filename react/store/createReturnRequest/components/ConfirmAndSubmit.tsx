@@ -16,6 +16,7 @@ import { ReturnInformationTable } from './ReturnInformationTable'
 import { ConfirmContactDetails } from './ConfirmContactDetails'
 import { ConfirmPickupAddressDetails } from './ConfirmPickupAddressDetails'
 import { ConfirmPaymentMethods } from './ConfirmPaymentMethods'
+import { ConfirmComment } from './ConfirmComment'
 import { validateNewReturnRequestFields } from '../../utils/validateNewReturnRequestFields'
 
 interface Props {
@@ -120,10 +121,13 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                   />
                 </section>
                 <section
-                  className={`${handles.paymentCommentWrapper} w-100 flex mt5`}
+                  className={`${handles.paymentCommentWrapper} w-100 flex mt5 justify-between`}
                 >
                   <ConfirmPaymentMethods
                     refundPaymentData={returnRequestValidated.refundPaymentData}
+                  />
+                  <ConfirmComment
+                    userComment={returnRequestValidated.userComment}
                   />
                 </section>
               </div>

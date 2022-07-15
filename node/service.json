@@ -107,6 +107,10 @@
       "path": "/returns/createRefund/:orderId",
       "public": true,
       "settingsType": "workspace"
+    },
+    "returnRequest": {
+      "path": "/_v/return-request",
+      "public": true
     }
   }
 }

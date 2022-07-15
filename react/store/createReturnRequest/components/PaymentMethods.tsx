@@ -117,7 +117,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
       className={`${handles.paymentMethodContainer} flex-ns flex-wrap flex-auto flex-column pa4 mb6`}
     >
       <p>
-        <FormattedMessage id="store/return-app.return-order-details.payment-method.subtitle" />
+        <FormattedMessage id="store/return-app.return-order-details.payment-method.description" />
       </p>
       {!enablePaymentMethodSelection ? (
         <p className="i-s">

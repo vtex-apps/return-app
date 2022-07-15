@@ -300,16 +300,17 @@ Body example:
     "visibleForCustomer": true
 }
 ```
+
 #### Set restock fee and shipping value to refund
 
 ![Generic badge](https://img.shields.io/badge/POST-blue.svg) `https://{accountName}.{environment}.com/no-cache/returns/api/verify-package/{request_id}`
 
 _Body Parameters:_
 
-| Param                 | Type    | Required | Default |
-| --------------------- | ------- | -------- | ------- |
-| restockFee            | number  |   no     |    0    |
-| refundedShippingValue | number  |   no     |    0    |
+| Param                 | Type   | Required | Default |
+| --------------------- | ------ | -------- | ------- |
+| restockFee            | number | no       | 0       |
+| refundedShippingValue | number | no       | 0       |
 
 After using this API you can check the results using the `Get request by id` API
 
@@ -321,6 +322,7 @@ Body example:
     "refundedShippingValue": 20
 }
 ```
+
 ##### Response body example:
 
 ```
@@ -490,6 +492,7 @@ _Body Parameters:_
 
 - [New CSS Handles](https://github.com/vtex-apps/return-app/pull/6)
 
- - [[Urgent] Partial refund + improvements on admin area](https://github.com/vtex-apps/return-app/pull/38)
- - [Fix profile request for production environment](https://github.com/vtex-apps/return-app/pull/42)
- - [[API ERROR] Update returns schema + fix binding](https://github.com/vtex-apps/return-app/pull/43)
+- [[Urgent] Partial refund + improvements on admin area](https://github.com/vtex-apps/return-app/pull/38)
+- [Fix profile request for production environment](https://github.com/vtex-apps/return-app/pull/42)
+- [[API ERROR] Update returns schema + fix binding](https://github.com/vtex-apps/return-app/pull/43)
+- [Email templates](https://github.com/vtex-apps/return-app/pull/155)
