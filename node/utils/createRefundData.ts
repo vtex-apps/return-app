@@ -5,10 +5,12 @@ export const createRefundData = ({
   requestId,
   refundData,
   requestItems,
+  refundableShipping,
 }: {
   requestId: string
   refundData?: Maybe<RefundDataInput>
   requestItems: ReturnRequest['items']
+  refundableShipping: number
 }): ReturnRequest['refundData'] => {
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
@@ -46,9 +48,15 @@ export const createRefundData = ({
 
   const refundedShippingValue = refundData?.refundedShippingValue ?? 0
 
+  if (refundableShipping < refundedShippingValue) {
+    throw new ResolverError(
+      `Refundable shipping value (${refundableShipping}) is less than the shipping value sent (${refundedShippingValue})`
+    )
+  }
+
   return {
     // invoiceNumber has to match the requestId.
-    // This values is used to filter the invoices created via Return app when calculating the items avaialble to be returned.
+    // This values is used to filter the invoices created via Return app when calculating the items available to be returned.
     invoiceNumber: requestId,
     invoiceValue: refundedItemsValue + refundedShippingValue,
     refundedItemsValue,

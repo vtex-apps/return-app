@@ -141,12 +141,17 @@ export const updateRequestStatusService = async (
     createdAt: requestDate,
   })
 
+  const maxRefundableShipping =
+    returnRequest.refundableAmountTotals.find(({ id }) => id === 'shipping')
+      ?.value ?? 0
+
   const refundInvoice =
     createRefundInvoice && requestStatus !== 'denied'
       ? createRefundData({
           requestId,
           refundData,
           requestItems: returnRequest.items,
+          refundableShipping: maxRefundableShipping,
         })
       : returnRequest.refundData
 
