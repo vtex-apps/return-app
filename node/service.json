@@ -108,11 +108,11 @@
       "public": true,
       "settingsType": "workspace"
     },
-    "returnRequest": {
+    "returnRequests": {
       "path": "/_v/return-request",
       "public": true
     },
-    "getReturnRequest": {
+    "returnRequest": {
       "path": "/_v/return-request/:requestId",
       "public": true
     }

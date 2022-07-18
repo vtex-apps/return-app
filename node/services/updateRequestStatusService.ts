@@ -61,7 +61,27 @@ const formatRequestToPartialUpdate = (
 }
 
 const acceptOrDenyPackage = (refundItemList?: RefundItemInput[]) => {
-  return refundItemList?.some(({ quantity }) => quantity > 0)
+  if (!refundItemList) {
+    throw new UserInputError(
+      'Missing items inside refundData object. It is necessary to pass a list of items to refund. To deny all items, pass a empty array.'
+    )
+  }
+
+  if (!Array.isArray(refundItemList)) {
+    throw new UserInputError(
+      'Item has to be an array. To deny all items, pass a empty array.'
+    )
+  }
+
+  return refundItemList.some(({ quantity, orderItemIndex }) => {
+    if (typeof quantity !== 'number') {
+      throw new UserInputError(
+        `Not a valid quantity for items index ${orderItemIndex}`
+      )
+    }
+
+    return quantity > 0
+  })
     ? 'packageVerified'
     : 'denied'
 }
@@ -115,7 +135,9 @@ export const updateRequestStatusService = async (
 
   // when a request is made for the same status, it means user is adding a new comment
   if (status === returnRequest.status && !comment) {
-    throw new UserInputError('Missing comment')
+    throw new UserInputError(
+      'Missing comment. Comment is needed when status sent is equal the current status.'
+    )
   }
 
   const isPackageVerified = status === 'packageVerified'
@@ -125,7 +147,9 @@ export const updateRequestStatusService = async (
   const createRefundInvoice = isPackageVerified && !returnRequest.refundData
 
   if (createRefundInvoice && !refundData) {
-    throw new UserInputError('Missing refundData')
+    throw new UserInputError(
+      'Missing refundData property. To update status to packageVerified it is necessary to send items verification object.'
+    )
   }
 
   // When status is packageVerified, the final status is based on the quantity of items. If none is approved, status is denied.
@@ -180,7 +204,24 @@ export const updateRequestStatusService = async (
       : null,
   }
 
-  await returnRequestClient.update(requestId, updatedRequest)
+  try {
+    await returnRequestClient.update(requestId, updatedRequest)
+  } catch (error) {
+    const mdValidationErrors = error?.response?.data?.errors[0]?.errors
+
+    const errorMessageString = mdValidationErrors
+      ? JSON.stringify(
+          {
+            message: 'Schema Validation error',
+            errors: mdValidationErrors,
+          },
+          null,
+          2
+        )
+      : error.message
+
+    throw new ResolverError(errorMessageString, error.response?.status || 500)
+  }
 
   const { cultureInfoData } = updatedRequest
 

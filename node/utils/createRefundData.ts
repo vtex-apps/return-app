@@ -1,5 +1,5 @@
 import type { Maybe, RefundDataInput, ReturnRequest } from 'vtex.return-app'
-import { ResolverError } from '@vtex/api'
+import { UserInputError } from '@vtex/api'
 
 export const createRefundData = ({
   requestId,
@@ -25,12 +25,24 @@ export const createRefundData = ({
     const requestedItem = requestItemsMap.get(refundItem.orderItemIndex)
 
     if (!requestedItem) {
-      throw new ResolverError(
+      throw new UserInputError(
         `Item index ${refundItem.orderItemIndex} isn't in the return request`
       )
     }
 
+    if (requestedItem.quantity < refundItem.quantity) {
+      throw new UserInputError(
+        `Item index ${refundItem.orderItemIndex} has a quantity of ${requestedItem.quantity} but ${refundItem.quantity} was requested to return`
+      )
+    }
+
     const { orderItemIndex, sellingPrice, tax, id } = requestedItem
+
+    if (typeof refundItem.restockFee !== 'number') {
+      throw new UserInputError(
+        `Item index ${refundItem.orderItemIndex} has a invalid restockFee. It must be a number. Pass 0 if there is no restock fee.`
+      )
+    }
 
     items.push({
       orderItemIndex,
@@ -46,10 +58,16 @@ export const createRefundData = ({
     0
   )
 
+  if (typeof refundData?.refundedShippingValue !== 'number') {
+    throw new UserInputError(
+      'Missing refundedShippingValue or not a valid number'
+    )
+  }
+
   const refundedShippingValue = refundData?.refundedShippingValue ?? 0
 
   if (refundableShipping < refundedShippingValue) {
-    throw new ResolverError(
+    throw new UserInputError(
       `Refundable shipping value (${refundableShipping}) is less than the shipping value sent (${refundedShippingValue})`
     )
   }
