@@ -111,6 +111,10 @@
     "returnRequest": {
       "path": "/_v/return-request",
       "public": true
+    },
+    "getReturnRequest": {
+      "path": "/_v/return-request/:requestId",
+      "public": true
     }
   }
 }
