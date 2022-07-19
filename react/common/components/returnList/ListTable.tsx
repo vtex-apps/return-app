@@ -1,16 +1,21 @@
 import React, { useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Table, EmptyState } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import ReturnListSchema from './ListTableSchema'
 import JumpToPage from './JumpToPage'
 import ListTableFilter from './ListTableFilter'
 import { useReturnRequestList } from '../../../hooks/useReturnRequestList'
 
+const CSS_HANDLES = ['listTableContainer'] as const
+
 const ListTable = () => {
   const {
     returnRequestData: { data, loading, error, refetch },
   } = useReturnRequestList()
+
+  const handles = useCssHandles(CSS_HANDLES)
 
   const { returnRequestList } = data ?? {}
   const { list, paging } = returnRequestList ?? {}
@@ -65,7 +70,7 @@ const ListTable = () => {
   }
 
   return (
-    <>
+    <div className={handles.listTableContainer}>
       <ListTableFilter
         refetch={refetch}
         loading={loading}
@@ -102,7 +107,7 @@ const ListTable = () => {
           maxPage={paging.pages}
         />
       ) : null}
-    </>
+    </div>
   )
 }
 

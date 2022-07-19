@@ -3,6 +3,7 @@ import type { RouteComponentProps } from 'react-router'
 import { PageBlock, PageHeader } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { StoreReturnDetailsLoader } from './loaders/StoreReturnDetailsLoader'
 import { ReturnDetailsProvider } from '../../common/provider/ReturnDetailsProvider'
@@ -17,9 +18,12 @@ import { StatusHistory } from '../../common/components/ReturnDetails/StatusHisto
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 
+const CSS_HANDLES = ['contactPickupContainer'] as const
+
 const StoreReturnDetails = () => {
   const { loading, error } = useReturnDetails()
   const { navigate } = useRuntime()
+  const handles = useCssHandles(CSS_HANDLES)
 
   return (
     <PageBlock className="ph0 mh0 pa0 pa0-ns">
@@ -42,7 +46,9 @@ const StoreReturnDetails = () => {
         <OrderLink />
         <ItemDetailsList />
         <ReturnValues />
-        <div className="flex-ns flex-wrap flex-row">
+        <div
+          className={`${handles.contactPickupContainer} flex-ns flex-wrap flex-row`}
+        >
           <ContactDetails />
           <PickupAddress />
         </div>

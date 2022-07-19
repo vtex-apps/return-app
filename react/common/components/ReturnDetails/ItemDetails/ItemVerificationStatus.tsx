@@ -6,16 +6,27 @@ import {
   IconClock,
 } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
 
+const CSS_HANDLES = [
+  'itemVerificationDeniedContainer',
+  'itemVerificationApprovedContainer',
+  'itemVerificationPartiallyContainer',
+  'itemVerificationNewContainer',
+] as const
+
 export const ItemVerificationStatus = (props: ItemStatusInterface) => {
   const { status, quantity, quantityRefunded } = props
+  const handles = useCssHandles(CSS_HANDLES)
 
   switch (status) {
     case 'denied': {
       return (
-        <div className="c-danger flex items-center">
+        <div
+          className={`${handles.itemVerificationDeniedContainer} c-danger flex items-center`}
+        >
           <span className="mr2 flex">
             <IconFailure size={14} />
           </span>
@@ -26,7 +37,9 @@ export const ItemVerificationStatus = (props: ItemStatusInterface) => {
 
     case 'approved': {
       return (
-        <div className="c-success flex items-center">
+        <div
+          className={`${handles.itemVerificationApprovedContainer} c-success flex items-center`}
+        >
           <span className="mr2 flex">
             <IconSuccess size={14} />
           </span>
@@ -37,7 +50,9 @@ export const ItemVerificationStatus = (props: ItemStatusInterface) => {
 
     case 'partiallyApproved': {
       return (
-        <div className="c-warning flex items-center">
+        <div
+          className={`${handles.itemVerificationPartiallyContainer} c-warning flex items-center`}
+        >
           <span className="mr2 flex">
             <IconWarning size={14} />
           </span>
@@ -51,7 +66,9 @@ export const ItemVerificationStatus = (props: ItemStatusInterface) => {
 
     default: {
       return (
-        <div className="c-warning flex items-center">
+        <div
+          className={`${handles.itemVerificationNewContainer} c-warning flex items-center`}
+        >
           <span className="mr2 flex">
             <IconClock size={14} />
           </span>
