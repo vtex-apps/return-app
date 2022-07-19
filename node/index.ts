@@ -33,6 +33,7 @@ import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
+import { createReturn } from './middlewares/createReturn'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -55,9 +56,9 @@ declare global {
 
   interface State extends RecorderState {
     // Added in the state via graphql directive or auth middleware when request has vtexidclientautcookie
-    userProfile: UserProfile
+    userProfile?: UserProfile
     // Added in the state via auth middleware when request has appkey and apptoken.
-    appkey: string
+    appkey?: string
   }
 }
 
@@ -131,7 +132,7 @@ export default new Service<Clients, State, ParamsContext>({
       POST: [errorHandler, createRefund],
     }),
     returnRequest: method({
-      POST: [errorHandler, auth],
+      POST: [errorHandler, auth, createReturn],
     }),
   },
   graphql: {

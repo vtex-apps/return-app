@@ -5,16 +5,18 @@ import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
+import { getCustomerEmail } from '../utils/getCostumerEmail'
 
 export const orderToReturnSummary = async (
   _: unknown,
-  args: { orderId: string },
+  args: { orderId: string; storeUserEmail?: string },
   ctx: Context
 ): Promise<OrderToReturnSummary> => {
-  const { orderId } = args
+  const { orderId, storeUserEmail } = args
   const {
-    state: { userProfile },
+    state: { userProfile, appkey },
     clients: { appSettings, oms, returnRequest: returnRequestClient },
+    vtex: { logger },
   } = ctx
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
@@ -24,7 +26,6 @@ export const orderToReturnSummary = async (
   }
 
   const { maxDays, excludedCategories } = settings
-  const { email } = userProfile
 
   // For requests where orderId is an empty string
   if (!orderId) {
@@ -38,6 +39,7 @@ export const orderToReturnSummary = async (
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
+    appkey,
   })
 
   canOrderBeReturned({
@@ -46,7 +48,19 @@ export const orderToReturnSummary = async (
     status,
   })
 
-  return createOrdersToReturnSummary(order, email, {
+  const customerEmail = getCustomerEmail(
+    clientProfileData,
+    {
+      userProfile,
+      appkey,
+      inputEmail: storeUserEmail,
+    },
+    {
+      logger,
+    }
+  )
+
+  return createOrdersToReturnSummary(order, customerEmail, {
     excludedCategories,
     returnRequestClient,
   })
