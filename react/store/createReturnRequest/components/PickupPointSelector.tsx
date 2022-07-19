@@ -6,6 +6,7 @@ import type {
   NearPickupPointQueryResponse,
   PickupPoint,
 } from 'vtex.return-app'
+import { useCssHandles } from 'vtex.css-handles'
 import { Dropdown, Spinner } from 'vtex.styleguide'
 import { FormattedMessage, useIntl } from 'react-intl'
 
@@ -21,9 +22,12 @@ interface PickupPointsDropdownOptions {
   label: string
 }
 
+const CSS_HANDLES = ['pickupPointContainer'] as const
+
 export const PickupPointSelector = ({ geoCoordinates }: Props) => {
   const [lat, long] = geoCoordinates.toString().split(',')
   const { formatMessage } = useIntl()
+  const handles = useCssHandles(CSS_HANDLES)
 
   const {
     returnRequest: { pickupReturnData },
@@ -104,7 +108,7 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
   }
 
   return (
-    <div className="mb4">
+    <div className={`${handles.pickupPointContainer} mb4`}>
       {loading ? (
         <div className="h2">
           <Spinner />

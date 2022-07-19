@@ -3,11 +3,14 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { Dropdown, Textarea } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { getReasonOptions } from '../../../common/constants/returnsRequest'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
 import { generateCustomReasonOptions } from '../../utils/generateCustomReasonOptions'
+
+const CSS_HANDLES = ['otherReasonOptionContainer'] as const
 
 interface Props {
   reason: string
@@ -22,6 +25,8 @@ export const RenderReasonDropdown = (props: Props) => {
     props
 
   const { formatMessage } = useIntl()
+  const handles = useCssHandles(CSS_HANDLES)
+
   const { data: settings } = useStoreSettings()
   const {
     culture: { locale },
@@ -73,7 +78,7 @@ export const RenderReasonDropdown = (props: Props) => {
         onChange={handleReasonChange}
       />
       {reason === 'otherReason' ? (
-        <div className="mv3">
+        <div className={`${handles.otherReasonOptionContainer} mv3`}>
           <Textarea
             resize="none"
             value={otherReason}

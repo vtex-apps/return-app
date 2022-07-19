@@ -1,11 +1,15 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { TotalWrapper } from './TotalWrapper'
 import { TotalContainer } from './TotalContainer'
 
+const CSS_HANDLES = ['approvedValuesContainer'] as const
+
 export const ApprovedValues = () => {
+  const handles = useCssHandles(CSS_HANDLES)
   const { data } = useReturnDetails()
   const { refundData, status } = data?.returnRequestDetails ?? {}
 
@@ -22,7 +26,7 @@ export const ApprovedValues = () => {
   }, 0)
 
   return (
-    <div className="mb5">
+    <div className={`${handles.approvedValuesContainer} mb5`}>
       {status === 'amountRefunded' ? (
         <h3>
           <FormattedMessage id="return-app.return-request-details.refund-total.header-refunded" />

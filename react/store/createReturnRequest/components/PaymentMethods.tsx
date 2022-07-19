@@ -1,6 +1,7 @@
 import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 import type {
   RefundPaymentDataInput,
   PaymentType,
@@ -22,6 +23,8 @@ type PaymentMethodsOptions = {
   label: string
 }
 
+const CSS_HANDLES = ['paymentMethodContainer', 'paymentBankWrapper'] as const
+
 const messages = defineMessages({
   formIBAN: { id: 'store/return-app.return-order-details.payment-method.iban' },
   formAccountHolder: {
@@ -31,6 +34,7 @@ const messages = defineMessages({
 
 export const PaymentMethods = ({ canRefundCard }: Props) => {
   const { formatMessage } = useIntl()
+  const handles = useCssHandles(CSS_HANDLES)
 
   const { data } = useStoreSettings()
   const { paymentOptions } = data ?? {}
@@ -109,7 +113,9 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
   const bankDetailsError = inputErrors.some((error) => error === 'bank-details')
 
   return (
-    <div className="flex-ns flex-wrap flex-auto flex-column pa4 mb6">
+    <div
+      className={`${handles.paymentMethodContainer} flex-ns flex-wrap flex-auto flex-column pa4 mb6`}
+    >
       <p>
         <FormattedMessage id="store/return-app.return-order-details.payment-method.description" />
       </p>
@@ -135,7 +141,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
         </>
       )}
       {refundPaymentData?.refundPaymentMethod === 'bank' ? (
-        <div>
+        <div className={`${handles.paymentMethodContainer}`}>
           <div className="flex-ns flex-wrap flex-auto flex-column mt6 mw6">
             <Input
               name="accountHolderName"

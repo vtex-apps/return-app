@@ -74,6 +74,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
   >(ORDER_TO_RETURN_SUMMARY, {
     variables: { orderId },
     skip: !orderId,
+    fetchPolicy: 'no-cache',
   })
 
   useEffect(() => {

@@ -3,12 +3,15 @@ import { Table } from 'vtex.styleguide'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedDate, useIntl, FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import {
   createStatusTimeline,
   statusMessageIdAdmin,
 } from '../../../utils/requestStatus'
+
+const CSS_HANDLES = ['statusHistoryContainer'] as const
 
 const statusHistorySchema = (
   formatMessage: IntlFormatters['formatMessage'],
@@ -54,6 +57,7 @@ const statusHistorySchema = (
 })
 
 export const StatusHistory = () => {
+  const handles = useCssHandles(CSS_HANDLES)
   const { data } = useReturnDetails()
   const { formatMessage } = useIntl()
   const {
@@ -71,7 +75,7 @@ export const StatusHistory = () => {
   )
 
   return (
-    <section className="mv4">
+    <section className={`${handles.statusHistoryContainer} mv4`}>
       <h3>
         <FormattedMessage id="return-app.return-request-details.status-history.title" />
       </h3>

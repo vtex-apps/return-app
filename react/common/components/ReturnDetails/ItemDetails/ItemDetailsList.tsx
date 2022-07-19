@@ -6,11 +6,14 @@ import type {
   Status,
   Maybe,
 } from 'vtex.return-app'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
 
 type ItemStatus = 'new' | 'denied' | 'approved' | 'partiallyApproved'
+
+const CSS_HANDLES = ['itemDetailsListContainer'] as const
 
 export interface ItemStatusInterface {
   status: ItemStatus
@@ -78,6 +81,8 @@ const getItemVerificationStatus = (
 }
 
 export const ItemDetailsList = () => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const { data } = useReturnDetails()
 
   if (!data) return null
@@ -94,7 +99,7 @@ export const ItemDetailsList = () => {
   const { currencyCode } = cultureInfoData
 
   return (
-    <section>
+    <section className={handles.itemDetailsListContainer}>
       <Table
         fullWidth
         dynamicRowHeight
