@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { FloatingActionBar } from 'vtex.styleguide'
-import { FormattedMessage } from 'react-intl'
+import { FloatingActionBar, ModalDialog } from 'vtex.styleguide'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { RefundItemInput } from 'vtex.return-app'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
@@ -28,16 +28,19 @@ interface Props {
 export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
   const { data } = useReturnDetails()
   const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
+
   const [refundItemsInput, setRefundItemsInput] = useState<RefundItemMap>(
     new Map()
   )
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [shippingToRefund, setShippingToRefund] = useState(0)
 
   const {
     id: requestId,
     items = [],
     refundableAmountTotals = [],
+    cultureInfoData,
   } = data?.returnRequestDetails ?? {}
 
   const handleItemChanges = ({
@@ -129,7 +132,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
             <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.confirm" />
           ),
           isLoading: submitting,
-          onClick: onSave,
+          onClick: () => setIsModalOpen(true),
         }}
         cancel={{
           label: (
@@ -138,6 +141,88 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
           onClick: onViewVerifyItems,
         }}
       />
+      <ModalDialog
+        centered
+        confirmation={{
+          onClick: onSave,
+          label: 'Yes',
+        }}
+        cancelation={{
+          onClick: () => setIsModalOpen(false),
+          label: 'Cancel',
+        }}
+        isOpen={isModalOpen}
+        onClose={onViewVerifyItems}
+      >
+        <div className="">
+          <p className="f3 f3-ns fw3 b">
+            <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.title" />
+          </p>
+          <div>
+            {items.map((item) => {
+              return (
+                <>
+                  <div className="flex" key={item.refId}>
+                    <p className="f6 mr5 gray b">
+                      <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.product" />
+                      :
+                    </p>
+                    <p className="f6 gray">{item.name}</p>
+                  </div>
+                  <div className="flex" key={item.refId}>
+                    <p className="f6 mr5 gray b">
+                      <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.quantity" />
+                      :
+                    </p>
+                    <p className="f6 gray">{item.quantity}</p>
+                  </div>
+                </>
+              )
+            })}
+          </div>
+          <div className="flex">
+            <p className="f6 mr5 gray b">
+              <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
+              :
+            </p>
+            <p className="f6 gray">
+              <FormattedNumber
+                value={Number(shippingToRefund) / 100}
+                currency={cultureInfoData.currencyCode}
+                style="currency"
+              />
+            </p>
+          </div>
+          <div className="flex">
+            <p className="f6 mr5 gray b">
+              <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
+              :
+            </p>
+            <p className="f6 gray">
+              <FormattedNumber
+                value={Number(totalRefundItems) / 100}
+                currency={cultureInfoData.currencyCode}
+                style="currency"
+              />
+            </p>
+          </div>
+          <div className="flex">
+            <p className="f6 mr5 gray b">
+              <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
+              :
+            </p>
+            <p className="f6 gray">
+              <FormattedNumber
+                value={
+                  (Number(shippingToRefund) + Number(totalRefundItems)) / 100
+                }
+                currency={cultureInfoData.currencyCode}
+                style="currency"
+              />
+            </p>
+          </div>
+        </div>
+      </ModalDialog>
     </>
   )
 }
