@@ -1,8 +1,11 @@
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { GiftCard, Maybe, RefundPaymentData } from 'vtex.return-app'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
+
+const CSS_HANDLES = ['refundMethodDetailContainer'] as const
 
 const messageId =
   'return-app.return-request-details.payent-method.refund-option'
@@ -15,13 +18,15 @@ interface RefundMethodProps {
 }
 
 const RefundPayment = (props: RefundMethodProps) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const { refundPaymentData, giftCard, refundValue, currency } = props
 
   const { refundPaymentMethod, iban, accountHolderName } = refundPaymentData
 
   if (refundPaymentMethod === 'giftCard') {
     return (
-      <div>
+      <div className={handles.refundMethodDetailContainer}>
         <p>
           <FormattedMessage
             id={`${messageId}.refund-method`}

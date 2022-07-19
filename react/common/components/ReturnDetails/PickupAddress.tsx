@@ -1,10 +1,14 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 
+const CSS_HANDLES = ['commonPickupContainer'] as const
+
 export const PickupAddress = () => {
   const { data } = useReturnDetails()
+  const handles = useCssHandles(CSS_HANDLES)
 
   if (!data) return null
 
@@ -18,7 +22,9 @@ export const PickupAddress = () => {
     'return-app.return-request-details.pickup-address'
 
   return (
-    <section className="flex-ns flex-wrap flex-auto flex-column pt4 pb4">
+    <section
+      className={`${handles.commonPickupContainer} flex-ns flex-wrap flex-auto flex-column pt4 pb4`}
+    >
       <h3>
         <FormattedMessage id={`${pickupAddressMessageRoute}.title`} />
       </h3>
