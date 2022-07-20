@@ -1,4 +1,3 @@
-import { deleteReturnRequest } from './deleteReturnRequest'
 import { createReturnRequest } from './createReturnRequest'
 import {
   queries as settingsQuery,
@@ -14,7 +13,6 @@ import { updateReturnRequestStatus } from './updateReturnRequestStatus'
 import { nearestPickupPoints } from './nearestPickupPoints'
 
 export const mutations = {
-  deleteReturnRequest,
   createReturnRequest,
   updateReturnRequestStatus,
   ...settingsMutation,
