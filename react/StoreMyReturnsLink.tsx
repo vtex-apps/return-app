@@ -10,7 +10,7 @@ interface RenderProps {
 interface Props {
   render: (paths: RenderProps[]) => ReactElement
 }
-FormattedMessage
+
 const StoreMyReturnsLink: FC<Props> = ({ render }) => {
   return render([
     {
