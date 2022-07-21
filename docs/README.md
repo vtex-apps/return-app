@@ -494,3 +494,4 @@ _Body Parameters:_
  - [Fix profile request for production environment](https://github.com/vtex-apps/return-app/pull/42)
  - [[API ERROR] Update returns schema + fix binding](https://github.com/vtex-apps/return-app/pull/43)
  - [Feat/add culture info](https://github.com/vtex-apps/return-app/pull/155)
+ - [V3 update endpoint](https://github.com/vtex-apps/return-app/pull/162)
