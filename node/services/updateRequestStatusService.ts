@@ -17,7 +17,7 @@ import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
-import type { MailData } from '../typings/mailClient'
+import type { StatusUpdateMailData } from '../typings/mailClient'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -246,16 +246,16 @@ export const updateRequestStatusService = async (
       refundData: updatedRefundData,
     } = updatedRequest
 
-    const mailData: MailData = {
+    const mailData: StatusUpdateMailData = {
       templateName: OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale),
       jsonData: {
         data: {
           status: updatedStatus,
-          name: customerProfileData?.name,
+          name: customerProfileData?.name ?? '',
           DocumentId: requestId,
-          email: customerProfileData?.email,
-          paymentMethod: refundPaymentData?.refundPaymentMethod,
-          iban: refundPaymentData?.iban,
+          email: customerProfileData?.email ?? '',
+          paymentMethod: refundPaymentData?.refundPaymentMethod ?? '',
+          iban: refundPaymentData?.iban ?? '',
           refundedAmount:
             Number(updatedRefundData?.refundedItemsValue) +
             Number(updatedRefundData?.refundedShippingValue),
