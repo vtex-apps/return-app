@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
-import { FloatingActionBar } from 'vtex.styleguide'
-import { FormattedMessage } from 'react-intl'
+import {
+  FloatingActionBar,
+  ModalDialog,
+  Table,
+  Tooltip,
+  IconInfo,
+} from 'vtex.styleguide'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { RefundItemInput } from 'vtex.return-app'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 import { VerifyItemsTable } from './VerifyItemsTable'
 import { VerifyTotalsTable } from './VerifyTotalsTable'
 import { useUpdateRequestStatus } from '../../../hooks/useUpdateRequestStatus'
+import { verifyItemsModalSchema } from './verifyItemsModalSchema'
 
 export type RefundItemMap = Map<
   number,
@@ -28,16 +35,19 @@ interface Props {
 export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
   const { data } = useReturnDetails()
   const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
+
   const [refundItemsInput, setRefundItemsInput] = useState<RefundItemMap>(
     new Map()
   )
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [shippingToRefund, setShippingToRefund] = useState(0)
 
   const {
     id: requestId,
     items = [],
     refundableAmountTotals = [],
+    cultureInfoData,
   } = data?.returnRequestDetails ?? {}
 
   const handleItemChanges = ({
@@ -129,7 +139,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
             <FormattedMessage id="admin/return-app.return-request-details.verify-items.action.confirm" />
           ),
           isLoading: submitting,
-          onClick: onSave,
+          onClick: () => setIsModalOpen(true),
         }}
         cancel={{
           label: (
@@ -138,6 +148,98 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
           onClick: onViewVerifyItems,
         }}
       />
+      <ModalDialog
+        centered
+        confirmation={{
+          onClick: onSave,
+          label: totalRefundItems ? (
+            <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.button-verify" />
+          ) : (
+            <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.button-deny" />
+          ),
+        }}
+        cancelation={{
+          onClick: () => setIsModalOpen(false),
+          label: 'Cancel',
+        }}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <div>
+          <p className="f3 f3-ns fw6">
+            <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.title" />
+          </p>
+          <div>
+            <Table
+              fullWidth
+              schema={verifyItemsModalSchema(refundItemsInput, cultureInfoData)}
+              items={items}
+            />
+          </div>
+
+          {totalRefundItems ? (
+            <>
+              <div className="flex mt5 justify-end">
+                <p className="f6 mr5 gray">
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
+                  :
+                </p>
+                <p className="f6 ">
+                  <FormattedNumber
+                    value={Number(shippingToRefund) / 100}
+                    currency={cultureInfoData.currencyCode}
+                    style="currency"
+                  />
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <p className="f6 mr5 gray">
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
+                  :
+                </p>
+                <p className="f6 ">
+                  <FormattedNumber
+                    value={Number(totalRefundItems) / 100}
+                    currency={cultureInfoData.currencyCode}
+                    style="currency"
+                  />
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <p className="f6 mr5 gray b">
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
+                  :
+                </p>
+                <p className="f6">
+                  <FormattedNumber
+                    value={
+                      (Number(shippingToRefund) + Number(totalRefundItems)) /
+                      100
+                    }
+                    currency={cultureInfoData.currencyCode}
+                    style="currency"
+                  />
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-end mt7">
+              <Tooltip
+                label={
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.tooltip" />
+                }
+              >
+                <span className="yellow pointer mr3 flex">
+                  <IconInfo />
+                </span>
+              </Tooltip>
+              <span className="i-s">
+                <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.deny-message" />
+              </span>
+            </div>
+          )}
+        </div>
+      </ModalDialog>
     </>
   )
 }
