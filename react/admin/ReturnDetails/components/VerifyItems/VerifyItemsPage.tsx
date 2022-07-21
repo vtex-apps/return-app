@@ -176,48 +176,53 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
               items={items}
             />
           </div>
-          <div className="flex mt5 justify-end">
-            <p className="f6 mr5 gray">
-              <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
-              :
-            </p>
-            <p className="f6 ">
-              <FormattedNumber
-                value={Number(shippingToRefund) / 100}
-                currency={cultureInfoData.currencyCode}
-                style="currency"
-              />
-            </p>
-          </div>
-          <div className="flex justify-end">
-            <p className="f6 mr5 gray">
-              <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
-              :
-            </p>
-            <p className="f6 ">
-              <FormattedNumber
-                value={Number(totalRefundItems) / 100}
-                currency={cultureInfoData.currencyCode}
-                style="currency"
-              />
-            </p>
-          </div>
-          <div className="flex justify-end">
-            <p className="f6 mr5 gray b">
-              <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
-              :
-            </p>
-            <p className="f6">
-              <FormattedNumber
-                value={
-                  (Number(shippingToRefund) + Number(totalRefundItems)) / 100
-                }
-                currency={cultureInfoData.currencyCode}
-                style="currency"
-              />
-            </p>
-          </div>
-          {totalRefundItems ? null : (
+
+          {totalRefundItems ? (
+            <>
+              <div className="flex mt5 justify-end">
+                <p className="f6 mr5 gray">
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
+                  :
+                </p>
+                <p className="f6 ">
+                  <FormattedNumber
+                    value={Number(shippingToRefund) / 100}
+                    currency={cultureInfoData.currencyCode}
+                    style="currency"
+                  />
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <p className="f6 mr5 gray">
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
+                  :
+                </p>
+                <p className="f6 ">
+                  <FormattedNumber
+                    value={Number(totalRefundItems) / 100}
+                    currency={cultureInfoData.currencyCode}
+                    style="currency"
+                  />
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <p className="f6 mr5 gray b">
+                  <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
+                  :
+                </p>
+                <p className="f6">
+                  <FormattedNumber
+                    value={
+                      (Number(shippingToRefund) + Number(totalRefundItems)) /
+                      100
+                    }
+                    currency={cultureInfoData.currencyCode}
+                    style="currency"
+                  />
+                </p>
+              </div>
+            </>
+          ) : (
             <div className="flex items-center justify-end mt7">
               <Tooltip
                 label={
