@@ -135,7 +135,9 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
           {paymentMethodError && !refundPaymentData?.refundPaymentMethod ? (
             <CustomMessage
               status="error"
-              message="store/return-app.return-payment-methods.input-payment-method.error"
+              message={
+                <FormattedMessage id="store/return-app.return-payment-methods.input-payment-method.error" />
+              }
             />
           ) : null}
         </>
@@ -152,7 +154,9 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
             {bankDetailsError && !refundPaymentData.accountHolderName ? (
               <CustomMessage
                 status="error"
-                message="store/return-app.return-payment-methods.input-account-holder.error"
+                message={
+                  <FormattedMessage id="store/return-app.return-payment-methods.input-account-holder.error" />
+                }
               />
             ) : null}
           </div>
@@ -166,7 +170,9 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
             {bankDetailsError && !refundPaymentData.iban ? (
               <CustomMessage
                 status="error"
-                message="store/return-app.return-payment-methods.input-iban.error"
+                message={
+                  <FormattedMessage id="store/return-app.return-payment-methods.input-iban.error" />
+                }
               />
             ) : null}
           </div>

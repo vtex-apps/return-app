@@ -8,7 +8,7 @@ import type {
 } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Dropdown, Spinner } from 'vtex.styleguide'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 import NEAREST_PICKUP_POINTS from '../graphql/nearestPickupPoints.gql'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
@@ -26,7 +26,6 @@ const CSS_HANDLES = ['pickupPointContainer'] as const
 
 export const PickupPointSelector = ({ geoCoordinates }: Props) => {
   const [lat, long] = geoCoordinates.toString().split(',')
-  const { formatMessage } = useIntl()
   const handles = useCssHandles(CSS_HANDLES)
 
   const {
@@ -114,23 +113,25 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
           <Spinner />
         </div>
       ) : (
-        <Dropdown
-          label=""
-          error={Boolean(error)}
-          errorMessage={
-            error ? (
-              <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
-            ) : undefined
-          }
-          placeholder={formatMessage({
-            id: 'store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder',
-          })}
-          size="small"
-          options={pickupPointsDropdownOptions}
-          value={pickupReturnData.addressId}
-          onChange={handlePickupPointSelected}
-          preventTruncate
-        />
+        <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder">
+          {(placehoder) => (
+            <Dropdown
+              label=""
+              error={Boolean(error)}
+              errorMessage={
+                error ? (
+                  <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
+                ) : undefined
+              }
+              placeholder={placehoder}
+              size="small"
+              options={pickupPointsDropdownOptions}
+              value={pickupReturnData.addressId}
+              onChange={handlePickupPointSelected}
+              preventTruncate
+            />
+          )}
+        </FormattedMessage>
       )}
     </div>
   )

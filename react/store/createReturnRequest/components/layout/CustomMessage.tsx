@@ -1,15 +1,13 @@
+import type { ReactElement } from 'react'
 import React from 'react'
-import { useIntl } from 'react-intl'
 import { IconWarning } from 'vtex.styleguide'
 
 interface Props {
   status: string
-  message: string
+  message: ReactElement
 }
 
 export const CustomMessage = ({ status, message }: Props) => {
-  const { formatMessage } = useIntl()
-
   return (
     <section className="flex items-center mt2">
       <div
@@ -24,11 +22,7 @@ export const CustomMessage = ({ status, message }: Props) => {
         >
           <IconWarning size={14} />
         </span>
-        <p className="t-small ma2">
-          {formatMessage({
-            id: message,
-          })}
-        </p>
+        <p className="t-small ma2">{message}</p>
       </div>
     </section>
   )

@@ -115,18 +115,20 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
         onSubmit={handleSubmit}
       >
         <div className="mb6">
-          <Dropdown
-            size="small"
-            placeholder={formatMessage({
-              id: 'admin/return-app.return-request-details.update-status.dropdown.placeholder',
-            })}
-            options={createStatusOptions(
-              data.returnRequestDetails.status,
-              formatMessage
+          <FormattedMessage id="admin/return-app.return-request-details.update-status.dropdown.placeholder">
+            {(placeholder) => (
+              <Dropdown
+                size="small"
+                placeholder={placeholder}
+                options={createStatusOptions(
+                  data.returnRequestDetails.status,
+                  formatMessage
+                )}
+                value={selectedStatus}
+                onChange={handleStatusChange}
+              />
             )}
-            value={selectedStatus}
-            onChange={handleStatusChange}
-          />
+          </FormattedMessage>
         </div>
         <div className="mb6">
           <Textarea
