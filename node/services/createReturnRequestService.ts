@@ -15,7 +15,7 @@ import { validateCanUsedropoffPoints } from '../utils/validateCanUseDropoffPoint
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
-import type { MailData } from '../typings/mailClient'
+import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 
 export const createReturnRequestService = async (
@@ -272,7 +272,7 @@ export const createReturnRequestService = async (
       address: { country, city, street },
     } = shippingData
 
-    const mailData: MailData = {
+    const mailData: ConfirmationMailData = {
       templateName: OMS_RETURN_REQUEST_CONFIRMATION(locale),
       jsonData: {
         data: {

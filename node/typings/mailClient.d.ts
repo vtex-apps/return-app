@@ -1,44 +1,45 @@
 import type { ReturnRequestItem, Status } from 'vtex.return-app'
 
-export interface MailData {
-  templateName: string
-  jsonData: JsonData
+export type ReturnRequestConfirmation = string
+
+export type ReturnRequestStatusUpdate = string
+
+export interface ConfirmationMailData {
+  templateName: ReturnRequestConfirmation
+  jsonData: {
+    data: {
+      status: Status['new']
+      name: string
+      DocumentId: string
+      email: string
+      phoneNumber: string
+      country: string
+      locality: string
+      address: string
+      paymentMethod: string
+    }
+    products: ReturnRequestItem[]
+    refundStatusData: ReturnRequest['refundStatusData']
+  }
 }
 
-export interface JsonData {
-  data: Data
-  products: ReturnRequestItem[] | ReturnRequest['items']
-  refundStatusData?: ReturnRequest['refundStatusData']
-  _accountInfo?: AccountInfo
-  cultureInfoData?: CultureInfoData
+export interface StatusUpdateMailData {
+  templateName: ReturnRequestStatusUpdate
+  jsonData: {
+    data: {
+      status: Status
+      name: string
+      DocumentId: string
+      email: string
+      paymentMethod: string
+      iban: string
+      refundedAmount: number
+    }
+    products: ReturnRequest['items']
+    refundStatusData: ReturnRequest['refundStatusData']
+  }
 }
 
-export interface Data {
-  status?: Status
-  name?: string
-  DocumentId?: string
-  email?: string
-  phoneNumber?: string
-  country?: string
-  locality?: string
-  address?: string
-  paymentMethod?: string
-  iban?: string | null
-  refundedAmount?: number
-  giftCardCode?: string
-  dateSubmitted?: string
-}
-
-export interface AccountInfo {
-  Id: string
-  TradingName: string
-  HostName: string
-}
-
-export interface CultureInfoData {
-  currencyCode: string
-  locale: string
-}
 export interface Template {
   AccountId: string | null
   AccountName: string | null
