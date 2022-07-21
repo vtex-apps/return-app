@@ -184,6 +184,11 @@ input ReturnRequestFilters {
   id: String
   createdIn: DateRangeInput
   orderId: String
+  """
+  userId: If not passed, resolver will try to get it from cookie session
+  """
+  userId: String
+  userEmail: String
 }
 
 input DateRangeInput {

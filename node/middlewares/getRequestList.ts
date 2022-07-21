@@ -1,0 +1,40 @@
+import type { Status } from 'vtex.return-app'
+
+import { returnRequestListService } from '../services/returnRequestListService'
+
+export async function getRequestList(ctx: Context) {
+  const { query } = ctx
+
+  const {
+    _page,
+    _status,
+    _sequenceNumber,
+    _id,
+    _createdIn,
+    _orderId,
+    _userEmail,
+    _allFields,
+  } = query
+
+  const [from, to] = (_createdIn as string | undefined)?.split(',') ?? []
+
+  const getAllFields = Boolean(_allFields)
+
+  ctx.set('Cache-Control', 'no-cache')
+
+  ctx.body = await returnRequestListService(
+    ctx,
+    {
+      page: _page ? Number(_page) : 1,
+      filter: {
+        status: _status as Status | undefined,
+        sequenceNumber: _sequenceNumber as string | undefined,
+        id: _id as string | undefined,
+        createdIn: _createdIn ? { from, to } : undefined,
+        orderId: _orderId as string | undefined,
+        userEmail: _userEmail as string | undefined,
+      },
+    },
+    getAllFields
+  )
+}
