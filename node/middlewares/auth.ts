@@ -25,14 +25,19 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
         email: user,
         role: isAdmin ? 'admin' : 'store-user',
       }
+
+      if (isAdmin) {
+        ctx.vtex.adminUserAuthToken = authCookie
+      }
     }
   }
 
   if (appkey && apptoken) {
     // If appkey and apptoken are not valid, the method throws a 401 error
-    await vtexId.login({ appkey, apptoken })
+    const { token } = await vtexId.login({ appkey, apptoken })
 
     state.appkey = appkey
+    ctx.vtex.adminUserAuthToken = token
   }
 
   const { userProfile, appkey: appKeyState } = state
@@ -41,8 +46,6 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
   if (!userProfile && !appKeyState) {
     throw new AuthenticationError('Request failed with status code 401')
   }
-
-  ctx.body = 'success'
 
   await next()
 }

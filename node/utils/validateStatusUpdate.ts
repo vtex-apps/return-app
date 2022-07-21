@@ -1,29 +1,38 @@
-import { ResolverError } from '@vtex/api'
+import { ResolverError, UserInputError } from '@vtex/api'
 import type { Status } from 'vtex.return-app'
 
-const previousStatusAllowed: Record<Status, Status[]> = {
-  new: ['new'],
-  processing: ['new', 'processing'],
-  pickedUpFromClient: ['processing', 'pickedUpFromClient'],
-  pendingVerification: ['pickedUpFromClient', 'pendingVerification'],
-  packageVerified: ['pendingVerification', 'packageVerified'],
-  amountRefunded: ['packageVerified', 'amountRefunded'],
-  denied: [
-    'new',
-    'processing',
-    'pickedUpFromClient',
-    'pendingVerification',
-    'denied',
-  ],
+const statusAllowed: Record<Status, Status[]> = {
+  new: ['new', 'processing', 'denied'],
+  processing: ['processing', 'pickedUpFromClient', 'denied'],
+  pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'denied'],
+  pendingVerification: ['pendingVerification', 'packageVerified'],
+  // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
+  packageVerified: ['packageVerified', 'amountRefunded'],
+  amountRefunded: ['amountRefunded'],
+  denied: ['denied'],
 }
 
 export const validateStatusUpdate = (
   newStatus: Status,
   currentStatus: Status
 ) => {
-  if (!previousStatusAllowed[newStatus].includes(currentStatus)) {
+  if (!newStatus) {
+    throw new UserInputError('Missing status')
+  }
+
+  if (!statusAllowed[newStatus]) {
+    throw new UserInputError(
+      `Invalid status: ${newStatus}. Valid values: ${Object.keys(
+        statusAllowed
+      ).join(', ')}`
+    )
+  }
+
+  if (!statusAllowed[currentStatus].includes(newStatus)) {
     throw new ResolverError(
-      `Status transition from ${currentStatus} to ${newStatus} is not allowed`
+      `Status transition from ${currentStatus} to ${newStatus} is not allowed. Valid status: ${statusAllowed[
+        currentStatus
+      ].join(', ')}`
     )
   }
 }

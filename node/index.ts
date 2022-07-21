@@ -27,7 +27,7 @@ import { addComment } from './middlewares/api/addComment'
 import { verifyPackage } from './middlewares/api/verifyPackage'
 import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
-import { updateStatus } from './middlewares/api/updateStatus'
+import { updateStatus as updateStatusV2 } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
@@ -36,6 +36,7 @@ import { auth } from './middlewares/auth'
 import { createReturn } from './middlewares/createReturn'
 import { getRequest } from './middlewares/getRequest'
 import { getRequestList } from './middlewares/getRequestList'
+import { updateRequestStatus } from './middlewares/updateRequestStatus'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -128,17 +129,18 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, checkStatus],
     }),
     apiUpdateStatus: method({
-      POST: [errorHandler, updateStatus],
+      POST: [errorHandler, updateStatusV2],
     }),
     createRefund: method({
       POST: [errorHandler, createRefund],
     }),
-    returnRequest: method({
+    returnRequests: method({
       POST: [errorHandler, auth, createReturn],
       GET: [errorHandler, auth, getRequestList],
     }),
-    getReturnRequest: method({
+    returnRequest: method({
       GET: [errorHandler, auth, getRequest],
+      PUT: [errorHandler, auth, updateRequestStatus],
     }),
   },
   graphql: {

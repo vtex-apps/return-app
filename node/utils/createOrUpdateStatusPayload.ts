@@ -28,7 +28,7 @@ export const createOrUpdateStatusPayload = ({
         comment: comment.value,
         createdAt,
         submittedBy,
-        visibleForCustomer: comment.visibleForCustomer,
+        visibleForCustomer: Boolean(comment.visibleForCustomer),
         role: 'adminUser' as const,
       }
     : null

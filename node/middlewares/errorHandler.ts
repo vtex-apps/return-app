@@ -12,7 +12,7 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
     })
 
     ctx.status = error.status || error.response?.status || 500
-    ctx.body = error.message
+    ctx.body = { error: error.message }
     ctx.app.emit('error', error, ctx)
   }
 }
