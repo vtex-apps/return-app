@@ -1,4 +1,4 @@
-function mod97(string) {
+function mod97(string: any) {
   let checksum = string.slice(0, 2)
   let fragment
 
@@ -10,7 +10,7 @@ function mod97(string) {
   return checksum
 }
 
-export function isValidIBANNumber(input) {
+export function isValidIBANNumber(input: string) {
   const CODE_LENGTHS = {
     AD: 24,
     AE: 23,

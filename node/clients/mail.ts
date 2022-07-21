@@ -1,7 +1,11 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
 
-import type { MailData, Template } from '../typings/mailClient'
+import type {
+  StatusUpdateMailData,
+  ConfirmationMailData,
+  Template,
+} from '../typings/mailClient'
 
 const MAIL_SERVICE_PATH = '/api/mail-service/pvt/sendmail'
 const TEMPLATE_RENDER_PATH = '/api/template-render/pvt/templates'
@@ -16,7 +20,9 @@ export class MailClient extends JanusClient {
     })
   }
 
-  public sendMail(mailData: MailData): Promise<string> {
+  public sendMail(
+    mailData: StatusUpdateMailData | ConfirmationMailData
+  ): Promise<string> {
     return this.http.post(MAIL_SERVICE_PATH, mailData, {
       metric: 'mail-post-send',
     })

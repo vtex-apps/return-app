@@ -43,12 +43,14 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [shippingToRefund, setShippingToRefund] = useState(0)
 
+  if (!data) return null
+
   const {
     id: requestId,
     items = [],
     refundableAmountTotals = [],
     cultureInfoData,
-  } = data?.returnRequestDetails ?? {}
+  } = data?.returnRequestDetails
 
   const handleItemChanges = ({
     orderItemIndex,

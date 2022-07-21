@@ -67,15 +67,17 @@ export const itemDetailsSchema = (
                 }}
               />
             </div>
-            <div className="mv2">
-              <FormattedMessage
-                id="return-app.return-request-details.table.product-info.sold-by"
-                values={{
-                  seller: sellerName,
-                  b: StrongChunk,
-                }}
-              />
-            </div>
+            {!sellerName ? null : (
+              <div className="mv2">
+                <FormattedMessage
+                  id="return-app.return-request-details.table.product-info.sold-by"
+                  values={{
+                    seller: sellerName,
+                    b: StrongChunk,
+                  }}
+                />
+              </div>
+            )}
           </div>
         )
       },
