@@ -176,7 +176,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
               items={items}
             />
           </div>
-          <div className="flex mt5">
+          <div className="flex mt5 justify-end">
             <p className="f6 mr5 gray">
               <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund" />
               :
@@ -189,7 +189,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
               />
             </p>
           </div>
-          <div className="flex">
+          <div className="flex justify-end">
             <p className="f6 mr5 gray">
               <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund-items" />
               :
@@ -202,12 +202,12 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
               />
             </p>
           </div>
-          <div className="flex">
-            <p className="f6 mr5 gray">
+          <div className="flex justify-end">
+            <p className="f6 mr5 gray b">
               <FormattedMessage id="admin/return-app.return-request-details.verify-items.table.header.total-refund" />
               :
             </p>
-            <p className="f6 ">
+            <p className="f6">
               <FormattedNumber
                 value={
                   (Number(shippingToRefund) + Number(totalRefundItems)) / 100
@@ -218,7 +218,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
             </p>
           </div>
           {totalRefundItems ? null : (
-            <div className="flex items-center mt7">
+            <div className="flex items-center justify-end mt7">
               <Tooltip
                 label={
                   <FormattedMessage id="admin/return-app.return-request-details.verify-items.modal.tooltip" />
