@@ -21,18 +21,22 @@ import { getOrder } from './middlewares/getOrder'
 import { getGiftCard } from './middlewares/getGiftCard'
 import { getSkuById } from './middlewares/getSkuById'
 import { sendMail } from './middlewares/sendMail'
-import { getRequest } from './middlewares/api/getRequest'
+import { getRequest as getRequestV2 } from './middlewares/api/getRequest'
 import { getList } from './middlewares/api/getList'
 import { addComment } from './middlewares/api/addComment'
 import { verifyPackage } from './middlewares/api/verifyPackage'
 import { changeProductStatus } from './middlewares/api/changeProductStatus'
 import { checkStatus } from './middlewares/api/checkStatus'
-import { updateStatus } from './middlewares/api/updateStatus'
+import { updateStatus as updateStatusV2 } from './middlewares/api/updateStatus'
 import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
+import { createReturn } from './middlewares/createReturn'
+import { getRequest } from './middlewares/getRequest'
+import { getRequestList } from './middlewares/getRequestList'
+import { updateRequestStatus } from './middlewares/updateRequestStatus'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -55,9 +59,9 @@ declare global {
 
   interface State extends RecorderState {
     // Added in the state via graphql directive or auth middleware when request has vtexidclientautcookie
-    userProfile: UserProfile
+    userProfile?: UserProfile
     // Added in the state via auth middleware when request has appkey and apptoken.
-    appkey: string
+    appkey?: string
   }
 }
 
@@ -107,7 +111,7 @@ export default new Service<Clients, State, ParamsContext>({
       POST: [errorHandler, sendMail],
     }),
     apiGetRequest: method({
-      GET: [errorHandler, getRequest],
+      GET: [errorHandler, getRequestV2],
     }),
     apiGetList: method({
       GET: [errorHandler, getList],
@@ -125,13 +129,18 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, checkStatus],
     }),
     apiUpdateStatus: method({
-      POST: [errorHandler, updateStatus],
+      POST: [errorHandler, updateStatusV2],
     }),
     createRefund: method({
       POST: [errorHandler, createRefund],
     }),
+    returnRequests: method({
+      POST: [errorHandler, auth, createReturn],
+      GET: [errorHandler, auth, getRequestList],
+    }),
     returnRequest: method({
-      POST: [errorHandler, auth],
+      GET: [errorHandler, auth, getRequest],
+      PUT: [errorHandler, auth, updateRequestStatus],
     }),
   },
   graphql: {

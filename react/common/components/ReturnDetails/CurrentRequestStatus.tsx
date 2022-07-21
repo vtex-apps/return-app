@@ -1,13 +1,17 @@
 import type { ReactElement } from 'react'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import { renderStatus } from '../RenderStatus'
 
+const CSS_HANDLES = ['currentRequestStatusContainer'] as const
 const renderChunks = (chunks: ReactElement) => <b>{chunks}</b>
 
 export const CurrentRequestStatus = () => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const { data } = useReturnDetails()
 
   if (!data) return null
@@ -15,7 +19,7 @@ export const CurrentRequestStatus = () => {
   const { id, status } = data.returnRequestDetails
 
   return (
-    <div className="mv4">
+    <div className={`${handles.currentRequestStatusContainer} mv4`}>
       <div className="mb4">
         <FormattedMessage
           id="return-app.return-request-details.current-status.request-id"

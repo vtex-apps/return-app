@@ -1,10 +1,16 @@
-import type { AddressType } from 'vtex.return-app'
-import { ResolverError } from '@vtex/api'
+import type { PickupReturnDataInput } from 'vtex.return-app'
+import { ResolverError, UserInputError } from '@vtex/api'
 
 export const validateCanUsedropoffPoints = (
-  addressType: AddressType,
+  pickupReturnData: PickupReturnDataInput,
   isPickupPointsEnabled?: boolean | null
 ) => {
+  if (!pickupReturnData) {
+    throw new UserInputError('Missing pickupReturnData')
+  }
+
+  const { addressType } = pickupReturnData
+
   if (addressType === 'PICKUP_POINT' && !isPickupPointsEnabled) {
     throw new ResolverError('Dropoff points are not enabled')
   }

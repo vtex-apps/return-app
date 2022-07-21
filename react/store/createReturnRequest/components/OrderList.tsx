@@ -100,7 +100,8 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
       return
     }
 
-    const newPage = operation === 'next' ? currentPage + 1 : currentPage - 1
+    const newPage =
+      operation === 'next' ? Number(currentPage) + 1 : Number(currentPage) - 1
 
     setFetchMoreState('LOADING')
     await handlePagination(newPage, 'next')

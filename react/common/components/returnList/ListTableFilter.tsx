@@ -9,8 +9,11 @@ import type {
 } from 'vtex.return-app'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { StatusActionMenu } from './StatusActionMenu'
+
+const CSS_HANDLES = ['listTableFilterContainer'] as const
 
 interface Props {
   refetch: (variables?: QueryReturnRequestListArgs | undefined) => Promise<
@@ -46,6 +49,8 @@ const initialFilters = {
 } as Filters
 
 const ListTableFilter = (props: Props) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const { refetch, loading, isDisabled } = props
 
   const { route } = useRuntime()
@@ -111,7 +116,7 @@ const ListTableFilter = (props: Props) => {
 
   return (
     <form onSubmit={handleSubmitFilters}>
-      <div className="flex items-center">
+      <div className={`${handles.listTableFilterContainer} flex items-center`}>
         {route.domain === 'admin' ? (
           <div className="mr2">
             <FormattedMessage id="return-app.return-request-list.table-data.requestId">

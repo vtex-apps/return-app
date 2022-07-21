@@ -3,8 +3,11 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 import type { ItemCondition } from 'vtex.return-app'
 import { Dropdown } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { defaultReturnConditionsMessages } from '../../utils/defaultReturnConditionsMessages'
+
+const CSS_HANDLES = ['conditionDropdwonContainer'] as const
 
 interface Props {
   condition: string
@@ -18,6 +21,7 @@ export const RenderConditionDropdown = ({
   isExcluded,
 }: Props) => {
   const { formatMessage } = useIntl()
+  const handles = useCssHandles(CSS_HANDLES)
 
   const handleConditionChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -45,7 +49,7 @@ export const RenderConditionDropdown = ({
   ]
 
   return (
-    <div>
+    <div className={handles.conditionDropdwonContainer}>
       <Dropdown
         disabled={isExcluded}
         label=""

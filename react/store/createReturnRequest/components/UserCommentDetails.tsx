@@ -2,14 +2,19 @@ import React from 'react'
 import type { ChangeEvent } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Textarea } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+
+const CSS_HANDLES = ['userCommentDetailsContainer'] as const
 
 export const UserCommentDetails = () => {
   const {
     returnRequest,
     actions: { updateReturnRequest },
   } = useReturnRequest()
+
+  const handles = useCssHandles(CSS_HANDLES)
 
   const { userComment } = returnRequest
 
@@ -23,7 +28,7 @@ export const UserCommentDetails = () => {
   }
 
   return (
-    <div className="mt4 ph4">
+    <div className={`${handles.userCommentDetailsContainer} mt4 ph4`}>
       <p>
         <FormattedMessage id="store/return-app.return-order-details.title.extra-comment" />
       </p>

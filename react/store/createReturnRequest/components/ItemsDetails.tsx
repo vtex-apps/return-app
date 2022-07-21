@@ -1,6 +1,7 @@
 import React from 'react'
 import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
@@ -11,6 +12,16 @@ interface Props {
   itemToReturn: ItemToReturn
   creationDate?: string
 }
+
+const CSS_HANDLES = [
+  'detailsRowContainer',
+  'detailsTdWrapper',
+  'productSectionWrapper',
+  'productText',
+  'productImageWrapper',
+  'productImage',
+  'itemsDetailText',
+] as const
 
 export const ItemsDetails = (props: Props) => {
   const {
@@ -24,6 +35,8 @@ export const ItemsDetails = (props: Props) => {
     },
     creationDate,
   } = props
+
+  const handles = useCssHandles(CSS_HANDLES)
 
   const {
     returnRequest,
@@ -118,12 +131,16 @@ export const ItemsDetails = (props: Props) => {
   const availableToReturn = isExcluded ? 0 : quantityAvailable
 
   return (
-    <tr>
-      <td>
-        <section className="ml3">
-          <p className="t-body fw5">{name}</p>
-          <div className="flex">
-            <img src={imageUrl} alt="Product" />
+    <tr className={`${handles.detailsRowContainer}`}>
+      <td className={`${handles.detailsTdWrapper}`}>
+        <section className={`${handles.productSectionWrapper} ml3`}>
+          <p className={`${handles.productText} t-body fw5`}>{name}</p>
+          <div className={`${handles.productImageWrapper} flex`}>
+            <img
+              className={`${handles.productImage}`}
+              src={imageUrl}
+              alt="Product"
+            />
             {isExcluded ? (
               <CustomMessage
                 status="warning"
@@ -133,13 +150,13 @@ export const ItemsDetails = (props: Props) => {
           </div>
         </section>
       </td>
-      <td>
-        <p className="tc">{quantity}</p>
+      <td className={`${handles.detailsTdWrapper}`}>
+        <p className={`${handles.itemsDetailText} tc`}>{quantity}</p>
       </td>
-      <td>
-        <p className="tc">{availableToReturn}</p>
+      <td className={`${handles.detailsTdWrapper}`}>
+        <p className={`${handles.itemsDetailText} tc`}>{availableToReturn}</p>
       </td>
-      <td>
+      <td className={`${handles.detailsTdWrapper}`}>
         <NumericStepper
           size="smaill"
           maxValue={availableToReturn}
@@ -147,7 +164,7 @@ export const ItemsDetails = (props: Props) => {
           onChange={(e: { value: number }) => handleQuantityChange(e.value)}
         />
       </td>
-      <td>
+      <td className={`${handles.detailsTdWrapper}`}>
         <RenderReasonDropdown
           isExcluded={isExcluded}
           reason={currentItem?.returnReason?.reason ?? ''}
@@ -162,7 +179,7 @@ export const ItemsDetails = (props: Props) => {
           />
         ) : null}
       </td>
-      <td>
+      <td className={`${handles.detailsTdWrapper}`}>
         <RenderConditionDropdown
           isExcluded={isExcluded}
           condition={currentItem?.condition ?? ''}

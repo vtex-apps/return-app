@@ -2,6 +2,9 @@ import type { FormEvent } from 'react'
 import React, { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, Button } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
+
+const CSS_HANDLES = ['jumpToPageContainer'] as const
 
 interface Props {
   handleJumpToPage: (page: number) => void
@@ -10,6 +13,8 @@ interface Props {
 }
 
 const JumpToPage = (props: Props) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const { handleJumpToPage, currentPage, maxPage } = props
 
   const [desiredPage, setDesiredPage] = useState(currentPage)
@@ -34,7 +39,7 @@ const JumpToPage = (props: Props) => {
   }
 
   return (
-    <div className="relative w-100">
+    <div className={`${handles.jumpToPageContainer} relative w-100`}>
       <div
         className="absolute flex items-center"
         style={{ right: '50%', top: '-2rem' }}

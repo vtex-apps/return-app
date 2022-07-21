@@ -38,14 +38,14 @@ export class OMSCustom extends OMS {
   constructor(ctx: IOContext, options?: InstanceOptions) {
     super(ctx, {
       ...options,
-      headers: {
-        VtexIdClientAutCookie: ctx.adminUserAuthToken ?? ctx.authToken,
-      },
     })
   }
 
   public listOrdersWithParams(params?: OrderListParams) {
     return this.http.get<OrderList>(routes.orders, {
+      headers: {
+        VtexIdClientAutCookie: this.context.authToken,
+      },
       metric: 'oms-list-order-with-params',
       ...(params ? { params } : {}),
     })
@@ -56,6 +56,9 @@ export class OMSCustom extends OMS {
       routes.invoice(orderId),
       invoice,
       {
+        headers: {
+          VtexIdClientAutCookie: this.context.adminUserAuthToken,
+        },
         metric: 'oms-create-invoice',
       }
     )

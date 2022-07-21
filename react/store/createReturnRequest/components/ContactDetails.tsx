@@ -2,6 +2,7 @@ import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
@@ -18,7 +19,17 @@ const messages = defineMessages({
   },
 })
 
+const CSS_HANDLES = [
+  'contactDetailsContainer',
+  'contactDetailsTitle',
+  'contactNameInputWrapper',
+  'contactEmailInputWrapper',
+  'contactPhoneInputWrapper',
+] as const
+
 export const ContactDetails = () => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const {
     returnRequest: { customerProfileData },
     inputErrors,
@@ -44,11 +55,13 @@ export const ContactDetails = () => {
   const contactError = inputErrors.some((error) => error === 'customer-data')
 
   return (
-    <div className="flex-ns flex-wrap flex-auto flex-column pa4">
-      <p>
+    <div
+      className={`${handles.contactDetailsContainer} flex-ns flex-wrap flex-auto flex-column pa4`}
+    >
+      <p className={`${handles.contactDetailsContainer}`}>
         <FormattedMessage id="store/return-app.return-order-details.title.contact-details" />
       </p>
-      <div className="mb4">
+      <div className={`${handles.contactNameInputWrapper} mb4`}>
         <Input
           name="name"
           required
@@ -63,7 +76,7 @@ export const ContactDetails = () => {
           />
         ) : null}
       </div>
-      <div className="mb4">
+      <div className={`${handles.contactEmailInputWrapper} mb4`}>
         <Input
           disabled
           name="email"
@@ -72,7 +85,7 @@ export const ContactDetails = () => {
           value={email}
         />
       </div>
-      <div className="mb4">
+      <div className={`${handles.contactPhoneInputWrapper} mb4`}>
         <Input
           name="phoneNumber"
           required

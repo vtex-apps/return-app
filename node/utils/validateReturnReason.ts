@@ -2,7 +2,7 @@ import type {
   ReturnRequestItemInput,
   CustomReturnReason,
 } from 'vtex.return-app'
-import { ResolverError } from '@vtex/api'
+import { ResolverError, UserInputError } from '@vtex/api'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'
 
@@ -11,6 +11,14 @@ export const validateReturnReason = (
   orderCreationDate: string,
   customReturnReasons?: CustomReturnReason[] | null
 ) => {
+  itemsToReturn.forEach(({ returnReason: { reason }, orderItemIndex }) => {
+    if (!reason) {
+      throw new UserInputError(
+        `Item index ${orderItemIndex} has no return reason. Reason cannot be empty.`
+      )
+    }
+  })
+
   if (!customReturnReasons || customReturnReasons.length === 0) {
     return
   }
