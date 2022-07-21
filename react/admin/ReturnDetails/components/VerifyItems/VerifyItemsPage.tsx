@@ -115,17 +115,6 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
     return total + itemTotal
   }, 0)
 
-  // eslint-disable-next-line no-console
-  console.log(totalRefundItems, 'totalRefundItems')
-  // eslint-disable-next-line no-console
-  console.log('------- ------- ------')
-  // eslint-disable-next-line no-console
-  console.log(refundItemsInput, 'refundItemsInput')
-  // eslint-disable-next-line no-console
-  console.log('------- ------- ------')
-  // eslint-disable-next-line no-console
-  console.log(items, 'items')
-
   return (
     <>
       <section>
