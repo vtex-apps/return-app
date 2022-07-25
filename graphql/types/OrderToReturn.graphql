@@ -37,6 +37,7 @@ type InvoicedItem {
   productId: String!
   quantity: Int!
   name: String!
+  localizedName: String
   imageUrl: String!
   """
   The index of the item in the Order.

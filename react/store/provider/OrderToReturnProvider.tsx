@@ -1,5 +1,6 @@
 import type { Dispatch, FC, SetStateAction } from 'react'
 import React, { createContext, useReducer, useState } from 'react'
+import { useRuntime } from 'vtex.render-runtime'
 
 import type {
   ReturnRequestActions,
@@ -38,10 +39,15 @@ export const OrderToReturnProvider: FC = ({ children }) => {
 
   const [inputErrors, setInputErrors] = useState<ErrorsValidation[]>([])
 
+  const {
+    culture: { locale },
+  } = useRuntime()
+
   const areFieldsValid = (): boolean => {
     const { errors } = validateNewReturnRequestFields(
       termsAndConditions,
-      returnRequest
+      returnRequest,
+      locale
     )
 
     if (errors) {

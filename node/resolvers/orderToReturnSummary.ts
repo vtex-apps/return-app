@@ -6,6 +6,7 @@ import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummar
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
+import { addLocalizedName } from '../utils/addLocalizedName'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -15,7 +16,12 @@ export const orderToReturnSummary = async (
   const { orderId, storeUserEmail } = args
   const {
     state: { userProfile, appkey },
-    clients: { appSettings, oms, returnRequest: returnRequestClient },
+    clients: {
+      appSettings,
+      oms,
+      returnRequest: returnRequestClient,
+      catalogGQL,
+    },
     vtex: { logger },
   } = ctx
 
@@ -60,8 +66,11 @@ export const orderToReturnSummary = async (
     }
   )
 
-  return createOrdersToReturnSummary(order, customerEmail, {
+  const summary = await createOrdersToReturnSummary(order, customerEmail, {
     excludedCategories,
     returnRequestClient,
   })
+
+  // Translate the products with the current binding; only for the storefront user
+  return addLocalizedName(summary, catalogGQL)
 }

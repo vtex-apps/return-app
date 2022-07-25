@@ -45,18 +45,27 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
       </thead>
       <tbody className={`${handles.returnInfoBodyContainer} v-mid`}>
         {selectedItems.map(
-          ({ quantity, orderItemIndex, condition, returnReason }) => {
+          ({ quantity, orderItemIndex, condition, returnReason }, key) => {
             const { reason } = returnReason
 
-            return quantity ? (
-              <tr className={`${handles.returnInfoTrBodyWrapper} ph5`}>
+            if (!quantity) {
+              return null
+            }
+
+            const { imageUrl, localizedName, name } = items[orderItemIndex]
+
+            return (
+              <tr
+                key={key}
+                className={`${handles.returnInfoTrBodyWrapper} ph5`}
+              >
                 <td className="w-50 pv5">
                   <div className="flex items-center ml2">
                     <div className={`${handles.returnInfoBodyImgWrapper} mr3`}>
-                      <img src={items[orderItemIndex].imageUrl} alt="Product" />
+                      <img src={imageUrl} alt="Product" />
                     </div>
                     <div className={handles.returnInfoReasonConditionWrapper}>
-                      <p className="b">{items[orderItemIndex].name}</p>
+                      <p className="b">{localizedName || name}</p>
                       <div className="flex">
                         <p className="f6 mt0 mr3 gray b">
                           <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
@@ -86,7 +95,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                   <p>{quantity}</p>
                 </td>
               </tr>
-            ) : null
+            )
           }
         )}
       </tbody>

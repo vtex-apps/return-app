@@ -82,7 +82,6 @@ const getItemVerificationStatus = (
 
 export const ItemDetailsList = () => {
   const handles = useCssHandles(CSS_HANDLES)
-
   const { data } = useReturnDetails()
 
   if (!data) return null

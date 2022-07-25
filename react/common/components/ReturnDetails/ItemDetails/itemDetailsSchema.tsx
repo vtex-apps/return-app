@@ -6,6 +6,7 @@ import type { ReturnRequestItem } from 'vtex.return-app'
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
+import ItemName from './ItemName'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 
@@ -41,11 +42,13 @@ export const itemDetailsSchema = (
         cellData: ReturnRequestItem['name']
         rowData: ReturnRequestItem
       }) {
-        const { refId, returnReason, sellerName } = rowData
+        const { refId, returnReason, sellerName, localizedName } = rowData
 
         return (
           <div className="mv4">
-            <span className="mv2">{cellData}</span>
+            <div className="mv2 flex flex-column">
+              <ItemName name={cellData} localizedName={localizedName} />
+            </div>
             <div className="mv2">
               <FormattedMessage
                 id="return-app.return-request-details.table.product-info.ref-id"
