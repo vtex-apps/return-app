@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime/'
@@ -90,6 +90,11 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
     'IDLE'
   )
 
+  const orderlListTableSchema = useMemo(
+    () => OrderlListTableSchema({ navigate }),
+    [navigate]
+  )
+
   const { paging } = orders
   const currentPage = paging?.currentPage ?? 1
   const perPage = paging?.perPage ?? 0
@@ -118,9 +123,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
         emptyStateLabel={
           <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
         }
-        schema={OrderlListTableSchema({
-          navigate,
-        })}
+        schema={orderlListTableSchema}
         items={orders.list}
         loading={fetchMoreState === 'LOADING'}
         pagination={{
