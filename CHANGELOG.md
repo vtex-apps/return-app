@@ -7,11 +7,86 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0] - 2022-07-26
+
+## [2.19.12] - 2022-06-27
+- Encode user email when getting orders to be returned.
+
+## [2.19.11] - 2022-06-17
+
+### Fixed
+
+- Revert fix encode URI email.
+
+# Added
+
+- Save seller information for new requests and display it to the customer and admin
+
+## [2.19.10] - 2022-06-16
+
+### Fixed
+
+- Fix encode URI email value to avoid breaking the URL.
+
+## [2.19.9] - 2022-06-15
+
+### Fixed
+
+- Doesn't show message about user not having order to return while the app is still preparing the order to show.
+
+## [2.19.8] - 2022-06-02
+
+### Fixed
+
+- Fix total amount of products price by calculating directly the sum of each product value instead of relying on the totalPrice from the return request.
+
+## [2.19.7] - 2022-05-30
+
 ### Added
 
-- Send confirmation email with return request details to customer when the request is created.
-- Send email with return request details to customer when the requests changes status.
-- Add the possibility to have different templates for different languages.
+- Manifest settingsSchema
+- Get settings endpoint
+- New setting 'displayConditionSelector' which hides the product's condition select
+- Translate select reason, select condition and characters left messages.
+- Provide min-width to quantity input on store and admin.
+
+## [2.19.6] - 2022-05-26
+
+### Changed
+
+- Increase timeout limit and TTL.
+
+## [2.19.5] - 2022-05-23
+
+### Fixed
+
+- Use safer value for display total amount of products price.
+
+## [2.19.5] - 2022-05-09
+
+### Fixed
+
+## [2.19.4] - 2022-05-09
+
+- Internationalize message and add linebreak variable.
+
+## [2.19.4] - 2022-05-02
+
+## [2.19.3] - 2022-03-25
+
+### Fixed
+
+- Prevent undefined price values on verify items by adding property `totalValue` on every scenario.
+
+## [2.19.2] - 2022-03-24
+
+### Fixed
+
+- Allow call center operators to create RMA for store users when impersonating them. Set `userId`, `email`, and `name` from session API when impersonating is happening.
+
+### Added
+
+- Unify schema properties and indexes to avoid updating each client after deployment when we change a schema.
 
 ## [2.19.1] - 2022-03-15
 
