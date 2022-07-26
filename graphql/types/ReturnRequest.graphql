@@ -13,7 +13,6 @@ input ReturnRequestItemInput {
   quantity: Int!
   condition: ItemCondition!
   returnReason: ReturnReasonInput!
-  localizedName: String
 }
 
 input ReturnReasonInput {

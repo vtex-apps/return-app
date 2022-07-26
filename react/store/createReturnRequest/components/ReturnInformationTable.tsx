@@ -65,7 +65,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                       <img src={imageUrl} alt="Product" />
                     </div>
                     <div className={handles.returnInfoReasonConditionWrapper}>
-                      <p className="b">{localizedName || name}</p>
+                      <p className="b">{localizedName ?? name}</p>
                       <div className="flex">
                         <p className="f6 mt0 mr3 gray b">
                           <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />

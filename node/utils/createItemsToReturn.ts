@@ -6,6 +6,9 @@ import type {
 } from '@vtex/clients'
 import type { ReturnRequestItemInput, ReturnRequestItem } from 'vtex.return-app'
 
+import type { CatalogGQL } from '../clients/catalogGQL'
+import { translateItemName } from './translateItems'
+
 interface ItemMetadata {
   Items: Array<{
     Id: string
@@ -44,60 +47,65 @@ const calculateItemTax = ({
   return parseFloat((taxValueFromTaxHub / quantity).toFixed(0))
 }
 
-export const createItemsToReturn = ({
+export const createItemsToReturn = async ({
   itemsToReturn,
   orderItems,
   sellers,
   itemMetadata,
+  catalogGQL,
 }: {
   itemsToReturn: ReturnRequestItemInput[]
   orderItems: OrderItemDetailResponse[]
   sellers: SellerDetail[]
   itemMetadata: ItemMetadata
-}): ReturnRequestItem[] => {
-  return itemsToReturn.map((item) => {
-    const orderItem = orderItems[item.orderItemIndex]
+  catalogGQL: CatalogGQL
+}): Promise<ReturnRequestItem[]> => {
+  return Promise.all(
+    itemsToReturn.map(async (item) => {
+      const orderItem = orderItems[item.orderItemIndex]
 
-    if (!orderItem) {
-      throw new UserInputError(
-        `Item index ${item.orderItemIndex} doesn't exist on order`
-      )
-    }
+      if (!orderItem) {
+        throw new UserInputError(
+          `Item index ${item.orderItemIndex} doesn't exist on order`
+        )
+      }
 
-    const {
-      id,
-      sellingPrice,
-      tax,
-      priceTags,
-      quantity,
-      name,
-      imageUrl,
-      unitMultiplier,
-      seller,
-      refId,
-      productId,
-    } = orderItem
+      const {
+        id,
+        sellingPrice,
+        tax,
+        priceTags,
+        quantity,
+        name,
+        imageUrl,
+        unitMultiplier,
+        seller,
+        refId,
+        productId,
+      } = orderItem
 
-    const sellerName =
-      sellers.find((sellerInfo) => sellerInfo.id === seller)?.name ?? ''
+      const sellerName =
+        sellers.find((sellerInfo) => sellerInfo.id === seller)?.name ?? ''
 
-    const productImage =
-      imageUrl ??
-      itemMetadata.Items.find((itemMeta) => itemMeta.Id === id)?.ImageUrl ??
-      ''
+      const productImage =
+        imageUrl ??
+        itemMetadata.Items.find((itemMeta) => itemMeta.Id === id)?.ImageUrl ??
+        ''
 
-    return {
-      ...item,
-      id,
-      sellingPrice,
-      tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
-      name,
-      imageUrl: productImage,
-      unitMultiplier,
-      sellerId: seller,
-      refId,
-      productId,
-      sellerName,
-    }
-  })
+      return {
+        ...item,
+        id,
+        sellingPrice,
+        tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
+        name,
+        localizedName: await translateItemName(id, name, catalogGQL),
+        imageUrl: productImage,
+        unitMultiplier,
+        sellerId: seller,
+        refId,
+        productId,
+        sellerName,
+      }
+    })
+  )
 }
