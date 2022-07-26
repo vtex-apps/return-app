@@ -4,7 +4,7 @@ interface ItemToReturn {
   quantityAvailable: number
   isExcluded: boolean
   name: string
-  localizedName?: string
+  localizedName?: string | null
   imageUrl: string
   orderItemIndex: number
 }
