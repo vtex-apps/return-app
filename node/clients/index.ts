@@ -10,6 +10,7 @@ import { GiftCard } from './giftCard'
 import { MailClient } from './mail'
 import Checkout from './checkout'
 import { VtexId } from './vtexId'
+import { CatalogGQL } from './catalogGQL'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -33,6 +34,10 @@ export class Clients extends IOClients {
 
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
+  }
+
+  public get catalogGQL() {
+    return this.getOrSet('catalogGQL', CatalogGQL)
   }
 
   public get returnRequest() {

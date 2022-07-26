@@ -13,6 +13,14 @@ import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
 import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
+import type { CatalogGQL } from '../clients/catalogGQL'
+import { handleTranlateItems } from './translateItems'
+
+interface CreateOrdersToReturnSummarySetup {
+  excludedCategories: ReturnAppSettings['excludedCategories']
+  returnRequestClient: MasterDataEntity<ReturnRequest>
+  catalogGQL: CatalogGQL
+}
 
 export const createOrdersToReturnSummary = async (
   order: OrderDetailResponse,
@@ -20,10 +28,8 @@ export const createOrdersToReturnSummary = async (
   {
     excludedCategories,
     returnRequestClient,
-  }: {
-    excludedCategories: ReturnAppSettings['excludedCategories']
-    returnRequestClient: MasterDataEntity<ReturnRequest>
-  }
+    catalogGQL,
+  }: CreateOrdersToReturnSummarySetup
 ): Promise<OrderToReturnSummary> => {
   const { items, orderId, creationDate } = order
 
@@ -157,7 +163,7 @@ export const createOrdersToReturnSummary = async (
   return {
     orderId,
     creationDate,
-    invoicedItems,
+    invoicedItems: await handleTranlateItems(invoicedItems, catalogGQL),
     processedItems,
     excludedItems,
     clientProfileData: transformOrderClientProfileData(

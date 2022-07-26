@@ -7,22 +7,30 @@ import type {
 import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'
+import type { CatalogGQL } from '../clients/catalogGQL'
 
 interface CanReturnAllItemsSetup {
   order: OrderDetailResponse
   excludedCategories: ReturnAppSettings['excludedCategories']
   returnRequestClient: MasterDataEntity<ReturnRequest>
+  catalogGQL: CatalogGQL
 }
 
 export const canReturnAllItems = async (
   itemsToReturn: ReturnRequestItemInput[],
-  { order, excludedCategories, returnRequestClient }: CanReturnAllItemsSetup
+  {
+    order,
+    excludedCategories,
+    returnRequestClient,
+    catalogGQL,
+  }: CanReturnAllItemsSetup
 ) => {
   // we pass email as email because we won't use the email form the return object here
   const { invoicedItems, excludedItems, processedItems } =
     await createOrdersToReturnSummary(order, 'email', {
       excludedCategories,
       returnRequestClient,
+      catalogGQL,
     })
 
   const excludedItemsIndexMap = new Map<number, boolean>()

@@ -46,7 +46,12 @@ export const ordersAvailableToReturn = async (
 ): Promise<OrdersToReturnList> => {
   const {
     state: { userProfile },
-    clients: { appSettings, oms, returnRequest: returnRequestClient },
+    clients: {
+      appSettings,
+      oms,
+      returnRequest: returnRequestClient,
+      catalogGQL,
+    },
   } = ctx
 
   const { page, storeUserEmail } = args
@@ -91,6 +96,7 @@ export const ordersAvailableToReturn = async (
     const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
       excludedCategories,
       returnRequestClient,
+      catalogGQL,
     })
 
     orderSummaryPromises.push(orderToReturnSummary)

@@ -15,7 +15,12 @@ export const orderToReturnSummary = async (
   const { orderId, storeUserEmail } = args
   const {
     state: { userProfile, appkey },
-    clients: { appSettings, oms, returnRequest: returnRequestClient },
+    clients: {
+      appSettings,
+      oms,
+      returnRequest: returnRequestClient,
+      catalogGQL,
+    },
     vtex: { logger },
   } = ctx
 
@@ -63,5 +68,6 @@ export const orderToReturnSummary = async (
   return createOrdersToReturnSummary(order, customerEmail, {
     excludedCategories,
     returnRequestClient,
+    catalogGQL,
   })
 }

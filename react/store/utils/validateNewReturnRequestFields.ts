@@ -41,7 +41,8 @@ interface ValidationSuccess {
 
 export const validateNewReturnRequestFields = (
   termsAndConditionsAccepted: boolean,
-  returnRequest: OrderDetailsState
+  returnRequest: OrderDetailsState,
+  locale: string
 ): ValidationError | ValidationSuccess => {
   const { items, pickupReturnData, customerProfileData, refundPaymentData } =
     returnRequest
@@ -117,6 +118,7 @@ export const validateNewReturnRequestFields = (
     items: validatedItems,
     pickupReturnData: { ...pickupReturnData, addressType },
     refundPaymentData,
+    locale,
   }
 
   return { validatedFields }

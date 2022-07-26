@@ -106,6 +106,7 @@
           "orderItemIndex": { "type": "integer" },
           "id": { "type": "string" },
           "name": { "type": "string" },
+          "localizedName": { "type": ["string", "null"] },
           "sellingPrice": { "type": "integer" },
           "tax": { "type": "integer" },
           "quantity": { "type": "integer" },

@@ -56,11 +56,12 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const returnRequestValidated = useMemo(() => {
     const { validatedFields } = validateNewReturnRequestFields(
       termsAndConditions,
-      returnRequest
+      returnRequest,
+      locale
     )
 
     return validatedFields
-  }, [termsAndConditions, returnRequest])
+  }, [termsAndConditions, returnRequest, locale])
 
   const handleCreateReturnRequest = async () => {
     if (creatingReturnRequest || !returnRequestValidated) return
@@ -68,7 +69,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     try {
       const { errors } = await createReturnRequest({
         variables: {
-          returnRequest: { ...returnRequestValidated, locale },
+          returnRequest: { ...returnRequestValidated },
         },
       })
 

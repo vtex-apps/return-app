@@ -23,7 +23,13 @@ export const createReturnRequestService = async (
   args: ReturnRequestInput
 ): Promise<ReturnRequestCreated> => {
   const {
-    clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
+    clients: {
+      oms,
+      returnRequest: returnRequestClient,
+      appSettings,
+      mail,
+      catalogGQL,
+    },
     state: { userProfile, appkey },
     vtex: { logger },
   } = ctx
@@ -136,6 +142,7 @@ export const createReturnRequestService = async (
     order,
     excludedCategories,
     returnRequestClient,
+    catalogGQL,
   })
 
   // Validate maxDays for custom reasons.
@@ -154,11 +161,12 @@ export const createReturnRequestService = async (
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
   const sequenceNumber = `${sequence}-${total + 1}`
 
-  const itemsToReturn = createItemsToReturn({
+  const itemsToReturn = await createItemsToReturn({
     itemsToReturn: items,
     orderItems,
     sellers,
     itemMetadata,
+    catalogGQL,
   })
 
   const refundableAmountTotals = createRefundableTotals(

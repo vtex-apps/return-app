@@ -32,6 +32,7 @@ export const ItemsDetails = (props: Props) => {
       orderItemIndex,
       imageUrl,
       name,
+      localizedName,
     },
     creationDate,
   } = props
@@ -134,7 +135,9 @@ export const ItemsDetails = (props: Props) => {
     <tr className={`${handles.detailsRowContainer}`}>
       <td className={`${handles.detailsTdWrapper}`}>
         <section className={`${handles.productSectionWrapper} ml3`}>
-          <p className={`${handles.productText} t-body fw5`}>{name}</p>
+          <p className={`${handles.productText} t-body fw5`}>
+            {localizedName ?? name}
+          </p>
           <div className={`${handles.productImageWrapper} flex`}>
             <img
               className={`${handles.productImage}`}

@@ -497,5 +497,6 @@
   "store/return-app.return-order-details.pickup-address.drop-off-points": "Select a drop off point",
   "store/return-app.return-order-details.pickup-address.drop-off-points.tooltip": "You can return your items in one of our selected drop off points",
   "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder": "Select a drop off point",
-  "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error": "There was an error loading the drop off points"
+  "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error": "There was an error loading the drop off points",
+  "admin/return-app.return-request-details.localized-product-name.tooltip": "Original item name from the order"
 }

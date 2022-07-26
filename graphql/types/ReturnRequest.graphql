@@ -129,6 +129,7 @@ type ReturnRequestItem {
   sellingPrice: Int!
   tax: Int!
   name: String!
+  localizedName: String
   imageUrl: String!
   unitMultiplier: Float!
   sellerId: String!
