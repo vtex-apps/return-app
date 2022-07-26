@@ -1,0 +1,29 @@
+type NearPickupPointQueryResponse {
+  items: [CheckoutPickupPoint!]!
+}
+
+type CheckoutPickupPoint {
+  pickupPoint: PickupPoint!
+}
+
+type PickupPoint {
+  friendlyName: String!
+  address: CheckoutAddress!
+  id: String!
+}
+
+type CheckoutAddress {
+  addressType: String!
+  addressId: String!
+  isDisposable: Boolean!
+  postalCode: String!
+  city: String!
+  state: String!
+  country: String!
+  street: String!
+  number: String!
+  neighborhood: String
+  complement: String
+  reference: String
+  geoCoordinates: [Float]!
+}

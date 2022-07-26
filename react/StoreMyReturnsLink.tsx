@@ -1,23 +1,23 @@
-import type { FC } from 'react'
-import { injectIntl } from 'react-intl'
+import type { FC, ReactElement } from 'react'
+import React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 interface RenderProps {
-  name: string
+  name: ReactElement | string
   path: string
 }
 
 interface Props {
-  render: (paths: RenderProps[]) => any
-  intl: any
+  render: (paths: RenderProps[]) => ReactElement
 }
 
-const StoreMyReturnsLink: FC<Props> = ({ render, intl }: Props) => {
+const StoreMyReturnsLink: FC<Props> = ({ render }) => {
   return render([
     {
-      name: intl.formatMessage({ id: 'returns.link' }),
+      name: <FormattedMessage id="store/return-app.link" />,
       path: '/my-returns',
     },
   ])
 }
 
-export default injectIntl(StoreMyReturnsLink)
+export default StoreMyReturnsLink

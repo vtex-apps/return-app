@@ -10,6 +10,6 @@ export class Catalog extends JanusClient {
 
   public getCategoryTree = async (): Promise<CategoryTree[]> =>
     this.http.get('/api/catalog_system/pub/category/tree/100', {
-      metric: 'catalog-getCategoryTree',
+      metric: 'catalog-get-category-tree',
     })
 }

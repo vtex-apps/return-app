@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "return-app",
-  "version": "3.0.0-beta.4",
+  "version": "3.0.0-beta.12",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -13,7 +13,8 @@
     "vtex.render-runtime": "8.x",
     "vtex.css-handles": "0.x",
     "vtex.easypost": "0.x",
-    "vtex.tenant-graphql": "0.x"
+    "vtex.tenant-graphql": "0.x",
+    "vtex.catalog-graphql": "1.x"
   },
   "builders": {
     "admin": "0.x",
@@ -22,7 +23,8 @@
     "docs": "0.x",
     "store": "0.x",
     "node": "6.x",
-    "graphql": "1.x"
+    "graphql": "1.x",
+    "masterdata": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
@@ -61,6 +63,12 @@
         "host": "api.vtex.com",
         "path": "/dataentities/*"
       }
+    },
+    {
+      "name": "sphinx-is-admin"
+    },
+    {
+      "name": "vtex.catalog-graphql:resolve-graphql"
     }
   ],
   "billingOptions": {

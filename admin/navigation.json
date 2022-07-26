@@ -1,6 +1,6 @@
 {
   "section": "orders",
-  "titleId": "navigation.label",
+  "titleId": "admin/return-app.navigation.label",
   "path": "/admin/returns/requests",
   "subSectionItems": [
     {

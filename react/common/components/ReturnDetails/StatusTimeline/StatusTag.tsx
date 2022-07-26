@@ -1,0 +1,41 @@
+import React from 'react'
+import type { Status } from 'vtex.return-app'
+import { IconSuccess, IconClear } from 'vtex.styleguide'
+import { useIntl } from 'react-intl'
+
+import { timelineStatusMessageId } from '../../../../utils/requestStatus'
+
+interface Props {
+  status: Status
+  visited: boolean
+  createdAt?: string
+}
+export const StatusTag = ({ status, visited, createdAt }: Props) => {
+  const { formatMessage } = useIntl()
+
+  return (
+    <span className="flex items-center">
+      {visited ? (
+        <span className="flex status-icon">
+          {status === 'denied' ? (
+            <IconClear size={30} color="#f21515" />
+          ) : (
+            <IconSuccess size={30} color="#134cd8" />
+          )}
+        </span>
+      ) : (
+        <span className="status-icon-not-visited" />
+      )}
+      <p>
+        {formatMessage(
+          timelineStatusMessageId[status],
+          createdAt
+            ? {
+                ts: new Date(createdAt),
+              }
+            : {}
+        )}
+      </p>
+    </span>
+  )
+}

@@ -1,0 +1,17 @@
+#import '../../common/graphql/returnDetailsFragment.gql'
+
+mutation updateReturnRequestStatus(
+  $requestId: ID!
+  $status: Status!
+  $comment: ReturnRequestCommentInput
+  $refundData: RefundDataInput
+) {
+  updateReturnRequestStatus(
+    requestId: $requestId
+    status: $status
+    comment: $comment
+    refundData: $refundData
+  ) @context(provider: "vtex.return-app") {
+    ...ReturnDetailsAdminFragment
+  }
+}

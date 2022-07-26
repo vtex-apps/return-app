@@ -1,0 +1,91 @@
+type OrdersToReturnList {
+  list: [OrderToReturnSummary]
+  paging: Pagination
+}
+
+type OrderToReturnSummary {
+  orderId: String!
+  creationDate: String!
+  """
+  Items invoiced / sent to costumer with items details.
+  """
+  invoicedItems: [InvoicedItem!]!
+  """
+  Items committed to return or already returned (invoiced as Input) that cannot be considered to be returned anymore.
+  The itemIndex property is used to identify the item in the list of invoiced items.
+  """
+  processedItems: [ProcessedItem!]!
+  """
+  Items forbidden to be return.
+  The itemIndex property is used to identify the item in the list of invoiced items.
+  """
+  excludedItems: [excludedItem!]!
+  clientProfileData: ClientProfileData!
+  shippingData: ShippingData!
+  paymentData: PaymentData!
+}
+
+type Pagination {
+  total: Int!
+  pages: Int!
+  currentPage: Int!
+  perPage: Int!
+}
+
+type InvoicedItem {
+  id: String!
+  productId: String!
+  quantity: Int!
+  name: String!
+  localizedName: String
+  imageUrl: String!
+  """
+  The index of the item in the Order.
+  """
+  orderItemIndex: Int!
+}
+
+type ProcessedItem {
+  itemIndex: Int!
+  quantity: Int!
+}
+
+type excludedItem {
+  itemIndex: Int!
+  reason: ExcludedReason!
+}
+
+type ExcludedReason {
+  key: ExcludedReasonEnum!
+  value: String!
+}
+
+enum ExcludedReasonEnum {
+  EXCLUDED_CATEGORY
+}
+
+enum OrderToReturnValidation {
+  OUT_OF_MAX_DAYS
+  ORDER_NOT_INVOICED
+}
+
+type ClientProfileData {
+  name: String!
+  email: String!
+  phoneNumber: String!
+}
+
+type ShippingData {
+  addressId: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  addressType: AddressType!
+  geoCoordinates: [Float]!
+}
+
+type PaymentData {
+  canRefundCard: Boolean!
+}
