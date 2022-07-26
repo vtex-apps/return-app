@@ -2,6 +2,7 @@ import React from 'react'
 import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
+import { FormattedMessage } from 'react-intl'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
@@ -147,7 +148,9 @@ export const ItemsDetails = (props: Props) => {
             {isExcluded ? (
               <CustomMessage
                 status="warning"
-                message="store/return-app.return-item-details.excluded-items.warning"
+                message={
+                  <FormattedMessage id="store/return-app.return-item-details.excluded-items.warning" />
+                }
               />
             ) : null}
           </div>
@@ -178,7 +181,9 @@ export const ItemsDetails = (props: Props) => {
         {reasonError && reasonErrorEmptyValue ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-item-details.dropdown-reason.error"
+            message={
+              <FormattedMessage id="store/return-app.return-item-details.dropdown-reason.error" />
+            }
           />
         ) : null}
       </td>
@@ -191,7 +196,9 @@ export const ItemsDetails = (props: Props) => {
         {conditionError ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-item-details.dropdown-condition.error"
+            message={
+              <FormattedMessage id="store/return-app.return-item-details.dropdown-condition.error" />
+            }
           />
         ) : null}
       </td>

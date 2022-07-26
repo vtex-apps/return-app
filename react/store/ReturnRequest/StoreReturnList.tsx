@@ -1,13 +1,23 @@
 import React from 'react'
 import { Button, PageBlock } from 'vtex.styleguide'
 import { ContentWrapper } from 'vtex.my-account-commons'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl'
 
 import ListTable from '../../common/components/returnList/ListTable'
 import { useReturnRequestList } from '../../hooks/useReturnRequestList'
 
+const messages = defineMessages({
+  titleId: {
+    id: 'store/return-app.return-request-list.page-header.title',
+  },
+  backButton: {
+    id: 'store/return-app.return-request-list.page-header.goBack',
+  },
+})
+
 export const StoreReturnList = () => {
   const { returnRequestData } = useReturnRequestList()
+  const { formatMessage } = useIntl()
   const { loading } = returnRequestData
 
   const headerContent = (
@@ -24,10 +34,10 @@ export const StoreReturnList = () => {
   return (
     <ContentWrapper
       namespace="return-app"
-      titleId="store/return-app.return-request-list.page-header.title"
+      titleId={formatMessage(messages.titleId)}
       backButton={{
         path: '/',
-        titleId: 'store/return-app.return-request-list.page-header.goBack',
+        titleId: formatMessage(messages.backButton),
       }}
       headerContent={headerContent}
     >

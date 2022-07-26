@@ -116,7 +116,7 @@ export const CustomReasonModal = ({
             <div className="w-100 mt3 mb6">
               <Input
                 placeholder={intl.formatMessage({
-                  id: 'admin/return-app.settings.section.custom-reasons.modal.custom-reason.placeholder',
+                  id: 'admin/return-app.settings.section.custom-reasons.modal.custom-reason.max-days.placeholder',
                 })}
                 label={intl.formatMessage({
                   id: 'admin/return-app.settings.section.custom-reasons.modal.custom-reason.max-days.label',

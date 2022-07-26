@@ -149,7 +149,6 @@
           "imageUrl",
           "unitMultiplier",
           "sellerId",
-          "sellerName",
           "productId",
           "refId",
           "returnReason",

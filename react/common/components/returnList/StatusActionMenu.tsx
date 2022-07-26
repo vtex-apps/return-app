@@ -11,7 +11,12 @@ interface Props {
   disabled: boolean
 }
 
+const allStatusKey = 'allStatus'
+
 const keyedStatusMessages = defineMessages({
+  [allStatusKey]: {
+    id: 'return-app.return-request-list.table.status.allStatus',
+  },
   new: {
     id: 'return-app.return-request-list.table.status.new',
   },
@@ -41,28 +46,20 @@ const StatusActionMenu = (props: Props) => {
   const { formatMessage } = useIntl()
 
   const optionList = Object.keys(keyedStatusMessages).map((key) => {
+    const keyName = key === allStatusKey ? '' : key
+
     return {
       label: formatMessage({ id: keyedStatusMessages[key].id }),
-      onClick: () => handleOnChange('status', key),
+      onClick: () => handleOnChange('status', keyName),
     }
   })
-
-  const allStatusOption = {
-    label: formatMessage({
-      id: 'return-app.return-request-list.table.status.allStatus',
-    }),
-    onClick: () => handleOnChange('status', ''),
-  }
-
-  optionList.unshift(allStatusOption)
 
   return (
     <ActionMenu
       label={
-        status ||
-        formatMessage({
-          id: 'return-app.return-request-list.table.status.allStatus',
-        })
+        status
+          ? formatMessage(keyedStatusMessages[status])
+          : formatMessage(keyedStatusMessages[allStatusKey])
       }
       align="right"
       buttonProps={{

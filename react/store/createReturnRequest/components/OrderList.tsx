@@ -24,7 +24,7 @@ const OrderlListTableSchema = ({ navigate }: OrderListTableSchemaProps) => {
     properties: {
       orderId: {
         title: (
-          <FormattedMessage id="store/return-app.return-order-list.table-header.oder-id" />
+          <FormattedMessage id="store/return-app.return-order-list.table-header.order-id" />
         ),
       },
       creationDate: {

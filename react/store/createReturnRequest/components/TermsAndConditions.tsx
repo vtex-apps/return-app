@@ -68,7 +68,9 @@ export const TermsAndConditions = () => {
       {hasntAcceptedTermsAndConditions ? (
         <CustomMessage
           status="error"
-          message="store/return-app.return-terms-and-conditions.checkbox.error"
+          message={
+            <FormattedMessage id="store/return-app.return-terms-and-conditions.checkbox.error" />
+          }
         />
       ) : null}
     </div>

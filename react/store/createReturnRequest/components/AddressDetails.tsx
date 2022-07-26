@@ -120,7 +120,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
       className={`${handles.addressContainer} flex-ns flex-wrap flex-auto flex-column pa4 mw6`}
     >
       <div
-        className={`${handles.addressHeaderWrapper}flex items-center justify-between`}
+        className={`${handles.addressHeaderWrapper} flex items-center justify-between`}
       >
         <div>
           <Tooltip
@@ -173,7 +173,9 @@ export const AddressDetails = ({ shippingData }: Props) => {
         {addressError && !pickupReturnData.address ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-address-details.address-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-address-details.address-input.error" />
+            }
           />
         ) : null}
       </div>
@@ -189,7 +191,9 @@ export const AddressDetails = ({ shippingData }: Props) => {
         {addressError && !pickupReturnData.city ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-address-details.city-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-address-details.city-input.error" />
+            }
           />
         ) : null}
       </div>
@@ -205,7 +209,9 @@ export const AddressDetails = ({ shippingData }: Props) => {
         {addressError && !pickupReturnData.state ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-address-details.state-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-address-details.state-input.error" />
+            }
           />
         ) : null}
       </div>
@@ -221,7 +227,9 @@ export const AddressDetails = ({ shippingData }: Props) => {
         {addressError && !pickupReturnData.zipCode ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-address-details.zip-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-address-details.zip-input.error" />
+            }
           />
         ) : null}
       </div>
@@ -237,7 +245,9 @@ export const AddressDetails = ({ shippingData }: Props) => {
         {addressError && !pickupReturnData.country ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-address-details.country-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-address-details.country-input.error" />
+            }
           />
         ) : null}
       </div>

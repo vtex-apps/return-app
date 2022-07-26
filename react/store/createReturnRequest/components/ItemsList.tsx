@@ -61,7 +61,9 @@ export const ItemsList = (props: Props) => {
       {noItemSelected ? (
         <CustomMessage
           status="error"
-          message="store/return-app.return-items-list.no-items-selected.error"
+          message={
+            <FormattedMessage id="store/return-app.return-items-list.no-items-selected.error" />
+          }
         />
       ) : null}
     </table>

@@ -76,7 +76,7 @@ const acceptOrDenyPackage = (refundItemList?: RefundItemInput[]) => {
   return refundItemList.some(({ quantity, orderItemIndex }) => {
     if (typeof quantity !== 'number') {
       throw new UserInputError(
-        `Not a valid quantity for items index ${orderItemIndex}`
+        `Not a valid quantity for item index ${orderItemIndex}`
       )
     }
 

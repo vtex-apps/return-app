@@ -72,7 +72,9 @@ export const ContactDetails = () => {
         {contactError && !name ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-contact-details.name-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-contact-details.name-input.error" />
+            }
           />
         ) : null}
       </div>
@@ -97,7 +99,9 @@ export const ContactDetails = () => {
         {contactError && !phoneNumber ? (
           <CustomMessage
             status="error"
-            message="store/return-app.return-contact-details.phone-input.error"
+            message={
+              <FormattedMessage id="store/return-app.return-contact-details.phone-input.error" />
+            }
           />
         ) : null}
       </div>
