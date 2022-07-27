@@ -25,6 +25,8 @@ export class CatalogGQL extends AppGraphQLClient {
       headers: {
         ...opts?.headers,
         cookie: `VtexIdclientAutCookie=${ctx.authToken}`,
+        'x-vtex-locale': ctx.locale ?? '',
+        'X-Vtex-Tenant': ctx.account,
       },
     })
   }
