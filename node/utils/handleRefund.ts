@@ -3,7 +3,6 @@ import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
-import { canRefundCard } from './canRefundCard'
 
 const getOneYearLaterDate = (createdAt: string) => {
   const date = new Date(createdAt)
@@ -82,14 +81,10 @@ export const handleRefund = async ({
     }
   }
 
-  const order = await omsClient.order(orderId)
+  const refundPayment =
+    refundPaymentMethod === 'card' || refundPaymentMethod === 'sameAsPurchase'
 
-  const refundCard =
-    refundPaymentMethod === 'card' ||
-    (refundPaymentMethod === 'sameAsPurchase' &&
-      canRefundCard(order.paymentData.transactions))
-
-  if (refundCard) {
+  if (refundPayment) {
     try {
       await omsClient.createInvoice(orderId, {
         type: 'Input',
