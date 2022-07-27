@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+- Create a invoice type Input for all requests created with payment method to be refunded as the same one used by the store user during the purchase.
+
 ## [3.0.0] - 2022-07-26
 
 ## [2.19.12] - 2022-06-27
