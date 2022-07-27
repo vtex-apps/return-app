@@ -10,11 +10,15 @@ export const translateItemName = async (
   originalName: string,
   catalogClient: CatalogGQL
 ) => {
-  const skuName = await catalogClient.getSKUTranslation(id)
+  try {
+    const skuName = await catalogClient.getSKUTranslation(id)
+    const isLocalized = skuName && skuName !== originalName
 
-  const isLocalized = skuName && skuName !== originalName
-
-  return isLocalized ? skuName : null
+    return isLocalized ? skuName : null
+  } catch (error) {
+    error.message = 'Error translating item name'
+    throw error
+  }
 }
 
 export function handleTranlateItems(
