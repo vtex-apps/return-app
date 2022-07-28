@@ -15,7 +15,7 @@ In this section of the merchant's admin, merchants are capable of visualizing an
 In this section of the merchant's admin, merchants control what are the conditions of allowing the return process for a given item or items per customer. 
 - **Max Days**: when an order creation date is older than the Max Days to return, user won't be able to select that order for a return
 - **Terms and Conditions**: link to the Terms and conditions offered by the store. (not provided by the app)
-- **Excluded categories**: List of categories to be excluded for the return process. Any item that belongs to any of these categories, will not be allowed to be returned.
+- **Excluded categories**: List of categories to be excluded for the return process. Any item that belongs to any of these categories, will not be allowed to be returned. The store user will see a message stating that that item is not allowed to be returned. 
 - **Return Payment Options**: 
 
   -- Same as Order: Payment will be refunded to the same payment method used in the order. 
@@ -41,25 +41,26 @@ The custom Return Reasons can be translated manually by the admin.
     |Unauthorized purchase|
     |Different from website|
 
-- **Other Option**: toggle this to include a generic other return request reason
+- **Other Option**: toggle this to include a generic other return request reason. The store user can input any generic value if this one is chosen. 
 - **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. It uses the geocoordinates from the order to find the closest pickup points.
-- **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item weight on the total order value. 
+- **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item value percentage of the total order value. 
 
 ### Transactional Emails
 The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
 
-The app creates a default template `oms-return-request-confirmation` that is modifiable on the Message Center to suit each store needs. 
+When creating a return request for the first time, the app creates a default template `oms-return-request-confirmation-{locale}` that is modifiable on the Message Center to suit each store needs. 
+the locale will be filled with the locale the store user had when browsing the store. 
 
-Additional to this template, in the case there are secondary languages on the account, a new template is created per locale based on the `cultureInfoData` to provide customers the ability to internationalize their templates. 
+Additional to the confirmation template, on successful Return Request Status update, the app also creates a `oms-return-request-status-update-{locale}`. 
 
-Each new template will include the locale appendend to the default template title for example: `oms-return-request-confirmation-en-GB`. 
+Both templates will always be created in English, it is responsability of the store to translate them to the desired locale. 
 
 
 ## API
 ### Create Return Request
 
 To create a Return Request make a POST request to the following endpoint:
-`https://{accountName}.myvtex.com/return-request`
+`https://{accountName}.myvtex.com/_v/return-request`
 with an example body in the form of:
 ```
 {
@@ -116,7 +117,7 @@ with an example body in the form of:
 |userComment|`string` comment to be added to the creation|false|
 |locale|`string` locale for the customer to visualize the return|true|
 
-A successful creation of a Return Request should return a status 200 with a response in the form of:
+A successful creation of a Return Request should return a status 201 with a response in the form of:
 ```
 {
     "requestId": "requestId"
@@ -173,6 +174,10 @@ To add a comment to a request, ones only needs to send the payload with status e
 To get a Return Request make a GET request to the following endpoint:
 `https://{accountName}.myvtex.com/_v/return-request/{requestId}`
 
+
+### Retrieve Return Request List
+To retrieve a List of Return Requests make a GET request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/return-request`
 The search params available are:
 
 - _page `integer`
@@ -186,11 +191,6 @@ The search params available are:
 By default, the requests will only have a summary of the request. If you want to get all the fields for the requests, you can pass another search param:
 
 - _allFields `string` (any truthy value)
-
-
-### Retrieve Return Request List
-To retrieve a List of Return Requests make a GET request to the following endpoint:
-`https://{accountName}.myvtex.com/_v/return-request`
 
 ## CSS handles
 
