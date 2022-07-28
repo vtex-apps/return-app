@@ -22,6 +22,7 @@ In this section of the merchant's admin, merchants control what are the conditio
   -- Allowed to choose: customer will select any of the refund options selected by the store. 
       **Disclaimer**: Only Credit Card triggers the automatic refund. **WIP: automatic refund for any payment method. **
 - **Custom Return Reasons**: Allows the store to define their own custom return reasons. This setting will overwrite the default reasons. 
+The custom Return Reasons can be translated manually by the admin. 
     |Default return reason|
     |---------|
     |Accidental Order|
@@ -40,7 +41,7 @@ In this section of the merchant's admin, merchants control what are the conditio
     |Different from website|
 
 - **Other Option**: toggle this to include a generic other return request reason
-- **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. 
+- **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. It uses the geocoordinates from the order to find the closest pickup points.
 - **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item weight on the total order value. 
 
 ### Transactional Emails
@@ -121,13 +122,76 @@ A successful creation of a Return Request should return a status 200 with a resp
 }
 ```
 
+### Update a Return Request Status
+Make a PUT request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/return-request/{requestId}`
+with the following example body:
+```
+{
+    "status":"processing",
+    "comment":{
+        "value":"Test comment",
+        "visibleForCustomer": false
+    "refundData":{
+        "items":[{
+            "orderItemIndex":0,
+            "quantity":1,
+            "restockFee":12,
+        }]
+        "refundedShippingValue":1
+    }
+    }
+}
+```
+
+|Field|Description|isRequired|
+|----|----|----|
+|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied|true|
+|comment value|`string` only required if not updating status|false|
+|comment visibleForCustomer|`boolean` the comment will be shown to the customer. Default false|false|
+|orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
+|quantity|`integer` number to be returned for the given `orderItemIndex`|true|
+|restockFee|`integer` discount to be applied to the amount to be refunded, can be zero|true|
+|refundedShippingValue|`integer` shipping amount to be refunded, can be zero|true|
+
+To update the request to the next possible status, one just needs to pass a payload with the key status and the status as its value.
+It's possible to send the comment payload with all the status. When sending the status packageVerified it's necessary to send the refundData object.
+
+The request can be denied up to the pickedUpFromClient status. After that, it's only possible to deny a request by passing quantity zero to all items when sending the status packageVerified.
+
+When sending the status packageVerified, the next status will be automatically set to packageVerified or denied based on the information inside refundData.items.
+
+When sending the status amountRefunded, the app will refund the payment method when the store user paid the order using credit card, and has selected to be refunded via credit card or the store forces refunds in the same method as the purchase.
+
+**Add comments without updating status**
+To add a comment to a request, ones only needs to send the payload with status equals to the current one and pass the comment object.
+
+
+
 ### Retrieve a Return Request
 To get a Return Request make a GET request to the following endpoint:
 `https://{accountName}.myvtex.com/_v/return-request/{requestId}`
 
+The search params available are:
+
+- _page `integer`
+- _status `enum`
+- _sequenceNumber `string`
+- _id `string`
+- _createdIn `string` e.g: _createdIn=2022-06-12,2022-07-13
+- _orderId `string`
+- _userEmail `string`
+
+By default, the requests will only have a summary of the request. If you want to get all the fields for the requests, you can pass another search param:
+
+- _allFields `string` (any truthy value)
+
+
 ### Retrieve Return Request List
 To retrieve a List of Return Requests make a GET request to the following endpoint:
 `https://{accountName}.myvtex.com/_v/return-request`
+
+## CSS handles
 
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
