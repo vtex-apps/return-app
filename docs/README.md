@@ -1,6 +1,7 @@
 # Return App V3 <sup>BETA</sup>
 
-Return app v3 is still in BETA. Docs are WIP.
+Return app v3 is still in BETA. v2 will no longer be supported so please do not install it. 
+ Docs are WIP.
 
 ## Description
 
