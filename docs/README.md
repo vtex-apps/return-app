@@ -94,13 +94,40 @@ with an example body in the form of:
 
 |Field | Description | isRequired |
 |-----| ------|------|
-|orderId|orderId to where the Return Request is being made to|true|
+|orderId|`string`orderId to where the Return Request is being made to|true|
 |items|array of individual itemObject to be returned|true|
 |orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
 |quantity|`integer` number to be returned for the given `orderItemIndex`|true|
 |condition|`enum` values: newWithBox, newWithoutBox, usedWithBox,usedWithoutBox|true|
+|name|`string`Customer name for the return request|true|
+|email|`string`customer's email for the return request|true|
+|phoneNumber|`string` customer's phone number for the return request|true|
+|addressId|`string` id of the customer's address can be empty string|true|
+|address|`string`customer address|true|
+|city|`string` city of the address|true|
+|country|`string` country of the address|true|
+|zipCode|`string` postal code of the address|true|
+|addressType|`enum` possible values: PICKUP_POINT, CUSTOMER_ADDRESS|true|
+|refundPaymentMethod|`enum` possible values: bank, card, giftCard, sameAsPurchase|true|
+|iban|`string`required when refundPaymentMethod is set as bank|false|
+|accountHolderName|`string` required when refundPaymentMethod is set as bank|false|
+|userComment|`string` comment to be added to the creation|false|
+|locale|`string` locale for the customer to visualize the return|true|
 
+A successful creation of a Return Request should return a status 200 with a response in the form of:
+```
+{
+    "requestId": "requestId"
+}
+```
 
+### Retrieve a Return Request
+To get a Return Request make a GET request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/return-request/{requestId}`
+
+### Retrieve Return Request List
+To retrieve a List of Return Requests make a GET request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/return-request`
 
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
