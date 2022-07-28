@@ -43,6 +43,14 @@ In this section of the merchant's admin, merchants control what are the conditio
 - **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. 
 - **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item weight on the total order value. 
 
+### Transactional Emails
+The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
+The app creates a default template `oms-return-request-confirmation` that is modifiable on the Message Center to suit each store needs. 
+Additional to this template, in the case there are secondary languages on the account, a new template is created per locale based on the `cultureInfoData` to provide customers the ability to internationalize their templates. 
+Each new template will include the locale appendend to the default template title for example: `oms-return-request-confirmation-en-GB`. 
+
+
+
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
 
