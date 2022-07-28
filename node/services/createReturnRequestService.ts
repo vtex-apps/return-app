@@ -224,7 +224,10 @@ export const createReturnRequestService = async (
         phoneNumber: customerProfileData.phoneNumber,
       },
       pickupReturnData,
-      refundPaymentData,
+      refundPaymentData: {
+        ...refundPaymentData,
+        automaticallyRefundPaymentMethod: false,
+      },
       items: itemsToReturn,
       dateSubmitted: requestDate,
       refundData: null,

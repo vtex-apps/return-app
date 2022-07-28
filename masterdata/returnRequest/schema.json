@@ -94,9 +94,12 @@
         },
         "accountHolderName": {
           "type": ["string", "null"]
+        },
+        "automaticallyRefundPaymentMethod": {
+          "type": "boolean"
         }
       },
-      "required": ["refundPaymentMethod"]
+      "required": ["refundPaymentMethod", "automaticallyRefundPaymentMethod"]
     },
     "items": {
       "type": "array",
