@@ -16,7 +16,9 @@ In this section of the merchant's admin, merchants control what are the conditio
 - **Terms and Conditions**: link to the Terms and conditions offered by the store. (not provided by the app)
 - **Excluded categories**: List of categories to be excluded for the return process. Any item that belongs to any of these categories, will not be allowed to be returned.
 - **Return Payment Options**: 
+
   -- Same as Order: Payment will be refunded to the same payment method used in the order. 
+
   -- Allowed to choose: customer will select any of the refund options selected by the store. 
       **Disclaimer**: Only Credit Card triggers the automatic refund. **WIP: automatic refund for any payment method. **
 - **Custom Return Reasons**: Allows the store to define their own custom return reasons. This setting will overwrite the default reasons. 
@@ -37,6 +39,9 @@ In this section of the merchant's admin, merchants control what are the conditio
     |Unauthorized purchase|
     |Different from website|
 
+- **Other Option**: toggle this to include a generic other return request reason
+- **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. 
+- **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item weight on the total order value. 
 
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
