@@ -20,18 +20,22 @@ In this section of the merchant's admin, merchants control what are the conditio
   -- Allowed to choose: customer will select any of the refund options selected by the store. 
       **Disclaimer**: Only Credit Card triggers the automatic refund. **WIP: automatic refund for any payment method. **
 - **Custom Return Reasons**: Allows the store to define their own custom return reasons. This setting will overwrite the default reasons. 
-    |Default return reason| |
-    |---------| |
-    |Accidental Order|Arrived in addition|
-    |Better Price|No Longer Needed|
-    |Performance|Unauthorized purchase|
-    |Incompatible|Different from website|
+    |Default return reason|
+    |---------|
+    |Accidental Order|
+    |Better Price|
+    |Performance|
+    |Incompatible|
     |Item Damaged|
     |Missed Delivery|
     |Missing Parts|
     |Box Damaged|
     |Different Product|
     |Defective|
+    |Arrived in addition|
+    |No Longer Needed|
+    |Unauthorized purchase|
+    |Different from website|
 
 
 ---
