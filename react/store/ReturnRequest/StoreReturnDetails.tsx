@@ -17,6 +17,7 @@ import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTime
 import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
+import RequestCancellation from '../../common/components/ReturnDetails/RequestCancellation'
 
 const CSS_HANDLES = ['contactPickupContainer'] as const
 
@@ -40,7 +41,9 @@ const StoreReturnDetails = () => {
             to: '#/my-returns',
           })
         }}
-      />
+      >
+        <RequestCancellation />
+      </PageHeader>
       <StoreReturnDetailsLoader data={{ loading, error }}>
         <CurrentRequestStatus />
         <OrderLink />
