@@ -45,9 +45,60 @@ In this section of the merchant's admin, merchants control what are the conditio
 
 ### Transactional Emails
 The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
+
 The app creates a default template `oms-return-request-confirmation` that is modifiable on the Message Center to suit each store needs. 
+
 Additional to this template, in the case there are secondary languages on the account, a new template is created per locale based on the `cultureInfoData` to provide customers the ability to internationalize their templates. 
+
 Each new template will include the locale appendend to the default template title for example: `oms-return-request-confirmation-en-GB`. 
+
+
+## API
+### Create Return Request
+
+To create a Return Request make a POST request to the following endpoint:
+`https://{accountName}.myvtex.com/return-request`
+with an example body in the form of:
+```
+{
+    "items": [{
+        "orderItemIndex": 0,
+        "quantity": 1,
+        "returnReason": {
+            "reason": "Wrong type"
+        },
+        "condition": "newWithBox"
+    }],
+    "orderId": "1240221188059-01",
+    "refundPaymentData": {
+        "refundPaymentMethod": "sameAsPurchase"
+    },
+    "pickupReturnData": {
+        "addressId:"",
+        "addressType": "CUSTOMER_ADDRESS",
+        "address": "Rua Haddock Lobo",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "Br",
+        "zipCode": "01403003"
+    },
+    "customerProfileData": {
+        "name": "Filadelfo Braz",
+        "email": "filadelfo.braz+test@gmail.com",
+        "phoneNumber": "123432122"
+    },
+    "userComment": "This is a test from API",
+    "locale": "pt-PT"
+}
+```
+
+|Field | Description | isRequired |
+|-----| ------|------|
+|orderId|orderId to where the Return Request is being made to|true|
+|items|array of individual itemObject to be returned|true|
+|orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
+|quantity|`integer` number to be returned for the given `orderItemIndex`|true|
+|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox,usedWithoutBox|true|
 
 
 
