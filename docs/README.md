@@ -192,7 +192,94 @@ By default, the requests will only have a summary of the request. If you want to
 
 - _allFields `string` (any truthy value)
 
-## CSS handles
+## Customization
+In order to apply CSS customizations in this and other blocks, follow the instructions given in the recipe on [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).
+
+|CSS Handles COMMON|
+|-----------|
+|'contactDetailsCommonContainer'|
+|'currentRequestStatusContainer'|
+|'itemDetailsListContainer'|
+|'itemVerificationDeniedContainer'|
+|'itemVerificationApprovedContainer'|
+|'itemVerificationPartiallyContainer'|
+|'itemVerificationNewContainer'|
+|'commonPickupContainer'|
+|'refundMethodDetailContainer'|
+|'approvedValuesContainer'|
+|'requestedValuesContainer'|
+|'returnValuesContainer'|
+|'totalContainer'|
+|'totalWrapperContainer'|
+|'statusHistoryContainer'|
+|'jumpToPageContainer'|
+|'listTableContainer'|
+|'listTableFilterContainer'|
+
+|CSS Handles STORE|
+|----------|
+|'contactPickupContainer'|
+|'addressContainer'|
+|'addressHeaderWrapper'|
+|'pickupAddressTitle'|
+|'tooltipToggleWrapper'|
+|'addressInputContainer'|
+|'cityInputContainer'|
+|'stateInputContainer'|
+|'zipCodeInputContainer'|
+|'countryInputContainer'|
+|'submitDetailsContainer'|
+|'contactAddressWrapper'|
+|'paymentCommentWrapper'|
+|'confirmationActionsContainer'|
+|'backButtonWrapper'|
+|'submitButtonWrapper'|
+|'confirmContactContainer'|
+|'confirmContactTitle'|
+|'confirmContactText'|
+|'confirmPaymentContainer'|
+|'confirmPaymentTitle'|
+|'accountHolderWrapper'|
+|'ibanWrapper'|
+|'accountHolderText'|
+|'confirmPaymentValue'|
+|'ibanText'|
+|'refundPaymentText'|
+|'confirmPickupContainer'|
+|'confirmPickupTitle'|
+|'confirmPickupText'|
+|'contactDetailsContainer'
+|'contactDetailsTitle'|
+|'contactNameInputWrapper'|
+|'contactEmailInputWrapper'|
+|'contactPhoneInputWrapper'|
+|'detailsRowContainer'|
+|'detailsTdWrapper'|
+|'productSectionWrapper'|
+|'productText'|
+|'productImageWrapper'|
+|'productImage'|
+|'itemsDetailText'|
+|'itemsListContainer'|
+|'itemsListTheadWrapper'|
+|'paymentMethodContainer'|
+|'paymentBankWrapper'|
+|'pickupPointContainer'|
+|'conditionDropdwonContainer'|
+|'otherReasonOptionContainer'|
+|'returnDetailsContainer'|
+|'orderIdDetailsWrapper'|
+|'creationDateDetailsWrapper'|
+|'returnInfoTableContainer'|
+|'returnInfoTheadContainer'|
+|'returnInfoTableText'|
+|'returnInfoBodyContainer'|
+|'returnInfoTrBodyWrapper'|
+|'returnInfoBodyImgWrapper'|
+|'returnInfoReasonConditionWrapper'|
+|'termsAndConditionsContainer'|
+|'termsAndConditionsLink'|
+|'userCommentDetailsContainer'|
 
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
