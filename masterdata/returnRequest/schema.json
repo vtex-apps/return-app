@@ -99,7 +99,7 @@
           "type": "boolean"
         }
       },
-      "required": ["refundPaymentMethod", "automaticallyRefundPaymentMethod"]
+      "required": ["refundPaymentMethod"]
     },
     "items": {
       "type": "array",

@@ -208,6 +208,14 @@ export const createReturnRequestService = async (
     }
   )
 
+  // const { refundPaymentMethod } =
+  //   refundPaymentData
+
+  // const createInvoiceTypeInput =
+  //   refundPaymentMethod === 'sameAsPurchase'
+  //     ? automaticallyRefundPaymentMethod ?? false
+  //     : null
+
   let rmaDocument: DocumentResponse
 
   try {

@@ -10,6 +10,7 @@ type ReturnAppSettings {
 type PaymentOptions {
   enablePaymentMethodSelection: Boolean
   allowedPaymentTypes: PaymentType!
+  automaticallyRefundPaymentMethod: Boolean
 }
 
 type PaymentType {
@@ -47,6 +48,7 @@ input ReturnAppSettingsInput {
 input PaymentOptionsInput {
   enablePaymentMethodSelection: Boolean
   allowedPaymentTypes: PaymentTypeInput!
+  automaticallyRefundPaymentMethod: Boolean
 }
 
 input PaymentTypeInput {
