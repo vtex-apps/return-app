@@ -9,6 +9,7 @@ query returnAppSettings {
         card
         giftCard
       }
+      automaticallyRefundPaymentMethod
     }
     termsUrl
     customReturnReasons {
