@@ -18,10 +18,11 @@ In this section of the merchant's admin, merchants control what are the conditio
 - **Excluded categories**: List of categories to be excluded for the return process. Any item that belongs to any of these categories, will not be allowed to be returned. The store user will see a message stating that that item is not allowed to be returned. 
 - **Return Payment Options**: 
 
-  -- Same as Order: Payment will be refunded to the same payment method used in the order. 
+  -- Same as Order: Payment will be refunded to the same payment method used in the order.
+  --  Automatically refund requests - Automatically refund any payment method when the configuration to refund is set to be same as order.
 
   -- Allowed to choose: customer will select any of the refund options selected by the store. 
-      **Disclaimer**: Only Credit Card triggers the automatic refund. **WIP: automatic refund for any payment method. **
+      **Disclaimer**: Requests that were set to refund via credit card trigger the automatic refund.
 - **Custom Return Reasons**: Allows the store to define their own custom return reasons. This setting will overwrite the default reasons. 
 The custom Return Reasons can be translated manually by the admin. 
     |Default return reason|

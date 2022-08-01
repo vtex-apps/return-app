@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Changed
-- Create a invoice type Input for all requests created with payment method to be refunded as the same one used by the store user during the purchase.
+### Add
+- Allow admin users to set automatic refund (creates invoice type Input for the order) when the request is set to refund the same payment method used for the purchase.
 
 ## [3.0.0] - 2022-07-26
 
