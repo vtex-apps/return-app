@@ -208,13 +208,14 @@ export const createReturnRequestService = async (
     }
   )
 
-  // const { refundPaymentMethod } =
-  //   refundPaymentData
+  const { refundPaymentMethod } = refundPaymentData
 
-  // const createInvoiceTypeInput =
-  //   refundPaymentMethod === 'sameAsPurchase'
-  //     ? automaticallyRefundPaymentMethod ?? false
-  //     : null
+  const { automaticallyRefundPaymentMethod } = paymentOptions
+
+  const createInvoiceTypeInput =
+    refundPaymentMethod === 'sameAsPurchase'
+      ? Boolean(automaticallyRefundPaymentMethod)
+      : null
 
   let rmaDocument: DocumentResponse
 
@@ -234,7 +235,7 @@ export const createReturnRequestService = async (
       pickupReturnData,
       refundPaymentData: {
         ...refundPaymentData,
-        automaticallyRefundPaymentMethod: false,
+        automaticallyRefundPaymentMethod: createInvoiceTypeInput,
       },
       items: itemsToReturn,
       dateSubmitted: requestDate,
