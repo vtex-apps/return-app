@@ -313,5 +313,6 @@
   "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error": "There was an error loading the drop off points",
   "admin/return-app.return-request-details.localized-product-name.tooltip": "Original item name from the order",
   "admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.label": "Automatically refund requests",
-  "admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.description": "Automatically create the return invoice in the OMS for the requests"
+  "admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.description": "Automatically create the return invoice in the OMS for the requests",
+  "return-app.return-request-details.payent-method.refund-option.refund-process": "Refund process: {automaticallyRefundPaymentMethod, select, true{Automatically} false{Manually}}"
 }

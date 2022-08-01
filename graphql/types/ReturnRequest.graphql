@@ -115,6 +115,7 @@ type RefundPaymentData {
   refundPaymentMethod: RefundPaymentMethod!
   iban: String
   accountHolderName: String
+  automaticallyRefundPaymentMethod: Boolean
 }
 
 type ReturnRequestItem {

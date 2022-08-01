@@ -51,7 +51,8 @@ export const handleRefund = async ({
 
   const { omsClient, giftCardClient } = clients
 
-  const { refundPaymentMethod } = refundPaymentData ?? {}
+  const { refundPaymentMethod, automaticallyRefundPaymentMethod } =
+    refundPaymentData ?? {}
 
   if (refundPaymentMethod === 'giftCard') {
     try {
@@ -82,7 +83,9 @@ export const handleRefund = async ({
   }
 
   const refundPayment =
-    refundPaymentMethod === 'card' || refundPaymentMethod === 'sameAsPurchase'
+    refundPaymentMethod === 'card' ||
+    (refundPaymentMethod === 'sameAsPurchase' &&
+      automaticallyRefundPaymentMethod)
 
   if (refundPayment) {
     try {
