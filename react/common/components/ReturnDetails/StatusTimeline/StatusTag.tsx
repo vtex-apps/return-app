@@ -13,11 +13,13 @@ interface Props {
 export const StatusTag = ({ status, visited, createdAt }: Props) => {
   const { formatMessage } = useIntl()
 
+  const invalid = ['denied', 'cancelled'].includes(status)
+
   return (
     <span className="flex items-center">
       {visited ? (
         <span className="flex status-icon">
-          {status === 'denied' ? (
+          {invalid ? (
             <IconClear size={30} color="#f21515" />
           ) : (
             <IconSuccess size={30} color="#134cd8" />

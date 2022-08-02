@@ -272,7 +272,8 @@
         "pendingVerification",
         "packageVerified",
         "amountRefunded",
-        "denied"
+        "denied",
+        "cancelled"
       ]
     }
   },

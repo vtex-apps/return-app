@@ -37,7 +37,7 @@ export const createOrdersToReturnSummary = async (
     { page: 1, pageSize: 100 },
     ['items', 'refundData', 'refundPaymentData'],
     undefined,
-    `orderId=${orderId}`
+    `orderId=${orderId} AND status <> cancelled`
   )
 
   const invoicesCreatedByReturnApp: string[] = []

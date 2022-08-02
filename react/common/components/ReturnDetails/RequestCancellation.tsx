@@ -1,34 +1,35 @@
 /* eslint-disable no-console */
 import React from 'react'
+import type { FormEvent, ReactElement } from 'react'
 import { utils, Button, EXPERIMENTAL_Modal as Modal } from 'vtex.styleguide'
-/* import { useDisclosure } from 'vtex.styleguide/react/utilities/useDisclosure' */
 import { useRuntime } from 'vtex.render-runtime'
-import { defineMessages } from 'react-intl'
-import type { Status } from 'vtex.return-app'
+import { defineMessages, FormattedMessage } from 'react-intl'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { useUpdateRequestStatus } from '../../../admin/hooks/useUpdateRequestStatus'
 
-type AdminAllowedStatus = Extract<
-  Status,
-  'new' | 'processing' | 'pickedUpFromClient'
->
+type CancellationMessage =
+  | 'adminAllow'
+  | 'adminRefuse'
+  | 'storeAllow'
+  | 'storeRefuse'
 
 export const messages = defineMessages({
   adminAllow: {
-    id: "Attention: This request's status will be set to CANCELLED. Doing so the user will be notified via email; allowing them to create a new return request with the items of the cancelled request. If you intend otherwhise, you are maybe looking to set the request as DENIED",
+    id: 'return-app.return-request-details.cancellation.modal.adminAllow',
   },
   adminRefuse: {
-    id: "Sorry, due to this request's current status, it's not possible to cancel this request",
+    id: 'return-app.return-request-details.cancellation.modal.adminRefuse',
   },
   storeAllow: {
-    id: 'Cancelling this request will allow the current items to be used in the creation of a new return request. This action is irreversible',
+    id: 'return-app.return-request-details.cancellation.modal.storeAllow',
   },
   storeRefuse: {
-    id: "Sorry, due to this request's current status, you'll need to contact the support team to request a cancellation",
+    id: 'return-app.return-request-details.cancellation.modal.storeRefuse',
   },
 })
 
-const allowedStatuses = ['new', 'processing', 'pickedUpFromClient'] as const
+const ParagraphChunk = (chunks: ReactElement) => <p>{chunks}</p>
 
 const RequestCancellation = () => {
   const { isOpen, onOpen, onClose } = utils.useDisclosure()
@@ -37,29 +38,58 @@ const RequestCancellation = () => {
     route: { domain },
   } = useRuntime()
 
+  const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
+
   if (!data) return null
 
+  const { status, id } = data.returnRequestDetails
+
+  const isDisabled = ['denied', 'cancelled'].includes(status)
+
+  if (isDisabled) {
+    return (
+      <Button variation="danger" size="small" disabled>
+        <FormattedMessage id="return-app.return-request-details.cancellation.cta" />
+      </Button>
+    )
+  }
+
   const isAdmin = domain === 'admin'
-  const { status } = data.returnRequestDetails
 
   // Both the user and the admin have different rules and messages
-  let messageKey: string
-  let enableSubmit = false
+  let messageKey: CancellationMessage
 
   if (isAdmin) {
-    enableSubmit = allowedStatuses.some(
-      (stat: AdminAllowedStatus) => stat === status
-    )
-    messageKey = enableSubmit ? 'adminAllow' : 'adminRefuse'
+    messageKey =
+      status === 'new' || status === 'processing' ? 'adminAllow' : 'adminRefuse'
   } else {
-    enableSubmit = status === 'new'
-    messageKey = enableSubmit ? 'storeAllow' : 'storeRefuse'
+    messageKey = status === 'new' ? 'storeAllow' : 'storeRefuse'
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (submitting) {
+      return
+    }
+
+    handleStatusUpdate({
+      id,
+      status: 'cancelled',
+      cleanUp: () => {
+        onClose()
+      },
+    })
   }
 
   return (
     <>
-      <Button variation="danger" size="small" onClick={onOpen}>
-        Cancel request
+      <Button
+        variation="danger"
+        size="small"
+        onClick={onOpen}
+        disabled={isDisabled}
+      >
+        <FormattedMessage id="return-app.return-request-details.cancellation.cta" />
       </Button>
 
       <Modal
@@ -69,25 +99,36 @@ const RequestCancellation = () => {
         bottomBar={
           <div className="nowrap">
             <span className="mr4">
-              <Button size="small" variation="tertiary" onClick={onClose}>
-                Close
+              <Button
+                size="small"
+                variation="tertiary"
+                onClick={onClose}
+                isLoading={submitting}
+              >
+                <FormattedMessage id="return-app.return-request-details.cancellation.modal.close" />
               </Button>
             </span>
             <span>
               <Button
                 size="small"
-                disabled={!enableSubmit}
+                disabled={['adminRefuse', 'storeRefuse'].includes(messageKey)}
                 variation="danger"
-                onClick={onClose}
+                onClick={handleSubmit}
+                isLoading={submitting}
               >
-                Proceed to cancel
+                <FormattedMessage id="return-app.return-request-details.cancellation.modal.accept" />
               </Button>
             </span>
           </div>
         }
       >
         <div>
-          <p>{messages[messageKey].id}</p>
+          <FormattedMessage
+            id={`${messages[messageKey].id}`}
+            values={{
+              p: ParagraphChunk,
+            }}
+          />
         </div>
       </Modal>
     </>

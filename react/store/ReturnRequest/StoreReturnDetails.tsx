@@ -18,6 +18,8 @@ import { StatusHistory } from '../../common/components/ReturnDetails/StatusHisto
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 import RequestCancellation from '../../common/components/ReturnDetails/RequestCancellation'
+import { UpdateRequestStatusProvider } from '../../admin/provider/UpdateRequestStatusProvider'
+import { AlertProvider } from '../../admin/provider/AlertProvider'
 
 const CSS_HANDLES = ['contactPickupContainer'] as const
 
@@ -27,9 +29,8 @@ const StoreReturnDetails = () => {
   const handles = useCssHandles(CSS_HANDLES)
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
+    <PageBlock>
       <PageHeader
-        className="ph0 mh0 nl5"
         title={
           <FormattedMessage id="store/return-app.return-request-details.page-header.title" />
         }
@@ -42,8 +43,13 @@ const StoreReturnDetails = () => {
           })
         }}
       >
-        <RequestCancellation />
+        <AlertProvider>
+          <UpdateRequestStatusProvider>
+            <RequestCancellation />
+          </UpdateRequestStatusProvider>
+        </AlertProvider>
       </PageHeader>
+
       <StoreReturnDetailsLoader data={{ loading, error }}>
         <CurrentRequestStatus />
         <OrderLink />

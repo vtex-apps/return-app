@@ -103,7 +103,7 @@ export const updateRequestStatusService = async (
 
   const { status, requestId, comment, refundData } = args
 
-  const { role, firstName, lastName, email } = userProfile ?? {}
+  const { role, firstName, lastName, email, userId } = userProfile ?? {}
 
   const requestDate = new Date().toISOString()
   const submittedByNameOrEmail =
@@ -119,7 +119,9 @@ export const updateRequestStatusService = async (
 
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
-  if (!userIsAdmin) {
+  const storeUserCancellation = role === 'store-user' && status === 'cancelled'
+
+  if (!userIsAdmin && !storeUserCancellation) {
     throw new ForbiddenError('Not authorized')
   }
 
@@ -128,12 +130,22 @@ export const updateRequestStatusService = async (
   ])) as ReturnRequest
 
   if (!returnRequest) {
-    throw new NotFoundError('Request not found')
+    throw new NotFoundError(`Request ${requestId} not found`)
+  }
+
+  if (
+    storeUserCancellation &&
+    (returnRequest.status !== 'new' ||
+      returnRequest.customerProfileData.userId !== userId)
+  ) {
+    throw new ForbiddenError(
+      'Store user not authorized. Only the same user of a newly created request can request a cancellation.'
+    )
   }
 
   validateStatusUpdate(status, returnRequest.status as Status)
 
-  // when a request is made for the same status, it means user is adding a new comment
+  // when a request is made for the same status, it means admin user is adding a new comment
   if (status === returnRequest.status && !comment) {
     throw new UserInputError(
       'Missing comment. Comment is needed when status sent is equal the current status.'

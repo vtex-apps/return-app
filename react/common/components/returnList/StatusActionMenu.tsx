@@ -35,6 +35,9 @@ const keyedStatusMessages = defineMessages({
   denied: {
     id: 'return-app.return-request-list.table.status.denied',
   },
+  cancelled: {
+    id: 'return-app.return-request-list.table.status.cancelled',
+  },
   amountRefunded: {
     id: 'return-app.return-request-list.table.status.refunded',
   },

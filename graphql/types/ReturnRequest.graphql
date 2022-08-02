@@ -91,6 +91,7 @@ enum Status {
   packageVerified
   amountRefunded
   denied
+  cancelled
 }
 
 type CustomerProfileData {
