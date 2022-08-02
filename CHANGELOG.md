@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Ability to cancel a request; this action refunds the items for creating a new return request
+
 ## [3.1.0] - 2022-08-08
 
 ### Added
