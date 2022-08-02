@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.1] - 2022-08-02
+
 ### Fixed
 - Add locale into context to allow item names to be translated when creating a new request via API.
 
