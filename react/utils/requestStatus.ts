@@ -17,12 +17,7 @@ const statusSequence: Status[] = [
 export const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'denied', 'cancelled'],
   processing: ['processing', 'pickedUpFromClient', 'denied', 'cancelled'],
-  pickedUpFromClient: [
-    'pickedUpFromClient',
-    'pendingVerification',
-    'denied',
-    'cancelled',
-  ],
+  pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'denied'],
   // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
   pendingVerification: ['pendingVerification'],
   packageVerified: ['packageVerified', 'amountRefunded'],
