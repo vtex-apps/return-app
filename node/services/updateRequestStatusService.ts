@@ -15,14 +15,14 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
+import { templateName } from '../utils/emailTemplates'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
 // If any new field is added to the ReturnRequest as required, it has to be added here too.
-const formatRequestToPartialUpdate = (
+export const formatRequestToPartialUpdate = (
   request: ReturnRequest
 ): ReturnRequest => {
   const {
@@ -228,7 +228,7 @@ export const updateRequestStatusService = async (
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale)
+      templateName('status-update', cultureInfoData?.locale)
     )
 
     if (!templateExists) {
@@ -247,7 +247,7 @@ export const updateRequestStatusService = async (
     } = updatedRequest
 
     const mailData: StatusUpdateMailData = {
-      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale),
+      templateName: templateName('status-update', cultureInfoData?.locale),
       jsonData: {
         data: {
           status: updatedStatus,

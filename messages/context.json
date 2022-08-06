@@ -311,5 +311,9 @@
   "store/return-app.return-order-details.pickup-address.drop-off-points.tooltip": "You can return your items in one of our selected drop off points",
   "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder": "Select a drop off point",
   "store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error": "There was an error loading the drop off points",
-  "admin/return-app.return-request-details.localized-product-name.tooltip": "Tooltip for localized product names"
+  "admin/return-app.return-request-details.localized-product-name.tooltip": "Tooltip for localized product names",
+  "admin/return-app.return-request-details.return-label.modal-title": "Are you sure you want to create a return shipping label?",
+  "admin/return-app.return-request-details.return-label.modal-message": "This action is irreversible. The created label will be sent via email to the customer.",
+  "admin/return-app.return-request-details.return-label.create-return-label": "Create return label",
+  "admin/return-app.return-request-details.return-label.see-return-label": "See return label"
 }

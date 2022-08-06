@@ -2,10 +2,7 @@ import type { ReturnRequestCreated, ReturnRequestInput } from 'vtex.return-app'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
 
-import {
-  SETTINGS_PATH,
-  OMS_RETURN_REQUEST_CONFIRMATION,
-} from '../utils/constants'
+import { SETTINGS_PATH } from '../utils/constants'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
@@ -17,6 +14,7 @@ import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
+import { templateName } from '../utils/emailTemplates'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -261,7 +259,7 @@ export const createReturnRequestService = async (
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_CONFIRMATION(locale)
+      templateName('confirmation', locale)
     )
 
     if (!templateExists) {
@@ -281,7 +279,7 @@ export const createReturnRequestService = async (
     } = shippingData
 
     const mailData: ConfirmationMailData = {
-      templateName: OMS_RETURN_REQUEST_CONFIRMATION(locale),
+      templateName: templateName('confirmation', locale),
       jsonData: {
         data: {
           status: 'new',

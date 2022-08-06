@@ -1,0 +1,3 @@
+mutation SendLabel($requestId: String, $labelUrl: String) {
+  sendReturnLabel(requestId: $requestId, labelUrl: $labelUrl)
+}
