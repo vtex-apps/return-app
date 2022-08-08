@@ -5,7 +5,12 @@ export const validatePaymentMethod = (
   refundPaymentData: RefundPaymentDataInput,
   paymentSettings: PaymentOptions
 ) => {
-  const { enablePaymentMethodSelection, allowedPaymentTypes } = paymentSettings
+  const {
+    enablePaymentMethodSelection,
+    allowedPaymentTypes,
+    automaticallyRefundPaymentMethod,
+  } = paymentSettings
+
   const { refundPaymentMethod, iban, accountHolderName } = refundPaymentData
 
   // When admin doesn't allow selection, PM request has to be sameAsPurchase
@@ -19,8 +24,17 @@ export const validatePaymentMethod = (
     )
   }
 
-  // sameAsPurchase isn't a field on allowedPaymentTypes. Return here to satisfy TS.
-  if (refundPaymentMethod === 'sameAsPurchase') return
+  if (refundPaymentMethod === 'sameAsPurchase') {
+    if (typeof automaticallyRefundPaymentMethod !== 'boolean') {
+      throw new ResolverError(
+        `automaticallyRefundPaymentMethod field isn't set on settings. It has to be a boolean when refundPaymentMethod is sameAsPurchase`,
+        500
+      )
+    }
+
+    // sameAsPurchase isn't a field on allowedPaymentTypes. Return here to satisfy TS.
+    return
+  }
 
   // The PM in the request has to be true in the allowedPaymentTypes on the settings.
   if (!allowedPaymentTypes[refundPaymentMethod]) {

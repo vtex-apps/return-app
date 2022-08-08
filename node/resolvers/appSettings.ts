@@ -44,10 +44,13 @@ const saveReturnAppSettings = async (
   // validate if all custom reasons have unique locales for their translations
   valideteUniqueCustomReasonsPerLocale(args.settings.customReturnReasons)
 
-  // validate that there is at least one payment method selected or user has to use the same as in the order
-  validatePaymentOptions(args.settings.paymentOptions)
+  const settings = {
+    ...args.settings,
+    // validate that there is at least one payment method selected or user has to use the same as in the order
+    paymentOptions: validatePaymentOptions(args.settings.paymentOptions),
+  }
 
-  await appSettings.save(SETTINGS_PATH, args.settings)
+  await appSettings.save(SETTINGS_PATH, settings)
 
   return true
 }

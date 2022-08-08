@@ -96,8 +96,11 @@ export const PaymentOptions = () => {
     dispatch({
       type: 'updatePaymentOptions',
       payload: {
+        ...appSettings?.paymentOptions,
         enablePaymentMethodSelection: checked,
         allowedPaymentTypes: appSettings.paymentOptions.allowedPaymentTypes,
+        // Always return to the default state when use checks / unchecks the checkbox. This way we avaiod a confusing state where buttons is disable but set to on.
+        automaticallyRefundPaymentMethod: false,
       },
     })
   }
@@ -136,7 +139,22 @@ export const PaymentOptions = () => {
     setHasError(false)
   }
 
-  const { enablePaymentMethodSelection } = appSettings.paymentOptions ?? {}
+  const handleAutomaticallyRefundOption = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    const { checked } = e.target
+
+    dispatch({
+      type: 'updatePaymentOptions',
+      payload: {
+        ...appSettings?.paymentOptions,
+        automaticallyRefundPaymentMethod: checked,
+      },
+    })
+  }
+
+  const { enablePaymentMethodSelection, automaticallyRefundPaymentMethod } =
+    appSettings.paymentOptions ?? {}
 
   return (
     <section>
@@ -144,21 +162,37 @@ export const PaymentOptions = () => {
         <FormattedMessage id="admin/return-app.settings.section.return-payment-options.header" />
       </h3>
       <div className="mb4 mh4">
-        <Toggle
-          label={
-            enablePaymentMethodSelection ? (
-              <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.check" />
-            ) : (
-              <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.uncheck" />
-            )
-          }
-          checked={enablePaymentMethodSelection}
-          semantic
-          onChange={handleEnablePaymentMethodSelection}
-          helpText={
-            <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.description" />
-          }
-        />
+        <div className="mb4">
+          <Toggle
+            label={
+              enablePaymentMethodSelection ? (
+                <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.check" />
+              ) : (
+                <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.uncheck" />
+              )
+            }
+            checked={enablePaymentMethodSelection}
+            semantic
+            onChange={handleEnablePaymentMethodSelection}
+            helpText={
+              <FormattedMessage id="admin/return-app.settings.section.payment-options.enable-payment-method-selection.description" />
+            }
+          />
+        </div>
+        <div className="mb4">
+          <Toggle
+            label={
+              <FormattedMessage id="admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.label" />
+            }
+            checked={automaticallyRefundPaymentMethod}
+            semantic
+            helpText={
+              <FormattedMessage id="admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.description" />
+            }
+            onChange={handleAutomaticallyRefundOption}
+            disabled={enablePaymentMethodSelection}
+          />
+        </div>
         {enablePaymentMethodSelection && optionsLabel ? (
           <div>
             <h4>

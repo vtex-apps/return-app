@@ -49,6 +49,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     refundPaymentMethod
     iban
     accountHolderName
+    automaticallyRefundPaymentMethod
   }
   refundData {
     invoiceNumber
