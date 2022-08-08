@@ -117,14 +117,6 @@ export const updateRequestStatusService = async (
     )
   }
 
-  const userIsAdmin = Boolean(appkey) || role === 'admin'
-
-  const storeUserCancellation = role === 'store-user' && status === 'cancelled'
-
-  if (!userIsAdmin && !storeUserCancellation) {
-    throw new ForbiddenError('Not authorized')
-  }
-
   const returnRequest = (await returnRequestClient.get(requestId, [
     '_all',
   ])) as ReturnRequest
@@ -133,14 +125,14 @@ export const updateRequestStatusService = async (
     throw new NotFoundError(`Request ${requestId} not found`)
   }
 
-  if (
-    storeUserCancellation &&
-    (returnRequest.status !== 'new' ||
-      returnRequest.customerProfileData.userId !== userId)
-  ) {
-    throw new ForbiddenError(
-      'Store user not authorized. Only the same user of a newly created request can request a cancellation.'
-    )
+  const userIsAdmin = Boolean(appkey) || role === 'admin'
+
+  const belongsToStoreUser =
+    returnRequest.customerProfileData.userId === userId &&
+    returnRequest.status === 'new'
+
+  if (!userIsAdmin && !belongsToStoreUser) {
+    throw new ForbiddenError('Not authorized')
   }
 
   validateStatusUpdate(status, returnRequest.status as Status)
