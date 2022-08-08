@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Allow admin users to set automatic refund (creates invoice type Input for the order) when the request is set to refund the same payment method used for the purchase.
 
+Ability to cancel a request; this action allows the store use to create a return request with the same items.
 ## [3.0.1] - 2022-08-02
 
 ### Fixed
