@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Add
+### Added
 - Allow admin users to set automatic refund (creates invoice type Input for the order) when the request is set to refund the same payment method used for the purchase.
+
+## [3.0.1] - 2022-08-02
+
+### Fixed
+- Add locale into context to allow item names to be translated when creating a new request via API.
 
 ## [3.0.0] - 2022-07-26
 
 ## [2.19.12] - 2022-06-27
+### Fixed
 - Encode user email when getting orders to be returned.
 
 ## [2.19.11] - 2022-06-17
