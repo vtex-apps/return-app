@@ -68,7 +68,7 @@ export const createReturnRequestService = async (
   // Check items since a request via endpoint might not have it.
   // Graphql validation doesn't prevent user to send empty items
   if (!items || items.length === 0) {
-    throw new UserInputError('There is no items in the request')
+    throw new UserInputError('There are no items in the request')
   }
 
   // For requests where orderId is an empty string

@@ -12,6 +12,7 @@ import {
 } from './OrderToReturnReducer'
 import type { ErrorsValidation } from '../utils/validateNewReturnRequestFields'
 import { validateNewReturnRequestFields } from '../utils/validateNewReturnRequestFields'
+import { useStoreSettings } from '../hooks/useStoreSettings'
 
 interface OrderToReturnContextInterface {
   returnRequest: OrderDetailsState
@@ -35,6 +36,10 @@ export const OrderToReturnProvider: FC = ({ children }) => {
     initialOrderToReturnState
   )
 
+  const { data: storeSettings } = useStoreSettings()
+  const { options } = storeSettings ?? {}
+  const { enableSelectItemCondition } = options ?? {}
+
   const [termsAndConditions, setTermsAndConditions] = useState(false)
 
   const [inputErrors, setInputErrors] = useState<ErrorsValidation[]>([])
@@ -44,11 +49,11 @@ export const OrderToReturnProvider: FC = ({ children }) => {
   } = useRuntime()
 
   const areFieldsValid = (): boolean => {
-    const { errors } = validateNewReturnRequestFields(
-      termsAndConditions,
-      returnRequest,
-      locale
-    )
+    const { errors } = validateNewReturnRequestFields(returnRequest, {
+      termsAndConditionsAccepted: termsAndConditions,
+      locale,
+      considerItemCondition: Boolean(enableSelectItemCondition),
+    })
 
     if (errors) {
       setInputErrors(errors)

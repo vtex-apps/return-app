@@ -24,6 +24,7 @@ query returnAppSettings {
       enableOtherOptionSelection
       enablePickupPoints
       enableProportionalShippingValue
+      enableSelectItemCondition
     }
   }
 }

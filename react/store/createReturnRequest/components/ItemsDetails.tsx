@@ -8,6 +8,7 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
 import { RenderReasonDropdown } from './RenderReasonDropdown'
+import { useStoreSettings } from '../../hooks/useStoreSettings'
 
 interface Props {
   itemToReturn: ItemToReturn
@@ -39,6 +40,10 @@ export const ItemsDetails = (props: Props) => {
   } = props
 
   const handles = useCssHandles(CSS_HANDLES)
+
+  const { data: storeSettings } = useStoreSettings()
+  const { options } = storeSettings ?? {}
+  const { enableSelectItemCondition } = options ?? {}
 
   const {
     returnRequest,
@@ -187,21 +192,23 @@ export const ItemsDetails = (props: Props) => {
           />
         ) : null}
       </td>
-      <td className={`${handles.detailsTdWrapper}`}>
-        <RenderConditionDropdown
-          isExcluded={isExcluded}
-          condition={currentItem?.condition ?? ''}
-          onConditionChange={handleConditionChange}
-        />
-        {conditionError ? (
-          <CustomMessage
-            status="error"
-            message={
-              <FormattedMessage id="store/return-app.return-item-details.dropdown-condition.error" />
-            }
+      {!enableSelectItemCondition ? null : (
+        <td className={`${handles.detailsTdWrapper}`}>
+          <RenderConditionDropdown
+            isExcluded={isExcluded}
+            condition={currentItem?.condition ?? ''}
+            onConditionChange={handleConditionChange}
           />
-        ) : null}
-      </td>
+          {conditionError ? (
+            <CustomMessage
+              status="error"
+              message={
+                <FormattedMessage id="store/return-app.return-item-details.dropdown-condition.error" />
+              }
+            />
+          ) : null}
+        </td>
+      )}
     </tr>
   )
 }

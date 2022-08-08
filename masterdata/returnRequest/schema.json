@@ -133,7 +133,7 @@
             "required": ["reason"]
           },
           "condition": {
-            "type": "string",
+            "type": ["string", "null"],
             "enum": [
               "newWithBox",
               "newWithoutBox",

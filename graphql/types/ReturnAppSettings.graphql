@@ -34,6 +34,7 @@ type ReturnOption {
   enableOtherOptionSelection: Boolean
   enablePickupPoints: Boolean
   enableProportionalShippingValue: Boolean
+  enableSelectItemCondition: Boolean
 }
 
 input ReturnAppSettingsInput {
@@ -72,4 +73,5 @@ input ReturnOptionInput {
   enableOtherOptionSelection: Boolean
   enablePickupPoints: Boolean
   enableProportionalShippingValue: Boolean
+  enableSelectItemCondition: Boolean
 }
