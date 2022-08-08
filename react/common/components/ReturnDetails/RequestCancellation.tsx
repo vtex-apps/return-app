@@ -103,7 +103,7 @@ const RequestCancellation = () => {
                 size="small"
                 variation="tertiary"
                 onClick={onClose}
-                isLoading={submitting}
+                disabled={submitting}
               >
                 <FormattedMessage id="return-app.return-request-details.cancellation.modal.close" />
               </Button>
