@@ -59,7 +59,7 @@ export const createItemsToReturn = async ({
   sellers: SellerDetail[]
   itemMetadata: ItemMetadata
   catalogGQL: CatalogGQL
-}): Promise<ReturnRequestItem[]> => {
+}): Promise<Array<RequiredField<ReturnRequestItem, 'condition'>>> => {
   return Promise.all(
     itemsToReturn.map(async (item) => {
       const orderItem = orderItems[item.orderItemIndex]
@@ -105,6 +105,7 @@ export const createItemsToReturn = async ({
         refId,
         productId,
         sellerName,
+        condition: item.condition ? item.condition : null,
       }
     })
   )

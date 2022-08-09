@@ -169,7 +169,7 @@ export const ItemsDetails = (props: Props) => {
       </td>
       <td className={`${handles.detailsTdWrapper}`}>
         <NumericStepper
-          size="smaill"
+          size="small"
           maxValue={availableToReturn}
           value={currentItem?.quantity ?? 0}
           onChange={(e: { value: number }) => handleQuantityChange(e.value)}

@@ -65,16 +65,18 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                     </div>
                     <div className={handles.returnInfoReasonConditionWrapper}>
                       <p className="b">{localizedName ?? name}</p>
-                      <div className="flex">
-                        <p className="f6 mt0 mr3 gray b">
-                          <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
-                        </p>
-                        <p className="f6 mt0 gray ">
-                          {formatMessage(
-                            defaultReturnConditionsMessages[condition]
-                          )}
-                        </p>
-                      </div>
+                      {!condition ? null : (
+                        <div className="flex">
+                          <p className="f6 mt0 mr3 gray b">
+                            <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
+                          </p>
+                          <p className="f6 mt0 gray ">
+                            {formatMessage(
+                              defaultReturnConditionsMessages[condition]
+                            )}
+                          </p>
+                        </div>
+                      )}
                       <div className="flex">
                         <p className="f6 mv0 mr3 gray b">
                           {' '}
