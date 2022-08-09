@@ -5,13 +5,20 @@ Return app v3 is still in BETA. v2 will no longer be supported so please do not 
 
 ## Description
 
-The **Return App** gives merchants the ability to manage the Return Request Process on their store. 
+The **Return App** gives merchants the option to allow customers to request a return for their items and it gives them the ability to manage the Return Request Process on their store. 
 
 ## Features
 
-### Admin Return Request List
+### Store: Returns
+A specific section under **My Account** on each store. 
+Here a customer will be able to visualize the history, status and details of their created returns. As well as creating a new **Return Request**. 
+
+
+### Admin: Return Request List
 In this section of the merchant's admin, merchants are capable of visualizing and managing all the return requests created by their customers. 
-### Admin Return Settings
+
+
+### Admin: Return Settings
 In this section of the merchant's admin, merchants control what are the conditions of allowing the return process for a given item or items per customer. 
 - **Max Days**: when an order creation date is older than the Max Days to return, user won't be able to select that order for a return
 - **Terms and Conditions**: link to the Terms and conditions offered by the store. (not provided by the app)
