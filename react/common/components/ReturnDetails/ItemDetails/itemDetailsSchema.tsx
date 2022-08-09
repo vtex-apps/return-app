@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import React from 'react'
+import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { ReturnRequestItem } from 'vtex.return-app'
 
@@ -7,12 +8,14 @@ import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
 import ItemName from './ItemName'
+import { defaultReturnConditionsMessages } from '../../../utils/defaultReturnConditionsMessages'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 
 export const itemDetailsSchema = (
   itemVerificationStatus: Map<number, ItemStatusInterface>,
-  currency: string
+  currency: string,
+  formatMessage: IntlFormatters['formatMessage']
 ) => ({
   properties: {
     imageUrl: {
@@ -42,7 +45,8 @@ export const itemDetailsSchema = (
         cellData: ReturnRequestItem['name']
         rowData: ReturnRequestItem
       }) {
-        const { refId, returnReason, sellerName, localizedName } = rowData
+        const { refId, returnReason, sellerName, localizedName, condition } =
+          rowData
 
         return (
           <div className="mv4">
@@ -67,6 +71,19 @@ export const itemDetailsSchema = (
                 }}
               />
             </div>
+            {!condition ? null : (
+              <div className="mv2">
+                <FormattedMessage
+                  id="return-app.return-request-details.table.product-info.condition"
+                  values={{
+                    condition: formatMessage(
+                      defaultReturnConditionsMessages[condition]
+                    ),
+                    b: StrongChunk,
+                  }}
+                />
+              </div>
+            )}
             {!sellerName ? null : (
               <div className="mv2">
                 <FormattedMessage

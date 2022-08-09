@@ -13,6 +13,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     imageUrl
     sellerName
     refId
+    condition
     returnReason {
       reason
       otherReason

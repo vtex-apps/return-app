@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import type { ReturnRequestItemInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 
-import { defaultReturnConditionsMessages } from '../../utils/defaultReturnConditionsMessages'
+import { defaultReturnConditionsMessages } from '../../../common/utils/defaultReturnConditionsMessages'
 
 interface Props {
   items: ItemToReturn[]
