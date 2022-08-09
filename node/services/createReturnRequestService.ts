@@ -159,7 +159,7 @@ export const createReturnRequestService = async (
   )
 
   // validate item condition
-  validateItemCondition(items, settingsOptions?.enableOtherOptionSelection)
+  validateItemCondition(items, settingsOptions?.enableSelectItemCondition)
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.

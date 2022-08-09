@@ -5,7 +5,7 @@ import type {
 
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
 
-const hasValidReason = (
+const hasValidReasonOrCondition = (
   item: OrderDetailsState['items'][number],
   considerItemCondition: boolean
 ): boolean => {
@@ -74,7 +74,7 @@ export const validateNewReturnRequestFields = (
   }
 
   const validatedItems = itemsToReturn.filter((item) =>
-    hasValidReason(item, considerItemCondition)
+    hasValidReasonOrCondition(item, considerItemCondition)
   ) as ReturnRequestItemInput[]
 
   if (itemsToReturn.length !== validatedItems.length) {
