@@ -86,8 +86,8 @@ export const ReturnDetails = (
                 <div className="f4 fw5 c-on-base">
                   <FormattedDate
                     value={creationDate}
-                    day="numeric"
-                    month="long"
+                    day="2-digit"
+                    month="2-digit"
                     year="numeric"
                   />
                 </div>
