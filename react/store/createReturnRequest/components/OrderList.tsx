@@ -18,74 +18,94 @@ interface RowData {
 
 type OrderListTableSchemaProps = {
   navigate: (to: { to: string }) => void
+  isSmallScreen: boolean
 }
-const OrderlListTableSchema = ({ navigate }: OrderListTableSchemaProps) => {
-  return {
-    properties: {
-      orderId: {
-        title: (
-          <FormattedMessage id="store/return-app.return-order-list.table-header.order-id" />
-        ),
+const OrderlListTableSchema = ({
+  navigate,
+  isSmallScreen,
+}: OrderListTableSchemaProps) => {
+  const properties = {
+    orderId: {
+      title: (
+        <FormattedMessage id="store/return-app.return-order-list.table-header.order-id" />
+      ),
+      minWidth: 150,
+    },
+    creationDate: {
+      title: (
+        <FormattedMessage id="store/return-app.return-order-list.table-header.creation-date" />
+      ),
+      cellRenderer: function formatDate({ cellData }: { cellData: string }) {
+        return (
+          <FormattedDate
+            value={cellData}
+            day="2-digit"
+            month="2-digit"
+            year="numeric"
+          />
+        )
       },
-      creationDate: {
-        title: (
-          <FormattedMessage id="store/return-app.return-order-list.table-header.creation-date" />
-        ),
-        cellRenderer: function formatDate({ cellData }: { cellData: string }) {
-          return (
-            <FormattedDate
-              value={cellData}
-              day="2-digit"
-              month="2-digit"
-              year="numeric"
-            />
-          )
-        },
-      },
-      status: {
-        title: (
-          <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
-        ),
-        cellRenderer: function availableProducts({ rowData }: RowData) {
-          const { quantityAvailable, quantity } = createItemsSummary(rowData)
+      minWidth: 120,
+    },
+    status: {
+      title: (
+        <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
+      ),
+      cellRenderer: function availableProducts({ rowData }: RowData) {
+        const { quantityAvailable, quantity } = createItemsSummary(rowData)
 
-          return <p>{`${quantityAvailable} / ${quantity}`}</p>
-        },
-      },
-      selectOrder: {
-        title: (
-          <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
-        ),
-        cellRenderer: function SelectOrderButton({ rowData }: RowData) {
-          const { quantityAvailable } = createItemsSummary(rowData)
-
-          return (
-            <div>
-              <Button
-                {...(!quantityAvailable
-                  ? null
-                  : {
-                      onClick: () =>
-                        navigate({
-                          to: `#/my-returns/add/${rowData.orderId}`,
-                        }),
-                    })}
-                variation="tertiary"
-                collapseLeft
-                disabled={!quantityAvailable}
-              >
-                <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
-              </Button>
-            </div>
-          )
-        },
+        return <p>{`${quantityAvailable} / ${quantity}`}</p>
       },
     },
+    selectOrder: {
+      title: (
+        <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+      ),
+      cellRenderer: function SelectOrderButton({ rowData }: RowData) {
+        const { quantityAvailable } = createItemsSummary(rowData)
+
+        return (
+          <div>
+            <Button
+              {...(!quantityAvailable
+                ? null
+                : {
+                    onClick: () =>
+                      navigate({
+                        to: `#/my-returns/add/${rowData.orderId}`,
+                      }),
+                  })}
+              variation="tertiary"
+              collapseLeft
+              disabled={!quantityAvailable}
+            >
+              <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+            </Button>
+          </div>
+        )
+      },
+      minWidth: 150,
+    },
+  }
+
+  const mobileOrder = {
+    orderId: null,
+    selectOrder: null,
+  }
+
+  return {
+    properties: isSmallScreen
+      ? Object.assign(mobileOrder, properties)
+      : properties,
   }
 }
 
 export const OrderList = ({ orders, handlePagination }: Props) => {
-  const { navigate } = useRuntime()
+  const {
+    navigate,
+    hints: { phone },
+  } = useRuntime()
+
   const [fetchMoreState, setFetchMoreState] = useState<'IDLE' | 'LOADING'>(
     'IDLE'
   )
@@ -120,6 +140,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
         }
         schema={OrderlListTableSchema({
           navigate,
+          isSmallScreen: phone,
         })}
         items={orders.list}
         loading={fetchMoreState === 'LOADING'}

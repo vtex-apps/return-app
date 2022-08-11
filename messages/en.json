@@ -56,7 +56,7 @@
   "store/return-app.return-order-list.table-header.items-to-return": "Items Available for Return",
   "store/return-app.return-order-list.table-header.select-order": "Select Order",
   "store/return-app.return-order-list.table-empty-state-label.no-orders-available": "No orders available for return",
-  "store/return-app.return-order-list.table-pagination.text-of": "Text of",
+  "store/return-app.return-order-list.table-pagination.text-of": "of",
   "store/return-app.return-order-details.page-header.link": "Back to orders",
   "store/return-app.return-order-details.page-header.title": "Return Request Form",
   "store/return-app.return-order-details.page-header.subtitle": "Select the products you want to refund",
