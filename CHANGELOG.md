@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.3.0] - 2022-08-11
+
 ### Added
 - Allow admin users to choose if the store user is required to select item conditions.
 
