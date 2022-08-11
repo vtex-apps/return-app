@@ -9,6 +9,7 @@ const generalOptions = [
   'enableOtherOptionSelection',
   'enablePickupPoints',
   'enableProportionalShippingValue',
+  'enableSelectItemCondition',
 ] as const
 
 const messages = defineMessages({
@@ -29,6 +30,12 @@ const messages = defineMessages({
   },
   'enableProportionalShippingValue-description': {
     id: 'admin/return-app.settings.section.general-options.enable-proportional-shipping-value.description',
+  },
+  'enableSelectItemCondition-label': {
+    id: 'admin/return-app.settings.section.general-options.enable-select-item-condition.label',
+  },
+  'enableSelectItemCondition-description': {
+    id: 'admin/return-app.settings.section.general-options.enable-select-item-condition.description',
   },
 })
 

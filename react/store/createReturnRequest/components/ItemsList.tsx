@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { ItemsDetails } from './ItemsDetails'
 import { CustomMessage } from './layout/CustomMessage'
 
@@ -16,6 +17,10 @@ const CSS_HANDLES = ['itemsListContainer', 'itemsListTheadWrapper'] as const
 export const ItemsList = (props: Props) => {
   const { items, creationDate } = props
 
+  const { data: storeSettings } = useStoreSettings()
+  const { options } = storeSettings ?? {}
+  const { enableSelectItemCondition } = options ?? {}
+
   const handles = useCssHandles(CSS_HANDLES)
   const { inputErrors } = useReturnRequest()
 
@@ -24,7 +29,7 @@ export const ItemsList = (props: Props) => {
   )
 
   return (
-    <table className={`${handles.itemsListContainer}w-100`}>
+    <table className={`${handles.itemsListContainer} w-100`}>
       <thead
         className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}
       >
@@ -44,9 +49,11 @@ export const ItemsList = (props: Props) => {
           <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
             <FormattedMessage id="store/return-app.return-order-details.table-header.reason" />
           </th>
-          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
-            <FormattedMessage id="store/return-app.return-order-details.table-header.condition" />
-          </th>
+          {!enableSelectItemCondition ? null : (
+            <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc">
+              <FormattedMessage id="store/return-app.return-order-details.table-header.condition" />
+            </th>
+          )}
         </tr>
       </thead>
       <tbody className="v-mid">

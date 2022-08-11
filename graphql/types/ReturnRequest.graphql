@@ -11,7 +11,7 @@ input ReturnRequestInput {
 input ReturnRequestItemInput {
   orderItemIndex: Int!
   quantity: Int!
-  condition: ItemCondition!
+  condition: ItemCondition
   returnReason: ReturnReasonInput!
 }
 
@@ -21,6 +21,7 @@ input ReturnReasonInput {
 }
 
 enum ItemCondition {
+  unspecified
   newWithBox
   newWithoutBox
   usedWithBox

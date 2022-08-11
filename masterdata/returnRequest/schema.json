@@ -135,6 +135,7 @@
           "condition": {
             "type": "string",
             "enum": [
+              "unspecified",
               "newWithBox",
               "newWithoutBox",
               "usedWithBox",

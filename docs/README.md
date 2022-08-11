@@ -52,6 +52,7 @@ The custom Return Reasons can be translated manually by the admin.
 - **Other Option**: toggle this to include a generic other return request reason. The store user can input any generic value if this one is chosen. 
 - **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. It uses the geocoordinates from the order to find the closest pickup points.
 - **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item value percentage of the total order value. 
+- **Item condition selector**: require the store user to select the condition of the items
 
 ### Transactional Emails
 The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
@@ -105,13 +106,13 @@ with an example body in the form of:
 
 |Field | Description | isRequired |
 |-----| ------|------|
-|orderId|`string`orderId to where the Return Request is being made to|true|
+|orderId|`string` orderId to where the Return Request is being made to|true|
 |items|array of individual itemObject to be returned|true|
-|orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
+|orderItemIndex|`integer` Index of the item in the Order object form the OMS|true|
 |quantity|`integer` number to be returned for the given `orderItemIndex`|true|
-|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox,usedWithoutBox|true|
-|name|`string`Customer name for the return request|true|
-|email|`string`customer's email for the return request|true|
+|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox|false|
+|name|`string` Customer name for the return request|true|
+|email|`string` customer's email for the return request|true|
 |phoneNumber|`string` customer's phone number for the return request|true|
 |addressId|`string` id of the customer's address can be empty string|true|
 |address|`string`customer address|true|

@@ -147,10 +147,10 @@ export const CreateReturnRequest = (props: RouteProps) => {
 
 export const CreateReturnRequestContainer = (props: RouteProps) => {
   return (
-    <OrderToReturnProvider>
-      <StoreSettingsPovider>
+    <StoreSettingsPovider>
+      <OrderToReturnProvider>
         <CreateReturnRequest {...props} />
-      </StoreSettingsPovider>
-    </OrderToReturnProvider>
+      </OrderToReturnProvider>
+    </StoreSettingsPovider>
   )
 }

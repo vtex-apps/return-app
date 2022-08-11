@@ -105,6 +105,7 @@ export const createItemsToReturn = async ({
         refId,
         productId,
         sellerName,
+        condition: item.condition ? item.condition : 'unspecified',
       }
     })
   )
