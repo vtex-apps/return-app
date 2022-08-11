@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Ability to cancel a request on admin and store side. This action allows the store use to create a return request with the same items.
+
 ### Fixed
 - Order list's mobile responsiveness
 

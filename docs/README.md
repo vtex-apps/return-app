@@ -156,7 +156,7 @@ with the following example body:
 
 |Field|Description|isRequired|
 |----|----|----|
-|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied|true|
+|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled |true|
 |comment value|`string` only required if not updating status|false|
 |comment visibleForCustomer|`boolean` the comment will be shown to the customer. Default false|false|
 |orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
