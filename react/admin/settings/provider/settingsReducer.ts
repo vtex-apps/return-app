@@ -22,7 +22,7 @@ export const initialSettingsState: ReturnAppSettings = {
     enableOtherOptionSelection: false,
     enablePickupPoints: false,
     enableProportionalShippingValue: false,
-    enableSelectItemCondition: true,
+    enableSelectItemCondition: false,
   },
 }
 

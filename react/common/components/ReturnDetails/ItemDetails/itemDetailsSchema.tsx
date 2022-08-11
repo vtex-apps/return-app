@@ -71,7 +71,7 @@ export const itemDetailsSchema = (
                 }}
               />
             </div>
-            {!condition ? null : (
+            {condition === 'unspecified' ? null : (
               <div className="mv2">
                 <FormattedMessage
                   id="return-app.return-request-details.table.product-info.condition"

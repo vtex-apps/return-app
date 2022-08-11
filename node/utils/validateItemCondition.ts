@@ -7,9 +7,9 @@ export const validateItemCondition = (
 ) => {
   considerCondition &&
     itemsToReturn.forEach(({ condition }, orderItemIndex) => {
-      if (!condition) {
+      if (!condition || condition === 'unspecified') {
         throw new UserInputError(
-          `Item index ${orderItemIndex} has no Item condition. Account settings state that Item condition cannot be empty.`
+          `Item index ${orderItemIndex} has no Item condition. Account settings state that Item condition cannot be unspecified.`
         )
       }
     })

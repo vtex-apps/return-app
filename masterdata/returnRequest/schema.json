@@ -133,9 +133,9 @@
             "required": ["reason"]
           },
           "condition": {
-            "type": ["string", "null"],
+            "type": "string",
             "enum": [
-              null,
+              "unspecified",
               "newWithBox",
               "newWithoutBox",
               "usedWithBox",

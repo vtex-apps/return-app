@@ -37,6 +37,3 @@ interface AuthenticationSession {
     value: string
   }
 }
-
-// Allows to pick a field from a type and convert it to required. Useful for the discrepancies between GraphQL types and Masterdata
-type RequiredField<T, K extends keyof T> = T & Required<Pick<T, K>>

@@ -110,7 +110,7 @@ with an example body in the form of:
 |items|array of individual itemObject to be returned|true|
 |orderItemIndex|`integer` Index of the item in the Order object form the OMS|true|
 |quantity|`integer` number to be returned for the given `orderItemIndex`|true|
-|condition|`enum` values: null, newWithBox, newWithoutBox, usedWithBox, usedWithoutBox|true|
+|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox|false|
 |name|`string` Customer name for the return request|true|
 |email|`string` customer's email for the return request|true|
 |phoneNumber|`string` customer's phone number for the return request|true|

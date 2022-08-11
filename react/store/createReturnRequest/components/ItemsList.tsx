@@ -29,7 +29,7 @@ export const ItemsList = (props: Props) => {
   )
 
   return (
-    <table className={`${handles.itemsListContainer}w-100`}>
+    <table className={`${handles.itemsListContainer} w-100`}>
       <thead
         className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}
       >

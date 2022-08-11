@@ -21,6 +21,7 @@ input ReturnReasonInput {
 }
 
 enum ItemCondition {
+  unspecified
   newWithBox
   newWithoutBox
   usedWithBox
@@ -122,7 +123,7 @@ type RefundPaymentData {
 type ReturnRequestItem {
   orderItemIndex: Int!
   quantity: Int!
-  condition: ItemCondition
+  condition: ItemCondition!
   returnReason: ReturnReason!
   """
   id: SKU id
