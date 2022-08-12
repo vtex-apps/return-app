@@ -33,18 +33,18 @@ interface Filters {
   status: Status | ''
   sequenceNumber: string
   id: string
-  createdIn: FilterDates | undefined
+  dateSubmitted: FilterDates | undefined
   orderId: string
 }
 
 type Keys = keyof Filters | keyof FilterDates
-export type FilterKeys = Exclude<Keys, 'createdIn'>
+export type FilterKeys = Exclude<Keys, 'dateSubmitted'>
 
 const initialFilters = {
   status: '',
   sequenceNumber: '',
   id: '',
-  createdIn: undefined,
+  dateSubmitted: undefined,
   orderId: '',
 } as Filters
 
@@ -57,9 +57,9 @@ const ListTableFilter = (props: Props) => {
   const [isFiltering, setIsFiltering] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
 
-  const { createdIn } = filters
-  const fromDate = createdIn ? new Date(createdIn.from) : ''
-  const toDate = createdIn ? new Date(createdIn.to) : ''
+  const { dateSubmitted } = filters
+  const fromDate = dateSubmitted ? new Date(dateSubmitted.from) : ''
+  const toDate = dateSubmitted ? new Date(dateSubmitted.to) : ''
 
   // Used solely for refetch's variables
   const selectedFilters = Object.keys(filters)
@@ -88,7 +88,7 @@ const ListTableFilter = (props: Props) => {
     /* Both dates are non nullable */
     if (key === 'to' || key === 'from') {
       const filterDates = {
-        ...filters.createdIn,
+        ...filters.dateSubmitted,
         [key]: value,
       } as FilterDates
 
@@ -102,7 +102,7 @@ const ListTableFilter = (props: Props) => {
 
       setFilters({
         ...filters,
-        createdIn: filterDates,
+        dateSubmitted: filterDates,
       })
 
       return

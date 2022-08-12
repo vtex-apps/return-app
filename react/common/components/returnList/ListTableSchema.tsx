@@ -75,7 +75,7 @@ const ReturnListSchema = () => {
           <FormattedMessage id="return-app.return-request-list.table-data.orderId" />
         ),
       },
-      createdIn: {
+      dateSubmitted: {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.createdDate" />
         ),

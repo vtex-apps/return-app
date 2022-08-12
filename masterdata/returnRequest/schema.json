@@ -306,7 +306,8 @@
     "orderId",
     "customerProfileData",
     "status",
-    "sequenceNumber"
+    "sequenceNumber",
+    "dateSubmitted"
   ],
   "v-immediate-indexing": true
 }
