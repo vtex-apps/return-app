@@ -9,7 +9,6 @@ const ReturnListSchema = () => {
   const {
     navigate,
     route: { domain },
-    hints: { phone },
   } = useRuntime()
 
   const isAdmin = domain === 'admin'
@@ -64,6 +63,7 @@ const ReturnListSchema = () => {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber" />
         ),
+        minWidth: 100,
         ...(!isAdmin && {
           cellRenderer({ cellData, rowData }) {
             return (
@@ -78,6 +78,7 @@ const ReturnListSchema = () => {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.orderId" />
         ),
+        minWidth: 160,
       },
       createdIn: {
         title: (
@@ -93,11 +94,13 @@ const ReturnListSchema = () => {
             />
           )
         },
+        minWidth: 110,
       },
       status: {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.status" />
         ),
+        minWidth: 250,
         cellRenderer({ cellData }) {
           return renderStatus(cellData)
         },

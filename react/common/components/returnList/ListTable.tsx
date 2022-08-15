@@ -18,7 +18,7 @@ const ListTable = () => {
 
   const {
     route: { domain },
-    hints: { mobile },
+    hints: { mobile, phone },
   } = useRuntime()
 
   const isAdmin = domain === 'admin'
@@ -110,7 +110,7 @@ const ListTable = () => {
           totalItems: paging?.total,
         }}
       />
-      {paging && list?.length && !loading ? (
+      {!phone && paging && list?.length && !loading ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}
           currentPage={paging.currentPage}
