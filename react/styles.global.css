@@ -42,3 +42,11 @@ ul.status {
 div.timeline:last-of-type ul.last-of {
   background-image: none;
 } 
+
+.returnDetailContainer .vtex-pageHeader__container {
+  padding: 0 0 2rem 0;
+}
+
+.returnDetailContainer .styleguide__box {
+  padding: 1rem;
+}

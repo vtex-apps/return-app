@@ -36,6 +36,7 @@ const RequestCancellation = () => {
   const { data } = useReturnDetails()
   const {
     route: { domain },
+    hints: { phone },
   } = useRuntime()
 
   const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
@@ -83,14 +84,16 @@ const RequestCancellation = () => {
 
   return (
     <>
-      <Button
-        variation="danger"
-        size="small"
-        onClick={onOpen}
-        disabled={isDisabled}
-      >
-        <FormattedMessage id="return-app.return-request-details.cancellation.cta" />
-      </Button>
+      <div className={phone ? 'mt4' : ''}>
+        <Button
+          variation="danger"
+          size="small"
+          onClick={onOpen}
+          disabled={isDisabled}
+        >
+          <FormattedMessage id="return-app.return-request-details.cancellation.cta" />
+        </Button>
+      </div>
 
       <Modal
         size="small"
