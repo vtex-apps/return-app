@@ -5,23 +5,31 @@ Return app v3 is still in BETA. v2 will no longer be supported so please do not 
 
 ## Description
 
-The **Return App** gives merchants the ability to manage the Return Request Process on their store. 
+The **Return App** gives merchants the option to allow customers to request a return for their items and it gives them the ability to manage the Return Request Process on their store. 
 
 ## Features
 
-### Admin Return Request List
+### Store: Returns
+A specific section under **My Account** on each store. 
+Here a customer will be able to visualize the history, status and details of their created returns. As well as creating a new **Return Request**. 
+
+
+### Admin: Return Request List
 In this section of the merchant's admin, merchants are capable of visualizing and managing all the return requests created by their customers. 
-### Admin Return Settings
+
+
+### Admin: Return Settings
 In this section of the merchant's admin, merchants control what are the conditions of allowing the return process for a given item or items per customer. 
 - **Max Days**: when an order creation date is older than the Max Days to return, user won't be able to select that order for a return
 - **Terms and Conditions**: link to the Terms and conditions offered by the store. (not provided by the app)
 - **Excluded categories**: List of categories to be excluded for the return process. Any item that belongs to any of these categories, will not be allowed to be returned. The store user will see a message stating that that item is not allowed to be returned. 
 - **Return Payment Options**: 
 
-  -- Same as Order: Payment will be refunded to the same payment method used in the order. 
+  -- Same as Order: Payment will be refunded to the same payment method used in the order.
+  --  Automatically refund requests - Automatically refund any payment method when the configuration to refund is set to be same as order.
 
   -- Allowed to choose: customer will select any of the refund options selected by the store. 
-      **Disclaimer**: Only Credit Card triggers the automatic refund. **WIP: automatic refund for any payment method. **
+      **Disclaimer**: Requests that were set to refund via credit card trigger the automatic refund.
 - **Custom Return Reasons**: Allows the store to define their own custom return reasons. This setting will overwrite the default reasons. 
 The custom Return Reasons can be translated manually by the admin. 
     |Default return reason|
@@ -44,6 +52,7 @@ The custom Return Reasons can be translated manually by the admin.
 - **Other Option**: toggle this to include a generic other return request reason. The store user can input any generic value if this one is chosen. 
 - **Allow PickUp Points**: allow the customer to set a pick up point to drop off the items to return. It uses the geocoordinates from the order to find the closest pickup points.
 - **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item value percentage of the total order value. 
+- **Item condition selector**: require the store user to select the condition of the items
 
 ### Transactional Emails
 The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
@@ -97,13 +106,13 @@ with an example body in the form of:
 
 |Field | Description | isRequired |
 |-----| ------|------|
-|orderId|`string`orderId to where the Return Request is being made to|true|
+|orderId|`string` orderId to where the Return Request is being made to|true|
 |items|array of individual itemObject to be returned|true|
-|orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
+|orderItemIndex|`integer` Index of the item in the Order object form the OMS|true|
 |quantity|`integer` number to be returned for the given `orderItemIndex`|true|
-|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox,usedWithoutBox|true|
-|name|`string`Customer name for the return request|true|
-|email|`string`customer's email for the return request|true|
+|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox|false|
+|name|`string` Customer name for the return request|true|
+|email|`string` customer's email for the return request|true|
 |phoneNumber|`string` customer's phone number for the return request|true|
 |addressId|`string` id of the customer's address can be empty string|true|
 |address|`string`customer address|true|
@@ -148,7 +157,7 @@ with the following example body:
 
 |Field|Description|isRequired|
 |----|----|----|
-|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied|true|
+|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled |true|
 |comment value|`string` only required if not updating status|false|
 |comment visibleForCustomer|`boolean` the comment will be shown to the customer. Default false|false|
 |orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|

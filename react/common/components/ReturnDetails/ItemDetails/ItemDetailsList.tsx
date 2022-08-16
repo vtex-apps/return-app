@@ -7,6 +7,7 @@ import type {
   Maybe,
 } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
+import { useIntl } from 'react-intl'
 
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
@@ -82,6 +83,7 @@ const getItemVerificationStatus = (
 
 export const ItemDetailsList = () => {
   const handles = useCssHandles(CSS_HANDLES)
+  const { formatMessage } = useIntl()
   const { data } = useReturnDetails()
 
   if (!data) return null
@@ -103,7 +105,11 @@ export const ItemDetailsList = () => {
         fullWidth
         dynamicRowHeight
         items={items}
-        schema={itemDetailsSchema(itemsVerificationStatus, currencyCode)}
+        schema={itemDetailsSchema(
+          itemsVerificationStatus,
+          currencyCode,
+          formatMessage
+        )}
       />
     </section>
   )

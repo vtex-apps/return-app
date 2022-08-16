@@ -18,6 +18,7 @@ import { ConfirmPickupAddressDetails } from './ConfirmPickupAddressDetails'
 import { ConfirmPaymentMethods } from './ConfirmPaymentMethods'
 import { ConfirmComment } from './ConfirmComment'
 import { validateNewReturnRequestFields } from '../../utils/validateNewReturnRequestFields'
+import { useStoreSettings } from '../../hooks/useStoreSettings'
 
 interface Props {
   onPageChange: (page: Page) => void
@@ -48,20 +49,24 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
     culture: { locale },
   } = useRuntime()
 
+  const { data: storeSettings } = useStoreSettings()
+  const { options } = storeSettings ?? {}
+  const { enableSelectItemCondition } = options ?? {}
+
   const [confirmationStatus, setConfirmationStatus] =
     useState<SubmissionStatus>('idle')
 
   const handles = useCssHandles(CSS_HANDLES)
 
   const returnRequestValidated = useMemo(() => {
-    const { validatedFields } = validateNewReturnRequestFields(
-      termsAndConditions,
-      returnRequest,
-      locale
-    )
+    const { validatedFields } = validateNewReturnRequestFields(returnRequest, {
+      termsAndConditionsAccepted: termsAndConditions,
+      locale,
+      considerItemCondition: Boolean(enableSelectItemCondition),
+    })
 
     return validatedFields
-  }, [termsAndConditions, returnRequest, locale])
+  }, [termsAndConditions, returnRequest, locale, enableSelectItemCondition])
 
   const handleCreateReturnRequest = async () => {
     if (creatingReturnRequest || !returnRequestValidated) return

@@ -18,6 +18,7 @@ const status = {
   verified: 'packageVerified',
   denied: 'denied',
   refunded: 'amountRefunded',
+  cancelled: 'cancelled',
 } as const
 
 /**
@@ -42,6 +43,16 @@ export function renderStatus(requestStatus: Status) {
             <IconFailure size={14} />
           </span>
           <FormattedMessage id="return-app.return-request-list.table.status.denied" />
+        </div>
+      )
+
+    case status.cancelled:
+      return (
+        <div className="red flex items-center">
+          <span className="mr2 flex">
+            <IconFailure size={14} />
+          </span>
+          <FormattedMessage id="return-app.return-request-list.table.status.cancelled" />
         </div>
       )
 

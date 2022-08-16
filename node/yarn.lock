@@ -6155,13 +6155,13 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.12/public/@types/vtex.return-app":
-  version "3.0.0-beta.12"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.0.0-beta.12/public/@types/vtex.return-app#286acba079ad762659739da7fab3adcc76dc7b58"
+"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.3.0/public/@types/vtex.return-app":
+  version "3.3.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.3.0/public/@types/vtex.return-app#8be1007aecefc0a07c08ea00e49391f309a69202"
 
-"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.2/public/@types/vtex.store-graphql":
-  version "2.152.2"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.152.2/public/@types/vtex.store-graphql#fc9699766e34fa77d75c69072f577818bfd5f6fb"
+"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.155.28/public/@types/vtex.store-graphql":
+  version "2.155.28"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.155.28/public/@types/vtex.store-graphql#a47c90088f17ac6f519911048d2b6e00bc0fba2b"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide":
   version "9.146.1"

@@ -13,6 +13,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - English translations.
 
+## [3.3.0] - 2022-08-11
+
+### Added
+- Allow admin users to choose if the store user is required to select item conditions.
+
+## [3.2.0] - 2022-08-11
+
+### Added
+
+- Ability to cancel a request on admin and store side. This action allows the store use to create a return request with the same items.
+
+### Fixed
+- Order list's mobile responsiveness
+
+## [3.1.0] - 2022-08-08
+
+### Added
+- Allow admin users to set automatic refund (creates invoice type Input for the order) when the request is set to refund the same payment method used for the purchase.
+
 ## [3.0.1] - 2022-08-02
 
 ### Fixed

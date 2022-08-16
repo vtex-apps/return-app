@@ -10,6 +10,7 @@ type ReturnAppSettings {
 type PaymentOptions {
   enablePaymentMethodSelection: Boolean
   allowedPaymentTypes: PaymentType!
+  automaticallyRefundPaymentMethod: Boolean
 }
 
 type PaymentType {
@@ -33,6 +34,7 @@ type ReturnOption {
   enableOtherOptionSelection: Boolean
   enablePickupPoints: Boolean
   enableProportionalShippingValue: Boolean
+  enableSelectItemCondition: Boolean
 }
 
 input ReturnAppSettingsInput {
@@ -47,6 +49,7 @@ input ReturnAppSettingsInput {
 input PaymentOptionsInput {
   enablePaymentMethodSelection: Boolean
   allowedPaymentTypes: PaymentTypeInput!
+  automaticallyRefundPaymentMethod: Boolean
 }
 
 input PaymentTypeInput {
@@ -70,4 +73,5 @@ input ReturnOptionInput {
   enableOtherOptionSelection: Boolean
   enablePickupPoints: Boolean
   enableProportionalShippingValue: Boolean
+  enableSelectItemCondition: Boolean
 }

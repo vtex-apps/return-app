@@ -13,6 +13,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     imageUrl
     sellerName
     refId
+    condition
     returnReason {
       reason
       otherReason
@@ -49,6 +50,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     refundPaymentMethod
     iban
     accountHolderName
+    automaticallyRefundPaymentMethod
   }
   refundData {
     invoiceNumber

@@ -103,7 +103,7 @@ export const updateRequestStatusService = async (
 
   const { status, requestId, comment, refundData } = args
 
-  const { role, firstName, lastName, email } = userProfile ?? {}
+  const { role, firstName, lastName, email, userId } = userProfile ?? {}
 
   const requestDate = new Date().toISOString()
   const submittedByNameOrEmail =
@@ -117,23 +117,27 @@ export const updateRequestStatusService = async (
     )
   }
 
-  const userIsAdmin = Boolean(appkey) || role === 'admin'
-
-  if (!userIsAdmin) {
-    throw new ForbiddenError('Not authorized')
-  }
-
   const returnRequest = (await returnRequestClient.get(requestId, [
     '_all',
   ])) as ReturnRequest
 
   if (!returnRequest) {
-    throw new NotFoundError('Request not found')
+    throw new NotFoundError(`Request ${requestId} not found`)
+  }
+
+  const userIsAdmin = Boolean(appkey) || role === 'admin'
+
+  const belongsToStoreUser =
+    returnRequest.customerProfileData.userId === userId &&
+    returnRequest.status === 'new'
+
+  if (!userIsAdmin && !belongsToStoreUser) {
+    throw new ForbiddenError('Not authorized')
   }
 
   validateStatusUpdate(status, returnRequest.status as Status)
 
-  // when a request is made for the same status, it means user is adding a new comment
+  // when a request is made for the same status, it means admin user is adding a new comment
   if (status === returnRequest.status && !comment) {
     throw new UserInputError(
       'Missing comment. Comment is needed when status sent is equal the current status.'

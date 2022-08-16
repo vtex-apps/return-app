@@ -9,6 +9,7 @@ query returnAppSettings {
         card
         giftCard
       }
+      automaticallyRefundPaymentMethod
     }
     termsUrl
     customReturnReasons {
@@ -23,6 +24,7 @@ query returnAppSettings {
       enableOtherOptionSelection
       enablePickupPoints
       enableProportionalShippingValue
+      enableSelectItemCondition
     }
   }
 }
