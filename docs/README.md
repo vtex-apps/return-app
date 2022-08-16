@@ -290,6 +290,9 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 |'termsAndConditionsLink'|
 |'userCommentDetailsContainer'|
 
+## Knowing issues
+- When a store has a process to create return invoices ([invoice type input](https://developers.vtex.com/vtex-rest-api/reference/invoicenotification)) outside the return app, the app will consider those items and they will not be able to be returned via the app. However when an item is already committed in a return request and an invoice is created considering that item, there will be more processed items to return then invoices items - It can be seen using the query `orderToReturnSummary` on GraphQL.
+
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
 
