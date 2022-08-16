@@ -117,31 +117,30 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <PageHeader
-        className="ph0 mh0 nl5"
-        {...createPageHeaderProps(page, navigate)}
-      />
-      <OrderDetailsLoader data={{ loading, error }}>
-        {page === 'form-details' && data ? (
-          <>
-            <ReturnDetails
-              {...props}
-              onPageChange={handlePageChange}
-              items={items}
-              creationDate={data.orderToReturnSummary.creationDate}
-              canRefundCard={
-                data?.orderToReturnSummary.paymentData.canRefundCard
-              }
-              shippingData={data.orderToReturnSummary.shippingData}
-            />
-          </>
-        ) : null}
-        {page === 'submit-form' ? (
-          <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
-        ) : null}
-      </OrderDetailsLoader>
-    </PageBlock>
+    <div className="createReturnRequestContainer">
+      <PageBlock>
+        <PageHeader {...createPageHeaderProps(page, navigate)} />
+        <OrderDetailsLoader data={{ loading, error }}>
+          {page === 'form-details' && data ? (
+            <>
+              <ReturnDetails
+                {...props}
+                onPageChange={handlePageChange}
+                items={items}
+                creationDate={data.orderToReturnSummary.creationDate}
+                canRefundCard={
+                  data?.orderToReturnSummary.paymentData.canRefundCard
+                }
+                shippingData={data.orderToReturnSummary.shippingData}
+              />
+            </>
+          ) : null}
+          {page === 'submit-form' ? (
+            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
+          ) : null}
+        </OrderDetailsLoader>
+      </PageBlock>
+    </div>
   )
 }
 

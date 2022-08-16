@@ -41,12 +41,28 @@ ul.status {
 
 div.timeline:last-of-type ul.last-of {
   background-image: none;
-} 
+}
 
-.returnDetailContainer .vtex-pageHeader__container {
+.return-itemsList-body tr {
+  border-bottom: 1px solid #e3e4e6;
+}
+
+.return-itemsList-body tr:last-child {
+  border-bottom: none;
+}
+
+.createReturnRequestContainer .vtex-pageHeader__container {
   padding: 0 0 2rem 0;
 }
 
-.returnDetailContainer .styleguide__box {
-  padding: 1rem;
+/* Based on https://github.com/vtex-apps/render-runtime/blob/ed5640d59e023f6cfa743b5aa58b654035b870cb/react/utils/withDevice.tsx#L29 */
+@media screen and (max-width: 639px) {
+  .returnDetailContainer .vtex-pageHeader__container {
+    padding: 0 0 2rem 0;
+  }
+
+  .returnDetailContainer .styleguide__box,
+  .createReturnRequestContainer .styleguide__box {
+    padding: 1rem;
+  }
 }
