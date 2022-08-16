@@ -11,12 +11,17 @@ export async function getRequestList(ctx: Context) {
     _sequenceNumber,
     _id,
     _createdIn,
+    _dateSubmitted,
     _orderId,
     _userEmail,
     _allFields,
   } = query
 
-  const [from, to] = (_createdIn as string | undefined)?.split(',') ?? []
+  const [from, to] =
+    (
+      (_createdIn as string | undefined) ??
+      (_dateSubmitted as string | undefined)
+    )?.split(',') ?? []
 
   const getAllFields = Boolean(_allFields)
 
@@ -31,6 +36,7 @@ export async function getRequestList(ctx: Context) {
         sequenceNumber: _sequenceNumber as string | undefined,
         id: _id as string | undefined,
         createdIn: _createdIn ? { from, to } : undefined,
+        dateSubmitted: _dateSubmitted ? { from, to } : undefined,
         orderId: _orderId as string | undefined,
         userEmail: _userEmail as string | undefined,
       },

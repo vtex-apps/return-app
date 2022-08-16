@@ -200,4 +200,9 @@ export const ReturnRequestResponse = {
 
     return cultureInfo
   },
+  createdIn: async (root: ReturnRequest, _args: unknown) => {
+    const { dateSubmitted } = root
+
+    return dateSubmitted
+  },
 }

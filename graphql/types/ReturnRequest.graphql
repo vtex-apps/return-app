@@ -187,6 +187,7 @@ input ReturnRequestFilters {
   sequenceNumber: String
   id: String
   createdIn: DateRangeInput
+  dateSubmitted: DateRangeInput
   orderId: String
   """
   userId: If not passed, resolver will try to get it from cookie session
