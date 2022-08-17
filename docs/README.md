@@ -30,6 +30,9 @@ In this section of the merchant's admin, merchants control what are the conditio
 
   -- Allowed to choose: customer will select any of the refund options selected by the store. 
       **Disclaimer**: Requests that were set to refund via credit card trigger the automatic refund.
+
+**Disclaimer**: For the cases that the return app creates a refund, the return invoice ([invoice type input](https://developers.vtex.com/vtex-rest-api/reference/invoicenotification)) will be created in the OMS with the return request id as the invoice number.
+
 - **Custom Return Reasons**: Allows the store to define their own custom return reasons. This setting will overwrite the default reasons. 
 The custom Return Reasons can be translated manually by the admin. 
     |Default return reason|
@@ -289,6 +292,11 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 |'termsAndConditionsContainer'|
 |'termsAndConditionsLink'|
 |'userCommentDetailsContainer'|
+
+## Knowing issues
+- When a store has a process to create return invoices ([invoice type input](https://developers.vtex.com/vtex-rest-api/reference/invoicenotification)) outside the return app, the app will consider those items and they will not be able to be returned via the app. However when an item is already committed in a return request and an invoice is created considering that item with a invoice number different than the return request id, there will be more processed items to return then invoices items - It can be seen using the query `orderToReturnSummary` on GraphQL.
+
+- When installing the app in a workspace - or creating a new one - the app will not behavior as expected. This is due to the masterdata builder not creating a schema for that workspace automatically. To fix that, one can just link the app in the workspace using the toolbelt. Doing so, there will be a new masterdata schema related to that workspace and the app should work fine.
 
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
