@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Bulgarian, Dutch, English, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
+
 ## [3.4.0] - 2022-08-17
 ### Fixed
 - Prevent order list and order details paegs to show negative numbers for available items.
