@@ -200,7 +200,7 @@ The search params available are:
 - \_status `enum`
 - \_sequenceNumber `string`
 - \_id `string`
-- \_dateSubmitted `string` e.g: \_dateSubmitted=2022-06-12,2022-07-13
+- \_createdIn `string` e.g: \_createdIn=2022-06-12,2022-07-13
 - \_orderId `string`
 - \_userEmail `string`
 
