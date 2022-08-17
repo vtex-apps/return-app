@@ -8,9 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Prevent order list and order details paegs to show negative numbers for available items.
-
-### Fixed
-
 - Avoid having a minus sign when restock fee is 0.
 
 ### Added
