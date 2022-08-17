@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Resolve dateSubmitted value into createdIn field because we lost the original value of createdIn (migration data from v2 to v3).
+- Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
+
+### Fixed
+
+- English translations.
 
 ## [3.3.0] - 2022-08-11
 
