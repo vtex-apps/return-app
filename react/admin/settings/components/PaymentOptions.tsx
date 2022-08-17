@@ -123,12 +123,6 @@ export const PaymentOptions = () => {
       allowedPaymentTypes: updatedPaymentOptions,
     }
 
-    if (!validateOptions(paymentOptionsPayload)) {
-      setHasError(true)
-
-      return
-    }
-
     dispatch({
       type: 'updatePaymentOptions',
       payload: {
@@ -136,6 +130,13 @@ export const PaymentOptions = () => {
         allowedPaymentTypes: updatedPaymentOptions,
       },
     })
+
+    if (!validateOptions(paymentOptionsPayload)) {
+      setHasError(true)
+
+      return
+    }
+
     setHasError(false)
   }
 
