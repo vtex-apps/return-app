@@ -39,10 +39,7 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
       return where
     }
 
-    if (
-      (key === 'createdIn' || key === 'dateSubmitted') &&
-      typeof value !== 'string'
-    ) {
+    if (key === 'createdIn' && typeof value !== 'string') {
       where += `dateSubmitted between ${filterDate(
         value.from
       )} AND ${filterDate(value.to)}`

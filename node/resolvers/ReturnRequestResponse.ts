@@ -201,7 +201,7 @@ export const ReturnRequestResponse = {
     return cultureInfo
   },
   // Resolve dateSubmitted value into createdIn field because we lost the original value of createdIn (migration data from v2 to v3).
-  createdIn: async (root: ReturnRequest, _args: unknown) => {
+  createdIn: async (root: ReturnRequest) => {
     const { dateSubmitted } = root
 
     return dateSubmitted
