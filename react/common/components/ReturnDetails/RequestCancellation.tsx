@@ -3,7 +3,7 @@ import React from 'react'
 import type { FormEvent, ReactElement } from 'react'
 import { utils, Button, EXPERIMENTAL_Modal as Modal } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
-import { defineMessages, FormattedMessage } from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import { useUpdateRequestStatus } from '../../../admin/hooks/useUpdateRequestStatus'
@@ -38,6 +38,8 @@ const RequestCancellation = () => {
     route: { domain },
     hints: { phone },
   } = useRuntime()
+
+  const { formatMessage } = useIntl()
 
   const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
 
@@ -126,12 +128,9 @@ const RequestCancellation = () => {
         }
       >
         <div>
-          <FormattedMessage
-            id={`${messages[messageKey].id}`}
-            values={{
-              p: ParagraphChunk,
-            }}
-          />
+          {formatMessage(messages[messageKey], {
+            p: ParagraphChunk,
+          })}
         </div>
       </Modal>
     </>
