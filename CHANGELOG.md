@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Mobile inconsistencies in My-account pages
+
 ### Added
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
 
