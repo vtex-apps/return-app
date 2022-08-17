@@ -8,14 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
 
 ### Fixed
+
 - English translations.
+- Allow to unselect all payment methods and if thats the case throw an error indicating that we must select al least one if `sameAsOrder` is on.
 
 ## [3.3.0] - 2022-08-11
 
 ### Added
+
 - Allow admin users to choose if the store user is required to select item conditions.
 
 ## [3.2.0] - 2022-08-11
@@ -25,22 +29,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Ability to cancel a request on admin and store side. This action allows the store use to create a return request with the same items.
 
 ### Fixed
+
 - Order list's mobile responsiveness
 
 ## [3.1.0] - 2022-08-08
 
 ### Added
+
 - Allow admin users to set automatic refund (creates invoice type Input for the order) when the request is set to refund the same payment method used for the purchase.
 
 ## [3.0.1] - 2022-08-02
 
 ### Fixed
+
 - Add locale into context to allow item names to be translated when creating a new request via API.
 
 ## [3.0.0] - 2022-07-26
 
 ## [2.19.12] - 2022-06-27
+
 ### Fixed
+
 - Encode user email when getting orders to be returned.
 
 ## [2.19.11] - 2022-06-17
