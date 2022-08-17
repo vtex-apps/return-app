@@ -7,14 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Fixed
-- Mobile inconsistencies in My-account pages
-
 ### Added
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
 
 ### Fixed
 - English translations.
+- My account mobile inconsistencies
+- Dynamic messages declared statically
 
 ## [3.3.0] - 2022-08-11
 
