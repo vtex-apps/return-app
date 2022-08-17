@@ -186,6 +186,10 @@ input ReturnRequestFilters {
   status: Status
   sequenceNumber: String
   id: String
+  """
+  createdIn: It uses the field dateSubmitted in the return request schema to search for documents.
+  The field createdIn is auto generated when the document is created, not reflecting the real value for documents migrated from older versions.
+  """
   createdIn: DateRangeInput
   orderId: String
   """

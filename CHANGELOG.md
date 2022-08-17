@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Prevent order list and order details paegs to show negative numbers for available items.
 - Avoid having a minus sign when restock fee is 0.
 
+### Changed
+
+- Resolve dateSubmitted value into createdIn field because we lost the original value of createdIn (migration data from v2 to v3).
+
 ### Added
 
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
