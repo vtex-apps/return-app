@@ -47,6 +47,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const {
     navigate,
     culture: { locale },
+    hints: { phone },
   } = useRuntime()
 
   const { data: storeSettings } = useStoreSettings()
@@ -117,7 +118,11 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                 className={`${handles.confirmationActionsContainer} flex flex-wrap`}
               >
                 <section
-                  className={`${handles.contactAddressWrapper} w-100 flex flex-wrap justify-between`}
+                  className={`${
+                    handles.contactAddressWrapper
+                  } w-100 flex flex-wrap justify-between ${
+                    phone ? 'flex-column' : ''
+                  }`}
                 >
                   <ConfirmContactDetails
                     contactDetails={returnRequestValidated.customerProfileData}
@@ -127,7 +132,11 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
                   />
                 </section>
                 <section
-                  className={`${handles.paymentCommentWrapper} w-100 flex mt5 justify-between`}
+                  className={`${
+                    handles.paymentCommentWrapper
+                  } w-100 flex mt5 justify-between ${
+                    phone ? 'flex-column' : ''
+                  }`}
                 >
                   <ConfirmPaymentMethods
                     refundPaymentData={returnRequestValidated.refundPaymentData}
@@ -169,26 +178,40 @@ export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
               </Alert>
             )}
             {confirmationStatus !== 'idle' ? null : (
-              <>
-                <div className={`${handles.backButtonWrapper} mr3`}>
+              <div
+                className={`flex ${
+                  phone ? 'w-100 flex-column' : 'justify-center'
+                }`}
+              >
+                <div
+                  className={`${handles.backButtonWrapper} ${
+                    phone ? 'mb5' : 'mr3'
+                  }`}
+                >
                   <Button
-                    size="small"
+                    block={phone}
+                    size={phone ? 'normal' : 'small'}
                     variation="secondary"
                     onClick={() => handlePageChange()}
                   >
                     <FormattedMessage id="store/return-app.confirm-and-submit.button.back" />
                   </Button>
                 </div>
-                <div className={`${handles.submitButtonWrapper} ml3`}>
+                <div
+                  className={`${handles.submitButtonWrapper} ${
+                    phone ? '' : 'mr3'
+                  }`}
+                >
                   <Button
-                    size="small"
+                    block={phone}
+                    size={phone ? 'normal' : 'small'}
                     onClick={handleCreateReturnRequest}
                     isLoading={creatingReturnRequest}
                   >
                     <FormattedMessage id="store/return-app.confirm-and-submit.button.submit" />
                   </Button>
                 </div>
-              </>
+              </div>
             )}
           </section>
         </>

@@ -3,6 +3,7 @@ import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
@@ -38,6 +39,10 @@ export const ItemsDetails = (props: Props) => {
     },
     creationDate,
   } = props
+
+  const {
+    hints: { phone },
+  } = useRuntime()
 
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -137,37 +142,53 @@ export const ItemsDetails = (props: Props) => {
 
   const availableToReturn = isExcluded ? 0 : quantityAvailable
 
+  const ItemQuantityDataCell = (
+    <>
+      <td className={`${handles.detailsTdWrapper} pa4`}>
+        <p className={`${handles.itemsDetailText} tc`}>{quantity}</p>
+      </td>
+      <td className={`${handles.detailsTdWrapper} pa4`}>
+        <p className={`${handles.itemsDetailText} tc`}>{availableToReturn}</p>
+      </td>
+    </>
+  )
+
   return (
     <tr className={`${handles.detailsRowContainer}`}>
-      <td className={`${handles.detailsTdWrapper}`}>
-        <section className={`${handles.productSectionWrapper} ml3`}>
-          <p className={`${handles.productText} t-body fw5`}>
-            {localizedName ?? name}
-          </p>
-          <div className={`${handles.productImageWrapper} flex`}>
+      <td className={`${handles.detailsTdWrapper} pa4`}>
+        <section
+          className={`${handles.productSectionWrapper} flex ${
+            phone ? 'w5' : ''
+          }`}
+        >
+          <div
+            className={`${handles.productImageWrapper} flex`}
+            style={{ flexBasis: '50%' }}
+          >
             <img
               className={`${handles.productImage}`}
               src={imageUrl}
               alt="Product"
             />
-            {isExcluded ? (
-              <CustomMessage
-                status="warning"
-                message={
-                  <FormattedMessage id="store/return-app.return-item-details.excluded-items.warning" />
-                }
-              />
-            ) : null}
           </div>
+          <p
+            className={`${handles.productText} t-body fw5 ml3`}
+            style={{ flexBasis: '100%' }}
+          >
+            {localizedName ?? name}
+          </p>
+          {isExcluded ? (
+            <CustomMessage
+              status="warning"
+              message={
+                <FormattedMessage id="store/return-app.return-item-details.excluded-items.warning" />
+              }
+            />
+          ) : null}
         </section>
       </td>
-      <td className={`${handles.detailsTdWrapper}`}>
-        <p className={`${handles.itemsDetailText} tc`}>{quantity}</p>
-      </td>
-      <td className={`${handles.detailsTdWrapper}`}>
-        <p className={`${handles.itemsDetailText} tc`}>{availableToReturn}</p>
-      </td>
-      <td className={`${handles.detailsTdWrapper}`}>
+      {phone ? null : ItemQuantityDataCell}
+      <td className={`${handles.detailsTdWrapper} pa4`}>
         <NumericStepper
           size="small"
           maxValue={availableToReturn}
@@ -175,7 +196,7 @@ export const ItemsDetails = (props: Props) => {
           onChange={(e: { value: number }) => handleQuantityChange(e.value)}
         />
       </td>
-      <td className={`${handles.detailsTdWrapper}`}>
+      <td className={`${handles.detailsTdWrapper} pa4`}>
         <RenderReasonDropdown
           isExcluded={isExcluded}
           reason={currentItem?.returnReason?.reason ?? ''}
@@ -193,7 +214,7 @@ export const ItemsDetails = (props: Props) => {
         ) : null}
       </td>
       {!enableSelectItemCondition ? null : (
-        <td className={`${handles.detailsTdWrapper}`}>
+        <td className={`${handles.detailsTdWrapper} pa4`}>
           <RenderConditionDropdown
             isExcluded={isExcluded}
             condition={currentItem?.condition ?? ''}
@@ -209,6 +230,7 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </td>
       )}
+      {!phone ? null : ItemQuantityDataCell}
     </tr>
   )
 }

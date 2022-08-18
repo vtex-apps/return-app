@@ -1,7 +1,8 @@
 import React from 'react'
-import { Button, PageBlock } from 'vtex.styleguide'
+import { Button } from 'vtex.styleguide'
 import { ContentWrapper } from 'vtex.my-account-commons'
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import ListTable from '../../common/components/returnList/ListTable'
 import { useReturnRequestList } from '../../hooks/useReturnRequestList'
@@ -16,19 +17,25 @@ const messages = defineMessages({
 })
 
 export const StoreReturnList = () => {
-  const { returnRequestData } = useReturnRequestList()
+  const {
+    hints: { phone },
+  } = useRuntime()
+
   const { formatMessage } = useIntl()
+  const { returnRequestData } = useReturnRequestList()
   const { loading } = returnRequestData
 
   const headerContent = (
-    <Button
-      variation="primary"
-      size="small"
-      disabled={loading}
-      href="#/my-returns/add"
-    >
-      <FormattedMessage id="store/return-app.return-request-list.page-header.cta" />
-    </Button>
+    <div className={`${phone ? 'mt4' : 'mt2'}`}>
+      <Button
+        variation="primary"
+        size="small"
+        disabled={loading}
+        href="#/my-returns/add"
+      >
+        <FormattedMessage id="store/return-app.return-request-list.page-header.cta" />
+      </Button>
+    </div>
   )
 
   return (
@@ -41,11 +48,7 @@ export const StoreReturnList = () => {
       }}
       headerContent={headerContent}
     >
-      {() => (
-        <PageBlock variation="full">
-          <ListTable />
-        </PageBlock>
-      )}
+      {() => <ListTable />}
     </ContentWrapper>
   )
 }

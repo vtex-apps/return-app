@@ -174,7 +174,7 @@ export const verifyItemsTableSchema = (
             currencyCode={cultureInfoData.currencyCode}
             locale={cultureInfoData.locale}
             onChange={handleChange}
-            disabled={selectedQuantity === 0}
+            readOnly={selectedQuantity === 0}
           />
         )
       },
