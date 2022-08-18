@@ -11,7 +11,11 @@ function mod97(string) {
 }
 
 export function isValidIBANNumber(input) {
-  const CODE_LENGTHS = {
+  type CodeLengths = {
+    [key: string]: number
+  }
+
+  const CODE_LENGTHS: CodeLengths = {
     AD: 24,
     AE: 23,
     AT: 20,
