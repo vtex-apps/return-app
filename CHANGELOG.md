@@ -7,10 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.4.0] - 2022-08-17
+### Fixed
+- Prevent order list and order details paegs to show negative numbers for available items.
+- Avoid having a minus sign when restock fee is 0.
+
+### Changed
+
+- Resolve dateSubmitted value into createdIn field because we lost the original value of createdIn (migration data from v2 to v3).
+
 ### Added
+
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
 
 ### Fixed
+
 - English translations.
 - My account mobile inconsistencies
 - Dynamic messages declared statically
@@ -18,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [3.3.0] - 2022-08-11
 
 ### Added
+
 - Allow admin users to choose if the store user is required to select item conditions.
 
 ## [3.2.0] - 2022-08-11
@@ -27,22 +39,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Ability to cancel a request on admin and store side. This action allows the store use to create a return request with the same items.
 
 ### Fixed
+
 - Order list's mobile responsiveness
 
 ## [3.1.0] - 2022-08-08
 
 ### Added
+
 - Allow admin users to set automatic refund (creates invoice type Input for the order) when the request is set to refund the same payment method used for the purchase.
 
 ## [3.0.1] - 2022-08-02
 
 ### Fixed
+
 - Add locale into context to allow item names to be translated when creating a new request via API.
 
 ## [3.0.0] - 2022-07-26
 
 ## [2.19.12] - 2022-06-27
+
 ### Fixed
+
 - Encode user email when getting orders to be returned.
 
 ## [2.19.11] - 2022-06-17
