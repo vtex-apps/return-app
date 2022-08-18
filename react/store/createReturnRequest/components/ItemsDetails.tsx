@@ -142,6 +142,17 @@ export const ItemsDetails = (props: Props) => {
 
   const availableToReturn = isExcluded ? 0 : quantityAvailable
 
+  const ItemQuantityDataCell = (
+    <>
+      <td className={`${handles.detailsTdWrapper} pa4`}>
+        <p className={`${handles.itemsDetailText} tc`}>{quantity}</p>
+      </td>
+      <td className={`${handles.detailsTdWrapper} pa4`}>
+        <p className={`${handles.itemsDetailText} tc`}>{availableToReturn}</p>
+      </td>
+    </>
+  )
+
   return (
     <tr className={`${handles.detailsRowContainer}`}>
       <td className={`${handles.detailsTdWrapper} pa4`}>
@@ -176,18 +187,7 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </section>
       </td>
-      {phone ? null : (
-        <>
-          <td className={`${handles.detailsTdWrapper} pa4`}>
-            <p className={`${handles.itemsDetailText} tc`}>{quantity}</p>
-          </td>
-          <td className={`${handles.detailsTdWrapper} pa4`}>
-            <p className={`${handles.itemsDetailText} tc`}>
-              {availableToReturn}
-            </p>
-          </td>
-        </>
-      )}
+      {phone ? null : ItemQuantityDataCell}
       <td className={`${handles.detailsTdWrapper} pa4`}>
         <NumericStepper
           size="small"
@@ -230,18 +230,7 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </td>
       )}
-      {!phone ? null : (
-        <>
-          <td className={`${handles.detailsTdWrapper} pa4`}>
-            <p className={`${handles.itemsDetailText} tc`}>{quantity}</p>
-          </td>
-          <td className={`${handles.detailsTdWrapper} pa4`}>
-            <p className={`${handles.itemsDetailText} tc`}>
-              {availableToReturn}
-            </p>
-          </td>
-        </>
-      )}
+      {!phone ? null : ItemQuantityDataCell}
     </tr>
   )
 }

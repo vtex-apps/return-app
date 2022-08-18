@@ -117,7 +117,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <div className="createReturnRequestContainer">
+    <div className="create-return-request__container">
       <PageBlock>
         <PageHeader {...createPageHeaderProps(page, navigate)} />
         <OrderDetailsLoader data={{ loading, error }}>

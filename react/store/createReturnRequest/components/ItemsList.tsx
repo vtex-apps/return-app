@@ -106,7 +106,9 @@ export const ItemsList = (props: Props) => {
         className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}
       >
         <tr className="w-100 truncate overflow-x-hidden">
-          {phone ? mobileOrder.map(TableHeader) : desktopOrder.map(TableHeader)}
+          {phone
+            ? mobileOrder.map((header) => TableHeader(header))
+            : desktopOrder.map((header) => TableHeader(header))}
         </tr>
       </thead>
       <tbody className="v-mid return-itemsList-body">

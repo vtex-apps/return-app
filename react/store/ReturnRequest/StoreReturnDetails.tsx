@@ -29,7 +29,7 @@ const StoreReturnDetails = () => {
   const handles = useCssHandles(CSS_HANDLES)
 
   return (
-    <div className="returnDetailContainer">
+    <div className="return-detail__container">
       <PageBlock>
         <PageHeader
           title={
