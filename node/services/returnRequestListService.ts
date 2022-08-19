@@ -40,9 +40,9 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
     }
 
     if (key === 'createdIn' && typeof value !== 'string') {
-      where += `${key} between ${filterDate(value.from)} AND ${filterDate(
-        value.to
-      )}`
+      where += `dateSubmitted between ${filterDate(
+        value.from
+      )} AND ${filterDate(value.to)}`
 
       return where
     }
@@ -119,7 +119,7 @@ export const returnRequestListService = async (
       pageSize: 25,
     },
     resultFields,
-    'createdIn DESC',
+    'dateSubmitted DESC',
     buildWhereClause(adjustedFilter)
   )
 

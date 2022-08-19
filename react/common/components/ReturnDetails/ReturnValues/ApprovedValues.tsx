@@ -48,7 +48,7 @@ export const ApprovedValues = () => {
           title={
             <FormattedMessage id="return-app.return-request-details.refund-total.restock-fee" />
           }
-          value={totalRestockFee * -1}
+          value={totalRestockFee === 0 ? 0 : totalRestockFee * -1}
         />
         <TotalWrapper
           title={

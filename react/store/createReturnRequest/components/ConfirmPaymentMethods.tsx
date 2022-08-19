@@ -2,6 +2,7 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import type { RefundPaymentDataInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 
@@ -23,9 +24,16 @@ const CSS_HANDLES = [
 export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
   const { formatMessage } = useIntl()
   const handles = useCssHandles(CSS_HANDLES)
+  const {
+    hints: { phone },
+  } = useRuntime()
 
   return (
-    <div className={`${handles.confirmPaymentContainer} w-40`}>
+    <div
+      className={`${handles.confirmPaymentContainer} ${
+        phone ? 'w-100' : 'w-40'
+      }`}
+    >
       <h2 className={`${handles.confirmPaymentTitle} mt0 mb6`}>
         <FormattedMessage id="store/return-app.confirm-and-submit.refund-method.title" />
       </h2>

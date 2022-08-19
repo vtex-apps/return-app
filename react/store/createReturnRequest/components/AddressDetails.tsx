@@ -168,7 +168,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           placeholder={formatMessage(messages.addressInput)}
           onChange={handleInputChange}
           value={pickupReturnData.address}
-          disabled={isPickupPoint}
+          readOnly={isPickupPoint}
         />
         {addressError && !pickupReturnData.address ? (
           <CustomMessage
@@ -186,7 +186,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           placeholder={formatMessage(messages.cityInput)}
           onChange={handleInputChange}
           value={pickupReturnData.city}
-          disabled={isPickupPoint}
+          readOnly={isPickupPoint}
         />
         {addressError && !pickupReturnData.city ? (
           <CustomMessage
@@ -204,7 +204,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           placeholder={formatMessage(messages.stateInput)}
           onChange={handleInputChange}
           value={pickupReturnData.state}
-          disabled={isPickupPoint}
+          readOnly={isPickupPoint}
         />
         {addressError && !pickupReturnData.state ? (
           <CustomMessage
@@ -222,7 +222,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           placeholder={formatMessage(messages.zipInput)}
           onChange={handleInputChange}
           value={pickupReturnData.zipCode}
-          disabled={isPickupPoint}
+          readOnly={isPickupPoint}
         />
         {addressError && !pickupReturnData.zipCode ? (
           <CustomMessage
@@ -240,7 +240,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           placeholder={formatMessage(messages.countryInput)}
           onChange={handleInputChange}
           value={pickupReturnData.country}
-          disabled={isPickupPoint}
+          readOnly={isPickupPoint}
         />
         {addressError && !pickupReturnData.country ? (
           <CustomMessage
