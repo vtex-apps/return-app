@@ -128,7 +128,7 @@ const ListTableFilter = (props: Props) => {
                   onChange={(e: FormEvent<HTMLInputElement>) =>
                     handleOnChange('id', e.currentTarget.value)
                   }
-                  disabled={isDisabled && !isFiltering}
+                  readOnly={isDisabled && !isFiltering}
                 />
               )}
             </FormattedMessage>
@@ -144,7 +144,7 @@ const ListTableFilter = (props: Props) => {
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   handleOnChange('sequenceNumber', e.currentTarget.value)
                 }
-                disabled={isDisabled && !isFiltering}
+                readOnly={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
@@ -159,7 +159,7 @@ const ListTableFilter = (props: Props) => {
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   handleOnChange('orderId', e.currentTarget.value)
                 }
-                disabled={isDisabled && !isFiltering}
+                readOnly={isDisabled && !isFiltering}
               />
             )}
           </FormattedMessage>
