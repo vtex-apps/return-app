@@ -1,39 +1,12 @@
-import type { ChangeEvent, ReactElement } from 'react'
-import React, { useState } from 'react'
+import type { ChangeEvent } from 'react'
+import React from 'react'
 import type { IntlShape } from 'react-intl'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
-import type {
-  PaymentOptions as PaymentOptionsInterface,
-  PaymentType,
-} from 'vtex.return-app'
+import type { PaymentType } from 'vtex.return-app'
 import { Toggle, CheckboxGroup } from 'vtex.styleguide'
 
 import { useSettings } from '../hooks/useSettings'
-
-const validateOptions = (paymentOptions: PaymentOptionsInterface) => {
-  const { enablePaymentMethodSelection, allowedPaymentTypes } = paymentOptions
-
-  // If the user has not enabled the payment method selection, then the allowed payment types can be all unselected.
-  if (!enablePaymentMethodSelection) return true
-
-  let result = false
-
-  for (const paymentType of Object.keys(allowedPaymentTypes)) {
-    // If we have at least one payment method selected, then the payment options are valid.
-    if (allowedPaymentTypes[paymentType]) {
-      result = true
-      break
-    }
-  }
-
-  return result
-}
-
-interface CheckboxProps {
-  label: ReactElement
-  checked: boolean
-  name: string
-}
+import type { CheckboxProps } from '../RMASettings'
 
 const messages = defineMessages({
   bank: {
@@ -74,13 +47,12 @@ const createOptionsLabel = (
   return createCheckoutOptions
 }
 
-export const PaymentOptions = () => {
+export const PaymentOptions = ({ handleOptionSelection, hasError }) => {
   const {
     appSettings,
     actions: { dispatch },
   } = useSettings()
 
-  const [hasError, setHasError] = useState(false)
   const intl = useIntl()
 
   const optionsLabel = createOptionsLabel(
@@ -103,41 +75,6 @@ export const PaymentOptions = () => {
         automaticallyRefundPaymentMethod: false,
       },
     })
-  }
-
-  const handleOptionSelection = (options: { string: CheckboxProps }) => {
-    const paymentOptions = Object.keys(options)
-
-    const updatedPaymentOptions = paymentOptions.reduce<PaymentType>(
-      (acc, paymentOption) => {
-        return {
-          ...acc,
-          [paymentOption]: options[paymentOption].checked,
-        }
-      },
-      {}
-    )
-
-    const paymentOptionsPayload = {
-      ...appSettings.paymentOptions,
-      allowedPaymentTypes: updatedPaymentOptions,
-    }
-
-    dispatch({
-      type: 'updatePaymentOptions',
-      payload: {
-        ...appSettings.paymentOptions,
-        allowedPaymentTypes: updatedPaymentOptions,
-      },
-    })
-
-    if (!validateOptions(paymentOptionsPayload)) {
-      setHasError(true)
-
-      return
-    }
-
-    setHasError(false)
   }
 
   const handleAutomaticallyRefundOption = (

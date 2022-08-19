@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import type { FormEvent } from 'react'
+import type { FormEvent, ReactElement } from 'react'
+import type {
+  PaymentOptions as PaymentOptionsInterface,
+  PaymentType,
+} from 'vtex.return-app'
 import { FormattedMessage } from 'react-intl'
 import {
   Layout,
@@ -25,13 +29,38 @@ export interface ModalWarningState {
   attemptNewSave: boolean
 }
 
+export interface CheckboxProps {
+  label: ReactElement
+  checked: boolean
+  name: string
+}
+
+const validateOptions = (paymentOptions: PaymentOptionsInterface) => {
+  const { enablePaymentMethodSelection, allowedPaymentTypes } = paymentOptions
+
+  // If the user has not enabled the payment method selection, then the allowed payment types can be all unselected.
+  if (!enablePaymentMethodSelection) return true
+
+  let result = false
+
+  for (const paymentType of Object.keys(allowedPaymentTypes)) {
+    // If we have at least one payment method selected, then the payment options are valid.
+    if (allowedPaymentTypes[paymentType]) {
+      result = true
+      break
+    }
+  }
+
+  return result
+}
+
 export const RMASettings = () => {
   const {
     appSettings,
     loading,
     error,
     savingAppSettings,
-    actions: { handleSaveAppSettings },
+    actions: { handleSaveAppSettings, dispatch },
   } = useSettings()
 
   const [maxDaysWarning, setWarning] = useState<ModalWarningState>({
@@ -39,6 +68,8 @@ export const RMASettings = () => {
     customMaxDays: 0,
     attemptNewSave: false,
   })
+
+  const [hasPaymentMethodError, setHasPaymentMethodError] = useState(false)
 
   useEffect(() => {
     if (!maxDaysWarning.attemptNewSave) return
@@ -54,11 +85,16 @@ export const RMASettings = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { customReturnReasons, maxDays } = appSettings
+    const { customReturnReasons, maxDays, paymentOptions } = appSettings
+    const { allowedPaymentTypes, enablePaymentMethodSelection } = paymentOptions
 
     const maxCustomOptionsDays = customReturnReasons?.reduce(
       (maxDay, option) => (maxDay > option.maxDays ? maxDay : option.maxDays),
       0
+    )
+
+    const isAnyPaymentMethod = Object.values(allowedPaymentTypes).some(
+      (paymentMethod) => paymentMethod === true
     )
 
     if (maxCustomOptionsDays && maxCustomOptionsDays < maxDays) {
@@ -71,7 +107,51 @@ export const RMASettings = () => {
       return
     }
 
+    if (!isAnyPaymentMethod && enablePaymentMethodSelection) {
+      setHasPaymentMethodError(true)
+
+      return
+    }
+
+    setHasPaymentMethodError(false)
+
     handleSaveAppSettings()
+  }
+
+  const handleOptionSelection = (options: { string: CheckboxProps }) => {
+    const paymentOptions = Object.keys(options)
+
+    const updatedPaymentOptions = paymentOptions.reduce<PaymentType>(
+      (acc, paymentOption) => {
+        return {
+          ...acc,
+          [paymentOption]: options[paymentOption].checked,
+        }
+      },
+      {}
+    )
+
+    const paymentOptionsPayload = {
+      ...appSettings.paymentOptions,
+      allowedPaymentTypes: updatedPaymentOptions,
+    }
+
+    dispatch({
+      type: 'updatePaymentOptions',
+      payload: {
+        ...appSettings.paymentOptions,
+        allowedPaymentTypes: updatedPaymentOptions,
+      },
+    })
+
+    if (!validateOptions(paymentOptionsPayload)) {
+      setHasPaymentMethodError(true)
+      window.scrollTo(0, 20)
+
+      return
+    }
+
+    setHasPaymentMethodError(false)
   }
 
   return (
@@ -110,7 +190,10 @@ export const RMASettings = () => {
               <Divider />
               <ExcludedCategories />
               <Divider />
-              <PaymentOptions />
+              <PaymentOptions
+                handleOptionSelection={handleOptionSelection}
+                hasError={hasPaymentMethodError}
+              />
               <Divider />
               <CustomReasons />
               <Divider />
