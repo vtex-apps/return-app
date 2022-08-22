@@ -178,7 +178,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
             ) : null}
             {bankDetailsError &&
             refundPaymentData.iban &&
-            !isValidIBANNumber(refundPaymentData.iban) ? (
+            isValidIBANNumber(refundPaymentData.iban) !== 1 ? (
               <CustomMessage
                 status="error"
                 message={
