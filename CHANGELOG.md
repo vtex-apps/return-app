@@ -7,14 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Remove IBAN and accountHolderNumber if refund method different than bank
+
 ## [3.4.1] - 2022-08-18
+
 ### Fixed
 
 - My account mobile inconsistencies
 - Dynamic messages declared statically
 
 ## [3.4.0] - 2022-08-17
+
 ### Fixed
+
 - Prevent order list and order details paegs to show negative numbers for available items.
 - Avoid having a minus sign when restock fee is 0.
 - English translations.
@@ -26,8 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
-
-
 
 ## [3.3.0] - 2022-08-11
 
