@@ -56,7 +56,7 @@ export const validatePaymentMethod = (
       throw new ResolverError('Account holder name is required', 400)
     }
 
-    if (!isValidIBANNumber(iban)) {
+    if (isValidIBANNumber(iban) !== 1) {
       throw new ResolverError('IBAN is not valid', 400)
     }
   }
