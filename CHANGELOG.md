@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.4.1] - 2022-08-18
+### Fixed
+
+- My account mobile inconsistencies
+- Dynamic messages declared statically
+
 ## [3.4.0] - 2022-08-17
 ### Fixed
 - Prevent order list and order details paegs to show negative numbers for available items.
 - Avoid having a minus sign when restock fee is 0.
+- English translations.
 
 ### Changed
 
@@ -20,9 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
 
-### Fixed
 
-- English translations.
 
 ## [3.3.0] - 2022-08-11
 

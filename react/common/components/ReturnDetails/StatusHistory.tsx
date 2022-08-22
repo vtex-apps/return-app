@@ -22,12 +22,13 @@ const statusHistorySchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.status-history.header.created-at" />
       ),
+      minWidth: 120,
       cellRenderer: function CreatedAt({ cellData }) {
         return (
           <FormattedDate
             value={cellData}
-            day="numeric"
-            month="long"
+            day="2-digit"
+            month="2-digit"
             year="numeric"
             hour="numeric"
             minute="numeric"
@@ -40,6 +41,7 @@ const statusHistorySchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.status-history.header.status" />
       ),
+      minWidth: 150,
       cellRenderer: function Status({ cellData }) {
         return formatMessage(statusMessageIdAdmin[cellData])
       },

@@ -80,7 +80,7 @@ export const ContactDetails = () => {
       </div>
       <div className={`${handles.contactEmailInputWrapper} mb4`}>
         <Input
-          disabled
+          readOnly
           name="email"
           placeholder={formatMessage(messages.emailInput)}
           onChange={handleInputChange}

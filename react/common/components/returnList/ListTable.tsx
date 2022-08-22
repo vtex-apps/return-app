@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Table, EmptyState } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
+import { useRuntime } from 'vtex.render-runtime'
 
 import ReturnListSchema from './ListTableSchema'
 import JumpToPage from './JumpToPage'
@@ -14,6 +15,13 @@ const ListTable = () => {
   const {
     returnRequestData: { data, loading, error, refetch },
   } = useReturnRequestList()
+
+  const {
+    route: { domain },
+    hints: { mobile, phone },
+  } = useRuntime()
+
+  const isAdmin = domain === 'admin'
 
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -71,11 +79,13 @@ const ListTable = () => {
 
   return (
     <div className={handles.listTableContainer}>
-      <ListTableFilter
-        refetch={refetch}
-        loading={loading}
-        isDisabled={!list?.length}
-      />
+      {mobile && !isAdmin ? null : (
+        <ListTableFilter
+          refetch={refetch}
+          loading={loading}
+          isDisabled={!list?.length}
+        />
+      )}
       <Table
         fullWidth
         loading={loading}
@@ -100,7 +110,7 @@ const ListTable = () => {
           totalItems: paging?.total,
         }}
       />
-      {paging && list?.length && !loading ? (
+      {!phone && paging && list?.length && !loading ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}
           currentPage={paging.currentPage}

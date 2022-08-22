@@ -29,43 +29,44 @@ const StoreReturnDetails = () => {
   const handles = useCssHandles(CSS_HANDLES)
 
   return (
-    <PageBlock>
-      <PageHeader
-        title={
-          <FormattedMessage id="store/return-app.return-request-details.page-header.title" />
-        }
-        linkLabel={
-          <FormattedMessage id="store/return-app.return-request-details.page-header.link-label" />
-        }
-        onLinkClick={() => {
-          navigate({
-            to: '#/my-returns',
-          })
-        }}
-      >
-        <AlertProvider>
-          <UpdateRequestStatusProvider>
-            <RequestCancellation />
-          </UpdateRequestStatusProvider>
-        </AlertProvider>
-      </PageHeader>
-
-      <StoreReturnDetailsLoader data={{ loading, error }}>
-        <CurrentRequestStatus />
-        <OrderLink />
-        <ItemDetailsList />
-        <ReturnValues />
-        <div
-          className={`${handles.contactPickupContainer} flex-ns flex-wrap flex-row`}
+    <div className="return-detail__container">
+      <PageBlock>
+        <PageHeader
+          title={
+            <FormattedMessage id="store/return-app.return-request-details.page-header.title" />
+          }
+          linkLabel={
+            <FormattedMessage id="store/return-app.return-request-details.page-header.link-label" />
+          }
+          onLinkClick={() => {
+            navigate({
+              to: '#/my-returns',
+            })
+          }}
         >
-          <ContactDetails />
-          <PickupAddress />
-        </div>
-        <RefundMethodDetail />
-        <StatusTimeline />
-        <StatusHistory />
-      </StoreReturnDetailsLoader>
-    </PageBlock>
+          <AlertProvider>
+            <UpdateRequestStatusProvider>
+              <RequestCancellation />
+            </UpdateRequestStatusProvider>
+          </AlertProvider>
+        </PageHeader>
+        <StoreReturnDetailsLoader data={{ loading, error }}>
+          <CurrentRequestStatus />
+          <OrderLink />
+          <ItemDetailsList />
+          <ReturnValues />
+          <div
+            className={`${handles.contactPickupContainer} flex-ns flex-wrap flex-row`}
+          >
+            <ContactDetails />
+            <PickupAddress />
+          </div>
+          <RefundMethodDetail />
+          <StatusTimeline />
+          <StatusHistory />
+        </StoreReturnDetailsLoader>
+      </PageBlock>
+    </div>
   )
 }
 
