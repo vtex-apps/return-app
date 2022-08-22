@@ -102,15 +102,10 @@ export const validateNewReturnRequestFields = (
     return { errors }
   }
 
-  // eslint-disable-next-line no-console
-  console.log(refundPaymentData, 'refundPaymentData')
-
   if (refundPaymentMethod === 'bank') {
     const { iban, accountHolderName } = refundPaymentData
 
     if (!iban || !accountHolderName || isValidIBANNumber(iban) !== 1) {
-      // eslint-disable-next-line no-console
-      console.log('here')
       errors.push('bank-details')
     }
   }
