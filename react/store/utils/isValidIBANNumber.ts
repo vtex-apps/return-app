@@ -1,5 +1,5 @@
-function mod97(string: any) {
-  let checksum = string.slice(0, 2)
+function mod97(string: string) {
+  let checksum = string.slice(0, 2) as string | number
   let fragment
 
   for (let offset = 2; offset < string.length; offset += 7) {
@@ -10,8 +10,12 @@ function mod97(string: any) {
   return checksum
 }
 
-export function isValidIBANNumber(input: string) {
-  const CODE_LENGTHS = {
+export function isValidIBANNumber(input) {
+  type CodeLengths = {
+    [key: string]: number
+  }
+
+  const CODE_LENGTHS: CodeLengths = {
     AD: 24,
     AE: 23,
     AT: 20,
@@ -108,5 +112,6 @@ export function isValidIBANNumber(input: string) {
     return returnVar.toString()
   })
 
-  return mod97(digits)
+  // If the IBAN is correct the result should be 1 if not any number higher than 1.
+  return mod97(digits) === 1
 }

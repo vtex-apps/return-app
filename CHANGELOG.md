@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Add IBAN validation in frontend and backend
 - Remove IBAN and accountHolderNumber if refund method different than bank
 
 ## [3.4.1] - 2022-08-18
