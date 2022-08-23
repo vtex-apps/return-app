@@ -113,5 +113,5 @@ export function isValidIBANNumber(input: string) {
   })
 
   // If the IBAN is correct the result should be 1 if not any number higher than 1.
-  return mod97(digits)
+  return mod97(digits) === 1
 }
