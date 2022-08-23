@@ -105,7 +105,7 @@ export const validateNewReturnRequestFields = (
   if (refundPaymentMethod === 'bank') {
     const { iban, accountHolderName } = refundPaymentData
 
-    if (!iban || !accountHolderName || isValidIBANNumber(iban) !== 1) {
+    if (!iban || !accountHolderName || !isValidIBANNumber(iban)) {
       errors.push('bank-details')
     }
   }

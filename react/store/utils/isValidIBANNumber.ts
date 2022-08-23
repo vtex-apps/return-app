@@ -1,5 +1,5 @@
-function mod97(string) {
-  let checksum = string.slice(0, 2)
+function mod97(string: string) {
+  let checksum = string.slice(0, 2) as string | number
   let fragment
 
   for (let offset = 2; offset < string.length; offset += 7) {
@@ -113,5 +113,5 @@ export function isValidIBANNumber(input) {
   })
 
   // If the IBAN is correct the result should be 1 if not any number higher than 1.
-  return mod97(digits)
+  return mod97(digits) === 1
 }
