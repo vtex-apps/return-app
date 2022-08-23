@@ -25,6 +25,7 @@ type Query {
   returnRequestList(
     filter: ReturnRequestFilters
     page: Int!
+    perPage: Int
   ): ReturnRequestList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
