@@ -1,6 +1,8 @@
 import type { RefundPaymentDataInput, PaymentOptions } from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
+import { isValidIBANNumber } from './isValidIBANNumber'
+
 export const validatePaymentMethod = (
   refundPaymentData: RefundPaymentDataInput,
   paymentSettings: PaymentOptions
@@ -44,6 +46,7 @@ export const validatePaymentMethod = (
     )
   }
 
+  // eslint-disable-next-line vtex/prefer-early-return
   if (refundPaymentMethod === 'bank') {
     if (!iban) {
       throw new ResolverError('IBAN is required', 400)
@@ -51,6 +54,10 @@ export const validatePaymentMethod = (
 
     if (!accountHolderName) {
       throw new ResolverError('Account holder name is required', 400)
+    }
+
+    if (!isValidIBANNumber(iban)) {
+      throw new ResolverError('IBAN is not valid', 400)
     }
   }
 }
