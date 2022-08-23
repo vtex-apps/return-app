@@ -193,6 +193,7 @@ To retrieve a List of Return Requests make a GET request to the following endpoi
 The search params available are:
 
 - _page `integer`
+- _perPage `integer`
 - _status `enum`
 - _sequenceNumber `string`
 - _id `string`
