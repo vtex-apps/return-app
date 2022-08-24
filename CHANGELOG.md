@@ -9,11 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Add perPage parameter to returnRequestList query.
-
-### Added
-
 - Remove IBAN and accountHolderNumber if refund method different than bank
+- Add perPage parameter to returnRequestList query.
 
 ## [3.4.1] - 2022-08-18
 
