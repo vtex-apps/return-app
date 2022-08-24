@@ -25,7 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Prevent order list and order details paegs to show negative numbers for available items.
 - Avoid having a minus sign when restock fee is 0.
 - English translations.
-- Allow to unselect all payment methods and if thats the case throw an error indicating that we must select al least one if `sameAsOrder` is on.
 
 ### Changed
 
