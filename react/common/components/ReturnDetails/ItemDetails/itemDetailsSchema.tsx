@@ -12,12 +12,20 @@ import { defaultReturnConditionsMessages } from '../../../utils/defaultReturnCon
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 
-export const itemDetailsSchema = (
-  itemVerificationStatus: Map<number, ItemStatusInterface>,
-  currency: string,
+interface Props {
+  itemsVerificationStatus: Map<number, ItemStatusInterface>
+  currencyCode: string
   formatMessage: IntlFormatters['formatMessage']
-) => ({
-  properties: {
+  isSmallScreen: boolean
+}
+
+export const itemDetailsSchema = ({
+  itemsVerificationStatus,
+  currencyCode,
+  formatMessage,
+  isSmallScreen,
+}: Props) => {
+  const properties = {
     imageUrl: {
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.product" />
@@ -109,7 +117,7 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.unit-price" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function UnitPrice({
         cellData,
@@ -121,7 +129,7 @@ export const itemDetailsSchema = (
             <FormattedNumber
               value={cellData / 100}
               style="currency"
-              currency={currency}
+              currency={currencyCode}
             />
           </AlignItemRight>
         )
@@ -131,7 +139,7 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.tax" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function Tax({
         cellData,
@@ -143,7 +151,7 @@ export const itemDetailsSchema = (
             <FormattedNumber
               value={cellData / 100}
               style="currency"
-              currency={currency}
+              currency={currencyCode}
             />
           </AlignItemRight>
         )
@@ -153,7 +161,7 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.total-price" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function TotalPrice({
         rowData,
@@ -167,7 +175,7 @@ export const itemDetailsSchema = (
             <FormattedNumber
               value={((sellingPrice + tax) * quantity) / 100}
               style="currency"
-              currency={currency}
+              currency={currencyCode}
             />
           </AlignItemRight>
         )
@@ -177,18 +185,31 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.verification-status" />
       ),
+      minWidth: 150,
       cellRenderer: function VerificationStatus({
         rowData,
       }: {
         rowData: ReturnRequestItem
       }) {
         const { orderItemIndex } = rowData
-        const itemStatus = itemVerificationStatus.get(orderItemIndex)
+        const itemStatus = itemsVerificationStatus.get(orderItemIndex)
 
         if (!itemStatus) return null
 
         return <ItemVerificationStatus {...itemStatus} />
       },
     },
-  },
-})
+  }
+
+  const mobileOrder = {
+    imageUrl: null,
+    name: null,
+    verificationStatus: null,
+  }
+
+  return {
+    properties: isSmallScreen
+      ? Object.assign(mobileOrder, properties)
+      : properties,
+  }
+}

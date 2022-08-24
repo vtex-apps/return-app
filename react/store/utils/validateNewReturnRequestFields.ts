@@ -4,6 +4,7 @@ import type {
 } from 'vtex.return-app'
 
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
+import { isValidIBANNumber } from './isValidIBANNumber'
 
 const hasValidReasonOrCondition = (
   item: OrderDetailsState['items'][number],
@@ -104,7 +105,7 @@ export const validateNewReturnRequestFields = (
   if (refundPaymentMethod === 'bank') {
     const { iban, accountHolderName } = refundPaymentData
 
-    if (!iban || !accountHolderName) {
+    if (!iban || !accountHolderName || !isValidIBANNumber(iban)) {
       errors.push('bank-details')
     }
   }

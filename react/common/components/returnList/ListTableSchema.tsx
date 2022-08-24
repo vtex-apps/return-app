@@ -6,12 +6,15 @@ import { IconInfo, ButtonPlain, Tooltip } from 'vtex.styleguide'
 import { renderStatus } from '../RenderStatus'
 
 const ReturnListSchema = () => {
-  const { navigate, route } = useRuntime()
+  const {
+    navigate,
+    route: { domain },
+  } = useRuntime()
 
-  const adminDomain = route.domain === 'admin'
+  const isAdmin = domain === 'admin'
 
   const navigateToRequest = (id: string) => {
-    const page = adminDomain
+    const page = isAdmin
       ? `/admin/app/returns/${id}/details/`
       : `#/my-returns/details/${id}`
 
@@ -22,7 +25,7 @@ const ReturnListSchema = () => {
 
   return {
     properties: {
-      ...(adminDomain && {
+      ...(isAdmin && {
         id: {
           title: (
             <FormattedMessage id="return-app.return-request-list.table-data.requestId" />
@@ -60,7 +63,8 @@ const ReturnListSchema = () => {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber" />
         ),
-        ...(!adminDomain && {
+        minWidth: 100,
+        ...(!isAdmin && {
           cellRenderer({ cellData, rowData }) {
             return (
               <ButtonPlain onClick={() => navigateToRequest(rowData.id)}>
@@ -74,6 +78,7 @@ const ReturnListSchema = () => {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.orderId" />
         ),
+        minWidth: 160,
       },
       createdIn: {
         title: (
@@ -89,11 +94,13 @@ const ReturnListSchema = () => {
             />
           )
         },
+        minWidth: 110,
       },
       status: {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.status" />
         ),
+        minWidth: 250,
         cellRenderer({ cellData }) {
           return renderStatus(cellData)
         },
