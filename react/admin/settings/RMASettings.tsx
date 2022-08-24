@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import type { FormEvent, ReactElement } from 'react'
 import type {
   PaymentOptions as PaymentOptionsInterface,
@@ -45,7 +45,7 @@ const validateOptions = (paymentOptions: PaymentOptionsInterface) => {
 
   for (const paymentType of Object.keys(allowedPaymentTypes)) {
     // If we have at least one payment method selected, then the payment options are valid.
-    if (allowedPaymentTypes[paymentType]) {
+    if (allowedPaymentTypes[paymentType] && paymentType !== '__typename') {
       result = true
       break
     }
@@ -71,6 +71,8 @@ export const RMASettings = () => {
 
   const [hasPaymentMethodError, setHasPaymentMethodError] = useState(false)
 
+  const paymentMethodsRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     if (!maxDaysWarning.attemptNewSave) return
 
@@ -86,15 +88,10 @@ export const RMASettings = () => {
     e.preventDefault()
 
     const { customReturnReasons, maxDays, paymentOptions } = appSettings
-    const { allowedPaymentTypes, enablePaymentMethodSelection } = paymentOptions
 
     const maxCustomOptionsDays = customReturnReasons?.reduce(
       (maxDay, option) => (maxDay > option.maxDays ? maxDay : option.maxDays),
       0
-    )
-
-    const isAnyPaymentMethod = Object.values(allowedPaymentTypes).some(
-      (paymentMethod) => paymentMethod === true
     )
 
     if (maxCustomOptionsDays && maxCustomOptionsDays < maxDays) {
@@ -107,8 +104,9 @@ export const RMASettings = () => {
       return
     }
 
-    if (!isAnyPaymentMethod && enablePaymentMethodSelection) {
+    if (!validateOptions(paymentOptions)) {
       setHasPaymentMethodError(true)
+      paymentMethodsRef.current?.scrollIntoView()
 
       return
     }
@@ -146,7 +144,6 @@ export const RMASettings = () => {
 
     if (!validateOptions(paymentOptionsPayload)) {
       setHasPaymentMethodError(true)
-      window.scrollTo(0, 20)
 
       return
     }
@@ -193,6 +190,7 @@ export const RMASettings = () => {
               <PaymentOptions
                 handleOptionSelection={handleOptionSelection}
                 hasError={hasPaymentMethodError}
+                ref={paymentMethodsRef}
               />
               <Divider />
               <CustomReasons />
