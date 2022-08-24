@@ -117,7 +117,7 @@ export const itemDetailsSchema = ({
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.unit-price" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function UnitPrice({
         cellData,
@@ -139,7 +139,7 @@ export const itemDetailsSchema = ({
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.tax" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function Tax({
         cellData,
@@ -161,7 +161,7 @@ export const itemDetailsSchema = ({
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.total-price" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function TotalPrice({
         rowData,

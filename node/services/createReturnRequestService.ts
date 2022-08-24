@@ -214,6 +214,14 @@ export const createReturnRequestService = async (
 
   const { refundPaymentMethod } = refundPaymentData
 
+  const { iban, accountHolderName, ...refundPaymentMethodSubset } =
+    refundPaymentData
+
+  const refundPaymentDataResult =
+    refundPaymentMethod === 'bank'
+      ? refundPaymentData
+      : refundPaymentMethodSubset
+
   const { automaticallyRefundPaymentMethod } = paymentOptions
 
   const createInvoiceTypeInput =
@@ -238,7 +246,7 @@ export const createReturnRequestService = async (
       },
       pickupReturnData,
       refundPaymentData: {
-        ...refundPaymentData,
+        ...refundPaymentDataResult,
         automaticallyRefundPaymentMethod: createInvoiceTypeInput,
       },
       items: itemsToReturn,

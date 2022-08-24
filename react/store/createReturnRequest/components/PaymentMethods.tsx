@@ -13,6 +13,7 @@ import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
 import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
+import { isValidIBANNumber } from '../../utils/isValidIBANNumber'
 
 interface Props {
   canRefundCard: boolean
@@ -172,6 +173,16 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
                 status="error"
                 message={
                   <FormattedMessage id="store/return-app.return-payment-methods.input-iban.error" />
+                }
+              />
+            ) : null}
+            {bankDetailsError &&
+            refundPaymentData.iban &&
+            !isValidIBANNumber(refundPaymentData.iban) ? (
+              <CustomMessage
+                status="error"
+                message={
+                  <FormattedMessage id="store/return-app.return-payment-methods.input-iban-invalid.error" />
                 }
               />
             ) : null}

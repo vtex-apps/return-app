@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Allow to unselect all payment methods and if thats the case throw an error indicating that we must select al least one if `sameAsOrder` is on.
+
 ### Added
 
-- Bulgarian, Dutch, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
+- Add IBAN validation in frontend and backend
+- Remove IBAN and accountHolderNumber if refund method different than bank
 
 ## [3.4.1] - 2022-08-18
 
