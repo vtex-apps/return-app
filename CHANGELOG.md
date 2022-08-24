@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.4.2] - 2022-08-24
+
 ### Fixed
 
 - Allow to unselect all payment methods and if thats the case throw an error indicating that we must select al least one if `sameAsOrder` is on.
