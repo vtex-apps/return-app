@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Bulgarian, Dutch, English, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
+
 ### Added
 
 - Add IBAN validation in frontend and backend
