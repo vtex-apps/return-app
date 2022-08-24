@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Allow to unselect all payment methods and if thats the case throw an error indicating that we must select al least one if `sameAsOrder` is on.
+- Bulgarian, Dutch, English, French, Italian, Portuguese, Romanian, Spanish and Thai translations.
 
 ### Added
 
