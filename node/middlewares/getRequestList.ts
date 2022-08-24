@@ -7,6 +7,7 @@ export async function getRequestList(ctx: Context) {
 
   const {
     _page,
+    _perPage,
     _status,
     _sequenceNumber,
     _id,
@@ -26,6 +27,7 @@ export async function getRequestList(ctx: Context) {
     ctx,
     {
       page: _page ? Number(_page) : 1,
+      perPage: _perPage ? Number(_perPage) : 25,
       filter: {
         status: _status as Status | undefined,
         sequenceNumber: _sequenceNumber as string | undefined,

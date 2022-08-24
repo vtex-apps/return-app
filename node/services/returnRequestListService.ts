@@ -66,7 +66,7 @@ export const returnRequestListService = async (
     state: { userProfile, appkey },
   } = ctx
 
-  const { page, filter } = args
+  const { page, perPage, filter } = args
   const {
     userId: userIdProfile,
     email: userEmailProfile,
@@ -116,7 +116,7 @@ export const returnRequestListService = async (
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,
-      pageSize: 25,
+      pageSize: perPage && perPage <= 100 ? perPage : 25,
     },
     resultFields,
     'dateSubmitted DESC',
