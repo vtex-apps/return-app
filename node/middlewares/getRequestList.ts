@@ -7,6 +7,7 @@ export async function getRequestList(ctx: Context) {
 
   const {
     _page,
+    _perPage,
     _status,
     _sequenceNumber,
     _id,
