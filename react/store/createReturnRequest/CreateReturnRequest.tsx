@@ -117,40 +117,39 @@ export const CreateReturnRequest = (props: RouteProps) => {
   }
 
   return (
-    <PageBlock className="ph0 mh0 pa0 pa0-ns">
-      <PageHeader
-        className="ph0 mh0 nl5"
-        {...createPageHeaderProps(page, navigate)}
-      />
-      <OrderDetailsLoader data={{ loading, error }}>
-        {page === 'form-details' && data ? (
-          <>
-            <ReturnDetails
-              {...props}
-              onPageChange={handlePageChange}
-              items={items}
-              creationDate={data.orderToReturnSummary.creationDate}
-              canRefundCard={
-                data?.orderToReturnSummary.paymentData.canRefundCard
-              }
-              shippingData={data.orderToReturnSummary.shippingData}
-            />
-          </>
-        ) : null}
-        {page === 'submit-form' ? (
-          <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
-        ) : null}
-      </OrderDetailsLoader>
-    </PageBlock>
+    <div className="create-return-request__container">
+      <PageBlock>
+        <PageHeader {...createPageHeaderProps(page, navigate)} />
+        <OrderDetailsLoader data={{ loading, error }}>
+          {page === 'form-details' && data ? (
+            <>
+              <ReturnDetails
+                {...props}
+                onPageChange={handlePageChange}
+                items={items}
+                creationDate={data.orderToReturnSummary.creationDate}
+                canRefundCard={
+                  data?.orderToReturnSummary.paymentData.canRefundCard
+                }
+                shippingData={data.orderToReturnSummary.shippingData}
+              />
+            </>
+          ) : null}
+          {page === 'submit-form' ? (
+            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
+          ) : null}
+        </OrderDetailsLoader>
+      </PageBlock>
+    </div>
   )
 }
 
 export const CreateReturnRequestContainer = (props: RouteProps) => {
   return (
-    <OrderToReturnProvider>
-      <StoreSettingsPovider>
+    <StoreSettingsPovider>
+      <OrderToReturnProvider>
         <CreateReturnRequest {...props} />
-      </StoreSettingsPovider>
-    </OrderToReturnProvider>
+      </OrderToReturnProvider>
+    </StoreSettingsPovider>
   )
 }

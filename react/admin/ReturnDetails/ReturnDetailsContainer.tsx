@@ -17,6 +17,7 @@ import { StatusHistory } from '../../common/components/ReturnDetails/StatusHisto
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 import { ReturnLabel } from './components/ReturnLabel/ReturnLabel'
+import RequestCancellation from '../../common/components/ReturnDetails/RequestCancellation'
 
 type Pages = 'return-details' | 'verify-items'
 
@@ -46,7 +47,9 @@ export const ReturnDetailsContainer = () => {
               to: '/admin/app/returns/requests',
             })
           }}
-        />
+        >
+          <RequestCancellation />
+        </PageHeader>
       }
     >
       <PageBlock variation="full" fit="fill">

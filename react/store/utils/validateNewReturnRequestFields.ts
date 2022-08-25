@@ -4,20 +4,24 @@ import type {
 } from 'vtex.return-app'
 
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
+import { isValidIBANNumber } from './isValidIBANNumber'
 
-const itemHasConditionAndReason = (
-  item: OrderDetailsState['items'][number]
-): item is ReturnRequestItemInput => {
+const hasValidReasonOrCondition = (
+  item: OrderDetailsState['items'][number],
+  considerItemCondition: boolean
+): boolean => {
   const isOtherReason = item.returnReason?.reason === 'otherReason'
   const hasRequiredUserInput = isOtherReason
     ? Boolean(item.returnReason?.otherReason)
     : true
 
-  return (
-    Boolean(item.condition) &&
-    Boolean(item.returnReason) &&
-    hasRequiredUserInput
-  )
+  const validReason = Boolean(item.returnReason) && hasRequiredUserInput
+
+  if (considerItemCondition) {
+    return Boolean(item.condition) && validReason
+  }
+
+  return validReason
 }
 
 export type ErrorsValidation =
@@ -38,14 +42,22 @@ interface ValidationSuccess {
   errors?: never
   validatedFields: ReturnRequestInput
 }
+interface ValidationData {
+  termsAndConditionsAccepted: boolean
+  locale: string
+  // If the item condition should be considered along the return reason
+  considerItemCondition: boolean
+}
 
 export const validateNewReturnRequestFields = (
-  termsAndConditionsAccepted: boolean,
   returnRequest: OrderDetailsState,
-  locale: string
+  validationData: ValidationData
 ): ValidationError | ValidationSuccess => {
   const { items, pickupReturnData, customerProfileData, refundPaymentData } =
     returnRequest
+
+  const { termsAndConditionsAccepted, locale, considerItemCondition } =
+    validationData
 
   const errors: ErrorsValidation[] = []
 
@@ -62,7 +74,9 @@ export const validateNewReturnRequestFields = (
     errors.push('no-item-selected')
   }
 
-  const validatedItems = itemsToReturn.filter(itemHasConditionAndReason)
+  const validatedItems = itemsToReturn.filter((item) =>
+    hasValidReasonOrCondition(item, considerItemCondition)
+  ) as ReturnRequestItemInput[]
 
   if (itemsToReturn.length !== validatedItems.length) {
     errors.push('reason-or-condition')
@@ -91,7 +105,7 @@ export const validateNewReturnRequestFields = (
   if (refundPaymentMethod === 'bank') {
     const { iban, accountHolderName } = refundPaymentData
 
-    if (!iban || !accountHolderName) {
+    if (!iban || !accountHolderName || !isValidIBANNumber(iban)) {
       errors.push('bank-details')
     }
   }

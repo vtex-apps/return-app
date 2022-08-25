@@ -94,6 +94,9 @@
         },
         "accountHolderName": {
           "type": ["string", "null"]
+        },
+        "automaticallyRefundPaymentMethod": {
+          "type": ["boolean", "null"]
         }
       },
       "required": ["refundPaymentMethod"]
@@ -132,6 +135,7 @@
           "condition": {
             "type": "string",
             "enum": [
+              "unspecified",
               "newWithBox",
               "newWithoutBox",
               "usedWithBox",
@@ -269,7 +273,8 @@
         "pendingVerification",
         "packageVerified",
         "amountRefunded",
-        "denied"
+        "denied",
+        "cancelled"
       ]
     }
   },
@@ -303,7 +308,8 @@
     "orderId",
     "customerProfileData",
     "status",
-    "sequenceNumber"
+    "sequenceNumber",
+    "dateSubmitted"
   ],
   "v-immediate-indexing": true
 }

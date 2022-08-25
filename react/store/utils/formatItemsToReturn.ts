@@ -21,12 +21,14 @@ export function formatItemsToReturn(
   }
 
   return invoicedItems.map((invoicedItem, index) => {
+    const quantityAvailable =
+      invoicedItem.quantity - (processedItemsQuantityIndexMap.get(index) ?? 0)
+
     return {
       ...invoicedItem,
       isExcluded: excludedItemsIndexMap.get(index) || false,
-      quantityAvailable:
-        invoicedItem.quantity -
-        (processedItemsQuantityIndexMap.get(index) ?? 0),
+      // Quantity available can be negative when the store invoices the return outside the return app and doesnot apply the .
+      quantityAvailable: quantityAvailable > 0 ? quantityAvailable : 0,
     }
   })
 }

@@ -15,6 +15,7 @@ import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { templateName } from '../utils/emailTemplates'
+import { validateItemCondition } from '../utils/validateItemCondition'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -66,7 +67,7 @@ export const createReturnRequestService = async (
   // Check items since a request via endpoint might not have it.
   // Graphql validation doesn't prevent user to send empty items
   if (!items || items.length === 0) {
-    throw new UserInputError('There is no items in the request')
+    throw new UserInputError('There are no items in the request')
   }
 
   // For requests where orderId is an empty string
@@ -155,6 +156,9 @@ export const createReturnRequestService = async (
     settingsOptions?.enablePickupPoints
   )
 
+  // validate item condition
+  validateItemCondition(items, settingsOptions?.enableSelectItemCondition)
+
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
   const sequenceNumber = `${sequence}-${total + 1}`
@@ -206,6 +210,23 @@ export const createReturnRequestService = async (
     }
   )
 
+  const { refundPaymentMethod } = refundPaymentData
+
+  const { iban, accountHolderName, ...refundPaymentMethodSubset } =
+    refundPaymentData
+
+  const refundPaymentDataResult =
+    refundPaymentMethod === 'bank'
+      ? refundPaymentData
+      : refundPaymentMethodSubset
+
+  const { automaticallyRefundPaymentMethod } = paymentOptions
+
+  const createInvoiceTypeInput =
+    refundPaymentMethod === 'sameAsPurchase'
+      ? Boolean(automaticallyRefundPaymentMethod)
+      : null
+
   let rmaDocument: DocumentResponse
 
   try {
@@ -222,7 +243,10 @@ export const createReturnRequestService = async (
         phoneNumber: customerProfileData.phoneNumber,
       },
       pickupReturnData,
-      refundPaymentData,
+      refundPaymentData: {
+        ...refundPaymentDataResult,
+        automaticallyRefundPaymentMethod: createInvoiceTypeInput,
+      },
       items: itemsToReturn,
       dateSubmitted: requestDate,
       refundData: null,

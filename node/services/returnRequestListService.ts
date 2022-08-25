@@ -40,9 +40,9 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
     }
 
     if (key === 'createdIn' && typeof value !== 'string') {
-      where += `${key} between ${filterDate(value.from)} AND ${filterDate(
-        value.to
-      )}`
+      where += `dateSubmitted between ${filterDate(
+        value.from
+      )} AND ${filterDate(value.to)}`
 
       return where
     }
@@ -66,7 +66,7 @@ export const returnRequestListService = async (
     state: { userProfile, appkey },
   } = ctx
 
-  const { page, filter } = args
+  const { page, perPage, filter } = args
   const {
     userId: userIdProfile,
     email: userEmailProfile,
@@ -116,10 +116,10 @@ export const returnRequestListService = async (
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,
-      pageSize: 25,
+      pageSize: perPage && perPage <= 100 ? perPage : 25,
     },
     resultFields,
-    'createdIn DESC',
+    'dateSubmitted DESC',
     buildWhereClause(adjustedFilter)
   )
 

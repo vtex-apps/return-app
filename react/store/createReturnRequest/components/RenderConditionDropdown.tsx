@@ -5,7 +5,7 @@ import type { ItemCondition } from 'vtex.return-app'
 import { Dropdown } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 
-import { defaultReturnConditionsMessages } from '../../utils/defaultReturnConditionsMessages'
+import { defaultReturnConditionsMessages } from '../../../common/utils/defaultReturnConditionsMessages'
 
 const CSS_HANDLES = ['conditionDropdwonContainer'] as const
 

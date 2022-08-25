@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import React from 'react'
+import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
 import type { ReturnRequestItem } from 'vtex.return-app'
 
@@ -7,14 +8,24 @@ import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
 import ItemName from './ItemName'
+import { defaultReturnConditionsMessages } from '../../../utils/defaultReturnConditionsMessages'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 
-export const itemDetailsSchema = (
-  itemVerificationStatus: Map<number, ItemStatusInterface>,
-  currency: string
-) => ({
-  properties: {
+interface Props {
+  itemsVerificationStatus: Map<number, ItemStatusInterface>
+  currencyCode: string
+  formatMessage: IntlFormatters['formatMessage']
+  isSmallScreen: boolean
+}
+
+export const itemDetailsSchema = ({
+  itemsVerificationStatus,
+  currencyCode,
+  formatMessage,
+  isSmallScreen,
+}: Props) => {
+  const properties = {
     imageUrl: {
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.product" />
@@ -42,7 +53,8 @@ export const itemDetailsSchema = (
         cellData: ReturnRequestItem['name']
         rowData: ReturnRequestItem
       }) {
-        const { refId, returnReason, sellerName, localizedName } = rowData
+        const { refId, returnReason, sellerName, localizedName, condition } =
+          rowData
 
         return (
           <div className="mv4">
@@ -67,6 +79,19 @@ export const itemDetailsSchema = (
                 }}
               />
             </div>
+            {condition === 'unspecified' ? null : (
+              <div className="mv2">
+                <FormattedMessage
+                  id="return-app.return-request-details.table.product-info.condition"
+                  values={{
+                    condition: formatMessage(
+                      defaultReturnConditionsMessages[condition]
+                    ),
+                    b: StrongChunk,
+                  }}
+                />
+              </div>
+            )}
             {!sellerName ? null : (
               <div className="mv2">
                 <FormattedMessage
@@ -92,7 +117,7 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.unit-price" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function UnitPrice({
         cellData,
@@ -104,7 +129,7 @@ export const itemDetailsSchema = (
             <FormattedNumber
               value={cellData / 100}
               style="currency"
-              currency={currency}
+              currency={currencyCode}
             />
           </AlignItemRight>
         )
@@ -114,7 +139,7 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.tax" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function Tax({
         cellData,
@@ -126,7 +151,7 @@ export const itemDetailsSchema = (
             <FormattedNumber
               value={cellData / 100}
               style="currency"
-              currency={currency}
+              currency={currencyCode}
             />
           </AlignItemRight>
         )
@@ -136,7 +161,7 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.total-price" />
       ),
-      width: 90,
+      width: 120,
       headerRight: true,
       cellRenderer: function TotalPrice({
         rowData,
@@ -150,7 +175,7 @@ export const itemDetailsSchema = (
             <FormattedNumber
               value={((sellingPrice + tax) * quantity) / 100}
               style="currency"
-              currency={currency}
+              currency={currencyCode}
             />
           </AlignItemRight>
         )
@@ -160,18 +185,31 @@ export const itemDetailsSchema = (
       title: (
         <FormattedMessage id="return-app.return-request-details.table.header.verification-status" />
       ),
+      minWidth: 150,
       cellRenderer: function VerificationStatus({
         rowData,
       }: {
         rowData: ReturnRequestItem
       }) {
         const { orderItemIndex } = rowData
-        const itemStatus = itemVerificationStatus.get(orderItemIndex)
+        const itemStatus = itemsVerificationStatus.get(orderItemIndex)
 
         if (!itemStatus) return null
 
         return <ItemVerificationStatus {...itemStatus} />
       },
     },
-  },
-})
+  }
+
+  const mobileOrder = {
+    imageUrl: null,
+    name: null,
+    verificationStatus: null,
+  }
+
+  return {
+    properties: isSmallScreen
+      ? Object.assign(mobileOrder, properties)
+      : properties,
+  }
+}

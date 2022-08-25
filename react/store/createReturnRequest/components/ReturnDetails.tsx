@@ -4,6 +4,7 @@ import type { RouteComponentProps } from 'react-router'
 import type { ShippingData } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Divider, Button } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
@@ -47,6 +48,10 @@ export const ReturnDetails = (
     actions: { areFieldsValid },
   } = useReturnRequest()
 
+  const {
+    hints: { phone },
+  } = useRuntime()
+
   const handleFieldsValidation = () => {
     if (areFieldsValid()) {
       onPageChange('submit-form')
@@ -86,8 +91,8 @@ export const ReturnDetails = (
                 <div className="f4 fw5 c-on-base">
                   <FormattedDate
                     value={creationDate}
-                    day="numeric"
-                    month="long"
+                    day="2-digit"
+                    month="2-digit"
                     year="numeric"
                   />
                 </div>
@@ -99,8 +104,10 @@ export const ReturnDetails = (
       <div className="t-body lh-copy c-muted-1 mb3 ml3 w-two-thirds-ns w-100">
         <FormattedMessage id="store/return-app.return-order-details.page-header.subtitle" />
       </div>
-      <ItemsList items={items} creationDate={creationDate} />
-      <div className="mv8">
+      <div className="overflow-scroll">
+        <ItemsList items={items} creationDate={creationDate} />
+      </div>
+      <div className="mb8">
         <Divider orientation="horizontal" />
       </div>
       <div className="w-100">
@@ -124,7 +131,7 @@ export const ReturnDetails = (
       <PaymentMethods canRefundCard={canRefundCard} />
       <TermsAndConditions />
       <div className="flex justify-center mt6">
-        <Button onClick={handleFieldsValidation} size="small">
+        <Button onClick={handleFieldsValidation} block={phone}>
           <FormattedMessage id="store/return-app.return-order-details.button.next" />
         </Button>
       </div>

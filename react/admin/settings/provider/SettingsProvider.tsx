@@ -53,8 +53,23 @@ export const SettingsProvider: FC = ({ children }) => {
 
   const handleSaveAppSettings = async () => {
     try {
+      const { paymentOptions } = appSettings
+
+      const { automaticallyRefundPaymentMethod } = paymentOptions
+
+      const adjustedPaymentOptions = paymentOptions.enablePaymentMethodSelection
+        ? paymentOptions
+        : {
+            ...paymentOptions,
+            automaticallyRefundPaymentMethod: Boolean(
+              automaticallyRefundPaymentMethod
+            ),
+          }
+
       const { data: mutationResult, errors } = await saveAppSettings({
-        variables: { settings: appSettings },
+        variables: {
+          settings: { ...appSettings, paymentOptions: adjustedPaymentOptions },
+        },
       })
 
       if (errors) {

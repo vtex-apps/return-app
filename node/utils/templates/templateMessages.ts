@@ -253,7 +253,8 @@ const STATUS_UPDATE = html`
         from client {{/eq}} {{#eq data.status 'pendingVerification'}} Pending
         verification {{/eq}} {{#eq data.status 'packageVerified'}} Package
         verified {{/eq}} {{#eq data.status 'amountRefunded'}} Amount refunded
-        {{/eq}} {{#eq data.status 'denied'}} Denied {{/eq}}
+        {{/eq}} {{#eq data.status 'denied'}} Denied {{/eq}} {{#eq data.status
+        'cancelled'}} Cancelled {{/eq}}
       </b>
     </td>
   </tr>
@@ -339,7 +340,8 @@ const STATUS_TIMELINE = html`
                                     {{#eq status 'pendingVerification'}} Pending verification {{/eq}}
                                     {{#eq status 'packageVerified'}} Package verified {{/eq}}
                                     {{#eq status 'amountRefunded'}} Amount refunded {{/eq}}
-                                    {{#eq status 'denied'}} Denied {{/eq}}
+                                    {{#eq status 'denied'}} Denied {{/eq}} {{#eq status
+                                      'cancelled'}} Cancelled {{/eq}}
                                   </b>
                                 </span>
                                 <ul class="statusUl">
@@ -363,7 +365,8 @@ const STATUS_TIMELINE = html`
                                     {{#eq status 'pendingVerification'}} Pending verification {{/eq}}
                                     {{#eq status 'packageVerified'}} Package verified {{/eq}}
                                     {{#eq status 'amountRefunded'}} Amount refunded {{/eq}}
-                                    {{#eq status 'denied'}} Denied {{/eq}}
+                                    {{#eq status 'denied'}} Denied {{/eq}} {{#eq status
+                                      'cancelled'}} Cancelled {{/eq}}
                                   </b>
                                 </span>
                                 <ul class="statusUl statusUlLast">
@@ -376,6 +379,7 @@ const STATUS_TIMELINE = html`
 
                                 {{#compare status '!=' 'amountRefunded'}}
                                 {{#compare status '!=' 'denied'}}
+                                {{#compare status '!=' 'cancelled'}}
                                 <span class="statusIcon">
                                     <span style="color: #fff; display: block; width: 1.3rem; height: 1.3rem; text-align: center;"><b>✓</b></span>
                                 </span>

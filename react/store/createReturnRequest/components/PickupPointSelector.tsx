@@ -124,7 +124,6 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
                 ) : undefined
               }
               placeholder={placehoder}
-              size="small"
               options={pickupPointsDropdownOptions}
               value={pickupReturnData.addressId}
               onChange={handlePickupPointSelected}
