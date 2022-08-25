@@ -131,19 +131,28 @@ export const ReturnRequestResponse = {
     return refundData
   },
   items: async (root: ReturnRequest, _args: unknown, ctx: Context) => {
-    const { id, items } = root
-
-    if (items) return items
+    const { id } = root
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequest: returnRequestClient, oms },
     } = ctx
 
-    const { items: itemsList } = await returnRequestClient.get(id as string, [
-      'items',
-    ])
+    const { orderId, items: itemsList } = await returnRequestClient.get(
+      id as string,
+      ['orderId', 'items']
+    )
 
-    return itemsList
+    const { sellers } = await oms.order(orderId, 'AUTH_TOKEN')
+
+    const itemsWithSellerName = itemsList.map((item) => {
+      const sellerName =
+        sellers.find((sellerInfo) => sellerInfo.id === item.sellerId)?.name ??
+        ''
+
+      return { ...item, sellerName }
+    })
+
+    return itemsWithSellerName
   },
   refundData: async (root: ReturnRequest, _args: unknown, ctx: Context) => {
     const { id, refundData } = root

@@ -1,9 +1,5 @@
 import { UserInputError } from '@vtex/api'
-import type {
-  OrderItemDetailResponse,
-  PriceTag,
-  SellerDetail,
-} from '@vtex/clients'
+import type { OrderItemDetailResponse, PriceTag } from '@vtex/clients'
 import type { ReturnRequestItemInput, ReturnRequestItem } from 'vtex.return-app'
 
 import type { CatalogGQL } from '../clients/catalogGQL'
@@ -50,13 +46,11 @@ const calculateItemTax = ({
 export const createItemsToReturn = async ({
   itemsToReturn,
   orderItems,
-  sellers,
   itemMetadata,
   catalogGQL,
 }: {
   itemsToReturn: ReturnRequestItemInput[]
   orderItems: OrderItemDetailResponse[]
-  sellers: SellerDetail[]
   itemMetadata: ItemMetadata
   catalogGQL: CatalogGQL
 }): Promise<ReturnRequestItem[]> => {
@@ -84,9 +78,6 @@ export const createItemsToReturn = async ({
         productId,
       } = orderItem
 
-      const sellerName =
-        sellers.find((sellerInfo) => sellerInfo.id === seller)?.name ?? ''
-
       const productImage =
         imageUrl ??
         itemMetadata.Items.find((itemMeta) => itemMeta.Id === id)?.ImageUrl ??
@@ -104,7 +95,6 @@ export const createItemsToReturn = async ({
         sellerId: seller,
         refId,
         productId,
-        sellerName,
         condition: item.condition ? item.condition : 'unspecified',
       }
     })

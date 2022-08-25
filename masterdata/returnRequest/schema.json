@@ -116,7 +116,7 @@
           "imageUrl": { "type": "string" },
           "unitMultiplier": { "type": "number" },
           "sellerId": { "type": "string" },
-          "sellerName": { "type": "string" },
+          "sellerName": { "type": ["string", "null"] },
           "productId": { "type": "string" },
           "refId": { "type": "string" },
           "returnReason": {

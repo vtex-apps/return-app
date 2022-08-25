@@ -136,7 +136,7 @@ type ReturnRequestItem {
   imageUrl: String!
   unitMultiplier: Float!
   sellerId: String!
-  sellerName: String!
+  sellerName: String
   productId: String!
   refId: String!
 }

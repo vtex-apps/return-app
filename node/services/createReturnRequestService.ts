@@ -111,7 +111,6 @@ export const createReturnRequestService = async (
     totals,
     creationDate,
     status,
-    sellers,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
     shippingData,
@@ -168,7 +167,6 @@ export const createReturnRequestService = async (
   const itemsToReturn = await createItemsToReturn({
     itemsToReturn: items,
     orderItems,
-    sellers,
     itemMetadata,
     catalogGQL,
   })
