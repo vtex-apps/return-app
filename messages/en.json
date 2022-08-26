@@ -128,7 +128,6 @@
   "store/return-app.return-item-details.dropdown-condition.error": "Condition is required",
   "store/return-app.return-payment-methods.input-payment-method.error": "Payment method is required",
   "store/return-app.return-payment-methods.input-iban.error": "IBAN is required",
-  "store/return-app.return-payment-methods.input-iban-invalid.error": "IBAN is not valid",
   "store/return-app.return-payment-methods.input-account-holder.error": "Account holder is required",
   "store/return-app.return-terms-and-conditions.checkbox.error": "Please accept the terms and conditions.",
   "store/return-app.return-items-list.no-items-selected.error": "No items selected",
