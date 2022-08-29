@@ -9,6 +9,7 @@ import { MailClient } from './mail'
 import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
+import { MarketplaceAppClient } from './marketplace'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -52,5 +53,9 @@ export class Clients extends IOClients {
 
   public get sphinx() {
     return this.getOrSet('sphinx', Sphinx)
+  }
+
+  public get marketplace() {
+    return this.getOrSet('marketplace', MarketplaceAppClient)
   }
 }

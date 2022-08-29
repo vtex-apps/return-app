@@ -12,6 +12,19 @@
     "returnRequest": {
       "path": "/_v/return-request/:requestId",
       "public": true
+    },
+    "_returnRequests": {
+      "path": "/_v/return-request",
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/vtex.return-app@*"
+          ]
+        }
+      ]
     }
   }
 }

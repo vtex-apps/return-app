@@ -5,6 +5,8 @@ import type {
 } from 'vtex.return-app'
 import { ForbiddenError } from '@vtex/api'
 
+const { VTEX_ACCOUNT } = process.env
+
 const filterDate = (date: string): string => {
   const newDate = new Date(date)
   const day = newDate.getDate()
@@ -61,9 +63,10 @@ export const returnRequestListService = async (
   getAllFields = false
 ) => {
   const {
-    clients: { returnRequest: returnRequestClient },
+    clients: { returnRequest: returnRequestClient, marketplace },
     request: { header },
     state: { userProfile, appkey },
+    vtex: { logger },
   } = ctx
 
   const { page, perPage, filter } = args
@@ -72,6 +75,41 @@ export const returnRequestListService = async (
     email: userEmailProfile,
     role,
   } = userProfile ?? {}
+
+  logger.info({
+    service: 'get return request list',
+    account: VTEX_ACCOUNT,
+    vtexProduct: header['x-vtex-product'],
+    args,
+    state: {
+      userProfile,
+      isAdmin: Boolean(appkey),
+    },
+  })
+
+  // vrn--vtexsphinx--aws-us-east-1--powerplanet--filarmamvp--link_vtex.return-app@3.5.0
+  const isAppRequester = userEmailProfile?.includes('vtexsphinx') ?? false
+
+  console.log({ userEmailProfile })
+
+  const [, , , sellerRequester] =
+    userEmailProfile && isAppRequester ? userEmailProfile.split('--') : []
+
+  // avoid infinite loop on vtexspain
+  // call marketplace
+  const marketplaceRequests =
+    // adapt marketplace.getRMAList to accept and send filter params
+    VTEX_ACCOUNT === 'powerplanet' ? await marketplace.getRMAList() : null
+
+  if (marketplaceRequests) {
+    console.log({ marketplaceRequests })
+
+    logger.info({
+      service: 'marketplace response',
+      account: VTEX_ACCOUNT,
+      marketplaceRequests,
+    })
+  }
 
   const { userId: userIdArg, userEmail: userEmailArg } = filter ?? {}
 
@@ -98,9 +136,11 @@ export const returnRequestListService = async (
     throw new ForbiddenError('Missing params to filter by store user')
   }
 
-  const adjustedFilter = requireFilterByUser
-    ? { ...filter, userId, userEmail }
-    : filter
+  const adjustedFilter =
+    // require user info (store user calling) AND is not a sellerCalling (seller is not admin)
+    requireFilterByUser && !sellerRequester
+      ? { ...filter, userId, userEmail }
+      : filter
 
   const resultFields = getAllFields
     ? ['_all']
@@ -113,6 +153,14 @@ export const returnRequestListService = async (
         'dateSubmitted',
       ]
 
+  const whereFilter = buildWhereClause(adjustedFilter)
+
+  const whereWithSeller = whereFilter?.length
+    ? `${whereFilter} AND items.sellerId=${sellerRequester}`
+    : `items.sellerId=${sellerRequester}`
+
+  console.log({ whereWithSeller, sellerRequester })
+
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,
@@ -120,14 +168,18 @@ export const returnRequestListService = async (
     },
     resultFields,
     'dateSubmitted DESC',
-    buildWhereClause(adjustedFilter)
+    sellerRequester ? whereWithSeller : whereFilter
   )
 
   const { data, pagination } = rmaSearchResult
   const { page: currentPage, pageSize, total } = pagination
 
+  const finalList = marketplaceRequests
+    ? [...marketplaceRequests.list, ...data]
+    : data
+
   return {
-    list: data,
+    list: finalList,
     paging: {
       total,
       perPage: pageSize,
