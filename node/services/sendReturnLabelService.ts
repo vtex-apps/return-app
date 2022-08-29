@@ -16,6 +16,13 @@ export const sendReturnLabelService = async (
     vtex: { logger },
   } = ctx
 
+  if (!requestId || !labelUrl) {
+    throw new ResolverError(
+      'The requestId or the labelUrl was not provided',
+      400
+    )
+  }
+
   const returnRequest = (await returnRequestClient.get(requestId, [
     '_all',
   ])) as ReturnRequest

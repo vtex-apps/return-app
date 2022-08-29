@@ -15,7 +15,7 @@
     "vtex.easypost": "0.x",
     "vtex.tenant-graphql": "0.x",
     "vtex.catalog-graphql": "1.x",
-    "vtex.apps-graphql": "2.x"
+    "vtex.apps-graphql": "3.x"
   },
   "builders": {
     "admin": "0.x",

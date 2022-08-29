@@ -26,6 +26,7 @@
     "@vtex/test-tools": "^0.3.2",
     "@vtex/tsconfig": "^0.6.0",
     "prop-types": "^15.7.2",
+    "vtex.apps-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@3.12.1/public/@types/vtex.apps-graphql",
     "vtex.catalog-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.101.1/public/@types/vtex.catalog-graphql",
     "vtex.css-handles": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles",
     "vtex.easypost": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost",

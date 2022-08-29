@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import { ButtonPlain, ModalDialog } from 'vtex.styleguide'
+import { ButtonPlain, ModalDialog, Tooltip, IconInfo } from 'vtex.styleguide'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
+import { useAlert } from '../../../hooks/userAlert'
 import GET_APP from './graphql/getInstalledApp.gql'
 import SEND_LABEL from './graphql/sendLabel.gql'
-// import CREATE_LABEL from './graphql/createLabel.gql'
+import CREATE_LABEL from './graphql/createLabel.gql'
 
 const ReturnLabel = () => {
   const [displayButton, setDisplayButton] = useState(false)
@@ -26,6 +27,7 @@ const ReturnLabel = () => {
   })
 
   const { data } = useReturnDetails()
+  const { openAlert } = useAlert()
 
   const { data: installedApp } = useQuery(GET_APP, {
     variables: {
@@ -70,15 +72,10 @@ const ReturnLabel = () => {
       if (returnLabel) {
         setLabelUrl(returnLabel)
         setDisbleLabelUrl(false)
+        setDisableCreateLabel(true)
       }
     }
   }, [data])
-
-  useEffect(() => {
-    if (labelUrl) {
-      setDisbleLabelUrl(false)
-    }
-  }, [labelUrl])
 
   const handleToggleModal = () => {
     setIsModalOpen(!isModalOpen)
@@ -88,31 +85,39 @@ const ReturnLabel = () => {
     setIsModalOpen(false)
   }
 
-  // const [createLabel] = useMutation(CREATE_LABEL)
-  const [sendLabel] = useMutation(SEND_LABEL)
+  const [, { loading: creatingLabel }] = useMutation(CREATE_LABEL)
+  const [sendLabel, { loading: sendingEmail }] = useMutation(SEND_LABEL)
 
   const handleConfirmation = async () => {
-    // Send mutation to EasyPost
-    // const createdLabelUrl = await createLabel({
-    //   variables: {
-    //     ...returnAddress,
-    //   },
-    // })
-
-    // temp labelUrl
+    // temp labelUrl [DELETE when we have the client Key from easypost]
     const createdLabelUrl =
       'https://assets.easypost.com/assets/images/usps-international-label.c7c603e0b25b12e4489a8c75db0d34b8.png'
 
-    setLabelUrl(createdLabelUrl)
+    try {
+      // Send mutation to EasyPost
+      // const createdLabelUrl = await createLabel({
+      //   variables: {
+      //     ...returnAddress,
+      //   },
+      // })
 
-    await sendLabel({
-      variables: {
-        returnId: data?.returnRequestDetails.id,
-        labelUrl: createdLabelUrl,
-      },
-    })
+      await sendLabel({
+        variables: {
+          requestId: data?.returnRequestDetails.id,
+          labelUrl: createdLabelUrl,
+        },
+      })
 
-    // TODO: alert admin if label was sent
+      openAlert(
+        'success',
+        <FormattedMessage id="admin/return-app.return-request-details.return-label.alert.success" />
+      )
+    } catch (error) {
+      openAlert(
+        'error',
+        <FormattedMessage id="admin/return-app.return-request-details.return-label.alert.error" />
+      )
+    }
 
     setIsModalOpen(false)
   }
@@ -139,12 +144,27 @@ const ReturnLabel = () => {
           <ButtonPlain disabled={disableLabelUrl} onClick={handleOpenLabelUrl}>
             <FormattedMessage id="admin/return-app.return-request-details.return-label.see-return-label" />
           </ButtonPlain>
+          <div className="flex items-center ml3">
+            <Tooltip
+              label={
+                <FormattedMessage id="admin/return-app.return-request-details.return-label-info.tooltip" />
+              }
+              position="left"
+            >
+              <div className="flex items-center">
+                <span className="yellow">
+                  <IconInfo className=" ml5 o-50" />
+                </span>
+              </div>
+            </Tooltip>
+          </div>
         </div>
       )}
 
       <ModalDialog
         isOpen={isModalOpen}
         onClose={handleCancelation}
+        loading={sendingEmail || creatingLabel}
         confirmation={{
           label: (
             <FormattedMessage id="admin/return-app.return-request-details.return-label.create-return-label" />

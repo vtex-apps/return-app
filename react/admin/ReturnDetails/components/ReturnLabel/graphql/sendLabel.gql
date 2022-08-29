@@ -1,3 +1,4 @@
-mutation SendLabel($requestId: String, $labelUrl: String) {
+mutation SendLabel($requestId: String!, $labelUrl: String!) {
   sendReturnLabel(requestId: $requestId, labelUrl: $labelUrl)
+    @context(provider: "vtex.return-app")
 }
