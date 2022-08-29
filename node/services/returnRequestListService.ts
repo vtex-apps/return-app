@@ -95,11 +95,16 @@ export const returnRequestListService = async (
   const [, , , sellerRequester] =
     userEmailProfile && isAppRequester ? userEmailProfile.split('--') : []
 
+  // In the marketplace side, add its name into the
+  const MARKETPLACENAME = 'vtexspain'
+
   // avoid infinite loop on vtexspain
   // call marketplace
   const marketplaceRequests =
     // adapt marketplace.getRMAList to accept and send filter params
-    VTEX_ACCOUNT === 'powerplanet' ? await marketplace.getRMAList() : null
+    VTEX_ACCOUNT === 'powerplanet'
+      ? await marketplace.getRMAList(MARKETPLACENAME)
+      : null
 
   if (marketplaceRequests) {
     console.log({ marketplaceRequests })
@@ -110,6 +115,14 @@ export const returnRequestListService = async (
       marketplaceRequests,
     })
   }
+
+  const adjustedMktPlaceRequests =
+    // modify marketplace request ids so we can use it in the quer to get the details.
+    // Should we do that in the mkt place side or seller side?
+    marketplaceRequests?.list.map(({ id, ...request }: any) => ({
+      id: `${id}::${MARKETPLACENAME}`,
+      ...request,
+    })) ?? null
 
   const { userId: userIdArg, userEmail: userEmailArg } = filter ?? {}
 
@@ -174,8 +187,8 @@ export const returnRequestListService = async (
   const { data, pagination } = rmaSearchResult
   const { page: currentPage, pageSize, total } = pagination
 
-  const finalList = marketplaceRequests
-    ? [...marketplaceRequests.list, ...data]
+  const finalList = adjustedMktPlaceRequests
+    ? [...adjustedMktPlaceRequests, ...data]
     : data
 
   return {

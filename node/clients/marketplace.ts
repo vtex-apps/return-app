@@ -1,5 +1,6 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { AuthType, IOClient } from '@vtex/api'
+import { ReturnRequestList, ReturnRequest } from 'vtex.return-app'
 
 const useHttps = !process.env.VTEX_IO
 
@@ -28,6 +29,12 @@ export class MarketplaceAppClient extends IOClient {
     })
   }
 
-  public getRMAList = async (): Promise<any> =>
-    this.http.get('/vtexspain/filarmamvp/_v/return-request')
+  public getRMAList = async (marketplace: string): Promise<ReturnRequestList> =>
+    this.http.get(`/${marketplace}/filarmamvp/_v/return-request`)
+
+  public getRMADetails = async (
+    requestId: string,
+    marketplace: string
+  ): Promise<ReturnRequest> =>
+    this.http.get(`/${marketplace}/filarmamvp/_v/return-request/${requestId}`)
 }
