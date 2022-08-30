@@ -16,7 +16,6 @@ import { useReturnDetails } from '../../common/hooks/useReturnDetails'
 
 interface HandleStatusUpdateArgs {
   status: Status
-  id: string
   comment?: ReturnRequestCommentInput
   cleanUp?: () => void
   refundData?: RefundDataInput
@@ -31,7 +30,14 @@ export const UpdateRequestStatusContext = createContext<UpdateRequestInterface>(
   {} as UpdateRequestInterface
 )
 
-export const UpdateRequestStatusProvider: FC = ({ children }) => {
+interface CustomRouteProps {
+  requestId: string
+}
+
+export const UpdateRequestStatusProvider: FC<CustomRouteProps> = ({
+  children,
+  requestId,
+}) => {
   const { openAlert } = useAlert()
   const { _handleUpdateQuery } = useReturnDetails()
 
@@ -43,12 +49,12 @@ export const UpdateRequestStatusProvider: FC = ({ children }) => {
   >(UPDATE_RETURN_STATUS)
 
   const handleStatusUpdate = async (args: HandleStatusUpdateArgs) => {
-    const { id, status, comment, cleanUp, refundData } = args
+    const { status, comment, cleanUp, refundData } = args
 
     try {
       const { errors, data: mutationData } = await updateReturnStatus({
         variables: {
-          requestId: id,
+          requestId,
           status,
           ...(comment ? { comment } : {}),
           ...(refundData ? { refundData } : {}),

@@ -19,6 +19,8 @@ import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
 
+const { VTEX_ACCOUNT } = process.env
+
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
 // If any new field is added to the ReturnRequest as required, it has to be added here too.
@@ -97,15 +99,24 @@ export const updateRequestStatusService = async (
       oms,
       giftCard: giftCardClient,
       mail,
+      marketplace,
     },
     vtex: { logger },
   } = ctx
 
   const { status, requestId, comment, refundData } = args
 
+  const [requestIdSeller, targetMarketplace] = requestId.split('::')
+
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
 
+  const isAppRequester = email?.includes('vtexsphinx') ?? false
+
+  const [, , , sellerRequester] =
+    email && isAppRequester ? email.split('--') : []
+
   const requestDate = new Date().toISOString()
+  // TODO: Check this. When the update come from Seller, who will be the submitter?
   const submittedByNameOrEmail =
     firstName || lastName ? `${firstName} ${lastName}` : email
 
@@ -115,6 +126,11 @@ export const updateRequestStatusService = async (
     throw new ResolverError(
       'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
     )
+  }
+
+  if (VTEX_ACCOUNT === 'powerplanet' && targetMarketplace) {
+    // args has requestId with the postfix ::marketplace. In the middleware, it will be replaced by the one in the URL (without it)
+    return marketplace.updateRMA(requestIdSeller, targetMarketplace, args)
   }
 
   const returnRequest = (await returnRequestClient.get(requestId, [
@@ -131,7 +147,11 @@ export const updateRequestStatusService = async (
     returnRequest.customerProfileData.userId === userId &&
     returnRequest.status === 'new'
 
-  if (!userIsAdmin && !belongsToStoreUser) {
+  const requestBelogsToSeller = returnRequest.items.some(
+    (item) => item.sellerId === sellerRequester
+  )
+
+  if (!userIsAdmin && !belongsToStoreUser && !requestBelogsToSeller) {
     throw new ForbiddenError('Not authorized')
   }
 
@@ -183,6 +203,8 @@ export const updateRequestStatusService = async (
         })
       : returnRequest.refundData
 
+  // Client for GiftCard uses adminUserAuthToken. How to handle that on a request coming from seller?
+  // OMS client to create invoice also uses adminUserAuthToken.
   const refundReturn = await handleRefund({
     currentStatus: requestStatus,
     previousStatus: returnRequest.status,
@@ -236,6 +258,7 @@ export const updateRequestStatusService = async (
     )
 
     if (!templateExists) {
+      // mail.publishTemplate uses adminUserAuthToken. How to handle that on a request coming from seller?
       await mail.publishTemplate(
         OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE(cultureInfoData?.locale)
       )

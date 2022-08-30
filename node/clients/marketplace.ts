@@ -1,6 +1,10 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { AuthType, IOClient } from '@vtex/api'
-import { ReturnRequestList, ReturnRequest } from 'vtex.return-app'
+import {
+  ReturnRequestList,
+  ReturnRequest,
+  MutationUpdateReturnRequestStatusArgs,
+} from 'vtex.return-app'
 
 const useHttps = !process.env.VTEX_IO
 
@@ -37,4 +41,14 @@ export class MarketplaceAppClient extends IOClient {
     marketplace: string
   ): Promise<ReturnRequest> =>
     this.http.get(`/${marketplace}/filarmamvp/_v/return-request/${requestId}`)
+
+  public updateRMA = (
+    requestId: string,
+    marketplace: string,
+    data: MutationUpdateReturnRequestStatusArgs
+  ): Promise<ReturnRequest> =>
+    this.http.put(
+      `/${marketplace}/filarmamvp/_v/return-request/${requestId}`,
+      data
+    )
 }

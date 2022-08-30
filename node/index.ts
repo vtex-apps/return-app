@@ -59,6 +59,7 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     _returnRequest: method({
       GET: [errorHandler, auth, getRequest],
+      PUT: [errorHandler, auth, updateRequestStatus],
     }),
   },
   graphql: {
