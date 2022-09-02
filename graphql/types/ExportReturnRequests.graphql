@@ -1,0 +1,57 @@
+type ExportReportData {
+  id: String
+  inProgress: Boolean
+  percentageProcessed: Float
+  requestedBy: String
+  completedDate: String
+  """
+  Masterdata _WHERE filter
+  """
+  selectedFilters: String
+  downloadLink: String
+  """
+  Download link expires 6 hours after completed
+  """
+  staleLink: Boolean
+  lastErrorMessage: String
+}
+
+input ExportReturnRequestsInput {
+  fileFormat: ExportFormatInput!
+  """
+  Masterdata _WHERE filter
+  """
+  documentsFilter: String
+  """
+  If not provided, the file will only be accesible via export status download link
+  """
+  deliveryConfiguration: DeliveryConfigurationData
+}
+
+enum ExportFormatInput {
+  XLSX
+  """
+  UNTESTED
+  """
+  CSV
+  """
+  UNTESTED
+  """
+  JSON
+}
+
+input DeliveryConfigurationData {
+  type: DeliveryTypeInput!
+  value: String!
+}
+
+enum DeliveryTypeInput {
+  """
+  Send file to endpoint
+  """
+  ENDPOINT
+  """
+  Send file to email
+  """
+  EMAIL
+}

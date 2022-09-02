@@ -12,3 +12,12 @@ interface ItemToReturn {
 type MaybeGlobal<T> = T | null
 
 type GeoCoordinates = Array<MaybeGlobal<number>>
+
+interface ExportDateFilters {
+  from: string
+  to: string
+}
+
+type ExportFiltersType = 'dates'
+
+type ExportFiltersData = ExportDateFilters

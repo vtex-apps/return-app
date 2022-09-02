@@ -6,6 +6,7 @@ import type {
 } from '../typings/mailClient'
 
 export const SETTINGS_PATH = 'app-settings'
+export const EXPORT_DATA_PATH = 'export-data'
 
 export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,

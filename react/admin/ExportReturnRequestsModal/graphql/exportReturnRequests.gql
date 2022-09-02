@@ -1,0 +1,8 @@
+#import './exportStatusFragment.gql'
+
+mutation exportReturnRequests($exportData: ExportReturnRequestsInput!) {
+  exportReturnRequests(exportData: $exportData)
+    @context(provider: "vtex.return-app") {
+    ...ExportReportDataAdminFragment
+  }
+}

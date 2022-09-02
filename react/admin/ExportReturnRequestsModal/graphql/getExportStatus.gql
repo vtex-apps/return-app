@@ -1,0 +1,7 @@
+#import './exportStatusFragment.gql'
+
+query exportStatus {
+  exportStatus @context(provider: "vtex.return-app") {
+    ...ExportReportDataAdminFragment
+  }
+}
