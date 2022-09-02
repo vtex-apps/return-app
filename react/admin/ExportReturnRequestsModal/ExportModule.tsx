@@ -6,6 +6,7 @@ import {
   utils,
   IconDownload,
 } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
 
 import { ExportProvider } from './provider/ExportProvider'
 import Content from './components/Content'
@@ -22,18 +23,20 @@ const ExportModule = () => {
         variation="primary"
         onClick={onOpen}
       >
-        EXPORT RETURNS
+        <FormattedMessage id="admin/return-app.export-module.modal-open" />
       </ButtonWithIcon>
 
       <Modal
         size="large"
         isOpen={isOpen}
         onClose={onClose}
-        title="Export module"
+        title={
+          <FormattedMessage id="admin/return-app.export-module.modal-title" />
+        }
         bottomBar={
           <div className="nowrap">
             <Button size="small" variation="tertiary" onClick={onClose}>
-              CLOSE
+              <FormattedMessage id="admin/return-app.export-module.modal-close" />
             </Button>
           </div>
         }

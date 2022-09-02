@@ -49,6 +49,12 @@ export const exportStatusService = async (
       lastErrorMessage,
     }
   } catch (error) {
+    if (error.response.status === 404) {
+      await exportReport.save(EXPORT_DATA_PATH, {})
+
+      return null
+    }
+
     throw new ResolverError(
       `An unexpected error ocurred while requesting export status: ${error.message}`
     )

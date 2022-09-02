@@ -1,4 +1,6 @@
+import type { ReactElement } from 'react'
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { SUPPORTED_REPORT_FORMATS } from '../../../common/constants/returnsRequest'
 
@@ -6,15 +8,22 @@ const Content = () => {
   return (
     <>
       <p className="mt3">
-        The Export module is the system responsible for merging all return
-        requests into a single file called{' '}
-        <span className="fw5 underline">report</span>, this can be then sent to
-        an email or downloaded directly from this module
+        <FormattedMessage
+          id="admin/return-app.export-module.content.first-paragraph"
+          values={{
+            // eslint-disable-next-line react/display-name
+            b: (chunks: ReactElement) => <b>{chunks}</b>,
+          }}
+        />
       </p>
       <p className="mt3">
-        Keep in mind that download links are not permanent, they expire after{' '}
-        <span className="fw5 underline">6 hours</span> following their
-        availability
+        <FormattedMessage
+          id="admin/return-app.export-module.content.second-paragraph"
+          values={{
+            // eslint-disable-next-line react/display-name
+            b: (chunks: ReactElement) => <b>{chunks}</b>,
+          }}
+        />
       </p>
       <div
         style={{
@@ -26,17 +35,15 @@ const Content = () => {
           padding: '12px 16px',
         }}
       >
-        It is important to remember that depending on the quantity of return
-        requests, the process can take a long time to finish. If you chose to
-        generate a download link, you can leave the module open and it will
-        update when its available for download
+        <FormattedMessage id="admin/return-app.export-module.content.warning-paragraph" />
       </div>
       <p className="t-small gray mv3">
-        Supported formats:&nbsp;
+        <FormattedMessage id="admin/return-app.export-module.content.format-disclaimer" />
+        &nbsp;
         {SUPPORTED_REPORT_FORMATS.map((format) => `.${format} `)}
       </p>
       <p className="t-small gray mv0">
-        Documents containing errors will be skipped
+        <FormattedMessage id="admin/return-app.export-module.content.skip-disclaimer" />
       </p>
     </>
   )

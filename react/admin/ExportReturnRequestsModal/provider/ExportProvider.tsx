@@ -24,7 +24,7 @@ export const ExportContext = createContext<ExportContextInterface>(
   {} as ExportContextInterface
 )
 
-const EXPORT_POLLING_MS = 1000
+const STATUS_POLLING_MS = 2000
 
 export const TAG_STATUSES = {
   READY: 'status-ready',
@@ -89,11 +89,13 @@ export const ExportProvider: FC = ({ children }) => {
       (isPolling && inProgress === false) ||
       (isPolling && lastErrorMessage)
     ) {
+      setPollingStatus(false)
       stopPolling()
     }
 
     if (!isPolling && inProgress && !lastErrorMessage) {
-      startPolling(EXPORT_POLLING_MS)
+      setPollingStatus(true)
+      startPolling(STATUS_POLLING_MS)
     }
   }, [isPolling, stopPolling, lastErrorMessage, startPolling, inProgress])
 
@@ -117,7 +119,7 @@ export const ExportProvider: FC = ({ children }) => {
         exportStatus: { ...mutationData.exportReturnRequests },
       }))
       setPollingStatus(true)
-      startPolling(EXPORT_POLLING_MS)
+      startPolling(STATUS_POLLING_MS)
     } catch (e) {
       console.error(e)
       setTagStatus(TAG_STATUSES.ERROR)

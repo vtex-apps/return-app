@@ -88,7 +88,9 @@ const ReportForm = () => {
 
   return (
     <>
-      <p className="f4 mt2">New report</p>
+      <p className="f4 mt2">
+        <FormattedMessage id="admin/return-app.export-module.report.form-title" />
+      </p>
       <div className="w-100 mb6 mt3">
         <Dropdown
           size="small"
@@ -98,7 +100,9 @@ const ReportForm = () => {
         />
       </div>
       <Toggle
-        label="All requests"
+        label={
+          <FormattedMessage id="admin/return-app.export-module.report.form-allRequests-toggle" />
+        }
         checked={exportAll}
         onChange={() => setExportPreference(!exportAll)}
       />
@@ -136,21 +140,29 @@ const ReportForm = () => {
           )}
         </FormattedMessage>
       </div>
-      <Toggle
-        label="Send file to email"
-        checked={sendEmail}
-        onChange={() => setEmailPreference(!sendEmail)}
-      />
+      <FormattedMessage id="admin/return-app.export-module.report.form-email-toggle">
+        {(formattedMessage) => (
+          <Toggle
+            label={formattedMessage}
+            checked={sendEmail}
+            onChange={() => setEmailPreference(!sendEmail)}
+          />
+        )}
+      </FormattedMessage>
       <div className="w-100 mv3">
-        <Input
-          size="small"
-          placeholder="Recipient email"
-          prefix={<IconUser />}
-          disabled={!sendEmail}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            handleOnChange('email', e.currentTarget.value)
-          }
-        />
+        <FormattedMessage id="admin/return-app.export-module.report.form-email-placeholder">
+          {(formattedMessage) => (
+            <Input
+              size="small"
+              placeholder={formattedMessage}
+              prefix={<IconUser />}
+              disabled={!sendEmail}
+              onChange={(e: FormEvent<HTMLInputElement>) =>
+                handleOnChange('email', e.currentTarget.value)
+              }
+            />
+          )}
+        </FormattedMessage>
       </div>
       <div className="w-100 mv4 flex justify-end">
         <Button
@@ -160,7 +172,7 @@ const ReportForm = () => {
           isLoading={submitInProgress}
           disabled={retryAvailable || inProgress || missingInputs}
         >
-          Generate
+          <FormattedMessage id="admin/return-app.export-module.report.form-cta" />
         </Button>
       </div>
     </>

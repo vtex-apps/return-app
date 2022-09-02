@@ -1,5 +1,6 @@
 import React from 'react'
 import { Tag, Spinner } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
 
 import { useExportModule } from '../hooks/useExportModule'
 import { TAG_STATUSES } from '../provider/ExportProvider'
@@ -19,14 +20,20 @@ const TagStatus = () => {
 
   switch (tagStatus) {
     case TAG_STATUSES.ERROR:
-      return <Tag type="error">Error, please try again</Tag>
+      return (
+        <Tag type="error">
+          <FormattedMessage id="admin/return-app.export-module.report.status-tag.error" />
+        </Tag>
+      )
 
     case TAG_STATUSES.INPROGRESS:
       return (
         <Tag type="warning">
           <span className="flex items-center">
             <Spinner color="#ffffff" size={12} />
-            &nbsp;In Progress&nbsp;
+            &nbsp;
+            <FormattedMessage id="admin/return-app.export-module.report.status-tag.inProgress" />
+            &nbsp;
             {maxPercievedPercentage ? ~~maxPercievedPercentage : 0}%
           </span>
         </Tag>
@@ -34,7 +41,11 @@ const TagStatus = () => {
 
     default:
     case TAG_STATUSES.READY:
-      return <Tag type="success">Ready</Tag>
+      return (
+        <Tag type="success">
+          <FormattedMessage id="admin/return-app.export-module.report.status-tag.ready" />
+        </Tag>
+      )
   }
 }
 
