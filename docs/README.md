@@ -15,7 +15,7 @@ Here a customer will be able to visualize the history, status and details of the
 
 
 ### Admin: Return Request List
-In this section of the merchant's admin, merchants are capable of visualizing and managing all the return requests created by their customers. 
+In this section of the merchant's admin, merchants are capable of visualizing and managing all the return requests created by their customers, while also being able to export all or some records to a single file.
 
 
 ### Admin: Return Settings

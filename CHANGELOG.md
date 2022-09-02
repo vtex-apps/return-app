@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- A new feature called Export module; allowing to report all records into a single file.
+
 ## [3.5.5] - 2022-11-11
 ### Fixed
 - Allow creation of a return for orders placed with a ` PICKUP_POINT` as customer address.
