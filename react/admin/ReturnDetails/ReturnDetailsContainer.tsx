@@ -68,8 +68,8 @@ export const ReturnDetailsContainer = () => {
             {detailsPage !== 'return-details' ? null : (
               <>
                 <CurrentRequestStatus />
-                <ReturnLabel />
                 <OrderLink />
+                <ReturnLabel />
                 <ItemDetailsList />
                 <ReturnValues />
                 <div className="flex-ns flex-wrap flex-row">

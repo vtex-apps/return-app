@@ -20,6 +20,7 @@ import { CurrentRequestStatus } from '../../common/components/ReturnDetails/Curr
 import RequestCancellation from '../../common/components/ReturnDetails/RequestCancellation'
 import { UpdateRequestStatusProvider } from '../../admin/provider/UpdateRequestStatusProvider'
 import { AlertProvider } from '../../admin/provider/AlertProvider'
+import { ReturnLabel } from '../../common/components/ReturnDetails/ReturnLabel'
 
 const CSS_HANDLES = ['contactPickupContainer'] as const
 
@@ -53,6 +54,7 @@ const StoreReturnDetails = () => {
         <StoreReturnDetailsLoader data={{ loading, error }}>
           <CurrentRequestStatus />
           <OrderLink />
+          <ReturnLabel />
           <ItemDetailsList />
           <ReturnValues />
           <div

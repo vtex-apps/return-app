@@ -74,9 +74,9 @@ export const sendReturnLabelService = async (
       templateName: templateName('label', locale),
       jsonData: {
         data: {
-          name: customerProfileData?.name ?? '',
+          name: customerProfileData.name,
           DocumentId: requestId,
-          email: customerProfileData?.email ?? '',
+          email: customerProfileData.email,
           labelUrl,
         },
       },

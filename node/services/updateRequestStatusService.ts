@@ -232,7 +232,7 @@ export const updateRequestStatusService = async (
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
   try {
     const templateExists = await mail.getTemplate(
-      templateName('status-update', cultureInfoData?.locale)
+      templateName('status-update', cultureInfoData.locale)
     )
 
     if (!templateExists) {
@@ -251,7 +251,7 @@ export const updateRequestStatusService = async (
     } = updatedRequest
 
     const mailData: StatusUpdateMailData = {
-      templateName: templateName('status-update', cultureInfoData?.locale),
+      templateName: templateName('status-update', cultureInfoData.locale),
       jsonData: {
         data: {
           status: updatedStatus,
@@ -260,13 +260,20 @@ export const updateRequestStatusService = async (
           email: customerProfileData?.email ?? '',
           paymentMethod: refundPaymentData?.refundPaymentMethod ?? '',
           iban: refundPaymentData?.iban ?? '',
-          refundedAmount:
-            Number(updatedRefundData?.refundedItemsValue) +
-            Number(updatedRefundData?.refundedShippingValue),
         },
         products: items,
         refundStatusData: updatedRefundStatusData,
       },
+    }
+
+    if (updatedRefundData?.refundedItemsValue) {
+      let refundedAmount = Number(updatedRefundData.refundedItemsValue)
+
+      if (updatedRefundData.refundedShippingValue) {
+        refundedAmount += Number(updatedRefundData.refundedShippingValue)
+      }
+
+      mailData.jsonData.data.refundedAmount = refundedAmount
     }
 
     await mail.sendMail(mailData)

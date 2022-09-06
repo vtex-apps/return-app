@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useMutation, useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import { ButtonPlain, ModalDialog, Tooltip, IconInfo } from 'vtex.styleguide'
+import {
+  ButtonPlain,
+  Collapsible,
+  Link,
+  ModalDialog,
+  Tooltip,
+  IconInfo,
+} from 'vtex.styleguide'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 import { useAlert } from '../../../hooks/userAlert'
@@ -10,82 +17,62 @@ import SEND_LABEL from './graphql/sendLabel.gql'
 import CREATE_LABEL from './graphql/createLabel.gql'
 
 const ReturnLabel = () => {
-  const [displayButton, setDisplayButton] = useState(false)
-  const [disableLabelUrl, setDisbleLabelUrl] = useState(true)
-  const [labelUrl, setLabelUrl] = useState('')
-  const [disableCreateLabel, setDisableCreateLabel] = useState(true)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [, setReturnAddress] = useState({
-    street1: '',
-    street2: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
-    name: '',
-    phone: '',
-  })
-
   const { data } = useReturnDetails()
   const { openAlert } = useAlert()
 
-  const { data: installedApp } = useQuery(GET_APP, {
+  const [labelUrl, setLabelUrl] = useState(
+    data?.returnRequestDetails.pickupReturnData.labelUrl ?? ''
+  )
+
+  const [returnAddress, setReturnAddress] = useState<ReturnLabelAddress | null>(
+    null
+  )
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false)
+
+  const { loading, error } = useQuery<{
+    app: {
+      settings: string
+    }
+  }>(GET_APP, {
     variables: {
       slug: 'vtex.easypost',
     },
+    onCompleted(installedApp) {
+      const {
+        app: { settings },
+      } = installedApp
+
+      const { street1, street2, city, state, zip, country, name, phone } =
+        JSON.parse(settings) as ReturnLabelAddress
+
+      setReturnAddress({
+        street1,
+        street2,
+        city,
+        state,
+        zip,
+        country,
+        name,
+        phone,
+      })
+    },
   })
-
-  useEffect(() => {
-    if (!installedApp?.app) return
-
-    const { app } = installedApp
-
-    const appSettings = JSON.parse(app.settings)
-    const { street1, street2, city, state, zip, country, name, phone } =
-      appSettings
-
-    setReturnAddress({
-      street1,
-      street2,
-      city,
-      state,
-      zip,
-      country,
-      name,
-      phone,
-    })
-
-    setDisplayButton(true)
-  }, [installedApp])
-
-  useEffect(() => {
-    if (!data) return
-
-    const {
-      status,
-      pickupReturnData: { returnLabel },
-    } = data.returnRequestDetails
-
-    if (status === 'processing') {
-      setDisableCreateLabel(false)
-
-      if (returnLabel) {
-        setLabelUrl(returnLabel)
-        setDisbleLabelUrl(false)
-        setDisableCreateLabel(true)
-      }
-    }
-  }, [data])
 
   const handleToggleModal = () => {
     setIsModalOpen(!isModalOpen)
+  }
+
+  const handleToggleCollapsible = () => {
+    setIsCollapsibleOpen(!isCollapsibleOpen)
   }
 
   const handleCancelation = () => {
     setIsModalOpen(false)
   }
 
-  const [, { loading: creatingLabel }] = useMutation(CREATE_LABEL)
+  const [, { loading: loadingLabel }] = useMutation(CREATE_LABEL)
   const [sendLabel, { loading: sendingEmail }] = useMutation(SEND_LABEL)
 
   const handleConfirmation = async () => {
@@ -108,11 +95,13 @@ const ReturnLabel = () => {
         },
       })
 
+      setLabelUrl(createdLabelUrl)
+
       openAlert(
         'success',
         <FormattedMessage id="admin/return-app.return-request-details.return-label.alert.success" />
       )
-    } catch (error) {
+    } catch (err) {
       openAlert(
         'error',
         <FormattedMessage id="admin/return-app.return-request-details.return-label.alert.error" />
@@ -122,49 +111,59 @@ const ReturnLabel = () => {
     setIsModalOpen(false)
   }
 
-  const handleOpenLabelUrl = () => {
-    window.open(labelUrl, '_blank')
-  }
-
-  if (!displayButton) return null
+  if (loading || error) return null
 
   return (
-    <div className="mb4">
-      {displayButton && (
-        <div className="flex">
-          <div className="mr4">
-            <ButtonPlain
-              className="mr4"
-              disabled={disableCreateLabel}
-              onClick={handleToggleModal}
-            >
-              <FormattedMessage id="admin/return-app.return-request-details.return-label.create-return-label" />
-            </ButtonPlain>
-          </div>
-          <ButtonPlain disabled={disableLabelUrl} onClick={handleOpenLabelUrl}>
-            <FormattedMessage id="admin/return-app.return-request-details.return-label.see-return-label" />
-          </ButtonPlain>
-          <div className="flex items-center ml3">
-            <Tooltip
-              label={
-                <FormattedMessage id="admin/return-app.return-request-details.return-label-info.tooltip" />
-              }
-              position="left"
-            >
-              <div className="flex items-center">
-                <span className="yellow">
-                  <IconInfo className=" ml5 o-50" />
-                </span>
+    <div className="mv4">
+      <div className="flex">
+        {returnAddress &&
+          (labelUrl === '' ? (
+            <Fragment>
+              <ButtonPlain
+                className="mr4"
+                disabled={data?.returnRequestDetails.status !== 'processing'}
+                onClick={handleToggleModal}
+              >
+                <FormattedMessage id="admin/return-app.return-request-details.return-label.create-return-label" />
+              </ButtonPlain>
+              <div className="flex items-center ml3">
+                <Tooltip
+                  label={
+                    <FormattedMessage id="admin/return-app.return-request-details.return-label-info.tooltip" />
+                  }
+                  position="right"
+                >
+                  <div className="flex items-center">
+                    <span className="yellow">
+                      <IconInfo className=" ml5 o-50" />
+                    </span>
+                  </div>
+                </Tooltip>
               </div>
-            </Tooltip>
-          </div>
-        </div>
-      )}
+            </Fragment>
+          ) : (
+            <Collapsible
+              header={
+                <div className="fw5">
+                  <FormattedMessage id="admin/return-app.return-request-details.return-label.see-return-label" />
+                </div>
+              }
+              isOpen={isCollapsibleOpen}
+              onClick={handleToggleCollapsible}
+            >
+              <div className="mv3 t-small">
+                <Link href={labelUrl} target="_blank">
+                  {labelUrl}
+                </Link>
+              </div>
+            </Collapsible>
+          ))}
+      </div>
 
       <ModalDialog
         isOpen={isModalOpen}
         onClose={handleCancelation}
-        loading={sendingEmail || creatingLabel}
+        loading={sendingEmail || loadingLabel}
         confirmation={{
           label: (
             <FormattedMessage id="admin/return-app.return-request-details.return-label.create-return-label" />

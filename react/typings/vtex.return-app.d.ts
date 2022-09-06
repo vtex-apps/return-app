@@ -9,6 +9,17 @@ interface ItemToReturn {
   orderItemIndex: number
 }
 
+type ReturnLabelAddress = {
+  street1: string
+  street2: string
+  city: string
+  state: string
+  zip: string
+  country: string
+  name: string
+  phone: string
+}
+
 type MaybeGlobal<T> = T | null
 
 type GeoCoordinates = Array<MaybeGlobal<number>>

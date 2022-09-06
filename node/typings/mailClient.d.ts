@@ -34,7 +34,7 @@ interface StatusUpdateData {
     email: string
     paymentMethod: string
     iban: string
-    refundedAmount: number
+    refundedAmount?: number
   }
   products: ReturnRequest['items']
   refundStatusData: RefundStatusData[]
