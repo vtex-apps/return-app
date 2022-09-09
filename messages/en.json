@@ -335,7 +335,7 @@
   "admin/return-app.export-module.modal-close": "CLOSE",
   "admin/return-app.export-module.content.first-paragraph": "The Export module is the system responsible for merging all return requests into a single file called <b>report</b>, this can be then sent to an email or downloaded directly from this module",
   "admin/return-app.export-module.content.second-paragraph": "Keep in mind that download links are not permanent, they expire after <b>6 hours</b> following their availability",
-  "admin/return-app.export-module.content.warning-paragraph": "It is important to remember that depending on the quantity of return requests, the process can take a long time to finish. If you chose to generate a download link, you can leave the module open and it will update when its available for download",
+  "admin/return-app.export-module.content.warning-paragraph": "As the export process runs in the backround, If you chose to only generate a download link, you can close this page and check back later.",
   "admin/return-app.export-module.content.format-disclaimer": "Supported formats:",
   "admin/return-app.export-module.content.skip-disclaimer": "Documents containing errors will be skipped",
   "admin/return-app.export-module.report.status-title": "Last report",

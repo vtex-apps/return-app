@@ -17,6 +17,8 @@ const ReportStatus = () => {
     staleLink,
   } = exportStatus ?? {}
 
+  const disableDownload = inProgress || !downloadLink || staleLink
+
   return (
     <>
       <p className="f4 mt2 mb3">
@@ -26,8 +28,8 @@ const ReportStatus = () => {
         <p className="mv3">
           <ButtonPlain
             variation="plain"
-            href={downloadLink ?? null}
-            disabled={inProgress || !downloadLink || staleLink}
+            href={disableDownload ? () => false : downloadLink}
+            disabled={disableDownload}
             target="_blank"
           >
             <FormattedMessage id="admin/return-app.export-module.report.download-cta" />
