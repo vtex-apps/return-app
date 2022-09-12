@@ -41,6 +41,10 @@ export const validateReturnReason = (
       returnReason: { reason },
     } = item
 
+    if (reason === 'otherReason') {
+      continue
+    }
+
     const maxDayForReason = maxDaysPercustomReasonMap.get(reason)
 
     if (!maxDayForReason) {

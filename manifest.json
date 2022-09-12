@@ -5,7 +5,6 @@
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
-    "vtex.store-graphql": "2.x",
     "vtex.styleguide": "9.x",
     "vtex.format-currency": "0.x",
     "vtex.my-account": "1.x",

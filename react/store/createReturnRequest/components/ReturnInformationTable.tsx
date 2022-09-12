@@ -88,10 +88,9 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                           <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{' '}
                         </p>
                         <p className="f6 mv0 gray ">
-                          {reason}{' '}
                           {returnReason?.otherReason
                             ? returnReason?.otherReason
-                            : null}
+                            : reason}
                         </p>
                       </div>
                     </div>
