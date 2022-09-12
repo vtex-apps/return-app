@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Fixed
-- Allow other reason to be selected when account is using custom reasons.
+- Allow other reason to be submitted when account is using custom reasons.
 
 ## [3.5.0] - 2022-08-24
 
