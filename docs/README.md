@@ -60,10 +60,10 @@ The custom Return Reasons can be translated manually by the admin.
 ### Transactional Emails
 The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
 
-When creating a return request for the first time, the app creates a default template `oms-return-request-confirmation-{locale}` that is modifiable on the Message Center to suit each store needs. 
+When creating a return request for the first time, the app creates a default template `oms-return-request-confirmation_{locale}` that is modifiable on the Message Center to suit each store needs. 
 the locale will be filled with the locale the store user had when browsing the store. 
 
-Additional to the confirmation template, on successful Return Request Status update, the app also creates a `oms-return-request-status-update-{locale}`. 
+Additional to the confirmation template, on successful Return Request Status update, the app also creates a `oms-return-request-status-update_{locale}`. 
 
 Both templates will always be created in English, it is responsability of the store to translate them to the desired locale. 
 
@@ -111,21 +111,27 @@ with an example body in the form of:
 |-----| ------|------|
 |orderId|`string` orderId to where the Return Request is being made to|true|
 |items|array of individual itemObject to be returned|true|
-|orderItemIndex|`integer` Index of the item in the Order object form the OMS|true|
-|quantity|`integer` number to be returned for the given `orderItemIndex`|true|
-|condition|`enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox|false|
-|name|`string` Customer name for the return request|true|
-|email|`string` customer's email for the return request|true|
-|phoneNumber|`string` customer's phone number for the return request|true|
-|addressId|`string` id of the customer's address can be empty string|true|
-|address|`string`customer address|true|
-|city|`string` city of the address|true|
-|country|`string` country of the address|true|
-|zipCode|`string` postal code of the address|true|
-|addressType|`enum` possible values: PICKUP_POINT, CUSTOMER_ADDRESS|true|
-|refundPaymentMethod|`enum` possible values: bank, card, giftCard, sameAsPurchase|true|
-|iban|`string`required when refundPaymentMethod is set as bank|false|
-|accountHolderName|`string` required when refundPaymentMethod is set as bank|false|
+|items orderItemIndex|`integer` Index of the item in the Order object form the OMS|true|
+|items quantity|`integer` number to be returned for the given `orderItemIndex`|true|
+|items condition|`enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox|false|
+|items returnReason| `object` with reason to return the item |true|
+|items returnReason reason| `string` reason to return |true|
+|items returnReason otherReason| `string` Description of the reason when it is `otherReason` | false|
+|customerProfileData| `object` with customer information |true|
+|customerProfileData name|`string` Customer name for the return request|true|
+|customerProfileData email|`string` customer's email for the return request|true|
+|customerProfileData phoneNumber|`string` customer's phone number for the return request|true|
+|pickupReturnData| `object` with information where the items should be picked up|true|
+|pickupReturnData addressId|`string` id of the customer's address can be empty string|true|
+|pickupReturnData address|`string`customer address|true|
+|pickupReturnData city|`string` city of the address|true|
+|pickupReturnData country|`string` country of the address|true|
+|pickupReturnData zipCode|`string` postal code of the address|true|
+|pickupReturnData addressType|`enum` possible values: PICKUP_POINT, CUSTOMER_ADDRESS|true|
+|refundPaymentData| `object` with refund information |true|
+|refundPaymentData refundPaymentMethod|`enum` possible values: bank, card, giftCard, sameAsPurchase|true|
+|refundPaymentData iban|`string`required when refundPaymentMethod is set as bank|false|
+|refundPaymentData accountHolderName|`string` required when refundPaymentMethod is set as bank|false|
 |userComment|`string` comment to be added to the creation|false|
 |locale|`string` locale for the customer to visualize the return|true|
 
@@ -142,18 +148,18 @@ Make a PUT request to the following endpoint:
 with the following example body:
 ```
 {
-    "status":"processing",
+    "status":"packageVerified",
     "comment":{
         "value":"Test comment",
         "visibleForCustomer": false
+    },
     "refundData":{
         "items":[{
             "orderItemIndex":0,
             "quantity":1,
-            "restockFee":12,
-        }]
+            "restockFee":12
+        }],
         "refundedShippingValue":1
-    }
     }
 }
 ```
@@ -161,12 +167,15 @@ with the following example body:
 |Field|Description|isRequired|
 |----|----|----|
 |status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled |true|
-|comment value|`string` only required if not updating status|false|
+|comment| `object` only required if not updating status | false|
+|comment value|`string` only required if not updating status|true|
 |comment visibleForCustomer|`boolean` the comment will be shown to the customer. Default false|false|
-|orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
-|quantity|`integer` number to be returned for the given `orderItemIndex`|true|
-|restockFee|`integer` discount to be applied to the amount to be refunded, can be zero|true|
-|refundedShippingValue|`integer` shipping amount to be refunded, can be zero|true|
+|refundData| `object` only considered when status sent is `packagedVerified` |false|
+|refundData items| `array` of `objects` with items approved to be returned |true|
+|refundData items orderItemIndex|`integer`Index of the item in the Order object form the OMS|true|
+|refundData items quantity|`integer` number to be returned for the given `orderItemIndex`|true|
+|refundData items restockFee|`integer` discount to be applied to the amount to be refunded, can be zero|true|
+|refundData refundedShippingValue|`integer` shipping amount to be refunded, can be zero|true|
 
 To update the request to the next possible status, one just needs to pass a payload with the key status and the status as its value.
 It's possible to send the comment payload with all the status. When sending the status packageVerified it's necessary to send the refundData object.
