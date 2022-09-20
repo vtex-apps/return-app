@@ -102,7 +102,7 @@ export const createItemsToReturn = async ({
         imageUrl: productImage,
         unitMultiplier,
         sellerId: seller,
-        refId,
+        refId: refId ?? '',
         productId,
         sellerName,
         condition: item.condition ? item.condition : 'unspecified',
