@@ -61,15 +61,17 @@ export const itemDetailsSchema = ({
             <div className="mv2 flex flex-column">
               <ItemName name={cellData} localizedName={localizedName} />
             </div>
-            <div className="mv2">
-              <FormattedMessage
-                id="return-app.return-request-details.table.product-info.ref-id"
-                values={{
-                  refId,
-                  b: StrongChunk,
-                }}
-              />
-            </div>
+            {!refId ? null : (
+              <div className="mv2">
+                <FormattedMessage
+                  id="return-app.return-request-details.table.product-info.ref-id"
+                  values={{
+                    refId,
+                    b: StrongChunk,
+                  }}
+                />
+              </div>
+            )}
             <div className="mv2">
               <FormattedMessage
                 id="return-app.return-request-details.table.product-info.reason"
