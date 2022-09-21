@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.5.2] - 2022-09-21
 ### Fixed
 - Default `refId` to an empty string when the value coming from the order is falsy.
 
