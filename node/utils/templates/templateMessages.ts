@@ -394,7 +394,7 @@ const STATUS_TIMELINE = html`
                                 </span>
                                 {{/compare}}
                                 {{/compare}}
-
+                                {{/compare}}
                                 {{/unless}}
                             </p>
                         </div>
