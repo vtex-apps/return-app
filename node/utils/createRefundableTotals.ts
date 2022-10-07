@@ -31,13 +31,20 @@ export const createRefundableTotals = (
 
   const taxTotal = { id: 'tax' as const, value: taxAmount }
 
-  const shippingAmount = proportionalShippingSetting
-    ? parseFloat(
-        (
-          (itemsAmount * orderShippingTotal) /
-          (orderItemsTotal + orderDiscountsTotal)
-        ).toFixed(0)
+  const orderItemsValue = orderItemsTotal + orderDiscountsTotal
+
+  // This handles the case where the items returned are all gifts (net value = 0)
+  const areAllItemsGift = orderItemsValue === 0
+
+  // If all items are gifts, we split the shipping value proportionally
+  const proportionalShippingValue = areAllItemsGift
+    ? orderShippingTotal / itemsToReturn.length
+    : parseFloat(
+        ((itemsAmount * orderShippingTotal) / orderItemsValue).toFixed(0)
       )
+
+  const shippingAmount = proportionalShippingSetting
+    ? proportionalShippingValue
     : orderShippingTotal
 
   const shippingTotal = { id: 'shipping' as const, value: shippingAmount }
