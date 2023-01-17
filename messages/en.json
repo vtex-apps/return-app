@@ -25,6 +25,8 @@
   "admin/return-app.settings.section.general-options.enable-proportional-shipping-value.description": "Calculate proportional shipping for every returned item",
   "admin/return-app.settings.section.general-options.enable-select-item-condition.label": "Enable the \"Item condition\" selector",
   "admin/return-app.settings.section.general-options.enable-select-item-condition.description": "When enabled, the user will be required to select each item's condition",
+  "admin/return-app.settings.section.general-options.disable-tax-refund.label": "Disable tax refund",
+  "admin/return-app.settings.section.general-options.disable-tax-refund.description": "When marked, the tax will not be refunded",
   "admin/return-app.settings.section-excluded-categories.fetch-data-error": "Error loading categories",
   "admin/return-app.settings.save.button": "Save Settings",
   "admin/return-app.settings.section.custom-reasons.empty-custom-reasons": "No options added",

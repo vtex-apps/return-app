@@ -97,6 +97,7 @@ export const updateRequestStatusService = async (
       oms,
       giftCard: giftCardClient,
       mail,
+      appSettings,
     },
     vtex: { logger },
   } = ctx
@@ -180,6 +181,7 @@ export const updateRequestStatusService = async (
           refundData,
           requestItems: returnRequest.items,
           refundableShipping: maxRefundableShipping,
+          appSettings,
         })
       : returnRequest.refundData
 
