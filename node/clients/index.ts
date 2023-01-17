@@ -10,7 +10,10 @@ import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 
-const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
+const ReturnAppSettings = vbaseFor<string, ReturnAppSettingsCustom>(
+  'appSettings'
+)
+
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
 
 export class Clients extends IOClients {

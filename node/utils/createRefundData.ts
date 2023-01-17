@@ -6,11 +6,13 @@ export const createRefundData = ({
   refundData,
   requestItems,
   refundableShipping,
+  appSettings,
 }: {
   requestId: string
   refundData?: Maybe<RefundDataInput>
   requestItems: ReturnRequest['items']
   refundableShipping: number
+  appSettings: ReturnAppSettingsCustom
 }): ReturnRequest['refundData'] => {
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
@@ -47,7 +49,9 @@ export const createRefundData = ({
     items.push({
       orderItemIndex,
       id,
-      price: (Number(sellingPrice) ?? 0) + (Number(tax) ?? 0),
+      price: appSettings.options.disableTaxRefund
+        ? Number(sellingPrice) ?? 0
+        : (Number(sellingPrice) ?? 0) + (Number(tax) ?? 0),
       quantity: refundItem.quantity,
       restockFee: refundItem.restockFee,
     })
