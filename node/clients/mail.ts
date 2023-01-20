@@ -5,6 +5,7 @@ import type {
   StatusUpdateMailData,
   ConfirmationMailData,
   Template,
+  ReturnLabelMailData,
 } from '../typings/mailClient'
 
 const MAIL_SERVICE_PATH = '/api/mail-service/pvt/sendmail'
@@ -21,7 +22,7 @@ export class MailClient extends JanusClient {
   }
 
   public sendMail(
-    mailData: StatusUpdateMailData | ConfirmationMailData
+    mailData: StatusUpdateMailData | ConfirmationMailData | ReturnLabelMailData
   ): Promise<string> {
     return this.http.post(MAIL_SERVICE_PATH, mailData, {
       metric: 'mail-post-send',
@@ -34,7 +35,7 @@ export class MailClient extends JanusClient {
     })
   }
 
-  public publishTemplate(template: Template): Promise<any> {
+  public publishTemplate(template: Template): Promise<unknown> {
     return this.http.post(TEMPLATE_RENDER_PATH, template, {
       headers: {
         ...this.options?.headers,

@@ -25,6 +25,7 @@ const initialPickupReturnData = {
   state: '',
   country: '',
   zipCode: '',
+  labelUrl: 'no-label',
 }
 
 export const initialOrderToReturnState: OrderDetailsState = {

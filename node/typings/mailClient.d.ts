@@ -1,44 +1,63 @@
-import type { ReturnRequestItem, Status } from 'vtex.return-app'
+import type {
+  ReturnRequest,
+  RefundStatusData,
+  ReturnRequestItem,
+  Status,
+} from 'vtex.return-app'
 
-export type ReturnRequestConfirmation = string
+interface MailData<DataType> {
+  templateName: string
+  jsonData: DataType
+}
 
-export type ReturnRequestStatusUpdate = string
+interface ConfirmationData {
+  data: {
+    status: Status['new']
+    name: string
+    DocumentId: string
+    email: string
+    phoneNumber: string
+    country: string
+    locality: string
+    address: string
+    paymentMethod: string
+  }
+  products: ReturnRequestItem[]
+  refundStatusData: RefundStatusData[]
+}
 
-export interface ConfirmationMailData {
-  templateName: ReturnRequestConfirmation
-  jsonData: {
-    data: {
-      status: Status['new']
-      name: string
-      DocumentId: string
-      email: string
-      phoneNumber: string
-      country: string
-      locality: string
-      address: string
-      paymentMethod: string
-    }
-    products: ReturnRequestItem[]
-    refundStatusData: ReturnRequest['refundStatusData']
+interface StatusUpdateData {
+  data: {
+    status: Status
+    name: string
+    DocumentId: string
+    email: string
+    paymentMethod: string
+    iban: string
+    refundedAmount?: number
+  }
+  products: ReturnRequest['items']
+  refundStatusData: RefundStatusData[]
+}
+
+interface ReturnLabelData {
+  data: {
+    name: string
+    DocumentId: string
+    email: string
+    labelUrl: string
   }
 }
 
-export interface StatusUpdateMailData {
-  templateName: ReturnRequestStatusUpdate
-  jsonData: {
-    data: {
-      status: Status
-      name: string
-      DocumentId: string
-      email: string
-      paymentMethod: string
-      iban: string
-      refundedAmount: number
-    }
-    products: ReturnRequest['items']
-    refundStatusData: ReturnRequest['refundStatusData']
-  }
-}
+export type TemplateName = 'confirmation' | 'status-update' | 'label'
+
+export type TemplateFriendlyName = 'Confirmation' | 'Status Update' | 'Label'
+
+export type ConfirmationMailData = MailData<ConfirmationData>
+
+export type StatusUpdateMailData = MailData<StatusUpdateData>
+
+export type ReturnLabelMailData = MailData<ReturnLabelData>
 
 export interface Template {
   AccountId: string | null

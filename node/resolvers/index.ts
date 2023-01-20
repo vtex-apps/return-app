@@ -11,10 +11,12 @@ import { returnRequestList } from './returnRequestList'
 import { ReturnRequestResponse } from './ReturnRequestResponse'
 import { updateReturnRequestStatus } from './updateReturnRequestStatus'
 import { nearestPickupPoints } from './nearestPickupPoints'
+import { sendReturnLabel } from './sendReturnLabel'
 
 export const mutations = {
   createReturnRequest,
   updateReturnRequestStatus,
+  sendReturnLabel,
   ...settingsMutation,
 }
 

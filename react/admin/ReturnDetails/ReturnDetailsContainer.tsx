@@ -16,6 +16,7 @@ import { StatusTimeline } from '../../common/components/ReturnDetails/StatusTime
 import { StatusHistory } from '../../common/components/ReturnDetails/StatusHistory'
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
+import { ReturnLabel } from './components/ReturnLabel/ReturnLabel'
 import RequestCancellation from '../../common/components/ReturnDetails/RequestCancellation'
 
 type Pages = 'return-details' | 'verify-items'
@@ -68,6 +69,7 @@ export const ReturnDetailsContainer = () => {
               <>
                 <CurrentRequestStatus />
                 <OrderLink />
+                <ReturnLabel />
                 <ItemDetailsList />
                 <ReturnValues />
                 <div className="flex-ns flex-wrap flex-row">

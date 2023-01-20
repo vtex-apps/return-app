@@ -45,6 +45,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     state
     zipCode
     addressType
+    labelUrl
   }
   refundPaymentData {
     refundPaymentMethod

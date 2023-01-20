@@ -409,6 +409,29 @@ const STATUS_TIMELINE = html`
 {{/compare}}
 `
 
+const RETURN_LABEL = html`
+  <tr style="box-sizing: border-box !important;">
+    <td
+      class="ph4-ns"
+      style="font-size: 14px; line-height: 20px; box-sizing: border-box; border-collapse: collapse; text-align: left; border-top-style: solid; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px; border-color: #eee; border-width: .5rem; width: 100%; padding-top: 2rem; padding-bottom: 2rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;"
+      align="left"
+    >
+      <div>
+        <h3
+          style="margin: 0; font-size: 20px; line-height: 36px; text-transform: uppercase; letter-spacing: 1.2pt; font-weight: 300; box-sizing: border-box; margin-top: 0 !important;"
+        >
+          Return shipping label
+        </h3>
+        <p>
+          You can find the return shipping label to return your items in the
+          next link:
+        </p>
+        <a href="{{data.labelUrl}}">Return shipping label</a>
+      </div>
+    </td>
+  </tr>
+`
+
 const createTemplate = (headAndStyle: string, ...bodyBlocks: string[]) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html
@@ -469,4 +492,10 @@ export const OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE_MESSAGE = createTemplate(
   REFUNDED_MESSAGE,
   DENIED_MESSSAGE,
   STATUS_TIMELINE
+)
+
+export const OMS_RETURN_REQUEST_LABEL_TEMPLATE_MESSAGE = createTemplate(
+  HEAD_AND_STYLE,
+  HEADER,
+  RETURN_LABEL
 )

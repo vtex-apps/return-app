@@ -1,0 +1,5 @@
+query GetInstalleApp($slug: String!) {
+  app: installedAppPublic(slug: $slug) @context(provider: "vtex.apps-graphql") {
+    settings
+  }
+}

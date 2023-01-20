@@ -45,6 +45,7 @@ input PickupReturnDataInput {
   country: String!
   zipCode: String!
   addressType: AddressType!
+  labelUrl: String!
 }
 
 enum AddressType {
@@ -110,7 +111,7 @@ type PickupReturnData {
   country: String!
   zipCode: String!
   addressType: AddressType!
-  returnLabel: String
+  labelUrl: String
 }
 
 type RefundPaymentData {
