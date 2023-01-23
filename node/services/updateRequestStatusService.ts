@@ -15,7 +15,10 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
+import {
+  OMS_RETURN_REQUEST_STATUS_UPDATE,
+  SETTINGS_PATH,
+} from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
 
@@ -102,6 +105,18 @@ export const updateRequestStatusService = async (
     vtex: { logger },
   } = ctx
 
+  const settingsPromise = appSettings.get(SETTINGS_PATH, true)
+
+  let settingsData: ReturnAppSettingsCustom | undefined
+
+  try {
+    settingsData = await settingsPromise
+  } catch (error) {
+    throw new ResolverError('Return App settings is not configured', 500)
+  }
+
+  logger.info(appSettings)
+
   const { status, requestId, comment, refundData } = args
 
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
@@ -181,7 +196,7 @@ export const updateRequestStatusService = async (
           refundData,
           requestItems: returnRequest.items,
           refundableShipping: maxRefundableShipping,
-          appSettings,
+          settingsData,
         })
       : returnRequest.refundData
 
