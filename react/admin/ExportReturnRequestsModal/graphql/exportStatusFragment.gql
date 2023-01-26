@@ -1,0 +1,11 @@
+fragment ExportReportDataAdminFragment on ExportReportData {
+  id
+  inProgress
+  percentageProcessed
+  requestedBy
+  completedDate
+  selectedFilters
+  downloadLink
+  staleLink
+  lastErrorMessage
+}

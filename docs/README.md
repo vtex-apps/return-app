@@ -3,6 +3,13 @@
 Return app v3 is still in BETA. v2 will no longer be supported so please do not install it. 
  Docs are WIP.
 
+ - Table of contents
+   - [Features](#features)
+   - [API](#api)
+   - [Customization](#customization)
+   - [Known issues](#known-issues)
+   - [Development](#development)
+
 ## Description
 
 The **Return App** gives merchants the option to allow customers to request a return for their items and it gives them the ability to manage the Return Request Process on their store. 
@@ -15,7 +22,7 @@ Here a customer will be able to visualize the history, status and details of the
 
 
 ### Admin: Return Request List
-In this section of the merchant's admin, merchants are capable of visualizing and managing all the return requests created by their customers. 
+In this section of the merchant's admin, merchants are capable of visualizing and managing all the return requests created by their customers, while also being able to export all or some records to a single file.
 
 
 ### Admin: Return Settings
@@ -303,10 +310,16 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 |'termsAndConditionsLink'|
 |'userCommentDetailsContainer'|
 
-## Knowing issues
+## Known issues
 - When a store has a process to create return invoices ([invoice type input](https://developers.vtex.com/vtex-rest-api/reference/invoicenotification)) outside the return app, the app will consider those items and they will not be able to be returned via the app. However when an item is already committed in a return request and an invoice is created considering that item with a invoice number different than the return request id, there will be more processed items to return then invoices items - It can be seen using the query `orderToReturnSummary` on GraphQL.
 
 - When installing the app in a workspace - or creating a new one - the app will not behavior as expected. This is due to the masterdata builder not creating a schema for that workspace automatically. To fix that, one can just link the app in the workspace using the toolbelt. Doing so, there will be a new masterdata schema related to that workspace and the app should work fine.
+
+## Development
+
+### Export feature (Report)
+
+This app leverages the Report API to export all return documents into a single file. For this to work, we maintain a matrix transformation MAP inside **/node/report**. If any key or value of the object is changed, next time any account that opens the module will have their map created/updated. The ID is the identifier we use to compare them, there's no need of changing it every time we modify the object.
 
 ---
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).

@@ -19,3 +19,22 @@ export const isWithinMaxDaysToReturn = (
 
   return new Date(orderCreationDate) > new Date(limitDateToReturn)
 }
+
+/**
+ * Compares a given ISO date vs today
+ * @returns if the report download link expired after 6 hours
+ */
+export const isReportStale = (completedDate: string | null) => {
+  if (!completedDate) return null
+
+  const today = new Date()
+  const completed = new Date(completedDate)
+
+  const difference = (today.getTime() - completed.getTime()) / 3600000
+
+  if (difference > 6) {
+    return true
+  }
+
+  return false
+}

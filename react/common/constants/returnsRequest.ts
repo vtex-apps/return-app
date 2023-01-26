@@ -120,3 +120,9 @@ export function getReasonOptions(
     },
   ]
 }
+
+/**
+ * The report api supports either
+ * XLSX / JSON / CSV
+ */
+export const SUPPORTED_REPORT_FORMATS = ['XLSX'] as const

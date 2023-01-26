@@ -3,6 +3,7 @@ import { Layout, PageHeader, PageBlock } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
 import ListTable from '../../common/components/returnList/ListTable'
+import ExportReturnRequestsModal from '../ExportReturnRequestsModal'
 
 export const AdminReturnList = () => {
   return (
@@ -16,7 +17,9 @@ export const AdminReturnList = () => {
           subtitle={
             <FormattedMessage id="admin/return-app.return-request-list.page-header.subTitle" />
           }
-        />
+        >
+          <ExportReturnRequestsModal />
+        </PageHeader>
       }
     >
       <PageBlock variation="full" fit="fill">

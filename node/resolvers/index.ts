@@ -11,10 +11,13 @@ import { returnRequestList } from './returnRequestList'
 import { ReturnRequestResponse } from './ReturnRequestResponse'
 import { updateReturnRequestStatus } from './updateReturnRequestStatus'
 import { nearestPickupPoints } from './nearestPickupPoints'
+import { exportStatus } from './exportStatus'
+import { exportReturnRequests } from './exportReturnRequests'
 
 export const mutations = {
   createReturnRequest,
   updateReturnRequestStatus,
+  exportReturnRequests,
   ...settingsMutation,
 }
 
@@ -26,6 +29,7 @@ export const queries = {
   returnRequest,
   returnRequestList,
   nearestPickupPoints,
+  exportStatus,
 }
 
 export const resolvers = { ReturnRequestResponse }

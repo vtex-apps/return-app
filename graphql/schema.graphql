@@ -30,6 +30,7 @@ type Query {
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
   nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
+  exportStatus: ExportReportData @cacheControl(scope: PRIVATE, maxAge: ZERO)
 }
 
 type Mutation {
@@ -42,4 +43,7 @@ type Mutation {
     comment: ReturnRequestCommentInput
     refundData: RefundDataInput
   ): ReturnRequestResponse @withUserProfile
+  exportReturnRequests(
+    exportData: ExportReturnRequestsInput!
+  ): ExportReportData @withUserProfile
 }
