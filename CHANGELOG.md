@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.19.13] - 2023-02-02
+
 ## [2.19.12] - 2022-06-27
 - Encode user email when getting orders to be returned.
 
