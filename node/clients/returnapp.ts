@@ -43,6 +43,7 @@ export default class ReturnApp extends ExternalClient {
   }
 
   public async getOrders(ctx: any, where: any): Promise<any> {
+
     return this.http.get(
       `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/oms/pvt/orders?${where}`,
       {
