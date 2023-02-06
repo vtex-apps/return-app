@@ -57,6 +57,9 @@
       "name": "OMSViewer"
     },
     {
+      "name": "ListOrders"
+    },
+    {
       "name": "outbound-access",
       "attrs": {
         "host": "api.vtex.com",
