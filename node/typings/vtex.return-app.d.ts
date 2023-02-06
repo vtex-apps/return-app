@@ -37,3 +37,11 @@ interface AuthenticationSession {
     value: string
   }
 }
+
+type ReturnAppSettingsCustom = ReturnAppSettings & {
+  options: ReturnOptionCustom
+}
+
+type ReturnOptionCustom = ReturnOption & {
+  disableTaxRefund?: boolean
+}

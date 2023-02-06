@@ -6,11 +6,13 @@ export const createRefundData = ({
   refundData,
   requestItems,
   refundableShipping,
+  settingsData,
 }: {
   requestId: string
   refundData?: Maybe<RefundDataInput>
   requestItems: ReturnRequest['items']
   refundableShipping: number
+  settingsData: ReturnAppSettingsCustom
 }): ReturnRequest['refundData'] => {
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
@@ -19,6 +21,9 @@ export const createRefundData = ({
   }
 
   const items = []
+  let refundableTaxes = 0
+  let invoiceValue = 0
+  let refundedItemsValue = 0
 
   for (const refundItem of refundData?.items ?? []) {
     if (refundItem.quantity === 0) continue
@@ -44,16 +49,20 @@ export const createRefundData = ({
       )
     }
 
+    refundableTaxes += Number(tax) ?? 0
+
     items.push({
       orderItemIndex,
       id,
-      price: (Number(sellingPrice) ?? 0) + (Number(tax) ?? 0),
+      price: settingsData?.options?.disableTaxRefund
+        ? Number(sellingPrice) ?? 0
+        : Number(sellingPrice) + Number(tax) ?? 0,
       quantity: refundItem.quantity,
       restockFee: refundItem.restockFee,
     })
   }
 
-  const refundedItemsValue = items.reduce(
+  refundedItemsValue = items.reduce(
     (total, item) => total + (item.price * item.quantity - item.restockFee),
     0
   )
@@ -72,11 +81,19 @@ export const createRefundData = ({
     )
   }
 
+  invoiceValue = settingsData?.options?.disableTaxRefund
+    ? refundedItemsValue + refundableTaxes + refundedShippingValue
+    : refundedItemsValue + refundedShippingValue
+
+  refundedItemsValue = settingsData?.options?.disableTaxRefund
+    ? refundedItemsValue + refundableTaxes
+    : refundedItemsValue
+
   return {
     // invoiceNumber has to match the requestId.
     // This values is used to filter the invoices created via Return app when calculating the items available to be returned.
     invoiceNumber: requestId,
-    invoiceValue: refundedItemsValue + refundedShippingValue,
+    invoiceValue,
     refundedItemsValue,
     refundedShippingValue,
     items,

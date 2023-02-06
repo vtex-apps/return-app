@@ -10,6 +10,7 @@ const generalOptions = [
   'enablePickupPoints',
   'enableProportionalShippingValue',
   'enableSelectItemCondition',
+  'disableTaxRefund',
 ] as const
 
 const messages = defineMessages({
@@ -36,6 +37,12 @@ const messages = defineMessages({
   },
   'enableSelectItemCondition-description': {
     id: 'admin/return-app.settings.section.general-options.enable-select-item-condition.description',
+  },
+  'disableTaxRefund-label': {
+    id: 'admin/return-app.settings.section.general-options.disable-tax-refund.label',
+  },
+  'disableTaxRefund-description': {
+    id: 'admin/return-app.settings.section.general-options.disable-tax-refund.description',
   },
 })
 
