@@ -57,6 +57,20 @@ The custom Return Reasons can be translated manually by the admin.
 - **Proportional shipping value**: the shipping value to be refunded per item will be automatically calculated based on the item value percentage of the total order value. 
 - **Item condition selector**: require the store user to select the condition of the items
 
+#### Request statuses
+
+| Status | Label | Description | Next status |
+| ---- | ---- | ---- | ---- |
+| `New` | `new` | Initial status for all requests | `Processing`<br><br>`Denied`<br><br>`Cancelled` |
+| `Processing` | `processing` | Store acknowledges the request | `Picked up from client`<br><br>`Denied`<br><br>`Cancelled` - only by admin users |
+| `Picked up from client` | `pickedUpFromClient` | Store receives the returned products or a status from a courier notifying the request was picked up  | `Pending verification`<br><br> `Denied` |
+| `Pending verification`  | `pendingVerification` | Store checks the products returned by the customer. The "Verify package" button will be available on the return details page. If done via the API the action to update to the next status requires a payload containing the items to be refunded information. If there is no item, the request will be `denined` automatically  | `Package Verified`<br><br>`Denied` |
+| `Package Verified` | `packageVerified` | Store accepts all items returned | `Amount refunded` |
+| `Amount refunded` | `amountRefunded` | This is the last state for a return request, if it has not been denied. The administrators will move the request in this state after making the payment to the client (by card or by bank transfer) - which can de automatically made by the app depending on the settings configured in the admin side. If the customer requested the return of the money by voucher, the voucher will be generated automatically when the request reach this state. | `-` |
+| `Denied` | `denied` | The return request reaches this state by an admin user action. Items included in the request will not be avaiable to be returned in another request | `-` |
+| `Cancelled` | `cancelled` | An admin user can cancel a request up to the `processing` status. The store user can cancel a request only when the return status is `new`. The items included on that request will be available to be returned in another one  | `-` |
+
+
 ### Transactional Emails
 The app leverages the capabilites of VTEX Message Center to notify the customers when a return request is created and when the status of their return changes. 
 
