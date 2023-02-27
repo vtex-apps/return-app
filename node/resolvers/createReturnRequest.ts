@@ -1,4 +1,4 @@
-import type { MutationCreateReturnRequestArgs } from 'vtex.return-app'
+import type { MutationCreateReturnRequestArgs } from 'obidev.obi-return-app'
 
 import { createReturnRequestService } from '../services/createReturnRequestService'
 

@@ -1,4 +1,4 @@
 mutation saveAppSettings($settings: ReturnAppSettingsInput!) {
   saveReturnAppSettings(settings: $settings)
-    @context(provider: "vtex.return-app")
+    @context(provider: "obidev.obi-return-app")
 }

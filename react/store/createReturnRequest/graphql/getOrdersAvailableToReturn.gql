@@ -1,5 +1,5 @@
 query ordersAvailableToReturn($page: Int!) {
-  ordersAvailableToReturn(page: $page) @context(provider: "vtex.return-app") {
+  ordersAvailableToReturn(page: $page) @context(provider: "obidev.obi-return-app") {
     list {
       orderId
       creationDate

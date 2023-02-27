@@ -1,6 +1,6 @@
 mutation CreateReturn($returnRequest: ReturnRequestInput!) {
   createReturnRequest(returnRequest: $returnRequest)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "obidev.obi-return-app") {
     returnRequestId
   }
 }

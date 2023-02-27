@@ -4,7 +4,7 @@ import { useQuery } from 'react-apollo'
 import type {
   OrderToReturnSummary,
   QueryOrderToReturnSummaryArgs,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 import { PageHeader, PageBlock } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'

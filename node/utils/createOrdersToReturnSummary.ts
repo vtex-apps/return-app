@@ -6,7 +6,7 @@ import type {
   ProcessedItem,
   ReturnAppSettings,
   ReturnRequest,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'

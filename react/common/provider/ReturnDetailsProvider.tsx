@@ -5,7 +5,7 @@ import { useQuery } from 'react-apollo'
 import type {
   ReturnRequestResponse,
   QueryReturnRequestArgs,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 
 import GET_REQUEST_DETAILS from '../graphql/getRequestDetails.gql'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { PickupReturnDataInput } from 'vtex.return-app'
+import type { PickupReturnDataInput } from 'obidev.obi-return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 

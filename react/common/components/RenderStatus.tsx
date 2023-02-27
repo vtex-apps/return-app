@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Status } from 'vtex.return-app'
+import type { Status } from 'obidev.obi-return-app'
 import { FormattedMessage } from 'react-intl'
 import {
   IconClock,

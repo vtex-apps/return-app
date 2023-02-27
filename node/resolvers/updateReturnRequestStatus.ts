@@ -1,7 +1,7 @@
 import type {
   MutationUpdateReturnRequestStatusArgs,
   ReturnRequest,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
 

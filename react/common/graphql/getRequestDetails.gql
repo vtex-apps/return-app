@@ -2,7 +2,7 @@
 
 query getRequestDetails($requestId: ID!) {
   returnRequestDetails: returnRequest(requestId: $requestId)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "obidev.obi-return-app") {
     ...ReturnDetailsAdminFragment
   }
 }

@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl } from 'react-intl'
-import type { ItemCondition } from 'vtex.return-app'
+import type { ItemCondition } from 'obidev.obi-return-app'
 import { Dropdown } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 

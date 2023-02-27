@@ -5,7 +5,7 @@ import type {
   QueryNearestPickupPointsArgs,
   NearPickupPointQueryResponse,
   PickupPoint,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Dropdown, Spinner } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'

@@ -3,7 +3,7 @@ import type {
   PaymentOptions,
   ReturnAppSettings,
   ReturnOption,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 
 export const initialSettingsState: ReturnAppSettings = {
   maxDays: 0,

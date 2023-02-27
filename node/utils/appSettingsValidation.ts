@@ -3,7 +3,7 @@ import type {
   PaymentTypeInput,
   CustomReturnReasonInput,
   PaymentOptions,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 
 export const validatePaymentOptions = (
   paymentOptions: PaymentOptionsInput

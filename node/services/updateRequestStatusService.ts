@@ -3,7 +3,7 @@ import type {
   ReturnRequest,
   Status,
   RefundItemInput,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 import {
   ResolverError,
   ForbiddenError,

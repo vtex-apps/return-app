@@ -3,7 +3,7 @@ import type {
   ReturnRequestItemInput,
   ReturnAppSettings,
   ReturnRequest,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'

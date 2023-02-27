@@ -1,5 +1,5 @@
 query storeAppSettings {
-  returnAppSettings @context(provider: "vtex.return-app") {
+  returnAppSettings @context(provider: "obidev.obi-return-app") {
     termsUrl
     customReturnReasons {
       reason

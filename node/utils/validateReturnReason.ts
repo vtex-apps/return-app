@@ -1,7 +1,7 @@
 import type {
   ReturnRequestItemInput,
   CustomReturnReason,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 import { ResolverError, UserInputError } from '@vtex/api'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'

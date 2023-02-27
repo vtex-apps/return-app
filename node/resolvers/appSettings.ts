@@ -1,7 +1,7 @@
 import type {
   ReturnAppSettings,
   MutationSaveReturnAppSettingsArgs,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app'
 
 import {
   validateMaxDaysCustomReasons,
