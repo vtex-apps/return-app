@@ -1,7 +1,7 @@
 import type {
   ReturnRequestItemInput,
   ReturnRequestInput,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
 import { isValidIBANNumber } from './isValidIBANNumber'

@@ -1,4 +1,4 @@
-import type { Maybe, RefundDataInput, ReturnRequest } from 'obidev.obi-return-app'
+import type { Maybe, RefundDataInput, ReturnRequest } from 'vtex.return-app'
 import { UserInputError } from '@vtex/api'
 
 export const createRefundData = ({

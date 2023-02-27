@@ -1,4 +1,4 @@
-import type { Status } from 'obidev.obi-return-app'
+import type { Status } from 'vtex.return-app'
 
 import { returnRequestListService } from '../services/returnRequestListService'
 

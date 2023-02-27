@@ -2,7 +2,7 @@ import type {
   QueryReturnRequestListArgs,
   ReturnRequestFilters,
   Maybe,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 import { ForbiddenError } from '@vtex/api'
 
 const filterDate = (date: string): string => {

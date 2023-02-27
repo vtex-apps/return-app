@@ -1,7 +1,7 @@
 {
-  "vendor": "obidev",
-  "name": "obi-return-app",
-  "version": "0.0.1",
+  "vendor": "vtex",
+  "name": "return-app",
+  "version": "3.5.6",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {

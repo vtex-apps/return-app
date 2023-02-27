@@ -1,6 +1,6 @@
 import type { ApolloError } from 'apollo-client'
 import { defineMessages } from 'react-intl'
-import type { OrderToReturnValidation } from 'obidev.obi-return-app'
+import type { OrderToReturnValidation } from 'vtex.return-app'
 
 import { ORDER_TO_RETURN_VALIDATON } from './constants'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { GiftCard, Maybe, RefundPaymentData } from 'obidev.obi-return-app'
+import type { GiftCard, Maybe, RefundPaymentData } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 

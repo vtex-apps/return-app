@@ -1,6 +1,6 @@
 query getReturnRequestList($filter: ReturnRequestFilters, $page: Int!) {
   returnRequestList(filter: $filter, page: $page)
-    @context(provider: "obidev.obi-return-app") {
+    @context(provider: "vtex.return-app") {
     list {
       id
       sequenceNumber

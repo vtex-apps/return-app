@@ -3,7 +3,7 @@ import { useQuery } from 'react-apollo'
 import type {
   OrdersToReturnList,
   QueryOrdersAvailableToReturnArgs,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 import { ContentWrapper, BaseLoading } from 'vtex.my-account-commons'
 import { FormattedMessage } from 'react-intl'
 

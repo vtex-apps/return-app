@@ -4,7 +4,7 @@ import type {
   RefundPaymentDataInput,
   ReturnRequestItemInput,
   Maybe,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 

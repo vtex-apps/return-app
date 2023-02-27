@@ -4,7 +4,7 @@ import type {
   PriceTag,
   SellerDetail,
 } from '@vtex/clients'
-import type { ReturnRequestItemInput, ReturnRequestItem } from 'obidev.obi-return-app'
+import type { ReturnRequestItemInput, ReturnRequestItem } from 'vtex.return-app'
 
 import type { CatalogGQL } from '../clients/catalogGQL'
 import { translateItemName } from './translateItems'

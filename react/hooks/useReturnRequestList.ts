@@ -2,7 +2,7 @@ import { useQuery } from 'react-apollo'
 import type {
   ReturnRequestList as ReturnRequestListResponse,
   QueryReturnRequestListArgs,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 
 import RETURN_REQUEST_LIST from '../graphql/getReturnRequestList.gql'
 

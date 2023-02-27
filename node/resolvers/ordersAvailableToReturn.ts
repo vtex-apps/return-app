@@ -1,5 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import type { OrdersToReturnList, OrderToReturnSummary } from 'obidev.obi-return-app'
+import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'

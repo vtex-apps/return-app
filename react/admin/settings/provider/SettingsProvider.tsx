@@ -3,7 +3,7 @@ import type { FC, Dispatch } from 'react'
 import React, { createContext, useReducer, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import type { ReturnAppSettings, ReturnAppSettingsInput } from 'obidev.obi-return-app'
+import type { ReturnAppSettings, ReturnAppSettingsInput } from 'vtex.return-app'
 
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import SAVE_APP_SETTINGS from '../graphql/saveAppSettings.gql'

@@ -3946,10 +3946,6 @@ oauth-sign@~0.9.0:
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==
 
-"obidev.obi-return-app@https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/obidev.obi-return-app@0.0.1+build1677516652/public/@types/obidev.obi-return-app":
-  version "0.0.1"
-  resolved "https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/obidev.obi-return-app@0.0.1+build1677516652/public/@types/obidev.obi-return-app#0dfffb76a73d3c034412acc546740a002e9fb827"
-
 object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -5209,6 +5205,10 @@ verror@1.10.0:
 "vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
+
+"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.6/public/@types/vtex.return-app":
+  version "3.5.6"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.6/public/@types/vtex.return-app#11353347392aa168c3b0fe16496b70448f4a840b"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
   version "9.146.3"

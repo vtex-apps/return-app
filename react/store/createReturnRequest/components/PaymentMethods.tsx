@@ -6,7 +6,7 @@ import type {
   RefundPaymentDataInput,
   PaymentType,
   RefundPaymentMethod,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'

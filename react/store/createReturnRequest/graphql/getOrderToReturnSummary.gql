@@ -1,6 +1,6 @@
 query orderToReturnSummary($orderId: ID!) {
   orderToReturnSummary(orderId: $orderId)
-    @context(provider: "obidev.obi-return-app") {
+    @context(provider: "vtex.return-app") {
     orderId
     creationDate
     invoicedItems {

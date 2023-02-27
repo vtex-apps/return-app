@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
-import type { ShippingData } from 'obidev.obi-return-app'
+import type { ShippingData } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Divider, Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'

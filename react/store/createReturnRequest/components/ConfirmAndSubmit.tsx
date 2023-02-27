@@ -5,7 +5,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
-} from 'obidev.obi-return-app'
+} from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Card, Button, Alert } from 'vtex.styleguide'
 
