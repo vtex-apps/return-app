@@ -15,6 +15,7 @@ interface Props {
 }
 
 const CSS_HANDLES = ['itemsListContainer', 'itemsListTheadWrapper'] as const
+const CSS_HANDLES_PHONE = ['cardItensWrapper'] as const
 
 const desktopOrder = [
   'product',
@@ -86,6 +87,7 @@ export const ItemsList = (props: Props) => {
   const { formatMessage } = useIntl()
 
   const handles = useCssHandles(CSS_HANDLES)
+  const handlesPhone = useCssHandles(CSS_HANDLES_PHONE)
   const { inputErrors } = useReturnRequest()
 
   const noItemSelected = inputErrors.some(
@@ -96,6 +98,22 @@ export const ItemsList = (props: Props) => {
     formatMessage,
     Boolean(enableSelectItemCondition)
   )
+
+  if (phone) {
+    return (
+      <div
+        className={`${handlesPhone.cardItensWrapper} flex flex-column flex-wrap flex-auto`}
+      >
+        {items.map((item) => (
+          <ItemsDetails
+            key={item.id}
+            itemToReturn={item}
+            creationDate={creationDate}
+          />
+        ))}
+      </div>
+    )
+  }
 
   return (
     <table
