@@ -20,7 +20,7 @@ type OrderListTableSchemaProps = {
   navigate: (to: { to: string }) => void
   isSmallScreen: boolean
 }
-const OrderlListTableSchema = ({
+const OrderListTableSchema = ({
   navigate,
   isSmallScreen,
 }: OrderListTableSchemaProps) => {
@@ -138,7 +138,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
         emptyStateLabel={
           <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
         }
-        schema={OrderlListTableSchema({
+        schema={OrderListTableSchema({
           navigate,
           isSmallScreen: phone,
         })}
