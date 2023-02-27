@@ -3,6 +3,9 @@
     "orderId": {
       "type": "string"
     },
+    "sellerName": {
+      "type": "string"
+    },
     "refundableAmount": {
       "type": "integer"
     },
