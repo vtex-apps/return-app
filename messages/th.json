@@ -307,6 +307,7 @@
   "return-app.return-request-details.order-id.link": "คำสั่ง {orderId}",
   "return-app.return-request-details.current-status.request-id": "<b>รหัสอ้างอิง:</b> {id}",
   "return-app.return-request-details.current-status.status": "<b>สถานะ:</b>",
+  "return-app.return-request-details.current-status.sellerName": "<b>SellerName:</b> {sellerName}",
   "admin/return-app.return-request-list.table-data.requestId.tooltip": "ลูกค้าสามารถมองเห็นรหัสคำขอของตนได้ในรายละเอียดคำสั่งซื้อ",
   "admin/return-app.settings.modal-warning.title": "โปรดทบทวนการตั้งค่าของงคุณ",
   "admin/return-app.settings.modal-warning.first-paragraph": "ดูเหมือนว่าคุณกำลังพยายามบันทึกตัวเลือกการคืนแบบกำหนดเองและยังไม่มีตัวใดถึง <b>{maxDays}</b> ซึ่งเป็นจำนวนวันสูงสุดที่กำหนดไว้สำหรับการคืน",

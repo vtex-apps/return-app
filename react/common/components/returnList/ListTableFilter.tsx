@@ -35,6 +35,7 @@ interface Filters {
   id: string
   createdIn: FilterDates | undefined
   orderId: string
+  sellerName: string
 }
 
 type Keys = keyof Filters | keyof FilterDates
@@ -46,6 +47,7 @@ const initialFilters = {
   id: '',
   createdIn: undefined,
   orderId: '',
+  sellerName: ''
 } as Filters
 
 const ListTableFilter = (props: Props) => {
@@ -158,6 +160,21 @@ const ListTableFilter = (props: Props) => {
                 value={filters.orderId}
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   handleOnChange('orderId', e.currentTarget.value)
+                }
+                readOnly={isDisabled && !isFiltering}
+              />
+            )}
+          </FormattedMessage>
+        </div>
+        <div className="mh2">
+          <FormattedMessage id="return-app.return-request-list.table-data.sellerName">
+            {(formattedMessage) => (
+              <Input
+                placeholder={formattedMessage}
+                size="small"
+                value={filters.sellerName}
+                onChange={(e: FormEvent<HTMLInputElement>) =>
+                  handleOnChange('sellerName', e.currentTarget.value)
                 }
                 readOnly={isDisabled && !isFiltering}
               />

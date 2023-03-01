@@ -39,6 +39,12 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
       return where
     }
 
+    if (key === 'sellerName') {
+      where += `sellerName = "${value}"`
+      
+      return where
+    }
+
     if (key === 'createdIn' && typeof value !== 'string') {
       where += `dateSubmitted between ${filterDate(
         value.from
@@ -111,8 +117,9 @@ export const returnRequestListService = async (
         'createdIn',
         'status',
         'dateSubmitted',
+        'sellerName'
       ]
-
+  
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,

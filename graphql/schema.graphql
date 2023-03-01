@@ -38,6 +38,7 @@ type Mutation {
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
   updateReturnRequestStatus(
     requestId: ID!
+    sellerName: String
     status: Status!
     comment: ReturnRequestCommentInput
     refundData: RefundDataInput
