@@ -10,11 +10,17 @@ import { Clients } from './clients'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
-import { auth } from './middlewares/auth'
-import { createReturn } from './middlewares/createReturn'
-import { getRequest } from './middlewares/getRequest'
-import { getRequestList } from './middlewares/getRequestList'
-import { updateRequestStatus } from './middlewares/updateRequestStatus'
+import {middlewares} from './middlewares'
+
+const {
+  auth,
+  createReturn,
+  getRequest,
+  getRequestList,
+  updateRequestStatus,
+  saveAppSetting,
+  returnAppSetting
+} = middlewares
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -54,6 +60,10 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, auth, getRequest],
       PUT: [errorHandler, auth, updateRequestStatus],
     }),
+    settings: method({
+      POST: [errorHandler, auth, saveAppSetting],
+      GET: [errorHandler, auth, returnAppSetting],
+    })
   },
   graphql: {
     resolvers: {
