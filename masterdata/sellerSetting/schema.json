@@ -1,0 +1,90 @@
+{
+  "properties": {
+    "sellerId": {
+      "type": "string"
+    },
+    "parentAccount": {
+      "type": "string"
+    },
+    "maxDays": {
+      "type": "integer"
+    },
+    "excludedCategories": {
+      "type": "array"
+    },
+    "paymentOptions": {
+      "type": "object",
+      "properties": {
+        "enablePaymentMethodSelection": {
+          "type": "boolean"
+        },
+        "allowedPaymentTypes": {
+          "type": "object",
+          "properties": {
+            "bank": {
+              "type": "boolean"
+            },
+            "card": {
+              "type": "boolean"
+            },
+            "giftCard": {
+              "type": "boolean"
+            }
+          }
+        },
+        "automaticallyRefundPaymentMethod": {
+          "type": "boolean"
+        }
+      }
+    },
+    "termsUrl": {
+      "type": "string"
+    },
+    "customReturnReasons": {
+      "type": "array",
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "maxDays": {
+          "type": "integer"
+        }
+      }
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "enableOtherOptionSelection": {
+          "type": "boolean"
+        },
+        "enablePickupPoints": {
+          "type": "boolean"
+        },
+        "enableProportionalShippingValue": {
+          "type": "boolean"
+        },
+        "enableSelectItemCondition": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "required": [
+    "sellerId",
+    "parentAccount"
+  ],
+  "v-cache": false,
+  "v-default-fields": [
+    "id",
+    "createdIn",
+    "sellerId",
+    "parentAccount"
+  ],
+  "v-indexed": [
+    "id",
+    "createdIn",
+    "sellerId",
+    "parentAccount"
+  ],
+  "v-immediate-indexing": true
+}

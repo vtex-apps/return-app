@@ -19,7 +19,9 @@ const {
   getRequestList,
   updateRequestStatus,
   saveAppSetting,
-  returnAppSetting
+  returnAppSetting,
+  saveSellerSetting,
+  returnSellerSetting
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -63,6 +65,12 @@ export default new Service<Clients, State, ParamsContext>({
     settings: method({
       POST: [errorHandler, auth, saveAppSetting],
       GET: [errorHandler, auth, returnAppSetting],
+    }),
+    sellerSetting: method({
+      POST: [errorHandler, auth, saveSellerSetting],
+    }),
+    sellerSettings: method({
+      GET: [errorHandler, auth, returnSellerSetting],
     })
   },
   graphql: {

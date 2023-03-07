@@ -1,6 +1,6 @@
 import { IOClients, Sphinx } from '@vtex/api'
 import { vbaseFor, masterDataFor } from '@vtex/clients'
-import { ReturnAppSettings, ReturnRequest } from 'vtex.return-app'
+import { ReturnAppSettings, ReturnRequest, SellerSetting } from 'vtex.return-app'
 
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
@@ -12,6 +12,7 @@ import { CatalogGQL } from './catalogGQL'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
+const SellerSetting = masterDataFor<SellerSetting>('sellerSetting')
 
 export class Clients extends IOClients {
   public get oms() {
@@ -32,6 +33,10 @@ export class Clients extends IOClients {
 
   public get returnRequest() {
     return this.getOrSet('returnRequest', ReturnRequest)
+  }
+
+  public get sellerSetting() {
+    return this.getOrSet('sellerSetting', SellerSetting)
   }
 
   public get giftCard() {

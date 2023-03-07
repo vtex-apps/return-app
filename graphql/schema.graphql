@@ -30,12 +30,16 @@ type Query {
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
   nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
+  sellerSetting(sellerId: String!): SellerSetting
+  sellerSettingList: SellerSettingResponseList @cacheControl(maxAge: ZERO)
 }
 
 type Mutation {
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
     @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
+  saveSellerSetting(settings:  SellerSettingInput!): Boolean
+  updateSellerSetting(sellerId: String!, settings: SellerSettingInput!): Boolean
   updateReturnRequestStatus(
     requestId: ID!
     sellerName: String

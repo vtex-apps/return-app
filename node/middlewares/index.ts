@@ -5,6 +5,7 @@ import { errorHandler } from './errorHandler'
 import { getRequest } from './getRequest'
 import { getRequestList } from './getRequestList'
 import { updateRequestStatus } from './updateRequestStatus'
+import { saveSellerSetting, returnSellerSetting  } from './sellerSetting' 
 
 export const middlewares = {
   saveAppSetting,
@@ -14,6 +15,8 @@ export const middlewares = {
   errorHandler,
   getRequest,
   getRequestList,
-  updateRequestStatus
+  updateRequestStatus,
+  saveSellerSetting,
+  returnSellerSetting
 }
 
