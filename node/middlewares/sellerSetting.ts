@@ -9,6 +9,12 @@ export async function saveSellerSetting(ctx: Context) {
   ctx.set('Cache-Control', 'no-cache')
   
   try {
+    const settings = await returnSellerSettingService(ctx, body?.settings?.sellerId)
+    
+    if(settings){
+      body.settings.id = settings.id
+    }
+
     ctx.body = await saveSellerSettingService(ctx, body)
 
     ctx.status = 200
