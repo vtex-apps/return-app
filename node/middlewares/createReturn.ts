@@ -16,6 +16,11 @@ export async function createReturn(ctx: Context) {
 
   ctx.vtex.locale = locale
 
-  ctx.body = await createReturnRequestService(ctx, body)
-  ctx.status = 201
+  try {
+    ctx.body = await createReturnRequestService(ctx, body)
+    ctx.status = 200
+  } catch (error) {
+    ctx.body = error?.response?.data || error.response.statusText || error
+    ctx.status = error.response?.status || 400
+  }
 }
