@@ -27,6 +27,8 @@ export async function returnSellerSetting(ctx: Context) {
 
   const { sellerId } = params as { sellerId: string }
 
+  ctx.set('Cache-Control', 'no-cache')
+
   try {
     const settings = await returnSellerSettingService(ctx, sellerId)
 
@@ -41,11 +43,13 @@ export async function returnSellerSetting(ctx: Context) {
         }
       }
 
-      await saveSellerSettingService(ctx, newSettings)
+      const res = await saveSellerSettingService(ctx, newSettings)
 
-      const settingsSeller = await returnSellerSettingService(ctx, sellerId)
+      ctx.body = {
+        ...newSettings?.settings,
+        id: res.DocumentId
+      }
 
-      ctx.body = settingsSeller
       ctx.status = 200
     } else {
       ctx.body = settings
@@ -55,6 +59,4 @@ export async function returnSellerSetting(ctx: Context) {
     ctx.body = error
     ctx.status = 400
   }
-
-  ctx.set('Cache-Control', 'no-cache')
 }
