@@ -21,7 +21,8 @@ const {
   saveAppSetting,
   returnAppSetting,
   saveSellerSetting,
-  returnSellerSetting
+  returnSellerSetting,
+  // sellerValidation
 } = middlewares
 
 const TIMEOUT_MS = 5000

@@ -33,7 +33,7 @@ export async function saveSellerSettingService(ctx: Context, args: MutationSaveS
     // validate that there is at least one payment method selected or user has to use the same as in the order
     paymentOptions: validatePaymentOptions(paymentOptions),
   }
-
+  
   const response = await sellerSetting.saveOrUpdate({
     ...currentSettings,
     id: currentSettings.id || undefined
