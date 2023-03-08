@@ -53,4 +53,13 @@ export class VtexId extends JanusClient {
       },
     })
   }
+
+  public getAccount(token: string, account: string): Promise<any> {
+    return this.http.get(`/api/vlm/account?an=${account}`, {
+      metric: 'vtexid-get-account',
+      headers: {
+        VtexIdClientAutCookie: token || '',
+      },
+    })
+  }
 }

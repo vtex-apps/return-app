@@ -22,7 +22,7 @@ const {
   returnAppSetting,
   saveSellerSetting,
   returnSellerSetting,
-  // sellerValidation
+  sellerValidation
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -56,7 +56,7 @@ export default new Service<Clients, State, ParamsContext>({
   clients,
   routes: {
     returnRequests: method({
-      POST: [errorHandler, auth, createReturn],
+      POST: [errorHandler, auth, sellerValidation, createReturn],
       GET: [errorHandler, auth, getRequestList],
     }),
     returnRequest: method({
@@ -68,10 +68,10 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, auth, returnAppSetting],
     }),
     sellerSetting: method({
-      POST: [errorHandler, auth, saveSellerSetting],
+      POST: [errorHandler, auth, sellerValidation, saveSellerSetting],
     }),
     sellerSettings: method({
-      GET: [errorHandler, auth, returnSellerSetting],
+      GET: [errorHandler, auth, sellerValidation, returnSellerSetting],
     })
   },
   graphql: {
