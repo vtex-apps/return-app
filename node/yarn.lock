@@ -1528,10 +1528,10 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.3.tgz#781d360c282436494b32fe7d9f7f8e64b3118aa3"
   integrity sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==
 
-"@vtex/api@6.45.12":
-  version "6.45.12"
-  resolved "https://registry.yarnpkg.com/@vtex/api/-/api-6.45.12.tgz#b13c04398b12f576263ea823369f09c970d57479"
-  integrity sha512-SVLKo+Q/TxQy+1UKzH8GswTI3F2OCRCLfgaNQOrVAVdbM6Ci4wzTeX8j/S4Q1aEEnqBFlH/wVpHf8I6NBa+g9A==
+"@vtex/api@6.45.15":
+  version "6.45.15"
+  resolved "https://registry.yarnpkg.com/@vtex/api/-/api-6.45.15.tgz#aa987d22f7df16ce2861130deda6ffd63156817b"
+  integrity sha512-Rg1VGDzJ4hHUNp1vSidMdGGPojr1PikMTptlZsJ3oNZVdEo4cPx2l8ZcAEwHWORL7QjPjXaEgmeA5ZOSf+boCQ==
   dependencies:
     "@types/koa" "^2.11.0"
     "@types/koa-compose" "^3.2.3"
@@ -1574,10 +1574,10 @@
     uuid "^3.3.3"
     xss "^1.0.6"
 
-"@vtex/clients@^2.13.0":
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/@vtex/clients/-/clients-2.17.0.tgz#252e2ecc907ba1eb71b553a7598f1f1ff76aadf8"
-  integrity sha512-21gE6vfjzPJe+5nqdwBKgbxwkVksPfiuJymYYn7mV1TNduFZNA0IWhSNjWqo/pnu6sHnPzXXjmcLDWse4QJR0w==
+"@vtex/clients@^2.21.0":
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/@vtex/clients/-/clients-2.21.0.tgz#b6f85a291b8ad4c17da8136a46950444559a4c09"
+  integrity sha512-UGZcdgJGqNbOr7saGSSiuoVR3cKwe0Ubo978vyDA+mdsfYfILIfXToiWulE3EMedbE3RUQ5MYqHheYfN/oJWRg==
   dependencies:
     "@gocommerce/utils" "^0.7.3"
 
@@ -6127,9 +6127,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.101.1/public/@types/vtex.catalog-graphql":
-  version "1.101.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.101.1/public/@types/vtex.catalog-graphql#8f4d8981c04429e94b30188acb9c6f1a6b912197"
+"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.1/public/@types/vtex.catalog-graphql":
+  version "1.102.1"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.1/public/@types/vtex.catalog-graphql#ad1dfac8d076034d4326a00a3da20a3915951f53"
 
 "vtex.css-handles@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles":
   version "0.4.4"
@@ -6155,17 +6155,13 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.0/public/@types/vtex.return-app":
-  version "3.5.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.0/public/@types/vtex.return-app#29e8ca8294b52af366586fcea7ae995870bc0271"
+"vtex.return-app@https://returnv3--yamamay.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.5+build1675354904/public/@types/vtex.return-app":
+  version "3.5.5"
+  resolved "https://returnv3--yamamay.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.5+build1675354904/public/@types/vtex.return-app#8ffb01d4c82c48346d0034dc96df3feb0612456f"
 
-"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.155.32/public/@types/vtex.store-graphql":
-  version "2.155.32"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.155.32/public/@types/vtex.store-graphql#abafbe1d80f453bbebc70024a829e4226bf6cc20"
-
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide":
-  version "9.146.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide#66db40ca1b78ad77ce4beedabecee320e1ef2ead"
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
+  version "9.146.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide#05558160f29cd8f4aefe419844a4bd66e2b3fdbb"
 
 "vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql":
   version "0.1.2"

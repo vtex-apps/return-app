@@ -11,7 +11,11 @@ import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
-const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
+const ReturnRequest = masterDataFor<ReturnRequest>(
+  'returnRequest',
+  undefined,
+  2
+)
 
 export class Clients extends IOClients {
   public get oms() {
