@@ -77,6 +77,9 @@ export const OrderListContainer = () => {
     operation === 'previous' && setCurrentPage(page)
   }
 
+  // eslint-disable-next-line no-console
+  console.log({ ordersToReturn })
+
   return (
     <>
       {loading || error || !ordersToReturn.length ? (

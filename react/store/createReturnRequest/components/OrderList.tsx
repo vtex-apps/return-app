@@ -5,6 +5,7 @@ import { useRuntime } from 'vtex.render-runtime/'
 import { Table, Button } from 'vtex.styleguide'
 
 import { createItemsSummary } from '../../utils/createItemsSummary'
+import MobileList from '../../../common/components/returnList/MobileList'
 
 type Operation = 'next' | 'previous'
 interface Props {
@@ -130,9 +131,12 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
 
   return (
     <>
-      <div className="t-body lh-copy c-muted-1 mb3 ml3 w-two-thirds-ns w-100">
+      <div className="flex items-center t-body lh-copy mb3 ml3 w-two-thirds-ns w-100 blue">
         <FormattedMessage id="store/return-app.request-return.page.header.subtitle" />
       </div>
+
+      <MobileList cardTypeByPage="request-return" items={orders.list ?? []} />
+
       <Table
         fullWidth
         emptyStateLabel={

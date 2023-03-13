@@ -2,10 +2,18 @@
 import React, { useState } from 'react'
 import { useCssHandles } from 'vtex.css-handles'
 
+import { GridCard } from '../../GridCard'
 import SingleGridIcon from './icons/SingleGrid'
 import DoubleGridIcon from './icons/DoubleGrid'
 
 import './styles.css'
+
+interface MobileListProps {
+  cardTypeByPage?: 'my-returns' | 'request-return'
+  // items: Maybe<Array<Maybe<OrderToReturnSummary>>> | ReturnRequestResponse[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  items: any
+}
 
 const CSS_HANDLES = [
   'mobileReturnListContainer',
@@ -23,10 +31,16 @@ const CSS_HANDLES = [
   'returnListItemInfoStatus',
 ] as const
 
-const MobileList = () => {
+const MobileList = ({
+  cardTypeByPage = 'my-returns',
+  items = [],
+}: MobileListProps) => {
   const [showDoubleGridVisibility, setShowDoubleGridVisibility] = useState(true)
 
   const handles = useCssHandles(CSS_HANDLES)
+
+  // eslint-disable-next-line no-console
+  console.log({ items })
 
   return (
     <div className={handles.mobileReturnListContainer}>
@@ -49,29 +63,15 @@ const MobileList = () => {
             : handles.returnListSingle
         }`}
       >
-        {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className={handles.returnListItem}>
-            <div className={handles.returnListItemHeader}>
-              <span>nº sequencial</span>
-              <span>12345678</span>
-            </div>
+        {!items ||
+          (items?.length <= 0 && <span>Nenhum resultado disponível</span>)}
 
-            <div className={handles.returnListItemImage}>
-              <img src="https://fakeimg.pl/159x162/" alt="order image" />
-            </div>
-
-            <div className={handles.returnListItemInfo}>
-              <span className={handles.returnListItemInfoDate}>30/12/2023</span>
-              <div className={handles.returnListItemInfoIdContainer}>
-                <span>ID:</span>
-                <span>123456789-120</span>
-              </div>
-              <div className={handles.returnListItemInfoStatus}>
-                <span>Status:</span>
-                <span>Novo</span>
-              </div>
-            </div>
-          </div>
+        {items?.map((item) => (
+          <GridCard
+            key={item?.orderId ?? ''}
+            cardTypeByPage={cardTypeByPage}
+            item={item}
+          />
         ))}
       </div>
     </div>

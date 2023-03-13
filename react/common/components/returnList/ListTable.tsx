@@ -39,6 +39,9 @@ const ListTable = () => {
     pageItemTo = currentPage === pages ? total : currentPage * perPage
   }
 
+  // eslint-disable-next-line no-console
+  console.log({ list })
+
   const handleNextPage = () => {
     if (!paging) return
 
@@ -84,7 +87,7 @@ const ListTable = () => {
 
   return (
     <>
-      <MobileList />
+      <MobileList items={list ?? []} />
       <div className={handles.listTableContainer}>
         {mobile && !isAdmin ? null : (
           <ListTableFilter
