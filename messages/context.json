@@ -53,6 +53,8 @@
   "store/return-app.link": "My Returns",
   "store/return-app.request-return.page.header": "Request a new return",
   "store/return-app.request-return.page.header.subtitle": "Select an order to start the return request process",
+  "store/return-app.request-return.page.card.return-text": "Items available for return",
+  "store/return-app.request-return.page.card.sequential-number": "Sequential number",
   "store/return-app.return-order-list.table-header.order-id": "OrderId",
   "store/return-app.return-order-list.table-header.creation-date": "Creation Date",
   "store/return-app.return-order-list.table-header.items-to-return": "Available Items To Return",

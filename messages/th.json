@@ -53,6 +53,8 @@
   "store/return-app.link": "การคืนของฉัน",
   "store/return-app.request-return.page.header": "ขอเพิ่มการคืน",
   "store/return-app.request-return.page.header.subtitle": "เลือกคำสั่งเพื่อเริ่มขั้นตอนคำขอส่งคืน",
+  "store/return-app.request-return.page.card.return-text": "รายการที่มีสำหรับการคืนสินค้า",
+  "store/return-app.request-return.page.card.sequential-number": "หมายเลขลำดับ",
   "store/return-app.return-order-list.table-header.order-id": "รหัสคำสั่งซื้อ",
   "store/return-app.return-order-list.table-header.creation-date": "วันที่สร้าง",
   "store/return-app.return-order-list.table-header.items-to-return": "สินค้าที่มีให้ส่งคืน",

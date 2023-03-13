@@ -53,6 +53,8 @@
   "store/return-app.link": "I miei resi",
   "store/return-app.request-return.page.header": "Richiedi nuovo reso",
   "store/return-app.request-return.page.header.subtitle": "Seleziona un ordine per avviare il processo di richiesta di reso",
+  "store/return-app.request-return.page.card.return-text": "Articoli disponibili per il reso",
+  "store/return-app.request-return.page.card.sequential-number": "Numero sequenziale",
   "store/return-app.return-order-list.table-header.order-id": "ID ordine",
   "store/return-app.return-order-list.table-header.creation-date": "Data di creazione",
   "store/return-app.return-order-list.table-header.items-to-return": "Articoli idonei al reso",

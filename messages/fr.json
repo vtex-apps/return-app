@@ -53,6 +53,8 @@
   "store/return-app.link": "Mes retours",
   "store/return-app.request-return.page.header": "Demander un nouveau retour",
   "store/return-app.request-return.page.header.subtitle": "Sélectionner une commande pour démarrer le processus de demande de retour",
+  "store/return-app.request-return.page.card.return-text": "Articles disponibles pour retour",
+  "store/return-app.request-return.page.card.sequential-number": "Numéro séquentiel",
   "store/return-app.return-order-list.table-header.order-id": "ID de commande",
   "store/return-app.return-order-list.table-header.creation-date": "Date de création",
   "store/return-app.return-order-list.table-header.items-to-return": "Articles disponibles pour un retour",

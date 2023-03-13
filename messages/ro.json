@@ -53,6 +53,8 @@
   "store/return-app.link": "Retururile mele",
   "store/return-app.request-return.page.header": "Solicită un nou retur",
   "store/return-app.request-return.page.header.subtitle": "Selectează o comandă pentru a începe procesul de solicitare a returului",
+  "store/return-app.request-return.page.card.return-text": "Articole disponibile pentru returnare",
+  "store/return-app.request-return.page.card.sequential-number": "Număr secvențial",
   "store/return-app.return-order-list.table-header.order-id": "ID Comandă",
   "store/return-app.return-order-list.table-header.creation-date": "Data creării",
   "store/return-app.return-order-list.table-header.items-to-return": "Articole disponibile pentru retur",

@@ -53,6 +53,8 @@
   "store/return-app.link": "Моите връщания",
   "store/return-app.request-return.page.header": "Заявка за ново връщане",
   "store/return-app.request-return.page.header.subtitle": "Изберете поръчка, за да започнете процеса на заявка на връщане",
+  "store/return-app.request-return.page.card.return-text": "Последователен номер",
+  "store/return-app.request-return.page.card.sequential-number": "Налични артикули за връщане",
   "store/return-app.return-order-list.table-header.order-id": "ИД на поръчката",
   "store/return-app.return-order-list.table-header.creation-date": "Дата на създаване",
   "store/return-app.return-order-list.table-header.items-to-return": "Налични артикули за връщане",
