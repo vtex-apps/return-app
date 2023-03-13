@@ -1,14 +1,19 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from 'react'
+import React, { useState } from 'react'
 import { useCssHandles } from 'vtex.css-handles'
+
+import SingleGridIcon from './icons/SingleGrid'
+import DoubleGridIcon from './icons/DoubleGrid'
+
+import './styles.css'
 
 const CSS_HANDLES = [
   'mobileReturnListContainer',
   'controlGridVisibility',
   'controlGridVisibilityButtons',
-  'gridSingle',
-  'gridDouble',
   'returnList',
+  'returnListSingle',
+  'returnListDouble',
   'returnListItem',
   'returnListItemHeader',
   'returnListItemImage',
@@ -19,6 +24,8 @@ const CSS_HANDLES = [
 ] as const
 
 const MobileList = () => {
+  const [showDoubleGridVisibility, setShowDoubleGridVisibility] = useState(true)
+
   const handles = useCssHandles(CSS_HANDLES)
 
   return (
@@ -26,12 +33,22 @@ const MobileList = () => {
       <div className={handles.controlGridVisibility}>
         <span>Visualização:</span>
         <div className={handles.controlGridVisibilityButtons}>
-          <button className={handles.gridSingle}>[]</button>
-          <button className={handles.gridDouble}>[][]</button>
+          <button onClick={() => setShowDoubleGridVisibility(false)}>
+            <SingleGridIcon filled={!showDoubleGridVisibility} />
+          </button>
+          <button onClick={() => setShowDoubleGridVisibility(true)}>
+            <DoubleGridIcon filled={showDoubleGridVisibility} />
+          </button>
         </div>
       </div>
 
-      <div className={handles.returnList}>
+      <div
+        className={`${handles.returnList} ${
+          showDoubleGridVisibility
+            ? handles.returnListDouble
+            : handles.returnListSingle
+        }`}
+      >
         {Array.from({ length: 4 }).map((_, index) => (
           <div key={index} className={handles.returnListItem}>
             <div className={handles.returnListItemHeader}>

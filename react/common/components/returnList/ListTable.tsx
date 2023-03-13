@@ -78,51 +78,54 @@ const ListTable = () => {
     )
   }
 
-  if (mobile || phone) {
-    return <MobileList />
-  }
+  // if (mobile || phone) {
+  //   return <MobileList />
+  // }
 
   return (
-    <div className={handles.listTableContainer}>
-      {mobile && !isAdmin ? null : (
-        <ListTableFilter
-          refetch={refetch}
+    <>
+      <MobileList />
+      <div className={handles.listTableContainer}>
+        {mobile && !isAdmin ? null : (
+          <ListTableFilter
+            refetch={refetch}
+            loading={loading}
+            isDisabled={!list?.length}
+          />
+        )}
+        <Table
+          fullWidth
           loading={loading}
-          isDisabled={!list?.length}
+          items={list}
+          emptyStateLabel={
+            <FormattedMessage id="return-app.return-request-list.table.emptyState" />
+          }
+          emptyStateChildren={
+            <p>
+              <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
+            </p>
+          }
+          schema={returnsListSchema}
+          pagination={{
+            textOf: (
+              <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
+            ),
+            onNextClick: handleNextPage,
+            onPrevClick: handlePrevPage,
+            currentItemFrom: pageItemFrom,
+            currentItemTo: pageItemTo,
+            totalItems: paging?.total,
+          }}
         />
-      )}
-      <Table
-        fullWidth
-        loading={loading}
-        items={list}
-        emptyStateLabel={
-          <FormattedMessage id="return-app.return-request-list.table.emptyState" />
-        }
-        emptyStateChildren={
-          <p>
-            <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
-          </p>
-        }
-        schema={returnsListSchema}
-        pagination={{
-          textOf: (
-            <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
-          ),
-          onNextClick: handleNextPage,
-          onPrevClick: handlePrevPage,
-          currentItemFrom: pageItemFrom,
-          currentItemTo: pageItemTo,
-          totalItems: paging?.total,
-        }}
-      />
-      {!phone && paging && list?.length && !loading ? (
-        <JumpToPage
-          handleJumpToPage={handleJumpToPage}
-          currentPage={paging.currentPage}
-          maxPage={paging.pages}
-        />
-      ) : null}
-    </div>
+        {!phone && paging && list?.length && !loading ? (
+          <JumpToPage
+            handleJumpToPage={handleJumpToPage}
+            currentPage={paging.currentPage}
+            maxPage={paging.pages}
+          />
+        ) : null}
+      </div>
+    </>
   )
 }
 
