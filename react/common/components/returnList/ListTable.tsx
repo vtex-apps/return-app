@@ -7,6 +7,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import ReturnListSchema from './ListTableSchema'
 import JumpToPage from './JumpToPage'
 import ListTableFilter from './ListTableFilter'
+import MobileList from './MobileList'
 import { useReturnRequestList } from '../../../hooks/useReturnRequestList'
 
 const CSS_HANDLES = ['listTableContainer'] as const
@@ -75,6 +76,10 @@ const ListTable = () => {
         <FormattedMessage id="return-app.return-request-list.error.description" />
       </EmptyState>
     )
+  }
+
+  if (mobile || phone) {
+    return <MobileList />
   }
 
   return (
