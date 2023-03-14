@@ -104,7 +104,7 @@ const OrderlListTableSchema = ({
 export const OrderList = ({ orders, handlePagination }: Props) => {
   const {
     navigate,
-    hints: { phone },
+    hints: { phone, mobile },
   } = useRuntime()
 
   const [fetchMoreState, setFetchMoreState] = useState<'IDLE' | 'LOADING'>(
@@ -129,13 +129,17 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
     setFetchMoreState('IDLE')
   }
 
+  if (mobile) {
+    return (
+      <MobileList cardTypeByPage="request-return" items={orders.list ?? []} />
+    )
+  }
+
   return (
     <>
       <div className="flex items-center t-body lh-copy mb3 ml3 w-two-thirds-ns w-100 blue">
         <FormattedMessage id="store/return-app.request-return.page.header.subtitle" />
       </div>
-
-      <MobileList cardTypeByPage="request-return" items={orders.list ?? []} />
 
       <Table
         fullWidth
