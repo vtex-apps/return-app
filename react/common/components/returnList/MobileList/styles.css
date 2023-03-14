@@ -128,3 +128,9 @@
 
   gap: 10px;
 }
+
+.emptyList {
+  font-size: 1rem;
+  font-weight: 500;
+  
+}

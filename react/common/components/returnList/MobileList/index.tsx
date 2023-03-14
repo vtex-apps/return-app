@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { GridCard } from '../../GridCard'
@@ -22,6 +22,7 @@ const CSS_HANDLES = [
   'returnList',
   'returnListSingle',
   'returnListDouble',
+  'emptyList',
 ] as const
 
 const MobileList = ({
@@ -29,40 +30,47 @@ const MobileList = ({
   items = [],
 }: MobileListProps) => {
   const [showDoubleGridVisibility, setShowDoubleGridVisibility] = useState(true)
+
   const handles = useCssHandles(CSS_HANDLES)
+  const hasItems = useMemo(() => items?.length > 0, [items])
 
   return (
     <div className={handles.mobileReturnListContainer}>
-      <div className={handles.controlGridVisibility}>
-        <span>Visualização:</span>
-        <div className={handles.controlGridVisibilityButtons}>
-          <button onClick={() => setShowDoubleGridVisibility(false)}>
-            <SingleGridIcon filled={!showDoubleGridVisibility} />
-          </button>
-          <button onClick={() => setShowDoubleGridVisibility(true)}>
-            <DoubleGridIcon filled={showDoubleGridVisibility} />
-          </button>
-        </div>
-      </div>
+      {!hasItems && (
+        <span className={handles.emptyList}>Nenhum resultado disponível</span>
+      )}
 
-      <div
-        className={`${handles.returnList} ${
-          showDoubleGridVisibility
-            ? handles.returnListDouble
-            : handles.returnListSingle
-        }`}
-      >
-        {!items ||
-          (items?.length <= 0 && <span>Nenhum resultado disponível</span>)}
+      {hasItems && (
+        <>
+          <div className={handles.controlGridVisibility}>
+            <span>Visualização:</span>
+            <div className={handles.controlGridVisibilityButtons}>
+              <button onClick={() => setShowDoubleGridVisibility(false)}>
+                <SingleGridIcon filled={!showDoubleGridVisibility} />
+              </button>
+              <button onClick={() => setShowDoubleGridVisibility(true)}>
+                <DoubleGridIcon filled={showDoubleGridVisibility} />
+              </button>
+            </div>
+          </div>
 
-        {items?.map((item) => (
-          <GridCard
-            key={item?.orderId ?? ''}
-            cardTypeByPage={cardTypeByPage}
-            item={item}
-          />
-        ))}
-      </div>
+          <div
+            className={`${handles.returnList} ${
+              showDoubleGridVisibility
+                ? handles.returnListDouble
+                : handles.returnListSingle
+            }`}
+          >
+            {items?.map((item) => (
+              <GridCard
+                key={item?.orderId ?? ''}
+                cardTypeByPage={cardTypeByPage}
+                item={item}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }
