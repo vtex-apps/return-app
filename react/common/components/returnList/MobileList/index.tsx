@@ -10,8 +10,6 @@ import './styles.css'
 
 interface MobileListProps {
   cardTypeByPage?: 'my-returns' | 'request-return'
-  // items: Maybe<Array<Maybe<OrderToReturnSummary>>> | ReturnRequestResponse[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: any
 }
 

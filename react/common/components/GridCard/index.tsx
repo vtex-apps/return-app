@@ -10,7 +10,6 @@ import './styles.css'
 
 interface GridCardProps {
   cardTypeByPage?: 'my-returns' | 'request-return'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any
 }
 
