@@ -28,7 +28,7 @@ export async function saveSellerSettingService(ctx: Context, args: MutationSaveS
   // validate if all custom reasons have unique locales for their translations
   valideteUniqueCustomReasonsPerLocale(customReturnReasons)
 
-  const currentSettings = {
+  const currentSettings: any = {
     ...settings,
     // validate that there is at least one payment method selected or user has to use the same as in the order
     paymentOptions: validatePaymentOptions(paymentOptions),

@@ -88,9 +88,12 @@ export const CustomReasons = () => {
     useState<CustomReasonWithIndex | null>(null)
 
   const {
-    appSettings: { customReturnReasons },
-    actions: { dispatch },
+    appSettings,
+    actions,
   } = useSettings()
+
+  const { customReturnReasons } = appSettings || {}
+  const { dispatch } = actions || {}
 
   const handleDeleteCustomReason = (reasonIndex: number) => {
     setIndexToDelete(reasonIndex)

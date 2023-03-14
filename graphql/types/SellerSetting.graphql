@@ -1,7 +1,7 @@
 type SellerSetting {
   id: String
   sellerId: String!
-  parentAccount: String!
+  parentAccount: String
   maxDays: Int!
   excludedCategories: [String!]!
   paymentOptions: PaymentOptions!
@@ -17,7 +17,7 @@ type SellerSettingResponseList {
 input SellerSettingInput  {
   id: String
   sellerId: String!
-  parentAccount: String!
+  parentAccount: String
   maxDays: Int!
   excludedCategories: [String!]!
   paymentOptions: PaymentOptionsInput!

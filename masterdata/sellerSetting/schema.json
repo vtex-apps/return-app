@@ -70,8 +70,7 @@
     }
   },
   "required": [
-    "sellerId",
-    "parentAccount"
+    "sellerId"
   ],
   "v-cache": false,
   "v-default-fields": [

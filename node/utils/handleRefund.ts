@@ -106,7 +106,6 @@ export const handleRefund = async ({
 
       return null
     } catch (error) {
-      console.log('ERRROR: ', error?.response?.data)
       throw new ResolverError('Error creating refund invoice')
     }
   }

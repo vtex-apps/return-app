@@ -1,5 +1,8 @@
 type Query {
   returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
+  returnSellerSettings(sellerId: String!): SellerSetting   
+  @withUserProfile
+  @cacheControl(maxAge: ZERO)
   categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
   """
   storeUserEmail: If not passed, resolver will try to parse it from session cookie.
@@ -32,6 +35,13 @@ type Query {
   nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
   sellerSetting(sellerId: String!): SellerSetting
   sellerSettingList: SellerSettingResponseList @cacheControl(maxAge: ZERO)
+  returnSettingsList(
+    filter: ReturnSettingsFilters
+    page: Int!
+    perPage: Int
+  ): ReturnSettingsList
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
 }
 
 type Mutation {
@@ -39,7 +49,7 @@ type Mutation {
     @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
   saveSellerSetting(settings:  SellerSettingInput!): Boolean
-  updateSellerSetting(sellerId: String!, settings: SellerSettingInput!): Boolean
+  updateSellerSetting(id: ID!, settings: SellerSettingInput!): Boolean
   updateReturnRequestStatus(
     requestId: ID!
     sellerName: String

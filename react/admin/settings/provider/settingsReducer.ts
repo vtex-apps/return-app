@@ -3,9 +3,10 @@ import type {
   PaymentOptions,
   ReturnAppSettings,
   ReturnOption,
+  SellerSetting
 } from 'vtex.return-app'
 
-export const initialSettingsState: ReturnAppSettings = {
+export const initialSettingsState: ReturnAppSettings | SellerSetting = {
   maxDays: 0,
   excludedCategories: [],
   termsUrl: '',
@@ -70,10 +71,17 @@ export const optionsAction = (options: ReturnOption) => {
   }
 }
 
-export const initialStateAction = (initialState: ReturnAppSettings) => {
+export const initialStateAction = (initialState: ReturnAppSettings | SellerSetting) => {
   return {
     type: 'updateInitialState' as const,
     payload: initialState,
+  }
+}
+
+export const initialStateActionSeller = (initialStateSeller: ReturnAppSettings | SellerSetting) => {
+  return {
+    type: 'updateInitialStateSeller' as const,
+    payload: initialStateSeller,
   }
 }
 
@@ -85,8 +93,9 @@ export type Actions =
   | ReturnType<typeof customReturnReasonsAction>
   | ReturnType<typeof optionsAction>
   | ReturnType<typeof initialStateAction>
+  | ReturnType<typeof initialStateActionSeller>
 
-export const settingsReducer = (state: ReturnAppSettings, action: Actions) => {
+export const settingsReducer = (state: ReturnAppSettings | SellerSetting, action: Actions) => {
   switch (action.type) {
     case 'updateMaxDays': {
       return {
@@ -131,6 +140,10 @@ export const settingsReducer = (state: ReturnAppSettings, action: Actions) => {
     }
 
     case 'updateInitialState': {
+      return action.payload
+    }
+
+    case 'updateInitialStateSeller': {
       return action.payload
     }
 

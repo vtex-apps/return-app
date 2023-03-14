@@ -97,9 +97,12 @@ export const TranslationsModal = ({
   >([])
 
   const {
-    appSettings: { customReturnReasons },
-    actions: { dispatch },
+    appSettings,
+    actions,
   } = useSettings()
+
+  const { customReturnReasons } = appSettings || {}
+  const { dispatch } = actions || {}
 
   const { data, loading, error } = useQuery<{ tenantInfo: Tenant }>(TENANT_INFO)
 
