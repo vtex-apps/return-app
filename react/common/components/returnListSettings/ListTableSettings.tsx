@@ -4,18 +4,17 @@ import { Table, EmptyState } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 
-import ReturnListSchema from './ListTableSchema'
-import JumpToPage from './JumpToPage'
-import ListTableFilter from './ListTableFilter'
-import { useReturnRequestList } from '../../../hooks/useReturnRequestList'
-
+import ReturnListTableSchemaSettings from './ListTableSchemaSettings'
+import JumpToPageSettings from './JumpToPageSettings'
+import ListTableFilterSettings from './ListTableFilterSettings'
+import { useSettingsRequestList } from '../../../hooks/useSettingsRequestList'
 
 const CSS_HANDLES = ['listTableContainer'] as const
 
-const ListTable = () => {
+const ListTableSettings = () => {
   const {
     returnRequestData: { data, loading, error, refetch },
-  } = useReturnRequestList()
+  } = useSettingsRequestList()
 
   const {
     route: { domain },
@@ -26,8 +25,8 @@ const ListTable = () => {
 
   const handles = useCssHandles(CSS_HANDLES)
 
-  const { returnRequestList } = data ?? {}
-  const { list, paging } = returnRequestList ?? {}
+  const { returnSettingsList } = data ?? {}
+  const { list, paging } = returnSettingsList ?? {}
 
   let pageItemFrom = 0
   let pageItemTo = 0
@@ -64,7 +63,7 @@ const ListTable = () => {
     desiredPage && refetch({ page: desiredPage })
   }
 
-  const returnsListSchema = useMemo(() => ReturnListSchema(), [])
+  const returnsListSchema = useMemo(() => ReturnListTableSchemaSettings(), [])
 
   if (error) {
     return (
@@ -81,7 +80,7 @@ const ListTable = () => {
   return (
     <div className={handles.listTableContainer}>
       {mobile && !isAdmin ? null : (
-        <ListTableFilter
+        <ListTableFilterSettings
           refetch={refetch}
           loading={loading}
           isDisabled={!list?.length}
@@ -112,7 +111,7 @@ const ListTable = () => {
         }}
       />
       {!phone && paging && list?.length && !loading ? (
-        <JumpToPage
+        <JumpToPageSettings
           handleJumpToPage={handleJumpToPage}
           currentPage={paging.currentPage}
           maxPage={paging.pages}
@@ -122,4 +121,4 @@ const ListTable = () => {
   )
 }
 
-export default ListTable
+export default ListTableSettings

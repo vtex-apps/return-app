@@ -42,10 +42,12 @@ const messages = defineMessages({
 export const GeneralOptions = () => {
   const {
     appSettings,
-    actions: { dispatch },
+    actions ,
   } = useSettings()
 
   const intl = useIntl()
+  
+  const dispatch = actions?.dispatch 
 
   const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target

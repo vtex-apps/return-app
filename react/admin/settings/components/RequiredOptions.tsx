@@ -8,9 +8,11 @@ import { useSettings } from '../hooks/useSettings'
 export const RequiredOptions = () => {
   const {
     appSettings,
-    actions: { dispatch },
+    actions ,
   } = useSettings()
 
+  const dispatch = actions?.dispatch 
+  
   const handleMaxDaysInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     const maxDays = Number(value)

@@ -1,0 +1,23 @@
+input ReturnSettingsFilters {
+  id: String
+  sellerName: String
+
+}
+
+type ReturnSettingsList {
+  list: [ReturnSettingsResponse!]!
+  paging: Pagination!
+}
+
+
+type ReturnSettingsResponse {
+  id: ID!
+  sellerId: String
+  maxDays: Int!
+  excludedCategories: [String!]!
+  paymentOptions: PaymentOptions!
+  termsUrl: String!
+  customReturnReasons: [CustomReturnReason!]
+  options: ReturnOption
+
+}
