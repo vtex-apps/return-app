@@ -36,7 +36,7 @@ export const RequiredOptions = () => {
         <div className="w-50 ph1">
           <Input
             // logic to avoid leading zero to be persistent in the input
-            value={appSettings.maxDays === 0 ? '' : appSettings.maxDays}
+            value={appSettings?.maxDays === 0 ? '' : appSettings?.maxDays}
             type="number"
             size="regular"
             label={
@@ -49,7 +49,7 @@ export const RequiredOptions = () => {
         </div>
         <div className="w-50 ph1">
           <Input
-            value={appSettings.termsUrl}
+            value={appSettings?.termsUrl}
             type="url"
             size="regular"
             label={

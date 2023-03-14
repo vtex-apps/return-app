@@ -38,7 +38,7 @@ const filterSearchCategories = ({
   const removeExcluded = categoryList.filter(({ id }) => {
     if (!id) return false
 
-    return !excludedCategories.includes(id)
+    return !excludedCategories?.includes(id)
   })
 
   const formattedLabels = removeExcluded.map(({ id, name }) => {
@@ -56,9 +56,13 @@ const filterSearchCategories = ({
 export const ExcludedCategories = () => {
   const [searchedCategory, setSearchedCategory] = React.useState('')
   const {
-    appSettings: { excludedCategories },
-    actions: { dispatch },
+    appSettings,
+    actions,
   } = useSettings()
+
+  const { dispatch } = actions || {}
+
+  const { excludedCategories } = appSettings || {}
 
   const intl = useIntl()
   const { data, loading, error } = useQuery<{
@@ -141,7 +145,7 @@ export const ExcludedCategories = () => {
         />
       </div>
 
-      {!excludedCategories.length ? null : (
+      {!excludedCategories?.length ? null : (
         <ul>
           {excludedCategories.map((categoryId) => {
             const categoryName = categoryNamesMap[categoryId]

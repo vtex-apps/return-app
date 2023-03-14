@@ -21,7 +21,7 @@ import { GeneralOptions } from '../components/GeneralOptions'
 import { PaymentOptions } from '../components/PaymentOptions'
 import { RequiredOptions } from '../components/RequiredOptions'
 import { WarningModal } from '../components/WarningModal'
-import { useSettingsDetail } from '../hooks/useSettings'
+import { useSettings } from '../hooks/useSettings'
 
 export interface ModalWarningState {
   openModal: boolean
@@ -60,9 +60,10 @@ export const SettingDetailsContainer = () => {
     loading,
     error,
     savingAppSettings,
-    actions: { handleSaveAppSettings, dispatch },
-  } = useSettingsDetail()
-  console.log("SETTINGS " ,appSettings)
+    actions,
+  } = useSettings()
+
+  const { handleSaveAppSettings, dispatch } = actions || {}
 
   const [maxDaysWarning, setWarning] = useState<ModalWarningState>({
     openModal: false,
@@ -88,7 +89,7 @@ export const SettingDetailsContainer = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { customReturnReasons, maxDays, paymentOptions } = appSettings
+    const { customReturnReasons, maxDays, paymentOptions } = appSettings || {}
 
     const maxCustomOptionsDays = customReturnReasons?.reduce(
       (maxDay, option) => (maxDay > option.maxDays ? maxDay : option.maxDays),
@@ -131,14 +132,14 @@ export const SettingDetailsContainer = () => {
     )
 
     const paymentOptionsPayload = {
-      ...appSettings.paymentOptions,
+      ...appSettings?.paymentOptions,
       allowedPaymentTypes: updatedPaymentOptions,
     }
 
     dispatch({
       type: 'updatePaymentOptions',
       payload: {
-        ...appSettings.paymentOptions,
+        ...appSettings?.paymentOptions,
         allowedPaymentTypes: updatedPaymentOptions,
       },
     })

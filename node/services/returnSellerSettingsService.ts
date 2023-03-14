@@ -1,8 +1,6 @@
-import type {
-  ReturnAppSettings,
-} from 'vtex.return-app'
+import type { SellerSetting } from 'vtex.return-app'
 
-export async function returnSellerSettingsService(ctx: Context, sellerId: string): Promise<ReturnAppSettings | null> {
+export async function returnSellerSettingsService(ctx: Context, sellerId: string): Promise<SellerSetting | null> {
   const {
     clients: { sellerSetting },
   } = ctx
@@ -23,20 +21,20 @@ export async function returnSellerSettingsService(ctx: Context, sellerId: string
     undefined,
     `sellerId=${sellerId}`
   )
-  if(settings?.[0]){
-    const response: ReturnAppSettings = {
-      maxDays: settings?.[0]?.maxDays,
-      excludedCategories: settings?.[0]?.excludedCategories,
-      paymentOptions: settings?.[0]?.paymentOptions,
-      termsUrl: settings?.[0]?.termsUrl,
-      customReturnReasons:settings?.[0]?.customReturnReasons,
-      options: settings?.[0]?.options,
-    }
-    return response
-  }else{
-    return null
-  }
- 
+  // if(settings?.[0]){
+  //   const response: ReturnAppSettings = {
+  //     maxDays: settings?.[0]?.maxDays,
+  //     excludedCategories: settings?.[0]?.excludedCategories,
+  //     paymentOptions: settings?.[0]?.paymentOptions,
+  //     termsUrl: settings?.[0]?.termsUrl,
+  //     customReturnReasons:settings?.[0]?.customReturnReasons,
+  //     options: settings?.[0]?.options,
+  //   }
+  //   return response
+  // }else{
+  //   return null
+  // }
+  return settings?.[0] || null
 }
 
 

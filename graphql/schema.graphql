@@ -1,6 +1,6 @@
 type Query {
   returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
-  returnSellerSettings(sellerId: String!): ReturnAppSettings   
+  returnSellerSettings(sellerId: String!): SellerSetting   
   @withUserProfile
   @cacheControl(maxAge: ZERO)
   categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
@@ -49,7 +49,7 @@ type Mutation {
     @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
   saveSellerSetting(settings:  SellerSettingInput!): Boolean
-  updateSellerSetting(sellerId: String!, settings: SellerSettingInput!): Boolean
+  updateSellerSetting(id: ID!, settings: SellerSettingInput!): Boolean
   updateReturnRequestStatus(
     requestId: ID!
     sellerName: String

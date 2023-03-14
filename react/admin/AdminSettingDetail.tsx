@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { AlertProvider } from './provider/AlertProvider'
-import { SettingsDetailProvider } from './settings/provider/SettingsDetailProvider'
+import { SettingsProvider } from './settings/provider/SettingsProvider'
 import { SettingDetailsContainer } from './settings/SettingDetails/SettingDetailsContainer'
 
 interface CustomRouteProps {
@@ -13,9 +13,9 @@ interface CustomRouteProps {
 export const AdminSettingDetail = ({ params }: CustomRouteProps) => {
   return (
     <AlertProvider>
-    <SettingsDetailProvider sellerId={params.id}>
+    <SettingsProvider sellerId={params.id}>
       <SettingDetailsContainer />
-    </SettingsDetailProvider>
+    </SettingsProvider>
   </AlertProvider>
   )
 }
