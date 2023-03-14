@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useMemo, useState } from 'react'
 import { useCssHandles } from 'vtex.css-handles'
+import { FormattedMessage } from 'react-intl'
 
 import { GridCard } from '../../GridCard'
 import SingleGridIcon from './icons/SingleGrid'
@@ -35,7 +36,9 @@ const MobileList = ({
   return (
     <div className={handles.mobileReturnListContainer}>
       {!hasItems && (
-        <span className={handles.emptyList}>Nenhum resultado disponível</span>
+        <span className={handles.emptyList}>
+          <FormattedMessage id="return-app.return-request-list.table.emptyState" />
+        </span>
       )}
 
       {hasItems && (
