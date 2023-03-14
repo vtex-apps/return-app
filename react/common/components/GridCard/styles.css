@@ -26,6 +26,7 @@
 .returnListItemHeader > span {
   font-size: .75rem;
   color: #464646;
+  text-align: left;
 }
 
 .returnListItemImage {
@@ -65,15 +66,18 @@
   font-size: .875rem;
   color: #464646;
   font-weight: 400;
+  text-align: left;
 }
 
 .returnListItemInfoIdContainer > span:first-child {
   font-weight: 500;
+  text-align: left;
 }
 
 .returnListItemInfoStatus {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 
   gap: 10px;
 }
@@ -82,8 +86,10 @@
   font-size: .875rem;
   color: #464646;
   font-weight: 400;
+  text-align: left;
 }
 
 .returnListItemInfoStatus > span:first-child {
   font-weight: 500;
+  text-align: left;
 }

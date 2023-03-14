@@ -36,11 +36,7 @@ const MobileList = ({
   items = [],
 }: MobileListProps) => {
   const [showDoubleGridVisibility, setShowDoubleGridVisibility] = useState(true)
-
   const handles = useCssHandles(CSS_HANDLES)
-
-  // eslint-disable-next-line no-console
-  console.log({ items })
 
   return (
     <div className={handles.mobileReturnListContainer}>

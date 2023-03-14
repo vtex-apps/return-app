@@ -53,10 +53,10 @@ export const GridCard = ({
       : item?.items?.[0]?.imageUrl ?? ''
 
   return (
-    <button
-      type="button"
-      className={handles.returnListItem}
+    <div
       onClick={navigateToCorrectReturnPage}
+      className={handles.returnListItem}
+      aria-hidden="true"
     >
       {cardTypeByPage === 'my-returns' && (
         <div className={handles.returnListItemHeader}>
@@ -116,6 +116,6 @@ export const GridCard = ({
           </div>
         )}
       </div>
-    </button>
+    </div>
   )
 }
