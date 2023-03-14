@@ -1,10 +1,17 @@
+import { storeUserGuard } from '../utils/storeUserGuard'
+
 export async function getOrders(ctx: Context, next: () => Promise<any>) {
   const {
     clients: { returnApp: returnAppClient },
     vtex: { logger },
+    state: { userProfile },
   } = ctx
 
   const { where } = ctx.vtex.route.params as { where: string }
+
+  if (userProfile?.role === 'store-user') {
+    storeUserGuard('orders', { source: where, identifier: userProfile.email })
+  }
 
   const clientEmailKey = 'clientEmail'
 

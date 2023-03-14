@@ -27,6 +27,8 @@ import { createRefund } from './middlewares/createRefund'
 import { errorHandler } from './middlewares/errorHandler'
 import { getExtraSettings } from './middlewares/getExtraSettings'
 import { mutations } from './resolvers'
+import { auth } from './middlewares/auth'
+import { adminAccess } from './middlewares/adminAccess'
 
 const TIMEOUT_MS = 20000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -47,80 +49,93 @@ const clients: ClientsConfig<Clients> = {
 declare global {
   type Context = ServiceContext<Clients, State>
 
-  type State = RecorderState
+  interface UserProfile {
+    email: string
+    userId: string
+    firstName?: string
+    lastName?: string
+    role: 'admin' | 'store-user'
+  }
+
+  interface State extends RecorderState {
+    // Added in the state via graphql directive or auth middleware when request has vtexidclientautcookie
+    userProfile?: UserProfile
+    // Added in the state via auth middleware when request has appkey and apptoken.
+    appkey?: string
+  }
 }
 
 export default new Service({
   clients,
   routes: {
     getSchemas: method({
-      GET: [errorHandler, returnAppGetSchemas],
+      GET: [errorHandler, auth, adminAccess, returnAppGetSchemas],
     }),
     generateSchema: method({
-      PUT: [errorHandler, generateReturnsSchema],
+      PUT: [errorHandler, auth, adminAccess, generateReturnsSchema],
     }),
     getDocuments: method({
-      GET: [errorHandler, receiveDocuments],
+      GET: [errorHandler, auth, receiveDocuments],
     }),
     getRequests: method({
-      GET: [errorHandler, getRequests],
+      GET: [errorHandler, auth, getRequests],
     }),
     getCategories: method({
-      GET: [errorHandler, receiveCategories],
+      GET: [errorHandler, auth, receiveCategories],
     }),
     getOrders: method({
-      GET: [errorHandler, getOrders],
+      GET: [errorHandler, auth, getOrders],
     }),
     getOrder: method({
-      GET: [errorHandler, getOrder],
+      GET: [errorHandler, auth, getOrder],
     }),
     saveDocuments: method({
-      POST: [errorHandler, saveMasterdataDocuments],
+      POST: [errorHandler, auth, saveMasterdataDocuments],
     }),
     savePartialDocument: method({
-      POST: [errorHandler, saveMasterdataPartialDocuments],
+      POST: [errorHandler, auth, saveMasterdataPartialDocuments],
     }),
     createGiftCard: method({
-      POST: [errorHandler, createGiftCard],
+      POST: [errorHandler, auth, adminAccess, createGiftCard],
     }),
     updateGiftCard: method({
-      POST: [errorHandler, updateGiftCard],
+      POST: [errorHandler, auth, adminAccess, updateGiftCard],
     }),
     getGiftCard: method({
-      GET: [errorHandler, getGiftCard],
+      GET: [errorHandler, auth, getGiftCard],
     }),
     getSkuById: method({
-      GET: [errorHandler, getSkuById],
+      GET: [errorHandler, auth, getSkuById],
     }),
     sendMail: method({
-      POST: [errorHandler, sendMail],
+      POST: [errorHandler, auth, adminAccess, sendMail],
     }),
     apiGetRequest: method({
-      GET: [errorHandler, getRequest],
+      GET: [errorHandler, auth, adminAccess, getRequest],
     }),
     apiGetList: method({
-      GET: [errorHandler, getList],
+      GET: [errorHandler, auth, adminAccess, getList],
     }),
     apiAddComment: method({
-      POST: [errorHandler, addComment],
+      POST: [errorHandler, auth, adminAccess, addComment],
     }),
     apiVerifyPackage: method({
-      POST: [errorHandler, verifyPackage],
+      POST: [errorHandler, auth, adminAccess, verifyPackage],
     }),
     apiChangeProductStatus: method({
-      POST: [errorHandler, changeProductStatus],
+      POST: [errorHandler, auth, adminAccess, changeProductStatus],
     }),
     apiCheckStatus: method({
-      GET: [errorHandler, checkStatus],
+      GET: [errorHandler, auth, adminAccess, checkStatus],
     }),
     apiUpdateStatus: method({
-      POST: [errorHandler, updateStatus],
+      POST: [errorHandler, auth, adminAccess, updateStatus],
     }),
     createRefund: method({
-      POST: [errorHandler, createRefund],
+      POST: [errorHandler, auth, adminAccess, createRefund],
     }),
     getExtraSettings: method({
-      GET: [errorHandler, getExtraSettings],
+      GET: [errorHandler, auth, adminAccess, getExtraSettings],
     }),
   },
   graphql: {

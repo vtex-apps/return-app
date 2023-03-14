@@ -78,6 +78,9 @@
       "name": "ListOrders"
     },
     {
+      "name": "sphinx-is-admin"
+    },
+    {
       "name": "outbound-access",
       "attrs": {
         "host": "api.vtex.com",
