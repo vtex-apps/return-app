@@ -78,10 +78,6 @@ const ListTable = () => {
     )
   }
 
-  if (mobile) {
-    return <MobileList items={list ?? []} />
-  }
-
   return (
     <div className={handles.listTableContainer}>
       {mobile && !isAdmin ? null : (
@@ -91,30 +87,35 @@ const ListTable = () => {
           isDisabled={!list?.length}
         />
       )}
-      <Table
-        fullWidth
-        loading={loading}
-        items={list}
-        emptyStateLabel={
-          <FormattedMessage id="return-app.return-request-list.table.emptyState" />
-        }
-        emptyStateChildren={
-          <p>
-            <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
-          </p>
-        }
-        schema={returnsListSchema}
-        pagination={{
-          textOf: (
-            <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
-          ),
-          onNextClick: handleNextPage,
-          onPrevClick: handlePrevPage,
-          currentItemFrom: pageItemFrom,
-          currentItemTo: pageItemTo,
-          totalItems: paging?.total,
-        }}
-      />
+
+      {mobile ? (
+        <MobileList items={list ?? []} />
+      ) : (
+        <Table
+          fullWidth
+          loading={loading}
+          items={list}
+          emptyStateLabel={
+            <FormattedMessage id="return-app.return-request-list.table.emptyState" />
+          }
+          emptyStateChildren={
+            <p>
+              <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
+            </p>
+          }
+          schema={returnsListSchema}
+          pagination={{
+            textOf: (
+              <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
+            ),
+            onNextClick: handleNextPage,
+            onPrevClick: handlePrevPage,
+            currentItemFrom: pageItemFrom,
+            currentItemTo: pageItemTo,
+            totalItems: paging?.total,
+          }}
+        />
+      )}
       {!phone && paging && list?.length && !loading ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}

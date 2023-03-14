@@ -4,6 +4,8 @@ import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime/'
 
+import { renderStatus } from '../RenderStatus'
+
 import './styles.css'
 
 interface GridCardProps {
@@ -99,7 +101,7 @@ export const GridCard = ({
                 <FormattedMessage id="return-app.return-request-details.status-timeline.header" />
                 :
               </span>
-              <span>Novo</span>
+              {!!item?.status && <span>{renderStatus(item.status)}</span>}
             </div>
           </>
         )}

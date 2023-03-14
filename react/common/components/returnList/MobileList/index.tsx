@@ -22,13 +22,6 @@ const CSS_HANDLES = [
   'returnList',
   'returnListSingle',
   'returnListDouble',
-  'returnListItem',
-  'returnListItemHeader',
-  'returnListItemImage',
-  'returnListItemInfo',
-  'returnListItemInfoDate',
-  'returnListItemInfoIdContainer',
-  'returnListItemInfoStatus',
 ] as const
 
 const MobileList = ({

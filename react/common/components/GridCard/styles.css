@@ -83,7 +83,7 @@
 }
 
 .returnListItemInfoStatus > span {
-  font-size: .875rem;
+  font-size: .75rem;
   color: #464646;
   font-weight: 400;
   text-align: left;
@@ -91,5 +91,9 @@
 
 .returnListItemInfoStatus > span:first-child {
   font-weight: 500;
-  text-align: left;
+}
+
+.returnListItemInfoStatus > span:last-child {
+  min-width: 20px;
+  text-align: right;
 }

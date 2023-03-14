@@ -129,43 +129,41 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
     setFetchMoreState('IDLE')
   }
 
-  if (mobile) {
-    return (
-      <MobileList cardTypeByPage="request-return" items={orders.list ?? []} />
-    )
-  }
-
   return (
     <>
       <div className="flex items-center t-body lh-copy mb3 ml3 w-two-thirds-ns w-100 blue">
         <FormattedMessage id="store/return-app.request-return.page.header.subtitle" />
       </div>
 
-      <Table
-        fullWidth
-        emptyStateLabel={
-          <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
-        }
-        schema={OrderlListTableSchema({
-          navigate,
-          isSmallScreen: phone,
-        })}
-        items={orders.list}
-        loading={fetchMoreState === 'LOADING'}
-        pagination={{
-          onNextClick: () => handlePaginationClick('next'),
-          onPrevClick: () => handlePaginationClick('previous'),
-          currentItemFrom: perPage * currentPage - perPage + 1,
-          currentItemTo:
-            perPage * currentPage > totalItems
-              ? totalItems
-              : perPage * currentPage,
-          textOf: (
-            <FormattedMessage id="store/return-app.return-order-list.table-pagination.text-of" />
-          ),
-          totalItems,
-        }}
-      />
+      {mobile ? (
+        <MobileList cardTypeByPage="request-return" items={orders.list ?? []} />
+      ) : (
+        <Table
+          fullWidth
+          emptyStateLabel={
+            <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
+          }
+          schema={OrderlListTableSchema({
+            navigate,
+            isSmallScreen: phone,
+          })}
+          items={orders.list}
+          loading={fetchMoreState === 'LOADING'}
+          pagination={{
+            onNextClick: () => handlePaginationClick('next'),
+            onPrevClick: () => handlePaginationClick('previous'),
+            currentItemFrom: perPage * currentPage - perPage + 1,
+            currentItemTo:
+              perPage * currentPage > totalItems
+                ? totalItems
+                : perPage * currentPage,
+            textOf: (
+              <FormattedMessage id="store/return-app.return-order-list.table-pagination.text-of" />
+            ),
+            totalItems,
+          }}
+        />
+      )}
     </>
   )
 }

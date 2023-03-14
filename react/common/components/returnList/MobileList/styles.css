@@ -128,13 +128,3 @@
 
   gap: 10px;
 }
-
-.returnListItemInfoStatus > span {
-  font-size: .875rem;
-  color: #464646;
-  font-weight: 400;
-}
-
-.returnListItemInfoStatus > span:first-child {
-  font-weight: 500;
-}
