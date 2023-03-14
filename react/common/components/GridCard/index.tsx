@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
+import { useRuntime } from 'vtex.render-runtime/'
 
 import './styles.css'
 
@@ -26,15 +27,43 @@ export const GridCard = ({
   item,
 }: GridCardProps) => {
   const handles = useCssHandles(CSS_HANDLES)
+  const { navigate } = useRuntime()
+
+  const navigateToCorrectReturnPage = () => {
+    if (cardTypeByPage === 'request-return') {
+      navigate({
+        to: `#/my-returns/add/${item?.orderId ?? ''}`,
+      })
+    } else {
+      navigate({
+        to: `#/my-returns/details/${item?.id ?? ''}`,
+      })
+    }
+  }
+
+  const availableItemsToReturnCount = useMemo(() => {
+    return (
+      (item?.invoicedItems?.length ?? 0) - (item?.processedItems?.length ?? 0)
+    )
+  }, [item])
+
+  const itemImage =
+    cardTypeByPage === 'request-return'
+      ? item?.invoicedItems?.[0]?.imageUrl ?? ''
+      : item?.items?.[0]?.imageUrl ?? ''
 
   return (
-    <div className={handles.returnListItem}>
+    <button
+      type="button"
+      className={handles.returnListItem}
+      onClick={navigateToCorrectReturnPage}
+    >
       {cardTypeByPage === 'my-returns' && (
         <div className={handles.returnListItemHeader}>
           <span>
             <FormattedMessage id="store/return-app.request-return.page.card.sequential-number" />
           </span>
-          <span>123456789</span>
+          <span>{item?.sequenceNumber ?? '123456-7'}</span>
         </div>
       )}
 
@@ -46,13 +75,13 @@ export const GridCard = ({
       )}
 
       <div className={handles.returnListItemImage}>
-        <img src="https://fakeimg.pl/159x162/" alt="order image" />
+        <img src={itemImage ?? '#'} alt="order image" />
       </div>
 
       <div className={handles.returnListItemInfo}>
         <span className={handles.returnListItemInfoDate}>
           <FormattedDate
-            value="2023-12-31"
+            value={item?.creationDate ?? new Date()}
             day="2-digit"
             month="2-digit"
             year="numeric"
@@ -81,12 +110,12 @@ export const GridCard = ({
               <FormattedMessage id="store/return-app.request-return.page.card.return-text" />
             </span>
             <span>
-              {item?.invoicedItems?.length ?? 0}/
+              {availableItemsToReturnCount ?? 0}/
               {item?.invoicedItems?.length ?? 0}
             </span>
           </div>
         )}
       </div>
-    </div>
+    </button>
   )
 }
