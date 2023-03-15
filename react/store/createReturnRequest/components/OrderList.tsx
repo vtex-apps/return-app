@@ -1,8 +1,14 @@
-import React, { useState } from 'react'
-import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
+import React, { useCallback, useEffect, useState } from 'react'
+import type {
+  Maybe,
+  OrdersToReturnList,
+  OrderToReturnSummary,
+  QueryOrdersAvailableToReturnArgs,
+} from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime/'
 import { Table, Button } from 'vtex.styleguide'
+import type { ApolloQueryResult } from 'apollo-client'
 
 import { createItemsSummary } from '../../utils/createItemsSummary'
 import MobileList from '../../../common/components/returnList/MobileList'
@@ -11,6 +17,12 @@ type Operation = 'next' | 'previous'
 interface Props {
   orders: OrdersToReturnList
   handlePagination: (page: number, operation: Operation) => Promise<void>
+  mobileList: Array<Maybe<OrderToReturnSummary>>
+  refetch: (
+    variables?: QueryOrdersAvailableToReturnArgs | undefined
+  ) => Promise<
+    ApolloQueryResult<{ ordersAvailableToReturn: OrdersToReturnList }>
+  >
 }
 
 interface RowData {
@@ -101,7 +113,12 @@ const OrderlListTableSchema = ({
   }
 }
 
-export const OrderList = ({ orders, handlePagination }: Props) => {
+export const OrderList = ({
+  orders,
+  handlePagination,
+  mobileList,
+  refetch,
+}: Props) => {
   const {
     navigate,
     hints: { phone, mobile },
@@ -129,6 +146,40 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
     setFetchMoreState('IDLE')
   }
 
+  const handleFetchMoreProducts = useCallback(async () => {
+    const maxPages = paging?.pages ?? 1
+
+    const { scrollHeight } = document.documentElement
+    const { scrollTop } = document.documentElement
+    const { clientHeight } = document.documentElement
+
+    const userReachedEndOfPage = scrollTop + clientHeight === scrollHeight
+
+    if (!userReachedEndOfPage) return
+
+    if (currentPage < maxPages) {
+      try {
+        await refetch({ page: currentPage + 1 })
+      } catch (err) {
+        console.error('Error while fetching more items', err)
+      }
+    }
+  }, [currentPage, paging?.pages, refetch])
+
+  useEffect(() => {
+    if (!phone) return
+
+    if (window) {
+      window.addEventListener('scroll', handleFetchMoreProducts)
+    }
+
+    return () => {
+      if (window) {
+        window.removeEventListener('scroll', handleFetchMoreProducts)
+      }
+    }
+  }, [phone, handleFetchMoreProducts])
+
   return (
     <>
       <div className="flex items-center t-body lh-copy mb3 ml3 w-two-thirds-ns w-100 blue">
@@ -136,7 +187,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
       </div>
 
       {mobile ? (
-        <MobileList cardTypeByPage="request-return" items={orders.list ?? []} />
+        <MobileList cardTypeByPage="request-return" items={mobileList ?? []} />
       ) : (
         <Table
           fullWidth
