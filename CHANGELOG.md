@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.5.8] - 2023-03-16
+### Added
+- Create new layout for My Returns List and Request Returns Available List (change from table to Grid Layout with cards)
+
 ## [3.5.6] - 2023-02-06
 
 ## [3.5.5] - 2022-11-11
