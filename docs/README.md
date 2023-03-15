@@ -237,6 +237,20 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 |'jumpToPageContainer'|
 |'listTableContainer'|
 |'listTableFilterContainer'|
+|'mobileReturnListContainer'|
+|'controlGridVisibility'|
+|'controlGridVisibilityButtons'|
+|'emptyList'|
+|'returnList'|
+|'returnListSingle'|
+|'returnListDouble'|
+|'returnListItem'|
+|'returnListItemHeader'|
+|'returnListItemImage'|
+|'returnListItemInfo'|
+|'returnListItemInfoDate'|
+|'returnListItemInfoIdContainer'|
+|'returnListItemInfoStatus'|
 
 |CSS Handles STORE|
 |----------|
