@@ -16,8 +16,10 @@ import { ItemDetailsCard } from './ItemDetailsCard'
 
 type ItemStatus = 'new' | 'denied' | 'approved' | 'partiallyApproved'
 
-const CSS_HANDLES = ['itemDetailsListContainer'] as const
-const CSS_HANDLES_PHONE = ['itemDetailsListWrapper'] as const
+const CSS_HANDLES = [
+  'itemDetailsListContainer',
+  'itemDetailsListWrapper',
+] as const
 
 export interface ItemStatusInterface {
   status: ItemStatus
@@ -86,7 +88,7 @@ const getItemVerificationStatus = (
 
 export const ItemDetailsList = () => {
   const handles = useCssHandles(CSS_HANDLES)
-  const handlesPhone = useCssHandles(CSS_HANDLES_PHONE)
+
   const { formatMessage } = useIntl()
   const { data } = useReturnDetails()
   const {
@@ -109,7 +111,7 @@ export const ItemDetailsList = () => {
   if (phone) {
     return (
       <section
-        className={`${handlesPhone.itemDetailsListWrapper} mv4 flex flex-column`}
+        className={`${handles.itemDetailsListWrapper} mv4 flex flex-column`}
       >
         {items?.map((item) => {
           return (

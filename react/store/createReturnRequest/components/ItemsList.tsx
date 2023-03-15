@@ -14,7 +14,11 @@ interface Props {
   creationDate?: string
 }
 
-const CSS_HANDLES = ['itemsListContainer', 'itemsListTheadWrapper', 'cardItemsWrapper'] as const
+const CSS_HANDLES = [
+  'itemsListContainer',
+  'itemsListTheadWrapper',
+  'cardItemsWrapper',
+] as const
 
 const desktopOrder = [
   'product',
@@ -23,15 +27,6 @@ const desktopOrder = [
   'quantity-to-return',
   'reason',
   'condition',
-]
-
-const mobileOrder = [
-  'product',
-  'quantity-to-return',
-  'reason',
-  'condition',
-  'quantity',
-  'available-to-return',
 ]
 
 export const messages = defineMessages({
@@ -122,9 +117,7 @@ export const ItemsList = (props: Props) => {
         className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}
       >
         <tr className="w-100 truncate overflow-x-hidden">
-          {phone
-            ? mobileOrder.map((header) => TableHeader(header))
-            : desktopOrder.map((header) => TableHeader(header))}
+          {desktopOrder.map((header) => TableHeader(header))}
         </tr>
       </thead>
       <tbody className="v-mid return-itemsList-body">
