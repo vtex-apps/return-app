@@ -24,6 +24,20 @@ const CSS_HANDLES = [
   'productImageWrapper',
   'productImage',
   'itemsDetailText',
+  'cardWrapper',
+  'productImageWrapper',
+  'productImage',
+  'productDetailsWrapper',
+  'productText',
+  'quantityWrapper',
+  'quantityKey',
+  'quantityValue',
+  'availableToReturnWrapper',
+  'availableToReturnKey',
+  'availableToReturnValue',
+  'quantitySelectorWrapper',
+  'reasonWrapper',
+  'conditionWrapper',
 ] as const
 
 export const ItemsDetails = (props: Props) => {
@@ -44,25 +58,7 @@ export const ItemsDetails = (props: Props) => {
     hints: { phone },
   } = useRuntime()
 
-  const CSS_HANDLES_PHONE = [
-    'cardWrapper',
-    'productImageWrapper',
-    'productImage',
-    'productDetailsWrapper',
-    'productText',
-    'quantityWrapper',
-    'quantityKey',
-    'quantityValue',
-    'availableToReturnWrapper',
-    'availableToReturnKey',
-    'availableToReturnValue',
-    'quantitySelectorWrapper',
-    'reasonWrapper',
-    'conditionWrapper',
-  ] as const
-
   const handles = useCssHandles(CSS_HANDLES)
-  const handlesPhone = useCssHandles(CSS_HANDLES_PHONE)
 
   const { data: storeSettings } = useStoreSettings()
   const { options } = storeSettings ?? {}
@@ -173,40 +169,32 @@ export const ItemsDetails = (props: Props) => {
 
   if (phone) {
     return (
-      <div className={`${handlesPhone.cardWrapper} mb4`}>
+      <div className={`${handles.cardWrapper} mb4`}>
         <Box>
-          <div className={`${handlesPhone.productImageWrapper} flex`}>
+          <div className={`${handles.productImageWrapper} flex`}>
             <img
-              className={`${handlesPhone.productImage}`}
+              className={`${handles.productImage}`}
               src={imageUrl}
               alt="Product"
             />
           </div>
-          <div
-            className={`${handlesPhone.productDetailsWrapper} flex flex-column`}
-          >
-            <p className={`${handlesPhone.productText}`}>
-              {localizedName ?? name}
-            </p>
-            <div
-              className={`${handlesPhone.quantityWrapper} flex flex-row mb4`}
-            >
-              <span className={`${handlesPhone.quantityKey} mr2`}>
+          <div className={`${handles.productDetailsWrapper} flex flex-column`}>
+            <p className={`${handles.productText}`}>{localizedName ?? name}</p>
+            <div className={`${handles.quantityWrapper} flex flex-row mb4`}>
+              <span className={`${handles.quantityKey} mr2`}>
                 <FormattedMessage id="store/return-app.return-order-details.table-header.quantity" />
                 :
               </span>
-              <span className={`${handlesPhone.quantityValue}`}>
-                {quantity}
-              </span>
+              <span className={`${handles.quantityValue}`}>{quantity}</span>
             </div>
             <div
-              className={`${handlesPhone.availableToReturnWrapper} flex flex-row mb4`}
+              className={`${handles.availableToReturnWrapper} flex flex-row mb4`}
             >
-              <span className={`${handlesPhone.availableToReturnKey} mr2`}>
+              <span className={`${handles.availableToReturnKey} mr2`}>
                 <FormattedMessage id="store/return-app.return-order-details.table-header.available-to-return" />
                 :
               </span>
-              <span className={`${handlesPhone.availableToReturnValue}`}>
+              <span className={`${handles.availableToReturnValue}`}>
                 {availableToReturn}
               </span>
             </div>
@@ -218,7 +206,7 @@ export const ItemsDetails = (props: Props) => {
                 }
               />
             ) : null}
-            <div className={`${handlesPhone.quantitySelectorWrapper} mb4`}>
+            <div className={`${handles.quantitySelectorWrapper} mb4`}>
               <NumericStepper
                 size="small"
                 maxValue={availableToReturn}
@@ -228,7 +216,7 @@ export const ItemsDetails = (props: Props) => {
                 }
               />
             </div>
-            <div className={`${handlesPhone.reasonWrapper} mb4`}>
+            <div className={`${handles.reasonWrapper} mb4`}>
               <RenderReasonDropdown
                 isExcluded={isExcluded}
                 reason={currentItem?.returnReason?.reason ?? ''}
@@ -246,7 +234,7 @@ export const ItemsDetails = (props: Props) => {
               ) : null}
             </div>
             {!enableSelectItemCondition ? null : (
-              <div className={`${handlesPhone.conditionWrapper}`}>
+              <div className={`${handles.conditionWrapper}`}>
                 <RenderConditionDropdown
                   isExcluded={isExcluded}
                   condition={currentItem?.condition ?? ''}
@@ -271,11 +259,7 @@ export const ItemsDetails = (props: Props) => {
   return (
     <tr className={`${handles.detailsRowContainer}`}>
       <td className={`${handles.detailsTdWrapper} pa4`}>
-        <section
-          className={`${handles.productSectionWrapper} flex ${
-            phone ? 'w5' : ''
-          }`}
-        >
+        <section className={`${handles.productSectionWrapper} flex`}>
           <div
             className={`${handles.productImageWrapper} flex`}
             style={{ flexBasis: '50%' }}
@@ -302,7 +286,7 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </section>
       </td>
-      {phone ? null : ItemQuantityDataCell}
+      {ItemQuantityDataCell}
       <td className={`${handles.detailsTdWrapper} pa4`}>
         <NumericStepper
           size="small"
@@ -345,7 +329,6 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </td>
       )}
-      {!phone ? null : ItemQuantityDataCell}
     </tr>
   )
 }
