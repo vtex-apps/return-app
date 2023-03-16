@@ -278,7 +278,7 @@
   "return-app.return-request-list.table.emptyState-children": "Essayez différents filtres pour votre recherche",
   "return-app.return-request-list.table-pagination.textOf": "le",
   "return-app.return-request-list.table-data.requestId": "Demander une référence",
-  "return-app.return-request-list.table-data.sequenceNumber": "Numéro de séquence",
+  "return-app.return-request-list.table-data.sequenceNumber": "Nº de séquence",
   "return-app.return-request-list.table-data.orderId": "ID de commande",
   "return-app.return-request-list.table-data.createdDate": "Date de création",
   "return-app.return-request-list.table-data.status": "Statut",

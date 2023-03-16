@@ -278,7 +278,7 @@
   "return-app.return-request-list.table.emptyState-children": "Intenta utilizar filtros diferentes en tu búsqueda",
   "return-app.return-request-list.table-pagination.textOf": "de",
   "return-app.return-request-list.table-data.requestId": "ID de la solicitud",
-  "return-app.return-request-list.table-data.sequenceNumber": "Número de secuencia",
+  "return-app.return-request-list.table-data.sequenceNumber": "Nº de secuencia",
   "return-app.return-request-list.table-data.orderId": "ID del pedido",
   "return-app.return-request-list.table-data.createdDate": "Fecha de creación",
   "return-app.return-request-list.table-data.status": "Status",

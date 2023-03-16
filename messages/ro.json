@@ -278,7 +278,7 @@
   "return-app.return-request-list.table.emptyState-children": "Încearcă filtre diferite pentru căutare",
   "return-app.return-request-list.table-pagination.textOf": "din",
   "return-app.return-request-list.table-data.requestId": "ID cerere",
-  "return-app.return-request-list.table-data.sequenceNumber": "Număr secvență",
+  "return-app.return-request-list.table-data.sequenceNumber": "Nº secvență",
   "return-app.return-request-list.table-data.orderId": "ID comandă",
   "return-app.return-request-list.table-data.createdDate": "Data creării",
   "return-app.return-request-list.table-data.status": "Status",
