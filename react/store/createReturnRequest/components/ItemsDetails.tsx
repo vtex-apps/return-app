@@ -25,8 +25,6 @@ const CSS_HANDLES = [
   'productImage',
   'itemsDetailText',
   'cardWrapper',
-  'productImageWrapper',
-  'productImage',
   'productDetailsWrapper',
   'productText',
   'quantityWrapper',
