@@ -47,7 +47,5 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
     throw new AuthenticationError('Request failed with status code 401')
   }
 
-  console.log(state)
-
   await next()
 }
