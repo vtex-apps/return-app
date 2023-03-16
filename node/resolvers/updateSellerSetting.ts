@@ -33,7 +33,7 @@ export const updateSellerSetting = async (
     // validate that there is at least one payment method selected or user has to use the same as in the order
     paymentOptions: validatePaymentOptions(settings.paymentOptions),
   }
-  console.log('id: ', id)
+  
   if(id){
     await sellerSetting.update(id, currentSettings)
     return true

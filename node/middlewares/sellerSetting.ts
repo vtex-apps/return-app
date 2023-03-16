@@ -1,12 +1,10 @@
 import { UserInputError } from '@vtex/api'
-import { json } from 'co-body'
 import { saveSellerSettingService, returnSellerSettingService } from '../services/SellerSettingService'
 import { SETTINGS_PATH } from '../utils/constants'
 
 export async function saveSellerSetting(ctx: Context) {
-  const { req } = ctx
+  const { body }: any = ctx || {}
 
-  const body = await json(req)
   ctx.set('Cache-Control', 'no-cache')
   
   try {
