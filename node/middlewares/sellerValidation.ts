@@ -11,33 +11,27 @@ export async function sellerValidation(ctx: Context, next: () => Promise<void>) 
     },
     clients: { vtexId },
   } = ctx
-
   const authCookie = header.vtexidclientautcookie as string | undefined
   const { _sellerName } = query
 
-  const {settings} = await json(req)
-  const sellerName = settings?.sellerId
-  
+  const body = await json(req)
+
+  const {settings , sellerName} = body
+  let seller = ""
+  const sellerNameSettintgs = settings?.sellerId
+  seller = sellerNameSettintgs || sellerName 
   const { sellerId } = params as { sellerId: string }
 
-  if(authCookie && (_sellerName || sellerName || sellerId) ){
-    const accountName = _sellerName || sellerName || sellerId
-
-    try {
-      const account = await vtexId.getAccount(authCookie, accountName)
-
-      if(account.accountName != accountName){
-        throw new AuthenticationError('Request failed with status code 401')
-      }
-      
-      ctx.body = {
-        settings
-      }
-      
-      await next()
-    } catch (error) {
+  if(authCookie && (_sellerName || seller || sellerId) ){
+    const accountName = String ( _sellerName || seller || sellerId )   
+    const account = await vtexId.getAccount(authCookie, accountName)
+    if(account.accountName != accountName){
       throw new AuthenticationError('Request failed with status code 401')
     }
+
+    ctx.body = body
+    
+    await next()
   } else {
     throw new AuthenticationError('Request failed with status code 401')
   }

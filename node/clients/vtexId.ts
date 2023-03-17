@@ -1,4 +1,4 @@
-import type { IOContext, InstanceOptions } from '@vtex/api'
+import { IOContext, InstanceOptions, AuthenticationError } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
 
 interface VtexIdLoginResponse {
@@ -54,12 +54,18 @@ export class VtexId extends JanusClient {
     })
   }
 
-  public getAccount(token: string, account: string): Promise<any> {
-    return this.http.get(`/api/vlm/account?an=${account}`, {
-      metric: 'vtexid-get-account',
-      headers: {
-        VtexIdClientAutCookie: token || '',
-      },
-    })
+  public async getAccount(token: string, account: string): Promise<any> {
+    try {
+      const response = await this.http.get(`/api/vlm/account?an=${account}`, {
+        metric: 'vtexid-get-account',
+        headers: {
+          VtexIdClientAutCookie: token || '',
+        },
+      })
+      return response
+    } catch (error) {
+      throw new AuthenticationError('Request failed with status code 401')
+
+    }
   }
 }
