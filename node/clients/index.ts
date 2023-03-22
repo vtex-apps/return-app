@@ -1,9 +1,10 @@
-import { IOClients } from '@vtex/api'
+import { IOClients, Sphinx } from '@vtex/api'
 import { OMS } from '@vtex/clients/build'
 
 import ReturnApp from './returnapp'
 import Masterdata from './masterdata'
 import { MDFactory } from './mdFactory'
+import { VtexId } from './vtexId'
 
 // Extend the default IOClients implementation with our own custom clients.
 export class Clients extends IOClients {
@@ -24,5 +25,13 @@ export class Clients extends IOClients {
   // it easy to call the methods from the resolvers.
   public get mdFactory() {
     return this.getOrSet('mdFactory', MDFactory)
+  }
+
+  public get vtexId() {
+    return this.getOrSet('vtexId', VtexId)
+  }
+
+  public get sphinx() {
+    return this.getOrSet('sphinx', Sphinx)
   }
 }

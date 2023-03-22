@@ -3,7 +3,6 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
     vtex: { logger },
   } = ctx
 
-  console.log('running error handler')
   try {
     await next()
   } catch (error) {
@@ -11,5 +10,9 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
       message: error.message,
       error,
     })
+
+    ctx.status = error.status ?? 500
+    ctx.body =
+      error.message ?? 'A problem ocurred while processing your request'
   }
 }
