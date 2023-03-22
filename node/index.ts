@@ -10,11 +10,20 @@ import { Clients } from './clients'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
-import { auth } from './middlewares/auth'
-import { createReturn } from './middlewares/createReturn'
-import { getRequest } from './middlewares/getRequest'
-import { getRequestList } from './middlewares/getRequestList'
-import { updateRequestStatus } from './middlewares/updateRequestStatus'
+import {middlewares} from './middlewares'
+
+const {
+  auth,
+  createReturn,
+  getRequest,
+  getRequestList,
+  updateRequestStatus,
+  saveAppSetting,
+  returnAppSetting,
+  saveSellerSetting,
+  returnSellerSetting,
+  sellerValidation
+} = middlewares
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -47,13 +56,23 @@ export default new Service<Clients, State, ParamsContext>({
   clients,
   routes: {
     returnRequests: method({
-      POST: [errorHandler, auth, createReturn],
+      POST: [errorHandler, auth, sellerValidation, createReturn],
       GET: [errorHandler, auth, getRequestList],
     }),
     returnRequest: method({
       GET: [errorHandler, auth, getRequest],
       PUT: [errorHandler, auth, updateRequestStatus],
     }),
+    settings: method({
+      POST: [errorHandler, auth, saveAppSetting],
+      GET: [errorHandler, auth, returnAppSetting],
+    }),
+    sellerSetting: method({
+      POST: [errorHandler, auth, sellerValidation, saveSellerSetting],
+    }),
+    sellerSettings: method({
+      GET: [errorHandler, auth, sellerValidation, returnSellerSetting],
+    })
   },
   graphql: {
     resolvers: {

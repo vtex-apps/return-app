@@ -37,6 +37,7 @@ export const createReturnRequestService = async (
 
   const {
     orderId,
+    sellerName,
     items,
     customerProfileData,
     pickupReturnData,
@@ -234,6 +235,7 @@ export const createReturnRequestService = async (
   try {
     rmaDocument = await returnRequestClient.save({
       orderId,
+      sellerName: sellerName || sellers?.[0]?.id || undefined,
       refundableAmount,
       sequenceNumber,
       status: 'new',

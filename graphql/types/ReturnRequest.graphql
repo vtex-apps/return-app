@@ -1,5 +1,6 @@
 input ReturnRequestInput {
   orderId: String!
+  sellerName: String
   items: [ReturnRequestItemInput!]!
   customerProfileData: CustomerProfileDataInput!
   pickupReturnData: PickupReturnDataInput!
@@ -67,6 +68,7 @@ enum RefundPaymentMethod {
 
 type ReturnRequestResponse {
   id: ID!
+  sellerName: String
   orderId: String!
   refundableAmount: Int!
   sequenceNumber: String!
@@ -186,6 +188,7 @@ input ReturnRequestFilters {
   status: Status
   sequenceNumber: String
   id: String
+  sellerName: String
   """
   createdIn: It uses the field dateSubmitted in the return request schema to search for documents.
   The field createdIn is auto generated when the document is created, not reflecting the real value for documents migrated from older versions.

@@ -21,9 +21,12 @@ export const CustomReasonModal = ({
   customReasonOnFocus,
 }: CustomReasonModalProps) => {
   const {
-    appSettings: { maxDays, customReturnReasons },
-    actions: { dispatch },
+    appSettings,
+    actions,
   } = useSettings()
+
+  const { dispatch } = actions || {}
+  const { maxDays, customReturnReasons } = appSettings || {}
 
   const [tempReason, setTempReason] = useState<CustomReturnReason>(
     {} as CustomReturnReason

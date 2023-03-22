@@ -12,6 +12,18 @@
     "returnRequest": {
       "path": "/_v/return-request/:requestId",
       "public": true
+    },
+    "settings": {
+      "path": "/_v/returns/settings",
+      "public": true
+    },
+    "sellerSetting": {
+      "path": "/_v/returns/seller/settings",
+      "public": true
+    },
+    "sellerSettings": {
+      "path": "/_v/returns/seller/settings/:sellerId",
+      "public": true
     }
   }
 }

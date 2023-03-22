@@ -42,15 +42,17 @@ const messages = defineMessages({
 export const GeneralOptions = () => {
   const {
     appSettings,
-    actions: { dispatch },
+    actions ,
   } = useSettings()
 
   const intl = useIntl()
+  
+  const dispatch = actions?.dispatch 
 
   const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target
 
-    const selectedOption = appSettings.options ?? {}
+    const selectedOption = appSettings?.options ?? {}
     const updatedSelection = { ...selectedOption, [name]: checked }
 
     dispatch({ type: 'updateOptions', payload: updatedSelection })
@@ -71,7 +73,7 @@ export const GeneralOptions = () => {
                 label={intl.formatMessage(messages[`${option}-label`])}
                 helpText={intl.formatMessage(messages[`${option}-description`])}
                 onChange={handleToggle}
-                checked={appSettings.options?.[option]}
+                checked={appSettings?.options?.[option]}
               />
               {i === self.length - 1 ? null : (
                 <div className="mv4">

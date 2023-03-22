@@ -56,8 +56,10 @@ export const PaymentOptions = forwardRef<HTMLDivElement, PaymentOptionsProps>(
   ({ handleOptionSelection, hasError }, ref) => {
     const {
       appSettings,
-      actions: { dispatch },
+      actions,
     } = useSettings()
+
+    const { dispatch } = actions || {}
 
     const intl = useIntl()
 
@@ -76,7 +78,7 @@ export const PaymentOptions = forwardRef<HTMLDivElement, PaymentOptionsProps>(
         payload: {
           ...appSettings?.paymentOptions,
           enablePaymentMethodSelection: checked,
-          allowedPaymentTypes: appSettings.paymentOptions.allowedPaymentTypes,
+          allowedPaymentTypes: appSettings?.paymentOptions?.allowedPaymentTypes,
           // Always return to the default state when use checks / unchecks the checkbox. This way we avaiod a confusing state where buttons is disable but set to on.
           automaticallyRefundPaymentMethod: false,
         },
@@ -98,7 +100,7 @@ export const PaymentOptions = forwardRef<HTMLDivElement, PaymentOptionsProps>(
     }
 
     const { enablePaymentMethodSelection, automaticallyRefundPaymentMethod } =
-      appSettings.paymentOptions ?? {}
+      appSettings?.paymentOptions ?? {}
 
     return (
       <section>

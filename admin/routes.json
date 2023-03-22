@@ -3,6 +3,14 @@
     "component": "AdminReturnList",
     "path": "/admin/app/returns/requests/"
   },
+  "admin.app.return-settings-list": {
+    "component": "AdminSettingReturnList",
+    "path": "/admin/app/returns/sellers/settings/"
+  },
+  "admin.app.return-setting-details": {
+    "component": "AdminSettingDetail",
+    "path": "/admin/app/returns/sellers/settings/:id/details/"
+  },
   "admin.app.return-settings": {
     "component": "AdminReturnSettings",
     "path": "/admin/app/returns/settings/"

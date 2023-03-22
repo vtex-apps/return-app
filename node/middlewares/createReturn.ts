@@ -1,12 +1,10 @@
 import { UserInputError } from '@vtex/api'
-import { json } from 'co-body'
 
 import { createReturnRequestService } from '../services/createReturnRequestService'
 
 export async function createReturn(ctx: Context) {
-  const { req } = ctx
 
-  const body = await json(req)
+  const { body }: any = ctx || {}
 
   const { locale } = body
 
@@ -16,6 +14,11 @@ export async function createReturn(ctx: Context) {
 
   ctx.vtex.locale = locale
 
-  ctx.body = await createReturnRequestService(ctx, body)
-  ctx.status = 201
+  try {
+    ctx.body = await createReturnRequestService(ctx, body)
+    ctx.status = 200
+  } catch (error) {
+    ctx.body = error?.response?.data || error.response.statusText || error
+    ctx.status = error.response?.status || 400
+  }
 }

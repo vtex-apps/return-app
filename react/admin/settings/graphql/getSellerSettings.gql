@@ -1,0 +1,34 @@
+
+query getSellerSettings($sellerId: String!) {
+  returnSellerSettings(sellerId: $sellerId)
+    @context(provider: "vtex.return-app") {
+    id
+    sellerId
+    maxDays
+    excludedCategories
+    paymentOptions {
+      enablePaymentMethodSelection
+      allowedPaymentTypes {
+        bank
+        card
+        giftCard
+      }
+      automaticallyRefundPaymentMethod
+    }
+    termsUrl
+    customReturnReasons {
+      reason
+      maxDays
+      translations {
+        locale
+        translation
+      }
+    }
+    options {
+      enableOtherOptionSelection
+      enablePickupPoints
+      enableProportionalShippingValue
+      enableSelectItemCondition
+    }
+  }
+}

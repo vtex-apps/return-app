@@ -307,6 +307,7 @@
   "return-app.return-request-details.order-id.link": "Bestelling {orderId}\"",
   "return-app.return-request-details.current-status.request-id": "<b>Aanvraag-ID:</b> {id}",
   "return-app.return-request-details.current-status.status": "<b>Status:</b>",
+  "return-app.return-request-details.current-status.sellerName": "<b>SellerName:</b> {sellerName}",
   "admin/return-app.return-request-list.table-data.requestId.tooltip": "Klanten kunnen hun aanvraag-ID zien in de aanvraaggegevens",
   "admin/return-app.settings.modal-warning.title": "Controleer uw instellingen",
   "admin/return-app.settings.modal-warning.first-paragraph": "Het lijkt erop dat u probeert de aangepaste retouropties op te slaan, waarvan er geen alle <b>{maxDays}</b> bereiken. Dit is het maximum aantal dagen voor een retouraanvraag.",

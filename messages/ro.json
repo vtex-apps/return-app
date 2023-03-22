@@ -307,6 +307,7 @@
   "return-app.return-request-details.order-id.link": "Comanda {orderId}",
   "return-app.return-request-details.current-status.request-id": "<b>ID cerere:</b> {id}",
   "return-app.return-request-details.current-status.status": "<b>Status:</b>",
+  "return-app.return-request-details.current-status.sellerName": "<b>SellerName:</b> {sellerName}",
   "admin/return-app.return-request-list.table-data.requestId.tooltip": "Clienții pot vedea ID-ul cererii în detaliile acesteia",
   "admin/return-app.settings.modal-warning.title": "Te rugăm să îți verifici setările",
   "admin/return-app.settings.modal-warning.first-paragraph": "Se pare că încerci să salvezi opțiuni de retur personalizate, dintre care niciuna dintre ele nu ajunge la <b>{maxDays}</b>; ziua maximă prevăzută pentru retur.",

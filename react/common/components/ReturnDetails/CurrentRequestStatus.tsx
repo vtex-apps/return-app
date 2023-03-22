@@ -16,7 +16,7 @@ export const CurrentRequestStatus = () => {
 
   if (!data) return null
 
-  const { id, status } = data.returnRequestDetails
+  const { id, status, sellerName } = data.returnRequestDetails
 
   return (
     <div className={`${handles.currentRequestStatusContainer} mv4`}>
@@ -24,6 +24,12 @@ export const CurrentRequestStatus = () => {
         <FormattedMessage
           id="return-app.return-request-details.current-status.request-id"
           values={{ id, b: renderChunks }}
+        />
+      </div>
+      <div className="mb4">
+        <FormattedMessage
+          id="return-app.return-request-details.current-status.sellerName"
+          values={{ sellerName, b: renderChunks }}
         />
       </div>
       <div className="flex">

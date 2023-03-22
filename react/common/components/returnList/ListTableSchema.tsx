@@ -80,6 +80,12 @@ const ReturnListSchema = () => {
         ),
         minWidth: 160,
       },
+      sellerName: {
+        title: (
+          <FormattedMessage id="return-app.return-request-list.table-data.sellerName" />
+        ),
+        minWidth: 140,
+      },
       createdIn: {
         title: (
           <FormattedMessage id="return-app.return-request-list.table-data.createdDate" />

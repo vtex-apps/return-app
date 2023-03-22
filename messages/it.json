@@ -278,6 +278,7 @@
   "return-app.return-request-list.table-data.requestId": "ID richiesta",
   "return-app.return-request-list.table-data.sequenceNumber": "Numero sequenziale",
   "return-app.return-request-list.table-data.orderId": "ID ordine",
+  "return-app.return-request-list.table-data.sellerName": "Nome venditore",
   "return-app.return-request-list.table-data.createdDate": "Data di creazione",
   "return-app.return-request-list.table-data.status": "Stato",
   "return-app.return-request-list.table-filters.fromDate": "Dal",

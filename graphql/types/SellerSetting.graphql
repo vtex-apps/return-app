@@ -1,0 +1,27 @@
+type SellerSetting {
+  id: String
+  sellerId: String!
+  parentAccount: String
+  maxDays: Int!
+  excludedCategories: [String!]!
+  paymentOptions: PaymentOptions!
+  termsUrl: String!
+  customReturnReasons: [CustomReturnReason!]
+  options: ReturnOption
+}
+
+type SellerSettingResponseList {
+  sellers: [SellerSetting]
+}
+
+input SellerSettingInput  {
+  id: String
+  sellerId: String!
+  parentAccount: String
+  maxDays: Int!
+  excludedCategories: [String!]!
+  paymentOptions: PaymentOptionsInput!
+  termsUrl: String!
+  customReturnReasons: [CustomReturnReasonInput!]
+  options: ReturnOptionInput
+}

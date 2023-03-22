@@ -100,8 +100,8 @@ export const updateRequestStatusService = async (
     },
     vtex: { logger },
   } = ctx
-
-  const { status, requestId, comment, refundData } = args
+  
+  const { status, requestId, comment, refundData, sellerName } = args
 
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
 
@@ -201,6 +201,7 @@ export const updateRequestStatusService = async (
 
   const updatedRequest = {
     ...formatRequestToPartialUpdate(returnRequest),
+    sellerName: sellerName || undefined,
     status: requestStatus,
     refundStatusData,
     refundData: refundInvoice

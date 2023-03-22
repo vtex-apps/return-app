@@ -3,6 +3,9 @@
     "orderId": {
       "type": "string"
     },
+    "sellerName": {
+      "type": "string"
+    },
     "refundableAmount": {
       "type": "integer"
     },
@@ -300,7 +303,8 @@
     "orderId",
     "sequenceNumber",
     "dateSubmitted",
-    "status"
+    "status",
+    "sellerName"
   ],
   "v-indexed": [
     "id",
@@ -309,7 +313,8 @@
     "customerProfileData",
     "status",
     "sequenceNumber",
-    "dateSubmitted"
+    "dateSubmitted",
+    "sellerName"
   ],
   "v-immediate-indexing": true
 }
