@@ -336,6 +336,35 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 | 'termsAndConditionsContainer'      |
 | 'termsAndConditionsLink'           |
 | 'userCommentDetailsContainer'      |
+| 'cardItemsWrapper'                 |
+| 'itemDetailsListWrapper'           |
+| 'cardWrapper'                      |
+| 'statusWrapper'                    |
+| 'productImageWrapper'              |
+| 'productImage'                     |
+| 'productDetailsWrapper'            |
+| 'productNameWrapper'               |
+| 'productName'                      |
+| 'productRefWrapper'                |
+| 'productReasonWrapper'             |
+| 'productConditionWrapper'          |
+| 'productSellerWrapper'             |
+| 'productQuantityWrapper'           |
+| 'productSellingPriceWrapper'       |
+| 'productTaxWrapper'                |
+| 'productTotalWrapper'              |
+| 'productKey'                       |
+| 'productValue'                     |
+| 'productText'                      |
+| 'quantityWrapper'                  |
+| 'quantityKey'                      |
+| 'quantityValue'                    |
+| 'availableToReturnWrapper'         |
+| 'availableToReturnKey'             |
+| 'availableToReturnValue'           |
+| 'quantitySelectorWrapper'          |
+| 'reasonWrapper'                    |
+| 'conditionWrapper'                 |
 
 ## Knowing issues
 
