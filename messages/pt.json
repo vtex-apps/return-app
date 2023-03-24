@@ -1,5 +1,5 @@
 {
-  "admin/return-app.navigation.label": "Devoluções",
+  "admin/return-app.navigation.label": "Devoluções - Modified",
   "navigation.labelRequests": "Solicitações",
   "admin/return-app.settings.navigation.label": "Configurações de devolução",
   "admin/return-app.settings.max-days.label": "Máximo de dias:",
@@ -53,6 +53,8 @@
   "store/return-app.link": "Minhas devoluções",
   "store/return-app.request-return.page.header": "Solicitar nova devolução",
   "store/return-app.request-return.page.header.subtitle": "Selecione um pedido para iniciar o processo de solicitação de devolução",
+  "store/return-app.request-return.page.card.return-text": "Itens disponíveis para devolução",
+  "store/return-app.request-return.page.card.sequential-number": "nº sequencial",
   "store/return-app.return-order-list.table-header.order-id": "ID do pedido",
   "store/return-app.return-order-list.table-header.creation-date": "Data de criação",
   "store/return-app.return-order-list.table-header.items-to-return": "Itens disponíveis para devolução",

@@ -1,17 +1,26 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Table, EmptyState } from 'vtex.styleguide'
+import { Table, EmptyState, Spinner } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+import type { ReturnRequestResponse } from 'vtex.return-app'
 
 import ReturnListSchema from './ListTableSchema'
 import JumpToPage from './JumpToPage'
 import ListTableFilter from './ListTableFilter'
+import MobileList from './MobileList'
 import { useReturnRequestList } from '../../../hooks/useReturnRequestList'
 
-const CSS_HANDLES = ['listTableContainer'] as const
+const CSS_HANDLES = [
+  'listTableContainer',
+  'loadingDataSpinnerContainer',
+] as const
 
 const ListTable = () => {
+  const [mobileOrdersList, setMobileOrdersList] = useState<
+    ReturnRequestResponse[]
+  >([])
+
   const {
     returnRequestData: { data, loading, error, refetch },
   } = useReturnRequestList()
@@ -65,6 +74,69 @@ const ListTable = () => {
 
   const returnsListSchema = useMemo(() => ReturnListSchema(), [])
 
+  const fetchMoreItems = useCallback(async () => {
+    const currentPage = paging?.currentPage ?? 1
+    const maxPage = paging?.pages ?? 1
+
+    if (currentPage < maxPage) {
+      await refetch({ page: currentPage + 1 })
+    }
+  }, [paging?.currentPage, paging?.pages, refetch])
+
+  const handleScroll = useCallback(async () => {
+    const { scrollHeight } = document.documentElement
+    const { scrollTop } = document.documentElement
+    const { clientHeight } = document.documentElement
+
+    const userReachedEndOfPage = scrollTop + clientHeight === scrollHeight
+
+    if (!userReachedEndOfPage) return
+
+    try {
+      await fetchMoreItems()
+    } catch (err) {
+      console.error('Error while fetching more items', err)
+    }
+  }, [fetchMoreItems])
+
+  const verifyIfItemAlreadyExists = (
+    array: ReturnRequestResponse[],
+    item: ReturnRequestResponse | null | undefined
+  ) => {
+    if (!item) return false
+
+    return (
+      array.findIndex((arrayItem) => arrayItem?.orderId === item?.orderId) !==
+      -1
+    )
+  }
+
+  useEffect(() => {
+    if (list) {
+      setMobileOrdersList((current) => {
+        const alreadyExist = verifyIfItemAlreadyExists(current, list[0])
+
+        if (alreadyExist) return current
+
+        return [...current, ...list]
+      })
+    }
+  }, [list])
+
+  useEffect(() => {
+    if (!phone) return
+
+    if (window) {
+      window.addEventListener('scroll', handleScroll)
+    }
+
+    return () => {
+      if (window) {
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
+  }, [phone, handleScroll])
+
   if (error) {
     return (
       <EmptyState
@@ -86,30 +158,44 @@ const ListTable = () => {
           isDisabled={!list?.length}
         />
       )}
-      <Table
-        fullWidth
-        loading={loading}
-        items={list}
-        emptyStateLabel={
-          <FormattedMessage id="return-app.return-request-list.table.emptyState" />
-        }
-        emptyStateChildren={
-          <p>
-            <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
-          </p>
-        }
-        schema={returnsListSchema}
-        pagination={{
-          textOf: (
-            <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
-          ),
-          onNextClick: handleNextPage,
-          onPrevClick: handlePrevPage,
-          currentItemFrom: pageItemFrom,
-          currentItemTo: pageItemTo,
-          totalItems: paging?.total,
-        }}
-      />
+
+      {phone ? (
+        <>
+          <MobileList items={mobileOrdersList ?? []} />
+          {loading && list?.length ? (
+            <div
+              className={`flex justify-center items-center mt6 mb6 ${handles.loadingDataSpinnerContainer}`}
+            >
+              <Spinner size={20} color="#dedede" />
+            </div>
+          ) : null}
+        </>
+      ) : (
+        <Table
+          fullWidth
+          loading={loading}
+          items={list}
+          emptyStateLabel={
+            <FormattedMessage id="return-app.return-request-list.table.emptyState" />
+          }
+          emptyStateChildren={
+            <p>
+              <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
+            </p>
+          }
+          schema={returnsListSchema}
+          pagination={{
+            textOf: (
+              <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
+            ),
+            onNextClick: handleNextPage,
+            onPrevClick: handlePrevPage,
+            currentItemFrom: pageItemFrom,
+            currentItemTo: pageItemTo,
+            totalItems: paging?.total,
+          }}
+        />
+      )}
       {!phone && paging && list?.length && !loading ? (
         <JumpToPage
           handleJumpToPage={handleJumpToPage}

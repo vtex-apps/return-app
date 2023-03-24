@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import type {
+  Maybe,
   OrdersToReturnList,
+  OrderToReturnSummary,
   QueryOrdersAvailableToReturnArgs,
 } from 'vtex.return-app'
 import { ContentWrapper, BaseLoading } from 'vtex.my-account-commons'
@@ -14,7 +16,7 @@ import { OrderListStructureLoader } from './components/loaders/OrderListStructur
 const headerConfig = {
   namespace: 'vtex-account__return-order-list',
   title: <FormattedMessage id="store/return-app.request-return.page.header" />,
-  titleId: 'store/return-app.request-return.page.header"',
+  titleId: 'store/return-app.request-return.page.header',
   backButton: {
     titleId: 'store/return-app.link',
     path: '/my-returns',
@@ -24,6 +26,9 @@ const headerConfig = {
 export const OrderListContainer = () => {
   const [ordersToReturn, setOrdersToReturn] = useState<OrdersToReturnList[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const [mobileOrdersToReturnList, setMobileOrdersToReturnList] = useState<
+    Array<Maybe<OrderToReturnSummary>>
+  >([])
 
   const { data, loading, error, fetchMore, refetch } = useQuery<
     { ordersAvailableToReturn: OrdersToReturnList },
@@ -34,12 +39,6 @@ export const OrderListContainer = () => {
     },
     fetchPolicy: 'no-cache',
   })
-
-  useEffect(() => {
-    if (data) {
-      setOrdersToReturn([data.ordersAvailableToReturn])
-    }
-  }, [data])
 
   const handlePagination = async (
     page: number,
@@ -77,6 +76,32 @@ export const OrderListContainer = () => {
     operation === 'previous' && setCurrentPage(page)
   }
 
+  const verifyIfItemAlreadyExists = (
+    array: Array<Maybe<OrderToReturnSummary>>,
+    item: OrderToReturnSummary | null | undefined
+  ) => {
+    if (!item) return false
+
+    return (
+      array.findIndex((arrayItem) => arrayItem?.orderId === item?.orderId) !==
+      -1
+    )
+  }
+
+  useEffect(() => {
+    if (data) {
+      setOrdersToReturn([data.ordersAvailableToReturn])
+      setMobileOrdersToReturnList((current) => {
+        const newList = data?.ordersAvailableToReturn?.list ?? []
+        const alreadyExist = verifyIfItemAlreadyExists(current, newList?.[0])
+
+        if (alreadyExist) return [...current]
+
+        return [...current, ...(data?.ordersAvailableToReturn?.list ?? [])]
+      })
+    }
+  }, [data])
+
   return (
     <>
       {loading || error || !ordersToReturn.length ? (
@@ -91,7 +116,9 @@ export const OrderListContainer = () => {
           {() => (
             <OrderList
               orders={ordersToReturn[currentPage - 1]}
+              mobileList={mobileOrdersToReturnList}
               handlePagination={handlePagination}
+              refetch={refetch}
             />
           )}
         </ContentWrapper>

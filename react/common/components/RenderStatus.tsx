@@ -98,7 +98,7 @@ export function renderStatus(requestStatus: Status) {
 
     default:
       return (
-        <div className="light-marine flex items-center">
+        <div className="green flex items-center">
           <span className="mr2 flex">
             <IconVisibilityOn size={14} />
           </span>
