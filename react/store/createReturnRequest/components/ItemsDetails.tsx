@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ItemCondition } from 'vtex.return-app'
-import { NumericStepper } from 'vtex.styleguide'
+import { NumericStepper, Box } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
@@ -24,6 +24,18 @@ const CSS_HANDLES = [
   'productImageWrapper',
   'productImage',
   'itemsDetailText',
+  'cardWrapper',
+  'productDetailsWrapper',
+  'productText',
+  'quantityWrapper',
+  'quantityKey',
+  'quantityValue',
+  'availableToReturnWrapper',
+  'availableToReturnKey',
+  'availableToReturnValue',
+  'quantitySelectorWrapper',
+  'reasonWrapper',
+  'conditionWrapper',
 ] as const
 
 export const ItemsDetails = (props: Props) => {
@@ -153,14 +165,99 @@ export const ItemsDetails = (props: Props) => {
     </>
   )
 
+  if (phone) {
+    return (
+      <div className={`${handles.cardWrapper} mb4`}>
+        <Box>
+          <div className={`${handles.productImageWrapper} flex`}>
+            <img
+              className={`${handles.productImage}`}
+              src={imageUrl}
+              alt="Product"
+            />
+          </div>
+          <div className={`${handles.productDetailsWrapper} flex flex-column`}>
+            <p className={`${handles.productText}`}>{localizedName ?? name}</p>
+            <div className={`${handles.quantityWrapper} flex flex-row mb4`}>
+              <span className={`${handles.quantityKey} mr2`}>
+                <FormattedMessage id="store/return-app.return-order-details.table-header.quantity" />
+                :
+              </span>
+              <span className={`${handles.quantityValue}`}>{quantity}</span>
+            </div>
+            <div
+              className={`${handles.availableToReturnWrapper} flex flex-row mb4`}
+            >
+              <span className={`${handles.availableToReturnKey} mr2`}>
+                <FormattedMessage id="store/return-app.return-order-details.table-header.available-to-return" />
+                :
+              </span>
+              <span className={`${handles.availableToReturnValue}`}>
+                {availableToReturn}
+              </span>
+            </div>
+            {isExcluded ? (
+              <CustomMessage
+                status="warning"
+                message={
+                  <FormattedMessage id="store/return-app.return-item-details.excluded-items.warning" />
+                }
+              />
+            ) : null}
+            <div className={`${handles.quantitySelectorWrapper} mb4`}>
+              <NumericStepper
+                size="small"
+                maxValue={availableToReturn}
+                value={currentItem?.quantity ?? 0}
+                onChange={(e: { value: number }) =>
+                  handleQuantityChange(e.value)
+                }
+              />
+            </div>
+            <div className={`${handles.reasonWrapper} mb4`}>
+              <RenderReasonDropdown
+                isExcluded={isExcluded}
+                reason={currentItem?.returnReason?.reason ?? ''}
+                otherReason={currentItem?.returnReason?.otherReason ?? ''}
+                onReasonChange={handleReasonChange}
+                creationDate={creationDate}
+              />
+              {reasonError && reasonErrorEmptyValue ? (
+                <CustomMessage
+                  status="error"
+                  message={
+                    <FormattedMessage id="store/return-app.return-item-details.dropdown-reason.error" />
+                  }
+                />
+              ) : null}
+            </div>
+            {!enableSelectItemCondition ? null : (
+              <div className={`${handles.conditionWrapper}`}>
+                <RenderConditionDropdown
+                  isExcluded={isExcluded}
+                  condition={currentItem?.condition ?? ''}
+                  onConditionChange={handleConditionChange}
+                />
+                {conditionError ? (
+                  <CustomMessage
+                    status="error"
+                    message={
+                      <FormattedMessage id="store/return-app.return-item-details.dropdown-condition.error" />
+                    }
+                  />
+                ) : null}
+              </div>
+            )}
+          </div>
+        </Box>
+      </div>
+    )
+  }
+
   return (
     <tr className={`${handles.detailsRowContainer}`}>
       <td className={`${handles.detailsTdWrapper} pa4`}>
-        <section
-          className={`${handles.productSectionWrapper} flex ${
-            phone ? 'w5' : ''
-          }`}
-        >
+        <section className={`${handles.productSectionWrapper} flex`}>
           <div
             className={`${handles.productImageWrapper} flex`}
             style={{ flexBasis: '50%' }}
@@ -187,7 +284,7 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </section>
       </td>
-      {phone ? null : ItemQuantityDataCell}
+      {ItemQuantityDataCell}
       <td className={`${handles.detailsTdWrapper} pa4`}>
         <NumericStepper
           size="small"
@@ -230,7 +327,6 @@ export const ItemsDetails = (props: Props) => {
           ) : null}
         </td>
       )}
-      {!phone ? null : ItemQuantityDataCell}
     </tr>
   )
 }

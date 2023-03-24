@@ -33,7 +33,7 @@ type OrderListTableSchemaProps = {
   navigate: (to: { to: string }) => void
   isSmallScreen: boolean
 }
-const OrderlListTableSchema = ({
+const OrderListTableSchema = ({
   navigate,
   isSmallScreen,
 }: OrderListTableSchemaProps) => {
@@ -215,6 +215,7 @@ export const OrderList = ({
           }}
         />
       )}
+
     </>
   )
 }
