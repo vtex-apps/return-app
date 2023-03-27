@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Fixing getOrders parameters.
+
 ## [2.20.0] - 2023-03-22
 
 ## [2.19.13] - 2023-02-02
