@@ -102,7 +102,6 @@ const OrdersTableFilter = (props: Props) => {
         ...filters,
         createdIn: filterDates,
       })
-      console.info(filters)
 
       return
     }
