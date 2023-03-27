@@ -112,8 +112,10 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
     const { orderItemIndex, sellingPrice, tax } = item
     const returningItem = refundItemsInput.get(orderItemIndex)
     const { quantity = 0, restockFee = 0 } = returningItem ?? {}
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     const itemTotal = (sellingPrice + tax) * quantity - restockFee
 
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     return total + itemTotal
   }, 0)
 

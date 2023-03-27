@@ -87,10 +87,7 @@ export const CustomReasons = () => {
   const [customReasonToEdit, setCustomReasonToEdit] =
     useState<CustomReasonWithIndex | null>(null)
 
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { customReturnReasons } = appSettings || {}
   const { dispatch } = actions || {}

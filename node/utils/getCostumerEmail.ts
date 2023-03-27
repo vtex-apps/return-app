@@ -30,7 +30,7 @@ export const getCustomerEmail = (
   }
 ): string => {
   const requesterIsStoreUser =
-    clientProfileData.userProfileId === userProfile?.userId
+  clientProfileData.userProfileId === userProfile?.userId
 
   // when the requester is the owner of the order, we can use the email parsed from the session cookie
   if (userProfile && requesterIsStoreUser) return userProfile.email

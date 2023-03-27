@@ -82,6 +82,7 @@ export const verifyItemsTableSchema = (
         return (
           <AlignItemRight>
             <FormattedNumber
+              // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
               value={(sellingPrice + tax) / 100}
               style="currency"
               currency={cultureInfoData.currencyCode}
@@ -160,6 +161,7 @@ export const verifyItemsTableSchema = (
             (restockFeeInputParsed * 100).toFixed(0)
           )
 
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           const maxRestockFee = (sellingPrice + tax) * selectedQuantity
 
           const restockFeeChecked =
@@ -200,6 +202,7 @@ export const verifyItemsTableSchema = (
           <AlignItemRight>
             <FormattedNumber
               value={
+                // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
                 ((sellingPrice + tax) * selectedQuantity - restockFee) / 100
               }
               style="currency"

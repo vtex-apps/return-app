@@ -15,7 +15,7 @@ export async function getRequestList(ctx: Context) {
     _orderId,
     _userEmail,
     _allFields,
-    _sellerName
+    _sellerName,
   } = query
 
   const [from, to] = (_dateSubmitted as string | undefined)?.split(',') ?? []

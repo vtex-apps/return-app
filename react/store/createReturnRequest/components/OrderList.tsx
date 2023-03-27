@@ -27,13 +27,13 @@ const OrderlListTableSchema = ({
   const properties = {
     orderId: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-header.order-id" />
+        <FormattedMessage id="return-app.return-order-list.table-header.order-id" />
       ),
       minWidth: 150,
     },
     creationDate: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-header.creation-date" />
+        <FormattedMessage id="return-app.return-order-list.table-header.creation-date" />
       ),
       cellRenderer: function formatDate({ cellData }: { cellData: string }) {
         return (
@@ -49,7 +49,7 @@ const OrderlListTableSchema = ({
     },
     status: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-header.items-to-return" />
+        <FormattedMessage id="return-app.return-order-list.table-header.items-to-return" />
       ),
       cellRenderer: function availableProducts({ rowData }: RowData) {
         const { quantityAvailable, quantity } = createItemsSummary(rowData)
@@ -59,7 +59,7 @@ const OrderlListTableSchema = ({
     },
     selectOrder: {
       title: (
-        <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+        <FormattedMessage id="return-app.return-order-list.table-header.select-order" />
       ),
       cellRenderer: function SelectOrderButton({ rowData }: RowData) {
         const { quantityAvailable } = createItemsSummary(rowData)
@@ -79,7 +79,7 @@ const OrderlListTableSchema = ({
               collapseLeft
               disabled={!quantityAvailable}
             >
-              <FormattedMessage id="store/return-app.return-order-list.table-header.select-order" />
+              <FormattedMessage id="return-app.return-order-list.table-header.select-order" />
             </Button>
           </div>
         )
@@ -136,7 +136,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
       <Table
         fullWidth
         emptyStateLabel={
-          <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
+          <FormattedMessage id="return-app.return-order-list.table-empty-state-label.no-orders-available" />
         }
         schema={OrderlListTableSchema({
           navigate,
@@ -153,7 +153,7 @@ export const OrderList = ({ orders, handlePagination }: Props) => {
               ? totalItems
               : perPage * currentPage,
           textOf: (
-            <FormattedMessage id="store/return-app.return-order-list.table-pagination.text-of" />
+            <FormattedMessage id="return-app.return-order-list.table-pagination.text-of" />
           ),
           totalItems,
         }}

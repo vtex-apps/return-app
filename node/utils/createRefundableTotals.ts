@@ -14,20 +14,26 @@ export const createRefundableTotals = (
     totals.find(({ id }) => id === 'Discounts')?.value ?? 0
 
   const itemsAmount =
-    itemsToReturn?.reduce((total, item) => {
-      const { quantity, sellingPrice } = item
+    itemsToReturn?.reduce(
+      (total: number, item: { quantity: any; sellingPrice: any }) => {
+        const { quantity, sellingPrice } = item
 
-      return total + (quantity ?? 0) * (sellingPrice ?? 0)
-    }, 0) ?? 0
+        return total + (quantity ?? 0) * (sellingPrice ?? 0)
+      },
+      0
+    ) ?? 0
 
   const itemsTotal = { id: 'items' as const, value: itemsAmount }
 
   const taxAmount =
-    itemsToReturn?.reduce((total, item) => {
-      const { quantity, tax } = item
+    itemsToReturn?.reduce(
+      (total: number, item: { quantity: any; tax: any }) => {
+        const { quantity, tax } = item
 
-      return total + (quantity ?? 0) * (tax ?? 0)
-    }, 0) ?? 0
+        return total + (quantity ?? 0) * (tax ?? 0)
+      },
+      0
+    ) ?? 0
 
   const taxTotal = { id: 'tax' as const, value: taxAmount }
 

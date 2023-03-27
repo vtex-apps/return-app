@@ -1,6 +1,10 @@
 import { IOClients, Sphinx } from '@vtex/api'
 import { vbaseFor, masterDataFor } from '@vtex/clients'
-import { ReturnAppSettings, ReturnRequest, SellerSetting } from 'vtex.return-app'
+import {
+  ReturnAppSettings,
+  ReturnRequest,
+  SellerSetting,
+} from 'vtex.return-app'
 
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'

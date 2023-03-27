@@ -13,6 +13,7 @@ const CSS_HANDLES = [
   'termsAndConditionsLink',
 ] as const
 
+
 export const TermsAndConditions = () => {
   const {
     termsAndConditions,
@@ -44,7 +45,7 @@ export const TermsAndConditions = () => {
         key="formAgreeCheckbox"
         label={
           <FormattedMessage
-            id="store/return-app.return-order-details.terms-and-conditions.form-agree"
+            id="return-app.return-order-details.terms-and-conditions.form-agree"
             values={{
               link: (
                 <span>
@@ -54,7 +55,7 @@ export const TermsAndConditions = () => {
                     target="_blank"
                     href={data?.termsUrl}
                   >
-                    <FormattedMessage id="store/return-app.return-order-details.terms-and-conditions.link" />
+                    <FormattedMessage id="return-app.return-order-details.terms-and-conditions.link" />
                   </a>
                 </span>
               ),
@@ -69,7 +70,7 @@ export const TermsAndConditions = () => {
         <CustomMessage
           status="error"
           message={
-            <FormattedMessage id="store/return-app.return-terms-and-conditions.checkbox.error" />
+            <FormattedMessage id="return-app.return-terms-and-conditions.checkbox.error" />
           }
         />
       ) : null}

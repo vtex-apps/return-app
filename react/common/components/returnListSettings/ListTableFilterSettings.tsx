@@ -4,12 +4,11 @@ import { FormattedMessage } from 'react-intl'
 import { Input, Button } from 'vtex.styleguide'
 import type {
   QueryReturnSettingsListArgs,
-  ReturnSettingsList
+  ReturnSettingsList,
 } from 'vtex.return-app'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
-
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 
@@ -28,12 +27,12 @@ interface Filters {
   sellerName: string
 }
 
-type Keys = keyof Filters 
+type Keys = keyof Filters
 export type FilterKeys = Exclude<Keys, Filters>
 
 const initialFilters = {
   id: '',
-  sellerName: ''
+  sellerName: '',
 } as Filters
 
 const ListTableFilterSettings = (props: Props) => {

@@ -41,7 +41,7 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
 
     if (key === 'sellerName') {
       where += `sellerName = "${value}"`
-      
+
       return where
     }
 
@@ -117,9 +117,9 @@ export const returnRequestListService = async (
         'createdIn',
         'status',
         'dateSubmitted',
-        'sellerName'
+        'sellerName',
       ]
-  
+
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,

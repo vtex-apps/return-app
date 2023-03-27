@@ -30,7 +30,7 @@ export const UserCommentDetails = () => {
   return (
     <div className={`${handles.userCommentDetailsContainer} mt4 ph4`}>
       <p>
-        <FormattedMessage id="store/return-app.return-order-details.title.extra-comment" />
+        <FormattedMessage id="return-app.return-order-details.title.extra-comment" />
       </p>
       <div>
         <Textarea

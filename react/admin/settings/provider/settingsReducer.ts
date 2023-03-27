@@ -3,7 +3,7 @@ import type {
   PaymentOptions,
   ReturnAppSettings,
   ReturnOption,
-  SellerSetting
+  SellerSetting,
 } from 'vtex.return-app'
 
 export const initialSettingsState: ReturnAppSettings | SellerSetting = {
@@ -71,14 +71,18 @@ export const optionsAction = (options: ReturnOption) => {
   }
 }
 
-export const initialStateAction = (initialState: ReturnAppSettings | SellerSetting) => {
+export const initialStateAction = (
+  initialState: ReturnAppSettings | SellerSetting
+) => {
   return {
     type: 'updateInitialState' as const,
     payload: initialState,
   }
 }
 
-export const initialStateActionSeller = (initialStateSeller: ReturnAppSettings | SellerSetting) => {
+export const initialStateActionSeller = (
+  initialStateSeller: ReturnAppSettings | SellerSetting
+) => {
   return {
     type: 'updateInitialStateSeller' as const,
     payload: initialStateSeller,
@@ -95,7 +99,10 @@ export type Actions =
   | ReturnType<typeof initialStateAction>
   | ReturnType<typeof initialStateActionSeller>
 
-export const settingsReducer = (state: ReturnAppSettings | SellerSetting, action: Actions) => {
+export const settingsReducer = (
+  state: ReturnAppSettings | SellerSetting,
+  action: Actions
+) => {
   switch (action.type) {
     case 'updateMaxDays': {
       return {

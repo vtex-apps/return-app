@@ -15,6 +15,14 @@
     "component": "AdminReturnSettings",
     "path": "/admin/app/returns/settings/"
   },
+  "admin.app.return-add": {
+    "component": "AdminReturnAdd",
+    "path": "/admin/app/returns/orders/add/:orderId/"
+  },
+  "admin.app.order-list": {
+    "component": "AdminReturnOrderList",
+    "path": "/admin/app/returns/orders/"
+  },
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
     "path": "/admin/app/returns/:id/details/"

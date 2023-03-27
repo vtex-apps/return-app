@@ -113,14 +113,14 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
           <Spinner />
         </div>
       ) : (
-        <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder">
+        <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder" >
           {(placehoder) => (
             <Dropdown
               label=""
               error={Boolean(error)}
               errorMessage={
                 error ? (
-                  <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
+                  <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
                 ) : undefined
               }
               placeholder={placehoder}

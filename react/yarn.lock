@@ -5178,46 +5178,6 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.1/public/@types/vtex.catalog-graphql":
-  version "1.102.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.1/public/@types/vtex.catalog-graphql#ad1dfac8d076034d4326a00a3da20a3915951f53"
-
-"vtex.css-handles@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles":
-  version "0.4.4"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles#8c45c6decf9acd2b944e07261686decff93d6422"
-
-"vtex.easypost@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost":
-  version "0.1.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost#078a135b63bb4fc5e39e6ad789d0caf9ea368f35"
-
-"vtex.format-currency@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency":
-  version "0.4.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency#aaed82b498270f0bb6f37e93eff7e7f401e4d283"
-
-"vtex.my-account-commons@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons":
-  version "1.6.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons#3715228fb82e81e955e6a90d11e7975e72b37b2e"
-
-"vtex.my-account@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account":
-  version "1.25.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account#3bc46389c0aa28f4e3e2e008fe3690f5901b1f2a"
-
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
-  version "8.132.4"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
-
-"vtex.return-app@https://develop--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1678885921/public/@types/vtex.return-app":
-  version "3.5.6"
-  resolved "https://develop--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1678885921/public/@types/vtex.return-app#00cefaf09ee59b6a5237e60ee2386fb016edae99"
-
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
-  version "9.146.3"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide#05558160f29cd8f4aefe419844a4bd66e2b3fdbb"
-
-"vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql":
-  version "0.1.2"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql#74673fe86baefe74f21a6d2615993ea0ccb5e79e"
-
 w3c-hr-time@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/w3c-hr-time/-/w3c-hr-time-1.0.2.tgz#0a89cdf5cc15822df9c360543676963e0cc308cd"

@@ -13,6 +13,7 @@ export const orderToReturnSummary = async (
   ctx: Context
 ): Promise<OrderToReturnSummary> => {
   const { orderId, storeUserEmail } = args
+  
   const {
     state: { userProfile, appkey },
     clients: {
@@ -58,7 +59,7 @@ export const orderToReturnSummary = async (
     {
       userProfile,
       appkey,
-      inputEmail: storeUserEmail,
+      inputEmail: storeUserEmail || clientProfileData?.email,
     },
     {
       logger,
