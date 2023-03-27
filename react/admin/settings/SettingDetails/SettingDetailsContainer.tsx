@@ -55,13 +55,8 @@ const validateOptions = (paymentOptions: PaymentOptionsInterface) => {
 }
 
 export const SettingDetailsContainer = () => {
-  const {
-    appSettings,
-    loading,
-    error,
-    savingAppSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, loading, error, savingAppSettings, actions } =
+    useSettings()
 
   const { handleSaveAppSettings, dispatch } = actions || {}
 
@@ -152,6 +147,7 @@ export const SettingDetailsContainer = () => {
 
     setHasPaymentMethodError(false)
   }
+
   return (
     <Layout
       pageHeader={

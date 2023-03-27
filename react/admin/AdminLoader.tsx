@@ -29,7 +29,11 @@ export const AdminLoader: FC<Props> = ({
   }
 
   if (loading || !data) {
-    return <Spinner />
+    return (
+      <EmptyState>
+        <Spinner />
+      </EmptyState>
+    )
   }
 
   return <>{children}</>

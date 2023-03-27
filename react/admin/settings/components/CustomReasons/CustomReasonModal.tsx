@@ -20,10 +20,7 @@ export const CustomReasonModal = ({
   onClose,
   customReasonOnFocus,
 }: CustomReasonModalProps) => {
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { dispatch } = actions || {}
   const { maxDays, customReturnReasons } = appSettings || {}

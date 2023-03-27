@@ -19,21 +19,54 @@ const createParams = ({
   maxDays,
   userEmail,
   page = 1,
+  filters,
 }: {
   maxDays: number
   userEmail: string
   page: number
+  filters?: {
+    orderId: string
+    sellerName: string
+    createdIn: { from: string; to: string }
+  }
 }) => {
   const currentDate = getCurrentDate()
+
+  let query = ''
+  let seller = ''
+  let creationDate = `creationDate:[${substractDays(
+    currentDate,
+    maxDays
+  )} TO ${currentDate}]`
+
+  if (filters) {
+    const { orderId, sellerName, createdIn } = filters
+
+    query = orderId || ''
+    seller = sellerName || ''
+    creationDate = createdIn
+      ? `creationDate:[${createdIn.from} TO ${createdIn.to}]`
+      : creationDate
+  }
+
+  console.info({
+    clientEmail: userEmail,
+    orderBy: 'creationDate,desc' as const,
+    f_status: 'invoiced' as const,
+    f_creationDate: creationDate,
+    q: query,
+    f_sellerNames: seller,
+    page,
+    per_page: 10 as const,
+  })
 
   return {
     clientEmail: userEmail,
     orderBy: 'creationDate,desc' as const,
     f_status: 'invoiced' as const,
-    f_creationDate: `creationDate:[${substractDays(
-      currentDate,
-      maxDays
-    )} TO ${currentDate}]`,
+    f_creationDate: creationDate,
+    q: query,
+    f_sellerNames: seller,
     page,
     per_page: 10 as const,
   }
@@ -41,7 +74,16 @@ const createParams = ({
 
 export const ordersAvailableToReturn = async (
   _: unknown,
-  args: { page: number; storeUserEmail?: string },
+  args: {
+    page: number
+    storeUserEmail?: string
+    isAdmin?: boolean
+    filters?: {
+      orderId: string
+      sellerName: string
+      createdIn: { from: string; to: string }
+    }
+  },
   ctx: Context
 ): Promise<OrdersToReturnList> => {
   const {
@@ -54,7 +96,7 @@ export const ordersAvailableToReturn = async (
     },
   } = ctx
 
-  const { page, storeUserEmail } = args
+  const { page, storeUserEmail, isAdmin, filters } = args
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
 
@@ -65,15 +107,15 @@ export const ordersAvailableToReturn = async (
   const { maxDays, excludedCategories } = settings
   const { email } = userProfile ?? {}
 
-  const userEmail = storeUserEmail ?? email
+  let userEmail = (storeUserEmail ?? email) as string
 
-  if (!userEmail) {
-    throw new ResolverError('Missing user email', 400)
+  if (isAdmin) {
+    userEmail = ''
   }
 
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
-    createParams({ maxDays, userEmail, page })
+    createParams({ maxDays, userEmail, page, filters })
   )
 
   const orderListPromises = []

@@ -14,7 +14,7 @@ const filterDate = (date: string): string => {
   return `${year}-${month < 10 ? `0${month}` : `${month}`}-${
     day < 10 ? `0${day}` : `${day}`
   }`
-}*/
+} */
 
 const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
   if (!filter) return
@@ -29,7 +29,7 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
 
     if (key === 'sellerName') {
       where += `sellerId = "${value}"`
-      
+
       return where
     }
 
@@ -97,8 +97,9 @@ export const returnSettingsListService = async (
         'paymentOptions',
         'customReturnReasons',
         'excludedCategories',
-        'createdIn'
+        'createdIn',
       ]
+
   const rmaSearchResult = await sellerSettingClient.searchRaw(
     {
       page,
@@ -108,6 +109,7 @@ export const returnSettingsListService = async (
     'createdIn DESC',
     buildWhereClause(adjustedFilter)
   )
+
   const { data, pagination } = rmaSearchResult
   const { page: currentPage, pageSize, total } = pagination
 

@@ -6,13 +6,10 @@ import { FormattedMessage } from 'react-intl'
 import { useSettings } from '../hooks/useSettings'
 
 export const RequiredOptions = () => {
-  const {
-    appSettings,
-    actions ,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
-  const dispatch = actions?.dispatch 
-  
+  const dispatch = actions?.dispatch
+
   const handleMaxDaysInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     const maxDays = Number(value)

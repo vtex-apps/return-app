@@ -1,5 +1,5 @@
-import { IOContext, InstanceOptions, AuthenticationError } from '@vtex/api'
-import { JanusClient } from '@vtex/api'
+import type { IOContext, InstanceOptions } from '@vtex/api'
+import { AuthenticationError, JanusClient } from '@vtex/api'
 
 interface VtexIdLoginResponse {
   authStatus: string
@@ -62,10 +62,10 @@ export class VtexId extends JanusClient {
           VtexIdClientAutCookie: token || '',
         },
       })
+
       return response
     } catch (error) {
       throw new AuthenticationError('Request failed with status code 401')
-
     }
   }
 }

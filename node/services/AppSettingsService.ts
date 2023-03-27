@@ -10,21 +10,19 @@ import {
   valideteUniqueCustomReasonsPerLocale,
 } from '../utils/appSettingsValidation'
 
-export async function saveAppSettingService(ctx: Context, args: MutationSaveReturnAppSettingsArgs): Promise<any> {
-  const { clients: { appSettings } } = ctx
+export async function saveAppSettingService(
+  ctx: Context,
+  args: MutationSaveReturnAppSettingsArgs
+): Promise<any> {
+  const {
+    clients: { appSettings },
+  } = ctx
 
   const { settings } = args ?? {}
-  const {
-    maxDays,
-    customReturnReasons,
-    paymentOptions
-  } = settings ?? {}
+  const { maxDays, customReturnReasons, paymentOptions } = settings ?? {}
 
   // validate if all custom reasons have max days smaller than the general max days
-  validateMaxDaysCustomReasons(
-    maxDays,
-    customReturnReasons
-  )
+  validateMaxDaysCustomReasons(maxDays, customReturnReasons)
 
   // validate if all custom reasons have unique locales for their translations
   valideteUniqueCustomReasonsPerLocale(customReturnReasons)
@@ -40,8 +38,9 @@ export async function saveAppSettingService(ctx: Context, args: MutationSaveRetu
   return true
 }
 
-
-export async function returnAppSettingService(ctx: Context): Promise<ReturnAppSettings | null> {
+export async function returnAppSettingService(
+  ctx: Context
+): Promise<ReturnAppSettings | null> {
   const {
     clients: { appSettings },
   } = ctx
@@ -52,6 +51,3 @@ export async function returnAppSettingService(ctx: Context): Promise<ReturnAppSe
 
   return settings
 }
-
-
-

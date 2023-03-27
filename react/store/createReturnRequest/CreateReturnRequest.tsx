@@ -24,37 +24,35 @@ export type Page = 'form-details' | 'submit-form'
 
 type RouteProps = RouteComponentProps<{ orderId: string }>
 
-const createPageHeaderProps = (page: Page, navigate: any) => {
+const createPageHeaderProps = (page: Page, navigate: any, isAdmin: boolean) => {
   if (page === 'submit-form') {
     return {
       title: (
-        <FormattedMessage id="store/return-app.confirm-and-submit.page-header.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.page-header.title" />
       ),
     }
   }
 
   return {
     title: (
-      <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+      <FormattedMessage id="return-app.return-order-details.page-header.title" />
     ),
     linkLabel: (
-      <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
+      <FormattedMessage id="return-app.return-order-details.page-header.link" />
     ),
     onLinkClick: () => {
       navigate({
-        to: '#/my-returns/add',
+        to: isAdmin ? '/admin/app/returns/orders/' : '#/my-returns/add',
       })
     },
   }
 }
 
-export const CreateReturnRequest = (props: RouteProps) => {
-  const {
-    match: {
-      params: { orderId },
-    },
-  } = props
-
+export const CreateReturnRequest = (props: any) => {
+  const orderId = props?.match?.params?.orderId || props?.params?.orderId
+  
+  const isAdmin = props?.page ? true : false
+  
   const [page, setPage] = useState<Page>('form-details')
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
 
@@ -119,7 +117,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
   return (
     <div className="create-return-request__container">
       <PageBlock>
-        <PageHeader {...createPageHeaderProps(page, navigate)} />
+        <PageHeader {...createPageHeaderProps(page, navigate, isAdmin)} />
         <OrderDetailsLoader data={{ loading, error }}>
           {page === 'form-details' && data ? (
             <>
@@ -132,11 +130,12 @@ export const CreateReturnRequest = (props: RouteProps) => {
                   data?.orderToReturnSummary.paymentData.canRefundCard
                 }
                 shippingData={data.orderToReturnSummary.shippingData}
+                isAdmin
               />
             </>
           ) : null}
           {page === 'submit-form' ? (
-            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
+            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} isAdmin />
           ) : null}
         </OrderDetailsLoader>
       </PageBlock>

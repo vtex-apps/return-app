@@ -96,10 +96,7 @@ export const TranslationsModal = ({
     CustomReturnReasonTranslation[]
   >([])
 
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { customReturnReasons } = appSettings || {}
   const { dispatch } = actions || {}

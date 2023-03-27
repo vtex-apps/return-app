@@ -38,12 +38,12 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
           <th
             className={`${handles.returnInfoTableText} v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc`}
           >
-            <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
+            <FormattedMessage id="return-app.return-order-details.table-header.product" />
           </th>
           <th
             className={`${handles.returnInfoTableText} v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc`}
           >
-            <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
+            <FormattedMessage id="return-app.return-order-details.table-header.quantity-to-return" />
           </th>
         </tr>
       </thead>
@@ -73,7 +73,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                       {!condition ? null : (
                         <div className="flex">
                           <p className="f6 mt0 mr3 gray b">
-                            <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
+                            <FormattedMessage id="return-app.return-information-table.table-row.p-condition" />
                           </p>
                           <p className="f6 mt0 gray ">
                             {formatMessage(
@@ -85,7 +85,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                       <div className="flex">
                         <p className="f6 mv0 mr3 gray b">
                           {' '}
-                          <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{' '}
+                          <FormattedMessage id="return-app.return-information-table.table-row.p-reason" />{' '}
                         </p>
                         <p className="f6 mv0 gray ">
                           {returnReason?.otherReason

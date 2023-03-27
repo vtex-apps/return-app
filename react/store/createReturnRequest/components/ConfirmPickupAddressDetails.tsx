@@ -27,7 +27,7 @@ export const ConfirmPickupAddressDetails = ({ pickupReturnData }: Props) => {
       }`}
     >
       <h2 className={`${handles.confirmPickupTitle} mt0 mb6`}>
-        <FormattedMessage id="store/return-app.confirm-and-submit.pickup-address.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.pickup-address.title" />
       </h2>
       <p className={`${handles.confirmPickupText}  f6 gray`}>
         {pickupReturnData.address}

@@ -1,6 +1,6 @@
 import type {
   SellerSetting,
-  MutationSaveSellerSettingArgs
+  MutationSaveSellerSettingArgs,
 } from 'vtex.return-app'
 
 import {
@@ -9,21 +9,19 @@ import {
   valideteUniqueCustomReasonsPerLocale,
 } from '../utils/appSettingsValidation'
 
-export async function saveSellerSettingService(ctx: Context, args: MutationSaveSellerSettingArgs): Promise<any> {
-  const { clients: { sellerSetting } } = ctx
+export async function saveSellerSettingService(
+  ctx: Context,
+  args: MutationSaveSellerSettingArgs
+): Promise<any> {
+  const {
+    clients: { sellerSetting },
+  } = ctx
 
   const { settings } = args ?? {}
-  const {
-    maxDays,
-    customReturnReasons,
-    paymentOptions,
-  } = settings ?? {}
+  const { maxDays, customReturnReasons, paymentOptions } = settings ?? {}
 
   // validate if all custom reasons have max days smaller than the general max days
-  validateMaxDaysCustomReasons(
-    maxDays,
-    customReturnReasons
-  )
+  validateMaxDaysCustomReasons(maxDays, customReturnReasons)
 
   // validate if all custom reasons have unique locales for their translations
   valideteUniqueCustomReasonsPerLocale(customReturnReasons)
@@ -33,17 +31,19 @@ export async function saveSellerSettingService(ctx: Context, args: MutationSaveS
     // validate that there is at least one payment method selected or user has to use the same as in the order
     paymentOptions: validatePaymentOptions(paymentOptions),
   }
-  
+
   const response = await sellerSetting.saveOrUpdate({
     ...currentSettings,
-    id: currentSettings.id || undefined
+    id: currentSettings.id || undefined,
   })
 
   return response
 }
 
-
-export async function returnSellerSettingService(ctx: Context, sellerId: string): Promise<SellerSetting | null> {
+export async function returnSellerSettingService(
+  ctx: Context,
+  sellerId: string
+): Promise<SellerSetting | null> {
   const {
     clients: { sellerSetting },
   } = ctx
@@ -57,7 +57,7 @@ export async function returnSellerSettingService(ctx: Context, sellerId: string)
     'paymentOptions',
     'termsUrl',
     'customReturnReasons',
-    'options'
+    'options',
   ]
 
   const settings = await sellerSetting.search(
@@ -66,9 +66,6 @@ export async function returnSellerSettingService(ctx: Context, sellerId: string)
     undefined,
     `sellerId=${sellerId}`
   )
-  
+
   return settings?.[0] || null
 }
-
-
-

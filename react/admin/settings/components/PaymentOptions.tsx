@@ -54,10 +54,7 @@ interface PaymentOptionsProps extends ComponentPropsWithoutRef<'div'> {
 
 export const PaymentOptions = forwardRef<HTMLDivElement, PaymentOptionsProps>(
   ({ handleOptionSelection, hasError }, ref) => {
-    const {
-      appSettings,
-      actions,
-    } = useSettings()
+    const { appSettings, actions } = useSettings()
 
     const { dispatch } = actions || {}
 

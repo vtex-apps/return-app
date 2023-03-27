@@ -10,7 +10,7 @@ import { Clients } from './clients'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
-import {middlewares} from './middlewares'
+import { middlewares } from './middlewares'
 
 const {
   auth,
@@ -22,7 +22,7 @@ const {
   returnAppSetting,
   saveSellerSetting,
   returnSellerSetting,
-  sellerValidation
+  sellerValidation,
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -72,7 +72,7 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     sellerSettings: method({
       GET: [errorHandler, auth, sellerValidation, returnSellerSetting],
-    })
+    }),
   },
   graphql: {
     resolvers: {

@@ -1,9 +1,13 @@
 import type { SellerSetting } from 'vtex.return-app'
 
-export async function returnSellerSettingsService(ctx: Context, sellerId: string): Promise<SellerSetting | null> {
+export async function returnSellerSettingsService(
+  ctx: Context,
+  sellerId: string
+): Promise<SellerSetting | null> {
   const {
     clients: { sellerSetting },
   } = ctx
+
   const fields = [
     'id',
     'sellerId',
@@ -13,14 +17,16 @@ export async function returnSellerSettingsService(ctx: Context, sellerId: string
     'paymentOptions',
     'termsUrl',
     'customReturnReasons',
-    'options'
+    'options',
   ]
+
   const settings = await sellerSetting.search(
     { page: 1, pageSize: 1 },
     fields,
     undefined,
     `sellerId=${sellerId}`
   )
+
   // if(settings?.[0]){
   //   const response: ReturnAppSettings = {
   //     maxDays: settings?.[0]?.maxDays,
@@ -36,6 +42,3 @@ export async function returnSellerSettingsService(ctx: Context, sellerId: string
   // }
   return settings?.[0] || null
 }
-
-
-

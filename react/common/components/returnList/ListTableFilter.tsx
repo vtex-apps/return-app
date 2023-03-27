@@ -47,7 +47,7 @@ const initialFilters = {
   id: '',
   createdIn: undefined,
   orderId: '',
-  sellerName: ''
+  sellerName: '',
 } as Filters
 
 const ListTableFilter = (props: Props) => {

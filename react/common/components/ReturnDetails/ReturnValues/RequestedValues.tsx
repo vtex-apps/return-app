@@ -36,6 +36,7 @@ export const RequestedValues = () => {
           title={
             <FormattedMessage id="return-app.return-request-details.request-total.item-tax" />
           }
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           value={totalRefundableItems + totalRefundableTaxes}
         />
         <TotalWrapper

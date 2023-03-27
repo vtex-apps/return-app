@@ -1,21 +1,17 @@
-import type { ReturnRequest  } from 'vtex.return-app'
+import type { ReturnRequest } from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
 
-
 export const updateRequestStatusFromSellerService = async (
   ctx: Context,
   args: ReturnRequest,
-  requestId: string,
+  requestId: string
 ): Promise<ReturnRequest> => {
   const {
-    clients: {
-      returnRequest: returnRequestClient,
-      mail,
-    },
+    clients: { returnRequest: returnRequestClient, mail },
     vtex: { logger },
   } = ctx
 
@@ -23,9 +19,9 @@ export const updateRequestStatusFromSellerService = async (
 
   const updatedRequest = {
     ...args,
-    sellerName: sellerName || undefined
+    sellerName: sellerName || undefined,
   }
- 
+
   try {
     await returnRequestClient.update(requestId, updatedRequest)
   } catch (error) {

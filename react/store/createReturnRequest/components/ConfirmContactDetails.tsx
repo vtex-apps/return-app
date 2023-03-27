@@ -28,7 +28,7 @@ export const ConfirmContactDetails = ({ contactDetails }: Props) => {
       }`}
     >
       <h2 className={`${handles.confirmContactTitle} mt0 mb6`}>
-        <FormattedMessage id="store/return-app.confirm-and-submit.contact-details.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.contact-details.title" />
       </h2>
       <p className={`${handles.confirmContactText} f6 gray`}>
         {contactDetails.name}

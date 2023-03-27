@@ -125,11 +125,11 @@ export const AddressDetails = ({ shippingData }: Props) => {
         <div>
           <Tooltip
             label={
-              <FormattedMessage id="store/return-app.return-order-details.title.tooltip.pickup-address" />
+              <FormattedMessage id="return-app.return-order-details.title.tooltip.pickup-address" />
             }
           >
             <p className={handles.pickupAddressTitle}>
-              <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
+              <FormattedMessage id="return-app.return-order-details.title.pickup-address" />
             </p>
           </Tooltip>
         </div>
@@ -137,7 +137,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <div className={`${handles.tooltipToggleWrapper} flex items-center`}>
             <Tooltip
               label={
-                <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.tooltip" />
+                <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points.tooltip" />
               }
               position="left"
             >
@@ -146,7 +146,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
                   <IconInfo className=" ml5 o-50" />
                 </span>
                 <p className="ml2 mr3">
-                  <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points" />
+                  <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points" />
                 </p>
               </div>
             </Tooltip>
@@ -174,7 +174,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.address-input.error" />
+              <FormattedMessage id="return-app.return-address-details.address-input.error" />
             }
           />
         ) : null}
@@ -192,7 +192,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.city-input.error" />
+              <FormattedMessage id="return-app.return-address-details.city-input.error" />
             }
           />
         ) : null}
@@ -210,7 +210,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.state-input.error" />
+              <FormattedMessage id="return-app.return-address-details.state-input.error" />
             }
           />
         ) : null}
@@ -228,7 +228,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.zip-input.error" />
+              <FormattedMessage id="return-app.return-address-details.zip-input.error" />
             }
           />
         ) : null}
@@ -246,7 +246,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.country-input.error" />
+              <FormattedMessage id="return-app.return-address-details.country-input.error" />
             }
           />
         ) : null}

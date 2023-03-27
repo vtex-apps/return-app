@@ -1,16 +1,23 @@
 import { UserInputError } from '@vtex/api'
-import { saveSellerSettingService, returnSellerSettingService } from '../services/SellerSettingService'
+
+import {
+  saveSellerSettingService,
+  returnSellerSettingService,
+} from '../services/SellerSettingService'
 import { SETTINGS_PATH } from '../utils/constants'
 
 export async function saveSellerSetting(ctx: Context) {
   const { body }: any = ctx || {}
 
   ctx.set('Cache-Control', 'no-cache')
-  
+
   try {
-    const settings = await returnSellerSettingService(ctx, body?.settings?.sellerId)
-    
-    if(settings){
+    const settings = await returnSellerSettingService(
+      ctx,
+      body?.settings?.sellerId
+    )
+
+    if (settings) {
       body.settings.id = settings.id
     }
 
@@ -36,27 +43,27 @@ export async function returnSellerSetting(ctx: Context) {
   ctx.set('Cache-Control', 'no-cache')
 
   try {
-    if(sellerId){
+    if (sellerId) {
       const settings = await returnSellerSettingService(ctx, sellerId)
-  
-      if(!settings){
+
+      if (!settings) {
         const settingsMkt: any = await appSettings.get(SETTINGS_PATH, true)
-  
+
         const newSettings = {
           settings: {
             ...settingsMkt,
             sellerId,
-            parentAccount: ctx.vtex.account
-          }
+            parentAccount: ctx.vtex.account,
+          },
         }
-  
+
         const res = await saveSellerSettingService(ctx, newSettings)
-  
+
         ctx.body = {
           ...newSettings?.settings,
-          id: res.DocumentId
+          id: res.DocumentId,
         }
-  
+
         ctx.status = 200
       } else {
         ctx.body = settings

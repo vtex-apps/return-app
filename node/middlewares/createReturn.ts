@@ -3,7 +3,6 @@ import { UserInputError } from '@vtex/api'
 import { createReturnRequestService } from '../services/createReturnRequestService'
 
 export async function createReturn(ctx: Context) {
-
   const { body }: any = ctx || {}
 
   const { locale } = body

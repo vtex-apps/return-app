@@ -55,10 +55,7 @@ const filterSearchCategories = ({
 
 export const ExcludedCategories = () => {
   const [searchedCategory, setSearchedCategory] = React.useState('')
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { dispatch } = actions || {}
 

@@ -175,6 +175,7 @@ export const itemDetailsSchema = ({
         return (
           <AlignItemRight>
             <FormattedNumber
+              // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
               value={((sellingPrice + tax) * quantity) / 100}
               style="currency"
               currency={currencyCode}

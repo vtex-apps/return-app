@@ -18,11 +18,17 @@ interface Props {
   onReasonChange: (reason: string, otherReason?: string) => void
   isExcluded: boolean
   creationDate?: string
+  isAdmin: boolean
 }
 
 export const RenderReasonDropdown = (props: Props) => {
-  const { reason, otherReason, onReasonChange, isExcluded, creationDate } =
-    props
+  const { 
+    reason,
+    otherReason,
+    onReasonChange,
+    isExcluded,
+    creationDate,
+  } = props
 
   const { formatMessage } = useIntl()
   const handles = useCssHandles(CSS_HANDLES)

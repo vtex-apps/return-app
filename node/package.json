@@ -15,17 +15,7 @@
     "@vtex/test-tools": "^1.0.0",
     "@vtex/tsconfig": "^0.6.0",
     "tslint": "^6.1.3",
-    "tslint-config-vtex": "^2.1.0",
-    "vtex.catalog-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.1/public/@types/vtex.catalog-graphql",
-    "vtex.css-handles": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles",
-    "vtex.easypost": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost",
-    "vtex.format-currency": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency",
-    "vtex.my-account": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account",
-    "vtex.my-account-commons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons",
-    "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
-    "vtex.return-app": "https://develop--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1678885921/public/@types/vtex.return-app",
-    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide",
-    "vtex.tenant-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql"
+    "tslint-config-vtex": "^2.1.0"
   },
   "scripts": {
     "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"
