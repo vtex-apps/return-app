@@ -49,17 +49,6 @@ const createParams = ({
       : creationDate
   }
 
-  console.info({
-    clientEmail: userEmail,
-    orderBy: 'creationDate,desc' as const,
-    f_status: 'invoiced' as const,
-    f_creationDate: creationDate,
-    q: query,
-    f_sellerNames: seller,
-    page,
-    per_page: 10 as const,
-  })
-
   return {
     clientEmail: userEmail,
     orderBy: 'creationDate,desc' as const,

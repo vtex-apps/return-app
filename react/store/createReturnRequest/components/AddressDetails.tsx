@@ -14,19 +14,19 @@ import { setInitialPickupAddress } from '../../utils/setInitialPickupAddress'
 
 const messages = defineMessages({
   addressInput: {
-    id: 'store/return-app.return-order-details.inputs.address-input',
+    id: 'return-app.return-order-details.inputs.address-input',
   },
   cityInput: {
-    id: 'store/return-app.return-order-details.inputs.city-input',
+    id: 'return-app.return-order-details.inputs.city-input',
   },
   stateInput: {
-    id: 'store/return-app.return-order-details.inputs.state-input',
+    id: 'return-app.return-order-details.inputs.state-input',
   },
   zipInput: {
-    id: 'store/return-app.return-order-details.inputs.zip-input',
+    id: 'return-app.return-order-details.inputs.zip-input',
   },
   countryInput: {
-    id: 'store/return-app.return-order-details.inputs.country-input',
+    id: 'return-app.return-order-details.inputs.country-input',
   },
 })
 
