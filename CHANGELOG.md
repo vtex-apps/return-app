@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
 
+- Televentas auth
+- GetOrders query parameters
 ## [2.20.0] - 2023-03-22
 
 ## [2.19.13] - 2023-02-02

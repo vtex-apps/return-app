@@ -273,7 +273,7 @@ class MyReturnsPageAdd extends Component<Props, State> {
     return fetch(
       `${
         fetchPath.getOrders
-      }clientEmail=${userEmail}&orderBy=creationDate,desc&f_status=invoiced&f_creationDate=creationDate:[${substractDays(
+      }clientEmail=${userEmail}&orderBy=creationDate,desc&_status=invoiced&_creationDate=creationDate:[${substractDays(
         maxDays
       )} TO ${currentDate}]`
     )
