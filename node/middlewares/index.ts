@@ -7,6 +7,7 @@ import { getRequestList } from './getRequestList'
 import { updateRequestStatus } from './updateRequestStatus'
 import { saveSellerSetting, returnSellerSetting } from './sellerSetting'
 import { sellerValidation } from './sellerValidation'
+import { getOrdersList } from './getOrdersList'
 
 export const middlewares = {
   saveAppSetting,
@@ -20,4 +21,5 @@ export const middlewares = {
   saveSellerSetting,
   returnSellerSetting,
   sellerValidation,
+  getOrdersList
 }

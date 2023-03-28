@@ -24,6 +24,10 @@
     "sellerSettings": {
       "path": "/_v/returns/seller/settings/:sellerId",
       "public": true
+    },
+    "orders": {
+      "path": "/_v/returns/seller/orders",
+      "public": true
     }
   }
 }

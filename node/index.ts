@@ -23,6 +23,7 @@ const {
   saveSellerSetting,
   returnSellerSetting,
   sellerValidation,
+  getOrdersList,
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -73,6 +74,9 @@ export default new Service<Clients, State, ParamsContext>({
     sellerSettings: method({
       GET: [errorHandler, auth, sellerValidation, returnSellerSetting],
     }),
+    orders: method({
+      POST: [errorHandler, auth, getOrdersList],
+    })    
   },
   graphql: {
     resolvers: {

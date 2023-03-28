@@ -17,7 +17,8 @@ export async function createReturn(ctx: Context) {
     ctx.body = await createReturnRequestSellerService(ctx, body)
     ctx.status = 200
   } catch (error) {
-    ctx.body = error?.response?.data || error.response.statusText || error
+    console.log(error)
+    ctx.body = error?.response?.data || error.response?.statusText || error
     ctx.status = error.response?.status || 400
   }
 }

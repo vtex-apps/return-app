@@ -25,7 +25,7 @@ export async function saveSellerSetting(ctx: Context) {
 
     ctx.status = 200
   } catch (error) {
-    ctx.body = error?.response?.data || error.response.statusText || error
+    ctx.body = error?.response?.data || error.response?.statusText || error
     ctx.status = error.response?.status || 400
   }
 }
@@ -73,7 +73,7 @@ export async function returnSellerSetting(ctx: Context) {
       throw new UserInputError('sellerId is required')
     }
   } catch (error) {
-    ctx.body = error?.response?.data || error.response.statusText || error
+    ctx.body = error?.response?.data || error.response?.statusText || error
     ctx.status = error.response?.status || 400
   }
 }

@@ -7,16 +7,9 @@ import {
   OMS_RETURN_REQUEST_CONFIRMATION,
 } from '../utils/constants'
 import { isUserAllowed } from '../utils/isUserAllowed'
-import { canOrderBeReturned } from '../utils/canOrderBeReturned'
-import { canReturnAllItems } from '../utils/canReturnAllItems'
-import { validateReturnReason } from '../utils/validateReturnReason'
-import { validatePaymentMethod } from '../utils/validatePaymentMethod'
-import { validateCanUsedropoffPoints } from '../utils/validateCanUseDropoffPoints'
-import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
-import { validateItemCondition } from '../utils/validateItemCondition'
 
 export const createReturnRequestSellerService = async (
   ctx: Context,
@@ -28,19 +21,17 @@ export const createReturnRequestSellerService = async (
       returnRequest: returnRequestClient,
       appSettings,
       mail,
-      catalogGQL,
     },
     state: { userProfile, appkey },
     vtex: { logger },
   } = ctx
 
   const {
-    marketplaceOrderId,
     orderId,
     sellerName,
     refundableAmount,
     sequenceNumber,
-    statusInput,
+    status,
     refundableAmountTotals,
     customerProfileData,
     pickupReturnData,
@@ -83,7 +74,7 @@ export const createReturnRequestSellerService = async (
     throw new UserInputError('Order ID is missing')
   }
 
-  const orderPromise = oms.order(marketplaceOrderId, 'AUTH_TOKEN')
+  const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
   const settingsPromise = appSettings.get(SETTINGS_PATH, true)
 
@@ -101,22 +92,11 @@ export const createReturnRequestSellerService = async (
 
   const {
     clientProfileData,
-    items: orderItems,
-    creationDate,
-    status,
-    sellers,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
     shippingData,
   } = order
 
-  const {
-    maxDays,
-    excludedCategories,
-    customReturnReasons,
-    paymentOptions,
-    options: settingsOptions,
-  } = settings
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -124,43 +104,6 @@ export const createReturnRequestSellerService = async (
     appkey,
   })
 
-  canOrderBeReturned({
-    creationDate,
-    maxDays,
-    status,
-  })
-
-  // Validate if all items are available to be returned
-  await canReturnAllItems(items, {
-    order,
-    excludedCategories,
-    returnRequestClient,
-    catalogGQL,
-  })
-
-  // Validate maxDays for custom reasons.
-  validateReturnReason(items, creationDate, customReturnReasons)
-
-  // Validate payment methods
-  validatePaymentMethod(refundPaymentData, paymentOptions)
-
-  // validate address type
-  validateCanUsedropoffPoints(
-    pickupReturnData,
-    settingsOptions?.enablePickupPoints
-  )
-
-  // validate item condition
-  validateItemCondition(items, settingsOptions?.enableSelectItemCondition)
-
-
-  const itemsToReturn = await createItemsToReturn({
-    itemsToReturn: items,
-    orderItems,
-    sellers,
-    itemMetadata,
-    catalogGQL,
-  })
 
 
   // customerProfileData can be undefined when coming from a endpoint request
@@ -179,16 +122,21 @@ export const createReturnRequestSellerService = async (
   )
 
   let rmaDocument: DocumentResponse
-
+console.log("statusInput ",status)
   try {
     rmaDocument = await returnRequestClient.save({
       orderId,
       sellerName,
       refundableAmount,
       sequenceNumber,
-      status: statusInput,
+      status,
       refundableAmountTotals,
-      customerProfileData,
+      customerProfileData: {
+        userId: clientProfileData.userProfileId,
+        name: customerProfileData.name,
+        email: customerEmail,
+        phoneNumber: customerProfileData.phoneNumber,
+      },
       pickupReturnData,
       refundPaymentData,
       items,
@@ -250,7 +198,7 @@ export const createReturnRequestSellerService = async (
           address: street,
           paymentMethod: refundPaymentData.refundPaymentMethod,
         },
-        products: [...itemsToReturn],
+        products: [...items],
         refundStatusData
       },
     }
