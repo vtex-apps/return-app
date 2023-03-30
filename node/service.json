@@ -28,6 +28,10 @@
     "orders": {
       "path": "/_v/returns/seller/orders",
       "public": true
+    },
+    "giftcard": {
+      "path": "/_v/returns/seller/giftcard",
+      "public": true
     }
   }
 }

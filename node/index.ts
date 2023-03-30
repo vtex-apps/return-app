@@ -24,6 +24,7 @@ const {
   returnSellerSetting,
   sellerValidation,
   getOrdersList,
+  createGiftcard
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -76,6 +77,9 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     orders: method({
       POST: [errorHandler, auth, getOrdersList],
+    }),
+    giftcard: method({
+      POST: [errorHandler, auth, createGiftcard],
     })    
   },
   graphql: {
