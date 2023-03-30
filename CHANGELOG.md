@@ -6,15 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
-
-## [3.5.8] - 2023-03-16
 ### Added
 - Create new layout for My Returns List and Request Returns Available List (change from table to Grid Layout with cards)
-
-## [3.5.7] - 2023-03-15
 ### Fixed
 - Change structure of solicitation details and new request (from table to card) in mobile devices.
+
+## [3.5.8] - 2023-03-16
+
+## [3.5.7] - 2023-03-15
 
 
 ## [3.5.6] - 2023-02-06
