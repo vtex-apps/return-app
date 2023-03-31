@@ -18,6 +18,7 @@ import {
 import { CustomReasons } from './components/CustomReasons'
 import { ExcludedCategories } from './components/ExcludedCategories'
 import { GeneralOptions } from './components/GeneralOptions'
+import { StatusOptions } from './components/StatusOptions'
 import { PaymentOptions } from './components/PaymentOptions'
 import { RequiredOptions } from './components/RequiredOptions'
 import { WarningModal } from './components/WarningModal'
@@ -181,9 +182,11 @@ export const RMASettings = () => {
                 setWarning={setWarning}
                 customMaxDays={maxDaysWarning.customMaxDays}
               />
-            )}
+              )}
             <form onSubmit={handleSubmit}>
               <RequiredOptions />
+              <Divider />
+              <StatusOptions />
               <Divider />
               <ExcludedCategories />
               <Divider />
