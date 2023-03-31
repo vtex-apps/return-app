@@ -38,7 +38,7 @@ export class MailClient extends JanusClient {
     return this.http.post(TEMPLATE_RENDER_PATH, template, {
       headers: {
         ...this.options?.headers,
-        VtexIdClientAutCookie: this.context.adminUserAuthToken ,
+        VtexIdClientAutCookie: this.context.adminUserAuthToken,
       },
       metric: 'mail-post-template',
     })

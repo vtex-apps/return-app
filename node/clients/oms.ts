@@ -57,7 +57,7 @@ export class OMSCustom extends OMS {
       invoice,
       {
         headers: {
-          VtexIdClientAutCookie: this.context.adminUserAuthToken ,
+          VtexIdClientAutCookie: this.context.adminUserAuthToken,
         },
         metric: 'oms-create-invoice',
       }
