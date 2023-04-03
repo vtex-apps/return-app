@@ -34,8 +34,9 @@ export const SettingsProvider: FC = ({ children }) => {
 
   const { openAlert } = useAlert()
 
-  const { data, loading, error } =
-    useQuery<{ returnAppSettings: ReturnAppSettings }>(APP_SETTINGS)
+  const { data, loading, error } = useQuery<{
+    returnAppSettings: ReturnAppSettings
+  }>(APP_SETTINGS)
 
   const [saveAppSettings, { loading: savingAppSettings }] = useMutation<
     { saveReturnAppSettings: boolean },
