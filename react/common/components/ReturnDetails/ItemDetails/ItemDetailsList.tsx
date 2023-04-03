@@ -12,10 +12,14 @@ import { useIntl } from 'react-intl'
 
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
+import { ItemDetailsCard } from './ItemDetailsCard'
 
 type ItemStatus = 'new' | 'denied' | 'approved' | 'partiallyApproved'
 
-const CSS_HANDLES = ['itemDetailsListContainer'] as const
+const CSS_HANDLES = [
+  'itemDetailsListContainer',
+  'itemDetailsListWrapper',
+] as const
 
 export interface ItemStatusInterface {
   status: ItemStatus
@@ -84,6 +88,7 @@ const getItemVerificationStatus = (
 
 export const ItemDetailsList = () => {
   const handles = useCssHandles(CSS_HANDLES)
+
   const { formatMessage } = useIntl()
   const { data } = useReturnDetails()
   const {
@@ -102,6 +107,25 @@ export const ItemDetailsList = () => {
   )
 
   const { currencyCode } = cultureInfoData
+
+  if (phone) {
+    return (
+      <section
+        className={`${handles.itemDetailsListWrapper} mv4 flex flex-column`}
+      >
+        {items?.map((item) => {
+          return (
+            <ItemDetailsCard
+              currencyCode={currencyCode}
+              key={item.orderItemIndex}
+              item={item}
+              itemsVerificationStatus={itemsVerificationStatus}
+            />
+          )
+        })}
+      </section>
+    )
+  }
 
   return (
     <section className={handles.itemDetailsListContainer}>

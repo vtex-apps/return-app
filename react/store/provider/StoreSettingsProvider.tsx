@@ -17,8 +17,9 @@ export const StoreSettingsContext = createContext<SettingsContextInterface>(
 )
 
 export const StoreSettingsPovider: FC = ({ children }) => {
-  const { data, loading, error, refetch } =
-    useQuery<{ returnAppSettings: ReturnAppSettings }>(STORE_SETTING)
+  const { data, loading, error, refetch } = useQuery<{
+    returnAppSettings: ReturnAppSettings
+  }>(STORE_SETTING)
 
   const [refetching, setRefetching] = useState(false)
 

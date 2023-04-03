@@ -53,6 +53,8 @@
   "store/return-app.link": "Mijn retourzendingen",
   "store/return-app.request-return.page.header": "Nieuwe retour aanvragen",
   "store/return-app.request-return.page.header.subtitle": "Selecteer een bestelling om het retourverzoek te starten",
+  "store/return-app.request-return.page.card.return-text": "Items beschikbaar voor retournering",
+  "store/return-app.request-return.page.card.sequential-number": "Opeenvolgend nummer",
   "store/return-app.return-order-list.table-header.order-id": "Bestel-ID",
   "store/return-app.return-order-list.table-header.creation-date": "Aanmaakdatum",
   "store/return-app.return-order-list.table-header.items-to-return": "Beschikbare items voor retour",

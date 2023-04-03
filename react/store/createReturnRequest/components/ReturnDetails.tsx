@@ -104,7 +104,7 @@ export const ReturnDetails = (
       <div className="t-body lh-copy c-muted-1 mb3 ml3 w-two-thirds-ns w-100">
         <FormattedMessage id="store/return-app.return-order-details.page-header.subtitle" />
       </div>
-      <div className="overflow-scroll">
+      <div className={!phone ? 'overflow-scroll' : ''}>
         <ItemsList items={items} creationDate={creationDate} />
       </div>
       <div className="mb8">
