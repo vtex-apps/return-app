@@ -194,7 +194,7 @@ export const OrderList = ({
           emptyStateLabel={
             <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
           }
-          schema={OrderlListTableSchema({
+          schema={OrderListTableSchema({
             navigate,
             isSmallScreen: phone,
           })}
