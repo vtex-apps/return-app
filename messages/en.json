@@ -428,5 +428,6 @@
   "return-app.return-order-list.table-header.linkLabel": "Back to returns",
   "return-app.return-order-list.page-header.title": "Order List",
   "return-app.return-order-list.table-header.seller-name": "Seller name",
-  "return-app.return-order-list.page-header.subTitle": "All return orders. Click on an order ID to create a return."
+  "return-app.return-order-list.page-header.subTitle": "All return orders. Click on an order ID to create a return.",
+  "return-app.return-request-list.table-data.searchBySellerName": "Search by seller... (e.g.: OBI)"
 }

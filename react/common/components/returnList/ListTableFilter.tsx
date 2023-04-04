@@ -1,17 +1,19 @@
-import type { FormEvent } from 'react'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Input, DatePicker, Button } from 'vtex.styleguide'
+import { Input, DatePicker, Button, AutocompleteInput } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
+import type { FormEvent } from 'react'
+import { useQuery } from 'react-apollo'
+import type { ApolloQueryResult } from 'apollo-client'
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestList,
   Status,
 } from 'vtex.return-app'
-import type { ApolloQueryResult } from 'apollo-client'
-import { useRuntime } from 'vtex.render-runtime'
-import { useCssHandles } from 'vtex.css-handles'
 
 import { StatusActionMenu } from './StatusActionMenu'
+import GET_SELLER from '../../graphql/getSeller.gql'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 
@@ -116,6 +118,53 @@ const ListTableFilter = (props: Props) => {
     })
   }
 
+  const UsersAutocomplete = ({ placeholder, readOnly }: any) => {
+    const [term, setTerm] = useState('')
+    const [isLoading, setLoading] = useState(false)
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    const { data } = useQuery(GET_SELLER)
+
+    const sellers = data?.sellers?.items.map((seller) => seller.name) || []
+
+    const options = {
+      onSelect: (...args) => handleOnChange('sellerName', args[0]),
+      isLoading,
+      size: 'small',
+      value: term.length
+        ? sellers.filter((seller: string) => {
+            return seller.toLowerCase().includes(term.toLowerCase())
+          })
+        : [],
+    }
+
+    const input = {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      onChange: (term) => {
+        if (term) {
+          setLoading(true)
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+          }
+
+          timeoutRef.current = setTimeout(() => {
+            setLoading(false)
+            setTerm(term)
+            timeoutRef.current = null
+          }, 1000)
+        } else {
+          setTerm(term)
+        }
+      },
+      onClear: () => handleOnChange('sellerName', ''),
+      disabled: readOnly,
+      placeholder,
+      value: filters.sellerName,
+    }
+
+    return <AutocompleteInput input={input} options={options} />
+  }
+
   return (
     <form onSubmit={handleSubmitFilters}>
       <div className={`${handles.listTableFilterContainer} flex items-center`}>
@@ -167,15 +216,10 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="return-app.return-request-list.table-data.sellerName">
+          <FormattedMessage id="return-app.return-request-list.table-data.searchBySellerName">
             {(formattedMessage) => (
-              <Input
+              <UsersAutocomplete
                 placeholder={formattedMessage}
-                size="small"
-                value={filters.sellerName}
-                onChange={(e: FormEvent<HTMLInputElement>) =>
-                  handleOnChange('sellerName', e.currentTarget.value)
-                }
                 readOnly={isDisabled && !isFiltering}
               />
             )}

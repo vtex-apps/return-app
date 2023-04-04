@@ -13,7 +13,8 @@
     "vtex.css-handles": "0.x",
     "vtex.easypost": "0.x",
     "vtex.tenant-graphql": "0.x",
-    "vtex.catalog-graphql": "1.x"
+    "vtex.catalog-graphql": "1.x",
+    "vtex.sellers-graphql": "8.x"
   },
   "builders": {
     "admin": "0.x",
