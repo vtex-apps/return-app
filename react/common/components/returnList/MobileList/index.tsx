@@ -46,7 +46,6 @@ const MobileList = ({
           <div className={handles.controlGridVisibility}>
             <span>
               <FormattedMessage id="return-app.return-request-list.table.view" />
-              Visualização:
             </span>
             <div className={handles.controlGridVisibilityButtons}>
               <button onClick={() => setShowDoubleGridVisibility(false)}>
