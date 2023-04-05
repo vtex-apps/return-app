@@ -5178,17 +5178,17 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.101.1/public/@types/vtex.catalog-graphql":
-  version "1.101.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.101.1/public/@types/vtex.catalog-graphql#8f4d8981c04429e94b30188acb9c6f1a6b912197"
+"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.3/public/@types/vtex.catalog-graphql":
+  version "1.102.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.3/public/@types/vtex.catalog-graphql#ce99343170d314d3231612357ef62e3356b50d81"
 
 "vtex.css-handles@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles":
   version "0.4.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles#8c45c6decf9acd2b944e07261686decff93d6422"
 
-"vtex.easypost@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost":
-  version "0.1.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.1.1/public/@types/vtex.easypost#078a135b63bb4fc5e39e6ad789d0caf9ea368f35"
+"vtex.easypost@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.2.0/public/@types/vtex.easypost":
+  version "0.2.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.easypost@0.2.0/public/@types/vtex.easypost#15fa1217e3a63a39787ac881b744e67d0b72f25d"
 
 "vtex.format-currency@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency":
   version "0.4.1"
@@ -5206,17 +5206,13 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.0/public/@types/vtex.return-app":
-  version "3.5.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.0/public/@types/vtex.return-app#29e8ca8294b52af366586fcea7ae995870bc0271"
+"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.6/public/@types/vtex.return-app":
+  version "3.5.6"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.5.6/public/@types/vtex.return-app#11353347392aa168c3b0fe16496b70448f4a840b"
 
-"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.155.32/public/@types/vtex.store-graphql":
-  version "2.155.32"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.155.32/public/@types/vtex.store-graphql#abafbe1d80f453bbebc70024a829e4226bf6cc20"
-
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide":
-  version "9.146.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide#66db40ca1b78ad77ce4beedabecee320e1ef2ead"
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
+  version "9.146.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide#05558160f29cd8f4aefe419844a4bd66e2b3fdbb"
 
 "vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql":
   version "0.1.2"

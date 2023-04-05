@@ -1,6 +1,6 @@
 import type { requestsStatuses } from '../utils'
 
-type Status = (typeof requestsStatuses)[keyof typeof requestsStatuses]
+type Status = typeof requestsStatuses[keyof typeof requestsStatuses]
 
 type Request = {
   status: Status
