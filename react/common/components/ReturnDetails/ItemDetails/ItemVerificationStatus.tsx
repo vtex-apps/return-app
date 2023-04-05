@@ -67,7 +67,7 @@ export const ItemVerificationStatus = (props: ItemStatusInterface) => {
     default: {
       return (
         <div
-          className={`${handles.itemVerificationNewContainer} c-warning flex items-center`}
+          className={`${handles.itemVerificationNewContainer} green flex items-center`}
         >
           <span className="mr2 flex">
             <IconClock size={14} />

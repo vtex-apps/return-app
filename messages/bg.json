@@ -300,6 +300,7 @@
   "return-app.return-request-list.table.status.denied": "Отказана",
   "return-app.return-request-list.table.status.cancelled": "Отменено",
   "return-app.return-request-list.table.status.allStatus": "Статус",
+  "return-app.return-request-list.table.view": "Вижте",
   "return-app.return-request-details.table.status-history.header.created-at": "Създадена на",
   "return-app.return-request-details.table.status-history.header.status": "Статус",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Изпратено от",
