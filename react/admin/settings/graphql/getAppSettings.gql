@@ -1,6 +1,7 @@
 query returnAppSettings {
   returnAppSettings @context(provider: "vtex.return-app") {
     maxDays
+    enableStatusSelection
     excludedCategories
     paymentOptions {
       enablePaymentMethodSelection

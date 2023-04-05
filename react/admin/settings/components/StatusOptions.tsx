@@ -5,7 +5,7 @@ import { Toggle, Divider } from 'vtex.styleguide'
 
 import { useSettings } from '../hooks/useSettings'
 
-const generalOptions = [
+const statusOptions = [
   'enableStatusSelection',
 ] as const
 
@@ -26,12 +26,9 @@ export const StatusOptions = () => {
   const dispatch = actions?.dispatch
 
   const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target
-
-    const selectedOption = appSettings?.options ?? {}
-    const updatedSelection = { ...selectedOption, [name]: checked }
-
-    dispatch({ type: 'updateOptions', payload: updatedSelection })
+    const {  checked } = e.target
+    
+    dispatch({ type: 'updateStatus', payload: checked })
   }
 
   return (
@@ -40,7 +37,7 @@ export const StatusOptions = () => {
         <FormattedMessage id="admin/return-app.settings.section.status-options.header" />
       </h3>
       <div className="mb4 mh4">
-        {generalOptions.map((option, i, self) => {
+        {statusOptions.map((option, i, self) => {
           return (
             <div className="mt4" key={option}>
               <Toggle
@@ -49,7 +46,7 @@ export const StatusOptions = () => {
                 label={intl.formatMessage(messages[`${option}-label`])}
                 helpText={intl.formatMessage(messages[`${option}-description`])}
                 onChange={handleToggle}
-                checked={appSettings?.options?.[option]}
+                checked={appSettings?.[option]}
               />
               {i === self.length - 1 ? null : (
                 <div className="mv4">

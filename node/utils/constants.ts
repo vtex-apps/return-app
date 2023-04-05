@@ -6,6 +6,8 @@ import type {
 } from '../typings/mailClient'
 
 export const SETTINGS_PATH = 'app-settings'
+export const STATUS_INVOICED = 'invoiced'
+export const STATUS_PAYMENT_APPROVE = 'payment-approved'
 
 export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,

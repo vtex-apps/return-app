@@ -3,6 +3,7 @@ type SellerSetting {
   sellerId: String!
   parentAccount: String
   maxDays: Int!
+  enableStatusSelection: Boolean
   excludedCategories: [String!]!
   paymentOptions: PaymentOptions!
   termsUrl: String!
@@ -19,6 +20,7 @@ input SellerSettingInput  {
   sellerId: String!
   parentAccount: String
   maxDays: Int!
+  enableStatusSelection: Boolean
   excludedCategories: [String!]!
   paymentOptions: PaymentOptionsInput!
   termsUrl: String!
