@@ -302,6 +302,7 @@
   "return-app.return-request-list.table.status.cancelled": "Abgesagt",
   "return-app.return-request-list.table.status.allStatus": "Status",
   "return-app.return-request-details.table.status-history.header.created-at": "Erstellt am",
+  "return-app.return-request-list.table.view": "View",
   "return-app.return-request-details.table.status-history.header.status": "Status",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Übermittelt von",
   "return-app.return-request-details.status-history.title": "Statushistorie",

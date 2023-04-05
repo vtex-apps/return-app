@@ -301,6 +301,7 @@
   "return-app.return-request-list.table.status.cancelled": "Geannuleerd",
   "return-app.return-request-list.table.status.allStatus": "Status",
   "return-app.return-request-details.table.status-history.header.created-at": "Gemaakt op",
+  "return-app.return-request-list.table.view": "Visualisatie",
   "return-app.return-request-details.table.status-history.header.status": "Status",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Ingezonden door",
   "return-app.return-request-details.status-history.title": "Statusgeschiedenis",

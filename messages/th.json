@@ -301,6 +301,7 @@
   "return-app.return-request-list.table.status.cancelled": "ยกเลิกแล้ว",
   "return-app.return-request-list.table.status.allStatus": "สถานะ",
   "return-app.return-request-details.table.status-history.header.created-at": "สร้างเมื่อ",
+  "return-app.return-request-list.table.view": "การสร้างภาพ",
   "return-app.return-request-details.table.status-history.header.status": "สถานะ",
   "return-app.return-request-details.table.status-history.header.submitted-by": "ส่งโดย",
   "return-app.return-request-details.status-history.title": "ประวัติสถานะ",

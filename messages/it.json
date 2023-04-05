@@ -302,6 +302,7 @@
   "return-app.return-request-list.table.status.allStatus": "Stato",
   "return-app.return-request-details.table.status-history.header.created-at": "Creato il",
   "return-app.return-request-details.table.status-history.header.status": "Stato",
+  "return-app.return-request-list.table.view": "Visualizzazione",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Inviato da",
   "return-app.return-request-details.status-history.title": "Cronologia di stato",
   "store/return-app.return-request-details.page-header.title": "Dettagli della richiesta di reso",
