@@ -53,6 +53,8 @@
   "store/return-app.link": "Mis devoluciones",
   "store/return-app.request-return.page.header": "Solicitar nueva devolución",
   "store/return-app.request-return.page.header.subtitle": "Selecciona un pedido para iniciar el proceso de solicitud de devolución",
+  "store/return-app.request-return.page.card.return-text": "Ítems disponibles para devolución",
+  "store/return-app.request-return.page.card.sequential-number": "Número secuencial",
   "store/return-app.return-order-list.table-header.order-id": "ID de pedido",
   "store/return-app.return-order-list.table-header.creation-date": "Fecha de creación",
   "store/return-app.return-order-list.table-header.items-to-return": "Ítems disponibles para devolución",
