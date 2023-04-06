@@ -300,7 +300,6 @@
   "return-app.return-request-list.table.status.denied": "Refusé",
   "return-app.return-request-list.table.status.cancelled": "Annulée",
   "return-app.return-request-list.table.status.allStatus": "Statut",
-  "return-app.return-request-list.table.view": "Visualisation",
   "return-app.return-request-details.table.status-history.header.created-at": "Créé le",
   "return-app.return-request-details.table.status-history.header.status": "Statut",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Soumis par",

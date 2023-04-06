@@ -300,7 +300,6 @@
   "return-app.return-request-list.table.status.denied": "Rifiutato",
   "return-app.return-request-list.table.status.cancelled": "Annullato",
   "return-app.return-request-list.table.status.allStatus": "Stato",
-  "return-app.return-request-list.table.view": "Visualizzazione",
   "return-app.return-request-details.table.status-history.header.created-at": "Creato il",
   "return-app.return-request-details.table.status-history.header.status": "Stato",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Inviato da",
