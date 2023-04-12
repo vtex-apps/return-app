@@ -11,6 +11,6 @@ export const returnOrdersListService = async (ctx: Context , body: any) => {
     body?.filter,
   )
 
-  console.log(returnRequestSameOrder)
+  
   return returnRequestSameOrder
 }

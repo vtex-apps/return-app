@@ -1,5 +1,6 @@
 query storeAppSettings {
   returnAppSettings @context(provider: "vtex.return-app") {
+    orderStatus
     termsUrl
     customReturnReasons {
       reason

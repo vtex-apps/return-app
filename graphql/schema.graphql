@@ -11,7 +11,7 @@ type Query {
     page: Int!
     storeUserEmail: String
     isAdmin: Boolean
-    filters: OrdersFilters
+    filter: OrdersFilters
   ): OrdersToReturnList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)

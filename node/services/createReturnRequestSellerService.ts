@@ -122,7 +122,7 @@ export const createReturnRequestSellerService = async (
   )
 
   let rmaDocument: DocumentResponse
-console.log("statusInput ",status)
+
   try {
     rmaDocument = await returnRequestClient.save({
       orderId,

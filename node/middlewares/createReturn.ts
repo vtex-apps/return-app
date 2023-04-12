@@ -4,7 +4,7 @@ import { createReturnRequestSellerService } from '../services/createReturnReques
 
 export async function createReturn(ctx: Context) {
   const { body }: any = ctx || {}
-  console.log(body)
+  
   const { locale } = body?.cultureInfoData
 
   if (!locale) {
@@ -17,7 +17,6 @@ export async function createReturn(ctx: Context) {
     ctx.body = await createReturnRequestSellerService(ctx, body)
     ctx.status = 200
   } catch (error) {
-    console.log(error)
     ctx.body = error?.response?.data || error.response?.statusText || error
     ctx.status = error.response?.status || 400
   }

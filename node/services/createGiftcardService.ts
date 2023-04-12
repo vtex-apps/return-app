@@ -33,7 +33,7 @@ export const createGiftcardService = async (ctx: Context , body: any) => {
       description: 'Initial Charge',
       value: body?.invoiceValue as number
     })
-    console.log("giftCard: { id: giftCardId, redemptionCode }" ,giftCardId, redemptionCode )
+    
     return {
       giftCard: { id: giftCardId, redemptionCode },
     }

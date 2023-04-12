@@ -2,13 +2,13 @@ query ordersAvailableToReturn(
   $page: Int!
   $storeUserEmail: String
   $isAdmin: Boolean
-  $filters: OrdersFilters
+  $filter: OrdersFilters
 ) {
   ordersAvailableToReturn(
     page: $page
     storeUserEmail: $storeUserEmail
     isAdmin: $isAdmin
-    filters: $filters
+    filter: $filter
   ) @context(provider: "vtex.return-app") {
     list {
       orderId

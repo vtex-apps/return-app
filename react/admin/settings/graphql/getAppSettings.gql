@@ -3,6 +3,7 @@ query returnAppSettings {
     maxDays
     enableStatusSelection
     excludedCategories
+    orderStatus
     paymentOptions {
       enablePaymentMethodSelection
       allowedPaymentTypes {

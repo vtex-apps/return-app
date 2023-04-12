@@ -11,6 +11,7 @@ export const initialSettingsState: ReturnAppSettings | SellerSetting = {
   enableStatusSelection: true,
   excludedCategories: [],
   termsUrl: '',
+  orderStatus: 'Select Option',
   paymentOptions: {
     enablePaymentMethodSelection: false,
     allowedPaymentTypes: {
@@ -32,6 +33,13 @@ export const maxDaysAction = (maxDays: number) => {
   return {
     type: 'updateMaxDays' as const,
     payload: maxDays,
+  }
+}
+
+export const orderStatusAction = (orderStatus: string) => {
+  return {
+    type: 'updateOrderStatus' as const,
+    payload: orderStatus,
   }
 }
 
@@ -100,6 +108,7 @@ export const initialStateActionSeller = (
 
 export type Actions =
   | ReturnType<typeof maxDaysAction>
+  | ReturnType<typeof orderStatusAction>
   | ReturnType<typeof excludedCategoriesAction>
   | ReturnType<typeof termsUrlAction>
   | ReturnType<typeof statusAction>
@@ -118,6 +127,13 @@ export const settingsReducer = (
       return {
         ...state,
         maxDays: action.payload,
+      }
+    }
+
+    case 'updateOrderStatus': {
+      return {
+        ...state,
+        orderStatus: action.payload,
       }
     }
 

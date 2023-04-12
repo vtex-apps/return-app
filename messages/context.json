@@ -6,6 +6,8 @@
   "admin/return-app.settings.error.header": "Error loading settings",
   "admin/return-app.settings.error.description": "There was an error loading the application settings. Please try to reload the page.",
   "admin/return-app.settings.terms.label": "Terms and conditions URL:",
+  "admin/return-app.settings.order-status.label": "Order Status",
+  "admin/return-app.settings.order-status.placeholder": "Select Option",
   "admin/return-app.settings.section.payment-options.available-payment-methods.header": "Available payment methods:",
   "admin/return-app.settings.section.payment-options.enable-payment-method-selection.description": "Prevent the customer from selecting a different payment method",
   "admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.uncheck": "Same as order",
