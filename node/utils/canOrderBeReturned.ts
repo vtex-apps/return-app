@@ -14,7 +14,7 @@ export const canOrderBeReturned = ({
   creationDate: string
   maxDays: number
   status: string
-  enableStatusSelection:boolean
+  enableStatusSelection: boolean | undefined | null
 }) => {
   if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
     throw new ResolverError(

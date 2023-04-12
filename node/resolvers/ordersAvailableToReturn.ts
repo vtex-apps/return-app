@@ -26,17 +26,16 @@ const createParams = ({
   maxDays: number
   userEmail: string
   page: number
-  orderStatus?: string
+  orderStatus?: string | any
   filter?: {
     orderId: string
     sellerName: string
     createdIn: { from: string; to: string }
   },
-  enableStatusSelection : boolean
-
+  enableStatusSelection : boolean | undefined | null
 }) => {
   const currentDate = getCurrentDate()
-  const orderStatusName = orderStatus.replace('f_','')
+  const orderStatusName = orderStatus?.replace('f_','')
 
   let query = ''
   let seller = ''
@@ -93,7 +92,6 @@ export const ordersAvailableToReturn = async (
   
   const { page, storeUserEmail, isAdmin, filter } = args
 
-  console.log(filters)
   const settings = await appSettings.get(SETTINGS_PATH, true)
 
   if (!settings) {
