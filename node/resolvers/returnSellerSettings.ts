@@ -1,4 +1,4 @@
-import type { QueryReturnSellerSettingsArgs } from 'vtex.return-app'
+import type { QueryReturnSellerSettingsArgs } from '../../typings/SellerSetting'
 
 import { returnSellerSettingsService } from '../services/returnSellerSettingsService'
 

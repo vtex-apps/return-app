@@ -1,7 +1,7 @@
 import type {
   SellerSetting,
   MutationSaveSellerSettingArgs,
-} from 'vtex.return-app'
+} from '../../typings/SellerSetting'
 
 import {
   validateMaxDaysCustomReasons,

@@ -1,4 +1,4 @@
-import type { ReturnRequestItem, Status } from 'vtex.return-app'
+import type { ReturnRequestItem, Status } from '../../typings/ReturnRequest'
 
 export type ReturnRequestConfirmation = string
 

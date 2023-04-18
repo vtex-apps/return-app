@@ -1,4 +1,4 @@
-import type { SellerSetting } from 'vtex.return-app'
+import type { SellerSetting } from '../../typings/SellerSetting'
 
 export async function returnSellerSettingsService(
   ctx: Context,

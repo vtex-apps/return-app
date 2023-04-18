@@ -1,4 +1,4 @@
-import type { OrderToReturnValidation } from 'vtex.return-app'
+import type { OrderToReturnValidation } from '../../typings/OrderToReturn'
 
 import type {
   ReturnRequestConfirmation,

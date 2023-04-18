@@ -5,7 +5,7 @@ import { Input, Button } from 'vtex.styleguide'
 import type {
   QueryReturnSettingsListArgs,
   ReturnSettingsList,
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnAppSettings'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'

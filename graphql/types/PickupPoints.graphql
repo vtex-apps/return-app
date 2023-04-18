@@ -21,7 +21,7 @@ type CheckoutAddress {
   state: String!
   country: String!
   street: String!
-  number: String
+  number: String!
   neighborhood: String
   complement: String
   reference: String

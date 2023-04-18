@@ -1,12 +1,13 @@
 import type {
   CustomReturnReason,
   PaymentOptions,
-  ReturnAppSettings,
   ReturnOption,
-  SellerSetting,
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnAppSettings'
+import type { SellerSetting } from '../../../../typings/SellerSetting'
 
-export const initialSettingsState: ReturnAppSettings | SellerSetting = {
+export const initialSettingsState: SellerSetting = {
+  id: '',
+  sellerId: '',
   maxDays: 0,
   enableStatusSelection: true,
   excludedCategories: [],
@@ -89,7 +90,7 @@ export const optionsAction = (options: ReturnOption) => {
 
 
 export const initialStateAction = (
-  initialState: ReturnAppSettings | SellerSetting
+  initialState: SellerSetting
 ) => {
   return {
     type: 'updateInitialState' as const,
@@ -98,7 +99,7 @@ export const initialStateAction = (
 }
 
 export const initialStateActionSeller = (
-  initialStateSeller: ReturnAppSettings | SellerSetting
+  initialStateSeller: SellerSetting
 ) => {
   return {
     type: 'updateInitialStateSeller' as const,
@@ -119,7 +120,7 @@ export type Actions =
   | ReturnType<typeof initialStateActionSeller>
 
 export const settingsReducer = (
-  state: ReturnAppSettings | SellerSetting,
+  state: SellerSetting,
   action: Actions
 ) => {
   switch (action.type) {

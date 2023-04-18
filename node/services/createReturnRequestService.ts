@@ -1,4 +1,4 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from 'vtex.return-app'
+import type { ReturnRequestCreated, ReturnRequestInput } from '../../typings/ReturnRequest'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
 

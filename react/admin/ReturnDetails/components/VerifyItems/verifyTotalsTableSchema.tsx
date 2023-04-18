@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react'
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
 import { InputCurrency } from 'vtex.styleguide'
-import type { CultureInfoData } from 'vtex.return-app'
+import type { CultureInfoData } from '../../../../../typings/ReturnRequest'
 
 import { AlignItemRight } from '../AlignItemRight'
 

@@ -1,5 +1,5 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-import type { OrderToReturnSummary } from 'vtex.return-app'
+import type { OrderToReturnSummary } from '../../typings/OrderToReturn'
 
 import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'

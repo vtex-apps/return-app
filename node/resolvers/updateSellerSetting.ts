@@ -1,4 +1,4 @@
-import type { MutationUpdateSellerSettingArgs } from 'vtex.return-app'
+import type { MutationUpdateSellerSettingArgs } from '../../typings/SellerSetting'
 
 import {
   validateMaxDaysCustomReasons,

@@ -1,4 +1,4 @@
-import type { ReturnRequest } from 'vtex.return-app'
+import type { ReturnRequest } from '../../typings/ReturnRequest'
 import { ResolverError } from '@vtex/api'
 
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'

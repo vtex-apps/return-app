@@ -1,7 +1,7 @@
 import type {
   ReturnRequestItemInput,
   ReturnRequestInput,
-} from 'vtex.return-app'
+} from '../../../typings/ReturnRequest'
 
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
 import { isValidIBANNumber } from './isValidIBANNumber'

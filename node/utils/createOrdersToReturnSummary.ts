@@ -3,10 +3,10 @@ import type {
   OrderToReturnSummary,
   InvoicedItem,
   ExcludedItem,
-  ProcessedItem,
-  ReturnAppSettings,
-  ReturnRequest,
-} from 'vtex.return-app'
+  ProcessedItem
+} from '../../typings/OrderToReturn'
+import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type { ReturnRequest } from '../../typings/ReturnRequest'
 
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'

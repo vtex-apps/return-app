@@ -6,7 +6,7 @@ import type {
   QueryReturnRequestListArgs,
   ReturnRequestList,
   Status,
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnRequest'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useCssHandles } from 'vtex.css-handles'
 
@@ -73,13 +73,13 @@ const OrdersTableFilter = (props: Props) => {
   const handleSubmitFilters = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsFiltering(true)
-    refetch({ filters: selectedFilters, page: 1, isAdmin: true })
+    refetch({ filter: selectedFilters, page: 1, isAdmin: true })
   }
 
   const handleResetFilters = () => {
     setIsFiltering(false)
     setFilters(initialFilters)
-    refetch({ filters: undefined, page: 1, isAdmin: true })
+    refetch({ filter: undefined, page: 1, isAdmin: true })
   }
 
   const handleOnChange = (key: FilterKeys, value: string) => {

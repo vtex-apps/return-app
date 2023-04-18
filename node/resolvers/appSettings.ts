@@ -1,7 +1,4 @@
-import type {
-  ReturnAppSettings,
-  MutationSaveReturnAppSettingsArgs,
-} from 'vtex.return-app'
+import type { ReturnAppSettings, MutationSaveReturnAppSettingsArgs } from '../../typings/ReturnAppSettings'
 
 import {
   validateMaxDaysCustomReasons,

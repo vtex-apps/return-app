@@ -4,11 +4,12 @@ import React, { createContext, useReducer, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import type {
-  ReturnAppSettings,
-  SellerSetting,
   ReturnAppSettingsInput,
-  SellerSettingInput,
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnAppSettings'
+import type {
+  SellerSetting,
+  SellerSettingInput
+} from '../../../../typings/SellerSetting'
 
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import APP_SETTINGS_SELLERS from '../graphql/getSellerSettings.gql'
@@ -23,7 +24,7 @@ interface ISettingsProvider {
   sellerId?: string
 }
 interface SettingsContextInterface {
-  appSettings: ReturnAppSettings | SellerSetting
+  appSettings: SellerSetting
   actions: {
     dispatch: Dispatch<Actions>
     handleSaveAppSettings: () => Promise<void>
@@ -39,7 +40,7 @@ export const SettingsContext = createContext<SettingsContextInterface>(
 )
 
 export const SettingsProvider = ({ children, sellerId }: ISettingsProvider) => {
-  const [appSettings, dispatch]: any = useReducer(
+  const [appSettings, dispatch] = useReducer(
     settingsReducer,
     initialSettingsState
   )
@@ -50,7 +51,7 @@ export const SettingsProvider = ({ children, sellerId }: ISettingsProvider) => {
   const VARIABLES = sellerId ? { variables: { sellerId } } : {}
 
   const { data, loading, error } = useQuery<{
-    returnAppSettings: ReturnAppSettings
+    returnAppSettings: SellerSetting
     returnSellerSettings: SellerSetting
   }>(QUERY, VARIABLES)
 

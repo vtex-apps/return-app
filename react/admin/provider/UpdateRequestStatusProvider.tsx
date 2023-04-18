@@ -6,7 +6,7 @@ import type {
   RefundDataInput,
   ReturnRequestResponse,
   MutationUpdateReturnRequestStatusArgs,
-} from 'vtex.return-app'
+} from '../../../typings/ReturnRequest'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 

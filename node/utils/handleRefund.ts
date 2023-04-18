@@ -1,4 +1,4 @@
-import type { Status, Maybe, ReturnRequest, GiftCard } from 'vtex.return-app'
+import type { Status, Maybe, ReturnRequest, GiftCard } from '../../typings/ReturnRequest'
 import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'

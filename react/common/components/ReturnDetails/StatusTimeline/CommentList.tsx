@@ -1,5 +1,5 @@
 import React from 'react'
-import type { RefundStatusComment, UserRole } from 'vtex.return-app'
+import type { RefundStatusComment, UserRole } from '../../../../../typings/ReturnRequest'
 import { useRuntime } from 'vtex.render-runtime'
 import { FormattedMessage } from 'react-intl'
 import { Tag } from 'vtex.styleguide'

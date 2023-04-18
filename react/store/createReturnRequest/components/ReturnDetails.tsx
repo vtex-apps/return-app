@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
-import type { ShippingData } from 'vtex.return-app'
+import type { ShippingData } from '../../../../typings/OrderToReturn'
 import { useCssHandles } from 'vtex.css-handles'
 import { Divider, Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'

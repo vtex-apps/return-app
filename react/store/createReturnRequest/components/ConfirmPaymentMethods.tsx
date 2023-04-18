@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import type { RefundPaymentDataInput } from 'vtex.return-app'
+import type { RefundPaymentDataInput } from '../../../../typings/ReturnRequest'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 

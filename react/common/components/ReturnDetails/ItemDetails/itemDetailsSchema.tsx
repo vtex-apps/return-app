@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import React from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem } from 'vtex.return-app'
+import type { ReturnRequestItem } from '../../../../../typings/ReturnRequest'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'

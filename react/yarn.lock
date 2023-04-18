@@ -5194,9 +5194,9 @@ verror@1.10.0:
   version "0.4.1"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency#aaed82b498270f0bb6f37e93eff7e7f401e4d283"
 
-"vtex.my-account-commons@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons":
-  version "1.6.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.0/public/@types/vtex.my-account-commons#3715228fb82e81e955e6a90d11e7975e72b37b2e"
+"vtex.my-account-commons@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.1/public/@types/vtex.my-account-commons":
+  version "1.6.1"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.1/public/@types/vtex.my-account-commons#653e7fc1d66a92c9eef99f621e9b2358eed1cbe9"
 
 "vtex.my-account@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account":
   version "1.25.0"
@@ -5206,9 +5206,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1679685728/public/@types/vtex.return-app":
+"vtex.return-app@https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1680721820/public/@types/vtex.return-app":
   version "3.5.6"
-  resolved "https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1679685728/public/@types/vtex.return-app#ebd5133ba42270793c153c4ac5f4f3398d52818c"
+  resolved "https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1680721820/public/@types/vtex.return-app#d14009b0975246e1062e855cff7de8dd9691a23a"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
   version "9.146.3"

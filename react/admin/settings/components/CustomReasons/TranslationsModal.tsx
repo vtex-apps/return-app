@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import type { Tenant, Binding } from 'vtex.tenant-graphql'
 import { ModalDialog, Table, Input, Spinner, EmptyState } from 'vtex.styleguide'
-import type { CustomReturnReasonTranslation } from 'vtex.return-app'
+import type { CustomReturnReasonTranslation } from '../../../../../typings/ReturnAppSettings'
 import { FormattedMessage } from 'react-intl'
 
 import TENANT_INFO from './graphql/tenant.gql'

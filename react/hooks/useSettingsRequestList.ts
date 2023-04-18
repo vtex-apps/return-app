@@ -1,8 +1,8 @@
 import { useQuery } from 'react-apollo'
 import type {
-  ReturnSettingsList as ReturnSettingsListResponse,
   QueryReturnRequestListArgs,
-} from 'vtex.return-app'
+} from '../../typings/ReturnRequest'
+import type { ReturnSettingsList as ReturnSettingsListResponse } from '../../typings/ReturnAppSettings'
 
 import SETTINGS_REQUEST_LIST from '../graphql/getSettingsRequestList.gql'
 

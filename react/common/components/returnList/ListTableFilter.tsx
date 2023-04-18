@@ -10,7 +10,7 @@ import type {
   QueryReturnRequestListArgs,
   ReturnRequestList,
   Status,
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnRequest'
 
 import { StatusActionMenu } from './StatusActionMenu'
 import GET_SELLER from '../../graphql/getSeller.gql'

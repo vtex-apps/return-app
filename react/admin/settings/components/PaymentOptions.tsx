@@ -2,7 +2,7 @@ import type { ChangeEvent, ComponentPropsWithoutRef } from 'react'
 import React, { forwardRef } from 'react'
 import type { IntlShape } from 'react-intl'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
-import type { PaymentType } from 'vtex.return-app'
+import type { PaymentType } from '../../../../typings/ReturnAppSettings'
 import { Toggle, CheckboxGroup } from 'vtex.styleguide'
 
 import { useSettings } from '../hooks/useSettings'

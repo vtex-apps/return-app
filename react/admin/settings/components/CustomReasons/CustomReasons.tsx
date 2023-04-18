@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { CustomReturnReason } from 'vtex.return-app'
+import type { CustomReturnReason } from '../../../../../typings/ReturnAppSettings'
 import {
   ButtonWithIcon,
   IconPlusLines,

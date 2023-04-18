@@ -4,7 +4,7 @@ import type {
   ReturnRequest,
   ReturnRequestCommentInput,
   Status,
-} from 'vtex.return-app'
+} from '../../typings/ReturnRequest'
 
 export const createOrUpdateStatusPayload = ({
   refundStatusData,

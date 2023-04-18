@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Status } from 'vtex.return-app'
+import type { Status } from '../../../../../typings/ReturnRequest'
 import { IconSuccess, IconClear } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
 

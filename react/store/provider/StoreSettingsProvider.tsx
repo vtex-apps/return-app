@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import React, { createContext, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import type { ReturnAppSettings } from 'vtex.return-app'
+import type { ReturnAppSettings } from '../../../typings/ReturnAppSettings'
 import { Alert } from 'vtex.styleguide'
 
 import STORE_SETTING from '../graphql/getStoreSettings.gql'

@@ -1,4 +1,4 @@
-import type { OrderToReturnSummary } from 'vtex.return-app'
+import type { OrderToReturnSummary } from '../../../typings/OrderToReturn'
 
 import { formatItemsToReturn } from './formatItemsToReturn'
 

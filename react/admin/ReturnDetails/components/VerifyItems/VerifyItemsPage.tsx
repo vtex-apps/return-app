@@ -7,7 +7,7 @@ import {
   IconInfo,
 } from 'vtex.styleguide'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { RefundItemInput } from 'vtex.return-app'
+import type { RefundItemInput } from '../../../../../typings/ReturnRequest'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 import { VerifyItemsTable } from './VerifyItemsTable'

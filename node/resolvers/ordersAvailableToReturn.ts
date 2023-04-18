@@ -1,5 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
+import type { OrdersToReturnList, OrderToReturnSummary } from '../../typings/OrderToReturn'
 
 import { SETTINGS_PATH, STATUS_INVOICED, STATUS_PAYMENT_APPROVE } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
@@ -46,7 +46,6 @@ const createParams = ({
 
   if (filter) {
     const { orderId, sellerName, createdIn } = filter
-
     query = orderId || ''
     seller = sellerName || ''
     creationDate = createdIn

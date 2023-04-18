@@ -3,7 +3,7 @@ import type {
   ReturnRequest,
   Status,
   RefundItemInput,
-} from 'vtex.return-app'
+} from '../../typings/ReturnRequest'
 import {
   ResolverError,
   ForbiddenError,

@@ -1,4 +1,4 @@
-import type { CustomReturnReason } from 'vtex.return-app'
+import type { CustomReturnReason } from '../../../typings/ReturnAppSettings'
 
 import { isWithinMaxDaysToReturn } from '../../../node/utils/dateHelpers'
 

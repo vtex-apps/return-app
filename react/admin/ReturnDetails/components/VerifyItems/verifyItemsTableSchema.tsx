@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem, CultureInfoData } from 'vtex.return-app'
+import type { ReturnRequestItem, CultureInfoData } from '../../../../../typings/ReturnRequest'
 import { NumericStepper, InputCurrency } from 'vtex.styleguide'
 
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'

@@ -1,4 +1,4 @@
-import type { PickupReturnDataInput } from 'vtex.return-app'
+import type { PickupReturnDataInput } from '../../typings/ReturnRequest'
 import { ResolverError, UserInputError } from '@vtex/api'
 
 export const validateCanUsedropoffPoints = (

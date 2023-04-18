@@ -2,7 +2,7 @@ import type {
   QueryReturnRequestListArgs,
   ReturnRequestFilters,
   Maybe,
-} from 'vtex.return-app'
+} from '../../typings/ReturnRequest'
 import { ForbiddenError } from '@vtex/api'
 /*
 const filterDate = (date: string): string => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { PickupReturnDataInput } from 'vtex.return-app'
+import type { PickupReturnDataInput } from '../../../../typings/ReturnRequest'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 

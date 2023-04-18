@@ -1,7 +1,5 @@
-import type {
-  ReturnRequestItemInput,
-  CustomReturnReason,
-} from 'vtex.return-app'
+import type { CustomReturnReason } from '../../typings/ReturnAppSettings'
+import type { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 import { ResolverError, UserInputError } from '@vtex/api'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'

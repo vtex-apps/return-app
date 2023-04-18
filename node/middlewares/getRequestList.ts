@@ -1,4 +1,4 @@
-import type { Status } from 'vtex.return-app'
+import type { Status } from '../../typings/ReturnRequest'
 
 import { returnRequestListService } from '../services/returnRequestListService'
 

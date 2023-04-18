@@ -4,9 +4,9 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 import type {
   RefundPaymentDataInput,
-  PaymentType,
   RefundPaymentMethod,
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnRequest'
+import type { PaymentType } from '../../../../typings/ReturnAppSettings'
 import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'

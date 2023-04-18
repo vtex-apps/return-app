@@ -1,7 +1,7 @@
 import type {
   ReturnAppSettings,
   MutationSaveReturnAppSettingsArgs,
-} from 'vtex.return-app'
+} from '../../typings/ReturnAppSettings'
 
 import { SETTINGS_PATH } from '../utils/constants'
 import {

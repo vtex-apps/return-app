@@ -5,7 +5,7 @@ import type {
   RefundData,
   Status,
   Maybe,
-} from 'vtex.return-app'
+} from '../../../../../typings/ReturnRequest'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl } from 'react-intl'
