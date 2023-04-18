@@ -5,14 +5,12 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
     header,
     clients: { vtexId, sphinx },
     state,
-    vtex,
+    vtex: { storeUserAuthToken, adminUserAuthToken },
   } = ctx
 
   const appkey = header['x-vtex-api-appkey'] as string | undefined
   const apptoken = header['x-vtex-api-apptoken'] as string | undefined
-  const authCookie =
-    (header.vtexidclientautcookie as string | undefined) ??
-    vtex.adminUserAuthToken
+  const authCookie = (adminUserAuthToken || storeUserAuthToken) ?? null
 
   if (authCookie) {
     const authenticatedUser = await vtexId.getAuthenticatedUser(authCookie)
