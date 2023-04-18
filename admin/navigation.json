@@ -1,19 +1,42 @@
-{
-  "section": "orders",
-  "titleId": "admin/return-app.navigation.label",
-  "path": "/admin/returns/requests",
-  "subSectionItems": [
-    {
-      "labelId": "navigation.labelRequests",
-      "path": "/admin/returns/requests"
-    },
-    {
-      "labelId": "admin/return-app.settings.navigation.label",
-      "path": "/admin/returns/settings"
-    },
-    {
-      "labelId": "admin/return-app.sellers.settings.navigation.label",
-      "path": "/admin/returns/sellers/settings"
-    }
-  ]
-}
+[
+  {
+    "section": "orders",
+    "titleId": "admin/return-app.navigation.label",
+    "path": "/admin/returns/requests",
+    "subSectionItems": [
+      {
+        "labelId": "navigation.labelRequests",
+        "path": "/admin/returns/requests"
+      },
+      {
+        "labelId": "admin/return-app.settings.navigation.label",
+        "path": "/admin/returns/settings"
+      },
+      {
+        "labelId": "admin/return-app.sellers.settings.navigation.label",
+        "path": "/admin/returns/sellers/settings"
+      }
+    ]
+  },
+  {
+    "section": "orders",
+    "subSection": "Return",
+    "adminVersion": 4,
+    "titleId": "admin/return-app.navigation.label",
+    "path": "/admin/returns/requests",
+    "subSectionItems": [
+      {
+        "labelId": "navigation.labelRequests",
+        "path": "/admin/returns/requests"
+      },
+      {
+        "labelId": "admin/return-app.settings.navigation.label",
+        "path": "/admin/returns/settings"
+      },
+      {
+        "labelId": "admin/return-app.sellers.settings.navigation.label",
+        "path": "/admin/returns/sellers/settings"
+      }
+    ]
+  } 
+]
