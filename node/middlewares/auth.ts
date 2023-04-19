@@ -3,14 +3,14 @@ import { AuthenticationError } from '@vtex/api'
 export async function auth(ctx: Context, next: () => Promise<void>) {
   const {
     header,
-    clients: { vtexId, sphinx },
+    clients: { vtexId, sphinx, session },
     state,
-    vtex: { storeUserAuthToken, adminUserAuthToken },
+    vtex: { storeUserAuthToken, adminUserAuthToken, sessionToken },
   } = ctx
 
   const appkey = header['x-vtex-api-appkey'] as string | undefined
   const apptoken = header['x-vtex-api-apptoken'] as string | undefined
-  const authCookie = (adminUserAuthToken || storeUserAuthToken) ?? null
+  const authCookie = adminUserAuthToken ?? storeUserAuthToken
 
   if (authCookie) {
     const authenticatedUser = await vtexId.getAuthenticatedUser(authCookie)
@@ -30,6 +30,26 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
       if (isAdmin) {
         ctx.vtex.adminUserAuthToken = authCookie
       }
+    }
+  } else {
+    const sessionData = await session
+      .getSession(sessionToken as string, ['*'])
+      .then((currentSession: any) => {
+        return currentSession.sessionData
+      })
+      .catch((_: any) => {
+        return null
+      })
+
+    const profileEmail = sessionData?.namespaces?.profile?.email?.value
+    const sessionUserId = sessionData?.namespaces?.profile?.id?.value
+
+    const isAdmin = await sphinx.isAdmin(profileEmail)
+
+    state.userProfile = {
+      userId: sessionUserId,
+      email: profileEmail,
+      role: isAdmin ? 'admin' : 'store-user',
     }
   }
 
