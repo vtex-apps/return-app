@@ -21,7 +21,7 @@ const createParams = ({
   page = 1,
   enableStatusSelection,
   filter,
-  orderStatus = 'creationDate',
+  orderStatus = 'f_creationDate',
 }: {
   maxDays: number
   userEmail: string
