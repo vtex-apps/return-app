@@ -348,6 +348,5 @@
   "admin/return-app.settings.order-status.label": "Статус на поръчката",
   "admin/return-app.settings.order-status.placeholder": "Изберете Опция",
   "admin/return-app.settings.section.status-options.header": "Опция за състояние",
-  "return-app.return-request-list.table-data.searchBySellerName": "Търсене по продавач... (напр.: VTEX)",
-  "return-app.return-request-list.table-filters.export-returns": "ЕКСПОРТИРАЙ"
+  "return-app.return-request-list.table-data.searchBySellerName": "Търсене по продавач... (напр.: VTEX)"
 }
