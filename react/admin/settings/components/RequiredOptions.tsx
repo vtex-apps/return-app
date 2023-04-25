@@ -24,7 +24,7 @@ export const RequiredOptions = () => {
 
   const handleOrderStatus = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-  
+    
     dispatch({ type: 'updateOrderStatus', payload: value })
   }
 

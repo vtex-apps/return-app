@@ -10,8 +10,11 @@ const statusOptions = [
 ] as const
 
 const messages = defineMessages({
-  'enableStatusSelection-label': {
-    id: 'admin/return-app.settings.section.status-options.enable-other-option-selection.label',
+  'enableStatusSelection-label-true': {
+    id: 'admin/return-app.settings.section.status-options.enable-other-option-selection.label-true',
+  },
+  'enableStatusSelection-label-false': {
+    id: 'admin/return-app.settings.section.status-options.enable-other-option-selection.label-false',
   },
   'enableStatusSelection-description': {
     id: 'admin/return-app.settings.section.status-options.enable-other-option-selection.description',
@@ -43,7 +46,7 @@ export const StatusOptions = () => {
               <Toggle
                 name={option}
                 semantic
-                label={intl.formatMessage(messages[`${option}-label`])}
+                label={appSettings?.[option] ? intl.formatMessage(messages[`${option}-label-true`]) : intl.formatMessage(messages[`${option}-label-false`]) }
                 helpText={intl.formatMessage(messages[`${option}-description`])}
                 onChange={handleToggle}
                 checked={appSettings?.[option]}
