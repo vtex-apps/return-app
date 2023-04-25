@@ -264,6 +264,17 @@
         }
       },
       "required": ["currencyCode", "locale"]
+    },
+    "logisticsInfo": {
+      "type": "object",
+      "properties": {
+        "currier": {
+          "type": "string"
+        },
+        "sla": {
+          "type": "string"
+        }
+      }
     }
   },
   "$defs": {

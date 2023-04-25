@@ -11,9 +11,11 @@ import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { middlewares } from './middlewares'
+import { exportRequests } from './middlewares/exportRequests'
 
 const {
   auth,
+  authSelf,
   createReturn,
   getRequest,
   getRequestList,
@@ -24,7 +26,7 @@ const {
   returnSellerSetting,
   sellerValidation,
   getOrdersList,
-  createGiftcard
+  createGiftcard,
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -65,6 +67,9 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, auth, getRequest],
       PUT: [errorHandler, auth, updateRequestStatus],
     }),
+    exportRequests: method({
+      GET: [errorHandler, authSelf, exportRequests],
+    }),
     settings: method({
       POST: [errorHandler, auth, saveAppSetting],
       GET: [errorHandler, auth, returnAppSetting],
@@ -80,7 +85,7 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     giftcard: method({
       POST: [errorHandler, auth, createGiftcard],
-    })    
+    }),
   },
   graphql: {
     resolvers: {

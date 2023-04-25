@@ -347,5 +347,6 @@
   "admin/return-app.settings.order-status.label": "Bestelstatus",
   "admin/return-app.settings.order-status.placeholder": "Selecteer optie",
   "admin/return-app.settings.section.status-options.header": "Status Optie",
-  "return-app.return-request-list.table-data.searchBySellerName": "Zoeken op verkoper... (bijv.: VTEX)"
+  "return-app.return-request-list.table-data.searchBySellerName": "Zoeken op verkoper... (bijv.: VTEX)",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTEREN"
 }

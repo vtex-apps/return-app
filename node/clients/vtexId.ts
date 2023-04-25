@@ -68,4 +68,8 @@ export class VtexId extends JanusClient {
       throw new AuthenticationError('Request failed with status code 401')
     }
   }
+
+  public getAuthToken() {
+    return this.context.adminUserAuthToken ?? this.context.authToken
+  }
 }

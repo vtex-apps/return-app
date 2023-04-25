@@ -268,6 +268,10 @@ export const createReturnRequestService = async (
         currencyCode,
         locale,
       },
+      logisticsInfo: {
+        currier: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.deliveryCompany)?.join(','),
+        sla: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.selectedSla)?.join(',')
+      }
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

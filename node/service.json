@@ -13,6 +13,10 @@
       "path": "/_v/return-request/:requestId",
       "public": true
     },
+    "exportRequests": {
+      "path": "/_v/return-request/export",
+      "public": true
+    },
     "settings": {
       "path": "/_v/returns/settings",
       "public": true

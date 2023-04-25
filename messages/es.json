@@ -348,5 +348,6 @@
   "admin/return-app.settings.order-status.label": "Estado del pedido",
   "admin/return-app.settings.order-status.placeholder": "Seleccionar opción",
   "admin/return-app.settings.section.status-options.header": "Opción de estado",
-  "return-app.return-request-list.table-data.searchBySellerName": "Buscar por vendedor... (p. ej.: VTEX)"
+  "return-app.return-request-list.table-data.searchBySellerName": "Buscar por vendedor... (p. ej.: VTEX)",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTAR"
 }

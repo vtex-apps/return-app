@@ -41,6 +41,7 @@ export const createReturnRequestSellerService = async (
     refundData,
     refundStatusData,
     cultureInfoData,
+    logisticInfo,
   } = args
 
   if (!appkey && !userProfile) {
@@ -144,6 +145,7 @@ export const createReturnRequestSellerService = async (
       refundData,
       refundStatusData,
       cultureInfoData,
+      logisticInfo
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

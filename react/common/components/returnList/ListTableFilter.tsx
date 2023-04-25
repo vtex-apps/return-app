@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import axios from 'axios'
 import { FormattedMessage } from 'react-intl'
 import { Input, DatePicker, Button, AutocompleteInput } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
@@ -116,6 +117,38 @@ const ListTableFilter = (props: Props) => {
       ...filters,
       [key]: value,
     })
+  }
+
+  const downloadCSV = async () => {
+    try {
+      if ('createdIn' in selectedFilters) {
+        const { createdIn } = selectedFilters
+        const { from, to } = createdIn as FilterDates
+
+        const response = await axios.get(
+          `/_v/return-request/export`,
+          {
+            params: {
+              _dateSubmitted: `${from},${to}`,
+            },
+          }
+        )
+
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+
+        link.href = url
+        link.setAttribute('download', `return-requests-${(new Date().toJSON().slice(0,10))}.csv`)
+        document.body.appendChild(link)
+        link.click()
+
+        if (link.parentNode) {
+          link.parentNode.removeChild(link)
+        }
+      }
+    } catch (error) {
+      console.error('Error al descargar el archivo CSV:', error)
+    }
   }
 
   const UsersAutocomplete = ({ placeholder, readOnly }: any) => {
@@ -283,6 +316,17 @@ const ListTableFilter = (props: Props) => {
             variation="danger"
           >
             <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
+          </Button>
+        </div>
+        <div className="mh2">
+          <Button
+            id="custom-excel-button"
+            size="small"
+            onClick={downloadCSV}
+            disabled={!createdIn || loading}
+            variation="primary"
+          >
+            <FormattedMessage id="return-app.return-request-list.table-filters.export-returns" />
           </Button>
         </div>
       </div>

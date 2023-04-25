@@ -118,6 +118,9 @@ export const returnRequestListService = async (
         'status',
         'dateSubmitted',
         'sellerName',
+        'customerProfileData',
+        'items',
+        'logisticsInfo'
       ]
 
   const rmaSearchResult = await returnRequestClient.searchRaw(

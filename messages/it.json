@@ -347,5 +347,6 @@
   "admin/return-app.settings.order-status.label": "Lo stato dell&#39;ordine",
   "admin/return-app.settings.order-status.placeholder": "Selezionare l&#39;opzione",
   "admin/return-app.settings.section.status-options.header": "Opzione di stato",
-  "return-app.return-request-list.table-data.searchBySellerName": "Cerca per venditore... (es: VTEX)"
+  "return-app.return-request-list.table-data.searchBySellerName": "Cerca per venditore... (es: VTEX)",
+  "return-app.return-request-list.table-filters.export-returns": "ESPORTA"
 }
