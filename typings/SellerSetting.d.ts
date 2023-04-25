@@ -25,7 +25,6 @@ export type Scalars = {
 export interface SellerSetting extends ReturnAppSettings {
   __typename?: 'SellerSetting';
   id?: Maybe<Scalars['String']>;
-  sellerId?: Scalars['String'];
 };
 
 

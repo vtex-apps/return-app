@@ -41,7 +41,7 @@ const createParams = ({
   let seller = ''
   let creationDate = `${orderStatusName}:[${substractDays(
     currentDate,
-    maxDays
+    maxDays || 0
   )} TO ${currentDate}]`
 
   if (filter) {

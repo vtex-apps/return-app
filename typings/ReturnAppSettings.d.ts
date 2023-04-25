@@ -22,6 +22,7 @@ export type ReturnAppSettings = {
   options?: Maybe<ReturnOption>;
   orderStatus: Scalars['String'];
   enableStatusSelection: Scalars['Boolean'];
+  sellerId?: Scalars['String'];
 };
 
 export type PaymentOptions = {
@@ -67,6 +68,7 @@ export type ReturnAppSettingsInput = {
   customReturnReasons?: InputMaybe<Array<CustomReturnReasonInput>>;
   options?: InputMaybe<ReturnOptionInput>;
   orderStatus: Scalars['String'];
+  sellerId?: Scalars['String'];
   enableStatusSelection: Scalars['Boolean'];
 };
 

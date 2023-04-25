@@ -7,6 +7,7 @@ type ReturnAppSettings {
   customReturnReasons: [CustomReturnReason!]
   options: ReturnOption
   orderStatus: String
+  sellerId: String
 }
 
 type PaymentOptions {
@@ -48,6 +49,7 @@ input ReturnAppSettingsInput {
   customReturnReasons: [CustomReturnReasonInput!]
   options: ReturnOptionInput
   orderStatus: String
+  sellerId: String
 }
 
 input PaymentOptionsInput {
