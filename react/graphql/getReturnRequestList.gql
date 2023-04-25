@@ -1,6 +1,6 @@
 query getReturnRequestList($filter: ReturnRequestFilters, $page: Int!) {
   returnRequestList(filter: $filter, page: $page)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "itglobers.return-app") {
     list {
       id
       sequenceNumber

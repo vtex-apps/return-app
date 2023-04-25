@@ -6167,10 +6167,6 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://jmartinez--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1680617123/public/@types/vtex.return-app":
-  version "3.5.6"
-  resolved "https://jmartinez--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1680617123/public/@types/vtex.return-app#eba486b187925467e240c61b636c1239f38e34a5"
-
 "vtex.sellers-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql":
   version "8.5.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql#abb5f85a55bd7e7f810e297c4716d9fb1c6cb6f9"

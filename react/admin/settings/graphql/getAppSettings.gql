@@ -1,5 +1,5 @@
 query returnAppSettings {
-  returnAppSettings @context(provider: "vtex.return-app") {
+  returnAppSettings @context(provider: "itglobers.return-app") {
     maxDays
     enableStatusSelection
     excludedCategories

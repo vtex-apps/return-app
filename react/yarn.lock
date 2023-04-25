@@ -5206,9 +5206,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1680721820/public/@types/vtex.return-app":
-  version "3.5.6"
-  resolved "https://eurango--obidev.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.5.6+build1680721820/public/@types/vtex.return-app#d14009b0975246e1062e855cff7de8dd9691a23a"
+"vtex.sellers-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql":
+  version "8.5.4"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql#abb5f85a55bd7e7f810e297c4716d9fb1c6cb6f9"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
   version "9.146.3"

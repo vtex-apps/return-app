@@ -1,9 +1,9 @@
 {
   "extensions": {
-    "my-account-portal/routes/vtex.return-app": {
+    "my-account-portal/routes/itglobers.return-app": {
       "component": "ExtensionRouter"
     },
-    "my-account-portal/menu-links-after/vtex.return-app": {
+    "my-account-portal/menu-links-after/itglobers.return-app": {
       "component": "ExtensionLinks"
     }
   }

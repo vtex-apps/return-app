@@ -9,7 +9,7 @@ query ordersAvailableToReturn(
     storeUserEmail: $storeUserEmail
     isAdmin: $isAdmin
     filter: $filter
-  ) @context(provider: "vtex.return-app") {
+  ) @context(provider: "itglobers.return-app") {
     list {
       orderId
       sellerName
