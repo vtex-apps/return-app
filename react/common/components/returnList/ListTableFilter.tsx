@@ -80,6 +80,16 @@ const ListTableFilter = (props: Props) => {
   const handleSubmitFilters = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsFiltering(true)
+    for (const prop in selectedFilters) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (selectedFilters.hasOwnProperty(prop)) {
+        if (selectedFilters[prop].trim() === '') {
+          delete selectedFilters[prop];
+        }
+      }
+    }
+    
+    setFilters({ ...initialFilters, ...selectedFilters })
     refetch({ filter: selectedFilters, page: 1 })
   }
 
