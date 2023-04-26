@@ -1,10 +1,10 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
-import type { ShippingData } from '../../../../typings/OrderToReturn'
 import { useCssHandles } from 'vtex.css-handles'
 import { Divider, Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 
+import type { ShippingData } from '../../../../typings/OrderToReturn'
 import { ContactDetails } from './ContactDetails'
 import { AddressDetails } from './AddressDetails'
 import { UserCommentDetails } from './UserCommentDetails'
@@ -28,18 +28,13 @@ interface Props {
   shippingData: ShippingData
 }
 
-export const ReturnDetails = (
-  props: any & Props
-) => {
+export const ReturnDetails = (props: any & Props) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
 
-  const {
-    onPageChange,
-    items,
-    creationDate,
-    canRefundCard,
-    shippingData,
-  } = props
+  const { onPageChange, items, creationDate, canRefundCard, shippingData } =
+    props
+
+  const [isChecked, setIsChecked] = React.useState(false)
 
   const handles = useCssHandles(CSS_HANDLES)
   const {
@@ -127,9 +122,13 @@ export const ReturnDetails = (
         </div>
       </div>
       <PaymentMethods canRefundCard={canRefundCard} />
-      <TermsAndConditions />
+      <TermsAndConditions setIsChecked={setIsChecked} />
       <div className="flex justify-center mt6">
-        <Button onClick={handleFieldsValidation} block={phone}>
+        <Button
+          onClick={handleFieldsValidation}
+          block={phone}
+          disabled={!isChecked}
+        >
           <FormattedMessage id="return-app.return-order-details.button.next" />
         </Button>
       </div>
