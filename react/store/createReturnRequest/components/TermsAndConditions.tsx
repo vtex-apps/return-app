@@ -13,8 +13,9 @@ const CSS_HANDLES = [
   'termsAndConditionsLink',
 ] as const
 
+export const TermsAndConditions = (props) => {
+  const { setIsChecked } = props
 
-export const TermsAndConditions = () => {
   const {
     termsAndConditions,
     inputErrors,
@@ -27,6 +28,7 @@ export const TermsAndConditions = () => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target
 
+    setIsChecked(checked)
     toogleTermsAndConditions(checked)
   }
 
