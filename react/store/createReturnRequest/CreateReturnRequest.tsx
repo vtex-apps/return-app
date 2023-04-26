@@ -135,7 +135,7 @@ export const CreateReturnRequest = (props: any) => {
             </>
           ) : null}
           {page === 'submit-form' ? (
-            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} isAdmin />
+            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} isAdmin={isAdmin} />
           ) : null}
         </OrderDetailsLoader>
       </PageBlock>
