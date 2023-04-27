@@ -168,7 +168,7 @@ const ListTableFilter = (props: Props) => {
 
     const { data } = useQuery(GET_SELLER)
 
-    const sellers = data?.sellers?.items.map((seller) => seller.name) || []
+    const sellers = data?.sellers?.items.map((seller) => seller.id) || []
 
     const options = {
       onSelect: (...args) => handleOnChange('sellerName', args[0]),
@@ -194,7 +194,7 @@ const ListTableFilter = (props: Props) => {
             setLoading(false)
             setTerm(term)
             timeoutRef.current = null
-          }, 1000)
+          }, 100)
         } else {
           setTerm(term)
         }

@@ -344,6 +344,6 @@
   "store/return-app.return-order-details.error.order-not-found": "Order not found",
   "store/return-app.return-order-details.error.forbidden": "You don't have access to this order",
   "store/return-app.return-order-details.error.unknown": "Something failed, please try again.",
-  "return-app.return-request-list.table-data.searchBySellerName": "Search by seller... (e.g.: VTEX)",
+  "return-app.return-request-list.table-data.searchBySellerName": "Seller ID",
   "return-app.return-request-list.table-filters.export-returns": "EXPORT"
 }

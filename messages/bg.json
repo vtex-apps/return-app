@@ -196,7 +196,7 @@
   "return-app.return-request-list.table-data.requestId": "ИД на заявката",
   "return-app.return-request-list.table-data.sequenceNumber": "Номер на поредността",
   "return-app.return-request-list.table-data.orderId": "ИД на поръчка",
-  "return-app.return-request-list.table-data.sellerName": "Seller Name",
+  "return-app.return-request-list.table-data.sellerName": "Seller ID",
   "return-app.return-request-list.table-data.createdDate": "Дата на създаване",
   "return-app.return-request-list.table-data.status": "Статус",
   "return-app.return-request-list.table-filters.fromDate": "От дата",
@@ -348,5 +348,5 @@
   "admin/return-app.settings.order-status.label": "Статус на поръчката",
   "admin/return-app.settings.order-status.placeholder": "Изберете Опция",
   "admin/return-app.settings.section.status-options.header": "Опция за състояние",
-  "return-app.return-request-list.table-data.searchBySellerName": "Търсене по продавач... (напр.: VTEX)"
+  "return-app.return-request-list.table-data.searchBySellerName": "Име на продавача"
 }

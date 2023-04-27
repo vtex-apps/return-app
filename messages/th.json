@@ -347,6 +347,6 @@
   "admin/return-app.settings.order-status.label": "สถานะการสั่งซื้อ",
   "admin/return-app.settings.order-status.placeholder": "เลือกตัวเลือก",
   "admin/return-app.settings.section.status-options.header": "ตัวเลือกสถานะ",
-  "return-app.return-request-list.table-data.searchBySellerName": "ค้นหาโดยผู้ขาย... (เช่น: VTEX)",
+  "return-app.return-request-list.table-data.searchBySellerName": "ชื่อผู้ขาย",
   "return-app.return-request-list.table-filters.export-returns": "ส่งออก"
 }

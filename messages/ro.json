@@ -347,6 +347,6 @@
   "admin/return-app.settings.order-status.label": "Starea comenzii",
   "admin/return-app.settings.order-status.placeholder": "Selectați opțiunea",
   "admin/return-app.settings.section.status-options.header": "Opțiune de stare",
-  "return-app.return-request-list.table-data.searchBySellerName": "Căutați după vânzător... (de exemplu: VTEX)",
+  "return-app.return-request-list.table-data.searchBySellerName": "ID vânzătorului",
   "return-app.return-request-list.table-filters.export-returns": "EXPORTĂ"
 }

@@ -200,7 +200,7 @@
   "return-app.sellers-settings-list.table-data.settingId": "ID de la configuración",
   "return-app.return-request-list.table-data.sequenceNumber": "Número de secuencia",
   "return-app.return-request-list.table-data.orderId": "ID del pedido",
-  "return-app.return-request-list.table-data.sellerName": "Vendedor",
+  "return-app.return-request-list.table-data.sellerName": "Vendedor ID",
   "return-app.return-request-list.table-data.createdDate": "Fecha de creación",
   "return-app.return-request-list.table-data.status": "Status",
   "return-app.return-request-list.table-filters.fromDate": "Desde",
@@ -348,6 +348,6 @@
   "admin/return-app.settings.order-status.label": "Estado del pedido",
   "admin/return-app.settings.order-status.placeholder": "Seleccionar opción",
   "admin/return-app.settings.section.status-options.header": "Opción de estado",
-  "return-app.return-request-list.table-data.searchBySellerName": "Buscar por vendedor... (p. ej.: VTEX)",
+  "return-app.return-request-list.table-data.searchBySellerName": "ID del vendedor",
   "return-app.return-request-list.table-filters.export-returns": "EXPORTAR"
 }

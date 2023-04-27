@@ -196,7 +196,7 @@
   "return-app.return-request-list.table-data.requestId": "ID richiesta",
   "return-app.return-request-list.table-data.sequenceNumber": "Numero sequenziale",
   "return-app.return-request-list.table-data.orderId": "ID ordine",
-  "return-app.return-request-list.table-data.sellerName": "Nome venditore",
+  "return-app.return-request-list.table-data.sellerName": "ID venditore",
   "return-app.return-request-list.table-data.createdDate": "Data di creazione",
   "return-app.return-request-list.table-data.status": "Stato",
   "return-app.return-request-list.table-filters.fromDate": "Dal",
@@ -347,6 +347,6 @@
   "admin/return-app.settings.order-status.label": "Lo stato dell&#39;ordine",
   "admin/return-app.settings.order-status.placeholder": "Selezionare l&#39;opzione",
   "admin/return-app.settings.section.status-options.header": "Opzione di stato",
-  "return-app.return-request-list.table-data.searchBySellerName": "Cerca per venditore... (es: VTEX)",
+  "return-app.return-request-list.table-data.searchBySellerName": "ID venditore",
   "return-app.return-request-list.table-filters.export-returns": "ESPORTA"
 }
