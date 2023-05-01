@@ -133,7 +133,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
                   data?.orderToReturnSummary.paymentData.canRefundCard
                 }
                 shippingData={data.orderToReturnSummary.shippingData}
-                showHighlightedMessage={enableHighlightFormMessage}
+                showHighlightedMessage={enableHighlightFormMessage ?? false}
               />
             </>
           ) : null}
