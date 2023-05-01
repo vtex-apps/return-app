@@ -25,6 +25,8 @@
   "admin/return-app.settings.section.general-options.enable-proportional-shipping-value.description": "Calcula o frete proporcional para cada item devolvido",
   "admin/return-app.settings.section.general-options.enable-select-item-condition.label": "Habilitar o seletor de condição do item",
   "admin/return-app.settings.section.general-options.enable-select-item-condition.description": "Quando habilitado, o usuário deverá selecionar a condição de cada item",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Ativar uma mensagem personalizável em formulários de retorno",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "Quando habilitado, no topo do formulário que é utilizado para preencher os dados pessoais do usuário, uma mensagem será exibida. Personalizável via \"Mensagens\"",
   "admin/return-app.settings.section-excluded-categories.fetch-data-error": "Erro ao carregar categorias",
   "admin/return-app.settings.save.button": "Salvar configurações",
   "admin/return-app.settings.section.custom-reasons.empty-custom-reasons": "Nenhuma opção adicionada",
