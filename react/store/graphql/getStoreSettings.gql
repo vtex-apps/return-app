@@ -21,6 +21,7 @@ query storeAppSettings {
       enableOtherOptionSelection
       enablePickupPoints
       enableSelectItemCondition
+      enableHighlightFormMessage
     }
   }
 }

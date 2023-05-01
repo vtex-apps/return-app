@@ -19,6 +19,7 @@ const CSS_HANDLES = [
   'returnDetailsContainer',
   'orderIdDetailsWrapper',
   'creationDateDetailsWrapper',
+  'highlightedFormMessage',
 ] as const
 
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
   creationDate: string
   canRefundCard: boolean
   shippingData: ShippingData
+  showHighlightedMessage: boolean
 }
 
 export const ReturnDetails = (
@@ -41,6 +43,7 @@ export const ReturnDetails = (
     creationDate,
     canRefundCard,
     shippingData,
+    showHighlightedMessage,
   } = props
 
   const handles = useCssHandles(CSS_HANDLES)
@@ -115,6 +118,11 @@ export const ReturnDetails = (
           <FormattedMessage id="store/return-app.return-order-details.section-details" />
         </div>
       </div>
+      {showHighlightedMessage ? (
+        <div className={`${handles.highlightedFormMessage} w-100 mt4`}>
+          <FormattedMessage id="store/return-app.return-order-details.section-details-highlighted-message" />
+        </div>
+      ) : null}
       <div className="flex-ns flex-wrap flex-row">
         <ContactDetails />
         <AddressDetails shippingData={shippingData} />

@@ -63,8 +63,9 @@ export const CreateReturnRequest = (props: RouteProps) => {
   } = useReturnRequest()
 
   const { data: storeSettings } = useStoreSettings()
-  const { paymentOptions } = storeSettings ?? {}
+  const { paymentOptions, options } = storeSettings ?? {}
   const { enablePaymentMethodSelection } = paymentOptions ?? {}
+  const { enableHighlightFormMessage } = options ?? {}
 
   const { navigate } = useRuntime()
 
@@ -132,6 +133,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
                   data?.orderToReturnSummary.paymentData.canRefundCard
                 }
                 shippingData={data.orderToReturnSummary.shippingData}
+                showHighlightedMessage={enableHighlightFormMessage}
               />
             </>
           ) : null}

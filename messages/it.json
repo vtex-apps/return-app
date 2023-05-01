@@ -25,6 +25,8 @@
   "admin/return-app.settings.section.general-options.enable-proportional-shipping-value.description": "Calcola la spedizione proporzionale per ogni articolo reso",
   "admin/return-app.settings.section.general-options.enable-select-item-condition.label": "Abilita il selettore di condizione dell'articolo",
   "admin/return-app.settings.section.general-options.enable-select-item-condition.description": "Se abilitato, l'utente dovrà selezionare la condizione di ogni articolo",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Abilita un messaggio personalizzabile nei moduli di reso",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "Se abilitato, in cima al modulo utilizzato per compilare i dati personali dell'utente, verrà visualizzato un messaggio. Personalizzabile tramite \"Messaggi\"",
   "admin/return-app.settings.section-excluded-categories.fetch-data-error": "Errore durante il caricamento delle categorie",
   "admin/return-app.settings.save.button": "Salva impostazioni",
   "admin/return-app.settings.section.custom-reasons.empty-custom-reasons": "Nessuna opzione aggiunta",

@@ -1,7 +1,4 @@
-# Return App V3 <sup>BETA</sup>
-
-Return app v3 is still in BETA. v2 will no longer be supported so please do not install it.
-Docs are WIP.
+# Return App V3
 
 ## Description
 
@@ -365,8 +362,9 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 | 'quantitySelectorWrapper'          |
 | 'reasonWrapper'                    |
 | 'conditionWrapper'                 |
+| 'highlightedFormMessage'           |
 
-## Knowing issues
+## Known issues
 
 - When a store has a process to create return invoices ([invoice type input](https://developers.vtex.com/vtex-rest-api/reference/invoicenotification)) outside the return app, the app will consider those items and they will not be able to be returned via the app. However when an item is already committed in a return request and an invoice is created considering that item with a invoice number different than the return request id, there will be more processed items to return then invoices items - It can be seen using the query `orderToReturnSummary` on GraphQL.
 
