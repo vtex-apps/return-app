@@ -1,6 +1,6 @@
 import type { ReturnRequestCreated, ReturnRequestInput } from 'vtex.return-app'
 import { UserInputError, ResolverError } from '@vtex/api'
-import type { DocumentResponse } from '@vtex/clients'
+import type { DocumentResponse } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
 
 import {
   SETTINGS_PATH,

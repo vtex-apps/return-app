@@ -1,4 +1,5 @@
-import type { OrderDetailResponse, MasterDataEntity } from '@vtex/clients'
+import type { OrderDetailResponse } from '@vtex/clients'
+import type { MasterDataEntity } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
 import type {
   OrderToReturnSummary,
   InvoicedItem,
