@@ -1574,10 +1574,10 @@
     uuid "^3.3.3"
     xss "^1.0.6"
 
-"@vtex/clients@^2.13.0":
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/@vtex/clients/-/clients-2.17.0.tgz#252e2ecc907ba1eb71b553a7598f1f1ff76aadf8"
-  integrity sha512-21gE6vfjzPJe+5nqdwBKgbxwkVksPfiuJymYYn7mV1TNduFZNA0IWhSNjWqo/pnu6sHnPzXXjmcLDWse4QJR0w==
+"@vtex/clients@^2.21.0":
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/@vtex/clients/-/clients-2.21.0.tgz#b6f85a291b8ad4c17da8136a46950444559a4c09"
+  integrity sha512-UGZcdgJGqNbOr7saGSSiuoVR3cKwe0Ubo978vyDA+mdsfYfILIfXToiWulE3EMedbE3RUQ5MYqHheYfN/oJWRg==
   dependencies:
     "@gocommerce/utils" "^0.7.3"
 
@@ -6155,9 +6155,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://sanz--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.7.1+build1682960217/public/@types/vtex.return-app":
-  version "3.7.1"
-  resolved "https://sanz--powerplanet.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.7.1+build1682960217/public/@types/vtex.return-app#97a749f93e74f1856a5614043d577c8db8fe8fd2"
+"vtex.return-app@https://sanz--canali.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.8.0+build1683029423/public/@types/vtex.return-app":
+  version "3.8.0"
+  resolved "https://sanz--canali.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.8.0+build1683029423/public/@types/vtex.return-app#484d950c6f38e7400592726b06f56db81a95ab87"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.4/public/@types/vtex.styleguide":
   version "9.146.4"
