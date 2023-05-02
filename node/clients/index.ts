@@ -14,7 +14,7 @@ const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>(
   'returnRequest',
   undefined,
-  2
+  1
 )
 
 export class Clients extends IOClients {
