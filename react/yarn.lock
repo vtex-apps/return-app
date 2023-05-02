@@ -5206,9 +5206,9 @@ verror@1.10.0:
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.return-app@https://sanz--canali.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.8.0+build1683029423/public/@types/vtex.return-app":
+"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.8.0/public/@types/vtex.return-app":
   version "3.8.0"
-  resolved "https://sanz--canali.myvtex.com/_v/private/typings/linked/v1/vtex.return-app@3.8.0+build1683029423/public/@types/vtex.return-app#484d950c6f38e7400592726b06f56db81a95ab87"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.8.0/public/@types/vtex.return-app#b4b0693d48eaf98748f87e310238b3aba0cb5edf"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.4/public/@types/vtex.styleguide":
   version "9.146.4"
