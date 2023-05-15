@@ -303,6 +303,7 @@
   "return-app.return-request-list.table.status.cancelled": "Cancelado",
   "return-app.return-request-list.table.status.allStatus": "Status",
   "return-app.return-request-details.table.status-history.header.created-at": "Criado em",
+  "return-app.return-request-list.table.view": "Visualização",
   "return-app.return-request-details.table.status-history.header.status": "Status",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Enviado por",
   "return-app.return-request-details.status-history.title": "Histórico de status",

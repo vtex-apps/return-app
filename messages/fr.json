@@ -302,6 +302,7 @@
   "return-app.return-request-list.table.status.allStatus": "Statut",
   "return-app.return-request-details.table.status-history.header.created-at": "Créé le",
   "return-app.return-request-details.table.status-history.header.status": "Statut",
+  "return-app.return-request-list.table.view": "Visualisatie",
   "return-app.return-request-details.table.status-history.header.submitted-by": "Soumis par",
   "return-app.return-request-details.status-history.title": "Historique du statut",
   "store/return-app.return-request-details.page-header.title": "Détails de la demande de retour",

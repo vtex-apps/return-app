@@ -50,8 +50,8 @@ export const GridCard = ({
 
   const itemImage =
     cardTypeByPage === 'request-return'
-      ? item?.invoicedItems?.[0]?.imageUrl ?? ''
-      : item?.items?.[0]?.imageUrl ?? ''
+      ? item?.invoicedItems?.[0]?.imageUrl.replace('55-55', '200-200') ?? ''
+      : item?.items?.[0]?.imageUrl.replace('55-55', '200-200') ?? ''
 
   return (
     <div
