@@ -172,7 +172,7 @@ export const createOrdersToReturnSummary = async (
     excludedItems,
     clientProfileData: transformOrderClientProfileData(
       order.clientProfileData,
-      email
+      email || order.clientProfileData.email
     ),
     shippingData: transformShippingData(order.shippingData),
     paymentData: {

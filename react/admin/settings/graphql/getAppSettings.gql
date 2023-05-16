@@ -1,7 +1,6 @@
 query returnAppSettings {
   returnAppSettings @context(provider: "itglobers.return-app") {
     maxDays
-    enableStatusSelection
     excludedCategories
     orderStatus
     paymentOptions {

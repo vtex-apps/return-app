@@ -341,12 +341,8 @@
   "store/return-app.return-order-details.error.order-not-found": "ไม่พบคำสั่งซื้อ",
   "store/return-app.return-order-details.error.forbidden": "คุณไม่สามารถดูคำสั่งซื้อนี้",
   "store/return-app.return-order-details.error.unknown": "มีบางอย่างผิดปกติ โปรดลองอีกครั้ง",
-  "admin/return-app.settings.section.status-options.enable-other-option-selection.label-true": "อนุญาตการคืนสินค้าในสถานะใบแจ้งหนี้เท่านั้น",
-  "admin/return-app.settings.section.status-options.enable-other-option-selection.label-false": "อนุญาตให้ส่งคืนในสถานะใบแจ้งหนี้และอนุมัติการชำระเงิน",
-  "admin/return-app.settings.section.status-options.enable-other-option-selection.description": "อนุญาตให้ส่งคืนคำสั่งซื้อในสถานะออกใบแจ้งหนี้หรืออนุมัติการชำระเงินเท่านั้น",
   "admin/return-app.settings.order-status.label": "สถานะการสั่งซื้อ",
   "admin/return-app.settings.order-status.placeholder": "เลือกตัวเลือก",
-  "admin/return-app.settings.section.status-options.header": "ตัวเลือกสถานะ",
   "return-app.return-request-list.table-data.searchBySellerName": "ชื่อผู้ขาย",
   "return-app.return-request-list.table-filters.export-returns": "ส่งออก"
 }

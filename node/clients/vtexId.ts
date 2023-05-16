@@ -72,4 +72,5 @@ export class VtexId extends JanusClient {
   public getAuthToken() {
     return this.context.adminUserAuthToken ?? this.context.authToken
   }
+  
 }

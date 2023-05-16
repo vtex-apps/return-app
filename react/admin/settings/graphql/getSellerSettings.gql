@@ -5,7 +5,6 @@ query getSellerSettings($sellerId: String!) {
     id
     sellerId
     maxDays
-    enableStatusSelection
     excludedCategories
     paymentOptions {
       enablePaymentMethodSelection

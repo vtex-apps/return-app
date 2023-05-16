@@ -1,6 +1,5 @@
 type ReturnAppSettings {
   maxDays: Int!
-  enableStatusSelection: Boolean
   excludedCategories: [String!]!
   paymentOptions: PaymentOptions!
   termsUrl: String!
@@ -42,7 +41,6 @@ type ReturnOption {
 
 input ReturnAppSettingsInput {
   maxDays: Int!
-  enableStatusSelection: Boolean
   excludedCategories: [String!]!
   paymentOptions: PaymentOptionsInput!
   termsUrl: String!

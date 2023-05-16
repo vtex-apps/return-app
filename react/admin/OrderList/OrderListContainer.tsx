@@ -39,7 +39,7 @@ export const OrderListContainer = () => {
     operation: 'next' | 'previous'
   ): Promise<void> => {
     const alreadyFetched = ordersToReturn.find((ordersItem) => {
-      return ordersItem.paging?.currentPage === page
+      return ordersItem?.paging?.currentPage === page
     })
 
     if (!alreadyFetched) {
@@ -56,7 +56,7 @@ export const OrderListContainer = () => {
           ])
 
           setCurrentPage(
-            Number(fetchMoreResult.ordersAvailableToReturn.paging?.currentPage)
+            Number(fetchMoreResult.ordersAvailableToReturn?.paging?.currentPage)
           )
 
           return prevResult

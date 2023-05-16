@@ -132,7 +132,7 @@ export const OrderList = ({
     'IDLE'
   )
 
-  const { paging } = orders
+  const { paging } = orders || {}
   const currentPage = paging?.currentPage ?? 1
   const perPage = paging?.perPage ?? 0
   const totalItems = paging?.total ?? 0
@@ -156,7 +156,7 @@ export const OrderList = ({
         <OrdersTableFilter
           refetch={refetch}
           loading={isLoading}
-          isDisabled={!orders.list?.length}
+          isDisabled={!orders?.list?.length}
         />
       )}
       <Table
@@ -168,7 +168,7 @@ export const OrderList = ({
           navigate,
           isSmallScreen: phone,
         })}
-        items={orders.list}
+        items={orders?.list}
         loading={fetchMoreState === 'LOADING'}
         pagination={{
           onNextClick: () => handlePaginationClick('next'),

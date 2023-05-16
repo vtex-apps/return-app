@@ -84,7 +84,7 @@ export const CreateReturnRequest = (props: any) => {
     const { orderId: id } = orderToReturnSummary
 
     const itemsToReturn = formatItemsToReturn(orderToReturnSummary)
-
+    
     setItemsToReturn(itemsToReturn)
 
     const { clientProfileData, shippingData } = orderToReturnSummary
@@ -99,7 +99,7 @@ export const CreateReturnRequest = (props: any) => {
         pickupReturnData: initialPickupAddress,
         items: itemsToReturn.map(({ orderItemIndex }) => ({
           orderItemIndex,
-          quantity: 0,
+          quantity: 0
         })),
         refundPaymentData: enablePaymentMethodSelection
           ? undefined

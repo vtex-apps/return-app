@@ -341,12 +341,8 @@
   "store/return-app.return-order-details.error.order-not-found": "Pedido não encontrado",
   "store/return-app.return-order-details.error.forbidden": "Você não tem acesso a este pedido",
   "store/return-app.return-order-details.error.unknown": "Ocorreu um erro. Tente novamente.",
-  "admin/return-app.settings.section.status-options.enable-other-option-selection.label-true": "Permitir devoluções apenas no status da fatura",
-  "admin/return-app.settings.section.status-options.enable-other-option-selection.label-false": "Permitir devoluções em status de fatura e aprovação de pagamento",
-  "admin/return-app.settings.section.status-options.enable-other-option-selection.description": "Permitir devoluções de pedidos apenas no status faturado ou aprovado para pagamento",
   "admin/return-app.settings.order-status.label": "Status do pedido",
   "admin/return-app.settings.order-status.placeholder": "Selecione a opção",
-  "admin/return-app.settings.section.status-options.header": "Opção de status",
   "return-app.return-request-list.table-data.searchBySellerName": "ID do Vendedor",
   "return-app.return-request-list.table-filters.export-returns": "EXPORTAR"
 }

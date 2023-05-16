@@ -9,7 +9,6 @@ export const initialSettingsState: SellerSetting = {
   id: '',
   sellerId: '',
   maxDays: 0,
-  enableStatusSelection: true,
   excludedCategories: [],
   termsUrl: '',
   orderStatus: 'Select Option',
@@ -55,13 +54,6 @@ export const termsUrlAction = (termsUrl: string) => {
   return {
     type: 'updateTermsUrl' as const,
     payload: termsUrl,
-  }
-}
-
-export const statusAction = (enableStatusSelection: boolean) => {
-  return {
-    type: 'updateStatus' as const,
-    payload: enableStatusSelection,
   }
 }
 
@@ -112,7 +104,6 @@ export type Actions =
   | ReturnType<typeof orderStatusAction>
   | ReturnType<typeof excludedCategoriesAction>
   | ReturnType<typeof termsUrlAction>
-  | ReturnType<typeof statusAction>
   | ReturnType<typeof paymentOptionsAction>
   | ReturnType<typeof customReturnReasonsAction>
   | ReturnType<typeof optionsAction>
@@ -152,12 +143,6 @@ export const settingsReducer = (
       }
     }
 
-    case 'updateStatus': {
-      return {
-        ...state,
-        enableStatusSelection: action.payload,
-      }
-    }
     case 'updatePaymentOptions': {
       return {
         ...state,
