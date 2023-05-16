@@ -10,6 +10,7 @@ const generalOptions = [
   'enablePickupPoints',
   'enableProportionalShippingValue',
   'enableSelectItemCondition',
+  'enableHighlightFormMessage',
 ] as const
 
 const messages = defineMessages({
@@ -36,6 +37,12 @@ const messages = defineMessages({
   },
   'enableSelectItemCondition-description': {
     id: 'admin/return-app.settings.section.general-options.enable-select-item-condition.description',
+  },
+  'enableHighlightFormMessage-label': {
+    id: 'admin/return-app.settings.section.general-options.enable-highlight-form-message.label',
+  },
+  'enableHighlightFormMessage-description': {
+    id: 'admin/return-app.settings.section.general-options.enable-highlight-form-message.description',
   },
 })
 

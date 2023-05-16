@@ -26,6 +26,7 @@ query returnAppSettings {
       enablePickupPoints
       enableProportionalShippingValue
       enableSelectItemCondition
+      enableHighlightFormMessage
     }
   }
 }

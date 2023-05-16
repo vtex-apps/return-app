@@ -57,6 +57,7 @@ export type ReturnOption = {
   enablePickupPoints?: Maybe<Scalars['Boolean']>;
   enableProportionalShippingValue?: Maybe<Scalars['Boolean']>;
   enableSelectItemCondition?: Maybe<Scalars['Boolean']>;
+  enableHighlightFormMessage: Maybe<Scalars['Boolean']>;
 };
 
 export type ReturnAppSettingsInput = {
@@ -98,6 +99,7 @@ export type ReturnOptionInput = {
   enablePickupPoints?: InputMaybe<Scalars['Boolean']>;
   enableProportionalShippingValue?: InputMaybe<Scalars['Boolean']>;
   enableSelectItemCondition?: InputMaybe<Scalars['Boolean']>;
+  enableHighlightFormMessage: Maybe<Scalars['Boolean']>;
 };
 
 export type MutationSaveReturnAppSettingsArgs = {
