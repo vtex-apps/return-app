@@ -345,5 +345,6 @@
   "admin/return-app.settings.order-status.label": "Estado del pedido",
   "admin/return-app.settings.order-status.placeholder": "Seleccionar opción",
   "return-app.return-request-list.table-data.searchBySellerName": "ID del vendedor",
-  "return-app.return-request-list.table-filters.export-returns": "EXPORTAR"
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTAR",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Habilitar un mensaje personalizable en los formularios de devolución"
 }

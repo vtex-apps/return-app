@@ -344,5 +344,7 @@
   "admin/return-app.settings.order-status.label": "Lo stato dell&#39;ordine",
   "admin/return-app.settings.order-status.placeholder": "Selezionare l&#39;opzione",
   "return-app.return-request-list.table-data.searchBySellerName": "ID venditore",
-  "return-app.return-request-list.table-filters.export-returns": "ESPORTA"
+  "return-app.return-request-list.table-filters.export-returns": "ESPORTA",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Abilita un messaggio personalizzabile nei moduli di reso",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "Se abilitato, in cima al modulo utilizzato per compilare i dati personali dell'utente, verrà visualizzato un messaggio. Personalizzabile tramite \"Messaggi\""
 }

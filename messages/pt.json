@@ -344,5 +344,7 @@
   "admin/return-app.settings.order-status.label": "Status do pedido",
   "admin/return-app.settings.order-status.placeholder": "Selecione a opção",
   "return-app.return-request-list.table-data.searchBySellerName": "ID do Vendedor",
-  "return-app.return-request-list.table-filters.export-returns": "EXPORTAR"
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTAR",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Ativar uma mensagem personalizável em formulários de retorno",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "Quando habilitado, no topo do formulário que é utilizado para preencher os dados pessoais do usuário, uma mensagem será exibida. Personalizável via \"Mensagens\""
 }

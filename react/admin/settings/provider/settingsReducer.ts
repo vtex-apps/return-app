@@ -26,6 +26,7 @@ export const initialSettingsState: SellerSetting = {
     enablePickupPoints: false,
     enableProportionalShippingValue: false,
     enableSelectItemCondition: false,
+    enableHighlightFormMessage: false
   },
 }
 

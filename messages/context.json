@@ -341,5 +341,7 @@
   "store/return-app.return-order-details.error.forbidden": "You don't have access to this order",
   "store/return-app.return-order-details.error.unknown": "Something failed, please try again.",
   "return-app.return-request-list.table-data.searchBySellerName": "Seller ID",
-  "return-app.return-request-list.table-filters.export-returns": "EXPORT"
+  "return-app.return-request-list.table-filters.export-returns": "EXPORT",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Toogle label for enabling a highlighted message",
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "Toogle description for enabling a highlighted message"
 }
