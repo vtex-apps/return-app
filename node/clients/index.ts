@@ -12,6 +12,7 @@ import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 import { ProfileClient } from './profile'
+import { Marketplace } from './marketplace'
 
 const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequestClient = masterDataFor<ReturnRequest>('returnRequest')
@@ -64,5 +65,9 @@ export class Clients extends IOClients {
 
   public get profile() {
     return this.getOrSet('profile', ProfileClient)
+  }
+
+  public get marketplace() {
+    return this.getOrSet('marketplace', Marketplace)
   }
 }

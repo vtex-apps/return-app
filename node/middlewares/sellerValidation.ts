@@ -12,7 +12,7 @@ export async function sellerValidation(
     vtex: {
       route: { params },
     },
-    clients: { vtexId },
+    clients: { marketplace },
   } = ctx
 
   const authCookie = header.vtexidclientautcookie as string | undefined
@@ -29,16 +29,26 @@ export async function sellerValidation(
 
   if (authCookie && (_sellerName || seller || sellerId)) {
     const accountName = String(_sellerName || seller || sellerId)
-    const account = await vtexId.getAccount(authCookie, accountName)
-
-    if (account.accountName !== accountName) {
-      throw new AuthenticationError('Request failed with status code 401')
+    const { items } = await marketplace.getSellers()
+    
+    if(items.length > 0){
+      const currentSeller = items.find((item: any) => item?.account === accountName)
+      if (!currentSeller) {
+        throw new AuthenticationError(`The ${accountName} account does not exist.`)
+      }
+      
+      if(!currentSeller.isActive){
+        throw new AuthenticationError(`The ${accountName} account is inactive.`)
+      }
+      
+      ctx.body = body
+  
+      await next()
+    } else {
+      throw new AuthenticationError('An error occurred while trying to validate your sellerId, please try again.')  
     }
 
-    ctx.body = body
-
-    await next()
   } else {
-    throw new AuthenticationError('Request failed with status code 401')
+    throw new AuthenticationError('Request failed with status code 401.')
   }
 }

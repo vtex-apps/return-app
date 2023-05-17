@@ -61,7 +61,7 @@ export default new Service<Clients, State, ParamsContext>({
   routes: {
     returnRequests: method({
       POST: [errorHandler, auth, sellerValidation, createReturn],
-      GET: [errorHandler, auth, getRequestList],
+      GET: [errorHandler, auth, sellerValidation, getRequestList],
     }),
     returnRequest: method({
       GET: [errorHandler, auth, getRequest],
@@ -80,8 +80,8 @@ export default new Service<Clients, State, ParamsContext>({
     sellerSettings: method({
       GET: [errorHandler, auth, sellerValidation, returnSellerSetting],
     }),
-    orders: method({
-      POST: [errorHandler, auth, getOrdersList],
+    orderList: method({
+      POST: [errorHandler, auth, sellerValidation, getOrdersList],
     }),
     giftcard: method({
       POST: [errorHandler, auth, createGiftcard],

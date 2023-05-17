@@ -29,8 +29,8 @@
       "path": "/_v/returns/seller/settings/:sellerId",
       "public": true
     },
-    "orders": {
-      "path": "/_v/returns/seller/orders",
+    "orderList": {
+      "path": "/_v/returns/seller/orderList",
       "public": true
     },
     "giftcard": {
