@@ -48,10 +48,20 @@ export const GridCard = ({
     )
   }, [item])
 
-  const itemImage =
+  let itemImage =
     cardTypeByPage === 'request-return'
-      ? item?.invoicedItems?.[0]?.imageUrl.replace('55-55', '200-200') ?? ''
-      : item?.items?.[0]?.imageUrl.replace('55-55', '200-200') ?? ''
+      ? item?.invoicedItems?.[0]?.imageUrl ?? ''
+      : item?.items?.[0]?.imageUrl ?? ''
+
+  /**
+   * Matches the id of an image and captures the width and height
+   * @example ids/167082-880-880/ -> -880-880
+   */
+  const replaceImageSize = itemImage?.match(/ids\/[^-]*(.*)\//)
+
+  itemImage = replaceImageSize
+    ? itemImage.replace(replaceImageSize[1], `-200-200`)
+    : itemImage
 
   return (
     <div
