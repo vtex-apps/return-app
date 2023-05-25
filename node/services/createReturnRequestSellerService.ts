@@ -42,6 +42,7 @@ export const createReturnRequestSellerService = async (
     refundStatusData,
     cultureInfoData,
     logisticInfo,
+    locale,
   } = args
 
   if (!appkey && !userProfile) {
@@ -77,13 +78,21 @@ export const createReturnRequestSellerService = async (
 
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
+  const searchRMAPromise = returnRequestClient.searchRaw(
+    { page: 1, pageSize: 1 },
+    ['id'],
+    undefined,
+    `orderId=${orderId}`
+  )
+
   const settingsPromise = appSettings.get(SETTINGS_PATH, true)
 
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
-  const [order, settings] = await Promise.all([
+  const [order, settings, searchRMA] = await Promise.all([
     orderPromise,
     settingsPromise,
+    searchRMAPromise,
   ])
 
   if (!settings) {
@@ -96,7 +105,15 @@ export const createReturnRequestSellerService = async (
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
     shippingData,
+    sellers,
+    sequence,
+    storePreferencesData: { currencyCode },
   } = order
+
+  const {
+    pagination: { total },
+  } = searchRMA
+
 
 
   isUserAllowed({
@@ -105,7 +122,7 @@ export const createReturnRequestSellerService = async (
     appkey,
   })
 
-
+  const currentSequenceNumber = `${sequence}-${total + 1}`
 
   // customerProfileData can be undefined when coming from a endpoint request
   const { email: inputEmail } = customerProfileData ?? {}
@@ -127,10 +144,10 @@ export const createReturnRequestSellerService = async (
   try {
     rmaDocument = await returnRequestClient.save({
       orderId,
-      sellerName,
+      sellerName: sellers?.[0]?.id || sellerName || undefined,
       refundableAmount,
-      sequenceNumber,
-      status,
+      sequenceNumber: sequenceNumber || currentSequenceNumber,
+      status: status || 'new',
       refundableAmountTotals,
       customerProfileData: {
         userId: clientProfileData.userProfileId,
@@ -141,11 +158,12 @@ export const createReturnRequestSellerService = async (
       pickupReturnData,
       refundPaymentData,
       items,
-      dateSubmitted,
+      dateSubmitted: dateSubmitted || new Date(),
       refundData,
       refundStatusData,
-      cultureInfoData,
-      logisticInfo
+      cultureInfoData: cultureInfoData || {locale, currencyCode},
+      logisticInfo,
+      createdIn: dateSubmitted || new Date()
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

@@ -1,6 +1,6 @@
 query getSettingsRequestList($filter: ReturnSettingsFilters, $page: Int!) {
   returnSettingsList(filter: $filter, page: $page)
-    @context(provider: "itglobers.return-app") {
+    @context(provider: "vtex.return-app") {
     list{
       id
       sellerId

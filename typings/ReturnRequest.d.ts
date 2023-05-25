@@ -131,12 +131,12 @@ export interface ReturnRequest {
 
 export type ReturnRequestInput = {
   orderId: Scalars['String'];
-  sellerName?: InputMaybe<Scalars['String']>;
+  sellerName?: Maybe<Scalars['String']>;
   items: Array<ReturnRequestItemInput>;
   customerProfileData: CustomerProfileDataInput;
   pickupReturnData: PickupReturnDataInput;
   refundPaymentData: RefundPaymentDataInput;
-  userComment?: InputMaybe<Scalars['String']>;
+  userComment?: Maybe<Scalars['String']>;
   locale: Scalars['String'];
 };
 

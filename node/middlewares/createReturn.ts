@@ -5,7 +5,7 @@ import { createReturnRequestSellerService } from '../services/createReturnReques
 export async function createReturn(ctx: Context) {
   const { body }: any = ctx || {}
   
-  const { locale } = body?.cultureInfoData
+  const locale = body?.cultureInfoData?.locale || body?.locale
 
   if (!locale) {
     throw new UserInputError('Locale is required.')
