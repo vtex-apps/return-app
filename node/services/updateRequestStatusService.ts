@@ -101,7 +101,7 @@ export const updateRequestStatusService = async (
     vtex: { logger },
   } = ctx
 
-  const { status, requestId, comment, refundData, sellerName } = args
+  const { status, comment, refundData, requestId, sellerName } = args
 
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
 

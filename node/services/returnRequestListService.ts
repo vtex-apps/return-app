@@ -151,7 +151,7 @@ export const returnRequestListService = async (
     'dateSubmitted DESC',
     buildWhereClause(adjustedFilter)
   )
-
+  
   const { data, pagination } = rmaSearchResult
   const { page: currentPage, pageSize, total } = pagination
 

@@ -1,6 +1,6 @@
 import { json } from 'co-body'
 
-import { updateRequestStatusFromSellerService } from '../services/updateRequestStatusFromSellerService'
+import { updateRequestStatusService } from '../services/updateRequestStatusService'
 
 export async function updateRequestStatus(ctx: Context) {
   const {
@@ -13,11 +13,7 @@ export async function updateRequestStatus(ctx: Context) {
   const { requestId } = params as { requestId: string }
 
   const body = await json(req)
-  const updatedRequest = await updateRequestStatusFromSellerService(
-    ctx,
-    body,
-    requestId
-  )
+  const updatedRequest = await updateRequestStatusService(ctx, {...body, requestId})
 
   ctx.set('Cache-Control', 'no-cache')
   ctx.body = updatedRequest

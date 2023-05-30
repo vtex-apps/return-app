@@ -16,6 +16,9 @@ export async function sellerValidation(
   } = ctx
 
   const authCookie = header.vtexidclientautcookie as string | undefined
+  const appkey = header['x-vtex-api-appkey'] as string | undefined
+  const apptoken = header['x-vtex-api-apptoken'] as string | undefined
+
   const { _sellerName } = query
 
   const body = await json(req)
@@ -27,7 +30,7 @@ export async function sellerValidation(
   seller = sellerNameSettintgs || sellerName
   const { sellerId } = params as { sellerId: string }
 
-  if (authCookie && (_sellerName || seller || sellerId)) {
+  if ((authCookie || appkey || apptoken) && (_sellerName || seller || sellerId)) {
     const accountName = String(_sellerName || seller || sellerId)
     const { items } = await marketplace.getSellers()
     
