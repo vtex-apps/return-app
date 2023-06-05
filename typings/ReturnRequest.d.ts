@@ -14,6 +14,7 @@ export type Scalars = {
 
 export interface ReturnRequest {
   orderId: string;
+  sellerOrderId?: string;
   sellerName?: string;
   refundableAmount: number;
   sequenceNumber: string;

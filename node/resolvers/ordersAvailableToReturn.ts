@@ -55,7 +55,7 @@ const createParams = ({
     return {
       clientEmail: userEmail,
       orderBy: 'creationDate,desc' as const,
-      f_status: 'invoiced,payment-approved,handling',
+      f_status: 'invoiced,payment-approved,handling,payment-pending',
       q: query,
       f_sellerNames: seller,
       page,

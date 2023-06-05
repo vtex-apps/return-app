@@ -3,6 +3,9 @@
     "orderId": {
       "type": "string"
     },
+    "orderSellerId": {
+      "type": "string"
+    },
     "sellerName": {
       "type": "string"
     },
