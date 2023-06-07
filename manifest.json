@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "return-app",
-  "version": "3.10.0",
+  "version": "3.11.0-beta",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -23,7 +23,7 @@
     "store": "0.x",
     "node": "6.x",
     "graphql": "1.x",
-    "masterdata": "1.x"
+    "masterdata": "2.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
