@@ -122,7 +122,9 @@ export const ordersAvailableToReturn = async (
   )
 
   const orderListPromises = []
-
+  let orders: any = []
+  let orderError = false
+  
   for (const order of list) {
     // Fetch order details to get items and packages
     const orderPromise = oms.order(order.orderId)
@@ -133,8 +135,21 @@ export const ordersAvailableToReturn = async (
     await pacer(2000)
   }
 
-  const orders = await Promise.all(orderListPromises)
+  try {
+    orders = await Promise.all(orderListPromises)
+  } catch (error) {
+    orderError = true
+  }
 
+  if(orderError) {
+    for (const order of list) {
+      // Fetch order details to get items and packages
+      oms.order(order.orderId).then((data) => orders.push(data))
+  
+      // eslint-disable-next-line no-await-in-loop
+      await pacer(2000)
+    }
+  }
   
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
 
@@ -186,7 +201,8 @@ export const ordersAvailableToReturn = async (
 
   return { list: orderList, paging: {
     ...paging,
-    perPage: orderList?.length || 0
-  } }
+    perPage: orderList?.length || 0,
+    total: paging.total <= 20 ? orderList.length : paging.total
+  }}
 
 }
