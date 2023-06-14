@@ -29,36 +29,36 @@ export const ApprovedValues = () => {
     <div className={`${handles.approvedValuesContainer} mb5`}>
       {status === 'amountRefunded' ? (
         <h3>
-          <FormattedMessage id="return-app.return-request-details.refund-total.header-refunded" />
+          <FormattedMessage id="store/return-app.return-request-details.refund-total.header-refunded" />
         </h3>
       ) : null}
       {status === 'packageVerified' ? (
         <h3>
-          <FormattedMessage id="return-app.return-request-details.refund-total.header-approved" />
+          <FormattedMessage id="store/return-app.return-request-details.refund-total.header-approved" />
         </h3>
       ) : null}
       <TotalContainer>
         <TotalWrapper
           title={
-            <FormattedMessage id="return-app.return-request-details.refund-total.item-tax" />
+            <FormattedMessage id="store/return-app.return-request-details.refund-total.item-tax" />
           }
           value={amountItemRefund}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="return-app.return-request-details.refund-total.restock-fee" />
+            <FormattedMessage id="store/return-app.return-request-details.refund-total.restock-fee" />
           }
           value={totalRestockFee === 0 ? 0 : totalRestockFee * -1}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="return-app.return-request-details.refund-total.shipping" />
+            <FormattedMessage id="store/return-app.return-request-details.refund-total.shipping" />
           }
           value={refundedShippingValue}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="return-app.return-request-details.refund-total.total" />
+            <FormattedMessage id="store/return-app.return-request-details.refund-total.total" />
           }
           value={invoiceValue}
         />

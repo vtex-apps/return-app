@@ -32,7 +32,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconSuccess size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.package-verified" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.package-verified" />
         </div>
       )
 
@@ -42,7 +42,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconFailure size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.denied" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.denied" />
         </div>
       )
 
@@ -52,7 +52,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconFailure size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.cancelled" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.cancelled" />
         </div>
       )
 
@@ -62,7 +62,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconClock size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.pending-verification" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.pending-verification" />
         </div>
       )
 
@@ -72,7 +72,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconClock size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.processing" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.processing" />
         </div>
       )
 
@@ -82,7 +82,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconCheck size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.refunded" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.refunded" />
         </div>
       )
 
@@ -92,7 +92,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconExternalLinkMini size={11} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.pickedup-from-client" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.pickedup-from-client" />
         </div>
       )
 
@@ -102,7 +102,7 @@ export function renderStatus(requestStatus: Status) {
           <span className="mr2 flex">
             <IconVisibilityOn size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.new" />
+          <FormattedMessage id="store/return-app.return-request-list.table.status.new" />
         </div>
       )
   }
