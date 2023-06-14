@@ -133,6 +133,7 @@
   "store/return-app.return-item-details.dropdown-condition.error": "La condición es obligatoria",
   "store/return-app.return-payment-methods.input-payment-method.error": "El método de pago es obligatorio",
   "store/return-app.return-payment-methods.input-iban.error": "El IBAN es obligatorio",
+  "store/return-app.return-payment-methods.input-iban-invalid.error": "IBAN is not valid",
   "store/return-app.return-payment-methods.input-account-holder.error": "El titular de la cuenta es obligatorio",
   "store/return-app.return-terms-and-conditions.checkbox.error": "Por favor, acepta los términos y condiciones.",
   "store/return-app.return-items-list.no-items-selected.error": "No hay ítems seleccionados",
