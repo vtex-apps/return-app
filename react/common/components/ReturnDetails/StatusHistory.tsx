@@ -79,7 +79,7 @@ export const StatusHistory = () => {
   return (
     <section className={`${handles.statusHistoryContainer} mv4`}>
       <h3>
-        <FormattedMessage id="return-app.return-request-details.status-history.title" />
+        <FormattedMessage id="store/return-app.return-request-details.status-history.title" />
       </h3>
       <Table
         fullWidth

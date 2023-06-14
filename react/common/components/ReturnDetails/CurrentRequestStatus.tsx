@@ -22,14 +22,14 @@ export const CurrentRequestStatus = () => {
     <div className={`${handles.currentRequestStatusContainer} mv4`}>
       <div className="mb4">
         <FormattedMessage
-          id="return-app.return-request-details.current-status.request-id"
+          id="store/return-app.return-request-details.current-status.request-id"
           values={{ id, b: renderChunks }}
         />
       </div>
       <div className="flex">
         <span className="mr2">
           <FormattedMessage
-            id="return-app.return-request-details.current-status.status"
+            id="store/return-app.return-request-details.current-status.status"
             values={{
               b: renderChunks,
             }}

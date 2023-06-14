@@ -23,7 +23,7 @@ export const OrderLink = () => {
   return (
     <Link href={targetHref} target="_blank">
       <FormattedMessage
-        id="return-app.return-request-details.order-id.link"
+        id="store/return-app.return-request-details.order-id.link"
         values={{ orderId }}
       />
     </Link>
