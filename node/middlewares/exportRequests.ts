@@ -12,8 +12,8 @@ function generateCSV(data: any[]) {
     ['Customer Name']           :item?.customerProfileData?.name,
     ['Customer Email']          :item?.customerProfileData?.email,
     ['Seller Name']             :item?.sellerName || '',
-    'Currier'                   :item?.logisticsInfo?.currier || '',
-    'SLA'                       :item?.logisticsInfo?.sla || '',
+    'Carrier'                   :item?.logisticsInfo?.currier || '',
+    'Shipping method'           :item?.logisticsInfo?.sla || '',
     ['Sequence Number']         :item?.sequenceNumber,
     ['Creation date']           :item?.createdIn,
     ['Creation time']           :item?.dateSubmitted

@@ -83,7 +83,7 @@ const ListTableFilter = (props: Props) => {
     for (const prop in selectedFilters) {
       // eslint-disable-next-line no-prototype-builtins
       if (selectedFilters.hasOwnProperty(prop)) {
-        if (selectedFilters[prop].trim() === '') {
+        if (typeof selectedFilters?.[prop] === 'string' && selectedFilters?.[prop]?.trim() === '') {
           delete selectedFilters[prop];
         }
       }
