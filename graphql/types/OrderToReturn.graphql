@@ -80,7 +80,7 @@ type ShippingData {
   addressId: String!
   address: String!
   city: String!
-  state: String!
+  state: String
   country: String!
   zipCode: String!
   addressType: AddressType!

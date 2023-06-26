@@ -36,7 +36,7 @@ export type CheckoutAddress = {
   isDisposable: Scalars['Boolean'];
   postalCode: Scalars['String'];
   city: Scalars['String'];
-  state: Scalars['String'];
+  state?: Scalars['String'];
   country: Scalars['String'];
   street: Scalars['String'];
   number?: Maybe<Scalars['String']>;

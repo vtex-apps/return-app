@@ -43,7 +43,7 @@ export interface ReturnRequest {
     addressId: string;
     address: string;
     city: string;
-    state: string;
+    state?: string;
     country: string;
     zipCode: string;
     addressType: "PICKUP_POINT" | "CUSTOMER_ADDRESS";
@@ -170,7 +170,7 @@ export type PickupReturnDataInput = {
   addressId: Scalars['String'];
   address: Scalars['String'];
   city: Scalars['String'];
-  state: Scalars['String'];
+  state?: Scalars['String'];
   country: Scalars['String'];
   zipCode: Scalars['String'];
   addressType: AddressType;

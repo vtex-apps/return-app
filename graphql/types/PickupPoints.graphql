@@ -18,7 +18,7 @@ type CheckoutAddress {
   isDisposable: Boolean!
   postalCode: String!
   city: String!
-  state: String!
+  state: String
   country: String!
   street: String!
   number: String!
