@@ -15,31 +15,31 @@ const allStatusKey = 'allStatus'
 
 const keyedStatusMessages = defineMessages({
   [allStatusKey]: {
-    id: 'return-app.return-request-list.table.status.allStatus',
+    id: 'store/return-app.return-request-list.table.status.allStatus',
   },
   new: {
-    id: 'return-app.return-request-list.table.status.new',
+    id: 'store/return-app.return-request-list.table.status.new',
   },
   processing: {
-    id: 'return-app.return-request-list.table.status.processing',
+    id: 'store/return-app.return-request-list.table.status.processing',
   },
   pickedUpFromClient: {
-    id: 'return-app.return-request-list.table.status.pickedup-from-client',
+    id: 'store/return-app.return-request-list.table.status.pickedup-from-client',
   },
   pendingVerification: {
-    id: 'return-app.return-request-list.table.status.pending-verification',
+    id: 'store/return-app.return-request-list.table.status.pending-verification',
   },
   packageVerified: {
-    id: 'return-app.return-request-list.table.status.package-verified',
+    id: 'store/return-app.return-request-list.table.status.package-verified',
   },
   denied: {
-    id: 'return-app.return-request-list.table.status.denied',
+    id: 'store/return-app.return-request-list.table.status.denied',
   },
   cancelled: {
-    id: 'return-app.return-request-list.table.status.cancelled',
+    id: 'store/return-app.return-request-list.table.status.cancelled',
   },
   amountRefunded: {
-    id: 'return-app.return-request-list.table.status.refunded',
+    id: 'store/return-app.return-request-list.table.status.refunded',
   },
 })
 

@@ -20,7 +20,7 @@ const statusHistorySchema = (
   properties: {
     createdAt: {
       title: (
-        <FormattedMessage id="return-app.return-request-details.table.status-history.header.created-at" />
+        <FormattedMessage id="store/return-app.return-request-details.table.status-history.header.created-at" />
       ),
       minWidth: 120,
       cellRenderer: function CreatedAt({ cellData }) {
@@ -39,7 +39,7 @@ const statusHistorySchema = (
     },
     status: {
       title: (
-        <FormattedMessage id="return-app.return-request-details.table.status-history.header.status" />
+        <FormattedMessage id="store/return-app.return-request-details.table.status-history.header.status" />
       ),
       minWidth: 150,
       cellRenderer: function Status({ cellData }) {
@@ -50,7 +50,7 @@ const statusHistorySchema = (
       ? {
           submittedBy: {
             title: (
-              <FormattedMessage id="return-app.return-request-details.table.status-history.header.submitted-by" />
+              <FormattedMessage id="store/return-app.return-request-details.table.status-history.header.submitted-by" />
             ),
           },
         }
@@ -79,7 +79,7 @@ export const StatusHistory = () => {
   return (
     <section className={`${handles.statusHistoryContainer} mv4`}>
       <h3>
-        <FormattedMessage id="return-app.return-request-details.status-history.title" />
+        <FormattedMessage id="store/return-app.return-request-details.status-history.title" />
       </h3>
       <Table
         fullWidth

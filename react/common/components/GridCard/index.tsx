@@ -107,7 +107,7 @@ export const GridCard = ({
             </div>
             <div className={handles.returnListItemInfoStatus}>
               <span>
-                <FormattedMessage id="return-app.return-request-details.status-timeline.header" />
+                <FormattedMessage id="store/return-app.return-request-details.status-timeline.header" />
                 :
               </span>
               {!!item?.status && <span>{renderStatus(item.status)}</span>}

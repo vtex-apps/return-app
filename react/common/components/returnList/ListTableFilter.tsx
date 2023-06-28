@@ -119,7 +119,7 @@ const ListTableFilter = (props: Props) => {
       <div className={`${handles.listTableFilterContainer} flex items-center`}>
         {route.domain === 'admin' ? (
           <div className="mr2">
-            <FormattedMessage id="return-app.return-request-list.table-data.requestId">
+            <FormattedMessage id="store/return-app.return-request-list.table-data.requestId">
               {(formattedMessage) => (
                 <Input
                   placeholder={formattedMessage}
@@ -135,7 +135,7 @@ const ListTableFilter = (props: Props) => {
           </div>
         ) : null}
         <div className="mh2">
-          <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber">
+          <FormattedMessage id="store/return-app.return-request-list.table-data.sequenceNumber">
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -150,7 +150,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="return-app.return-request-list.table-data.orderId">
+          <FormattedMessage id="store/return-app.return-request-list.table-data.orderId">
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -165,7 +165,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="return-app.return-request-list.table-filters.fromDate">
+          <FormattedMessage id="store/return-app.return-request-list.table-filters.fromDate">
             {(formattedMessage) => (
               <DatePicker
                 maxDate={new Date()}
@@ -182,7 +182,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="return-app.return-request-list.table-filters.toDate">
+          <FormattedMessage id="store/return-app.return-request-list.table-filters.toDate">
             {(formattedMessage) => (
               <DatePicker
                 maxDate={new Date()}
@@ -211,7 +211,7 @@ const ListTableFilter = (props: Props) => {
             type="submit"
             disabled={!hasSelectedFilters || loading}
           >
-            <FormattedMessage id="return-app.return-request-list.table-filters.apply-filters" />
+            <FormattedMessage id="store/return-app.return-request-list.table-filters.apply-filters" />
           </Button>
         </div>
         <div className="mh2">
@@ -221,7 +221,7 @@ const ListTableFilter = (props: Props) => {
             disabled={!isFiltering || loading}
             variation="danger"
           >
-            <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
+            <FormattedMessage id="store/return-app.return-request-list.table-filters.clear-filters" />
           </Button>
         </div>
       </div>

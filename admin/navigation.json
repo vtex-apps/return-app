@@ -4,7 +4,7 @@
   "path": "/admin/returns/requests",
   "subSectionItems": [
     {
-      "labelId": "navigation.labelRequests",
+      "labelId": "admin/navigation.labelRequests",
       "path": "/admin/returns/requests"
     },
     {
