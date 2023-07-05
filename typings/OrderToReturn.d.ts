@@ -105,7 +105,7 @@ export type ShippingData = {
   addressId: Scalars['String'];
   address: Scalars['String'];
   city: Scalars['String'];
-  state?: Scalars['String'];
+  state: Scalars['String'];
   country: Scalars['String'];
   zipCode: Scalars['String'];
   addressType: AddressType;

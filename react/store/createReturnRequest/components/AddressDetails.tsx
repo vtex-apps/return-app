@@ -201,7 +201,6 @@ export const AddressDetails = ({ shippingData }: Props) => {
       <div className={`${handles.stateInputContainer} mb4`}>
         <Input
           name="state"
-          requiered
           placeholder={formatMessage(messages.stateInput)}
           onChange={handleInputChange}
           value={pickupReturnData.state}
