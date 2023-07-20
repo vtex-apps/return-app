@@ -166,7 +166,7 @@ with the following example body:
 
 |Field|Description|isRequired|
 |----|----|----|
-|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled |true|
+|status|`enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, canceled |true|
 |comment| `object` only required if not updating status | false|
 |comment value|`string` only required if not updating status|true|
 |comment visibleForCustomer|`boolean` the comment will be shown to the customer. Default false|false|

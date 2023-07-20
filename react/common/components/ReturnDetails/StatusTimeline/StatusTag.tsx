@@ -13,7 +13,7 @@ interface Props {
 export const StatusTag = ({ status, visited, createdAt }: Props) => {
   const { formatMessage } = useIntl()
 
-  const invalid = ['denied', 'cancelled'].includes(status)
+  const invalid = ['denied', 'canceled'].includes(status)
 
   return (
     <span className="flex items-center">

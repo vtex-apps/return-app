@@ -26,7 +26,7 @@ export interface ReturnRequest {
     | "packageVerified"
     | "amountRefunded"
     | "denied"
-    | "cancelled";
+    | "canceled";
   refundableAmountTotals: {
     id: "items" | "shipping" | "tax";
     value: number;
@@ -109,7 +109,7 @@ export interface ReturnRequest {
       | "packageVerified"
       | "amountRefunded"
       | "denied"
-      | "cancelled";
+      | "canceled";
     submittedBy: string;
     createdAt: string;
     comments: {
@@ -221,7 +221,7 @@ export type Status =
   | 'packageVerified'
   | 'amountRefunded'
   | 'denied'
-  | 'cancelled';
+  | 'canceled';
 
 export type CustomerProfileData = {
   __typename?: 'CustomerProfileData';

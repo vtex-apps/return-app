@@ -15,15 +15,15 @@ const statusSequence: Status[] = [
 ]
 
 export const statusAllowed: Record<Status, Status[]> = {
-  new: ['new', 'processing', 'denied', 'cancelled'],
-  processing: ['processing', 'pickedUpFromClient', 'denied', 'cancelled'],
+  new: ['new', 'processing', 'denied', 'canceled'],
+  processing: ['processing', 'pickedUpFromClient', 'denied', 'canceled'],
   pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'denied'],
   // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
   pendingVerification: ['pendingVerification'],
   packageVerified: ['packageVerified', 'amountRefunded'],
   amountRefunded: ['amountRefunded'],
   denied: ['denied'],
-  cancelled: ['cancelled'],
+  canceled: ['canceled'],
 }
 
 export const statusMessageIdAdmin = defineMessages({
@@ -34,7 +34,7 @@ export const statusMessageIdAdmin = defineMessages({
   packageVerified: { id: 'return-app-status.package-verified' },
   amountRefunded: { id: 'return-app-status.refunded' },
   denied: { id: 'return-app-status.denied' },
-  cancelled: { id: 'return-app-status.cancelled' },
+  canceled: { id: 'return-app-status.canceled' },
 })
 
 export const timelineStatusMessageId = defineMessages({
@@ -49,7 +49,7 @@ export const timelineStatusMessageId = defineMessages({
   packageVerified: { id: 'return-app-status.timeline.package-verified' },
   amountRefunded: { id: 'return-app-status.timeline.refunded' },
   denied: { id: 'return-app-status.timeline.denied' },
-  cancelled: { id: 'return-app-status.timeline.cancelled' },
+  canceled: { id: 'return-app-status.timeline.canceled' },
 })
 
 type Comments = RefundStatusComment[]
@@ -82,7 +82,7 @@ export const createStatusTimeline = (
   const statusTimeline: VisitedStatus[] = []
 
   const isDenied = currentStatus === 'denied'
-  const isCancelled = currentStatus === 'cancelled'
+  const isCancelled = currentStatus === 'canceled'
 
   for (const statusName of statusSequence) {
     const status = refundStatusMap.get(statusName)
@@ -98,7 +98,7 @@ export const createStatusTimeline = (
   }
 
   if (isDenied || isCancelled) {
-    const status = refundStatusMap.get(isDenied ? 'denied' : 'cancelled')
+    const status = refundStatusMap.get(isDenied ? 'denied' : 'canceled')
 
     if (status) {
       statusTimeline.push(status)

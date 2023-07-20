@@ -291,7 +291,7 @@
         "packageVerified",
         "amountRefunded",
         "denied",
-        "cancelled"
+        "canceled"
       ]
     }
   },
