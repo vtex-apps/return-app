@@ -1,9 +1,10 @@
 import type { Status } from '../../typings/ReturnRequest'
-import Papa from 'papaparse'
+import XLSX from 'xlsx'
 
 import { returnRequestListService } from '../services/returnRequestListService'
 
-function generateCSV(data: any[]) {
+
+const createXLSBuffer = (data: any[]) => {
   const flattenedData = data.map((item: any) => ({
     ['Return Request ID']       :item?.id,
     ['Order ID']                :item?.orderId,
@@ -19,7 +20,12 @@ function generateCSV(data: any[]) {
     ['Creation time']           :item?.dateSubmitted
   }))
 
-  return Papa.unparse(flattenedData)
+  const workbook = XLSX.utils.book_new()
+  const worksheet = XLSX.utils.json_to_sheet(flattenedData)
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'return-requests')
+
+  return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
 }
 
 export async function exportRequests(ctx: Context, next: () => Promise<void>) {
@@ -104,11 +110,11 @@ export async function exportRequests(ctx: Context, next: () => Promise<void>) {
       responseRequests = responseRequests.concat(nextRequest.flat())
     }
 
-    const file = generateCSV(responseRequests)
+    const file = createXLSBuffer(responseRequests)
 
     ctx.status = 200
-    ctx.set('Content-Type', 'application/csv')
-    ctx.set('Content-Disposition', `attachment; filename=return-requests-${(new Date().toJSON().slice(0,10))}.csv`)
+    ctx.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    ctx.set('Content-Disposition', `attachment; filename=return-requests-${(new Date().toJSON().slice(0,10))}.xls`)
     ctx.body = file
   } catch (error) {
     ctx.status = 500
