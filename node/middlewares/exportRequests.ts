@@ -42,6 +42,7 @@ export async function exportRequests(ctx: Context, next: () => Promise<void>) {
     _userEmail,
     _allFields,
     _sellerName,
+    _onlyData = false,
   } = query
 
   try {
@@ -110,12 +111,17 @@ export async function exportRequests(ctx: Context, next: () => Promise<void>) {
       responseRequests = responseRequests.concat(nextRequest.flat())
     }
 
-    const file = createXLSBuffer(responseRequests)
+    if(_onlyData) {
+      ctx.status = 200
+      ctx.body = responseRequests
+    } else {
+      const file = createXLSBuffer(responseRequests)
 
-    ctx.status = 200
-    ctx.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    ctx.set('Content-Disposition', `attachment; filename=return-requests-${(new Date().toJSON().slice(0,10))}.xls`)
-    ctx.body = file
+      ctx.status = 200
+      ctx.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      ctx.set('Content-Disposition', `attachment; filename=return-requests-${(new Date().toJSON().slice(0,10))}.xls`)
+      ctx.body = file
+    }
   } catch (error) {
     ctx.status = 500
     ctx.body = { error: error.message }
