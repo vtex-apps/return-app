@@ -72,6 +72,7 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     settings: method({
       POST: [errorHandler, auth, saveAppSetting],
+      PUT: [errorHandler, auth, saveAppSetting],
       GET: [errorHandler, auth, returnAppSetting],
     }),
     sellerSetting: method({
