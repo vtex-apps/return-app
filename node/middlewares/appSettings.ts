@@ -1,6 +1,5 @@
 import { json } from 'co-body'
 
-import { saveAppSettingService } from '../services/AppSettingsService'
 import { SETTINGS_PATH } from '../utils/constants'
 import schemaAppSetting from '../utils/appSettingSchema'
 
