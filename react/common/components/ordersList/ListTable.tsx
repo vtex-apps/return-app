@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import type { OrdersToReturnList, OrderToReturnSummary } from '../../../../typings/OrderToReturn'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 import { Table, Button } from 'vtex.styleguide'
 
+import type {
+  OrdersToReturnList,
+  OrderToReturnSummary,
+} from '../../../../typings/OrderToReturn'
 import { createItemsSummary } from '../../../store/utils/createItemsSummary'
 import OrdersTableFilter from './ListTableFilter'
 

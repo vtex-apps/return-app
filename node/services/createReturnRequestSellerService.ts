@@ -1,7 +1,7 @@
-import type { ReturnRequestCreated } from '../../typings/ReturnRequest'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
 
+import type { ReturnRequestCreated } from '../../typings/ReturnRequest'
 import {
   SETTINGS_PATH,
   OMS_RETURN_REQUEST_CONFIRMATION,
@@ -16,12 +16,7 @@ export const createReturnRequestSellerService = async (
   args: any
 ): Promise<ReturnRequestCreated> => {
   const {
-    clients: {
-      oms,
-      returnRequest: returnRequestClient,
-      appSettings,
-      mail,
-    },
+    clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
     state: { userProfile, appkey },
     vtex: { logger },
   } = ctx
@@ -64,7 +59,6 @@ export const createReturnRequestSellerService = async (
     )
   }
 
-
   // Check items since a request via endpoint might not have it.
   // Graphql validation doesn't prevent user to send empty items
   if (!items || items.length === 0) {
@@ -99,7 +93,6 @@ export const createReturnRequestSellerService = async (
     throw new ResolverError('Return App settings is not configured', 500)
   }
 
-
   const {
     clientProfileData,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
@@ -113,8 +106,6 @@ export const createReturnRequestSellerService = async (
   const {
     pagination: { total },
   } = searchRMA
-
-
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -161,9 +152,9 @@ export const createReturnRequestSellerService = async (
       dateSubmitted: dateSubmitted || new Date(),
       refundData,
       refundStatusData,
-      cultureInfoData: cultureInfoData || {locale, currencyCode},
+      cultureInfoData: cultureInfoData || { locale, currencyCode },
       logisticInfo,
-      createdIn: dateSubmitted || new Date()
+      createdIn: dateSubmitted || new Date(),
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
@@ -219,7 +210,7 @@ export const createReturnRequestSellerService = async (
           paymentMethod: refundPaymentData.refundPaymentMethod,
         },
         products: [...items],
-        refundStatusData
+        refundStatusData,
       },
     }
 

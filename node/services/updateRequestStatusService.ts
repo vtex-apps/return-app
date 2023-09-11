@@ -1,9 +1,3 @@
-import type {
-  MutationUpdateReturnRequestStatusArgs,
-  ReturnRequest,
-  Status,
-  RefundItemInput,
-} from '../../typings/ReturnRequest'
 import {
   ResolverError,
   ForbiddenError,
@@ -11,6 +5,12 @@ import {
   UserInputError,
 } from '@vtex/api'
 
+import type {
+  MutationUpdateReturnRequestStatusArgs,
+  ReturnRequest,
+  Status,
+  RefundItemInput,
+} from '../../typings/ReturnRequest'
 import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'

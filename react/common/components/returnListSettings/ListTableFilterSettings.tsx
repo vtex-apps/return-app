@@ -2,13 +2,14 @@ import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, Button } from 'vtex.styleguide'
+import type { ApolloQueryResult } from 'apollo-client'
+import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
+
 import type {
   QueryReturnSettingsListArgs,
   ReturnSettingsList,
 } from '../../../../typings/ReturnAppSettings'
-import type { ApolloQueryResult } from 'apollo-client'
-import { useRuntime } from 'vtex.render-runtime'
-import { useCssHandles } from 'vtex.css-handles'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 

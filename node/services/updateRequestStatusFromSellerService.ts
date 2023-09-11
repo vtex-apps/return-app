@@ -1,6 +1,16 @@
-import type { MutationUpdateReturnRequestStatusArgs, ReturnRequest, Status, RefundItemInput } from '../../typings/ReturnRequest'
-import { ResolverError, NotFoundError, UserInputError, ForbiddenError } from '@vtex/api'
+import {
+  ResolverError,
+  NotFoundError,
+  UserInputError,
+  ForbiddenError,
+} from '@vtex/api'
 
+import type {
+  MutationUpdateReturnRequestStatusArgs,
+  ReturnRequest,
+  Status,
+  RefundItemInput,
+} from '../../typings/ReturnRequest'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
@@ -8,7 +18,6 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-
 
 const formatRequestToPartialUpdate = (
   request: ReturnRequest
@@ -74,7 +83,6 @@ const acceptOrDenyPackage = (refundItemList?: RefundItemInput[]) => {
     : 'denied'
 }
 
-
 export const updateRequestStatusFromSellerService = async (
   ctx: Context,
   args: MutationUpdateReturnRequestStatusArgs,
@@ -82,10 +90,16 @@ export const updateRequestStatusFromSellerService = async (
 ): Promise<ReturnRequest> => {
   const {
     state: { userProfile, appkey },
-    clients: { returnRequest: returnRequestClient, mail, oms, giftCard: giftCardClient },
+    clients: {
+      returnRequest: returnRequestClient,
+      mail,
+      oms,
+      giftCard: giftCardClient,
+    },
     vtex: { logger },
   } = ctx
-  console.log('args: ',args)
+
+  console.log('args: ', args)
   const { status, comment, refundData } = args || {}
 
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
@@ -129,8 +143,8 @@ export const updateRequestStatusFromSellerService = async (
 
   validateStatusUpdate(status, returnRequest.status as Status)
 
-   // when a request is made for the same status, it means admin user is adding a new comment
-   if (status === returnRequest.status && !comment) {
+  // when a request is made for the same status, it means admin user is adding a new comment
+  if (status === returnRequest.status && !comment) {
     throw new UserInputError(
       'Missing comment. Comment is needed when status sent is equal the current status.'
     )
@@ -156,14 +170,14 @@ export const updateRequestStatusFromSellerService = async (
   const refundStatusData = createOrUpdateStatusPayload({
     refundStatusData: returnRequest.refundStatusData,
     requestStatus,
-    comment, 
+    comment,
     submittedBy,
     createdAt: requestDate,
   })
 
   const maxRefundableShipping =
-  returnRequest.refundableAmountTotals.find(({ id }) => id === 'shipping')
-    ?.value ?? 0
+    returnRequest.refundableAmountTotals.find(({ id }) => id === 'shipping')
+      ?.value ?? 0
 
   const refundInvoice =
     createRefundInvoice && requestStatus !== 'denied'

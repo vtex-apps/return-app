@@ -1,6 +1,6 @@
 query getSettingsRequestList($filter: ReturnSettingsFilters, $page: Int!) {
   returnSettingsList(filter: $filter, page: $page)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "itglobers.return-app") {
     list{
       id
       sellerId
@@ -15,7 +15,7 @@ query getSettingsRequestList($filter: ReturnSettingsFilters, $page: Int!) {
       customReturnReasons{
         reason
       }
-      excludedCategories      
+      excludedCategories
     }
     paging {
       total

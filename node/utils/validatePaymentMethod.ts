@@ -1,7 +1,7 @@
-import type { PaymentOptions } from '../../typings/ReturnAppSettings'
-import type { RefundPaymentDataInput } from '../../typings/ReturnRequest'
 import { ResolverError } from '@vtex/api'
 
+import type { PaymentOptions } from '../../typings/ReturnAppSettings'
+import type { RefundPaymentDataInput } from '../../typings/ReturnRequest'
 import { isValidIBANNumber } from './isValidIBANNumber'
 
 export const validatePaymentMethod = (

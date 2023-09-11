@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import type { OrdersToReturnList, OrderToReturnSummary } from '../../../../typings/OrderToReturn'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime/'
 import { Table, Button } from 'vtex.styleguide'
 
+import type {
+  OrdersToReturnList,
+  OrderToReturnSummary,
+} from '../../../../typings/OrderToReturn'
 import { createItemsSummary } from '../../utils/createItemsSummary'
 
 type Operation = 'next' | 'previous'

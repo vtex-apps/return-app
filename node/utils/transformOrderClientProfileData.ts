@@ -1,4 +1,5 @@
 import type { ClientProfileDetail } from '@vtex/clients'
+
 import type { ClientProfileData } from '../../typings/OrderToReturn'
 
 export const transformOrderClientProfileData = (

@@ -24,7 +24,7 @@ export const RequiredOptions = () => {
 
   const handleOrderStatus = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    
+
     dispatch({ type: 'updateOrderStatus', payload: value })
   }
 
@@ -53,7 +53,7 @@ export const RequiredOptions = () => {
             />
           </div>
           <div className="w-50 ph1">
-            <FormattedMessage id="admin/return-app.settings.order-status.placeholder" >
+            <FormattedMessage id="admin/return-app.settings.order-status.placeholder">
               {(placehoder) => (
                 <Dropdown
                   label={

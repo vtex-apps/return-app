@@ -1,4 +1,5 @@
 import type { ShippingDetail } from '@vtex/clients'
+
 import type { ShippingData } from '../../typings/OrderToReturn'
 
 export const transformShippingData = (

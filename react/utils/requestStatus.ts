@@ -1,9 +1,10 @@
+import { defineMessages } from 'react-intl'
+
 import type {
   Status,
   RefundStatusData,
   RefundStatusComment,
 } from '../../typings/ReturnRequest'
-import { defineMessages } from 'react-intl'
 
 const statusSequence: Status[] = [
   'new',

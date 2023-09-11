@@ -1,13 +1,13 @@
 import type { OrderDetailResponse, MasterDataEntity } from '@vtex/clients'
+
 import type {
   OrderToReturnSummary,
   InvoicedItem,
   ExcludedItem,
-  ProcessedItem
+  ProcessedItem,
 } from '../../typings/OrderToReturn'
 import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
 import type { ReturnRequest } from '../../typings/ReturnRequest'
-
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'

@@ -1,5 +1,6 @@
-import type { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 import { UserInputError } from '@vtex/api'
+
+import type { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 
 export const validateItemCondition = (
   itemsToReturn: ReturnRequestItemInput[],

@@ -1,9 +1,10 @@
+import { ForbiddenError } from '@vtex/api'
+
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestFilters,
   Maybe,
 } from '../../typings/ReturnRequest'
-import { ForbiddenError } from '@vtex/api'
 
 const filterDate = (date: string): string => {
   const newDate = new Date(date)
@@ -26,7 +27,7 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
     if (typeof value === 'string' && value.trim() === '') {
       //  throw new Error(`Fields cannot be empty: ${key}`)
       return where
-}
+    }
 
     if (where.length) {
       where += ` AND `
@@ -139,7 +140,7 @@ export const returnRequestListService = async (
         'sellerName',
         'customerProfileData',
         'items',
-        'logisticsInfo'
+        'logisticsInfo',
       ]
 
   const rmaSearchResult = await returnRequestClient.searchRaw(
@@ -149,9 +150,13 @@ export const returnRequestListService = async (
     },
     resultFields,
     'dateSubmitted DESC',
-    buildWhereClause(adjustedFilter)
+    `status <> "goodwill"${
+      (buildWhereClause(adjustedFilter) &&
+        ` AND ${buildWhereClause(adjustedFilter)}`) ??
+      ''
+    }`
   )
-  
+
   const { data, pagination } = rmaSearchResult
   const { page: currentPage, pageSize, total } = pagination
 

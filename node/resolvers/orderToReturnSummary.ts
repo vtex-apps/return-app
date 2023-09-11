@@ -1,6 +1,6 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-import type { OrderToReturnSummary } from '../../typings/OrderToReturn'
 
+import type { OrderToReturnSummary } from '../../typings/OrderToReturn'
 import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isUserAllowed } from '../utils/isUserAllowed'
@@ -13,7 +13,7 @@ export const orderToReturnSummary = async (
   ctx: Context
 ): Promise<OrderToReturnSummary> => {
   const { orderId, storeUserEmail } = args
-  
+
   const {
     state: { userProfile, appkey },
     clients: {
@@ -21,7 +21,7 @@ export const orderToReturnSummary = async (
       oms,
       returnRequest: returnRequestClient,
       catalogGQL,
-      profile
+      profile,
     },
     vtex: { logger, adminUserAuthToken },
   } = ctx
@@ -31,6 +31,7 @@ export const orderToReturnSummary = async (
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
   }
+
   const { maxDays, excludedCategories, orderStatus } = settings
 
   // For requests where orderId is an empty string
@@ -54,15 +55,19 @@ export const orderToReturnSummary = async (
     creationDate,
     maxDays,
     status,
-    orderStatus
+    orderStatus,
   })
-  
-  if(userProfile?.role === 'admin'){
-    try {
-      const profileUnmask = await profile.getProfileUnmask(clientProfileData?.userProfileId, adminUserAuthToken)
 
-      if(profileUnmask?.[0]?.document?.email){
+  if (userProfile?.role === 'admin') {
+    try {
+      const profileUnmask = await profile.getProfileUnmask(
+        clientProfileData?.userProfileId,
+        adminUserAuthToken
+      )
+
+      if (profileUnmask?.[0]?.document?.email) {
         const currenProfile = profileUnmask?.[0]?.document
+
         userEmail = currenProfile.email
 
         order.clientProfileData = {
@@ -72,14 +77,17 @@ export const orderToReturnSummary = async (
           lastName: currenProfile?.lastName,
           phone: currenProfile?.homePhone,
         }
-
       } else {
-        const response = await profile.searchEmailByUserId(clientProfileData?.userProfileId, adminUserAuthToken)
-        
-        if(response.length > 0){
+        const response = await profile.searchEmailByUserId(
+          clientProfileData?.userProfileId,
+          adminUserAuthToken
+        )
+
+        if (response.length > 0) {
           const currenProfile = response?.[0]
+
           userEmail = currenProfile?.email
-  
+
           order.clientProfileData = {
             ...order.clientProfileData,
             email: userEmail,
@@ -92,9 +100,12 @@ export const orderToReturnSummary = async (
     } catch (error) {}
 
     try {
-      const addressUnmask = await profile.getAddressUnmask(clientProfileData?.userProfileId, adminUserAuthToken)
-      
-      if(addressUnmask?.[0]?.document){
+      const addressUnmask = await profile.getAddressUnmask(
+        clientProfileData?.userProfileId,
+        adminUserAuthToken
+      )
+
+      if (addressUnmask?.[0]?.document) {
         const address = addressUnmask?.[0]?.document
 
         order.shippingData.address = {
@@ -103,10 +114,9 @@ export const orderToReturnSummary = async (
           city: address.locality,
           postalCode: address.postalCode,
           street: address.route,
-          number: address.streetNumber
+          number: address.streetNumber,
         }
       }
-
     } catch (error) {}
   }
 

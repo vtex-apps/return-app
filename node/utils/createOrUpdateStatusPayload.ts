@@ -1,4 +1,5 @@
 import { ResolverError } from '@vtex/api'
+
 import type {
   Maybe,
   ReturnRequest,

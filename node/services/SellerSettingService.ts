@@ -2,7 +2,6 @@ import type {
   SellerSetting,
   MutationSaveSellerSettingArgs,
 } from '../../typings/SellerSetting'
-
 import {
   validateMaxDaysCustomReasons,
   validatePaymentOptions,

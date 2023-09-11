@@ -2,13 +2,13 @@ import React, { useState, useMemo } from 'react'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
+import { Card, Button, Alert } from 'vtex.styleguide'
+
 import type {
   MutationCreateReturnRequestArgs,
   ReturnRequestCreated,
 } from '../../../../typings/ReturnRequest'
-import { useCssHandles } from 'vtex.css-handles'
-import { Card, Button, Alert } from 'vtex.styleguide'
-
 import type { Page } from '../CreateReturnRequest'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import CREATE_RETURN_REQUEST from '../graphql/createReturnRequest.gql'

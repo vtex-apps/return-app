@@ -1,7 +1,12 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
+
 import type { ReturnRequest } from '../../typings/ReturnRequest'
 
-export const returnRequestService = async (ctx: Context, requestId: string) => {
+export const returnRequestService = async (
+  ctx: Context,
+  requestId: string,
+  fields = ['_all']
+) => {
   const {
     clients: { returnRequest: returnRequestClient },
     state: { userProfile, appkey },
@@ -10,7 +15,7 @@ export const returnRequestService = async (ctx: Context, requestId: string) => {
   const { userId, role } = userProfile ?? {}
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
-  const returnRequestResult = await returnRequestClient.get(requestId, ['_all'])
+  const returnRequestResult = await returnRequestClient.get(requestId, fields)
 
   if (!returnRequestResult) {
     // Code error 'E_HTTP_404' to match the one when failing to find and order by OMS

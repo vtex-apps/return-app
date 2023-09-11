@@ -1,9 +1,7 @@
 import { useQuery } from 'react-apollo'
-import type {
-  QueryReturnRequestListArgs,
-} from '../../typings/ReturnRequest'
-import type { ReturnSettingsList as ReturnSettingsListResponse } from '../../typings/ReturnAppSettings'
 
+import type { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
+import type { ReturnSettingsList as ReturnSettingsListResponse } from '../../typings/ReturnAppSettings'
 import SETTINGS_REQUEST_LIST from '../graphql/getSettingsRequestList.gql'
 
 export const useSettingsRequestList = () => {

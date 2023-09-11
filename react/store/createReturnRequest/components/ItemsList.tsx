@@ -55,7 +55,6 @@ export const messages = defineMessages({
   },
 })
 
-
 const TableHeaderRenderer = (
   formatMessage: IntlFormatters['formatMessage'],
   addCondition: boolean
@@ -95,7 +94,7 @@ export const ItemsList = (props: Props) => {
 
   const TableHeader = TableHeaderRenderer(
     formatMessage,
-    Boolean(enableSelectItemCondition),
+    Boolean(enableSelectItemCondition)
   )
 
   return (

@@ -27,10 +27,9 @@ const CSS_HANDLES = [
   'contactPhoneInputWrapper',
 ] as const
 
-
 export const ContactDetails = () => {
   const handles = useCssHandles(CSS_HANDLES)
-  
+
   const {
     returnRequest: { customerProfileData },
     inputErrors,

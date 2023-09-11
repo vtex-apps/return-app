@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import type { FormEvent, ReactElement } from 'react'
-import type {
-  PaymentOptions as PaymentOptionsInterface,
-  PaymentType,
-} from '../../../../typings/ReturnAppSettings'
 import { FormattedMessage } from 'react-intl'
 import {
   Layout,
@@ -15,6 +11,10 @@ import {
   EmptyState,
 } from 'vtex.styleguide'
 
+import type {
+  PaymentOptions as PaymentOptionsInterface,
+  PaymentType,
+} from '../../../../typings/ReturnAppSettings'
 import { CustomReasons } from '../components/CustomReasons'
 import { ExcludedCategories } from '../components/ExcludedCategories'
 import { GeneralOptions } from '../components/GeneralOptions'

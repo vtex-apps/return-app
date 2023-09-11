@@ -1,5 +1,4 @@
 import type { InvoicedItem } from '../../typings/OrderToReturn'
-
 import type { CatalogGQL } from '../clients/catalogGQL'
 
 /**

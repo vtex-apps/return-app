@@ -1,10 +1,10 @@
 import React from 'react'
-import type { ItemCondition } from '../../../../typings/ReturnRequest'
 import { NumericStepper } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
+import type { ItemCondition } from '../../../../typings/ReturnRequest'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
 import { RenderConditionDropdown } from './RenderConditionDropdown'

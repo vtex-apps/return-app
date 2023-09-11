@@ -1,17 +1,17 @@
-import { ResolverError } from "@vtex/api"
+import { ResolverError } from '@vtex/api'
 
-export const createGiftcardService = async (ctx: Context , body: any) => {
+export const createGiftcardService = async (ctx: Context, body: any) => {
   const {
-    clients: { giftCard : giftCardClient },
+    clients: { giftCard: giftCardClient },
   } = ctx
-  
+
   const getOneYearLaterDate = (createdAt: string) => {
     const date = new Date(createdAt)
     const year = date.getFullYear()
     const month = date.getMonth()
     const day = date.getDate()
     const oneYearLater = new Date(year + 1, month, day)
-  
+
     return oneYearLater.toISOString()
   }
 
@@ -31,9 +31,9 @@ export const createGiftcardService = async (ctx: Context , body: any) => {
 
     await giftCardClient.updateGiftCard(giftCardId, {
       description: 'Initial Charge',
-      value: body?.invoiceValue as number
+      value: body?.invoiceValue as number,
     })
-    
+
     return {
       giftCard: { id: giftCardId, redemptionCode },
     }

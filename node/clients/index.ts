@@ -1,9 +1,9 @@
 import { IOClients, Sphinx } from '@vtex/api'
 import { vbaseFor, masterDataFor } from '@vtex/clients'
+
 import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
 import type { ReturnRequest } from '../../typings/ReturnRequest'
 import type { SellerSetting } from '../../typings/SellerSetting'
-
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
 import { GiftCard } from './giftCard'
@@ -14,8 +14,11 @@ import { CatalogGQL } from './catalogGQL'
 import { ProfileClient } from './profile'
 import { Marketplace } from './marketplace'
 
-const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>('appSettings')
-const ReturnRequestClient = masterDataFor<ReturnRequest>('returnRequest')
+const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
+  'appSettings'
+)
+
+const ReturnRequestClient = masterDataFor<ReturnRequest | any>('returnRequest')
 const SellerSettingClient = masterDataFor<SellerSetting>('sellerSetting')
 
 export class Clients extends IOClients {

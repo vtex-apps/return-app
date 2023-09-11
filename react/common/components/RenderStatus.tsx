@@ -1,5 +1,4 @@
 import React from 'react'
-import type { Status } from '../../../typings/ReturnRequest'
 import { FormattedMessage } from 'react-intl'
 import {
   IconClock,
@@ -9,6 +8,8 @@ import {
   IconSuccess,
   IconExternalLinkMini,
 } from 'vtex.styleguide'
+
+import type { Status } from '../../../typings/ReturnRequest'
 
 const status = {
   new: 'new',

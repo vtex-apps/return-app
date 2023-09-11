@@ -3,14 +3,12 @@ import type { Dispatch, ReactNode } from 'react'
 import React, { createContext, useReducer, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import type {
-  ReturnAppSettingsInput,
-} from '../../../../typings/ReturnAppSettings'
+
+import type { ReturnAppSettingsInput } from '../../../../typings/ReturnAppSettings'
 import type {
   SellerSetting,
-  SellerSettingInput
+  SellerSettingInput,
 } from '../../../../typings/SellerSetting'
-
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import APP_SETTINGS_SELLERS from '../graphql/getSellerSettings.gql'
 import SAVE_APP_SETTINGS from '../graphql/saveAppSettings.gql'

@@ -2,9 +2,9 @@ import type { FC } from 'react'
 import React, { createContext, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import type { ReturnAppSettings } from '../../../typings/ReturnAppSettings'
 import { Alert } from 'vtex.styleguide'
 
+import type { ReturnAppSettings } from '../../../typings/ReturnAppSettings'
 import STORE_SETTING from '../graphql/getStoreSettings.gql'
 
 interface SettingsContextInterface {

@@ -1,4 +1,5 @@
 import { ResolverError, UserInputError } from '@vtex/api'
+
 import type { Status } from '../../typings/ReturnRequest'
 
 const statusAllowed: Record<Status, Status[]> = {

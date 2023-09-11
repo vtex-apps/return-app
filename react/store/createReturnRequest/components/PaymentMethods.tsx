@@ -2,13 +2,13 @@ import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
+import { Input, RadioGroup } from 'vtex.styleguide'
+
 import type {
   RefundPaymentDataInput,
   RefundPaymentMethod,
 } from '../../../../typings/ReturnRequest'
 import type { PaymentType } from '../../../../typings/ReturnAppSettings'
-import { Input, RadioGroup } from 'vtex.styleguide'
-
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'

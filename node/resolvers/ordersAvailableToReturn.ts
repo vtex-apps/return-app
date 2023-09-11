@@ -1,6 +1,9 @@
 import { ResolverError } from '@vtex/api'
-import type { OrdersToReturnList, OrderToReturnSummary } from '../../typings/OrderToReturn'
 
+import type {
+  OrdersToReturnList,
+  OrderToReturnSummary,
+} from '../../typings/OrderToReturn'
 import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { getCurrentDate, substractDays } from '../utils/dateHelpers'
@@ -30,10 +33,10 @@ const createParams = ({
     orderId: string
     sellerName: string
     createdIn: { from: string; to: string }
-  },
+  }
 }) => {
   const currentDate = getCurrentDate()
-  const orderStatusName = orderStatus?.replace('f_','')
+  const orderStatusName = orderStatus?.replace('f_', '')
 
   let query = ''
   let seller = ''
@@ -44,6 +47,7 @@ const createParams = ({
 
   if (filter) {
     const { orderId, sellerName, createdIn } = filter
+
     query = orderId || ''
     seller = sellerName || ''
     creationDate = createdIn
@@ -51,7 +55,7 @@ const createParams = ({
       : creationDate
   }
 
-  if(orderStatus === 'partial-invoiced') {
+  if (orderStatus === 'partial-invoiced') {
     return {
       clientEmail: userEmail,
       orderBy: 'creationDate,desc' as const,
@@ -98,7 +102,7 @@ export const ordersAvailableToReturn = async (
       catalogGQL,
     },
   } = ctx
-  
+
   const { page, storeUserEmail, isAdmin, filter } = args
 
   const settings = await appSettings.get(SETTINGS_PATH, true)
@@ -124,7 +128,7 @@ export const ordersAvailableToReturn = async (
   const orderListPromises = []
   let orders: any = []
   let orderError = false
-  
+
   for (const order of list) {
     // Fetch order details to get items and packages
     const orderPromise = oms.order(order.orderId)
@@ -141,68 +145,83 @@ export const ordersAvailableToReturn = async (
     orderError = true
   }
 
-  if(orderError) {
+  if (orderError) {
     for (const order of list) {
       // Fetch order details to get items and packages
       oms.order(order.orderId).then((data) => orders.push(data))
-  
+
       // eslint-disable-next-line no-await-in-loop
       await pacer(2000)
     }
   }
-  
+
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
 
   for (const order of orders) {
-    if(orderStatus === 'partial-invoiced' && order.status !== 'invoiced'){
+    if (orderStatus === 'partial-invoiced' && order.status !== 'invoiced') {
       const currentDate = getCurrentDate()
-      const startDate = substractDays(currentDate, maxDays || 0 )
+      const startDate = substractDays(currentDate, maxDays || 0)
       const endDate = currentDate
 
-      const deliveredDate = order.packageAttachment.packages.filter((item: any) => {
-        if(item?.courierStatus?.deliveredDate || item?.issuanceDate){
-          return item
+      const deliveredDate = order.packageAttachment.packages.filter(
+        (item: any) => {
+          if (item?.courierStatus?.deliveredDate || item?.issuanceDate) {
+            return item
+          }
         }
-      })
-      
-      if(deliveredDate.length > 0){
-        const haspackage = deliveredDate.map((delivered: any) => {
-          const currentDeliveredDate = delivered?.courierStatus?.deliveredDate ||delivered?.issuanceDate
+      )
 
-          if(currentDeliveredDate && currentDeliveredDate >= startDate && currentDeliveredDate <= endDate){
+      if (deliveredDate.length > 0) {
+        const haspackage = deliveredDate.map((delivered: any) => {
+          const currentDeliveredDate =
+            delivered?.courierStatus?.deliveredDate || delivered?.issuanceDate
+
+          if (
+            currentDeliveredDate &&
+            currentDeliveredDate >= startDate &&
+            currentDeliveredDate <= endDate
+          ) {
             return delivered
           }
-        });
-        
-        if(haspackage.length > 0){
-          const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
-            excludedCategories,
-            returnRequestClient,
-            catalogGQL,
-          })
-      
-          orderSummaryPromises.push(orderToReturnSummary)    
+        })
+
+        if (haspackage.length > 0) {
+          const orderToReturnSummary = createOrdersToReturnSummary(
+            order,
+            userEmail,
+            {
+              excludedCategories,
+              returnRequestClient,
+              catalogGQL,
+            }
+          )
+
+          orderSummaryPromises.push(orderToReturnSummary)
         }
       }
-
     } else {
-      const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
-        excludedCategories,
-        returnRequestClient,
-        catalogGQL,
-      })
-  
+      const orderToReturnSummary = createOrdersToReturnSummary(
+        order,
+        userEmail,
+        {
+          excludedCategories,
+          returnRequestClient,
+          catalogGQL,
+        }
+      )
+
       orderSummaryPromises.push(orderToReturnSummary)
     }
-
   }
 
   const orderList = await Promise.all(orderSummaryPromises)
 
-  return { list: orderList, paging: {
-    ...paging,
-    perPage: orderList?.length || 0,
-    total: paging.total <= 20 ? orderList.length : paging.total
-  }}
-
+  return {
+    list: orderList,
+    paging: {
+      ...paging,
+      perPage: orderList?.length || 0,
+      total: paging.total <= 20 ? orderList.length : paging.total,
+    },
+  }
 }

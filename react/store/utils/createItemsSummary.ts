@@ -1,5 +1,4 @@
 import type { OrderToReturnSummary } from '../../../typings/OrderToReturn'
-
 import { formatItemsToReturn } from './formatItemsToReturn'
 
 export function createItemsSummary(orderToReturn: OrderToReturnSummary): {

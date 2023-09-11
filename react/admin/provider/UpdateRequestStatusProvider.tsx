@@ -1,5 +1,8 @@
 import type { FC } from 'react'
 import React, { createContext } from 'react'
+import { useMutation } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
+
 import type {
   Status,
   ReturnRequestCommentInput,
@@ -7,9 +10,6 @@ import type {
   ReturnRequestResponse,
   MutationUpdateReturnRequestStatusArgs,
 } from '../../../typings/ReturnRequest'
-import { useMutation } from 'react-apollo'
-import { FormattedMessage } from 'react-intl'
-
 import UPDATE_RETURN_STATUS from '../graphql/updateReturnRequestStatus.gql'
 import { useAlert } from '../hooks/userAlert'
 import { useReturnDetails } from '../../common/hooks/useReturnDetails'

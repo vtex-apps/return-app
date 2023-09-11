@@ -6,14 +6,14 @@ export type OrderStatus = {
 export const ORDER_STATUS: OrderStatus[] = [
   {
     label: 'Order accepted',
-    value: 'f_creationDate'
+    value: 'f_creationDate',
   },
   {
     label: 'Partially invoiced',
-    value: 'partial-invoiced'
+    value: 'partial-invoiced',
   },
   {
     label: 'Invoiced',
-    value: 'f_invoicedDate'
-  }
+    value: 'f_invoicedDate',
+  },
 ]

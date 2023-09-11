@@ -1,6 +1,6 @@
 query orderToReturnSummary($orderId: ID!) {
   orderToReturnSummary(orderId: $orderId)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "itglobers.return-app") {
     orderId
     creationDate
     invoicedItems {

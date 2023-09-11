@@ -1,5 +1,10 @@
-import type { Maybe, RefundDataInput, ReturnRequest } from '../../typings/ReturnRequest'
 import { UserInputError } from '@vtex/api'
+
+import type {
+  Maybe,
+  RefundDataInput,
+  ReturnRequest,
+} from '../../typings/ReturnRequest'
 
 export const createRefundData = ({
   requestId,

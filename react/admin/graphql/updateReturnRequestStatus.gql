@@ -11,7 +11,7 @@ mutation updateReturnRequestStatus(
     status: $status
     comment: $comment
     refundData: $refundData
-  ) @context(provider: "vtex.return-app") {
+  ) @context(provider: "itglobers.return-app") {
     ...ReturnDetailsAdminFragment
   }
 }

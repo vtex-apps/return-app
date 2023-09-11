@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { useQuery } from 'react-apollo'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { AutocompleteInput, IconWarning, IconDeny } from 'vtex.styleguide'
-import type { CategoryInfo } from '../../../../typings/Category'
 
+import type { CategoryInfo } from '../../../../typings/Category'
 import GET_CATEGORY_TREE_INFO from '../graphql/getCategoryTreeName.gql'
 import { useSettings } from '../hooks/useSettings'
 

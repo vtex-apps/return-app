@@ -1,7 +1,10 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from '../../typings/ReturnRequest'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
 
+import type {
+  ReturnRequestCreated,
+  ReturnRequestInput,
+} from '../../typings/ReturnRequest'
 import {
   SETTINGS_PATH,
   OMS_RETURN_REQUEST_CONFIRMATION,
@@ -126,7 +129,7 @@ export const createReturnRequestService = async (
     customReturnReasons,
     paymentOptions,
     options: settingsOptions,
-    orderStatus
+    orderStatus,
   } = settings
 
   isUserAllowed({
@@ -139,7 +142,7 @@ export const createReturnRequestService = async (
     creationDate,
     maxDays,
     status,
-    orderStatus
+    orderStatus,
   })
 
   // Validate if all items are available to be returned
@@ -271,9 +274,13 @@ export const createReturnRequestService = async (
         locale,
       },
       logisticsInfo: {
-        currier: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.deliveryCompany)?.join(','),
-        sla: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.selectedSla)?.join(',')
-      }
+        currier: shippingData?.logisticsInfo
+          .map((logisticInfo: any) => logisticInfo?.deliveryCompany)
+          ?.join(','),
+        sla: shippingData?.logisticsInfo
+          .map((logisticInfo: any) => logisticInfo?.selectedSla)
+          ?.join(','),
+      },
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

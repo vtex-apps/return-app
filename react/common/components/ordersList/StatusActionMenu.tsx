@@ -1,8 +1,8 @@
 import React from 'react'
 import { defineMessages, useIntl } from 'react-intl'
-import type { Status } from '../../../../typings/ReturnRequest'
 import { ActionMenu } from 'vtex.styleguide'
 
+import type { Status } from '../../../../typings/ReturnRequest'
 import type { FilterKeys } from './ListTableFilter'
 
 interface Props {

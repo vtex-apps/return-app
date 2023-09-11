@@ -1,5 +1,4 @@
 import type { QueryReturnSellerSettingsArgs } from '../../typings/SellerSetting'
-
 import { returnSellerSettingsService } from '../services/returnSellerSettingsService'
 
 export const returnSellerSettings = async (

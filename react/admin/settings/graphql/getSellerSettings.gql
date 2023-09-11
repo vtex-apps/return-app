@@ -1,7 +1,7 @@
 
 query getSellerSettings($sellerId: String!) {
   returnSellerSettings(sellerId: $sellerId)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "itglobers.return-app") {
     id
     sellerId
     maxDays

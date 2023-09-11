@@ -1,5 +1,4 @@
 import type { MutationUpdateSellerSettingArgs } from '../../typings/SellerSetting'
-
 import {
   validateMaxDaysCustomReasons,
   validatePaymentOptions,

@@ -5,6 +5,10 @@
   "minReplicas": 2,
   "maxReplicas": 4,
   "routes": {
+    "goodwill": {
+      "path": "/_v/goodwill/*id",
+      "public": true
+    },
     "returnRequests": {
       "path": "/_v/return-request",
       "public": true
@@ -35,6 +39,10 @@
     },
     "giftcard": {
       "path": "/_v/returns/seller/giftcard",
+      "public": true
+    },
+    "ping": {
+      "path": "/_v/ping",
       "public": true
     }
   }

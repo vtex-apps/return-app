@@ -1,15 +1,15 @@
 import React from 'react'
 import { Table } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
+import { useRuntime } from 'vtex.render-runtime'
+import { useIntl } from 'react-intl'
+
 import type {
   ReturnRequestItem,
   RefundData,
   Status,
   Maybe,
 } from '../../../../../typings/ReturnRequest'
-import { useCssHandles } from 'vtex.css-handles'
-import { useRuntime } from 'vtex.render-runtime'
-import { useIntl } from 'react-intl'
-
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
 

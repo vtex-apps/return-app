@@ -26,7 +26,7 @@ export const initialSettingsState: SellerSetting = {
     enablePickupPoints: false,
     enableProportionalShippingValue: false,
     enableSelectItemCondition: false,
-    enableHighlightFormMessage: false
+    enableHighlightFormMessage: false,
   },
 }
 
@@ -81,19 +81,14 @@ export const optionsAction = (options: ReturnOption) => {
   }
 }
 
-
-export const initialStateAction = (
-  initialState: SellerSetting
-) => {
+export const initialStateAction = (initialState: SellerSetting) => {
   return {
     type: 'updateInitialState' as const,
     payload: initialState,
   }
 }
 
-export const initialStateActionSeller = (
-  initialStateSeller: SellerSetting
-) => {
+export const initialStateActionSeller = (initialStateSeller: SellerSetting) => {
   return {
     type: 'updateInitialStateSeller' as const,
     payload: initialStateSeller,
@@ -111,10 +106,7 @@ export type Actions =
   | ReturnType<typeof initialStateAction>
   | ReturnType<typeof initialStateActionSeller>
 
-export const settingsReducer = (
-  state: SellerSetting,
-  action: Actions
-) => {
+export const settingsReducer = (state: SellerSetting, action: Actions) => {
   switch (action.type) {
     case 'updateMaxDays': {
       return {

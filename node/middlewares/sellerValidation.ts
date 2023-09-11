@@ -30,27 +30,36 @@ export async function sellerValidation(
   seller = sellerNameSettintgs || sellerName
   const { sellerId } = params as { sellerId: string }
 
-  if ((authCookie || appkey || apptoken) && (_sellerName || seller || sellerId)) {
+  if (
+    (authCookie || appkey || apptoken) &&
+    (_sellerName || seller || sellerId)
+  ) {
     const accountName = String(_sellerName || seller || sellerId)
     const { items } = await marketplace.getSellers()
-    
-    if(items.length > 0){
-      const currentSeller = items.find((item: any) => item?.account === accountName)
+
+    if (items.length > 0) {
+      const currentSeller = items.find(
+        (item: any) => item?.account === accountName
+      )
+
       if (!currentSeller) {
-        throw new AuthenticationError(`The ${accountName} account does not exist.`)
+        throw new AuthenticationError(
+          `The ${accountName} account does not exist.`
+        )
       }
-      
-      if(!currentSeller.isActive){
+
+      if (!currentSeller.isActive) {
         throw new AuthenticationError(`The ${accountName} account is inactive.`)
       }
-      
+
       ctx.body = body
-  
+
       await next()
     } else {
-      throw new AuthenticationError('An error occurred while trying to validate your sellerId, please try again.')  
+      throw new AuthenticationError(
+        'An error occurred while trying to validate your sellerId, please try again.'
+      )
     }
-
   } else {
     throw new AuthenticationError('Request failed with status code 401.')
   }

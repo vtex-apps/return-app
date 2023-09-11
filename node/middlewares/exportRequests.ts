@@ -1,23 +1,24 @@
-import type { Status } from '../../typings/ReturnRequest'
 import XLSX from 'xlsx'
 
+import type { Status } from '../../typings/ReturnRequest'
 import { returnRequestListService } from '../services/returnRequestListService'
-
 
 const createXLSBuffer = (data: any[]) => {
   const flattenedData = data.map((item: any) => ({
-    ['Return Request ID']       :item?.id,
-    ['Order ID']                :item?.orderId,
-    ['Return Request Status']   :item?.status,
-    ['Return Reason']           :item?.items?.map((reason: any) => `${reason?.id}-${reason?.returnReason?.reason}`).join(','),
-    ['Customer Name']           :item?.customerProfileData?.name,
-    ['Customer Email']          :item?.customerProfileData?.email,
-    ['Seller Name']             :item?.sellerName || '',
-    'Carrier'                   :item?.logisticsInfo?.currier || '',
-    'Shipping method'           :item?.logisticsInfo?.sla || '',
-    ['Sequence Number']         :item?.sequenceNumber,
-    ['Creation date']           :item?.createdIn,
-    ['Creation time']           :item?.dateSubmitted
+    'Return Request ID': item?.id,
+    'Order ID': item?.orderId,
+    'Return Request Status': item?.status,
+    'Return Reason': item?.items
+      ?.map((reason: any) => `${reason?.id}-${reason?.returnReason?.reason}`)
+      .join(','),
+    'Customer Name': item?.customerProfileData?.name,
+    'Customer Email': item?.customerProfileData?.email,
+    'Seller Name': item?.sellerName || '',
+    Carrier: item?.logisticsInfo?.currier || '',
+    'Shipping method': item?.logisticsInfo?.sla || '',
+    'Sequence Number': item?.sequenceNumber,
+    'Creation date': item?.createdIn,
+    'Creation time': item?.dateSubmitted,
   }))
 
   const workbook = XLSX.utils.book_new()
@@ -111,15 +112,23 @@ export async function exportRequests(ctx: Context, next: () => Promise<void>) {
       responseRequests = responseRequests.concat(nextRequest.flat())
     }
 
-    if(_onlyData) {
+    if (_onlyData) {
       ctx.status = 200
       ctx.body = responseRequests
     } else {
       const file = createXLSBuffer(responseRequests)
 
       ctx.status = 200
-      ctx.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-      ctx.set('Content-Disposition', `attachment; filename=return-requests-${(new Date().toJSON().slice(0,10))}.xls`)
+      ctx.set(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      )
+      ctx.set(
+        'Content-Disposition',
+        `attachment; filename=return-requests-${new Date()
+          .toJSON()
+          .slice(0, 10)}.xls`
+      )
       ctx.body = file
     }
   } catch (error) {

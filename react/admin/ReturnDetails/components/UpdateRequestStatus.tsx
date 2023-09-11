@@ -10,8 +10,8 @@ import {
   Tooltip,
   IconInfo,
 } from 'vtex.styleguide'
-import type { Status } from '../../../../typings/ReturnRequest'
 
+import type { Status } from '../../../../typings/ReturnRequest'
 import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
 import {
   statusAllowed,

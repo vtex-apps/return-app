@@ -9,6 +9,9 @@
     "sellerName": {
       "type": "string"
     },
+    "sellerId": {
+      "type": "string"
+    },
     "refundableAmount": {
       "type": "integer"
     },
@@ -266,7 +269,7 @@
           "type": "string"
         }
       },
-      "required": ["currencyCode", "locale"]
+      "required": ["currencyCode"]
     },
     "logisticsInfo": {
       "type": "object",
@@ -278,12 +281,24 @@
           "type": "string"
         }
       }
+    },
+    "reason": {
+      "type": "string"
+    },
+    "goodwillData": {
+      "type": "object",
+      "properties": {
+        "creditAmount": {
+          "type": "integer"
+        }
+      }
     }
   },
   "$defs": {
     "status": {
       "type": "string",
       "enum": [
+        "goodwill",
         "new",
         "processing",
         "pickedUpFromClient",
@@ -297,14 +312,9 @@
   },
   "required": [
     "orderId",
-    "refundableAmount",
     "sequenceNumber",
     "status",
-    "refundableAmountTotals",
-    "customerProfileData",
-    "pickupReturnData",
     "refundPaymentData",
-    "items",
     "refundData",
     "refundStatusData",
     "dateSubmitted",

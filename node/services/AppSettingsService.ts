@@ -2,7 +2,6 @@ import type {
   ReturnAppSettings,
   MutationSaveReturnAppSettingsArgs,
 } from '../../typings/ReturnAppSettings'
-
 import { SETTINGS_PATH } from '../utils/constants'
 import {
   validateMaxDaysCustomReasons,

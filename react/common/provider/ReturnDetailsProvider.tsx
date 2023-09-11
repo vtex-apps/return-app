@@ -2,11 +2,11 @@ import type { FC } from 'react'
 import React, { createContext } from 'react'
 import type { ApolloError } from 'apollo-client'
 import { useQuery } from 'react-apollo'
+
 import type {
   ReturnRequestResponse,
   QueryReturnRequestArgs,
 } from '../../../typings/ReturnRequest'
-
 import GET_REQUEST_DETAILS from '../graphql/getRequestDetails.gql'
 
 interface ReturnDetailsSetupInterface {

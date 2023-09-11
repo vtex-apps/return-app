@@ -1,5 +1,4 @@
 import type { Status } from '../../typings/ReturnRequest'
-
 import { returnRequestListService } from '../services/returnRequestListService'
 
 export async function getRequestList(ctx: Context) {

@@ -1,5 +1,4 @@
 import type { OrderToReturnValidation } from '../../typings/OrderToReturn'
-
 import type {
   ReturnRequestConfirmation,
   ReturnRequestStatusUpdate,

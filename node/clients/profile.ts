@@ -13,31 +13,38 @@ export class ProfileClient extends JanusClient {
   }
 
   public searchEmailByUserId(userId: string, token: string | undefined) {
-    return this.http.get(`/api/dataentities/CL/search?userId=${userId}&_fields=email,firstName,lastName,phone`, {
-      metric: 'get-email-by-userId',
-      headers: {
-        VtexIdClientAutCookie: token,
+    return this.http.get(
+      `/api/dataentities/CL/search?userId=${userId}&_fields=email,firstName,lastName,phone`,
+      {
+        metric: 'get-email-by-userId',
+        headers: {
+          VtexIdClientAutCookie: token,
+        },
       }
-    })
+    )
   }
 
   public getProfileUnmask(userId: string, token: string | undefined) {
-    return this.http.get(`/api/storage/profile-system/profiles/${userId}/unmask`, {
-      metric: 'get-profile-unmask',
-      headers: {
-        VtexIdClientAutCookie: token,
+    return this.http.get(
+      `/api/storage/profile-system/profiles/${userId}/unmask`,
+      {
+        metric: 'get-profile-unmask',
+        headers: {
+          VtexIdClientAutCookie: token,
+        },
       }
-    })
+    )
   }
-
 
   public getAddressUnmask(userId: string, token: string | undefined) {
-    return this.http.get(`/api/storage/profile-system/profiles/${userId}/addresses/unmask`, {
-      metric: 'get-address-unmask',
-      headers: {
-        VtexIdClientAutCookie: token,
+    return this.http.get(
+      `/api/storage/profile-system/profiles/${userId}/addresses/unmask`,
+      {
+        metric: 'get-address-unmask',
+        headers: {
+          VtexIdClientAutCookie: token,
+        },
       }
-    })
+    )
   }
-  
 }

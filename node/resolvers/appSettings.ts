@@ -1,5 +1,7 @@
-import type { ReturnAppSettings, MutationSaveReturnAppSettingsArgs } from '../../typings/ReturnAppSettings'
-
+import type {
+  ReturnAppSettings,
+  MutationSaveReturnAppSettingsArgs,
+} from '../../typings/ReturnAppSettings'
 import {
   validateMaxDaysCustomReasons,
   validatePaymentOptions,

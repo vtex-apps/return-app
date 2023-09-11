@@ -1,6 +1,6 @@
 query nearestPickupPoints($lat: String!, $long: String!) {
   nearestPickupPoints(lat: $lat, long: $long)
-    @context(provider: "vtex.return-app") {
+    @context(provider: "itglobers.return-app") {
     items {
       pickupPoint {
         friendlyName

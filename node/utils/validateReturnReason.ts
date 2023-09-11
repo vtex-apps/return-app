@@ -1,7 +1,7 @@
-import type { CustomReturnReason } from '../../typings/ReturnAppSettings'
-import type { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 import { ResolverError, UserInputError } from '@vtex/api'
 
+import type { CustomReturnReason } from '../../typings/ReturnAppSettings'
+import type { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 import { isWithinMaxDaysToReturn } from './dateHelpers'
 
 export const validateReturnReason = (

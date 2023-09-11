@@ -6,12 +6,12 @@ import { useCssHandles } from 'vtex.css-handles'
 import type { FormEvent } from 'react'
 import { useQuery } from 'react-apollo'
 import type { ApolloQueryResult } from 'apollo-client'
+
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestList,
   Status,
 } from '../../../../typings/ReturnRequest'
-
 import { StatusActionMenu } from './StatusActionMenu'
 import GET_SELLER from '../../graphql/getSeller.gql'
 
@@ -82,12 +82,15 @@ const ListTableFilter = (props: Props) => {
     for (const prop in selectedFilters) {
       // eslint-disable-next-line no-prototype-builtins
       if (selectedFilters.hasOwnProperty(prop)) {
-        if (typeof selectedFilters?.[prop] === 'string' && selectedFilters?.[prop]?.trim() === '') {
-          delete selectedFilters[prop];
+        if (
+          typeof selectedFilters?.[prop] === 'string' &&
+          selectedFilters?.[prop]?.trim() === ''
+        ) {
+          delete selectedFilters[prop]
         }
       }
     }
-    
+
     setFilters({ ...initialFilters, ...selectedFilters })
     refetch({ filter: selectedFilters, page: 1 })
   }

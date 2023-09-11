@@ -1,6 +1,11 @@
-import type { Status, Maybe, ReturnRequest, GiftCard } from '../../typings/ReturnRequest'
 import { ResolverError } from '@vtex/api'
 
+import type {
+  Status,
+  Maybe,
+  ReturnRequest,
+  GiftCard,
+} from '../../typings/ReturnRequest'
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
 

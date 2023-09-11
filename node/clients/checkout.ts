@@ -1,6 +1,8 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
-import { NearPickupPointQueryResponse } from '../../typings/PickupPoints'
+
+import type { NearPickupPointQueryResponse } from '../../typings/PickupPoints'
+
 export default class Checkout extends JanusClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
     super(ctx, {
