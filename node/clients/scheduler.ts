@@ -12,7 +12,7 @@ export default class Scheduler extends JanusClient {
     })
   }
 
-  public setInitialScheduler = async (
+  public createlScheduler = async (
     appName: string,
     schedulerData: SchedulerRequest
   ): Promise<void> => {
@@ -20,7 +20,7 @@ export default class Scheduler extends JanusClient {
       `/api/scheduler/master/${appName}/?version=4`,
       schedulerData,
       {
-        metric: `schedulerMFC-setup`,
+        metric: `create-scheduler-return-app-setup`,
       }
     )
   }
@@ -30,7 +30,7 @@ export default class Scheduler extends JanusClient {
     id: string
   ): Promise<void> => {
     await this.http.delete(`/api/scheduler/master/${appName}/${id}?version=4`, {
-      metric: `schedulerMFC-delete`,
+      metric: `delete-scheduler-return-app-setup`,
     })
   }
 }

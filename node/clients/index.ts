@@ -13,6 +13,7 @@ import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 import { ProfileClient } from './profile'
 import { Marketplace } from './marketplace'
+import Scheduler from './scheduler'
 
 const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
   'appSettings'
@@ -72,5 +73,9 @@ export class Clients extends IOClients {
 
   public get marketplace() {
     return this.getOrSet('marketplace', Marketplace)
+  }
+
+  public get scheduler() {
+    return this.getOrSet('scheduler', Scheduler)
   }
 }

@@ -1,4 +1,4 @@
 mutation updateSellerSetting($id: ID!, $settings: SellerSettingInput!) {
   updateSellerSetting(id: $id, settings: $settings)
-    @context(provider: "itglobers.return-app")
+    @context(provider: "vtex.return-app")
 }

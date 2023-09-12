@@ -42,8 +42,14 @@
       "public": true
     },
     "ping": {
-      "path": "/_v/ping",
+      "path": "/_v/return-app/ping",
       "public": true
+    }
+  },
+  "events": {
+    "keepALive": {
+      "sender": "apps",
+      "topics": ["setup"]
     }
   }
 }

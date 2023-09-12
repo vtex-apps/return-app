@@ -19,7 +19,7 @@ export async function sellerValidation(
   const appkey = header['x-vtex-api-appkey'] as string | undefined
   const apptoken = header['x-vtex-api-apptoken'] as string | undefined
 
-  const { _sellerName } = query
+  const { _sellerName, _sellerId } = query
 
   const body = await json(req)
 
@@ -32,14 +32,17 @@ export async function sellerValidation(
 
   if (
     (authCookie || appkey || apptoken) &&
-    (_sellerName || seller || sellerId)
+    (_sellerName || _sellerId || seller || sellerId)
   ) {
-    const accountName = String(_sellerName || seller || sellerId)
+    const accountName = String(_sellerName || _sellerId || seller || sellerId)
     const { items } = await marketplace.getSellers()
 
     if (items.length > 0) {
       const currentSeller = items.find(
-        (item: any) => item?.account === accountName
+        (item: any) =>
+          item?.id === accountName ||
+          item?.account === accountName ||
+          item?.name === accountName
       )
 
       if (!currentSeller) {
@@ -52,6 +55,7 @@ export async function sellerValidation(
         throw new AuthenticationError(`The ${accountName} account is inactive.`)
       }
 
+      ctx.state.sellerId = currentSeller.id
       ctx.body = body
 
       await next()
@@ -61,6 +65,6 @@ export async function sellerValidation(
       )
     }
   } else {
-    throw new AuthenticationError('Request failed with status code 401.')
+    throw new AuthenticationError('_sellerName or _sellerId is required.')
   }
 }

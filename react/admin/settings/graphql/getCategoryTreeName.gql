@@ -1,5 +1,5 @@
 query categoryTreeName {
-  categoryTreeName @context(provider: "itglobers.return-app") {
+  categoryTreeName @context(provider: "vtex.return-app") {
     id
     name
   }

@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "return-app",
-  "version": "3.15.2-hkignore",
+  "version": "3.16.0-hkignore",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -37,6 +37,9 @@
         "host": "{{account}}.vtexcommercestable.com.br",
         "path": "/api/*"
       }
+    },
+    {
+      "name": "colossus-fire-event"
     },
     {
       "name": "outbound-access",

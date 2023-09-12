@@ -14,6 +14,7 @@ import { middlewares } from './middlewares'
 import { exportRequests } from './middlewares/exportRequests'
 import { goodwill } from './middlewares/goodwill'
 import { ping } from './middlewares/ping'
+import setupScheduler from './events/keepAlive'
 
 const {
   auth,
@@ -55,11 +56,15 @@ declare global {
     userProfile?: UserProfile
     // Added in the state via auth middleware when request has appkey and apptoken.
     appkey?: string
+    sellerId?: string
   }
 }
 
 export default new Service<Clients, State, ParamsContext>({
   clients,
+  events: {
+    keepALive: setupScheduler,
+  },
   routes: {
     returnRequests: method({
       POST: [errorHandler, auth, sellerValidation, createReturn],
@@ -94,7 +99,7 @@ export default new Service<Clients, State, ParamsContext>({
       POST: [errorHandler, auth, sellerValidation, goodwill],
     }),
     ping: method({
-      GET: [ping],
+      POST: [ping],
     }),
   },
   graphql: {

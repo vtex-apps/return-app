@@ -1,6 +1,6 @@
 mutation CreateReturn($returnRequest: ReturnRequestInput!) {
   createReturnRequest(returnRequest: $returnRequest)
-    @context(provider: "itglobers.return-app") {
+    @context(provider: "vtex.return-app") {
     returnRequestId
   }
 }
