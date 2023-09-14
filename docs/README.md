@@ -370,6 +370,16 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 
 - When installing the app in a workspace - or creating a new one - the app will not behavior as expected. This is due to the masterdata builder not creating a schema for that workspace automatically. To fix that, one can just link the app in the workspace using the toolbelt. Doing so, there will be a new masterdata schema related to that workspace and the app should work fine.
 
+    # Workaround
+
+    - To avoid the issue with the masterdata builder when installing a new version of the APP in the master environment follow these steps:
+
+    1. Create a PROD WS within the account you will install the APP.
+    2. Install the new version of the APP in this PROD workspace, `vtex install vtex.return-app@x.x.x`
+    3. Create a DEV WS, and link the APP latest version to the workspace. `vtex link`
+    4. Check if the documents are on the listing page of the PROD WS `/admin/returns/requests/`
+    5. If they are, then you are safe to install on the Master environment.
+
 ---
 
 Documentation for v2 [here](https://github.com/vtex-apps/return-app/tree/v2).
