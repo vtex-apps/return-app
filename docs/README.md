@@ -372,7 +372,7 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 
     # Workaround
 
-    - To avoid the issue with the masterdata builder when installing a new version of the APP in the master environment follow these steps:
+    To avoid the issue with the masterdata builder when installing a new version of the APP in the master environment follow these steps:
 
     1. Create a PROD WS within the account you will install the APP.
     2. Install the new version of the APP in this PROD workspace, `vtex install vtex.return-app@x.x.x`
