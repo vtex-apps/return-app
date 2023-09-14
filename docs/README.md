@@ -370,7 +370,7 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 
 - When installing the app in a workspace - or creating a new one - the app will not behavior as expected. This is due to the masterdata builder not creating a schema for that workspace automatically. To fix that, one can just link the app in the workspace using the toolbelt. Doing so, there will be a new masterdata schema related to that workspace and the app should work fine.
 
-    # Workaround
+    ### Workaround
 
     To avoid the issue with the masterdata builder when installing a new version of the APP in the master environment follow these steps:
 
