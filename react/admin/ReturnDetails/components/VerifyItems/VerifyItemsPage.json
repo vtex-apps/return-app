@@ -1,0 +1,35 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.verify-items.title"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.action.confirm"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.action.cancel"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.modal.button-verify"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.modal.button-deny"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.modal.title"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.total-refund-items"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.total-refund"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.modal.tooltip"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.modal.deny-message"
+  }
+]

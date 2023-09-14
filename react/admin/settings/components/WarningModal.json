@@ -1,0 +1,20 @@
+[
+  {
+    "id": "admin/return-app.settings.modal-warning.title"
+  },
+  {
+    "id": "admin/return-app.settings.modal-warning.first-paragraph"
+  },
+  {
+    "id": "admin/return-app.settings.modal-warning.second-paragraph"
+  },
+  {
+    "id": "admin/return-app.settings.modal-warning.third-paragraph"
+  },
+  {
+    "id": "admin/return-app.settings.modal-warning.confirm"
+  },
+  {
+    "id": "admin/return-app.settings.modal-warning.cancel"
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.refund-method"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.gift-card"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.gift-card-code"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.gift-card-value"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.bank"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.iban"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.account-holder"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.card"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.same-as-purchase"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.refund-option.refund-process"
+  },
+  {
+    "id": "return-app.return-request-details.payent-method.title"
+  }
+]

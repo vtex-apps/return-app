@@ -1,0 +1,14 @@
+[
+  {
+    "id": "admin/return-app.settings.navigation.label"
+  },
+  {
+    "id": "admin/return-app.settings.error.header"
+  },
+  {
+    "id": "admin/return-app.settings.error.description"
+  },
+  {
+    "id": "admin/return-app.settings.save.button"
+  }
+]

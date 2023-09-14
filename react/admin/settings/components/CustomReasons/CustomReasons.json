@@ -1,0 +1,32 @@
+[
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.table.header.reason"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.table.header.max-days"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-return-reasons.header"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.add.button"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.empty-custom-reasons"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.empty-custom-reasons.how-to"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.empty-custom-reasons.reasons.disclaimer"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.confirm"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.cancel"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.message"
+  }
+]

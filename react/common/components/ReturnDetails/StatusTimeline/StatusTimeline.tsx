@@ -18,7 +18,7 @@ export const StatusTimeline = () => {
   return (
     <section className="mv8">
       <h3>
-        <FormattedMessage id="store/return-app.return-request-details.status-timeline.header" />
+        <FormattedMessage id="return-app.return-request-details.status-timeline.header" />
       </h3>
       <div className="mb5">
         {timeline.map((statusDetails, index) => (

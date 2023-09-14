@@ -1,0 +1,14 @@
+[
+  {
+    "id": "store/return-app.return-order-details.table-header.product"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.quantity-to-return"
+  },
+  {
+    "id": "store/return-app.return-information-table.table-row.p-condition"
+  },
+  {
+    "id": "store/return-app.return-information-table.table-row.p-reason"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "store/return-app.return-order-details.inputs.name-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.inputs.email-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.inputs.phone-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.title.contact-details"
+  },
+  {
+    "id": "store/return-app.return-contact-details.name-input.error"
+  },
+  {
+    "id": "store/return-app.return-contact-details.phone-input.error"
+  }
+]

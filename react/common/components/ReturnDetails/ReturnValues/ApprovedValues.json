@@ -1,0 +1,20 @@
+[
+  {
+    "id": "return-app.return-request-details.refund-total.header-refunded"
+  },
+  {
+    "id": "return-app.return-request-details.refund-total.header-approved"
+  },
+  {
+    "id": "return-app.return-request-details.refund-total.item-tax"
+  },
+  {
+    "id": "return-app.return-request-details.refund-total.restock-fee"
+  },
+  {
+    "id": "return-app.return-request-details.refund-total.shipping"
+  },
+  {
+    "id": "return-app.return-request-details.refund-total.total"
+  }
+]

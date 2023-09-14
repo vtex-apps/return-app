@@ -37,7 +37,7 @@ const MobileList = ({
     <div className={handles.mobileReturnListContainer}>
       {!hasItems && (
         <span className={handles.emptyList}>
-          <FormattedMessage id="store/return-app.return-request-list.table.emptyState" />
+          <FormattedMessage id="return-app.return-request-list.table.emptyState" />
         </span>
       )}
 
@@ -45,7 +45,7 @@ const MobileList = ({
         <>
           <div className={handles.controlGridVisibility}>
             <span>
-              <FormattedMessage id="store/return-app.return-request-list.table.view" />
+              <FormattedMessage id="return-app.return-request-list.table.view" />
             </span>
             <div className={handles.controlGridVisibilityButtons}>
               <button onClick={() => setShowDoubleGridVisibility(false)}>

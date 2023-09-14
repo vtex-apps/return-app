@@ -1,0 +1,26 @@
+[
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.table.header.custom-reason-translation.locale"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.table.header.custom-reason-translation.translation"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.confirm"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.cancel"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.header.custom-reason-translation"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.error.header"
+  },
+  {
+    "id": "admin/return-app.settings.section.custom-reasons.modal.translations.error.description"
+  }
+]

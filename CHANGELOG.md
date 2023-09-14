@@ -7,12 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [3.10.1] - 2023-06-28
-
-### Fixed
-- Messages standardization.
-- Missing translations in several languages.
-
 ## [3.8.5] - 2023-05-15
 
 ## [3.8.1] - 2023-05-02

@@ -19,7 +19,7 @@ export const PickupAddress = () => {
   } = data
 
   const pickupAddressMessageRoute =
-    'store/return-app.return-request-details.pickup-address'
+    'return-app.return-request-details.pickup-address'
 
   return (
     <section

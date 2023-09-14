@@ -1,0 +1,11 @@
+[
+  {
+    "id": "admin/return-app.settings.excluded-categories.label"
+  },
+  {
+    "id": "admin/return-app.settings.search-categories.placeholder"
+  },
+  {
+    "id": "admin/return-app.settings.section-excluded-categories.fetch-data-error"
+  }
+]

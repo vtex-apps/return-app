@@ -1,0 +1,20 @@
+[
+  {
+    "id": "store/return-app.confirm-and-submit.alert.label"
+  },
+  {
+    "id": "store/return-app.confirm-and-submit.alert.success"
+  },
+  {
+    "id": "store/return-app.confirm-and-submit.alert.error.label"
+  },
+  {
+    "id": "store/return-app.confirm-and-submit.alert.error"
+  },
+  {
+    "id": "store/return-app.confirm-and-submit.button.back"
+  },
+  {
+    "id": "store/return-app.confirm-and-submit.button.submit"
+  }
+]

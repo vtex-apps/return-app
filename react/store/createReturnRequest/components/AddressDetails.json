@@ -1,0 +1,44 @@
+[
+  {
+    "id": "store/return-app.return-order-details.inputs.address-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.inputs.city-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.inputs.state-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.inputs.zip-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.inputs.country-input"
+  },
+  {
+    "id": "store/return-app.return-order-details.title.tooltip.pickup-address"
+  },
+  {
+    "id": "store/return-app.return-order-details.title.pickup-address"
+  },
+  {
+    "id": "store/return-app.return-order-details.pickup-address.drop-off-points.tooltip"
+  },
+  {
+    "id": "store/return-app.return-order-details.pickup-address.drop-off-points"
+  },
+  {
+    "id": "store/return-app.return-address-details.address-input.error"
+  },
+  {
+    "id": "store/return-app.return-address-details.city-input.error"
+  },
+  {
+    "id": "store/return-app.return-address-details.state-input.error"
+  },
+  {
+    "id": "store/return-app.return-address-details.zip-input.error"
+  },
+  {
+    "id": "store/return-app.return-address-details.country-input.error"
+  }
+]

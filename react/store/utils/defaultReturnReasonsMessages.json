@@ -1,0 +1,50 @@
+[
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.accidental-order"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.better-price"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.performance"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.incompatible"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.item-damaged"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.missed-delivery"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.missing-parts"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.box-damaged"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.different-product"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.defective"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.arrived-in-addition"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.no-longer-needed"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.unauthorized-purchase"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.different-from-website"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.other-reason"
+  },
+  {
+    "id": "store/return-app.return-order-details.dropdown-reasons.placeholder.select-reason"
+  }
+]

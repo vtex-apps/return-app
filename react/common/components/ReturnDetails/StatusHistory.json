@@ -1,0 +1,14 @@
+[
+  {
+    "id": "return-app.return-request-details.table.status-history.header.created-at"
+  },
+  {
+    "id": "return-app.return-request-details.table.status-history.header.status"
+  },
+  {
+    "id": "return-app.return-request-details.table.status-history.header.submitted-by"
+  },
+  {
+    "id": "return-app.return-request-details.status-history.title"
+  }
+]

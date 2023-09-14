@@ -1,0 +1,26 @@
+[
+  {
+    "id": "return-app.return-request-details.table.product-info.ref-id"
+  },
+  {
+    "id": "return-app.return-request-details.table.product-info.reason"
+  },
+  {
+    "id": "return-app.return-request-details.table.product-info.condition"
+  },
+  {
+    "id": "return-app.return-request-details.table.product-info.sold-by"
+  },
+  {
+    "id": "return-app.return-request-details.table.header.quantity"
+  },
+  {
+    "id": "return-app.return-request-details.table.header.unit-price"
+  },
+  {
+    "id": "return-app.return-request-details.table.header.tax"
+  },
+  {
+    "id": "return-app.return-request-details.table.header.total-price"
+  }
+]

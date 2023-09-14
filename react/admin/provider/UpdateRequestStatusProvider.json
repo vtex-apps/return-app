@@ -1,0 +1,8 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.update-status.alert.success"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.alert.error"
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "store/return-app.return-request-list.page-header.title"
+  },
+  {
+    "id": "store/return-app.return-request-list.page-header.goBack"
+  },
+  {
+    "id": "store/return-app.return-request-list.page-header.cta"
+  }
+]

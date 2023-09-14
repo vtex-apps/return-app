@@ -1,0 +1,23 @@
+[
+  {
+    "id": "return-app.return-request-details.cancellation.modal.adminAllow"
+  },
+  {
+    "id": "return-app.return-request-details.cancellation.modal.adminRefuse"
+  },
+  {
+    "id": "return-app.return-request-details.cancellation.modal.storeAllow"
+  },
+  {
+    "id": "return-app.return-request-details.cancellation.modal.storeRefuse"
+  },
+  {
+    "id": "return-app.return-request-details.cancellation.cta"
+  },
+  {
+    "id": "return-app.return-request-details.cancellation.modal.close"
+  },
+  {
+    "id": "return-app.return-request-details.cancellation.modal.accept"
+  }
+]

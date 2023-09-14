@@ -1,0 +1,23 @@
+[
+  {
+    "id": "return-app.return-request-list.table-data.requestId"
+  },
+  {
+    "id": "return-app.return-request-list.table-data.sequenceNumber"
+  },
+  {
+    "id": "return-app.return-request-list.table-data.orderId"
+  },
+  {
+    "id": "return-app.return-request-list.table-filters.fromDate"
+  },
+  {
+    "id": "return-app.return-request-list.table-filters.toDate"
+  },
+  {
+    "id": "return-app.return-request-list.table-filters.apply-filters"
+  },
+  {
+    "id": "return-app.return-request-list.table-filters.clear-filters"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "store/return-app.return-order-details.section-products"
+  },
+  {
+    "id": "store/return-app.return-order-details.page-header.order-id"
+  },
+  {
+    "id": "store/return-app.return-order-details.page-header.creation-date"
+  },
+  {
+    "id": "store/return-app.return-order-details.page-header.subtitle"
+  },
+  {
+    "id": "store/return-app.return-order-details.section-details"
+  },
+  {
+    "id": "store/return-app.return-order-details.section-details-highlighted-message"
+  },
+  {
+    "id": "store/return-app.return-order-details.section-payment"
+  },
+  {
+    "id": "store/return-app.return-order-details.button.next"
+  }
+]

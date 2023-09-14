@@ -1,0 +1,14 @@
+[
+  {
+    "id": "return-app.return-request-details.contact-details.title"
+  },
+  {
+    "id": "return-app.return-request-details.contact-details.name"
+  },
+  {
+    "id": "return-app.return-request-details.contact-details.email"
+  },
+  {
+    "id": "return-app.return-request-details.contact-details.phone"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "store/return-app.return-order-details.payment-options.card"
+  },
+  {
+    "id": "store/return-app.return-order-details.payment-options.gift-card"
+  },
+  {
+    "id": "store/return-app.return-order-details.payment-options.bank"
+  },
+  {
+    "id": "store/return-app.confirm-payment-methods.refund-method.p-same-as-purchase"
+  }
+]

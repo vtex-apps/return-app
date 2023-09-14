@@ -1,0 +1,17 @@
+[
+  {
+    "id": "store/return-app.return-order-details.error.order-not-invoiced"
+  },
+  {
+    "id": "store/return-app.return-order-details.error.out-of-max-days"
+  },
+  {
+    "id": "store/return-app.return-order-details.error.order-not-found"
+  },
+  {
+    "id": "store/return-app.return-order-details.error.forbidden"
+  },
+  {
+    "id": "store/return-app.return-order-details.error.unknown"
+  }
+]

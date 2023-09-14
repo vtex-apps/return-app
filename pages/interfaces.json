@@ -1,0 +1,14 @@
+{
+  "admin.app.return-list": {
+    "component": "AdminReturnList",
+    "render": "client"
+  },
+  "admin.app.return-settings": {
+    "component": "AdminReturnSettings",
+    "render": "client"
+  },
+  "admin.app.return-details": {
+    "component": "AdminReturnDetails",
+    "render": "client"
+  }
+}

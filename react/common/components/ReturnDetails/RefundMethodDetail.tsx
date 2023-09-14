@@ -9,7 +9,7 @@ import { useReturnDetails } from '../../hooks/useReturnDetails'
 const CSS_HANDLES = ['refundMethodDetailContainer'] as const
 
 const messageId =
-  'store/return-app.return-request-details.payent-method.refund-option'
+  'return-app.return-request-details.payent-method.refund-option'
 
 interface RefundMethodProps {
   refundPaymentData: RefundPaymentData
@@ -136,7 +136,7 @@ const RefundPayment = (props: RefundMethodProps) => {
         </p>
         {domain !== 'admin' ? null : (
           <FormattedMessage
-            id="store/return-app.return-request-details.payent-method.refund-option.refund-process"
+            id="return-app.return-request-details.payent-method.refund-option.refund-process"
             values={{ automaticallyRefundPaymentMethod }}
           />
         )}
@@ -161,7 +161,7 @@ export const RefundMethodDetail = () => {
   return (
     <section>
       <h3>
-        <FormattedMessage id="store/return-app.return-request-details.payent-method.title" />
+        <FormattedMessage id="return-app.return-request-details.payent-method.title" />
       </h3>
       <RefundPayment
         refundPaymentData={refundPaymentData}

@@ -46,7 +46,7 @@ const JumpToPage = (props: Props) => {
       >
         <div className="mr3">
           <span className="c-muted-2 t-small">
-            <FormattedMessage id="store/return-app.return-request-list.table-jumpToPage.pageText" />{' '}
+            <FormattedMessage id="return-app.return-request-list.table-jumpToPage.pageText" />{' '}
             {`${currentPage} - ${maxPage}`}
           </span>
         </div>
@@ -69,7 +69,7 @@ const JumpToPage = (props: Props) => {
             onClick={handleSubmit}
             disabled={!desiredPage || !canSubmit}
           >
-            <FormattedMessage id="store/return-app.return-request-list.table-jumpToPage.cta" />
+            <FormattedMessage id="return-app.return-request-list.table-jumpToPage.cta" />
           </Button>
         </div>
       </div>

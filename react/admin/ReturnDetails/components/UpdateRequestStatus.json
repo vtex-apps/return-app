@@ -1,0 +1,26 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.update-status.title"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.tooltip"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.dropdown.placeholder"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.textarea.label"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.checkbox.label"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.button.update-status"
+  },
+  {
+    "id": "admin/return-app.return-request-details.update-status.button.comment"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.button"
+  }
+]

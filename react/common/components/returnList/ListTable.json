@@ -1,0 +1,17 @@
+[
+  {
+    "id": "return-app.return-request-list.error.title"
+  },
+  {
+    "id": "return-app.return-request-list.error.description"
+  },
+  {
+    "id": "return-app.return-request-list.table.emptyState"
+  },
+  {
+    "id": "return-app.return-request-list.table.emptyState-children"
+  },
+  {
+    "id": "return-app.return-request-list.table-pagination.textOf"
+  }
+]

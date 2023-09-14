@@ -1,0 +1,14 @@
+[
+  {
+    "id": "return-app.return-request-details.table.verification-status.denied"
+  },
+  {
+    "id": "return-app.return-request-details.table.verification-status.approved"
+  },
+  {
+    "id": "return-app.return-request-details.table.verification-status.partially-approved"
+  },
+  {
+    "id": "return-app.return-request-details.table.verification-status.new"
+  }
+]

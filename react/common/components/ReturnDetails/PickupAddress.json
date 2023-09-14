@@ -1,0 +1,29 @@
+[
+  {
+    "id": "return-app.return-request-details.pickup-address.title"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.pickup-type"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.pickup-type.pickup-point"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.pickup-type.customer-address"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.country"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.locality"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.address"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.state"
+  },
+  {
+    "id": "return-app.return-request-details.pickup-address.zip"
+  }
+]

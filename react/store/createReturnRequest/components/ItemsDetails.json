@@ -1,0 +1,17 @@
+[
+  {
+    "id": "store/return-app.return-order-details.table-header.quantity"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.available-to-return"
+  },
+  {
+    "id": "store/return-app.return-item-details.excluded-items.warning"
+  },
+  {
+    "id": "store/return-app.return-item-details.dropdown-reason.error"
+  },
+  {
+    "id": "store/return-app.return-item-details.dropdown-condition.error"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.page-header.title"
+  },
+  {
+    "id": "admin/return-app.return-request-details.page-header.link-label"
+  },
+  {
+    "id": "admin/return-app.return-request-details.error.title"
+  },
+  {
+    "id": "admin/return-app.return-request-details.error.description"
+  }
+]

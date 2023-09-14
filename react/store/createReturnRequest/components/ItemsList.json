@@ -1,0 +1,23 @@
+[
+  {
+    "id": "store/return-app.return-order-details.table-header.product"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.quantity"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.available-to-return"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.quantity-to-return"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.reason"
+  },
+  {
+    "id": "store/return-app.return-order-details.table-header.condition"
+  },
+  {
+    "id": "store/return-app.return-items-list.no-items-selected.error"
+  }
+]

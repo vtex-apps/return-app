@@ -141,10 +141,10 @@ const ListTable = () => {
     return (
       <EmptyState
         title={
-          <FormattedMessage id="store/return-app.return-request-list.error.title" />
+          <FormattedMessage id="return-app.return-request-list.error.title" />
         }
       >
-        <FormattedMessage id="store/return-app.return-request-list.error.description" />
+        <FormattedMessage id="return-app.return-request-list.error.description" />
       </EmptyState>
     )
   }
@@ -176,17 +176,17 @@ const ListTable = () => {
           loading={loading}
           items={list}
           emptyStateLabel={
-            <FormattedMessage id="store/return-app.return-request-list.table.emptyState" />
+            <FormattedMessage id="return-app.return-request-list.table.emptyState" />
           }
           emptyStateChildren={
             <p>
-              <FormattedMessage id="store/return-app.return-request-list.table.emptyState-children" />
+              <FormattedMessage id="return-app.return-request-list.table.emptyState-children" />
             </p>
           }
           schema={returnsListSchema}
           pagination={{
             textOf: (
-              <FormattedMessage id="store/return-app.return-request-list.table-pagination.textOf" />
+              <FormattedMessage id="return-app.return-request-list.table-pagination.textOf" />
             ),
             onNextClick: handleNextPage,
             onPrevClick: handlePrevPage,

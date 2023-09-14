@@ -1,0 +1,11 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.verify-items.action.approve"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.action.deny"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.action.partially-approve"
+  }
+]

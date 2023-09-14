@@ -1,33 +1,33 @@
-import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import type { ReturnRequestItemInput } from 'vtex.return-app'
-import { useCssHandles } from 'vtex.css-handles'
-import { useRuntime } from 'vtex.render-runtime'
+import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import type { ReturnRequestItemInput } from "vtex.return-app";
+import { useCssHandles } from "vtex.css-handles";
+import { useRuntime } from "vtex.render-runtime";
 
-import { defaultReturnConditionsMessages } from '../../../common/utils/defaultReturnConditionsMessages'
+import { defaultReturnConditionsMessages } from "../../../common/utils/defaultReturnConditionsMessages";
 
 interface Props {
-  items: ItemToReturn[]
-  selectedItems: ReturnRequestItemInput[]
+  items: ItemToReturn[];
+  selectedItems: ReturnRequestItemInput[];
 }
 
 const CSS_HANDLES = [
-  'returnInfoTableContainer',
-  'returnInfoTheadContainer',
-  'returnInfoTableText',
-  'returnInfoBodyContainer',
-  'returnInfoTrBodyWrapper',
-  'returnInfoBodyImgWrapper',
-  'returnInfoReasonConditionWrapper',
-] as const
+  "returnInfoTableContainer",
+  "returnInfoTheadContainer",
+  "returnInfoTableText",
+  "returnInfoBodyContainer",
+  "returnInfoTrBodyWrapper",
+  "returnInfoBodyImgWrapper",
+  "returnInfoReasonConditionWrapper",
+] as const;
 
 export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
-  const { formatMessage } = useIntl()
-  const handles = useCssHandles(CSS_HANDLES)
+  const { formatMessage } = useIntl();
+  const handles = useCssHandles(CSS_HANDLES);
 
   const {
     hints: { phone },
-  } = useRuntime()
+  } = useRuntime();
 
   return (
     <table className={`${handles.returnInfoTableContainer} w-100`}>
@@ -48,62 +48,71 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
         </tr>
       </thead>
       <tbody className={`${handles.returnInfoBodyContainer} v-mid`}>
-        {selectedItems.map(
-          ({ quantity, orderItemIndex, condition, returnReason }, key) => {
-            const { reason } = returnReason
+        {selectedItems.map((item, index) => {
+          const { quantity, orderItemIndex, condition, returnReason } = item;
+          const { reason } = returnReason;
 
-            if (!quantity) {
-              return null
-            }
+          if (!quantity) {
+            return null;
+          }
 
-            const { imageUrl, localizedName, name } = items[orderItemIndex]
+          // Buscar el elemento en 'items' con el mismo 'orderItemIndex'
+          const selectedItem = items.find(
+            // eslint-disable-next-line @typescript-eslint/no-shadow
+            (item) => item.orderItemIndex === orderItemIndex
+          );
 
-            return (
-              <tr
-                key={key}
-                className={`${handles.returnInfoTrBodyWrapper} ph5`}
-              >
-                <td className={`pv5 ${phone ? 'w-80' : 'w-50'}`}>
-                  <div className="flex items-center">
-                    <div className={`${handles.returnInfoBodyImgWrapper} mr3`}>
-                      <img src={imageUrl} alt="Product" />
-                    </div>
-                    <div className={handles.returnInfoReasonConditionWrapper}>
-                      <p className="b">{localizedName ?? name}</p>
-                      {!condition ? null : (
-                        <div className="flex">
-                          <p className="f6 mt0 mr3 gray b">
-                            <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
-                          </p>
-                          <p className="f6 mt0 gray ">
-                            {formatMessage(
-                              defaultReturnConditionsMessages[condition]
-                            )}
-                          </p>
-                        </div>
-                      )}
+          if (!selectedItem) {
+            return null;
+          }
+
+          const { imageUrl, localizedName, name } = selectedItem;
+
+          return (
+            <tr
+              key={index}
+              className={`${handles.returnInfoTrBodyWrapper} ph5`}
+            >
+              <td className={`pv5 ${phone ? "w-80" : "w-50"}`}>
+                <div className="flex items-center">
+                  <div className={`${handles.returnInfoBodyImgWrapper} mr3`}>
+                    <img src={imageUrl} alt="Product" />
+                  </div>
+                  <div className={handles.returnInfoReasonConditionWrapper}>
+                    <p className="b">{localizedName ?? name}</p>
+                    {!condition ? null : (
                       <div className="flex">
-                        <p className="f6 mv0 mr3 gray b">
-                          {' '}
-                          <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{' '}
+                        <p className="f6 mt0 mr3 gray b">
+                          <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
                         </p>
-                        <p className="f6 mv0 gray ">
-                          {returnReason?.otherReason
-                            ? returnReason?.otherReason
-                            : reason}
+                        <p className="f6 mt0 gray ">
+                          {formatMessage(
+                            defaultReturnConditionsMessages[condition]
+                          )}
                         </p>
                       </div>
+                    )}
+                    <div className="flex">
+                      <p className="f6 mv0 mr3 gray b">
+                        {" "}
+                        <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{" "}
+                      </p>
+                      <p className="f6 mv0 gray ">
+                        {returnReason?.otherReason
+                          ? returnReason?.otherReason
+                          : reason}
+                      </p>
                     </div>
                   </div>
-                </td>
-                <td className={`tc pv5 ${phone ? 'w-20' : 'w-50'}`}>
-                  <p>{quantity}</p>
-                </td>
-              </tr>
-            )
-          }
-        )}
+                </div>
+              </td>
+              <td className={`tc pv5 ${phone ? "w-20" : "w-50"}`}>
+                <p>{quantity}</p>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
-  )
-}
+  );
+};

@@ -1,0 +1,11 @@
+{
+  "admin.app.return-list": {
+    "path": "/admin/app/returns/requests/"
+  },
+  "admin.app.return-settings": {
+    "path": "/admin/app/returns/settings/"
+  },
+  "admin.app.return-details": {
+    "path": "/admin/app/returns/:id/details/"
+  }
+}

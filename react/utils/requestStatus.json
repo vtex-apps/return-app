@@ -1,0 +1,50 @@
+[
+  {
+    "id": "return-app-status.new"
+  },
+  {
+    "id": "return-app-status.processing"
+  },
+  {
+    "id": "return-app-status.pickedup-from-client"
+  },
+  {
+    "id": "return-app-status.pending-verification"
+  },
+  {
+    "id": "return-app-status.package-verified"
+  },
+  {
+    "id": "return-app-status.refunded"
+  },
+  {
+    "id": "return-app-status.denied"
+  },
+  {
+    "id": "return-app-status.cancelled"
+  },
+  {
+    "id": "return-app-status.timeline.new"
+  },
+  {
+    "id": "return-app-status.timeline.processing"
+  },
+  {
+    "id": "return-app-status.timeline.pickedup-from-client"
+  },
+  {
+    "id": "return-app-status.timeline.pending-verification"
+  },
+  {
+    "id": "return-app-status.timeline.package-verified"
+  },
+  {
+    "id": "return-app-status.timeline.refunded"
+  },
+  {
+    "id": "return-app-status.timeline.denied"
+  },
+  {
+    "id": "return-app-status.timeline.cancelled"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "store/return-app.return-order-details.payment-method.iban"
+  },
+  {
+    "id": "store/return-app.return-order-details.payment-method.account-holder"
+  },
+  {
+    "id": "store/return-app.return-order-details.payment-method.description"
+  },
+  {
+    "id": "store/return-app.return-order-details.payment-method.default"
+  },
+  {
+    "id": "store/return-app.return-payment-methods.input-payment-method.error"
+  },
+  {
+    "id": "store/return-app.return-payment-methods.input-account-holder.error"
+  },
+  {
+    "id": "store/return-app.return-payment-methods.input-iban.error"
+  },
+  {
+    "id": "store/return-app.return-payment-methods.input-iban-invalid.error"
+  }
+]

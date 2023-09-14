@@ -1,0 +1,14 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.refundable-shipping"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.total-refund-items"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.total-refund"
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.product"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.price"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.tax"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.total"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.quantity"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.verified"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.restock-fee"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.refund-product-total"
+  },
+  {
+    "id": "admin/return-app.return-request-details.verify-items.table.header.action"
+  }
+]

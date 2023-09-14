@@ -1,0 +1,20 @@
+[
+  {
+    "id": "return-app.return-request-list.table-data.requestId"
+  },
+  {
+    "id": "admin/return-app.return-request-list.table-data.requestId.tooltip"
+  },
+  {
+    "id": "return-app.return-request-list.table-data.sequenceNumber"
+  },
+  {
+    "id": "return-app.return-request-list.table-data.orderId"
+  },
+  {
+    "id": "return-app.return-request-list.table-data.createdDate"
+  },
+  {
+    "id": "return-app.return-request-list.table-data.status"
+  }
+]

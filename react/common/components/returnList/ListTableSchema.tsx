@@ -28,7 +28,7 @@ const ReturnListSchema = () => {
       ...(isAdmin && {
         id: {
           title: (
-            <FormattedMessage id="store/return-app.return-request-list.table-data.requestId" />
+            <FormattedMessage id="return-app.return-request-list.table-data.requestId" />
           ),
           headerRenderer({ title }) {
             return (
@@ -61,7 +61,7 @@ const ReturnListSchema = () => {
       }),
       sequenceNumber: {
         title: (
-          <FormattedMessage id="store/return-app.return-request-list.table-data.sequenceNumber" />
+          <FormattedMessage id="return-app.return-request-list.table-data.sequenceNumber" />
         ),
         minWidth: 100,
         ...(!isAdmin && {
@@ -76,13 +76,13 @@ const ReturnListSchema = () => {
       },
       orderId: {
         title: (
-          <FormattedMessage id="store/return-app.return-request-list.table-data.orderId" />
+          <FormattedMessage id="return-app.return-request-list.table-data.orderId" />
         ),
         minWidth: 160,
       },
       createdIn: {
         title: (
-          <FormattedMessage id="store/return-app.return-request-list.table-data.createdDate" />
+          <FormattedMessage id="return-app.return-request-list.table-data.createdDate" />
         ),
         cellRenderer({ cellData }) {
           return (
@@ -98,7 +98,7 @@ const ReturnListSchema = () => {
       },
       status: {
         title: (
-          <FormattedMessage id="store/return-app.return-request-list.table-data.status" />
+          <FormattedMessage id="return-app.return-request-list.table-data.status" />
         ),
         minWidth: 250,
         cellRenderer({ cellData }) {

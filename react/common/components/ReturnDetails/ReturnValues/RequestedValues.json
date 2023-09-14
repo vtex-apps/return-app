@@ -1,0 +1,14 @@
+[
+  {
+    "id": "return-app.return-request-details.request-total.header"
+  },
+  {
+    "id": "return-app.return-request-details.request-total.item-tax"
+  },
+  {
+    "id": "return-app.return-request-details.request-total.shipping"
+  },
+  {
+    "id": "return-app.return-request-details.request-total.total"
+  }
+]

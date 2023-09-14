@@ -28,7 +28,7 @@ export const itemDetailsSchema = ({
   const properties = {
     imageUrl: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.product" />
+        <FormattedMessage id="return-app.return-request-details.table.header.product" />
       ),
       width: 80,
       cellRenderer: function ProductImage({
@@ -43,7 +43,7 @@ export const itemDetailsSchema = ({
     },
     name: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.product-info" />
+        <FormattedMessage id="return-app.return-request-details.table.header.product-info" />
       ),
       minWidth: 500,
       cellRenderer: function ProductName({
@@ -64,7 +64,7 @@ export const itemDetailsSchema = ({
             {!refId ? null : (
               <div className="mv2">
                 <FormattedMessage
-                  id="store/return-app.return-request-details.table.product-info.ref-id"
+                  id="return-app.return-request-details.table.product-info.ref-id"
                   values={{
                     refId,
                     b: StrongChunk,
@@ -74,7 +74,7 @@ export const itemDetailsSchema = ({
             )}
             <div className="mv2">
               <FormattedMessage
-                id="store/return-app.return-request-details.table.product-info.reason"
+                id="return-app.return-request-details.table.product-info.reason"
                 values={{
                   reason: returnReason.otherReason ?? returnReason.reason,
                   b: StrongChunk,
@@ -84,7 +84,7 @@ export const itemDetailsSchema = ({
             {condition === 'unspecified' ? null : (
               <div className="mv2">
                 <FormattedMessage
-                  id="store/return-app.return-request-details.table.product-info.condition"
+                  id="return-app.return-request-details.table.product-info.condition"
                   values={{
                     condition: formatMessage(
                       defaultReturnConditionsMessages[condition]
@@ -97,7 +97,7 @@ export const itemDetailsSchema = ({
             {!sellerName ? null : (
               <div className="mv2">
                 <FormattedMessage
-                  id="store/return-app.return-request-details.table.product-info.sold-by"
+                  id="return-app.return-request-details.table.product-info.sold-by"
                   values={{
                     seller: sellerName,
                     b: StrongChunk,
@@ -111,13 +111,13 @@ export const itemDetailsSchema = ({
     },
     quantity: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.quantity" />
+        <FormattedMessage id="return-app.return-request-details.table.header.quantity" />
       ),
       width: 80,
     },
     sellingPrice: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.unit-price" />
+        <FormattedMessage id="return-app.return-request-details.table.header.unit-price" />
       ),
       width: 120,
       headerRight: true,
@@ -139,7 +139,7 @@ export const itemDetailsSchema = ({
     },
     tax: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.tax" />
+        <FormattedMessage id="return-app.return-request-details.table.header.tax" />
       ),
       width: 120,
       headerRight: true,
@@ -161,7 +161,7 @@ export const itemDetailsSchema = ({
     },
     totalItems: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.total-price" />
+        <FormattedMessage id="return-app.return-request-details.table.header.total-price" />
       ),
       width: 120,
       headerRight: true,
@@ -185,7 +185,7 @@ export const itemDetailsSchema = ({
     },
     verificationStatus: {
       title: (
-        <FormattedMessage id="store/return-app.return-request-details.table.header.verification-status" />
+        <FormattedMessage id="return-app.return-request-details.table.header.verification-status" />
       ),
       minWidth: 150,
       cellRenderer: function VerificationStatus({

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "store/return-app.confirm-and-submit.refund-method.title"
+  },
+  {
+    "id": "store/return-app.confirm-payment-methods.refund-method.p-account-holder-name"
+  },
+  {
+    "id": "store/return-app.confirm-payment-methods.refund-method.p-iban"
+  }
+]

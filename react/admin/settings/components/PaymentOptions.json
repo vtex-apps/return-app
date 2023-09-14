@@ -1,0 +1,38 @@
+[
+  {
+    "id": "admin/return-app.settings.section.payment-options.available-payment-methods.bank"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.available-payment-methods.card"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.available-payment-methods.gift-card"
+  },
+  {
+    "id": "admin/return-app.settings.section.return-payment-options.header"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.check"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.enable-payment-method-selection.label.uncheck"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.enable-payment-method-selection.description"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.label"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.refund-method-strategy.checkbox.description"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.available-payment-methods.header"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.available-payment-methods.label"
+  },
+  {
+    "id": "admin/return-app.settings.section.payment-options.enable-payment-method-selection.error"
+  }
+]
