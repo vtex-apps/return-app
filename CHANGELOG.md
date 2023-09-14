@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Blank confirmation page fixed by changin the logic on how we retrieve the info from selectedItems.
+
 ## [3.8.5] - 2023-05-15
 
 ## [3.8.1] - 2023-05-02
