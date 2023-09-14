@@ -375,9 +375,9 @@ In order to apply CSS customizations in this and other blocks, follow the instru
     To avoid the issue with the Masterdata builder when installing a new version of the APP in the master environment follow these steps:
 
     1. Create a PROD WS within the account you will install the APP.
-    2. Install the new version of the APP in this PROD workspace, `vtex install vtex.return-app@x.x.x`
-    3. Create a DEV WS, and link the APP latest version to the workspace. `vtex link`
-    4. Check if the documents are on the listing page of the PROD WS `/admin/returns/requests/`
+    2. Install the new version of the APP in this PROD workspace: `vtex install vtex.return-app@3.x.x`
+    3. Create a DEV WS, and link the APP latest version to the workspace: `vtex link`
+    4. Check if the documents are on the listing page of the PROD WS. `/admin/returns/requests/`
     5. If they are, then you are safe to install on the Master environment.
 
 ---
