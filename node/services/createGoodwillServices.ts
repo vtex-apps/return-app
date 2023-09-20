@@ -71,7 +71,7 @@ export const createGoodwillService = async (
 
   const searchRMAData = await searchRMA
 
-  if (searchRMAData) {
+  if (searchRMAData && searchRMAData.data.length !== 0) {
     throw new Error("There's already a request or goodwill for this order")
   }
 

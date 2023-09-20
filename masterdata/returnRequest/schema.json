@@ -256,7 +256,7 @@
             }
           }
         },
-        "required": ["status", "submittedBy", "createdAt", "comments"]
+        "required": ["status", "submittedBy", "createdAt"]
       }
     },
     "cultureInfoData": {
