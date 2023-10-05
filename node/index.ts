@@ -12,7 +12,6 @@ import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { middlewares } from './middlewares'
 import { exportRequests } from './middlewares/exportRequests'
-import { goodwill } from './middlewares/goodwill'
 import { ping } from './middlewares/ping'
 import setupScheduler from './events/keepAlive'
 
@@ -93,10 +92,6 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     giftcard: method({
       POST: [errorHandler, auth, createGiftcard],
-    }),
-    goodwill: method({
-      GET: [goodwill],
-      POST: [errorHandler, auth, sellerValidation, goodwill],
     }),
     ping: method({
       POST: [ping],

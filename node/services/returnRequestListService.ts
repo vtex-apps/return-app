@@ -150,11 +150,7 @@ export const returnRequestListService = async (
     },
     resultFields,
     'dateSubmitted DESC',
-    `status <> "goodwill"${
-      (buildWhereClause(adjustedFilter) &&
-        ` AND ${buildWhereClause(adjustedFilter)}`) ??
-      ''
-    }`
+    buildWhereClause(adjustedFilter)
   )
 
   const { data, pagination } = rmaSearchResult

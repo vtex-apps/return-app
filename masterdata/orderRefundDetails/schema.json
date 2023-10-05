@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "orderRefundDetails",
+  "description": "Schema for order refund details",
+  "type": "object",
+  "properties": {
+    "orderID": {
+      "type": "string",
+      "description": "The unique identifier for the order."
+    },
+    "initialInvoicedAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The initial amount invoiced for the order."
+    },
+    "totalRefunded": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total amount that has been refunded so far for the order."
+    },
+    "remainingRefundableAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The remaining amount that can be refunded for the order."
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time when the refund details were last updated."
+    }
+  },
+  "required": [
+    "orderID",
+    "initialInvoicedAmount",
+    "totalRefunded",
+    "remainingRefundableAmount",
+    "lastUpdated"
+  ]
+}

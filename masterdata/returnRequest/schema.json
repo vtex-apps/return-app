@@ -1,4 +1,7 @@
 {
+  "$schema": "http://json-schema.org/schema#",
+  "title": "returnRequest",
+  "type": "object",
   "properties": {
     "orderId": {
       "type": "string"
@@ -7,9 +10,6 @@
       "type": "string"
     },
     "sellerName": {
-      "type": "string"
-    },
-    "sellerId": {
       "type": "string"
     },
     "refundableAmount": {
@@ -256,7 +256,7 @@
             }
           }
         },
-        "required": ["status", "submittedBy", "createdAt"]
+        "required": ["status", "submittedBy", "createdAt", "comments"]
       }
     },
     "cultureInfoData": {
@@ -269,7 +269,7 @@
           "type": "string"
         }
       },
-      "required": ["currencyCode"]
+      "required": ["currencyCode", "locale"]
     },
     "logisticsInfo": {
       "type": "object",
@@ -281,24 +281,12 @@
           "type": "string"
         }
       }
-    },
-    "reason": {
-      "type": "string"
-    },
-    "goodwillData": {
-      "type": "object",
-      "properties": {
-        "creditAmount": {
-          "type": "integer"
-        }
-      }
     }
   },
   "$defs": {
     "status": {
       "type": "string",
       "enum": [
-        "goodwill",
         "new",
         "processing",
         "pickedUpFromClient",
@@ -312,9 +300,14 @@
   },
   "required": [
     "orderId",
+    "refundableAmount",
     "sequenceNumber",
     "status",
+    "refundableAmountTotals",
+    "customerProfileData",
+    "pickupReturnData",
     "refundPaymentData",
+    "items",
     "refundData",
     "refundStatusData",
     "dateSubmitted",

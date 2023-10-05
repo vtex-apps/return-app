@@ -5,10 +5,6 @@
   "minReplicas": 2,
   "maxReplicas": 4,
   "routes": {
-    "goodwill": {
-      "path": "/_v/goodwill/*id",
-      "public": true
-    },
     "returnRequests": {
       "path": "/_v/return-request",
       "public": true

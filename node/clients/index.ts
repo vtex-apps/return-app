@@ -19,8 +19,18 @@ const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
   'appSettings'
 )
 
+export type OrderRefundDetails = {
+  orderID: string
+  initialInvoicedAmount: number
+  totalRefunded: number
+  remainingRefundableAmount: number
+  lastUpdated: Date
+}
+
 const ReturnRequestClient = masterDataFor<ReturnRequest | any>('returnRequest')
 const SellerSettingClient = masterDataFor<SellerSetting>('sellerSetting')
+const OrderRefundDetails =
+  masterDataFor<OrderRefundDetails>('orderRefundDetails')
 
 export class Clients extends IOClients {
   public get oms() {
@@ -41,6 +51,10 @@ export class Clients extends IOClients {
 
   public get returnRequest() {
     return this.getOrSet('returnRequest', ReturnRequestClient)
+  }
+
+  public get orderRefundDetails() {
+    return this.getOrSet('orderRefundDetails', OrderRefundDetails)
   }
 
   public get sellerSetting() {
