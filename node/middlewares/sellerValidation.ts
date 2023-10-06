@@ -35,7 +35,7 @@ export async function sellerValidation(
     (_sellerName || _sellerId || seller || sellerId)
   ) {
     const accountName = String(_sellerName || _sellerId || seller || sellerId)
-    const { items } = await marketplace.getSellers()
+    const { items } = await marketplace.getSellers(accountName)
 
     if (items.length > 0) {
       const currentSeller = items.find(

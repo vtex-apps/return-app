@@ -11,8 +11,11 @@ export class Marketplace extends JanusClient {
     })
   }
 
-  public getSellers = async (): Promise<any> =>
+  public getSellers = async (seller?: string): Promise<any> =>
     this.http.get('/api/seller-register/pvt/sellers', {
       metric: 'marketplace-get-seller-list',
+      params: {
+        ...(seller ? { keyword: seller } : {}),
+      },
     })
 }
