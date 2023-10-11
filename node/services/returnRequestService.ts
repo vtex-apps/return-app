@@ -1,6 +1,7 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
 
 import type { ReturnRequest } from '../../typings/ReturnRequest'
+import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
 
 export const returnRequestService = async (
   ctx: Context,
@@ -29,6 +30,15 @@ export const returnRequestService = async (
   if (!requestBelongsToUser && !userIsAdmin) {
     throw new ForbiddenError('User cannot access this request')
   }
+
+  // todo: complete this function
+  await calculateAvailableAmountsService(
+    ctx,
+    {
+      order: { orderId: returnRequestResult.orderId },
+    },
+    'GET'
+  )
 
   return returnRequestResult
 }

@@ -19,14 +19,6 @@ const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
   'appSettings'
 )
 
-export type OrderRefundDetails = {
-  orderID: string
-  initialInvoicedAmount: number
-  totalRefunded: number
-  remainingRefundableAmount: number
-  lastUpdated: Date
-}
-
 const ReturnRequestClient = masterDataFor<ReturnRequest | any>('returnRequest')
 const SellerSettingClient = masterDataFor<SellerSetting>('sellerSetting')
 const OrderRefundDetails =

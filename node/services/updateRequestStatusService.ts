@@ -18,6 +18,7 @@ import { handleRefund } from '../utils/handleRefund'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
+import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -210,6 +211,16 @@ export const updateRequestStatusService = async (
   }
 
   try {
+    requestStatus === 'amountRefunded' &&
+      refundInvoice &&
+      (await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+          amountRefunded: refundInvoice.invoiceValue,
+        },
+        'UPDATE'
+      ))
     await returnRequestClient.update(requestId, updatedRequest)
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

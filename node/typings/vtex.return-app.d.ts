@@ -37,3 +37,13 @@ interface AuthenticationSession {
     value: string
   }
 }
+
+interface OrderRefundDetails {
+  id: string
+  orderID: string
+  initialInvoicedAmount: number
+  totalRefunded?: number | undefined
+  remainingRefundableAmount?: number | undefined
+  amountToBeRefundedInProcess: number | undefined
+  lastUpdated: Date
+}

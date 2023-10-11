@@ -21,6 +21,7 @@ import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
+import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -237,6 +238,15 @@ export const createReturnRequestService = async (
       : null
 
   let rmaDocument: DocumentResponse
+
+  await calculateAvailableAmountsService(
+    ctx,
+    {
+      order,
+      amountToBeRefund: refundableAmount,
+    },
+    'CREATE'
+  )
 
   try {
     rmaDocument = await returnRequestClient.save({
