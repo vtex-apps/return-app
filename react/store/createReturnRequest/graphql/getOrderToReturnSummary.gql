@@ -37,5 +37,15 @@ query orderToReturnSummary($orderId: ID!) {
     paymentData {
       canRefundCard
     }
+    availableAmountsToRefund {
+      initialInvoicedAmount
+      amountToBeRefundedInProcess
+      totalRefunded
+      remainingRefundableAmount
+      initialShippingCost
+      shippingCostToBeRefundedInProcess
+      totalShippingCostRefunded
+      remainingRefundableShippingCost
+    }
   }
 }

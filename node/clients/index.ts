@@ -14,12 +14,14 @@ import { CatalogGQL } from './catalogGQL'
 import { ProfileClient } from './profile'
 import { Marketplace } from './marketplace'
 import Scheduler from './scheduler'
+import { PaymentGateway } from './paymentGateway'
 
 const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
   'appSettings'
 )
 
 const ReturnRequestClient = masterDataFor<ReturnRequest | any>('returnRequest')
+const GoodwillClient = masterDataFor<Goodwill | any>('goodwill')
 const SellerSettingClient = masterDataFor<SellerSetting>('sellerSetting')
 const OrderRefundDetails =
   masterDataFor<OrderRefundDetails>('orderRefundDetails')
@@ -43,6 +45,10 @@ export class Clients extends IOClients {
 
   public get returnRequest() {
     return this.getOrSet('returnRequest', ReturnRequestClient)
+  }
+
+  public get goodwill() {
+    return this.getOrSet('goodwill', GoodwillClient)
   }
 
   public get orderRefundDetails() {
@@ -83,5 +89,9 @@ export class Clients extends IOClients {
 
   public get scheduler() {
     return this.getOrSet('scheduler', Scheduler)
+  }
+
+  public get paymentGateway() {
+    return this.getOrSet('paymentGateway', PaymentGateway)
   }
 }

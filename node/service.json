@@ -13,8 +13,16 @@
       "path": "/_v/return-request/:requestId",
       "public": true
     },
+    "preRefund": {
+      "path": "/_v/return-request/prerefund",
+      "public": true
+    },
     "exportRequests": {
       "path": "/_v/return-request/export",
+      "public": true
+    },
+    "goodwill": {
+      "path": "/_v/goodwill/*id",
       "public": true
     },
     "settings": {

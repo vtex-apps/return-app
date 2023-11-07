@@ -62,6 +62,7 @@ export type ReturnOption = {
   enableProportionalShippingValue?: Maybe<Scalars['Boolean']>
   enableSelectItemCondition?: Maybe<Scalars['Boolean']>
   enableHighlightFormMessage?: Maybe<Scalars['Boolean']>
+  enableGoodwill?: Maybe<Scalars['Boolean']>
 }
 
 export type ReturnAppSettingsInput = {
@@ -104,6 +105,7 @@ export type ReturnOptionInput = {
   enableProportionalShippingValue?: InputMaybe<Scalars['Boolean']>
   enableSelectItemCondition?: InputMaybe<Scalars['Boolean']>
   enableHighlightFormMessage?: Maybe<Scalars['Boolean']>
+  enableGoodwill?: Maybe<Scalars['Boolean']>
 }
 
 export type MutationSaveReturnAppSettingsArgs = {

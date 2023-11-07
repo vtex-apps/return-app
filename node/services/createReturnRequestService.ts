@@ -239,16 +239,20 @@ export const createReturnRequestService = async (
 
   let rmaDocument: DocumentResponse
 
-  await calculateAvailableAmountsService(
-    ctx,
-    {
-      order,
-      amountToBeRefund: refundableAmount,
-    },
-    'CREATE'
-  )
-
   try {
+    const amountToBeRefund = refundableAmountTotals.find(
+      (item) => item.id === 'items'
+    )?.value
+
+    await calculateAvailableAmountsService(
+      ctx,
+      {
+        order,
+        amountToBeRefund,
+      },
+      'CREATE'
+    )
+
     rmaDocument = await returnRequestClient.save({
       orderId,
       sellerOrderId,

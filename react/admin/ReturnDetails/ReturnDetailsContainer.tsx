@@ -17,16 +17,19 @@ import { StatusHistory } from '../../common/components/ReturnDetails/StatusHisto
 import { OrderLink } from '../../common/components/ReturnDetails/OrderLink'
 import { CurrentRequestStatus } from '../../common/components/ReturnDetails/CurrentRequestStatus'
 import RequestCancellation from '../../common/components/ReturnDetails/RequestCancellation'
+import ApproveRequest from '../../common/components/ReturnDetails/ApproveRequest'
 
 type Pages = 'return-details' | 'verify-items'
 
 export const ReturnDetailsContainer = () => {
   const [detailsPage, setDetailsPage] = useState<Pages>('return-details')
+  const [showButtons, setShowButtons] = useState(true)
   const returnDetails = useReturnDetails()
 
   const { navigate } = useRuntime()
 
   const handleViewVerifyItems = (page: Pages) => {
+    setShowButtons(page === 'return-details')
     setDetailsPage(page)
   }
 
@@ -47,7 +50,16 @@ export const ReturnDetailsContainer = () => {
             })
           }}
         >
-          <RequestCancellation />
+          {showButtons ? (
+            <div className="flex-ns flex-wrap flex-row">
+              <div style={{ marginRight: '1rem' }}>
+                <RequestCancellation />
+              </div>
+              <ApproveRequest
+                onViewVerifyItems={() => handleViewVerifyItems('verify-items')}
+              />
+            </div>
+          ) : null}
         </PageHeader>
       }
     >

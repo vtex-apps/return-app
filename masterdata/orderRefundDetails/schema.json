@@ -28,6 +28,26 @@
       "minimum": 0,
       "description": "The remaining amount that can be refunded for the order."
     },
+    "initialShippingCost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The inital shipping cost for the order."
+    },
+    "shippingCostToBeRefundedInProcess": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The shipping cost that is currently being refunded for the order."
+    },
+    "totalShippingCostRefunded": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total shipping cost that has been refunded so far for the order."
+    },
+    "remainingRefundableShippingCost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The remaining shipping cost that can be refunded for the order."
+    },
     "lastUpdated": {
       "type": "string",
       "format": "date-time",

@@ -184,6 +184,43 @@ export const updateRequestStatusService = async (
         })
       : returnRequest.refundData
 
+  let availableAmountsToRefund
+
+  try {
+    if (requestStatus === 'amountRefunded' && refundInvoice) {
+      availableAmountsToRefund = await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+          amountRefunded: refundInvoice.refundedItemsValue,
+        },
+        'UPDATE'
+      )
+
+      refundInvoice.invoiceValue = availableAmountsToRefund.amountRefunded
+    } else if (requestStatus === 'packageVerified' && refundInvoice) {
+      availableAmountsToRefund = await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+          shippingCostRefunded: refundInvoice.refundedShippingValue,
+        },
+        'UPDATE'
+      )
+    } else {
+      availableAmountsToRefund = await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+        },
+        'GET'
+      )
+    }
+  } catch (error) {
+    console.error('error: ', error)
+    throw new Error("Can't calculate available amounts to refund")
+  }
+
   const refundReturn = await handleRefund({
     currentStatus: requestStatus,
     previousStatus: returnRequest.status,
@@ -202,7 +239,7 @@ export const updateRequestStatusService = async (
 
   const updatedRequest = {
     ...formatRequestToPartialUpdate(returnRequest),
-    sellerName: sellerName || undefined,
+    sellerName: sellerName ?? undefined,
     status: requestStatus,
     refundStatusData,
     refundData: refundInvoice
@@ -211,18 +248,9 @@ export const updateRequestStatusService = async (
   }
 
   try {
-    requestStatus === 'amountRefunded' &&
-      refundInvoice &&
-      (await calculateAvailableAmountsService(
-        ctx,
-        {
-          order: { orderId: returnRequest.orderId },
-          amountRefunded: refundInvoice.invoiceValue,
-        },
-        'UPDATE'
-      ))
     await returnRequestClient.update(requestId, updatedRequest)
   } catch (error) {
+    console.error('error: ', error)
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
     const errorMessageString = mdValidationErrors
@@ -289,5 +317,5 @@ export const updateRequestStatusService = async (
     })
   }
 
-  return { id: requestId, ...updatedRequest }
+  return { id: requestId, ...updatedRequest, availableAmountsToRefund }
 }

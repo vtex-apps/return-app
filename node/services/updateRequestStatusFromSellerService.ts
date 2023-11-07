@@ -99,7 +99,6 @@ export const updateRequestStatusFromSellerService = async (
     vtex: { logger },
   } = ctx
 
-  console.log('args: ', args)
   const { status, comment, refundData } = args || {}
 
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
@@ -124,8 +123,6 @@ export const updateRequestStatusFromSellerService = async (
   const returnRequest = (await returnRequestClient.get(requestId, [
     '_all',
   ])) as ReturnRequest
-
-  console.log('returnRequest: ', returnRequest)
 
   if (!returnRequest) {
     throw new NotFoundError(`Request ${requestId} not found`)

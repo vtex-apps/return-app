@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedDate, FormattedMessage } from 'react-intl'
+import { FormattedDate, FormattedMessage, FormattedNumber } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 import { Divider, Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
@@ -18,6 +18,7 @@ const CSS_HANDLES = [
   'returnDetailsContainer',
   'orderIdDetailsWrapper',
   'creationDateDetailsWrapper',
+  'returnValuesContainer',
 ] as const
 
 interface Props {
@@ -31,8 +32,14 @@ interface Props {
 export const ReturnDetails = (props: any & Props) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
 
-  const { onPageChange, items, creationDate, canRefundCard, shippingData } =
-    props
+  const {
+    onPageChange,
+    items,
+    creationDate,
+    canRefundCard,
+    shippingData,
+    availableAmountsToRefund,
+  } = props
 
   const [isChecked, setIsChecked] = React.useState(false)
 
@@ -43,6 +50,7 @@ export const ReturnDetails = (props: any & Props) => {
 
   const {
     hints: { phone },
+    culture: { currency },
   } = useRuntime()
 
   const handleFieldsValidation = () => {
@@ -88,6 +96,102 @@ export const ReturnDetails = (props: any & Props) => {
                     month="2-digit"
                     year="numeric"
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-100 mt4">
+          <div className="f4 mb5 fw5">
+            <FormattedMessage id="return-app.return-request-details.available-amounts.header" />
+          </div>
+        </div>
+        <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
+          <div
+            className={`${handles.orderIdDetailsWrapper} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}
+          >
+            <div>
+              <div className="c-muted-2 f6">
+                <FormattedMessage id="return-app.return-request-details.available-amounts.total-order" />
+              </div>
+              <div className="w-100 mt2">
+                <div className="f4 fw5 c-on-base">
+                  <FormattedNumber
+                    value={
+                      (availableAmountsToRefund.initialInvoicedAmount || 0) /
+                      100
+                    }
+                    style="currency"
+                    currency={currency}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`${handles.creationDateDetailsWrapper} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}
+          >
+            <div>
+              <div className="c-muted-2 f6">
+                <FormattedMessage id="return-app.return-request-details.available-amounts.remaining-amount" />
+              </div>
+              <div className="w-100 mt2">
+                <div className="f4 fw5 c-on-base">
+                  <div className="f4 fw5 c-on-base">
+                    <FormattedNumber
+                      value={
+                        (availableAmountsToRefund.remainingRefundableAmount ||
+                          0) / 100
+                      }
+                      style="currency"
+                      currency={currency}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`${handles.creationDateDetailsWrapper} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}
+          >
+            <div>
+              <div className="c-muted-2 f6">
+                <FormattedMessage id="return-app.return-request-details.available-amounts.amount-to-refund" />
+              </div>
+              <div className="w-100 mt2">
+                <div className="f4 fw5 c-on-base">
+                  <div className="f4 fw5 c-on-base">
+                    <FormattedNumber
+                      value={
+                        (availableAmountsToRefund.amountToBeRefundedInProcess ||
+                          0) / 100
+                      }
+                      style="currency"
+                      currency={currency}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`${handles.creationDateDetailsWrapper} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}
+          >
+            <div>
+              <div className="c-muted-2 f6">
+                <FormattedMessage id="return-app.return-request-details.available-amounts.total-refunded" />
+              </div>
+              <div className="w-100 mt2">
+                <div className="f4 fw5 c-on-base">
+                  <div className="f4 fw5 c-on-base">
+                    <FormattedNumber
+                      value={
+                        (availableAmountsToRefund.totalRefunded || 0) / 100
+                      }
+                      style="currency"
+                      currency={currency}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

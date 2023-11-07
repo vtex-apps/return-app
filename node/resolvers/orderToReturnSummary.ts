@@ -6,6 +6,7 @@ import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummar
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
+import { calculateAvailableAmountsService } from '../services/calculateAvailableAmountsService'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -132,9 +133,19 @@ export const orderToReturnSummary = async (
     }
   )
 
-  return createOrdersToReturnSummary(order, customerEmail, {
+  const availableAmountsToRefund = await calculateAvailableAmountsService(
+    ctx,
+    {
+      order,
+    },
+    'GET'
+  )
+
+  const response = await createOrdersToReturnSummary(order, customerEmail, {
     excludedCategories,
     returnRequestClient,
     catalogGQL,
   })
+
+  return { ...response, availableAmountsToRefund }
 }

@@ -27,6 +27,7 @@ export const initialSettingsState: SellerSetting = {
     enableProportionalShippingValue: false,
     enableSelectItemCondition: false,
     enableHighlightFormMessage: false,
+    enableGoodwill: false,
   },
 }
 

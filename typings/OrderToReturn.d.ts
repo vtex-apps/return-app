@@ -30,6 +30,13 @@ export type OrdersToReturnList = {
   paging?: Maybe<Pagination>
 }
 
+export type AvailableAmountsToRefund = {
+  initialInvoicedAmount?: Scalars['Int']
+  amountToBeRefundedInProcess?: Scalars['Int']
+  totalRefunded?: Scalars['Int']
+  remainingRefundableAmount?: Scalars['Int']
+}
+
 export type OrderToReturnSummary = {
   __typename?: 'OrderToReturnSummary'
   orderId: Scalars['String']
@@ -50,6 +57,7 @@ export type OrderToReturnSummary = {
   clientProfileData: ClientProfileData
   shippingData: ShippingData
   paymentData: PaymentData
+  availableAmountsToRefund?: AvailableAmountsToRefund
 }
 
 export type Pagination = {

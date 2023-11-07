@@ -32,9 +32,12 @@ export async function sellerValidation(
 
   if (
     (authCookie || appkey || apptoken) &&
-    (_sellerName || _sellerId || seller || sellerId)
+    (_sellerName || _sellerId || seller || sellerId || body.sellerId)
   ) {
-    const accountName = String(_sellerName || _sellerId || seller || sellerId)
+    const accountName = String(
+      _sellerName || _sellerId || seller || sellerId || body.sellerId
+    )
+
     const { items } = await marketplace.getSellers(accountName)
 
     if (items.length > 0) {

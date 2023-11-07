@@ -31,8 +31,7 @@ export const returnRequestService = async (
     throw new ForbiddenError('User cannot access this request')
   }
 
-  // todo: complete this function
-  await calculateAvailableAmountsService(
+  const availableAmountsToRefund = await calculateAvailableAmountsService(
     ctx,
     {
       order: { orderId: returnRequestResult.orderId },
@@ -40,5 +39,5 @@ export const returnRequestService = async (
     'GET'
   )
 
-  return returnRequestResult
+  return { ...returnRequestResult, availableAmountsToRefund }
 }

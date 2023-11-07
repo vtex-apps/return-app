@@ -199,6 +199,17 @@ export type RefundPaymentMethod =
   | 'giftCard'
   | 'sameAsPurchase'
 
+export type AvailableAmountsToRefund = {
+  initialInvoicedAmount?: Scalars['Int']
+  amountToBeRefundedInProcess?: Scalars['Int']
+  totalRefunded?: Scalars['Int']
+  remainingRefundableAmount?: Scalars['Int']
+  initialShippingCost: Scalars['Int']
+  shippingCostToBeRefundedInProcess: Scalars['Int']
+  totalShippingCostRefunded: Scalars['Int']
+  remainingRefundableShippingCost: Scalars['Int']
+}
+
 export type ReturnRequestResponse = {
   __typename?: 'ReturnRequestResponse'
   id: Scalars['ID']
@@ -218,6 +229,7 @@ export type ReturnRequestResponse = {
   refundData?: Maybe<RefundData>
   refundStatusData: RefundStatusData[]
   cultureInfoData: CultureInfoData
+  availableAmountsToRefund: AvailableAmountsToRefund
 }
 
 export type Status =

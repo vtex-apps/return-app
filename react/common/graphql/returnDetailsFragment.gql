@@ -77,4 +77,14 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
     currencyCode
     locale
   }
+  availableAmountsToRefund {
+    initialInvoicedAmount
+    amountToBeRefundedInProcess
+    totalRefunded
+    remainingRefundableAmount
+    initialShippingCost
+    shippingCostToBeRefundedInProcess
+    totalShippingCostRefunded
+    remainingRefundableShippingCost
+  }
 }

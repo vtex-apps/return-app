@@ -14,6 +14,8 @@ import { middlewares } from './middlewares'
 import { exportRequests } from './middlewares/exportRequests'
 import { ping } from './middlewares/ping'
 import setupScheduler from './events/keepAlive'
+import { createGoodwill } from './middlewares/goodwill/createGoodwill'
+import { getGoodwills } from './middlewares/goodwill/getGoodwills'
 
 const {
   auth,
@@ -29,6 +31,7 @@ const {
   sellerValidation,
   getOrdersList,
   createGiftcard,
+  createPrerefund,
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -75,6 +78,13 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     exportRequests: method({
       GET: [errorHandler, authSelf, exportRequests],
+    }),
+    goodwill: method({
+      POST: [errorHandler, auth, sellerValidation, createGoodwill],
+      GET: [errorHandler, auth, sellerValidation, getGoodwills],
+    }),
+    preRefund: method({
+      GET: [errorHandler, auth, createPrerefund],
     }),
     settings: method({
       POST: [errorHandler, auth, saveAppSetting],

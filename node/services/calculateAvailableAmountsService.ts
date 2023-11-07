@@ -1,21 +1,16 @@
-import type { OrderDetailResponse } from '@vtex/clients'
+import type { ItemTotal, OrderDetailResponse } from '@vtex/clients'
+
+import { cleanObject } from '../utils'
 
 type RefundDetail =
   | {
       order: OrderDetailResponse
-      amountToBeRefund: number
-      amountRefunded?: never
+      amountToBeRefund?: number
+      amountRefunded?: number
+      shippingCostToBeRefund?: number
+      shippingCostRefunded?: number
     }
-  | {
-      order: OrderDetailResponse | { orderId: string }
-      amountRefunded: number
-      amountToBeRefund?: never
-    }
-  | {
-      order: OrderDetailResponse | { orderId: string }
-      amountToBeRefund?: never
-      amountRefunded?: never
-    }
+  | { [key: string]: any }
 
 type ActionRouteFunction = {
   GET: () => OrderRefundDetails & { action: string }
@@ -29,77 +24,153 @@ const actionRoute = (
   refundData: OrderRefundDetails
 ): ActionRouteFunction => {
   const {
-    order: { orderId },
+    order: { orderId, value },
   } = refundDetail
 
   const getAvailableAmounts = () => {
-    return { ...refundData, action: 'GET' }
+    const availableAmounts = refundData || {
+      id: orderId,
+      orderID: orderId,
+      initialInvoicedAmount: value,
+      totalRefunded: 0,
+      amountToBeRefundedInProcess: 0,
+      remainingRefundableAmount: value,
+      lastUpdated: new Date(),
+    }
+
+    return { ...availableAmounts, action: 'GET' }
   }
 
   const updateAvailableAmounts = async () => {
-    const { amountRefunded, amountToBeRefund } = refundDetail
+    let { amountRefunded, amountToBeRefund, shippingCostRefunded } =
+      refundDetail
 
-    let { totalRefunded = 0, initialInvoicedAmount } = refundData
+    let {
+      totalRefunded = 0,
+      initialInvoicedAmount,
+      amountToBeRefundedInProcess = 0,
+      totalShippingCostRefunded,
+      remainingRefundableShippingCost,
+      remainingRefundableAmount,
+    } = refundData
 
     let refundDateToUpdate: OrderRefundDetails = {
       ...refundData,
       lastUpdated: new Date(),
     }
 
-    if (amountRefunded) {
-      totalRefunded += amountRefunded
-
-      if (totalRefunded > initialInvoicedAmount) {
-        throw new Error("Can't refund more than the invoiced amount")
+    if (shippingCostRefunded) {
+      refundDateToUpdate = {
+        ...refundData,
+        shippingCostToBeRefundedInProcess: 0,
+        totalShippingCostRefunded:
+          (totalShippingCostRefunded ?? 0) + Number(shippingCostRefunded),
+        remainingRefundableShippingCost: Math.abs(
+          (remainingRefundableShippingCost ?? 0) - Number(shippingCostRefunded)
+        ),
+        lastUpdated: new Date(),
       }
+    }
+
+    if (amountRefunded) {
+      const possibleToRefund = totalRefunded + Number(amountRefunded)
+
+      if (possibleToRefund > initialInvoicedAmount) {
+        amountRefunded = amountToBeRefundedInProcess
+      }
+
+      if (
+        amountToBeRefundedInProcess > 0 &&
+        amountToBeRefundedInProcess - amountRefunded >= 0
+      ) {
+        amountToBeRefundedInProcess -= amountRefunded
+      } else if (amountToBeRefundedInProcess - amountRefunded <= 0) {
+        amountToBeRefundedInProcess = 0
+      }
+
+      totalRefunded += Number(amountRefunded)
 
       refundDateToUpdate = {
         ...refundData,
         totalRefunded,
         remainingRefundableAmount: initialInvoicedAmount - totalRefunded,
-        amountToBeRefundedInProcess: 0,
+        amountToBeRefundedInProcess,
         lastUpdated: new Date(),
       }
     }
 
     if (amountToBeRefund) {
-      totalRefunded += amountToBeRefund
+      totalRefunded += Number(amountToBeRefund)
 
       if (totalRefunded > initialInvoicedAmount) {
-        throw new Error("Can't refund more than the invoiced amount")
+        amountToBeRefundedInProcess = remainingRefundableAmount ?? 0
+      } else {
+        amountToBeRefundedInProcess += Number(amountToBeRefund)
       }
 
       refundDateToUpdate = {
         ...refundData,
-        amountToBeRefundedInProcess: amountToBeRefund,
+        amountToBeRefundedInProcess,
         lastUpdated: new Date(),
       }
     }
+
+    refundDateToUpdate = cleanObject(refundDateToUpdate)
 
     await orderRefundDetails.update(orderId, refundDateToUpdate)
 
-    return { ...refundDateToUpdate, action: 'UPDATE' }
+    return { ...refundDateToUpdate, amountRefunded, action: 'UPDATE' }
   }
 
   const createAvailableAmounts = async () => {
-    const { order, amountToBeRefund } = refundDetail
+    const { order, amountToBeRefund, amountRefunded } = refundDetail
 
-    if (!refundData && amountToBeRefund && 'paymentData' in order) {
-      const refundDataToCreate = {
-        id: order.orderId,
-        orderID: order.orderId,
-        initialInvoicedAmount:
-          order.paymentData?.transactions[0].payments[0].value,
-        amountToBeRefundedInProcess: amountToBeRefund,
-        lastUpdated: new Date(),
+    if (
+      (amountToBeRefund && amountToBeRefund > order.value) ||
+      (amountRefunded && amountRefunded > order.value)
+    ) {
+      throw new Error("Can't refund more than the invoiced amount")
+    } else {
+      if (!refundData && amountToBeRefund) {
+        const initialShippingCost = order.totals.find(
+          (total: ItemTotal) => total.id === 'Shipping'
+        ).value
+
+        const refundDataToCreate = {
+          id: order.orderId,
+          orderID: order.orderId,
+          initialInvoicedAmount: order.value,
+          remainingRefundableAmount: order.value,
+          amountToBeRefundedInProcess: amountToBeRefund,
+          initialShippingCost,
+          shippingCostToBeRefundedInProcess: initialShippingCost,
+          remainingRefundableShippingCost: initialShippingCost,
+          lastUpdated: new Date(),
+        }
+
+        await orderRefundDetails.save(refundDataToCreate)
+
+        return { ...refundDataToCreate, action: 'CREATE' }
       }
 
-      await orderRefundDetails.save(refundDataToCreate)
+      if (!refundData && amountRefunded) {
+        const refundDataToCreate = {
+          id: order.orderId,
+          orderID: order.orderId,
+          initialInvoicedAmount: order.value,
+          totalRefunded: amountRefunded,
+          amountToBeRefundedInProcess: 0,
+          remainingRefundableAmount: order.value - amountRefunded,
+          lastUpdated: new Date(),
+        }
 
-      return { ...refundDataToCreate, action: 'CREATE' }
+        await orderRefundDetails.save(refundDataToCreate)
+
+        return { ...refundDataToCreate, action: 'CREATE' }
+      }
+
+      return updateAvailableAmounts()
     }
-
-    return updateAvailableAmounts()
   }
 
   return {
@@ -130,17 +201,17 @@ export const calculateAvailableAmountsService = async (
       'totalRefunded',
       'remainingRefundableAmount',
       'lastUpdated',
+      'initialShippingCost',
+      'shippingCostToBeRefundedInProcess',
+      'totalShippingCostRefunded',
+      'remainingRefundableShippingCost',
     ])
 
     const actionToResolve = actionRoute(ctx, refundDetail, refundData)
     const reponse = await actionToResolve[action]()
 
-    console.info('reponse: ', reponse)
-
     return reponse
   } catch (error) {
-    console.error(error)
-
-    return 'error'
+    throw new Error(error.message)
   }
 }
