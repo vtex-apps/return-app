@@ -1,8 +1,9 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { CustomerProfileDataInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+
+import type { CustomerProfileDataInput } from '../../../../typings/ReturnRequest'
 
 interface Props {
   contactDetails: CustomerProfileDataInput
@@ -28,7 +29,7 @@ export const ConfirmContactDetails = ({ contactDetails }: Props) => {
       }`}
     >
       <h2 className={`${handles.confirmContactTitle} mt0 mb6`}>
-        <FormattedMessage id="store/return-app.confirm-and-submit.contact-details.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.contact-details.title" />
       </h2>
       <p className={`${handles.confirmContactText} f6 gray`}>
         {contactDetails.name}

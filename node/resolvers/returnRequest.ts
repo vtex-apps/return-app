@@ -1,5 +1,4 @@
-import type { QueryReturnRequestArgs } from 'vtex.return-app'
-
+import type { QueryReturnRequestArgs } from '../../typings/ReturnRequest'
 import { returnRequestService } from '../services/returnRequestService'
 
 export const returnRequest = async (

@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import type { FormEvent, ReactElement } from 'react'
-import type {
-  PaymentOptions as PaymentOptionsInterface,
-  PaymentType,
-} from 'vtex.return-app'
 import { FormattedMessage } from 'react-intl'
 import {
   Layout,
@@ -15,6 +11,10 @@ import {
   EmptyState,
 } from 'vtex.styleguide'
 
+import type {
+  PaymentOptions as PaymentOptionsInterface,
+  PaymentType,
+} from '../../../../typings/ReturnAppSettings'
 import { CustomReasons } from '../components/CustomReasons'
 import { ExcludedCategories } from '../components/ExcludedCategories'
 import { GeneralOptions } from '../components/GeneralOptions'
@@ -55,13 +55,8 @@ const validateOptions = (paymentOptions: PaymentOptionsInterface) => {
 }
 
 export const SettingDetailsContainer = () => {
-  const {
-    appSettings,
-    loading,
-    error,
-    savingAppSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, loading, error, savingAppSettings, actions } =
+    useSettings()
 
   const { handleSaveAppSettings, dispatch } = actions || {}
 
@@ -152,6 +147,7 @@ export const SettingDetailsContainer = () => {
 
     setHasPaymentMethodError(false)
   }
+
   return (
     <Layout
       pageHeader={

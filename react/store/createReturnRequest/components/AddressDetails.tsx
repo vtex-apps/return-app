@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input, Tooltip, Toggle, IconInfo } from 'vtex.styleguide'
-import type { AddressType, ShippingData } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 
+import type { ShippingData } from '../../../../typings/OrderToReturn'
+import type { AddressType } from '../../../../typings/ReturnRequest'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { CustomMessage } from './layout/CustomMessage'
@@ -14,19 +15,19 @@ import { setInitialPickupAddress } from '../../utils/setInitialPickupAddress'
 
 const messages = defineMessages({
   addressInput: {
-    id: 'store/return-app.return-order-details.inputs.address-input',
+    id: 'return-app.return-order-details.inputs.address-input',
   },
   cityInput: {
-    id: 'store/return-app.return-order-details.inputs.city-input',
+    id: 'return-app.return-order-details.inputs.city-input',
   },
   stateInput: {
-    id: 'store/return-app.return-order-details.inputs.state-input',
+    id: 'return-app.return-order-details.inputs.state-input',
   },
   zipInput: {
-    id: 'store/return-app.return-order-details.inputs.zip-input',
+    id: 'return-app.return-order-details.inputs.zip-input',
   },
   countryInput: {
-    id: 'store/return-app.return-order-details.inputs.country-input',
+    id: 'return-app.return-order-details.inputs.country-input',
   },
 })
 
@@ -125,11 +126,11 @@ export const AddressDetails = ({ shippingData }: Props) => {
         <div>
           <Tooltip
             label={
-              <FormattedMessage id="store/return-app.return-order-details.title.tooltip.pickup-address" />
+              <FormattedMessage id="return-app.return-order-details.title.tooltip.pickup-address" />
             }
           >
             <p className={handles.pickupAddressTitle}>
-              <FormattedMessage id="store/return-app.return-order-details.title.pickup-address" />
+              <FormattedMessage id="return-app.return-order-details.title.pickup-address" />
             </p>
           </Tooltip>
         </div>
@@ -137,7 +138,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <div className={`${handles.tooltipToggleWrapper} flex items-center`}>
             <Tooltip
               label={
-                <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.tooltip" />
+                <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points.tooltip" />
               }
               position="left"
             >
@@ -146,7 +147,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
                   <IconInfo className=" ml5 o-50" />
                 </span>
                 <p className="ml2 mr3">
-                  <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points" />
+                  <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points" />
                 </p>
               </div>
             </Tooltip>
@@ -174,7 +175,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.address-input.error" />
+              <FormattedMessage id="return-app.return-address-details.address-input.error" />
             }
           />
         ) : null}
@@ -192,7 +193,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.city-input.error" />
+              <FormattedMessage id="return-app.return-address-details.city-input.error" />
             }
           />
         ) : null}
@@ -200,7 +201,6 @@ export const AddressDetails = ({ shippingData }: Props) => {
       <div className={`${handles.stateInputContainer} mb4`}>
         <Input
           name="state"
-          requiered
           placeholder={formatMessage(messages.stateInput)}
           onChange={handleInputChange}
           value={pickupReturnData.state}
@@ -210,7 +210,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.state-input.error" />
+              <FormattedMessage id="return-app.return-address-details.state-input.error" />
             }
           />
         ) : null}
@@ -228,7 +228,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.zip-input.error" />
+              <FormattedMessage id="return-app.return-address-details.zip-input.error" />
             }
           />
         ) : null}
@@ -246,7 +246,7 @@ export const AddressDetails = ({ shippingData }: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-address-details.country-input.error" />
+              <FormattedMessage id="return-app.return-address-details.country-input.error" />
             }
           />
         ) : null}

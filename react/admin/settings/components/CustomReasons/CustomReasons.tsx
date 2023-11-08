@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { CustomReturnReason } from 'vtex.return-app'
 import {
   ButtonWithIcon,
   IconPlusLines,
@@ -9,6 +8,7 @@ import {
   ModalDialog,
 } from 'vtex.styleguide'
 
+import type { CustomReturnReason } from '../../../../../typings/ReturnAppSettings'
 import { useSettings } from '../../hooks/useSettings'
 import { CustomReasonModal } from './CustomReasonModal'
 import { TranslationsModal } from './TranslationsModal'
@@ -87,10 +87,7 @@ export const CustomReasons = () => {
   const [customReasonToEdit, setCustomReasonToEdit] =
     useState<CustomReasonWithIndex | null>(null)
 
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { customReturnReasons } = appSettings || {}
   const { dispatch } = actions || {}

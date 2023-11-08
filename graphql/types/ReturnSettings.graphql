@@ -19,5 +19,5 @@ type ReturnSettingsResponse {
   termsUrl: String!
   customReturnReasons: [CustomReturnReason!]
   options: ReturnOption
-
+  orderStatus: String
 }

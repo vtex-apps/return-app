@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "return-app",
-  "version": "3.5.7-beta.0",
+  "version": "3.16.1-hkignore",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -13,7 +13,8 @@
     "vtex.css-handles": "0.x",
     "vtex.easypost": "0.x",
     "vtex.tenant-graphql": "0.x",
-    "vtex.catalog-graphql": "1.x"
+    "vtex.catalog-graphql": "1.x",
+    "vtex.sellers-graphql": "8.x"
   },
   "builders": {
     "admin": "0.x",
@@ -36,6 +37,9 @@
         "host": "{{account}}.vtexcommercestable.com.br",
         "path": "/api/*"
       }
+    },
+    {
+      "name": "colossus-fire-event"
     },
     {
       "name": "outbound-access",

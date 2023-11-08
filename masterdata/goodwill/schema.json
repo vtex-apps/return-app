@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "goodwill",
+  "properties": {
+    "creditnoteID": {
+      "type": "string",
+      "description": "Unique identifier for the order."
+    },
+    "sellerId": {
+      "type": "string",
+      "description": "Unique identifier for the seller."
+    },
+    "status": { "$ref": "#/$defs/status" },
+    "creditAmount": {
+      "type": "number",
+      "description": "Amount to be credited.",
+      "minimum": 0
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for the credit."
+    },
+    "refundPaymentData": {
+      "type": "object",
+      "properties": {
+        "refundPaymentMethod": {
+          "type": "string",
+          "enum": ["bank", "card", "giftCard", "sameAsPurchase"],
+          "description": "Method of refund payment."
+        }
+      },
+      "required": ["refundPaymentMethod"]
+    }
+  },
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": ["new", "processing", "amountRefunded"],
+      "default": "new"
+    }
+  },
+  "required": [
+    "orderId",
+    "creditAmount",
+    "reason",
+    "sellerId",
+    "refundPaymentData"
+  ]
+}

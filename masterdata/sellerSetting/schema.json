@@ -1,4 +1,7 @@
 {
+  "$schema": "http://json-schema.org/schema#",
+  "title": "sellerSetting",
+  "type": "object",
   "properties": {
     "sellerId": {
       "type": "string"
@@ -67,23 +70,14 @@
           "type": "boolean"
         }
       }
+    },
+    "orderStatus": {
+      "type": "string"
     }
   },
-  "required": [
-    "sellerId"
-  ],
+  "required": ["sellerId"],
   "v-cache": false,
-  "v-default-fields": [
-    "id",
-    "createdIn",
-    "sellerId",
-    "parentAccount"
-  ],
-  "v-indexed": [
-    "id",
-    "createdIn",
-    "sellerId",
-    "parentAccount"
-  ],
+  "v-default-fields": ["id", "createdIn", "sellerId", "parentAccount"],
+  "v-indexed": ["id", "createdIn", "sellerId", "parentAccount"],
   "v-immediate-indexing": true
 }

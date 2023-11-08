@@ -1,17 +1,19 @@
-import type { FormEvent } from 'react'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Input, DatePicker, Button } from 'vtex.styleguide'
+import { Input, DatePicker, Button, AutocompleteInput } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
+import type { FormEvent } from 'react'
+import { useQuery } from 'react-apollo'
+import type { ApolloQueryResult } from 'apollo-client'
+
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestList,
   Status,
-} from 'vtex.return-app'
-import type { ApolloQueryResult } from 'apollo-client'
-import { useRuntime } from 'vtex.render-runtime'
-import { useCssHandles } from 'vtex.css-handles'
-
+} from '../../../../typings/ReturnRequest'
 import { StatusActionMenu } from './StatusActionMenu'
+import GET_SELLER from '../../graphql/getSeller.gql'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 
@@ -47,7 +49,7 @@ const initialFilters = {
   id: '',
   createdIn: undefined,
   orderId: '',
-  sellerName: ''
+  sellerName: '',
 } as Filters
 
 const ListTableFilter = (props: Props) => {
@@ -77,6 +79,19 @@ const ListTableFilter = (props: Props) => {
   const handleSubmitFilters = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsFiltering(true)
+    for (const prop in selectedFilters) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (selectedFilters.hasOwnProperty(prop)) {
+        if (
+          typeof selectedFilters?.[prop] === 'string' &&
+          selectedFilters?.[prop]?.trim() === ''
+        ) {
+          delete selectedFilters[prop]
+        }
+      }
+    }
+
+    setFilters({ ...initialFilters, ...selectedFilters })
     refetch({ filter: selectedFilters, page: 1 })
   }
 
@@ -114,6 +129,53 @@ const ListTableFilter = (props: Props) => {
       ...filters,
       [key]: value,
     })
+  }
+
+  const UsersAutocomplete = ({ placeholder, readOnly }: any) => {
+    const [term, setTerm] = useState('')
+    const [isLoading, setLoading] = useState(false)
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    const { data } = useQuery(GET_SELLER)
+
+    const sellers = data?.sellers?.items.map((seller) => seller.id) || []
+
+    const options = {
+      onSelect: (...args) => handleOnChange('sellerName', args[0]),
+      isLoading,
+      size: 'small',
+      value: term.length
+        ? sellers.filter((seller: string) => {
+            return seller.toLowerCase().includes(term.toLowerCase())
+          })
+        : [],
+    }
+
+    const input = {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      onChange: (term) => {
+        if (term) {
+          setLoading(true)
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+          }
+
+          timeoutRef.current = setTimeout(() => {
+            setLoading(false)
+            setTerm(term)
+            timeoutRef.current = null
+          }, 100)
+        } else {
+          setTerm(term)
+        }
+      },
+      onClear: () => handleOnChange('sellerName', ''),
+      disabled: readOnly,
+      placeholder,
+      value: filters.sellerName,
+    }
+
+    return <AutocompleteInput input={input} options={options} />
   }
 
   return (
@@ -167,15 +229,10 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="return-app.return-request-list.table-data.sellerName">
+          <FormattedMessage id="return-app.return-request-list.table-data.searchBySellerName">
             {(formattedMessage) => (
-              <Input
+              <UsersAutocomplete
                 placeholder={formattedMessage}
-                size="small"
-                value={filters.sellerName}
-                onChange={(e: FormEvent<HTMLInputElement>) =>
-                  handleOnChange('sellerName', e.currentTarget.value)
-                }
                 readOnly={isDisabled && !isFiltering}
               />
             )}
@@ -239,6 +296,17 @@ const ListTableFilter = (props: Props) => {
             variation="danger"
           >
             <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
+          </Button>
+        </div>
+        <div className="mh2">
+          <Button
+            id="custom-excel-button"
+            size="small"
+            href={`/_v/return-request/export/?_dateSubmitted=${createdIn?.from},${createdIn?.to}`}
+            disabled={!createdIn || loading}
+            variation="primary"
+          >
+            <FormattedMessage id="return-app.return-request-list.table-filters.export-returns" />
           </Button>
         </div>
       </div>

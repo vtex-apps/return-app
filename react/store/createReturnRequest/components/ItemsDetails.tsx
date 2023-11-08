@@ -1,10 +1,10 @@
 import React from 'react'
-import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
+import type { ItemCondition } from '../../../../typings/ReturnRequest'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
@@ -181,7 +181,7 @@ export const ItemsDetails = (props: Props) => {
             <CustomMessage
               status="warning"
               message={
-                <FormattedMessage id="store/return-app.return-item-details.excluded-items.warning" />
+                <FormattedMessage id="return-app.return-item-details.excluded-items.warning" />
               }
             />
           ) : null}
@@ -203,12 +203,13 @@ export const ItemsDetails = (props: Props) => {
           otherReason={currentItem?.returnReason?.otherReason ?? ''}
           onReasonChange={handleReasonChange}
           creationDate={creationDate}
+          isAdmin
         />
         {reasonError && reasonErrorEmptyValue ? (
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-item-details.dropdown-reason.error" />
+              <FormattedMessage id="return-app.return-item-details.dropdown-reason.error" />
             }
           />
         ) : null}
@@ -224,7 +225,7 @@ export const ItemsDetails = (props: Props) => {
             <CustomMessage
               status="error"
               message={
-                <FormattedMessage id="store/return-app.return-item-details.dropdown-condition.error" />
+                <FormattedMessage id="return-app.return-item-details.dropdown-condition.error" />
               }
             />
           ) : null}

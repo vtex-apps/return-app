@@ -2,6 +2,7 @@
   "extends": "@vtex/tsconfig",
   "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"],
   "compilerOptions": {
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "lib": ["es2019", "dom"]
   }
 }

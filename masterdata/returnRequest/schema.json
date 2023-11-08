@@ -1,6 +1,12 @@
 {
+  "$schema": "http://json-schema.org/schema#",
+  "title": "returnRequest",
+  "type": "object",
   "properties": {
     "orderId": {
+      "type": "string"
+    },
+    "orderSellerId": {
       "type": "string"
     },
     "sellerName": {
@@ -264,6 +270,17 @@
         }
       },
       "required": ["currencyCode", "locale"]
+    },
+    "logisticsInfo": {
+      "type": "object",
+      "properties": {
+        "currier": {
+          "type": "string"
+        },
+        "sla": {
+          "type": "string"
+        }
+      }
     }
   },
   "$defs": {
@@ -277,7 +294,7 @@
         "packageVerified",
         "amountRefunded",
         "denied",
-        "cancelled"
+        "canceled"
       ]
     }
   },

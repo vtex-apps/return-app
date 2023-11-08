@@ -13,6 +13,18 @@
       "path": "/_v/return-request/:requestId",
       "public": true
     },
+    "preRefund": {
+      "path": "/_v/return-request/prerefund",
+      "public": true
+    },
+    "exportRequests": {
+      "path": "/_v/return-request/export",
+      "public": true
+    },
+    "goodwill": {
+      "path": "/_v/goodwill/*id",
+      "public": true
+    },
     "settings": {
       "path": "/_v/returns/settings",
       "public": true
@@ -24,6 +36,24 @@
     "sellerSettings": {
       "path": "/_v/returns/seller/settings/:sellerId",
       "public": true
+    },
+    "orderList": {
+      "path": "/_v/returns/seller/orderList",
+      "public": true
+    },
+    "giftcard": {
+      "path": "/_v/returns/seller/giftcard",
+      "public": true
+    },
+    "ping": {
+      "path": "/_v/return-app/ping",
+      "public": true
+    }
+  },
+  "events": {
+    "keepALive": {
+      "sender": "apps",
+      "topics": ["setup"]
     }
   }
 }

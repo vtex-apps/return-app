@@ -1,12 +1,9 @@
-
+import type { QueryReturnSellerSettingsArgs } from '../../typings/SellerSetting'
 import { returnSellerSettingsService } from '../services/returnSellerSettingsService'
-import type {
-  QueryReturnSellerSettingsArgs,
-} from 'vtex.return-app'
 
 export const returnSellerSettings = async (
   _: unknown,
-  { sellerId } : QueryReturnSellerSettingsArgs,
+  { sellerId }: QueryReturnSellerSettingsArgs,
   ctx: Context
 ) => {
   return returnSellerSettingsService(ctx, sellerId)

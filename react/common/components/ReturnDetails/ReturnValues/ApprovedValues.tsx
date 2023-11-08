@@ -18,10 +18,12 @@ export const ApprovedValues = () => {
   const { items, invoiceValue, refundedShippingValue } = refundData
 
   const amountItemRefund = items.reduce((total, item) => {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     return total + item.price * item.quantity
   }, 0)
 
   const totalRestockFee = items.reduce((total, item) => {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     return total + item.restockFee
   }, 0)
 

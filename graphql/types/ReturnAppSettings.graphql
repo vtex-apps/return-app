@@ -5,6 +5,8 @@ type ReturnAppSettings {
   termsUrl: String!
   customReturnReasons: [CustomReturnReason!]
   options: ReturnOption
+  orderStatus: String
+  sellerId: String
 }
 
 type PaymentOptions {
@@ -35,6 +37,8 @@ type ReturnOption {
   enablePickupPoints: Boolean
   enableProportionalShippingValue: Boolean
   enableSelectItemCondition: Boolean
+  enableHighlightFormMessage: Boolean
+  enableGoodwill: Boolean
 }
 
 input ReturnAppSettingsInput {
@@ -44,6 +48,8 @@ input ReturnAppSettingsInput {
   termsUrl: String!
   customReturnReasons: [CustomReturnReasonInput!]
   options: ReturnOptionInput
+  orderStatus: String
+  sellerId: String
 }
 
 input PaymentOptionsInput {
@@ -74,4 +80,6 @@ input ReturnOptionInput {
   enablePickupPoints: Boolean
   enableProportionalShippingValue: Boolean
   enableSelectItemCondition: Boolean
+  enableHighlightFormMessage: Boolean
+  enableGoodwill: Boolean
 }

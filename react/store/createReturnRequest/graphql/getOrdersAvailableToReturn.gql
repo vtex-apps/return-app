@@ -1,7 +1,18 @@
-query ordersAvailableToReturn($page: Int!) {
-  ordersAvailableToReturn(page: $page) @context(provider: "vtex.return-app") {
+query ordersAvailableToReturn(
+  $page: Int!
+  $storeUserEmail: String
+  $isAdmin: Boolean
+  $filter: OrdersFilters
+) {
+  ordersAvailableToReturn(
+    page: $page
+    storeUserEmail: $storeUserEmail
+    isAdmin: $isAdmin
+    filter: $filter
+  ) @context(provider: "vtex.return-app") {
     list {
       orderId
+      sellerName
       creationDate
       invoicedItems {
         id

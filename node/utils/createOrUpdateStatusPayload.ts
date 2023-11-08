@@ -1,10 +1,11 @@
 import { ResolverError } from '@vtex/api'
+
 import type {
   Maybe,
   ReturnRequest,
   ReturnRequestCommentInput,
   Status,
-} from 'vtex.return-app'
+} from '../../typings/ReturnRequest'
 
 export const createOrUpdateStatusPayload = ({
   refundStatusData,

@@ -33,7 +33,7 @@ export const StoreReturnList = () => {
         disabled={loading}
         href="#/my-returns/add"
       >
-        <FormattedMessage id="store/return-app.return-request-list.page-header.cta" />
+        <FormattedMessage id="return-app.return-request-list.page-header.cta" />
       </Button>
     </div>
   )

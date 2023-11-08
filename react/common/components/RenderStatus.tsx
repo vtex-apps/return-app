@@ -1,5 +1,4 @@
 import React from 'react'
-import type { Status } from 'vtex.return-app'
 import { FormattedMessage } from 'react-intl'
 import {
   IconClock,
@@ -10,6 +9,8 @@ import {
   IconExternalLinkMini,
 } from 'vtex.styleguide'
 
+import type { Status } from '../../../typings/ReturnRequest'
+
 const status = {
   new: 'new',
   processing: 'processing',
@@ -18,7 +19,7 @@ const status = {
   verified: 'packageVerified',
   denied: 'denied',
   refunded: 'amountRefunded',
-  cancelled: 'cancelled',
+  canceled: 'canceled',
 } as const
 
 /**
@@ -46,13 +47,13 @@ export function renderStatus(requestStatus: Status) {
         </div>
       )
 
-    case status.cancelled:
+    case status.canceled:
       return (
         <div className="red flex items-center">
           <span className="mr2 flex">
             <IconFailure size={14} />
           </span>
-          <FormattedMessage id="return-app.return-request-list.table.status.cancelled" />
+          <FormattedMessage id="return-app.return-request-list.table.status.canceled" />
         </div>
       )
 

@@ -1,9 +1,12 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem, CultureInfoData } from 'vtex.return-app'
 import { NumericStepper, InputCurrency } from 'vtex.styleguide'
 
+import type {
+  ReturnRequestItem,
+  CultureInfoData,
+} from '../../../../../typings/ReturnRequest'
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'
 import { AlignItemRight } from '../AlignItemRight'
 import { ProductActionStatus } from './ProductActionStatus'
@@ -82,6 +85,7 @@ export const verifyItemsTableSchema = (
         return (
           <AlignItemRight>
             <FormattedNumber
+              // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
               value={(sellingPrice + tax) / 100}
               style="currency"
               currency={cultureInfoData.currencyCode}
@@ -160,6 +164,7 @@ export const verifyItemsTableSchema = (
             (restockFeeInputParsed * 100).toFixed(0)
           )
 
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           const maxRestockFee = (sellingPrice + tax) * selectedQuantity
 
           const restockFeeChecked =
@@ -200,6 +205,7 @@ export const verifyItemsTableSchema = (
           <AlignItemRight>
             <FormattedNumber
               value={
+                // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
                 ((sellingPrice + tax) * selectedQuantity - restockFee) / 100
               }
               style="currency"

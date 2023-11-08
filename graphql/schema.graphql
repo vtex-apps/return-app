@@ -1,8 +1,8 @@
 type Query {
   returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
-  returnSellerSettings(sellerId: String!): SellerSetting   
-  @withUserProfile
-  @cacheControl(maxAge: ZERO)
+  returnSellerSettings(sellerId: String!): SellerSetting
+    @withUserProfile
+    @cacheControl(maxAge: ZERO)
   categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
   """
   storeUserEmail: If not passed, resolver will try to parse it from session cookie.
@@ -10,6 +10,8 @@ type Query {
   ordersAvailableToReturn(
     page: Int!
     storeUserEmail: String
+    isAdmin: Boolean
+    filter: OrdersFilters
   ): OrdersToReturnList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
@@ -48,7 +50,7 @@ type Mutation {
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
     @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
-  saveSellerSetting(settings:  SellerSettingInput!): Boolean
+  saveSellerSetting(settings: SellerSettingInput!): Boolean
   updateSellerSetting(id: ID!, settings: SellerSettingInput!): Boolean
   updateReturnRequestStatus(
     requestId: ID!

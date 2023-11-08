@@ -1,8 +1,7 @@
 import type {
   MutationUpdateReturnRequestStatusArgs,
   ReturnRequest,
-} from 'vtex.return-app'
-
+} from '../../typings/ReturnRequest'
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
 
 export const updateReturnRequestStatus = (

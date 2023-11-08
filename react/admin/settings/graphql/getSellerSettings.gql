@@ -1,4 +1,3 @@
-
 query getSellerSettings($sellerId: String!) {
   returnSellerSettings(sellerId: $sellerId)
     @context(provider: "vtex.return-app") {

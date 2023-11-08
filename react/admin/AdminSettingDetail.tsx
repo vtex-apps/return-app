@@ -13,9 +13,9 @@ interface CustomRouteProps {
 export const AdminSettingDetail = ({ params }: CustomRouteProps) => {
   return (
     <AlertProvider>
-    <SettingsProvider sellerId={params.id}>
-      <SettingDetailsContainer />
-    </SettingsProvider>
-  </AlertProvider>
+      <SettingsProvider sellerId={params.id}>
+        <SettingDetailsContainer />
+      </SettingsProvider>
+    </AlertProvider>
   )
 }

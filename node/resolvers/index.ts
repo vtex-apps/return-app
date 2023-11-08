@@ -31,7 +31,7 @@ export const queries = {
   returnRequest,
   returnRequestList,
   nearestPickupPoints,
-  returnSettingsList
+  returnSettingsList,
 }
 
 export const resolvers = { ReturnRequestResponse }

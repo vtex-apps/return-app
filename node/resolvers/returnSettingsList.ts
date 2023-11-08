@@ -1,5 +1,4 @@
-import type { QueryReturnRequestListArgs } from 'vtex.return-app'
-
+import type { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
 import { returnSettingsListService } from '../services/returnSettingsListService'
 
 export const returnSettingsList = (

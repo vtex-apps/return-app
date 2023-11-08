@@ -9,13 +9,13 @@ import { CustomMessage } from './layout/CustomMessage'
 
 const messages = defineMessages({
   nameInput: {
-    id: 'store/return-app.return-order-details.inputs.name-input',
+    id: 'return-app.return-order-details.inputs.name-input',
   },
   emailInput: {
-    id: 'store/return-app.return-order-details.inputs.email-input',
+    id: 'return-app.return-order-details.inputs.email-input',
   },
   phoneInput: {
-    id: 'store/return-app.return-order-details.inputs.phone-input',
+    id: 'return-app.return-order-details.inputs.phone-input',
   },
 })
 
@@ -59,7 +59,7 @@ export const ContactDetails = () => {
       className={`${handles.contactDetailsContainer} flex-ns flex-wrap flex-auto flex-column pa4`}
     >
       <p className={`${handles.contactDetailsContainer}`}>
-        <FormattedMessage id="store/return-app.return-order-details.title.contact-details" />
+        <FormattedMessage id="return-app.return-order-details.title.contact-details" />
       </p>
       <div className={`${handles.contactNameInputWrapper} mb4`}>
         <Input
@@ -73,7 +73,7 @@ export const ContactDetails = () => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-contact-details.name-input.error" />
+              <FormattedMessage id="return-app.return-contact-details.name-input.error" />
             }
           />
         ) : null}
@@ -100,7 +100,7 @@ export const ContactDetails = () => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id="store/return-app.return-contact-details.phone-input.error" />
+              <FormattedMessage id="return-app.return-contact-details.phone-input.error" />
             }
           />
         ) : null}

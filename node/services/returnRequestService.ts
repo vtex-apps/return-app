@@ -1,7 +1,13 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
-import type { ReturnRequest } from 'vtex.return-app'
 
-export const returnRequestService = async (ctx: Context, requestId: string) => {
+import type { ReturnRequest } from '../../typings/ReturnRequest'
+import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
+
+export const returnRequestService = async (
+  ctx: Context,
+  requestId: string,
+  fields = ['_all']
+) => {
   const {
     clients: { returnRequest: returnRequestClient },
     state: { userProfile, appkey },
@@ -10,7 +16,7 @@ export const returnRequestService = async (ctx: Context, requestId: string) => {
   const { userId, role } = userProfile ?? {}
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
-  const returnRequestResult = await returnRequestClient.get(requestId, ['_all'])
+  const returnRequestResult = await returnRequestClient.get(requestId, fields)
 
   if (!returnRequestResult) {
     // Code error 'E_HTTP_404' to match the one when failing to find and order by OMS
@@ -25,5 +31,13 @@ export const returnRequestService = async (ctx: Context, requestId: string) => {
     throw new ForbiddenError('User cannot access this request')
   }
 
-  return returnRequestResult
+  const availableAmountsToRefund = await calculateAvailableAmountsService(
+    ctx,
+    {
+      order: { orderId: returnRequestResult.orderId },
+    },
+    'GET'
+  )
+
+  return { ...returnRequestResult, availableAmountsToRefund }
 }

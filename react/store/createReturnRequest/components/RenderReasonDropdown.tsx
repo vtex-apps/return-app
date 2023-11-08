@@ -18,6 +18,7 @@ interface Props {
   onReasonChange: (reason: string, otherReason?: string) => void
   isExcluded: boolean
   creationDate?: string
+  isAdmin: boolean
 }
 
 export const RenderReasonDropdown = (props: Props) => {

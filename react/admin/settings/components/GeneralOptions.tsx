@@ -10,6 +10,8 @@ const generalOptions = [
   'enablePickupPoints',
   'enableProportionalShippingValue',
   'enableSelectItemCondition',
+  'enableHighlightFormMessage',
+  'enableGoodwill',
 ] as const
 
 const messages = defineMessages({
@@ -37,17 +39,26 @@ const messages = defineMessages({
   'enableSelectItemCondition-description': {
     id: 'admin/return-app.settings.section.general-options.enable-select-item-condition.description',
   },
+  'enableHighlightFormMessage-label': {
+    id: 'admin/return-app.settings.section.general-options.enable-highlight-form-message.label',
+  },
+  'enableHighlightFormMessage-description': {
+    id: 'admin/return-app.settings.section.general-options.enable-highlight-form-message.description',
+  },
+  'enableGoodwill-label': {
+    id: 'admin/return-app.settings.section.general-options.enable-goodwill.label',
+  },
+  'enableGoodwill-description': {
+    id: 'admin/return-app.settings.section.general-options.enable-goodwill.description',
+  },
 })
 
 export const GeneralOptions = () => {
-  const {
-    appSettings,
-    actions ,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const intl = useIntl()
-  
-  const dispatch = actions?.dispatch 
+
+  const dispatch = actions?.dispatch
 
   const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target

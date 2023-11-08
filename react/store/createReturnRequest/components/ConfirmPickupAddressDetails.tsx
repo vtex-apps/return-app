@@ -1,8 +1,9 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { PickupReturnDataInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+
+import type { PickupReturnDataInput } from '../../../../typings/ReturnRequest'
 
 interface Props {
   pickupReturnData: PickupReturnDataInput
@@ -27,7 +28,7 @@ export const ConfirmPickupAddressDetails = ({ pickupReturnData }: Props) => {
       }`}
     >
       <h2 className={`${handles.confirmPickupTitle} mt0 mb6`}>
-        <FormattedMessage id="store/return-app.confirm-and-submit.pickup-address.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.pickup-address.title" />
       </h2>
       <p className={`${handles.confirmPickupText}  f6 gray`}>
         {pickupReturnData.address}

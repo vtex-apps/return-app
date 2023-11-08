@@ -1,7 +1,7 @@
 import { ResolverError } from '@vtex/api'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'
-import { ORDER_TO_RETURN_VALIDATON } from './constants'
+import { ORDER_TO_RETURN_VALIDATON, STATUS_INVOICED } from './constants'
 
 const { ORDER_NOT_INVOICED, OUT_OF_MAX_DAYS } = ORDER_TO_RETURN_VALIDATON
 
@@ -9,10 +9,12 @@ export const canOrderBeReturned = ({
   creationDate,
   maxDays,
   status,
+  orderStatus,
 }: {
   creationDate: string
   maxDays: number
   status: string
+  orderStatus: string
 }) => {
   if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
     throw new ResolverError(
@@ -22,7 +24,7 @@ export const canOrderBeReturned = ({
     )
   }
 
-  if (status !== 'invoiced') {
+  if (orderStatus !== 'partial-invoiced' && status !== STATUS_INVOICED) {
     throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
   }
 }

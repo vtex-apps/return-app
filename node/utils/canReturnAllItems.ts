@@ -1,11 +1,11 @@
 import type { OrderDetailResponse, MasterDataEntity } from '@vtex/clients'
-import type {
-  ReturnRequestItemInput,
-  ReturnAppSettings,
-  ReturnRequest,
-} from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
+import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type {
+  ReturnRequestItemInput,
+  ReturnRequest,
+} from '../../typings/ReturnRequest'
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'
 import type { CatalogGQL } from '../clients/catalogGQL'
 

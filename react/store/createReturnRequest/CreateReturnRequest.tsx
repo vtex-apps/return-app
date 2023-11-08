@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import type { RouteComponentProps } from 'react-router'
 import { useQuery } from 'react-apollo'
-import type {
-  OrderToReturnSummary,
-  QueryOrderToReturnSummaryArgs,
-} from 'vtex.return-app'
 import { PageHeader, PageBlock } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
+import type {
+  OrderToReturnSummary,
+  QueryOrderToReturnSummaryArgs,
+} from '../../../typings/OrderToReturn'
 import { StoreSettingsPovider } from '../provider/StoreSettingsProvider'
 import { OrderToReturnProvider } from '../provider/OrderToReturnProvider'
 import { ReturnDetails } from './components/ReturnDetails'
@@ -24,36 +24,34 @@ export type Page = 'form-details' | 'submit-form'
 
 type RouteProps = RouteComponentProps<{ orderId: string }>
 
-const createPageHeaderProps = (page: Page, navigate: any) => {
+const createPageHeaderProps = (page: Page, navigate: any, isAdmin: boolean) => {
   if (page === 'submit-form') {
     return {
       title: (
-        <FormattedMessage id="store/return-app.confirm-and-submit.page-header.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.page-header.title" />
       ),
     }
   }
 
   return {
     title: (
-      <FormattedMessage id="store/return-app.return-order-details.page-header.title" />
+      <FormattedMessage id="return-app.return-order-details.page-header.title" />
     ),
     linkLabel: (
-      <FormattedMessage id="store/return-app.return-order-details.page-header.link" />
+      <FormattedMessage id="return-app.return-order-details.page-header.link" />
     ),
     onLinkClick: () => {
       navigate({
-        to: '#/my-returns/add',
+        to: isAdmin ? '/admin/app/returns/orders/' : '#/my-returns/add',
       })
     },
   }
 }
 
-export const CreateReturnRequest = (props: RouteProps) => {
-  const {
-    match: {
-      params: { orderId },
-    },
-  } = props
+export const CreateReturnRequest = (props: any) => {
+  const orderId = props?.match?.params?.orderId || props?.params?.orderId
+
+  const isAdmin = !!props?.page
 
   const [page, setPage] = useState<Page>('form-details')
   const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
@@ -63,8 +61,9 @@ export const CreateReturnRequest = (props: RouteProps) => {
   } = useReturnRequest()
 
   const { data: storeSettings } = useStoreSettings()
-  const { paymentOptions } = storeSettings ?? {}
+  const { paymentOptions, options } = storeSettings ?? {}
   const { enablePaymentMethodSelection } = paymentOptions ?? {}
+  const { enableHighlightFormMessage } = options ?? {}
 
   const { navigate } = useRuntime()
 
@@ -119,7 +118,7 @@ export const CreateReturnRequest = (props: RouteProps) => {
   return (
     <div className="create-return-request__container">
       <PageBlock>
-        <PageHeader {...createPageHeaderProps(page, navigate)} />
+        <PageHeader {...createPageHeaderProps(page, navigate, isAdmin)} />
         <OrderDetailsLoader data={{ loading, error }}>
           {page === 'form-details' && data ? (
             <>
@@ -132,11 +131,20 @@ export const CreateReturnRequest = (props: RouteProps) => {
                   data?.orderToReturnSummary.paymentData.canRefundCard
                 }
                 shippingData={data.orderToReturnSummary.shippingData}
+                showHighlightedMessage={enableHighlightFormMessage ?? false}
+                isAdmin
+                availableAmountsToRefund={
+                  data.orderToReturnSummary.availableAmountsToRefund
+                }
               />
             </>
           ) : null}
           {page === 'submit-form' ? (
-            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
+            <ConfirmAndSubmit
+              onPageChange={handlePageChange}
+              items={items}
+              isAdmin={isAdmin}
+            />
           ) : null}
         </OrderDetailsLoader>
       </PageBlock>

@@ -8,6 +8,7 @@ type SellerSetting {
   termsUrl: String!
   customReturnReasons: [CustomReturnReason!]
   options: ReturnOption
+  orderStatus: String
 }
 
 type SellerSettingResponseList {
@@ -24,4 +25,5 @@ input SellerSettingInput  {
   termsUrl: String!
   customReturnReasons: [CustomReturnReasonInput!]
   options: ReturnOptionInput
+  orderStatus: String
 }

@@ -1,15 +1,15 @@
 import React, { useState, useRef } from 'react'
 import type { ChangeEvent } from 'react'
 import { useQuery } from 'react-apollo'
-import type {
-  QueryNearestPickupPointsArgs,
-  NearPickupPointQueryResponse,
-  PickupPoint,
-} from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Dropdown, Spinner } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
+import type {
+  QueryNearestPickupPointsArgs,
+  NearPickupPointQueryResponse,
+  PickupPoint,
+} from '../../../../typings/PickupPoints'
 import NEAREST_PICKUP_POINTS from '../graphql/nearestPickupPoints.gql'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 
@@ -113,14 +113,14 @@ export const PickupPointSelector = ({ geoCoordinates }: Props) => {
           <Spinner />
         </div>
       ) : (
-        <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder">
+        <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points.dropdown.placehoder">
           {(placehoder) => (
             <Dropdown
               label=""
               error={Boolean(error)}
               errorMessage={
                 error ? (
-                  <FormattedMessage id="store/return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
+                  <FormattedMessage id="return-app.return-order-details.pickup-address.drop-off-points.dropdown.error" />
                 ) : undefined
               }
               placeholder={placehoder}

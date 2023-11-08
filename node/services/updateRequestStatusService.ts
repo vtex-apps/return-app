@@ -1,9 +1,3 @@
-import type {
-  MutationUpdateReturnRequestStatusArgs,
-  ReturnRequest,
-  Status,
-  RefundItemInput,
-} from 'vtex.return-app'
 import {
   ResolverError,
   ForbiddenError,
@@ -11,6 +5,12 @@ import {
   UserInputError,
 } from '@vtex/api'
 
+import type {
+  MutationUpdateReturnRequestStatusArgs,
+  ReturnRequest,
+  Status,
+  RefundItemInput,
+} from '../../typings/ReturnRequest'
 import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
@@ -18,6 +18,7 @@ import { handleRefund } from '../utils/handleRefund'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
+import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -100,8 +101,8 @@ export const updateRequestStatusService = async (
     },
     vtex: { logger },
   } = ctx
-  
-  const { status, requestId, comment, refundData, sellerName } = args
+
+  const { status, comment, refundData, requestId, sellerName } = args
 
   const { role, firstName, lastName, email, userId } = userProfile ?? {}
 
@@ -183,6 +184,43 @@ export const updateRequestStatusService = async (
         })
       : returnRequest.refundData
 
+  let availableAmountsToRefund
+
+  try {
+    if (requestStatus === 'amountRefunded' && refundInvoice) {
+      availableAmountsToRefund = await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+          amountRefunded: refundInvoice.refundedItemsValue,
+        },
+        'UPDATE'
+      )
+
+      refundInvoice.invoiceValue = availableAmountsToRefund.amountRefunded
+    } else if (requestStatus === 'packageVerified' && refundInvoice) {
+      availableAmountsToRefund = await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+          shippingCostRefunded: refundInvoice.refundedShippingValue,
+        },
+        'UPDATE'
+      )
+    } else {
+      availableAmountsToRefund = await calculateAvailableAmountsService(
+        ctx,
+        {
+          order: { orderId: returnRequest.orderId },
+        },
+        'GET'
+      )
+    }
+  } catch (error) {
+    console.error('error: ', error)
+    throw new Error("Can't calculate available amounts to refund")
+  }
+
   const refundReturn = await handleRefund({
     currentStatus: requestStatus,
     previousStatus: returnRequest.status,
@@ -201,7 +239,7 @@ export const updateRequestStatusService = async (
 
   const updatedRequest = {
     ...formatRequestToPartialUpdate(returnRequest),
-    sellerName: sellerName || undefined,
+    sellerName: sellerName ?? undefined,
     status: requestStatus,
     refundStatusData,
     refundData: refundInvoice
@@ -212,6 +250,7 @@ export const updateRequestStatusService = async (
   try {
     await returnRequestClient.update(requestId, updatedRequest)
   } catch (error) {
+    console.error('error: ', error)
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
     const errorMessageString = mdValidationErrors
@@ -278,5 +317,5 @@ export const updateRequestStatusService = async (
     })
   }
 
-  return { id: requestId, ...updatedRequest }
+  return { id: requestId, ...updatedRequest, availableAmountsToRefund }
 }

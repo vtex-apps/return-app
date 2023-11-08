@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import type { Tenant, Binding } from 'vtex.tenant-graphql'
 import { ModalDialog, Table, Input, Spinner, EmptyState } from 'vtex.styleguide'
-import type { CustomReturnReasonTranslation } from 'vtex.return-app'
 import { FormattedMessage } from 'react-intl'
 
+import type { CustomReturnReasonTranslation } from '../../../../../typings/ReturnAppSettings'
 import TENANT_INFO from './graphql/tenant.gql'
 import type { CustomReasonWithIndex } from './CustomReasons'
 import { useSettings } from '../../hooks/useSettings'
@@ -96,10 +96,7 @@ export const TranslationsModal = ({
     CustomReturnReasonTranslation[]
   >([])
 
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { customReturnReasons } = appSettings || {}
   const { dispatch } = actions || {}

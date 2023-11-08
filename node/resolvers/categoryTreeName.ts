@@ -1,4 +1,4 @@
-import type { CategoryInfo } from 'vtex.return-app'
+import type { CategoryInfo } from '../../typings/Category'
 
 const transformCategoryTree = (
   categoryTree: CategoryTree[],

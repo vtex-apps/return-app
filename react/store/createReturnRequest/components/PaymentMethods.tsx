@@ -2,13 +2,13 @@ import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
-import type {
-  RefundPaymentDataInput,
-  PaymentType,
-  RefundPaymentMethod,
-} from 'vtex.return-app'
 import { Input, RadioGroup } from 'vtex.styleguide'
 
+import type {
+  RefundPaymentDataInput,
+  RefundPaymentMethod,
+} from '../../../../typings/ReturnRequest'
+import type { PaymentType } from '../../../../typings/ReturnAppSettings'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
@@ -27,9 +27,9 @@ type PaymentMethodsOptions = {
 const CSS_HANDLES = ['paymentMethodContainer', 'paymentBankWrapper'] as const
 
 const messages = defineMessages({
-  formIBAN: { id: 'store/return-app.return-order-details.payment-method.iban' },
+  formIBAN: { id: 'return-app.return-order-details.payment-method.iban' },
   formAccountHolder: {
-    id: 'store/return-app.return-order-details.payment-method.account-holder',
+    id: 'return-app.return-order-details.payment-method.account-holder',
   },
 })
 
@@ -118,11 +118,11 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
       className={`${handles.paymentMethodContainer} flex-ns flex-wrap flex-auto flex-column pa4 mb6`}
     >
       <p>
-        <FormattedMessage id="store/return-app.return-order-details.payment-method.description" />
+        <FormattedMessage id="return-app.return-order-details.payment-method.description" />
       </p>
       {!enablePaymentMethodSelection ? (
         <p className="i-s">
-          <FormattedMessage id="store/return-app.return-order-details.payment-method.default" />
+          <FormattedMessage id="return-app.return-order-details.payment-method.default" />
         </p>
       ) : (
         <>
@@ -137,7 +137,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
             <CustomMessage
               status="error"
               message={
-                <FormattedMessage id="store/return-app.return-payment-methods.input-payment-method.error" />
+                <FormattedMessage id="return-app.return-payment-methods.input-payment-method.error" />
               }
             />
           ) : null}
@@ -156,7 +156,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
               <CustomMessage
                 status="error"
                 message={
-                  <FormattedMessage id="store/return-app.return-payment-methods.input-account-holder.error" />
+                  <FormattedMessage id="return-app.return-payment-methods.input-account-holder.error" />
                 }
               />
             ) : null}
@@ -172,7 +172,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
               <CustomMessage
                 status="error"
                 message={
-                  <FormattedMessage id="store/return-app.return-payment-methods.input-iban.error" />
+                  <FormattedMessage id="return-app.return-payment-methods.input-iban.error" />
                 }
               />
             ) : null}
@@ -182,7 +182,7 @@ export const PaymentMethods = ({ canRefundCard }: Props) => {
               <CustomMessage
                 status="error"
                 message={
-                  <FormattedMessage id="store/return-app.return-payment-methods.input-iban-invalid.error" />
+                  <FormattedMessage id="return-app.return-payment-methods.input-iban-invalid.error" />
                 }
               />
             ) : null}

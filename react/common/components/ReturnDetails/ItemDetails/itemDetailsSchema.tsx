@@ -2,8 +2,8 @@ import type { ReactElement } from 'react'
 import React from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem } from 'vtex.return-app'
 
+import type { ReturnRequestItem } from '../../../../../typings/ReturnRequest'
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
@@ -175,6 +175,7 @@ export const itemDetailsSchema = ({
         return (
           <AlignItemRight>
             <FormattedNumber
+              // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
               value={((sellingPrice + tax) * quantity) / 100}
               style="currency"
               currency={currencyCode}

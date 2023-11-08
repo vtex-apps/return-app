@@ -1,14 +1,38 @@
 import { json } from 'co-body'
-import { saveAppSettingService } from '../services/AppSettingsService'
+
 import { SETTINGS_PATH } from '../utils/constants'
+import schemaAppSetting from '../utils/appSettingSchema'
 
 export async function saveAppSetting(ctx: Context) {
-  const { req } = ctx
+  const {
+    req,
+    clients: { appSettings },
+  } = ctx
 
   const body = await json(req)
 
-  ctx.body = await saveAppSettingService(ctx, body)
-  ctx.status = 201
+  try {
+    await schemaAppSetting.validateAsync(body)
+
+    const settings = await appSettings.get(SETTINGS_PATH, true)
+
+    const newSettings = {
+      ...settings,
+      ...body,
+    }
+
+    await appSettings.save(SETTINGS_PATH, newSettings)
+
+    ctx.body = { settingsSaved: newSettings }
+    ctx.status = 201
+  } catch (error) {
+    const errors = error.details
+      ? error.details.map((detail: any) => detail.message)
+      : [error.message]
+
+    ctx.body = { errors }
+    ctx.status = 400
+  }
 }
 
 export async function returnAppSetting(ctx: Context) {

@@ -36,22 +36,22 @@ const mobileOrder = [
 
 export const messages = defineMessages({
   product: {
-    id: 'store/return-app.return-order-details.table-header.product',
+    id: 'return-app.return-order-details.table-header.product',
   },
   quantity: {
-    id: 'store/return-app.return-order-details.table-header.quantity',
+    id: 'return-app.return-order-details.table-header.quantity',
   },
   'available-to-return': {
-    id: 'store/return-app.return-order-details.table-header.available-to-return',
+    id: 'return-app.return-order-details.table-header.available-to-return',
   },
   'quantity-to-return': {
-    id: 'store/return-app.return-order-details.table-header.quantity-to-return',
+    id: 'return-app.return-order-details.table-header.quantity-to-return',
   },
   reason: {
-    id: 'store/return-app.return-order-details.table-header.reason',
+    id: 'return-app.return-order-details.table-header.reason',
   },
   condition: {
-    id: 'store/return-app.return-order-details.table-header.condition',
+    id: 'return-app.return-order-details.table-header.condition',
   },
 })
 
@@ -124,7 +124,7 @@ export const ItemsList = (props: Props) => {
         <CustomMessage
           status="error"
           message={
-            <FormattedMessage id="store/return-app.return-items-list.no-items-selected.error" />
+            <FormattedMessage id="return-app.return-items-list.no-items-selected.error" />
           }
         />
       ) : null}

@@ -10,10 +10,16 @@ import { Clients } from './clients'
 import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
-import {middlewares} from './middlewares'
+import { middlewares } from './middlewares'
+import { exportRequests } from './middlewares/exportRequests'
+import { ping } from './middlewares/ping'
+import setupScheduler from './events/keepAlive'
+import { createGoodwill } from './middlewares/goodwill/createGoodwill'
+import { getGoodwills } from './middlewares/goodwill/getGoodwills'
 
 const {
   auth,
+  authSelf,
   createReturn,
   getRequest,
   getRequestList,
@@ -22,7 +28,10 @@ const {
   returnAppSetting,
   saveSellerSetting,
   returnSellerSetting,
-  sellerValidation
+  sellerValidation,
+  getOrdersList,
+  createGiftcard,
+  createPrerefund,
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -49,22 +58,37 @@ declare global {
     userProfile?: UserProfile
     // Added in the state via auth middleware when request has appkey and apptoken.
     appkey?: string
+    sellerId?: string
   }
 }
 
 export default new Service<Clients, State, ParamsContext>({
   clients,
+  events: {
+    keepALive: setupScheduler,
+  },
   routes: {
     returnRequests: method({
       POST: [errorHandler, auth, sellerValidation, createReturn],
-      GET: [errorHandler, auth, getRequestList],
+      GET: [errorHandler, auth, sellerValidation, getRequestList],
     }),
     returnRequest: method({
       GET: [errorHandler, auth, getRequest],
       PUT: [errorHandler, auth, updateRequestStatus],
     }),
+    exportRequests: method({
+      GET: [errorHandler, authSelf, exportRequests],
+    }),
+    goodwill: method({
+      POST: [errorHandler, auth, sellerValidation, createGoodwill],
+      GET: [errorHandler, auth, sellerValidation, getGoodwills],
+    }),
+    preRefund: method({
+      GET: [errorHandler, auth, createPrerefund],
+    }),
     settings: method({
       POST: [errorHandler, auth, saveAppSetting],
+      PUT: [errorHandler, auth, saveAppSetting],
       GET: [errorHandler, auth, returnAppSetting],
     }),
     sellerSetting: method({
@@ -72,7 +96,16 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     sellerSettings: method({
       GET: [errorHandler, auth, sellerValidation, returnSellerSetting],
-    })
+    }),
+    orderList: method({
+      POST: [errorHandler, auth, sellerValidation, getOrdersList],
+    }),
+    giftcard: method({
+      POST: [errorHandler, auth, createGiftcard],
+    }),
+    ping: method({
+      POST: [ping],
+    }),
   },
   graphql: {
     resolvers: {

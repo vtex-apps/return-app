@@ -13,7 +13,9 @@ const CSS_HANDLES = [
   'termsAndConditionsLink',
 ] as const
 
-export const TermsAndConditions = () => {
+export const TermsAndConditions = (props) => {
+  const { setIsChecked } = props
+
   const {
     termsAndConditions,
     inputErrors,
@@ -26,6 +28,7 @@ export const TermsAndConditions = () => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target
 
+    setIsChecked(checked)
     toogleTermsAndConditions(checked)
   }
 
@@ -44,7 +47,7 @@ export const TermsAndConditions = () => {
         key="formAgreeCheckbox"
         label={
           <FormattedMessage
-            id="store/return-app.return-order-details.terms-and-conditions.form-agree"
+            id="return-app.return-order-details.terms-and-conditions.form-agree"
             values={{
               link: (
                 <span>
@@ -54,7 +57,7 @@ export const TermsAndConditions = () => {
                     target="_blank"
                     href={data?.termsUrl}
                   >
-                    <FormattedMessage id="store/return-app.return-order-details.terms-and-conditions.link" />
+                    <FormattedMessage id="return-app.return-order-details.terms-and-conditions.link" />
                   </a>
                 </span>
               ),
@@ -69,7 +72,7 @@ export const TermsAndConditions = () => {
         <CustomMessage
           status="error"
           message={
-            <FormattedMessage id="store/return-app.return-terms-and-conditions.checkbox.error" />
+            <FormattedMessage id="return-app.return-terms-and-conditions.checkbox.error" />
           }
         />
       ) : null}

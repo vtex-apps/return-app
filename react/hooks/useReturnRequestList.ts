@@ -1,9 +1,9 @@
 import { useQuery } from 'react-apollo'
+
 import type {
   ReturnRequestList as ReturnRequestListResponse,
   QueryReturnRequestListArgs,
-} from 'vtex.return-app'
-
+} from '../../typings/ReturnRequest'
 import RETURN_REQUEST_LIST from '../graphql/getReturnRequestList.gql'
 
 export const useReturnRequestList = () => {

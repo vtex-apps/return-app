@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "orderRefundDetails",
+  "description": "Schema for order refund details",
+  "type": "object",
+  "properties": {
+    "orderID": {
+      "type": "string",
+      "description": "The unique identifier for the order."
+    },
+    "initialInvoicedAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The initial amount invoiced for the order."
+    },
+    "amountToBeRefundedInProcess": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The amount that is currently being refunded for the order."
+    },
+    "totalRefunded": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total amount that has been refunded so far for the order."
+    },
+    "remainingRefundableAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The remaining amount that can be refunded for the order."
+    },
+    "initialShippingCost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The inital shipping cost for the order."
+    },
+    "shippingCostToBeRefundedInProcess": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The shipping cost that is currently being refunded for the order."
+    },
+    "totalShippingCostRefunded": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total shipping cost that has been refunded so far for the order."
+    },
+    "remainingRefundableShippingCost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The remaining shipping cost that can be refunded for the order."
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time when the refund details were last updated."
+    }
+  },
+  "required": [
+    "orderID",
+    "initialInvoicedAmount",
+    "amountToBeRefundedInProcess",
+    "lastUpdated"
+  ],
+  "v-default-fields": [
+    "orderID",
+    "initialInvoicedAmount",
+    "totalRefunded",
+    "remainingRefundableAmount",
+    "lastUpdated"
+  ],
+  "v-indexed": ["orderID"],
+  "v-immediate-indexing": true
+}

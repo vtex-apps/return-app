@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
-import type {
-  OrdersToReturnList,
-  QueryOrdersAvailableToReturnArgs,
-} from 'vtex.return-app'
 import { ContentWrapper, BaseLoading } from 'vtex.my-account-commons'
 import { FormattedMessage } from 'react-intl'
 
+import type {
+  OrdersToReturnList,
+  QueryOrdersAvailableToReturnArgs,
+} from '../../../typings/OrderToReturn'
 import ORDERS_AVAILABLE_TO_RETURN from './graphql/getOrdersAvailableToReturn.gql'
 import { OrderList } from './components/OrderList'
 import { OrderListStructureLoader } from './components/loaders/OrderListStructureLoader'

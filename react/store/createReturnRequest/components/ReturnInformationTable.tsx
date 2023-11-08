@@ -1,9 +1,9 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import type { ReturnRequestItemInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 
+import type { ReturnRequestItemInput } from '../../../../typings/ReturnRequest'
 import { defaultReturnConditionsMessages } from '../../../common/utils/defaultReturnConditionsMessages'
 
 interface Props {
@@ -38,25 +38,29 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
           <th
             className={`${handles.returnInfoTableText} v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc`}
           >
-            <FormattedMessage id="store/return-app.return-order-details.table-header.product" />
+            <FormattedMessage id="return-app.return-order-details.table-header.product" />
           </th>
           <th
             className={`${handles.returnInfoTableText} v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s tc`}
           >
-            <FormattedMessage id="store/return-app.return-order-details.table-header.quantity-to-return" />
+            <FormattedMessage id="return-app.return-order-details.table-header.quantity-to-return" />
           </th>
         </tr>
       </thead>
       <tbody className={`${handles.returnInfoBodyContainer} v-mid`}>
         {selectedItems.map(
-          ({ quantity, orderItemIndex, condition, returnReason }, key) => {
+          ({ quantity, condition, returnReason, orderItemIndex }, key) => {
             const { reason } = returnReason
 
             if (!quantity) {
               return null
             }
 
-            const { imageUrl, localizedName, name } = items[orderItemIndex]
+            const currentItem = items.find(
+              (item) => item.orderItemIndex === orderItemIndex
+            )
+
+            const { imageUrl, localizedName, name } = currentItem || {} // items?.[orderItemIndex] || {}
 
             return (
               <tr
@@ -73,7 +77,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                       {!condition ? null : (
                         <div className="flex">
                           <p className="f6 mt0 mr3 gray b">
-                            <FormattedMessage id="store/return-app.return-information-table.table-row.p-condition" />
+                            <FormattedMessage id="return-app.return-information-table.table-row.p-condition" />
                           </p>
                           <p className="f6 mt0 gray ">
                             {formatMessage(
@@ -85,7 +89,7 @@ export const ReturnInformationTable = ({ items, selectedItems }: Props) => {
                       <div className="flex">
                         <p className="f6 mv0 mr3 gray b">
                           {' '}
-                          <FormattedMessage id="store/return-app.return-information-table.table-row.p-reason" />{' '}
+                          <FormattedMessage id="return-app.return-information-table.table-row.p-reason" />{' '}
                         </p>
                         <p className="f6 mv0 gray ">
                           {returnReason?.otherReason

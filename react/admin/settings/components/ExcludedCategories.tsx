@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { useQuery } from 'react-apollo'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { AutocompleteInput, IconWarning, IconDeny } from 'vtex.styleguide'
-import type { CategoryInfo } from 'vtex.return-app'
 
+import type { CategoryInfo } from '../../../../typings/Category'
 import GET_CATEGORY_TREE_INFO from '../graphql/getCategoryTreeName.gql'
 import { useSettings } from '../hooks/useSettings'
 
@@ -55,10 +55,7 @@ const filterSearchCategories = ({
 
 export const ExcludedCategories = () => {
   const [searchedCategory, setSearchedCategory] = React.useState('')
-  const {
-    appSettings,
-    actions,
-  } = useSettings()
+  const { appSettings, actions } = useSettings()
 
   const { dispatch } = actions || {}
 

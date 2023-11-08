@@ -1,15 +1,17 @@
 import type {
   CustomReturnReason,
   PaymentOptions,
-  ReturnAppSettings,
   ReturnOption,
-  SellerSetting
-} from 'vtex.return-app'
+} from '../../../../typings/ReturnAppSettings'
+import type { SellerSetting } from '../../../../typings/SellerSetting'
 
-export const initialSettingsState: ReturnAppSettings | SellerSetting = {
+export const initialSettingsState: SellerSetting = {
+  id: '',
+  sellerId: '',
   maxDays: 0,
   excludedCategories: [],
   termsUrl: '',
+  orderStatus: 'Select Option',
   paymentOptions: {
     enablePaymentMethodSelection: false,
     allowedPaymentTypes: {
@@ -24,6 +26,8 @@ export const initialSettingsState: ReturnAppSettings | SellerSetting = {
     enablePickupPoints: false,
     enableProportionalShippingValue: false,
     enableSelectItemCondition: false,
+    enableHighlightFormMessage: false,
+    enableGoodwill: false,
   },
 }
 
@@ -31,6 +35,13 @@ export const maxDaysAction = (maxDays: number) => {
   return {
     type: 'updateMaxDays' as const,
     payload: maxDays,
+  }
+}
+
+export const orderStatusAction = (orderStatus: string) => {
+  return {
+    type: 'updateOrderStatus' as const,
+    payload: orderStatus,
   }
 }
 
@@ -71,14 +82,14 @@ export const optionsAction = (options: ReturnOption) => {
   }
 }
 
-export const initialStateAction = (initialState: ReturnAppSettings | SellerSetting) => {
+export const initialStateAction = (initialState: SellerSetting) => {
   return {
     type: 'updateInitialState' as const,
     payload: initialState,
   }
 }
 
-export const initialStateActionSeller = (initialStateSeller: ReturnAppSettings | SellerSetting) => {
+export const initialStateActionSeller = (initialStateSeller: SellerSetting) => {
   return {
     type: 'updateInitialStateSeller' as const,
     payload: initialStateSeller,
@@ -87,6 +98,7 @@ export const initialStateActionSeller = (initialStateSeller: ReturnAppSettings |
 
 export type Actions =
   | ReturnType<typeof maxDaysAction>
+  | ReturnType<typeof orderStatusAction>
   | ReturnType<typeof excludedCategoriesAction>
   | ReturnType<typeof termsUrlAction>
   | ReturnType<typeof paymentOptionsAction>
@@ -95,12 +107,19 @@ export type Actions =
   | ReturnType<typeof initialStateAction>
   | ReturnType<typeof initialStateActionSeller>
 
-export const settingsReducer = (state: ReturnAppSettings | SellerSetting, action: Actions) => {
+export const settingsReducer = (state: SellerSetting, action: Actions) => {
   switch (action.type) {
     case 'updateMaxDays': {
       return {
         ...state,
         maxDays: action.payload,
+      }
+    }
+
+    case 'updateOrderStatus': {
+      return {
+        ...state,
+        orderStatus: action.payload,
       }
     }
 

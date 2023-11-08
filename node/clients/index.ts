@@ -1,7 +1,9 @@
 import { IOClients, Sphinx } from '@vtex/api'
 import { vbaseFor, masterDataFor } from '@vtex/clients'
-import { ReturnAppSettings, ReturnRequest, SellerSetting } from 'vtex.return-app'
 
+import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type { ReturnRequest } from '../../typings/ReturnRequest'
+import type { SellerSetting } from '../../typings/SellerSetting'
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
 import { GiftCard } from './giftCard'
@@ -9,10 +11,20 @@ import { MailClient } from './mail'
 import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
+import { ProfileClient } from './profile'
+import { Marketplace } from './marketplace'
+import Scheduler from './scheduler'
+import { PaymentGateway } from './paymentGateway'
 
-const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
-const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
-const SellerSetting = masterDataFor<SellerSetting>('sellerSetting')
+const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
+  'appSettings'
+)
+
+const ReturnRequestClient = masterDataFor<ReturnRequest | any>('returnRequest')
+const GoodwillClient = masterDataFor<Goodwill | any>('goodwill')
+const SellerSettingClient = masterDataFor<SellerSetting>('sellerSetting')
+const OrderRefundDetails =
+  masterDataFor<OrderRefundDetails>('orderRefundDetails')
 
 export class Clients extends IOClients {
   public get oms() {
@@ -20,7 +32,7 @@ export class Clients extends IOClients {
   }
 
   public get appSettings() {
-    return this.getOrSet('appSettings', ReturnAppSettings)
+    return this.getOrSet('appSettings', ReturnAppSettingsClient)
   }
 
   public get catalog() {
@@ -32,11 +44,19 @@ export class Clients extends IOClients {
   }
 
   public get returnRequest() {
-    return this.getOrSet('returnRequest', ReturnRequest)
+    return this.getOrSet('returnRequest', ReturnRequestClient)
+  }
+
+  public get goodwill() {
+    return this.getOrSet('goodwill', GoodwillClient)
+  }
+
+  public get orderRefundDetails() {
+    return this.getOrSet('orderRefundDetails', OrderRefundDetails)
   }
 
   public get sellerSetting() {
-    return this.getOrSet('sellerSetting', SellerSetting)
+    return this.getOrSet('sellerSetting', SellerSettingClient)
   }
 
   public get giftCard() {
@@ -57,5 +77,21 @@ export class Clients extends IOClients {
 
   public get sphinx() {
     return this.getOrSet('sphinx', Sphinx)
+  }
+
+  public get profile() {
+    return this.getOrSet('profile', ProfileClient)
+  }
+
+  public get marketplace() {
+    return this.getOrSet('marketplace', Marketplace)
+  }
+
+  public get scheduler() {
+    return this.getOrSet('scheduler', Scheduler)
+  }
+
+  public get paymentGateway() {
+    return this.getOrSet('paymentGateway', PaymentGateway)
   }
 }

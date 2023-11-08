@@ -1,11 +1,12 @@
-import type { OrderToReturnValidation } from 'vtex.return-app'
-
+import type { OrderToReturnValidation } from '../../typings/OrderToReturn'
 import type {
   ReturnRequestConfirmation,
   ReturnRequestStatusUpdate,
 } from '../typings/mailClient'
 
 export const SETTINGS_PATH = 'app-settings'
+export const STATUS_INVOICED = 'invoiced'
+export const STATUS_PAYMENT_APPROVE = 'payment-approved'
 
 export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,

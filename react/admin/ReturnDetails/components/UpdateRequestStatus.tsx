@@ -1,45 +1,20 @@
 import type { FormEvent, ChangeEvent } from 'react'
 import React, { useState } from 'react'
-import type { IntlFormatters } from 'react-intl'
-import { FormattedMessage, useIntl } from 'react-intl'
-import {
-  Dropdown,
-  Textarea,
-  Checkbox,
-  Button,
-  Tooltip,
-  IconInfo,
-} from 'vtex.styleguide'
-import type { Status } from 'vtex.return-app'
+import { FormattedMessage } from 'react-intl'
+import { Textarea, Checkbox, Button, Tooltip, IconInfo } from 'vtex.styleguide'
 
+import type { Status } from '../../../../typings/ReturnRequest'
 import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
-import {
-  statusAllowed,
-  statusMessageIdAdmin,
-} from '../../../utils/requestStatus'
 import { useUpdateRequestStatus } from '../../hooks/useUpdateRequestStatus'
-
-const createStatusOptions = (
-  currentStatus: Status,
-  formatMessage: IntlFormatters['formatMessage']
-): Array<{ value: string; label: string }> => {
-  const allowedStatus = statusAllowed[currentStatus]
-
-  return allowedStatus.map((status) => ({
-    value: status,
-    label: formatMessage(statusMessageIdAdmin[status]),
-  }))
-}
 
 interface Props {
   onViewVerifyItems: () => void
 }
 
-export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
-  const [selectedStatus, setSelectedStatus] = useState<Status | ''>('')
+export const UpdateRequestStatus = (_: Props) => {
+  const [selectedStatus] = useState<Status | ''>('')
   const [comment, setComment] = useState('')
   const [visibleForCustomer, setVisibleForCustomer] = useState(false)
-  const { formatMessage } = useIntl()
   const { data } = useReturnDetails()
   const { submitting, handleStatusUpdate } = useUpdateRequestStatus()
 
@@ -50,7 +25,7 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (submitting || selectedStatus === '' || !data?.returnRequestDetails) {
+    if (submitting || !data?.returnRequestDetails) {
       return
     }
 
@@ -63,16 +38,10 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
 
     handleStatusUpdate({
       id: data.returnRequestDetails?.id,
-      status: selectedStatus,
+      status: data.returnRequestDetails?.status,
       comment: newComment,
       cleanUp,
     })
-  }
-
-  const handleStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-
-    setSelectedStatus(value as Status)
   }
 
   const handleCommentsChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -115,22 +84,6 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
         onSubmit={handleSubmit}
       >
         <div className="mb6">
-          <FormattedMessage id="admin/return-app.return-request-details.update-status.dropdown.placeholder">
-            {(placeholder) => (
-              <Dropdown
-                size="small"
-                placeholder={placeholder}
-                options={createStatusOptions(
-                  data.returnRequestDetails.status,
-                  formatMessage
-                )}
-                value={selectedStatus}
-                onChange={handleStatusChange}
-              />
-            )}
-          </FormattedMessage>
-        </div>
-        <div className="mb6">
           <Textarea
             label={
               <FormattedMessage id="admin/return-app.return-request-details.update-status.textarea.label" />
@@ -153,10 +106,7 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
             type="submit"
             variation="primary"
             size="small"
-            disabled={
-              !selectedStatus ||
-              (selectedStatus === data.returnRequestDetails.status && !comment)
-            }
+            disabled={!comment}
             isLoading={submitting}
           >
             {updateStatus ? (
@@ -165,13 +115,6 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
               <FormattedMessage id="admin/return-app.return-request-details.update-status.button.comment" />
             )}
           </Button>
-          {data.returnRequestDetails.status === 'pendingVerification' ? (
-            <span className="ml4">
-              <Button type="button" onClick={onViewVerifyItems} size="small">
-                <FormattedMessage id="admin/return-app.return-request-details.verify-items.button" />
-              </Button>
-            </span>
-          ) : null}
         </div>
       </form>
     </section>

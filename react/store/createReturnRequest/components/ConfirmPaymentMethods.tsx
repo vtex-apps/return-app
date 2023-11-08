@@ -1,9 +1,9 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import type { RefundPaymentDataInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 
+import type { RefundPaymentDataInput } from '../../../../typings/ReturnRequest'
 import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 
 interface Props {
@@ -35,13 +35,13 @@ export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
       }`}
     >
       <h2 className={`${handles.confirmPaymentTitle} mt0 mb6`}>
-        <FormattedMessage id="store/return-app.confirm-and-submit.refund-method.title" />
+        <FormattedMessage id="return-app.confirm-and-submit.refund-method.title" />
       </h2>
       {refundPaymentData?.refundPaymentMethod === 'bank' ? (
         <>
           <div className={`${handles.accountHolderWrapper} flex`}>
             <p className={`${handles.accountHolderText} f6 mr2 gray b`}>
-              <FormattedMessage id="store/return-app.confirm-payment-methods.refund-method.p-account-holder-name" />
+              <FormattedMessage id="return-app.confirm-payment-methods.refund-method.p-account-holder-name" />
             </p>
             <p className={`${handles.confirmPaymentValue} f6 gray`}>
               {refundPaymentData.accountHolderName}
@@ -49,7 +49,7 @@ export const ConfirmPaymentMethods = ({ refundPaymentData }: Props) => {
           </div>
           <div className={`${handles.ibanWrapper} flex`}>
             <p className={`${handles.ibanText} f6 mr2 gray b`}>
-              <FormattedMessage id="store/return-app.confirm-payment-methods.refund-method.p-iban" />
+              <FormattedMessage id="return-app.confirm-payment-methods.refund-method.p-iban" />
             </p>
             <p className={`${handles.confirmPaymentValue} f6 gray `}>
               {refundPaymentData.iban}

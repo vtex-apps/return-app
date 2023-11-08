@@ -1,5 +1,10 @@
-import type { Maybe, RefundDataInput, ReturnRequest } from 'vtex.return-app'
 import { UserInputError } from '@vtex/api'
+
+import type {
+  Maybe,
+  RefundDataInput,
+  ReturnRequest,
+} from '../../typings/ReturnRequest'
 
 export const createRefundData = ({
   requestId,
@@ -76,6 +81,7 @@ export const createRefundData = ({
     // invoiceNumber has to match the requestId.
     // This values is used to filter the invoices created via Return app when calculating the items available to be returned.
     invoiceNumber: requestId,
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     invoiceValue: refundedItemsValue + refundedShippingValue,
     refundedItemsValue,
     refundedShippingValue,

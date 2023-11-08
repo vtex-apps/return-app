@@ -1,9 +1,10 @@
+import { ForbiddenError } from '@vtex/api'
+
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestFilters,
   Maybe,
-} from 'vtex.return-app'
-import { ForbiddenError } from '@vtex/api'
+} from '../../typings/ReturnRequest'
 
 const filterDate = (date: string): string => {
   const newDate = new Date(date)
@@ -23,6 +24,11 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
   const whereFilter = returnFilters.reduce((where, [key, value]) => {
     if (!value) return where
 
+    if (typeof value === 'string' && value.trim() === '') {
+      //  throw new Error(`Fields cannot be empty: ${key}`)
+      return where
+    }
+
     if (where.length) {
       where += ` AND `
     }
@@ -41,7 +47,7 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
 
     if (key === 'sellerName') {
       where += `sellerName = "${value}"`
-      
+
       return where
     }
 
@@ -104,9 +110,23 @@ export const returnRequestListService = async (
     throw new ForbiddenError('Missing params to filter by store user')
   }
 
+  const removeBlankSpace = (object: any) => {
+    if (typeof object === 'string') {
+      return object.trim()
+    }
+
+    if (typeof object === 'object' && object !== null) {
+      for (const key in object) {
+        object[key] = removeBlankSpace(object[key])
+      }
+    }
+
+    return object
+  }
+
   const adjustedFilter = requireFilterByUser
-    ? { ...filter, userId, userEmail }
-    : filter
+    ? removeBlankSpace({ ...filter, userId, userEmail })
+    : removeBlankSpace(filter)
 
   const resultFields = getAllFields
     ? ['_all']
@@ -117,9 +137,12 @@ export const returnRequestListService = async (
         'createdIn',
         'status',
         'dateSubmitted',
-        'sellerName'
+        'sellerName',
+        'customerProfileData',
+        'items',
+        'logisticsInfo',
       ]
-  
+
   const rmaSearchResult = await returnRequestClient.searchRaw(
     {
       page,

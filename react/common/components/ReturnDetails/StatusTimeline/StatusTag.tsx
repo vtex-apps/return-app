@@ -1,8 +1,8 @@
 import React from 'react'
-import type { Status } from 'vtex.return-app'
 import { IconSuccess, IconClear } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
 
+import type { Status } from '../../../../../typings/ReturnRequest'
 import { timelineStatusMessageId } from '../../../../utils/requestStatus'
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 export const StatusTag = ({ status, visited, createdAt }: Props) => {
   const { formatMessage } = useIntl()
 
-  const invalid = ['denied', 'cancelled'].includes(status)
+  const invalid = ['denied', 'canceled'].includes(status)
 
   return (
     <span className="flex items-center">

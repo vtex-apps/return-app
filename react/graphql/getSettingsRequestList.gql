@@ -1,21 +1,21 @@
 query getSettingsRequestList($filter: ReturnSettingsFilters, $page: Int!) {
   returnSettingsList(filter: $filter, page: $page)
     @context(provider: "vtex.return-app") {
-    list{
+    list {
       id
       sellerId
       maxDays
-      paymentOptions{
-        allowedPaymentTypes{
+      paymentOptions {
+        allowedPaymentTypes {
           bank
           card
           giftCard
         }
       }
-      customReturnReasons{
+      customReturnReasons {
         reason
       }
-      excludedCategories      
+      excludedCategories
     }
     paging {
       total

@@ -2,6 +2,7 @@ query returnAppSettings {
   returnAppSettings @context(provider: "vtex.return-app") {
     maxDays
     excludedCategories
+    orderStatus
     paymentOptions {
       enablePaymentMethodSelection
       allowedPaymentTypes {
@@ -25,6 +26,8 @@ query returnAppSettings {
       enablePickupPoints
       enableProportionalShippingValue
       enableSelectItemCondition
+      enableHighlightFormMessage
+      enableGoodwill
     }
   }
 }

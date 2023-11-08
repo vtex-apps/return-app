@@ -1,0 +1,15 @@
+query GetSellers($sellersParams: SellersParams) {
+  sellers(parameters: $sellersParams)
+    @context(provider: "vtex.sellers-graphql") {
+    items {
+      id
+      name
+      account
+    }
+    paging {
+      from
+      to
+      total
+    }
+  }
+}

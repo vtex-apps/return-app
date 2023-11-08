@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { ButtonPlain } from 'vtex.styleguide'
 
-
 const ReturnListTableSchemaSettings = () => {
   const {
     navigate,
@@ -47,15 +46,10 @@ const ReturnListTableSchemaSettings = () => {
           ),
           minWidth: 310,
           headerRenderer({ title }) {
-            return (
-              <div className="flex items-center">
-                {title}
-              </div>
-            )
+            return <div className="flex items-center">{title}</div>
           },
         },
       }),
-      
     },
   }
 }

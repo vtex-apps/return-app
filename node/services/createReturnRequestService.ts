@@ -1,7 +1,10 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from 'vtex.return-app'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
 
+import type {
+  ReturnRequestCreated,
+  ReturnRequestInput,
+} from '../../typings/ReturnRequest'
 import {
   SETTINGS_PATH,
   OMS_RETURN_REQUEST_CONFIRMATION,
@@ -18,6 +21,7 @@ import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
+import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -117,6 +121,7 @@ export const createReturnRequestService = async (
     itemMetadata,
     shippingData,
     storePreferencesData: { currencyCode },
+    sellerOrderId,
   } = order
 
   const {
@@ -125,6 +130,7 @@ export const createReturnRequestService = async (
     customReturnReasons,
     paymentOptions,
     options: settingsOptions,
+    orderStatus,
   } = settings
 
   isUserAllowed({
@@ -137,6 +143,7 @@ export const createReturnRequestService = async (
     creationDate,
     maxDays,
     status,
+    orderStatus,
   })
 
   // Validate if all items are available to be returned
@@ -233,8 +240,22 @@ export const createReturnRequestService = async (
   let rmaDocument: DocumentResponse
 
   try {
+    const amountToBeRefund = refundableAmountTotals.find(
+      (item) => item.id === 'items'
+    )?.value
+
+    await calculateAvailableAmountsService(
+      ctx,
+      {
+        order,
+        amountToBeRefund,
+      },
+      'CREATE'
+    )
+
     rmaDocument = await returnRequestClient.save({
       orderId,
+      sellerOrderId,
       sellerName: sellerName || sellers?.[0]?.id || undefined,
       refundableAmount,
       sequenceNumber,
@@ -265,6 +286,14 @@ export const createReturnRequestService = async (
       cultureInfoData: {
         currencyCode,
         locale,
+      },
+      logisticsInfo: {
+        currier: shippingData?.logisticsInfo
+          .map((logisticInfo: any) => logisticInfo?.deliveryCompany)
+          ?.join(','),
+        sla: shippingData?.logisticsInfo
+          .map((logisticInfo: any) => logisticInfo?.selectedSla)
+          ?.join(','),
       },
     })
   } catch (error) {

@@ -4,7 +4,7 @@ import type {
   RefundPaymentDataInput,
   ReturnRequestItemInput,
   Maybe,
-} from 'vtex.return-app'
+} from '../../../typings/ReturnRequest'
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
