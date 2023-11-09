@@ -14,7 +14,6 @@ import { CatalogGQL } from './catalogGQL'
 import { ProfileClient } from './profile'
 import { Marketplace } from './marketplace'
 import Scheduler from './scheduler'
-import { PaymentGateway } from './paymentGateway'
 
 const ReturnAppSettingsClient = vbaseFor<string, ReturnAppSettings>(
   'appSettings'
@@ -89,9 +88,5 @@ export class Clients extends IOClients {
 
   public get scheduler() {
     return this.getOrSet('scheduler', Scheduler)
-  }
-
-  public get paymentGateway() {
-    return this.getOrSet('paymentGateway', PaymentGateway)
   }
 }
