@@ -141,6 +141,7 @@ export const returnRequestListService = async (
         'customerProfileData',
         'items',
         'logisticsInfo',
+        'refundableAmount',
       ]
 
   const rmaSearchResult = await returnRequestClient.searchRaw(
