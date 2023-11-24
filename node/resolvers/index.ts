@@ -14,15 +14,16 @@ import { updateReturnRequestStatus } from './updateReturnRequestStatus'
 import { nearestPickupPoints } from './nearestPickupPoints'
 import { returnSellerSettings } from './returnSellerSettings'
 import { updateSellerSetting } from './updateSellerSetting'
+import { resolversWrapper } from '../utils/resolversWrapper'
 
-export const mutations = {
+export const mutations = resolversWrapper( {
   createReturnRequest,
   updateReturnRequestStatus,
   updateSellerSetting,
   ...settingsMutation,
-}
+})
 
-export const queries = {
+export const queries = resolversWrapper({
   ...settingsQuery,
   returnSellerSettings,
   categoryTreeName,
@@ -32,6 +33,6 @@ export const queries = {
   returnRequestList,
   nearestPickupPoints,
   returnSettingsList,
-}
+})
 
 export const resolvers = { ReturnRequestResponse }
