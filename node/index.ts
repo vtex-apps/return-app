@@ -33,6 +33,7 @@ const {
   getOrdersList,
   createGiftcard,
   createPrerefund,
+  invoice
 } = middlewares
 
 const TIMEOUT_MS = 5000
@@ -106,6 +107,9 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     ping: method({
       POST: [ping],
+    }),
+    invoice: method({
+      POST: [auth, invoice],
     }),
   },
   graphql: {
