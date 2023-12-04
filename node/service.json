@@ -7,44 +7,126 @@
   "routes": {
     "returnRequests": {
       "path": "/_v/return-request",
-      "public": true
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]
     },
     "returnRequest": {
       "path": "/_v/return-request/:requestId",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["put","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "preRefund": {
       "path": "/_v/return-request/prerefund",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "exportRequests": {
       "path": "/_v/return-request/export",
       "public": true
     },
     "goodwill": {
       "path": "/_v/goodwill/*id",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "settings": {
       "path": "/_v/returns/settings",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get","put"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "sellerSetting": {
       "path": "/_v/returns/seller/settings",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "sellerSettings": {
       "path": "/_v/returns/seller/settings/:sellerId",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "orderList": {
       "path": "/_v/returns/seller/orderList",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "giftcard": {
       "path": "/_v/returns/seller/giftcard",
-      "public": true
-    },
+      "public": false,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["post","get"],
+          "principals": [
+            "vrn:apps:*:*:*:app/*.return-app-sellers@*",
+            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+          ]
+        }
+      ]    },
     "ping": {
       "path": "/_v/return-app/ping",
       "public": true

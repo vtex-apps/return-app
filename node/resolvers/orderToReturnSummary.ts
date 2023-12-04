@@ -16,7 +16,7 @@ export const orderToReturnSummary = async (
   const { orderId, storeUserEmail } = args
 
   const {
-    state: { userProfile, appkey },
+    state: { userProfile, appkey , sellerId },
     clients: {
       appSettings,
       oms,
@@ -45,11 +45,12 @@ export const orderToReturnSummary = async (
   const { creationDate, clientProfileData, status } = order
 
   let userEmail = ''
-
+  sellerId
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
     appkey,
+    sellerId
   })
 
   canOrderBeReturned({
@@ -127,6 +128,7 @@ export const orderToReturnSummary = async (
       userProfile,
       appkey,
       inputEmail: storeUserEmail || userEmail || clientProfileData?.email,
+      sellerId
     },
     {
       logger,

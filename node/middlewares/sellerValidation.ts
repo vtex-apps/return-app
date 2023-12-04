@@ -6,7 +6,6 @@ export async function sellerValidation(
   next: () => Promise<void>
 ) {
   const {
-    header,
     req,
     query,
     vtex: {
@@ -14,10 +13,6 @@ export async function sellerValidation(
     },
     clients: { marketplace },
   } = ctx
-
-  const authCookie = header.vtexidclientautcookie as string | undefined
-  const appkey = header['x-vtex-api-appkey'] as string | undefined
-  const apptoken = header['x-vtex-api-apptoken'] as string | undefined
 
   const { _sellerName, _sellerId } = query
 
@@ -29,9 +24,7 @@ export async function sellerValidation(
 
   seller = sellerNameSettintgs || sellerName
   const { sellerId } = params as { sellerId: string }
-
   if (
-    (authCookie || appkey || apptoken) &&
     (_sellerName || _sellerId || seller || sellerId || body.sellerId)
   ) {
     const accountName = String(

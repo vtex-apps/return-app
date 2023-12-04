@@ -19,7 +19,6 @@ import { getGoodwills } from './middlewares/goodwill/getGoodwills'
 import { setSchemaVersion } from './middlewares/setSchema'
 
 const {
-  auth,
   authSelf,
   createReturn,
   getRequest,
@@ -70,39 +69,39 @@ export default new Service<Clients, State, ParamsContext>({
   },
   routes: {
     returnRequests: method({
-      POST: [setSchemaVersion, errorHandler, auth, sellerValidation, createReturn],
-      GET: [setSchemaVersion, errorHandler, auth, sellerValidation, getRequestList],
+      POST: [setSchemaVersion, errorHandler, sellerValidation, createReturn],
+      GET: [setSchemaVersion, errorHandler, sellerValidation, getRequestList],
     }),
     returnRequest: method({
-      GET: [setSchemaVersion, errorHandler, auth, getRequest],
-      PUT: [setSchemaVersion, errorHandler, auth, updateRequestStatus],
+      GET: [setSchemaVersion, errorHandler, getRequest],
+      PUT: [setSchemaVersion, errorHandler, updateRequestStatus],
     }),
     exportRequests: method({
       GET: [setSchemaVersion, errorHandler, authSelf, exportRequests],
     }),
     goodwill: method({
-      POST: [setSchemaVersion, setSchemaVersion, errorHandler, auth, sellerValidation, createGoodwill],
-      GET: [setSchemaVersion, setSchemaVersion, errorHandler, auth, sellerValidation, getGoodwills],
+      POST: [setSchemaVersion, setSchemaVersion, errorHandler, sellerValidation, createGoodwill],
+      GET: [setSchemaVersion, setSchemaVersion, errorHandler, sellerValidation, getGoodwills],
     }),
     preRefund: method({
-      GET: [setSchemaVersion, errorHandler, auth, createPrerefund],
+      GET: [setSchemaVersion, errorHandler, createPrerefund],
     }),
     settings: method({
-      POST: [setSchemaVersion, errorHandler, auth, saveAppSetting],
-      PUT: [setSchemaVersion, errorHandler, auth, saveAppSetting],
-      GET: [setSchemaVersion, errorHandler, auth, returnAppSetting],
+      POST: [setSchemaVersion, errorHandler, saveAppSetting],
+      PUT: [setSchemaVersion, errorHandler, saveAppSetting],
+      GET: [setSchemaVersion, errorHandler, returnAppSetting],
     }),
     sellerSetting: method({
-      POST: [setSchemaVersion, errorHandler, auth, sellerValidation, saveSellerSetting],
+      POST: [setSchemaVersion, errorHandler, sellerValidation, saveSellerSetting],
     }),
     sellerSettings: method({
-      GET: [setSchemaVersion, errorHandler, auth, sellerValidation, returnSellerSetting],
+      GET: [setSchemaVersion, errorHandler, sellerValidation, returnSellerSetting],
     }),
     orderList: method({
-      POST: [setSchemaVersion, errorHandler, auth, sellerValidation, getOrdersList],
+      POST: [setSchemaVersion, errorHandler, sellerValidation, getOrdersList],
     }),
     giftcard: method({
-      POST: [errorHandler, auth, createGiftcard],
+      POST: [errorHandler, createGiftcard],
     }),
     ping: method({
       POST: [ping],

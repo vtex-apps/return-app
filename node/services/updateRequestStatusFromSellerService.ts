@@ -2,7 +2,6 @@ import {
   ResolverError,
   NotFoundError,
   UserInputError,
-  ForbiddenError,
 } from '@vtex/api'
 
 import type {
@@ -89,6 +88,7 @@ export const updateRequestStatusFromSellerService = async (
   requestId: string
 ): Promise<ReturnRequest> => {
   const {
+    header,
     state: { userProfile, appkey },
     clients: {
       returnRequest: returnRequestClient,
@@ -98,16 +98,17 @@ export const updateRequestStatusFromSellerService = async (
     },
     vtex: { logger },
   } = ctx
+  let { sellerId } = ctx.state
 
   const { status, comment, refundData } = args || {}
 
-  const { role, firstName, lastName, email, userId } = userProfile ?? {}
+  const { firstName, lastName, email } = userProfile ?? {}
 
   const requestDate = new Date().toISOString()
   const submittedByNameOrEmail =
-    firstName || lastName ? `${firstName} ${lastName}` : email
-
-  const submittedBy = appkey ?? submittedByNameOrEmail
+  firstName || lastName ? `${firstName} ${lastName}` : email
+  sellerId = sellerId ?? header['x-vtex-caller'] as string | undefined
+  const submittedBy = appkey ?? submittedByNameOrEmail ?? sellerId
 
   if (!submittedBy) {
     throw new ResolverError(
@@ -126,16 +127,6 @@ export const updateRequestStatusFromSellerService = async (
 
   if (!returnRequest) {
     throw new NotFoundError(`Request ${requestId} not found`)
-  }
-
-  const userIsAdmin = Boolean(appkey) || role === 'admin'
-
-  const belongsToStoreUser =
-    returnRequest.customerProfileData.userId === userId &&
-    returnRequest.status === 'new'
-
-  if (!userIsAdmin && !belongsToStoreUser) {
-    throw new ForbiddenError('Not authorized')
   }
 
   validateStatusUpdate(status, returnRequest.status as Status)

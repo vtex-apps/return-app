@@ -1,5 +1,3 @@
-// import { calculateAvailableAmountsService } from '../calculateAvailableAmountsService'
-
 import { UserInputError } from '@vtex/api'
 
 import { calculateAvailableAmountsService } from '../calculateAvailableAmountsService'
