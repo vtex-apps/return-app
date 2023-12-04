@@ -14,7 +14,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]
@@ -28,7 +28,7 @@
           "actions": ["put","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -41,7 +41,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -58,7 +58,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -71,7 +71,7 @@
           "actions": ["post","get","put"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -84,7 +84,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -97,7 +97,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -110,7 +110,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
@@ -123,7 +123,7 @@
           "actions": ["post","get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
-            "vrn:vtex.vtex-id:*:*:*:user/vtexappkey-itglobers-DNEDFK"
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]    },
