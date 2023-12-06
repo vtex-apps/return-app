@@ -15,7 +15,6 @@ export const createInvoice = async (
   const {
     clients: {
       oms,
-      returnRequest: returnRequestClient,
       appSettings,
     },
     state: { userProfile, appkey },
@@ -60,22 +59,20 @@ export const createInvoice = async (
     throw new UserInputError('Order ID is missing')
   }
 
+    // For requests where type is not correct
+    if (type !== 'Input' && type !== 'Output'  ) {
+      throw new UserInputError('Required type Input or Output')
+    }
+
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
-  const searchRMAPromise = returnRequestClient.searchRaw(
-    { page: 1, pageSize: 1 },
-    ['id'],
-    undefined,
-    `orderId=${orderId}`
-  )
 
   const settingsPromise = appSettings.get(SETTINGS_PATH, true)
 
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
-  const [order, searchRMA, settings] = await Promise.all([
+  const [order, settings] = await Promise.all([
     orderPromise,
-    searchRMAPromise,
     settingsPromise,
   ])
 
@@ -96,7 +93,7 @@ export const createInvoice = async (
   })
   //Validate type
   //GET availableAmount
-  const availableAmount = await calculateAvailableAmountsService(
+  let availableAmount = await calculateAvailableAmountsService(
     ctx,
     {
       order: { orderId: id },
@@ -104,20 +101,56 @@ export const createInvoice = async (
     'GET'
   )
 
-  console.log("availableAmount",availableAmount)
-  if(type === 'input'){
+  if(type === 'Input'){
     //If is INPUT validate valueAvailabeToReturn
+    let available = availableAmount.remainingRefundableAmount - availableAmount.amountToBeRefundedInProcess
+    if(invoiceValue > available){
+      throw new ResolverError('Return App already have a amountToBeRefundedInProcess that is greater than the invoiceValue', 500)
+    }
 
   }
-  //else continue and invoice,return valueAvailabeToReturn
-  await oms.createInvoice(orderId, {
-    type,
-    issuanceDate,
-    invoiceNumber,
-    invoiceValue,
-    dispatchDate,
-    items,
-  })
+  try {
+    const response = await oms.createInvoice(orderId, {
+      type,
+      issuanceDate,
+      invoiceNumber,
+      invoiceValue,
+      dispatchDate,
+      items,
+    })
+    if(type === 'Input'){
+      if(availableAmount.initialInvoicedAmount){
+        calculateAvailableAmountsService(
+          ctx,
+          {
+            order: { orderId: orderId},
+            amountRefunded: invoiceValue,
+          },
+          'UPDATE'
+        )
+      }else{
+        calculateAvailableAmountsService(
+          ctx,
+          {
+            order,
+            amountRefunded: invoiceValue,
+          },
+          'CREATE'
+        )
+      }
+    }
+    availableAmount = await calculateAvailableAmountsService(
+      ctx,
+      {
+        order: { orderId: id },
+      },
+      'GET'
+    )
+    return { response , availableAmount}
 
+  } catch (error) {
+    throw new ResolverError(`Return App invoice error ${error.message}`, 500 )
+
+  }
 
 }
