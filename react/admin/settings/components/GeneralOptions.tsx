@@ -11,6 +11,7 @@ const generalOptions = [
   'enableProportionalShippingValue',
   'enableSelectItemCondition',
   'enableHighlightFormMessage',
+  'enableGoodwill',
 ] as const
 
 const messages = defineMessages({
@@ -43,6 +44,12 @@ const messages = defineMessages({
   },
   'enableHighlightFormMessage-description': {
     id: 'admin/return-app.settings.section.general-options.enable-highlight-form-message.description',
+  },
+  'enableGoodwill-label': {
+    id: 'admin/return-app.settings.section.general-options.enable-goodwill.label',
+  },
+  'enableGoodwill-description': {
+    id: 'admin/return-app.settings.section.general-options.enable-goodwill.description',
   },
 })
 

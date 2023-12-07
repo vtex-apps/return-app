@@ -6,6 +6,7 @@ import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummar
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
+import { calculateAvailableAmountsService } from '../services/calculateAvailableAmountsService'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -15,7 +16,7 @@ export const orderToReturnSummary = async (
   const { orderId, storeUserEmail } = args
 
   const {
-    state: { userProfile, appkey },
+    state: { userProfile, appkey , sellerId },
     clients: {
       appSettings,
       oms,
@@ -44,11 +45,12 @@ export const orderToReturnSummary = async (
   const { creationDate, clientProfileData, status } = order
 
   let userEmail = ''
-
+  sellerId
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
     appkey,
+    sellerId
   })
 
   canOrderBeReturned({
@@ -126,15 +128,26 @@ export const orderToReturnSummary = async (
       userProfile,
       appkey,
       inputEmail: storeUserEmail || userEmail || clientProfileData?.email,
+      sellerId
     },
     {
       logger,
     }
   )
 
-  return createOrdersToReturnSummary(order, customerEmail, {
+  const availableAmountsToRefund = await calculateAvailableAmountsService(
+    ctx,
+    {
+      order,
+    },
+    'GET'
+  )
+
+  const response = await createOrdersToReturnSummary(order, customerEmail, {
     excludedCategories,
     returnRequestClient,
     catalogGQL,
   })
+
+  return { ...response, availableAmountsToRefund }
 }

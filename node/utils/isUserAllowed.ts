@@ -5,13 +5,18 @@ export const isUserAllowed = ({
   requesterUser,
   clientProfile,
   appkey,
+  sellerId
 }: {
   requesterUser?: UserProfile
   clientProfile: ClientProfileDetail
   appkey?: string
+  sellerId?: string
 }) => {
   // If appkey is in the request, it means that the request was authenticated with appkey and apptoken
   if (appkey) return
+
+  // If sellerId is in the request, it means that the request was from app seller
+  if (sellerId) return
 
   // if appkey doesn't exist, we need a UserProfile
   if (!requesterUser) {

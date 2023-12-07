@@ -24,6 +24,7 @@ type OrderToReturnSummary {
   clientProfileData: ClientProfileData!
   shippingData: ShippingData!
   paymentData: PaymentData!
+  availableAmountsToRefund: AvailableAmountsToRefund
 }
 
 type Pagination {

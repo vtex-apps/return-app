@@ -133,6 +133,9 @@ export const CreateReturnRequest = (props: any) => {
                 shippingData={data.orderToReturnSummary.shippingData}
                 showHighlightedMessage={enableHighlightFormMessage ?? false}
                 isAdmin
+                availableAmountsToRefund={
+                  data.orderToReturnSummary.availableAmountsToRefund
+                }
               />
             </>
           ) : null}

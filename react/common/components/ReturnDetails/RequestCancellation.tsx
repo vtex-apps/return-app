@@ -47,15 +47,9 @@ const RequestCancellation = () => {
 
   const { status, id } = data.returnRequestDetails
 
-  const isDisabled = ['denied', 'canceled'].includes(status)
+  const isDisabled = ['amountRefunded', 'denied', 'canceled'].includes(status)
 
-  if (isDisabled) {
-    return (
-      <Button variation="danger" size="small" disabled>
-        <FormattedMessage id="return-app.return-request-details.cancellation.cta" />
-      </Button>
-    )
-  }
+  if (isDisabled) return null
 
   const isAdmin = domain === 'admin'
 

@@ -38,6 +38,7 @@ type ReturnOption {
   enableProportionalShippingValue: Boolean
   enableSelectItemCondition: Boolean
   enableHighlightFormMessage: Boolean
+  enableGoodwill: Boolean
 }
 
 input ReturnAppSettingsInput {
@@ -80,4 +81,5 @@ input ReturnOptionInput {
   enableProportionalShippingValue: Boolean
   enableSelectItemCondition: Boolean
   enableHighlightFormMessage: Boolean
+  enableGoodwill: Boolean
 }

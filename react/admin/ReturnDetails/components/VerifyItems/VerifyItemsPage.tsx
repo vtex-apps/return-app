@@ -50,6 +50,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
     items = [],
     refundableAmountTotals = [],
     cultureInfoData,
+    availableAmountsToRefund: { remainingRefundableShippingCost },
   } = data?.returnRequestDetails
 
   const handleItemChanges = ({
@@ -106,7 +107,9 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
   }
 
   const refundableShipping =
-    refundableAmountTotals.find(({ id }) => id === 'shipping')?.value ?? 0
+    remainingRefundableShippingCost ??
+    refundableAmountTotals.find(({ id }) => id === 'shipping')?.value ??
+    0
 
   const totalRefundItems = items.reduce((total, item) => {
     const { orderItemIndex, sellingPrice, tax } = item

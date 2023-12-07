@@ -1,5 +1,3 @@
-import { ForbiddenError } from '@vtex/api'
-
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestFilters,
@@ -78,12 +76,6 @@ export const returnSettingsListService = async (
   // When the user is not admin or the request is coming from the store, we need to apply the user filter to get the right requests
   const requireFilterByUser =
     !userIsAdmin || vtexProduct === 'store' || role === 'store-user'
-
-  const hasUserIdOrEmail = Boolean(userId || userEmail)
-
-  if (requireFilterByUser && !hasUserIdOrEmail) {
-    throw new ForbiddenError('Missing params to filter by store user')
-  }
 
   const adjustedFilter = requireFilterByUser
     ? { ...filter, userId, userEmail }

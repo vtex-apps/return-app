@@ -346,5 +346,14 @@
   "store/return-app.return-order-details.error.unknown": "Something failed. Please try again.",
   "return-app.return-request-list.table-filters.export-returns": "EXPORT",
   "admin/return-app.settings.section.general-options.enable-highlight-form-message.label": "Enable a customizable message in return forms",
-  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "When enabled, on top of the form that's used to fill the user personal data, a message will be displayed. Customizable via \"Messages\""
+  "admin/return-app.settings.section.general-options.enable-highlight-form-message.description": "When enabled, on top of the form that's used to fill the user personal data, a message will be displayed. Customizable via \"Messages\"",
+  "admin/return-app.settings.section.general-options.enable-goodwill.label": "Enable Goodwill Refund",
+  "admin/return-app.settings.section.general-options.enable-goodwill.description": "When enabled, you can make a goodwill refund via REST API",
+  "return-app.return-request-details.available-amounts.header": "Available Amounts",
+  "return-app.return-request-details.available-amounts.total-order": "Total Order",
+  "return-app.return-request-details.available-amounts.remaining-amount": "Remaining Amount",
+  "return-app.return-request-details.available-amounts.amount-to-refund": "Amount to Refund in process",
+  "return-app.return-request-details.available-amounts.total-refunded": "Total Refunded",
+  "return-app.return-request-details.available-amounts.total-shipping-refunded": "Total Shipping Refunded",
+  "admin/return-app.return-request-details.refund-amount.button": "Refund Amount"
 }

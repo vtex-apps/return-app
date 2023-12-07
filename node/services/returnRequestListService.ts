@@ -1,5 +1,3 @@
-import { ForbiddenError } from '@vtex/api'
-
 import type {
   QueryReturnRequestListArgs,
   ReturnRequestFilters,
@@ -77,7 +75,6 @@ export const returnRequestListService = async (
     request: { header },
     state: { userProfile, appkey },
   } = ctx
-
   const { page, perPage, filter } = args
   const {
     userId: userIdProfile,
@@ -103,12 +100,6 @@ export const returnRequestListService = async (
   // When the user is not admin or the request is coming from the store, we need to apply the user filter to get the right requests
   const requireFilterByUser =
     !userIsAdmin || vtexProduct === 'store' || role === 'store-user'
-
-  const hasUserIdOrEmail = Boolean(userId || userEmail)
-
-  if (requireFilterByUser && !hasUserIdOrEmail) {
-    throw new ForbiddenError('Missing params to filter by store user')
-  }
 
   const removeBlankSpace = (object: any) => {
     if (typeof object === 'string') {
@@ -141,6 +132,7 @@ export const returnRequestListService = async (
         'customerProfileData',
         'items',
         'logisticsInfo',
+        'refundableAmount',
       ]
 
   const rmaSearchResult = await returnRequestClient.searchRaw(

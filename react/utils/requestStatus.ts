@@ -8,9 +8,9 @@ import type {
 
 const statusSequence: Status[] = [
   'new',
-  'processing',
-  'pickedUpFromClient',
-  'pendingVerification',
+  // 'processing',
+  // 'pickedUpFromClient',
+  // 'pendingVerification',
   'packageVerified',
   'amountRefunded',
 ]
