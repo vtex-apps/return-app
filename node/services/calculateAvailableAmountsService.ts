@@ -89,7 +89,6 @@ const actionRoute = (
       }
 
       totalRefunded += Number(amountRefunded)
-
       refundDateToUpdate = {
         ...refundData,
         totalRefunded,
@@ -158,7 +157,7 @@ const actionRoute = (
           id: order.orderId,
           orderID: order.orderId,
           initialInvoicedAmount: order.value,
-          totalRefunded: amountRefunded,
+          totalRefunded: Number(amountRefunded),
           amountToBeRefundedInProcess: 0,
           remainingRefundableAmount: order.value - amountRefunded,
           lastUpdated: new Date(),

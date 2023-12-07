@@ -48,6 +48,10 @@
     "ping": {
       "path": "/_v/return-app/ping",
       "public": true
+    },
+    "invoice": {
+      "path": "/_v/return-app/invoice/:orderId",
+      "public": true
     }
   },
   "events": {
