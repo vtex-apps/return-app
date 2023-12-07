@@ -14,6 +14,7 @@ export const getCustomerEmail = (
     userProfile,
     appkey,
     inputEmail,
+    sellerId
   }: {
     userProfile?: UserProfile
     appkey?: string
@@ -21,7 +22,8 @@ export const getCustomerEmail = (
      * Email sent via args, either via GraphQL or request body in REST
      * @type {string}
      */
-    inputEmail?: string | null
+    inputEmail?: string | null,
+    sellerId?: string
   },
   {
     logger,
@@ -34,6 +36,9 @@ export const getCustomerEmail = (
 
   // when the requester is the owner of the order, we can use the email parsed from the session cookie
   if (userProfile && requesterIsStoreUser) return userProfile.email
+
+  // when the requester is to seller, we can use the email session
+  if(sellerId) return String(inputEmail)
 
   // Case: Request made by an admin user for a store user (e.g. via GraphQL IDE or endpoint using auth cookie)
   if (userProfile && userProfile.role === 'admin' && !requesterIsStoreUser) {

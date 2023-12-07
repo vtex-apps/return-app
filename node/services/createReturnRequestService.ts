@@ -28,6 +28,7 @@ export const createReturnRequestService = async (
   args: ReturnRequestInput
 ): Promise<ReturnRequestCreated> => {
   const {
+    header,
     clients: {
       oms,
       returnRequest: returnRequestClient,
@@ -39,6 +40,7 @@ export const createReturnRequestService = async (
     vtex: { logger },
   } = ctx
 
+  let { sellerId } = ctx.state
   const {
     orderId,
     sellerName,
@@ -50,10 +52,6 @@ export const createReturnRequestService = async (
     locale,
   } = args
 
-  if (!appkey && !userProfile) {
-    throw new ResolverError('Missing appkey or userProfile')
-  }
-
   const { firstName, lastName, email } = userProfile ?? {}
 
   const submittedByNameOrEmail =
@@ -61,7 +59,8 @@ export const createReturnRequestService = async (
 
   // If request was validated using appkey and apptoken, we assign the appkey as a sender
   // Otherwise, we try to use requester name. Email is the last resort.
-  const submittedBy = appkey ?? submittedByNameOrEmail
+  sellerId = sellerId ?? header['x-vtex-caller'] as string | undefined
+  const submittedBy = appkey ?? submittedByNameOrEmail ?? sellerId
 
   if (!submittedBy) {
     throw new ResolverError(
@@ -137,6 +136,7 @@ export const createReturnRequestService = async (
     requesterUser: userProfile,
     clientProfile: clientProfileData,
     appkey,
+    sellerId
   })
 
   canOrderBeReturned({
@@ -214,6 +214,7 @@ export const createReturnRequestService = async (
       userProfile,
       appkey,
       inputEmail,
+      sellerId
     },
     {
       logger,

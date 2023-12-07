@@ -16,10 +16,13 @@ export const createReturnRequestSellerService = async (
   args: any
 ): Promise<ReturnRequestCreated> => {
   const {
+    header,
     clients: { oms, returnRequest: returnRequestClient, appSettings, mail },
     state: { userProfile, appkey },
     vtex: { logger },
   } = ctx
+
+  let { sellerId } = ctx.state
 
   const {
     orderId,
@@ -40,10 +43,6 @@ export const createReturnRequestSellerService = async (
     locale,
   } = args
 
-  if (!appkey && !userProfile) {
-    throw new ResolverError('Missing appkey or userProfile')
-  }
-
   const { firstName, lastName, email } = userProfile ?? {}
 
   const submittedByNameOrEmail =
@@ -51,7 +50,8 @@ export const createReturnRequestSellerService = async (
 
   // If request was validated using appkey and apptoken, we assign the appkey as a sender
   // Otherwise, we try to use requester name. Email is the last resort.
-  const submittedBy = appkey ?? submittedByNameOrEmail
+  sellerId = sellerId ?? header['x-vtex-caller'] as string | undefined
+  const submittedBy = appkey ?? submittedByNameOrEmail ?? sellerId
 
   if (!submittedBy) {
     throw new ResolverError(
@@ -108,9 +108,10 @@ export const createReturnRequestSellerService = async (
   } = searchRMA
 
   isUserAllowed({
-    requesterUser: userProfile,
+    requesterUser: userProfile ,
     clientProfile: clientProfileData,
     appkey,
+    sellerId
   })
 
   const currentSequenceNumber = `${sequence}-${total + 1}`
@@ -124,6 +125,7 @@ export const createReturnRequestSellerService = async (
       userProfile,
       appkey,
       inputEmail,
+      sellerId
     },
     {
       logger,

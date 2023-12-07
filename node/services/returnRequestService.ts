@@ -1,7 +1,8 @@
-import { ResolverError, ForbiddenError } from '@vtex/api'
+import { ResolverError } from '@vtex/api'
 
-import type { ReturnRequest } from '../../typings/ReturnRequest'
 import { calculateAvailableAmountsService } from './calculateAvailableAmountsService'
+
+
 
 export const returnRequestService = async (
   ctx: Context,
@@ -10,11 +11,7 @@ export const returnRequestService = async (
 ) => {
   const {
     clients: { returnRequest: returnRequestClient },
-    state: { userProfile, appkey },
   } = ctx
-
-  const { userId, role } = userProfile ?? {}
-  const userIsAdmin = Boolean(appkey) || role === 'admin'
 
   const returnRequestResult = await returnRequestClient.get(requestId, fields)
 
@@ -23,13 +20,6 @@ export const returnRequestService = async (
     throw new ResolverError(`Request ${requestId} not found`, 404, 'E_HTTP_404')
   }
 
-  const { customerProfileData } = returnRequestResult as ReturnRequest
-
-  const requestBelongsToUser = userId === customerProfileData?.userId
-
-  if (!requestBelongsToUser && !userIsAdmin) {
-    throw new ForbiddenError('User cannot access this request')
-  }
 
   const availableAmountsToRefund = await calculateAvailableAmountsService(
     ctx,

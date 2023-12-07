@@ -1,6 +1,5 @@
 import {
   ResolverError,
-  ForbiddenError,
   NotFoundError,
   UserInputError,
 } from '@vtex/api'
@@ -92,6 +91,7 @@ export const updateRequestStatusService = async (
   args: MutationUpdateReturnRequestStatusArgs
 ): Promise<ReturnRequest> => {
   const {
+    header,
     state: { userProfile, appkey },
     clients: {
       returnRequest: returnRequestClient,
@@ -101,16 +101,17 @@ export const updateRequestStatusService = async (
     },
     vtex: { logger },
   } = ctx
-
+  let { sellerId } = ctx.state
   const { status, comment, refundData, requestId, sellerName } = args
 
-  const { role, firstName, lastName, email, userId } = userProfile ?? {}
+  const { firstName, lastName, email } = userProfile ?? {}
 
   const requestDate = new Date().toISOString()
   const submittedByNameOrEmail =
-    firstName || lastName ? `${firstName} ${lastName}` : email
+  firstName || lastName ? `${firstName} ${lastName}` : email
 
-  const submittedBy = appkey ?? submittedByNameOrEmail
+  sellerId = sellerId ?? header['x-vtex-caller'] as string | undefined
+  const submittedBy = appkey ?? submittedByNameOrEmail ?? sellerId
 
   if (!submittedBy) {
     throw new ResolverError(
@@ -124,16 +125,6 @@ export const updateRequestStatusService = async (
 
   if (!returnRequest) {
     throw new NotFoundError(`Request ${requestId} not found`)
-  }
-
-  const userIsAdmin = Boolean(appkey) || role === 'admin'
-
-  const belongsToStoreUser =
-    returnRequest.customerProfileData.userId === userId &&
-    returnRequest.status === 'new'
-
-  if (!userIsAdmin && !belongsToStoreUser) {
-    throw new ForbiddenError('Not authorized')
   }
 
   validateStatusUpdate(status, returnRequest.status as Status)
@@ -185,6 +176,51 @@ export const updateRequestStatusService = async (
       : returnRequest.refundData
 
   let availableAmountsToRefund
+  let updatedRequest
+  try {
+    const refundReturn = await handleRefund({
+      currentStatus: requestStatus,
+      previousStatus: returnRequest.status,
+      refundPaymentData: returnRequest.refundPaymentData ?? {},
+      orderId: returnRequest.orderId as string,
+      createdAt: requestDate,
+      refundInvoice,
+      userEmail: returnRequest.customerProfileData?.email as string,
+      clients: {
+        omsClient: oms,
+        giftCardClient,
+      },
+    })
+
+    const giftCard = refundReturn?.giftCard
+
+    updatedRequest = {
+      ...formatRequestToPartialUpdate(returnRequest),
+      sellerName: sellerName ?? undefined,
+      status: requestStatus,
+      refundStatusData,
+      refundData: refundInvoice
+        ? { ...refundInvoice, ...(giftCard ? { giftCard } : null) }
+        : null,
+    }
+    await returnRequestClient.update(requestId, updatedRequest)
+  } catch (error) {
+    console.error('error: ', error)
+    const mdValidationErrors = error?.response?.data?.errors[0]?.errors
+
+    const errorMessageString = mdValidationErrors
+      ? JSON.stringify(
+          {
+            message: 'Schema Validation error',
+            errors: mdValidationErrors,
+          },
+          null,
+          2
+        )
+      : error.message
+
+    throw new ResolverError(errorMessageString, error.response?.status || 500)
+  }
 
   try {
     if (requestStatus === 'amountRefunded' && refundInvoice) {
@@ -221,52 +257,7 @@ export const updateRequestStatusService = async (
     throw new Error("Can't calculate available amounts to refund")
   }
 
-  const refundReturn = await handleRefund({
-    currentStatus: requestStatus,
-    previousStatus: returnRequest.status,
-    refundPaymentData: returnRequest.refundPaymentData ?? {},
-    orderId: returnRequest.orderId as string,
-    createdAt: requestDate,
-    refundInvoice,
-    userEmail: returnRequest.customerProfileData?.email as string,
-    clients: {
-      omsClient: oms,
-      giftCardClient,
-    },
-  })
-
-  const giftCard = refundReturn?.giftCard
-
-  const updatedRequest = {
-    ...formatRequestToPartialUpdate(returnRequest),
-    sellerName: sellerName ?? undefined,
-    status: requestStatus,
-    refundStatusData,
-    refundData: refundInvoice
-      ? { ...refundInvoice, ...(giftCard ? { giftCard } : null) }
-      : null,
-  }
-
-  try {
-    await returnRequestClient.update(requestId, updatedRequest)
-  } catch (error) {
-    console.error('error: ', error)
-    const mdValidationErrors = error?.response?.data?.errors[0]?.errors
-
-    const errorMessageString = mdValidationErrors
-      ? JSON.stringify(
-          {
-            message: 'Schema Validation error',
-            errors: mdValidationErrors,
-          },
-          null,
-          2
-        )
-      : error.message
-
-    throw new ResolverError(errorMessageString, error.response?.status || 500)
-  }
-
+  console.log("availableAmountsToRefund",availableAmountsToRefund)
   const { cultureInfoData } = updatedRequest
 
   // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
