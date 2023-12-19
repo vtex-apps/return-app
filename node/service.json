@@ -11,7 +11,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
@@ -19,32 +19,46 @@
         }
       ]
     },
+    "_returnRequests": {
+      "path": "/_v/return-request",
+      "public": true
+    },
     "returnRequest": {
       "path": "/_v/return-request/:requestId",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["put","get"],
+          "actions": ["put", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_returnRequest": {
+      "path": "/_v/return-request/:requestId",
+      "public": true
+    },
     "preRefund": {
       "path": "/_v/return-request/prerefund",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_preRefund": {
+      "path": "/_v/return-request/prerefund",
+      "public": true
+    },
     "exportRequests": {
       "path": "/_v/return-request/export",
       "public": true
@@ -55,78 +69,108 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_goodwill": {
+      "path": "/_v/goodwill/*id",
+      "public": true
+    },
     "settings": {
       "path": "/_v/returns/settings",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get","put"],
+          "actions": ["post", "get", "put"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_settings": {
+      "path": "/_v/returns/settings",
+      "public": true
+    },
     "sellerSetting": {
       "path": "/_v/returns/seller/settings",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_sellerSetting": {
+      "path": "/_v/returns/seller/settings",
+      "public": true
+    },
     "sellerSettings": {
       "path": "/_v/returns/seller/settings/:sellerId",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_sellerSettings": {
+      "path": "/_v/returns/seller/settings/:sellerId",
+      "public": true
+    },
     "orderList": {
       "path": "/_v/returns/seller/orderList",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_orderList": {
+      "path": "/_v/returns/seller/orderList",
+      "public": true
+    },
     "giftcard": {
       "path": "/_v/returns/seller/giftcard",
       "public": false,
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post","get"],
+          "actions": ["post", "get"],
           "principals": [
             "vrn:apps:*:*:*:app/*.return-app-sellers@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]    },
+      ]
+    },
+    "_giftcard": {
+      "path": "/_v/returns/seller/giftcard",
+      "public": true
+    },
     "ping": {
       "path": "/_v/return-app/ping",
       "public": true
