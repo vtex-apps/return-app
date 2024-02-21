@@ -309,7 +309,8 @@
     "customerProfileData",
     "status",
     "sequenceNumber",
-    "dateSubmitted"
+    "dateSubmitted",
+    "items"
   ],
   "v-immediate-indexing": true
 }

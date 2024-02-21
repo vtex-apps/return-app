@@ -18,6 +18,8 @@ export async function auth(ctx: Context, next: () => Promise<void>) {
     if (authenticatedUser) {
       const isAdmin = await sphinx.isAdmin(authenticatedUser.user)
 
+      // user when coming from another account: vrn--vtexsphinx--aws-us-east-1--powerplanet--filarmamvp--link_vtex.return-app@3.5.0
+      // maybe use it to get the seller name.
       const { user, userId } = authenticatedUser
 
       state.userProfile = {

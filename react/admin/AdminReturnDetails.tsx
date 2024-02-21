@@ -15,7 +15,7 @@ export const AdminReturnDetails = ({ params }: CustomRouteProps) => {
   return (
     <AlertProvider>
       <ReturnDetailsProvider requestId={params.id}>
-        <UpdateRequestStatusProvider>
+        <UpdateRequestStatusProvider requestId={params.id}>
           <ReturnDetailsContainer />
         </UpdateRequestStatusProvider>
       </ReturnDetailsProvider>
