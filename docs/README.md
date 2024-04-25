@@ -1,5 +1,10 @@
 # Return App V3
 
+##  ⚠️ Maintenance ⚠️
+*Starting June 1st 2023, this application will no longer be maintained by VTEX.*
+
+---
+
 ## Description
 
 The **Return App** gives merchants the option to allow customers to request a return for their items and it gives them the ability to manage the Return Request Process on their store.
