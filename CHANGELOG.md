@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- English translation (changing Tax to Surcharge to better reflect actual functionality).
+
 ## [3.10.2] - 2024-04-25
 
 ## [3.10.1] - 2023-06-28
