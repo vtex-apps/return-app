@@ -45,7 +45,7 @@ const RequestCancellation = () => {
 
   if (!data) return null
 
-  const { status, id } = data.returnRequestDetails
+  const { status } = data.returnRequestDetails
 
   const isDisabled = ['denied', 'cancelled'].includes(status)
 
@@ -76,7 +76,6 @@ const RequestCancellation = () => {
     }
 
     handleStatusUpdate({
-      id,
       status: 'cancelled',
       cleanUp: () => {
         onClose()
