@@ -1,0 +1,27 @@
+query storeAppSettings {
+  returnAppSettings @context(provider: "vtex.return-app") {
+    termsUrl
+    customReturnReasons {
+      reason
+      maxDays
+      translations {
+        locale
+        translation
+      }
+    }
+    paymentOptions {
+      enablePaymentMethodSelection
+      allowedPaymentTypes {
+        bank
+        card
+        giftCard
+      }
+    }
+    options {
+      enableOtherOptionSelection
+      enablePickupPoints
+      enableSelectItemCondition
+      enableHighlightFormMessage
+    }
+  }
+}

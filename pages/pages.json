@@ -1,0 +1,10 @@
+{
+  "extensions": {
+    "my-account-portal/routes/vtex.return-app": {
+      "component": "ExtensionRouter"
+    },
+    "my-account-portal/menu-links-after/vtex.return-app": {
+      "component": "ExtensionLinks"
+    }
+  }
+}

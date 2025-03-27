@@ -1,0 +1,315 @@
+{
+  "properties": {
+    "orderId": {
+      "type": "string"
+    },
+    "refundableAmount": {
+      "type": "integer"
+    },
+    "sequenceNumber": {
+      "type": "string"
+    },
+    "status": { "$ref": "#/$defs/status" },
+    "refundableAmountTotals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": ["items", "shipping", "tax"]
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": ["id", "value"]
+      }
+    },
+    "customerProfileData": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phoneNumber": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["userId", "name", "phoneNumber", "email"]
+    },
+    "pickupReturnData": {
+      "type": "object",
+      "properties": {
+        "addressId": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        },
+        "addressType": {
+          "type": "string",
+          "enum": ["PICKUP_POINT", "CUSTOMER_ADDRESS"]
+        },
+        "returnLabel": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "addressId",
+        "address",
+        "city",
+        "state",
+        "country",
+        "zipCode",
+        "addressType"
+      ]
+    },
+    "refundPaymentData": {
+      "type": "object",
+      "properties": {
+        "refundPaymentMethod": {
+          "type": "string",
+          "enum": ["bank", "card", "giftCard", "sameAsPurchase"]
+        },
+        "iban": {
+          "type": ["string", "null"]
+        },
+        "accountHolderName": {
+          "type": ["string", "null"]
+        },
+        "automaticallyRefundPaymentMethod": {
+          "type": ["boolean", "null"]
+        }
+      },
+      "required": ["refundPaymentMethod"]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "orderItemIndex": { "type": "integer" },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "localizedName": { "type": ["string", "null"] },
+          "sellingPrice": { "type": "integer" },
+          "tax": { "type": "integer" },
+          "quantity": { "type": "integer" },
+          "imageUrl": { "type": "string" },
+          "unitMultiplier": { "type": "number" },
+          "sellerId": { "type": "string" },
+          "sellerName": { "type": "string" },
+          "productId": { "type": "string" },
+          "refId": { "type": "string" },
+          "returnReason": {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "string",
+                "required": true
+              },
+              "otherReason": {
+                "type": ["string", "null"]
+              }
+            },
+            "required": ["reason"]
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "unspecified",
+              "newWithBox",
+              "newWithoutBox",
+              "usedWithBox",
+              "usedWithoutBox"
+            ]
+          }
+        },
+        "required": [
+          "orderItemIndex",
+          "id",
+          "name",
+          "sellingPrice",
+          "tax",
+          "quantity",
+          "imageUrl",
+          "unitMultiplier",
+          "sellerId",
+          "productId",
+          "refId",
+          "returnReason",
+          "condition"
+        ]
+      }
+    },
+    "dateSubmitted": { "type": "string", "format": "date-time" },
+    "refundData": {
+      "type": ["object", "null"],
+      "properties": {
+        "invoiceNumber": { "type": "string" },
+        "invoiceValue": { "type": "integer" },
+        "refundedItemsValue": { "type": "integer" },
+        "refundedShippingValue": { "type": "integer" },
+        "giftCard": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "redemptionCode": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "redemptionCode"]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "orderItemIndex": { "type": "integer" },
+              "id": { "type": "string" },
+              "price": { "type": "integer" },
+              "quantity": { "type": "integer" },
+              "restockFee": { "type": "integer" }
+            },
+            "required": [
+              "orderItemIndex",
+              "id",
+              "price",
+              "quantity",
+              "restockFee"
+            ]
+          }
+        }
+      },
+      "required": [
+        "invoiceNumber",
+        "invoiceValue",
+        "refundedItemsValue",
+        "items"
+      ]
+    },
+    "refundStatusData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": { "$ref": "#/$defs/status" },
+          "submittedBy": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "comment": { "type": "string" },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "role": {
+                  "type": "string",
+
+                  "enum": ["adminUser", "storeUser"]
+                },
+                "submittedBy": { "type": "string" },
+                "visibleForCustomer": { "type": "boolean" }
+              },
+              "required": [
+                "comment",
+                "createdAt",
+                "role",
+                "submittedBy",
+                "visibleForCustomer"
+              ]
+            }
+          }
+        },
+        "required": ["status", "submittedBy", "createdAt", "comments"]
+      }
+    },
+    "cultureInfoData": {
+      "type": "object",
+      "properties": {
+        "currencyCode": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        }
+      },
+      "required": ["currencyCode", "locale"]
+    }
+  },
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "processing",
+        "pickedUpFromClient",
+        "pendingVerification",
+        "packageVerified",
+        "amountRefunded",
+        "denied",
+        "cancelled"
+      ]
+    }
+  },
+  "required": [
+    "orderId",
+    "refundableAmount",
+    "sequenceNumber",
+    "status",
+    "refundableAmountTotals",
+    "customerProfileData",
+    "pickupReturnData",
+    "refundPaymentData",
+    "items",
+    "refundData",
+    "refundStatusData",
+    "dateSubmitted",
+    "cultureInfoData"
+  ],
+  "v-cache": false,
+  "v-default-fields": [
+    "id",
+    "createdIn",
+    "orderId",
+    "sequenceNumber",
+    "dateSubmitted",
+    "status"
+  ],
+  "v-indexed": [
+    "id",
+    "createdIn",
+    "orderId",
+    "customerProfileData",
+    "status",
+    "sequenceNumber",
+    "dateSubmitted"
+  ],
+  "v-immediate-indexing": true
+}

@@ -1,0 +1,41 @@
+query orderToReturnSummary($orderId: ID!) {
+  orderToReturnSummary(orderId: $orderId)
+    @context(provider: "vtex.return-app") {
+    orderId
+    creationDate
+    invoicedItems {
+      id
+      productId
+      quantity
+      name
+      localizedName
+      imageUrl
+      orderItemIndex
+    }
+    processedItems {
+      itemIndex
+      quantity
+    }
+    excludedItems {
+      itemIndex
+    }
+    clientProfileData {
+      name
+      email
+      phoneNumber
+    }
+    shippingData {
+      addressId
+      address
+      city
+      state
+      country
+      zipCode
+      addressType
+      geoCoordinates
+    }
+    paymentData {
+      canRefundCard
+    }
+  }
+}

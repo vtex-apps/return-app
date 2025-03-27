@@ -1,0 +1,6 @@
+mutation CreateReturn($returnRequest: ReturnRequestInput!) {
+  createReturnRequest(returnRequest: $returnRequest)
+    @context(provider: "vtex.return-app") {
+    returnRequestId
+  }
+}

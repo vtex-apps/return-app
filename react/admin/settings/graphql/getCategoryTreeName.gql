@@ -1,0 +1,6 @@
+query categoryTreeName {
+  categoryTreeName @context(provider: "vtex.return-app") {
+    id
+    name
+  }
+}

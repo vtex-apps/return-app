@@ -1,0 +1,12 @@
+yarn-error.log
+node_modules/
+docs/_book/
+.tmp
+.idea
+npm-debug.log
+.build/
+lib
+*.orig
+react/package-lock.json
+package-lock.json
+.vscode

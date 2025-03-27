@@ -1,0 +1,79 @@
+fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
+  id
+  status
+  orderId
+  refundableAmount
+  items {
+    orderItemIndex
+    name
+    localizedName
+    sellingPrice
+    tax
+    quantity
+    imageUrl
+    sellerName
+    refId
+    condition
+    returnReason {
+      reason
+      otherReason
+    }
+  }
+  refundableAmountTotals {
+    id
+    value
+  }
+  refundData {
+    refundedShippingValue
+    invoiceValue
+    items {
+      orderItemIndex
+      quantity
+      price
+      restockFee
+    }
+  }
+  customerProfileData {
+    name
+    email
+    phoneNumber
+  }
+  pickupReturnData {
+    country
+    city
+    address
+    state
+    zipCode
+    addressType
+  }
+  refundPaymentData {
+    refundPaymentMethod
+    iban
+    accountHolderName
+    automaticallyRefundPaymentMethod
+  }
+  refundData {
+    invoiceNumber
+    invoiceValue
+    giftCard {
+      id
+      redemptionCode
+    }
+  }
+  refundStatusData {
+    status
+    submittedBy
+    createdAt
+    comments {
+      comment
+      createdAt
+      visibleForCustomer
+      submittedBy
+      role
+    }
+  }
+  cultureInfoData {
+    currencyCode
+    locale
+  }
+}

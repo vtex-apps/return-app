@@ -1,0 +1,8 @@
+{
+  "my-account-link.my-returns-link": {
+    "component": "StoreMyReturnsLink"
+  },
+  "my-account-link.my-returns-app": {
+    "component": "StoreReturnApp"
+  }
+}

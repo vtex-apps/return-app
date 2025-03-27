@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "./typings/*.d.ts",
+    "./**/*.tsx",
+    "./**/*.ts"
+  ],
+  "extends": "@vtex/tsconfig"
+}

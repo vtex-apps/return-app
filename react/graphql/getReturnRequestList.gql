@@ -1,0 +1,22 @@
+query getReturnRequestList($filter: ReturnRequestFilters, $page: Int!) {
+  returnRequestList(filter: $filter, page: $page)
+    @context(provider: "vtex.return-app") {
+    list {
+      id
+      sequenceNumber
+      createdIn
+      status
+      orderId
+      items {
+        id
+        imageUrl
+      }
+    }
+    paging {
+      total
+      pages
+      currentPage
+      perPage
+    }
+  }
+}

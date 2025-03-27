@@ -1,0 +1,68 @@
+.status-icon {
+  padding-top: 3px;
+  padding-left: 3px;
+  margin-right: 20px;
+}
+
+.status-icon-not-visited {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #134cd8;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  padding-top: 3px;
+  padding-left: 3px;
+  background: #fff;
+  margin-right: 20px;
+  margin-left: 3px;
+}
+
+.status-icon-checked {
+  background: #134cd8;
+}
+
+.status-denied {
+  border: 1px solid red;
+  background: #f21515a1;
+}
+
+ul.status {
+  background-image: linear-gradient(gray 33%, rgba(255, 255, 255, 0) 0%);
+  background-position: left;
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+  list-style-type: none;
+  margin-left: 15px;
+  min-height: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+div.timeline:last-of-type ul.last-of {
+  background-image: none;
+}
+
+.return-itemsList-body tr {
+  border-bottom: 1px solid #e3e4e6;
+}
+
+.return-itemsList-body tr:last-child {
+  border-bottom: none;
+}
+
+.create-return-request__container .vtex-pageHeader__container {
+  padding: 0 0 2rem 0;
+}
+
+/* Based on https://github.com/vtex-apps/render-runtime/blob/ed5640d59e023f6cfa743b5aa58b654035b870cb/react/utils/withDevice.tsx#L29 */
+@media screen and (max-width: 639px) {
+  .return-detail__container .vtex-pageHeader__container {
+    padding: 0 0 2rem 0;
+  }
+
+  .return-detail__container .styleguide__box,
+  .create-return-request__container .styleguide__box {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,47 @@
+input ProductReturnedInput {
+  imageUrl: String!
+  skuId: String!
+  sku: String!
+  productId: String!
+  ean: String!
+  brandId: String!
+  brandName: String!
+  skuName: String!
+  unitPrice: Int!
+  quantity: Int!
+  goodProducts: Int!
+  reason: String!
+  reasonCode: String!
+  condition: String!
+}
+
+type ProductReturned {
+  id: ID!
+  createdIn: String!
+  refundId: String!
+  orderId: String!
+  userId: String!
+  imageUrl: String!
+  skuId: String!
+  sku: String!
+  productId: String!
+  ean: String!
+  brandId: String!
+  brandName: String!
+  skuName: String!
+  manufacturerCode: String!
+  unitPrice: Int!
+  quantity: Int!
+  totalPrice: Int!
+  goodProducts: Int!
+  reason: String!
+  reasonCode: String!
+  condition: String!
+  status: String!
+  dateSubmitted: String!
+  type: String!
+}
+
+type returnRequestCreated {
+  returnRequestId: String!
+}

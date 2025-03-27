@@ -1,0 +1,247 @@
+input ReturnRequestInput {
+  orderId: String!
+  items: [ReturnRequestItemInput!]!
+  customerProfileData: CustomerProfileDataInput!
+  pickupReturnData: PickupReturnDataInput!
+  refundPaymentData: RefundPaymentDataInput!
+  userComment: String
+  locale: String!
+}
+
+input ReturnRequestItemInput {
+  orderItemIndex: Int!
+  quantity: Int!
+  condition: ItemCondition
+  returnReason: ReturnReasonInput!
+}
+
+input ReturnReasonInput {
+  reason: String!
+  otherReason: String
+}
+
+enum ItemCondition {
+  unspecified
+  newWithBox
+  newWithoutBox
+  usedWithBox
+  usedWithoutBox
+}
+
+input CustomerProfileDataInput {
+  name: String!
+  """
+  email: If it is not provided, the email from session will be used. When calling from store front, it's ok not to pass it, but calling from GraphQL IDE or Postman, it's required.
+  """
+  email: String
+  phoneNumber: String!
+}
+
+input PickupReturnDataInput {
+  addressId: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  addressType: AddressType!
+}
+
+enum AddressType {
+  PICKUP_POINT
+  CUSTOMER_ADDRESS
+}
+
+input RefundPaymentDataInput {
+  refundPaymentMethod: RefundPaymentMethod!
+  iban: String
+  accountHolderName: String
+}
+
+enum RefundPaymentMethod {
+  bank
+  card
+  giftCard
+  sameAsPurchase
+}
+
+type ReturnRequestResponse {
+  id: ID!
+  orderId: String!
+  refundableAmount: Int!
+  sequenceNumber: String!
+  createdIn: String!
+  status: Status!
+  dateSubmitted: String!
+  userComment: String
+  refundableAmountTotals: [RefundableAmountTotal!]!
+  customerProfileData: CustomerProfileData!
+  pickupReturnData: PickupReturnData!
+  refundPaymentData: RefundPaymentData!
+  items: [ReturnRequestItem!]!
+  refundData: RefundData
+  refundStatusData: [RefundStatusData!]!
+  cultureInfoData: CultureInfoData!
+}
+
+enum Status {
+  new
+  processing
+  pickedUpFromClient
+  pendingVerification
+  packageVerified
+  amountRefunded
+  denied
+  cancelled
+}
+
+type CustomerProfileData {
+  userId: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+}
+
+type PickupReturnData {
+  addressId: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  addressType: AddressType!
+  returnLabel: String
+}
+
+type RefundPaymentData {
+  refundPaymentMethod: RefundPaymentMethod!
+  iban: String
+  accountHolderName: String
+  automaticallyRefundPaymentMethod: Boolean
+}
+
+type ReturnRequestItem {
+  orderItemIndex: Int!
+  quantity: Int!
+  condition: ItemCondition!
+  returnReason: ReturnReason!
+  """
+  id: SKU id
+  """
+  id: String!
+  sellingPrice: Int!
+  tax: Int!
+  name: String!
+  localizedName: String
+  imageUrl: String!
+  unitMultiplier: Float!
+  sellerId: String!
+  sellerName: String!
+  productId: String!
+  refId: String!
+}
+
+type ReturnReason {
+  reason: String!
+  otherReason: String
+}
+
+type RefundData {
+  invoiceNumber: String!
+  invoiceValue: Int!
+  refundedItemsValue: Int!
+  refundedShippingValue: Int!
+  giftCard: GiftCard
+  items: [RefundItem!]!
+}
+
+type GiftCard {
+  id: String!
+  redemptionCode: String!
+}
+
+type RefundItem {
+  orderItemIndex: Int!
+  quantity: Int!
+  restockFee: Int!
+  price: Int!
+}
+
+type RefundStatusData {
+  status: Status!
+  submittedBy: String
+  createdAt: String!
+  comments: [RefundStatusComment!]!
+}
+
+type RefundStatusComment {
+  comment: String!
+  createdAt: String!
+  role: UserRole!
+  visibleForCustomer: Boolean
+  submittedBy: String!
+}
+
+input ReturnRequestFilters {
+  status: Status
+  sequenceNumber: String
+  id: String
+  """
+  createdIn: It uses the field dateSubmitted in the return request schema to search for documents.
+  The field createdIn is auto generated when the document is created, not reflecting the real value for documents migrated from older versions.
+  """
+  createdIn: DateRangeInput
+  orderId: String
+  """
+  userId: If not passed, resolver will try to get it from cookie session
+  """
+  userId: String
+  userEmail: String
+}
+
+input DateRangeInput {
+  from: String!
+  to: String!
+}
+
+type ReturnRequestList {
+  list: [ReturnRequestResponse!]!
+  paging: Pagination!
+}
+
+input RefundDataInput {
+  items: [RefundItemInput!]!
+  refundedShippingValue: Int!
+}
+
+input RefundItemInput {
+  orderItemIndex: Int!
+  quantity: Int!
+  restockFee: Int!
+}
+
+input ReturnRequestCommentInput {
+  value: String!
+  visibleForCustomer: Boolean!
+}
+
+type RefundableAmountTotal {
+  id: RefundableAmountId!
+  value: Int!
+}
+
+enum RefundableAmountId {
+  items
+  shipping
+  tax
+}
+
+enum UserRole {
+  adminUser
+  storeUser
+}
+
+type CultureInfoData {
+  currencyCode: String!
+  locale: String!
+}

@@ -1,0 +1,45 @@
+type Query {
+  returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
+  categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
+  """
+  storeUserEmail: If not passed, resolver will try to parse it from session cookie.
+  """
+  ordersAvailableToReturn(
+    page: Int!
+    storeUserEmail: String
+  ): OrdersToReturnList
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  """
+  storeUserEmail: If not passed, resolver will try to parse it from session cookie.
+  """
+  orderToReturnSummary(
+    orderId: ID!
+    storeUserEmail: String
+  ): OrderToReturnSummary
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  returnRequest(requestId: ID!): ReturnRequestResponse
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  returnRequestList(
+    filter: ReturnRequestFilters
+    page: Int!
+    perPage: Int
+  ): ReturnRequestList
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
+}
+
+type Mutation {
+  createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
+    @withUserProfile
+  saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
+  updateReturnRequestStatus(
+    requestId: ID!
+    status: Status!
+    comment: ReturnRequestCommentInput
+    refundData: RefundDataInput
+  ): ReturnRequestResponse @withUserProfile
+}

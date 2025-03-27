@@ -1,0 +1,79 @@
+type ReturnAppSettings {
+  maxDays: Int!
+  excludedCategories: [String!]!
+  paymentOptions: PaymentOptions!
+  termsUrl: String!
+  customReturnReasons: [CustomReturnReason!]
+  options: ReturnOption
+}
+
+type PaymentOptions {
+  enablePaymentMethodSelection: Boolean
+  allowedPaymentTypes: PaymentType!
+  automaticallyRefundPaymentMethod: Boolean
+}
+
+type PaymentType {
+  bank: Boolean
+  card: Boolean
+  giftCard: Boolean
+}
+
+type CustomReturnReason {
+  reason: String!
+  maxDays: Int!
+  translations: [CustomReturnReasonTranslation!]
+}
+
+type CustomReturnReasonTranslation {
+  locale: String!
+  translation: String!
+}
+
+type ReturnOption {
+  enableOtherOptionSelection: Boolean
+  enablePickupPoints: Boolean
+  enableProportionalShippingValue: Boolean
+  enableSelectItemCondition: Boolean
+  enableHighlightFormMessage: Boolean
+}
+
+input ReturnAppSettingsInput {
+  maxDays: Int!
+  excludedCategories: [String!]!
+  paymentOptions: PaymentOptionsInput!
+  termsUrl: String!
+  customReturnReasons: [CustomReturnReasonInput!]
+  options: ReturnOptionInput
+}
+
+input PaymentOptionsInput {
+  enablePaymentMethodSelection: Boolean
+  allowedPaymentTypes: PaymentTypeInput!
+  automaticallyRefundPaymentMethod: Boolean
+}
+
+input PaymentTypeInput {
+  bank: Boolean
+  card: Boolean
+  giftCard: Boolean
+}
+
+input CustomReturnReasonInput {
+  reason: String!
+  maxDays: Int!
+  translations: [CustomReturnReasonTranslationInput!]
+}
+
+input CustomReturnReasonTranslationInput {
+  locale: String!
+  translation: String!
+}
+
+input ReturnOptionInput {
+  enableOtherOptionSelection: Boolean
+  enablePickupPoints: Boolean
+  enableProportionalShippingValue: Boolean
+  enableSelectItemCondition: Boolean
+  enableHighlightFormMessage: Boolean
+}

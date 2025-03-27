@@ -1,0 +1,4 @@
+mutation saveAppSettings($settings: ReturnAppSettingsInput!) {
+  saveReturnAppSettings(settings: $settings)
+    @context(provider: "vtex.return-app")
+}
