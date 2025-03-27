@@ -30,6 +30,7 @@ export const createReturnRequestService = async (
       appSettings,
       mail,
       catalogGQL,
+      events
     },
     state: { userProfile, appkey },
     vtex: { logger },
@@ -338,5 +339,6 @@ export const createReturnRequestService = async (
     })
   }
 
+  events.sendEvent('','return-app.createReturn', { returnRequestId: rmaDocument.DocumentId })
   return { returnRequestId: rmaDocument.DocumentId }
 }

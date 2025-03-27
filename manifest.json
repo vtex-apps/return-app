@@ -1,7 +1,7 @@
 {
   "vendor": "odp",
   "name": "return-app",
-  "version": "3.8.5",
+  "version": "3.8.6",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
