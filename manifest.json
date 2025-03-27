@@ -1,7 +1,7 @@
 {
   "vendor": "odp",
   "name": "return-app",
-  "version": "3.8.6",
+  "version": "3.8.7",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -34,7 +34,14 @@
       "name": "outbound-access",
       "attrs": {
         "host": "{{account}}.vtexcommercestable.com.br",
-        "path": "/api/*"
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "infra.io.vtex.com",
+        "path": "*"
       }
     },
     {
@@ -43,6 +50,12 @@
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/oms/pvt/orders/*"
       }
+    },
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
     },
     {
       "name": "vbase-read-write"
