@@ -261,6 +261,9 @@
         }
       },
       "required": ["currencyCode", "locale"]
+    },
+    "AdditionalInfo": {
+      "type": "string"
     }
   },
   "$defs": {
