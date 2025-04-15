@@ -6,7 +6,7 @@ input ReturnRequestInput {
   refundPaymentData: RefundPaymentDataInput!
   userComment: String
   locale: String!
-  AdditionalInfo: String
+  additionalInfo: String
 }
 
 input ReturnRequestItemInput {
@@ -75,7 +75,7 @@ type ReturnRequestResponse {
   status: Status!
   dateSubmitted: String!
   userComment: String
-  AdditionalInfo: String
+  additionalInfo: String
   refundableAmountTotals: [RefundableAmountTotal!]!
   customerProfileData: CustomerProfileData!
   pickupReturnData: PickupReturnData!

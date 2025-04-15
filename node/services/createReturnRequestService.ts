@@ -44,6 +44,7 @@ export const createReturnRequestService = async (
     refundPaymentData,
     userComment,
     locale,
+    additionalInfo,
   } = args
 
   if (!appkey && !userProfile) {
@@ -265,6 +266,7 @@ export const createReturnRequestService = async (
         currencyCode,
         locale,
       },
+      additionalInfo: additionalInfo ?? undefined,
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

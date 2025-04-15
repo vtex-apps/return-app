@@ -3,7 +3,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
   status
   orderId
   refundableAmount
-  AdditionalInfo
+  additionalInfo
   items {
     orderItemIndex
     name

@@ -16,7 +16,7 @@ export interface OrderDetailsState {
   pickupReturnData: PartialBy<PickupReturnDataInput, 'addressType'>
   refundPaymentData?: RefundPaymentDataInput
   userComment?: Maybe<string> | undefined
-  AdditionalInfo?: string
+  additionalInfo?: string
 }
 
 const initialPickupReturnData = {

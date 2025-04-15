@@ -262,7 +262,7 @@
       },
       "required": ["currencyCode", "locale"]
     },
-    "AdditionalInfo": {
+    "additionalInfo": {
       "type": "string"
     }
   },
