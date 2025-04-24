@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.9.2] - 2025-04-24
+
 ### Added
 - Success message for return request creation in English and Spanish language files
 - Return request creation functionality with forms for customer profile, pickup return, and refund payment
