@@ -342,5 +342,6 @@
   "admin/return-app.return-items.title": "Items",
   "admin/return-app.return-items.add": "Add",
   "admin/return-app.return-items.item": "Item {number}",
-  "admin/return-app.return-items.remove": "Remove"
+  "admin/return-app.return-items.remove": "Remove",
+  "admin/return-app.return-request-list.success-message": "Return request created successfully!"
 }

@@ -342,5 +342,6 @@
   "admin/return-app.return-items.title": "Ítems",
   "admin/return-app.return-items.add": "Agregar",
   "admin/return-app.return-items.item": "Ítem {number}",
-  "admin/return-app.return-items.remove": "Eliminar"
+  "admin/return-app.return-items.remove": "Eliminar",
+  "admin/return-app.return-request-list.success-message": "¡Solicitud de devolución creada con éxito!"
 }
