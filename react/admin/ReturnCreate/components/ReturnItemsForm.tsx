@@ -121,6 +121,9 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
                     currency: 'USD',
                   }).format(order.items[index].price / 100)}
                 </p>
+                <p>
+                  <strong>Quantity:</strong> {order.items[index].quantity}
+                </p>
               </div>
             </div>
           )}
