@@ -2,6 +2,7 @@
   "admin/return-app.navigation.label": "Returns",
   "navigation.labelRequests": "Requests",
   "admin/return-app.settings.navigation.label": "Returns Settings",
+  "admin/return-app.create.navigation.label": "Create Return",
   "admin/return-app.settings.max-days.label": "Max days:",
   "admin/return-app.settings.error.header": "Error loading settings",
   "admin/return-app.settings.error.description": "There was an error loading the application settings. Please try reloading the page.",
@@ -276,6 +277,8 @@
   "return-app-status.timeline.cancelled": "Cancelled",
   "admin/return-app.return-request-list.page-header.title": "Return Request List",
   "admin/return-app.return-request-list.page-header.subTitle": "All return requests created by store users. Click a request ID to see more.",
+  "admin/return-app.return-request-list.page-header.create-return": "Create Return",
+  "admin/return-app.return-request-list.page-header.create-return-description": "Create a new return request",
   "return-app.return-request-list.error.title": "Error loading list",
   "return-app.return-request-list.error.description": "An error occurred while loading the request list. Please try again.",
   "return-app.return-request-list.table.emptyState": "No results available",
@@ -335,5 +338,10 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Attention: This request's status will be set to CANCELLED.</p><p>This will notify the user via email and allow them to create a new return request with the cancelled request's items.</p><p>If that is not your intention, set the request as DENIED.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Sorry, it's not possible to cancel this request due to its current status.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Cancelling this request will allow the current items to be used in a new return request.</p><p>This action is irreversible.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Sorry, you need to contact the support team to cancel this request due to its current status.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Sorry, you need to contact the support team to cancel this request due to its current status.</p>",
+  "admin/return-app.return-items.title": "Items",
+  "admin/return-app.return-items.add": "Add",
+  "admin/return-app.return-items.item": "Item {number}",
+  "admin/return-app.return-items.remove": "Remove",
+  "admin/return-app.return-request-list.success-message": "Return request created successfully!"
 }

@@ -10,5 +10,9 @@
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
     "path": "/admin/app/returns/:id/details/"
+  },
+  "admin.app.return-create": {
+    "component": "AdminReturnCreate",
+    "path": "/admin/app/returns/create/"
   }
 }

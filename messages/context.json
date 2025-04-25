@@ -2,6 +2,7 @@
   "admin/return-app.navigation.label": "Returns",
   "navigation.labelRequests": "Requests",
   "admin/return-app.settings.navigation.label": "Returns Settings",
+  "admin/return-app.create.navigation.label": "Create Return",
   "admin/return-app.settings.max-days.label": "Max days:",
   "admin/return-app.settings.error.header": "Error loading settings",
   "admin/return-app.settings.error.description": "There was an error loading the application settings. Please try to reload the page.",
@@ -276,6 +277,8 @@
   "return-app-status.timeline.cancelled": "Cancelled",
   "admin/return-app.return-request-list.page-header.title": "App page header title",
   "admin/return-app.return-request-list.page-header.subTitle": "App page header subtitle",
+  "admin/return-app.return-request-list.page-header.create-return": "Create Return",
+  "admin/return-app.return-request-list.page-header.create-return-description": "Create a new return request",
   "return-app.return-request-list.error.title": "Title when the return request list has an error loading",
   "return-app.return-request-list.error.description": "Description of the error when the return request list fails to load",
   "return-app.return-request-list.table.emptyState": "Text for when no data is shown in the table",
@@ -335,5 +338,10 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "Text message for allowing a cancellation for admins",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "Text message for refusing a cancellation for admins",
   "return-app.return-request-details.cancellation.modal.storeAllow": "Text message for allowing a cancellation for store users",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "Text message for refusing a cancellation for store users"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "Text message for refusing a cancellation for store users",
+  "admin/return-app.return-items.title": "Items",
+  "admin/return-app.return-items.add": "Add",
+  "admin/return-app.return-items.item": "Item {number}",
+  "admin/return-app.return-items.remove": "Remove",
+  "admin/return-app.return-request-list.success-message": "Return request created successfully!"
 }

@@ -2,6 +2,7 @@
   "admin/return-app.navigation.label": "Devoluciones",
   "navigation.labelRequests": "Solicitudes",
   "admin/return-app.settings.navigation.label": "Configuración de devolución",
+  "admin/return-app.create.navigation.label": "Crear devolución",
   "admin/return-app.settings.max-days.label": "Max. días:",
   "admin/return-app.settings.error.header": "Error al cargar la configuración",
   "admin/return-app.settings.error.description": "Se produjo un error al cargar la configuración de la aplicación. Intenta recargar la página.",
@@ -276,6 +277,8 @@
   "return-app-status.timeline.cancelled": "Cancelado",
   "admin/return-app.return-request-list.page-header.title": "Lista de solicitudes de devolución",
   "admin/return-app.return-request-list.page-header.subTitle": "Todas las solicitudes de devolución creadas por los usuarios de la tienda. Haz clic en el ID de una solicitud para ver más.",
+  "admin/return-app.return-request-list.page-header.create-return": "Crear devolución",
+  "admin/return-app.return-request-list.page-header.create-return-description": "Crea una nueva solicitud de devolución",
   "return-app.return-request-list.error.title": "Error al cargar la lista",
   "return-app.return-request-list.error.description": "Se produjo un error al cargar la lista de solicitudes. Por favor, vuelve a intentarlo.",
   "return-app.return-request-list.table.emptyState": "No hay resultados disponibles",
@@ -335,5 +338,10 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Atención: El status de esta solicitud se establecerá como CANCELADA.</p><p>El usuario será notificado por correo electrónico y podrá crear una nueva solicitud de devolución con los elementos de la solicitud cancelada.</p><p>Si esa no es tu intención, define la solicitud como DENEGADA.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Lo sentimos, no se puede cancelar esta solicitud debido a su status actual.</p> <p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Cancelar esta solicitud permitirá utilizar los ítems actuales en una nueva solicitud de devolución.</p><p>Esta acción es irreversible.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Lo sentimos, debes ponerte en contacto con el equipo de soporte para cancelar esta solicitud debido a su status actual.</p> <p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Lo sentimos, debes ponerte en contacto con el equipo de soporte para cancelar esta solicitud debido a su status actual.</p> <p>",
+  "admin/return-app.return-items.title": "Ítems",
+  "admin/return-app.return-items.add": "Agregar",
+  "admin/return-app.return-items.item": "Ítem {number}",
+  "admin/return-app.return-items.remove": "Eliminar",
+  "admin/return-app.return-request-list.success-message": "¡Solicitud de devolución creada con éxito!"
 }
