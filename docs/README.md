@@ -104,7 +104,8 @@ with an example body in the form of:
         "phoneNumber": "123432122"
     },
     "userComment": "This is a test from API",
-    "locale": "pt-PT"
+    "locale": "pt-PT",
+    "additionalInfo": "Additional information for the return request"
 }
 ```
 
@@ -135,6 +136,7 @@ with an example body in the form of:
 | refundPaymentData accountHolderName   | `string` required when refundPaymentMethod is set as bank             | false      |
 | userComment                           | `string` comment to be added to the creation                          | false      |
 | locale                                | `string` locale for the customer to visualize the return              | true       |
+| additionalInfo                        | `string` additional information for the return request                | false      |
 
 A successful creation of a Return Request should return a status 201 with a response in the form of:
 
