@@ -2,6 +2,8 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Button, Dropdown, Input } from 'vtex.styleguide'
 
+import type { Order } from '../types/Order'
+
 interface ReturnItem {
   orderItemIndex: number
   quantity: number
@@ -15,6 +17,7 @@ interface ReturnItem {
 interface ReturnItemsFormProps {
   items: ReturnItem[]
   onChange: (items: ReturnItem[]) => void
+  order: Order | null
 }
 
 const ITEM_CONDITIONS = [
@@ -35,6 +38,7 @@ const RETURN_REASONS = [
 export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
   items,
   onChange,
+  order,
 }) => {
   const handleAddItem = () => {
     const newItem: ReturnItem = {
@@ -96,6 +100,33 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
 
       {items.map((item, index) => (
         <div key={index} className="mb5 pa4 ba b--muted-4 br3">
+          {order && (
+            <div className="items-center mb4 flex">
+              <img
+                src={order.items[index].imageUrl}
+                alt={order.items[index].name}
+                width={250}
+              />
+              <div className="ml4">
+                <p>
+                  <strong>SKU:</strong> {order.items[index].id}
+                </p>
+                <p>
+                  <strong>Name:</strong> {order.items[index].name}
+                </p>
+                <p>
+                  <strong>Price:</strong>{' '}
+                  {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(order.items[index].price / 100)}
+                </p>
+                <p>
+                  <strong>Quantity:</strong> {order.items[index].quantity}
+                </p>
+              </div>
+            </div>
+          )}
           <div className="flex justify-between items-center mb4">
             <h4 className="t-heading-4">
               <FormattedMessage
@@ -116,6 +147,7 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
             <Input
               label="Order Item Index"
               type="number"
+              disabled={!!order}
               value={item.orderItemIndex}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleItemChange(

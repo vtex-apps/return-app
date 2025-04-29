@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMutation } from 'react-apollo'
 
 import CREATE_RETURN_REQUEST from '../../graphql/createReturn.gql'
+import type { Order } from '../types/Order'
 
 interface ReturnItem {
   orderItemIndex: number
@@ -64,8 +65,14 @@ export const useReturnForm = () => {
   })
 
   const [loading, setLoading] = useState(false)
+  const [
+    loadingCompleteFormDataFromOrderId,
+    setLoadingCompleteFormDataFromOrderId,
+  ] = useState(false)
+
   const [error, setError] = useState<Error | null>(null)
   const [success, setSuccess] = useState(false)
+  const [order, setOrder] = useState<Order | null>(null)
 
   const [createReturnRequest] = useMutation(CREATE_RETURN_REQUEST)
 
@@ -73,6 +80,43 @@ export const useReturnForm = () => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
+    }))
+  }
+
+  const completeFormDataFromOrderId = async (orderId: string) => {
+    setLoadingCompleteFormDataFromOrderId(true)
+    const orderFromApi = await fetch(`/api/oms/pvt/orders/${orderId}`)
+    const orderData = (await orderFromApi.json()) as Order
+
+    setOrder(orderData)
+
+    setLoadingCompleteFormDataFromOrderId(false)
+
+    setFormData((prev) => ({
+      ...prev,
+      customerProfileData: {
+        name: `${orderData.clientProfileData.firstName} ${orderData.clientProfileData.lastName}`,
+        email: orderData.clientProfileData.email,
+        phoneNumber: orderData.clientProfileData.phone,
+      },
+      items: orderData.items.map((item, index) => ({
+        orderItemIndex: index,
+        quantity: item.quantity,
+        condition: '',
+        returnReason: {
+          reason: '',
+          otherReason: '',
+        },
+      })),
+      pickupReturnData: {
+        addressId: orderData.shippingData.address.addressId,
+        address: orderData.shippingData.address.street,
+        city: orderData.shippingData.address.city,
+        state: orderData.shippingData.address.state,
+        country: orderData.shippingData.address.country,
+        zipCode: orderData.shippingData.address.postalCode,
+        addressType: 'CUSTOMER_ADDRESS',
+      },
     }))
   }
 
@@ -143,5 +187,8 @@ export const useReturnForm = () => {
     handleSubmit,
     handleInputChange,
     handleNestedInputChange,
+    completeFormDataFromOrderId,
+    loadingCompleteFormDataFromOrderId,
+    order,
   }
 }

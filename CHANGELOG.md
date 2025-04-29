@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.9.3] - 2025-04-25
+
+### Added
+- Display item quantity in return items form for enhanced order details
+- Enhanced return creation form with order data integration
+- Added loading state for order ID completion
+
+### Changed
+- Adjusted README documentation
+
 ## [3.9.2] - 2025-04-24
 
 ### Added

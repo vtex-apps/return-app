@@ -26,6 +26,9 @@ const ReturnCreate: React.FC = () => {
     handleSubmit,
     handleInputChange,
     handleNestedInputChange,
+    completeFormDataFromOrderId,
+    loadingCompleteFormDataFromOrderId,
+    order,
   } = useReturnForm()
 
   return (
@@ -60,7 +63,7 @@ const ReturnCreate: React.FC = () => {
             </div>
           )}
 
-          <div className="mb5">
+          <div className="mb5 flex">
             <Input
               label="Order ID"
               value={formData.orderId}
@@ -69,12 +72,21 @@ const ReturnCreate: React.FC = () => {
               }
               required
             />
+            <div className="mt6 ml4">
+              <Button
+                onClick={() => completeFormDataFromOrderId(formData.orderId)}
+                isLoading={loadingCompleteFormDataFromOrderId}
+              >
+                OK
+              </Button>
+            </div>
           </div>
           <div className="mb5">
             <Box>
               <ReturnItemsForm
                 items={formData.items}
                 onChange={(items) => handleInputChange('items', items)}
+                order={order}
               />
             </Box>
           </div>
@@ -85,6 +97,7 @@ const ReturnCreate: React.FC = () => {
                 onChange={(field, value) =>
                   handleNestedInputChange('customerProfileData', field, value)
                 }
+                order={order}
               />
             </Box>
           </div>

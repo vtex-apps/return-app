@@ -1,16 +1,19 @@
 import React from 'react'
 import { Input } from 'vtex.styleguide'
 
+import type { Order } from '../types/Order'
 import type { CustomerProfileData } from '../types/ReturnRequestForm'
 
 interface CustomerProfileFormProps {
   data: CustomerProfileData
   onChange: (field: string, value: string) => void
+  order: Order | null
 }
 
 export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({
   data,
   onChange,
+  order,
 }) => {
   return (
     <div className="mb5">
@@ -44,6 +47,7 @@ export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChange('email', e.target.value)
           }
+          disabled={!!order}
         />
       </div>
     </div>
