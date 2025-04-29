@@ -3,8 +3,8 @@ import type { Status } from 'odp.return-app'
 
 const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'denied', 'cancelled'],
-  processing: ['processing', 'pickedUpFromClient', 'denied', 'cancelled'],
-  pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'denied'],
+  processing: ['processing', 'pickedUpFromClient', 'pendingVerification', 'packageVerified', 'denied', 'cancelled'],
+  pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'packageVerified', 'denied'],
   pendingVerification: ['pendingVerification', 'packageVerified'],
   // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
   packageVerified: ['packageVerified', 'amountRefunded'],
