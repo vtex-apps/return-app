@@ -18,7 +18,8 @@ export const validatePaymentMethod = (
   // When admin doesn't allow selection, PM request has to be sameAsPurchase
   if (
     !enablePaymentMethodSelection &&
-    refundPaymentMethod !== 'sameAsPurchase'
+    refundPaymentMethod !== 'sameAsPurchase' && 
+    refundPaymentMethod !== 'giftCard'
   ) {
     throw new ResolverError(
       `Payment method ${refundPaymentMethod} is not allowed`,
