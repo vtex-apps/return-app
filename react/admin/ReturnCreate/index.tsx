@@ -10,7 +10,7 @@ import {
   PageHeader,
   Textarea,
 } from 'vtex.styleguide'
-
+import { CommentFields } from './components/ReturnTypeForm'
 import { CustomerProfileForm } from './components/CustomerProfileForm'
 import { PickupReturnForm } from './components/PickupReturnForm'
 import { RefundPaymentForm } from './components/RefundPaymentForm'
@@ -54,15 +54,6 @@ const ReturnCreate: React.FC = () => {
               </Alert>
             </div>
           )}
-
-          {success && (
-            <div className="mb5">
-              <Alert type="success" onClose={() => {}}>
-                <FormattedMessage id="admin/return-app.return-request-list.success-message" />
-              </Alert>
-            </div>
-          )}
-
           <div className="mb5 flex">
             <Input
               label="Order ID"
@@ -133,13 +124,14 @@ const ReturnCreate: React.FC = () => {
           </div>
 
           <div className="mb5">
-            <Textarea
-              label="Additional Info"
-              value={formData.additionalInfo}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                handleInputChange('additionalInfo', e.target.value)
-              }
-            />
+            <Box>
+              <CommentFields
+                returnAction={formData.additionalInfo?.returnAction || ''}
+                reasonCode={formData.additionalInfo?.reasonCode || ''}
+                onReturnActionChange={(value) => handleNestedInputChange('additionalInfo', 'returnAction', value)}
+                onReasonCodeChange={(value) => handleNestedInputChange('additionalInfo', 'reasonCode', value)}
+              />
+            </Box>
           </div>
 
           <div className="mt5">
@@ -147,6 +139,13 @@ const ReturnCreate: React.FC = () => {
               Create Return Request
             </Button>
           </div>
+          {success && (
+            <div className="mt5">
+              <Alert type="success" onClose={()=>{}}>
+                Return request created successfully!
+              </Alert>
+            </div>
+          )}
         </form>
       </PageBlock>
     </Layout>

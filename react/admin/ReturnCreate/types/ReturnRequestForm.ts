@@ -7,7 +7,7 @@ export interface ReturnItem {
   orderItemIndex: number
   quantity: number
   condition: string
-  returnReason: ReturnReason
+  returnReason?: ReturnReason
 }
 
 export interface CustomerProfileData {

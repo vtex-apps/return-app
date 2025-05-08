@@ -3,16 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { Button, Dropdown, Input } from 'vtex.styleguide'
 
 import type { Order } from '../types/Order'
-
-interface ReturnItem {
-  orderItemIndex: number
-  quantity: number
-  condition: string
-  returnReason: {
-    reason: string
-    otherReason?: string
-  }
-}
+import { ReturnItem } from '../types/ReturnRequestForm'
 
 interface ReturnItemsFormProps {
   items: ReturnItem[]
@@ -46,7 +37,7 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
       quantity: 1,
       condition: 'unspecified',
       returnReason: {
-        reason: 'defective',
+        reason: 'other',
       },
     }
 
@@ -67,23 +58,6 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
     const newItems = [...items]
 
     newItems[index] = { ...newItems[index], [field]: value }
-    onChange(newItems)
-  }
-
-  const handleReasonChange = (
-    index: number,
-    field: keyof ReturnItem['returnReason'],
-    value: string
-  ) => {
-    const newItems = [...items]
-
-    newItems[index] = {
-      ...newItems[index],
-      returnReason: {
-        ...newItems[index].returnReason,
-        [field]: value,
-      },
-    }
     onChange(newItems)
   }
 
@@ -184,7 +158,6 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
               onChange={(_, value) =>
                 handleItemChange(index, 'condition', value)
               }
-              required
             />
           </div>
 
@@ -192,23 +165,21 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
             <Dropdown
               label="Return Reason"
               options={RETURN_REASONS}
-              value={item.returnReason.reason}
+              value={item.returnReason?.reason}
               onChange={(_, value) =>
-                handleReasonChange(index, 'reason', value)
+                handleItemChange(index, 'returnReason', { ...item.returnReason, reason: value })
               }
-              required
             />
           </div>
 
-          {item.returnReason.reason === 'other' && (
+          {item.returnReason?.reason === 'other' && (
             <div className="mb4">
               <Input
                 label="Other Reason"
                 value={item.returnReason.otherReason || ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleReasonChange(index, 'otherReason', e.target.value)
+                  handleItemChange(index, 'returnReason', { ...item.returnReason, otherReason: e.target.value })
                 }
-                required
               />
             </div>
           )}

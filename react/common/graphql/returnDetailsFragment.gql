@@ -26,6 +26,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
   }
   refundData {
     refundedShippingValue
+    refundedAdditionalValue
     invoiceValue
     items {
       orderItemIndex

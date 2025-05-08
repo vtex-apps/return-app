@@ -153,6 +153,7 @@ type RefundData {
   invoiceValue: Int!
   refundedItemsValue: Int!
   refundedShippingValue: Int!
+  refundedAdditionalValue: Int!
   giftCard: GiftCard
   items: [RefundItem!]!
 }
@@ -214,6 +215,7 @@ type ReturnRequestList {
 input RefundDataInput {
   items: [RefundItemInput!]!
   refundedShippingValue: Int!
+  refundedAdditionalValue: Int!
 }
 
 input RefundItemInput {

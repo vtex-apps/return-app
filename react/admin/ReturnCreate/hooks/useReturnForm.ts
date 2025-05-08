@@ -3,42 +3,13 @@ import { useMutation } from 'react-apollo'
 
 import CREATE_RETURN_REQUEST from '../../graphql/createReturn.gql'
 import type { Order } from '../types/Order'
+import { ReturnRequestForm } from '../types/ReturnRequestForm'
 
-interface ReturnItem {
-  orderItemIndex: number
-  quantity: number
-  condition: string
-  returnReason: {
-    reason: string
-    otherReason?: string
+interface FormData extends Omit<ReturnRequestForm, 'additionalInfo'> {
+  additionalInfo?: {
+    returnAction?: string
+    reasonCode?: string
   }
-}
-
-interface FormData {
-  orderId: string
-  items: ReturnItem[]
-  customerProfileData: {
-    name: string
-    email?: string
-    phoneNumber: string
-  }
-  pickupReturnData: {
-    addressId: string
-    address: string
-    city: string
-    state: string
-    country: string
-    zipCode: string
-    addressType: 'PICKUP_POINT' | 'CUSTOMER_ADDRESS'
-  }
-  refundPaymentData: {
-    refundPaymentMethod: string
-    iban?: string
-    accountHolderName?: string
-  }
-  userComment?: string
-  additionalInfo?: string
-  locale: string
 }
 
 export const useReturnForm = () => {
@@ -99,10 +70,10 @@ export const useReturnForm = () => {
         email: orderData.clientProfileData.email,
         phoneNumber: orderData.clientProfileData.phone,
       },
-      items: orderData.items.map((item, index) => ({
+      items: orderData.items.map((_item, index) => ({
         orderItemIndex: index,
-        quantity: item.quantity,
-        condition: '',
+        quantity: 0,
+        condition: 'unspecified',
         returnReason: {
           reason: '',
           otherReason: '',
@@ -164,10 +135,18 @@ export const useReturnForm = () => {
     setError(null)
     setSuccess(false)
 
+    const filteredItems = formData.items.filter(item => item.quantity > 0)
+
+    const returnRequestPayload = {
+      ...formData,
+      items: filteredItems,
+      additionalInfo: JSON.stringify(formData.additionalInfo)
+    }
+    
     try {
       await createReturnRequest({
         variables: {
-          returnRequest: formData,
+          returnRequest: returnRequestPayload,
         },
       })
       setSuccess(true)
