@@ -15,10 +15,13 @@ const TYPE_OPTIONS = [
   { value: 'miscRefund', label: 'Misc Refund' },
 ]
 
-const TYPE_FILTERED_OPTIONS: Record<string, {
-  returnCategoryOptions: Array<{ value: string; label: string }>,
-  reasonCodeOptions: Record<string, Array<{ value: string; label: string }>>
-}> = {
+const TYPE_FILTERED_OPTIONS: Record<
+  string,
+  {
+    returnCategoryOptions: Array<{ value: string; label: string }>
+    reasonCodeOptions: Record<string, Array<{ value: string; label: string }>>
+  }
+> = {
   deliveryOnly: {
     returnCategoryOptions: [
       { value: 'customer', label: 'Customer related' },
@@ -27,16 +30,17 @@ const TYPE_FILTERED_OPTIONS: Record<string, {
     ],
     reasonCodeOptions: {
       customer: [
-        { value: 'CN', label: 'CN – Customer Related* (listed as "No Longer Needs" online)*' },
+        {
+          value: 'CN',
+          label: 'CN – Customer Related* (listed as "No Longer Needs" online)*',
+        },
       ],
       delivery: [
         { value: 'DD', label: 'DD – Product was Delivered Damaged*' },
         { value: 'DN', label: 'DN – Order/Case Not Delivered' },
         { value: 'CS', label: 'CS-Customer Signed Disputed' },
       ],
-      warehouse: [
-        { value: 'WS', label: 'WS – Short Ship Split-Case/Repack' },
-      ],
+      warehouse: [{ value: 'WS', label: 'WS – Short Ship Split-Case/Repack' }],
     },
   },
   returnOnly: {
@@ -53,14 +57,20 @@ const TYPE_FILTERED_OPTIONS: Record<string, {
         { value: 'ES', label: 'ES – Wrong Shipping Address was Used' },
       ],
       customer: [
-        { value: 'CN', label: 'CN – Customer Related* (listed as "No Longer Needs" online)*' },
+        {
+          value: 'CN',
+          label: 'CN – Customer Related* (listed as "No Longer Needs" online)*',
+        },
         { value: 'CL', label: 'CL – Customer Does Not Want Item' },
         { value: 'CD', label: 'CD – Duplicate order - Customer Error' },
         { value: 'CW', label: 'CW – Customer ordered wrong item*' },
       ],
       item: [
         { value: 'ID', label: 'ID – Item/Product Related*' },
-        { value: 'IC', label: 'IC – Description Does Not Match (from catalog or web)*' },
+        {
+          value: 'IC',
+          label: 'IC – Description Does Not Match (from catalog or web)*',
+        },
       ],
       delivery: [
         { value: 'DD', label: 'DD – Product was Delivered Damaged*' },
@@ -92,14 +102,20 @@ const TYPE_FILTERED_OPTIONS: Record<string, {
       ],
       customer: [
         { value: 'CA', label: 'CA - Amazon Return to Store (B2B Use Only)' },
-        { value: 'CN', label: 'CN – Customer Related* (listed as "No Longer Needs" online)*' },
+        {
+          value: 'CN',
+          label: 'CN – Customer Related* (listed as "No Longer Needs" online)*',
+        },
         { value: 'CC', label: 'CC – Acct CleanUp/Credit Rebill' },
         { value: 'CF', label: 'CF--Customer refused delivery' },
         { value: 'CS', label: 'CS - Customer Signed Disputed' },
       ],
       item: [
         { value: 'ID', label: 'ID – Item/Product Related*' },
-        { value: 'IC', label: 'IC – Description Does Not Match (from catalog or web)*' },
+        {
+          value: 'IC',
+          label: 'IC – Description Does Not Match (from catalog or web)*',
+        },
       ],
       delivery: [
         { value: 'DD', label: 'DD – Product was Delivered Damaged*' },
@@ -133,11 +149,17 @@ const TYPE_FILTERED_OPTIONS: Record<string, {
         { value: 'EP', label: 'EP – Special Pricing was Entered Incorrectly' },
       ],
       customer: [
-        { value: 'CN', label: 'CN – Customer Related* (listed as "No Longer Needs" online)*' },
+        {
+          value: 'CN',
+          label: 'CN – Customer Related* (listed as "No Longer Needs" online)*',
+        },
       ],
       item: [
         { value: 'ID', label: 'ID – Item/Product Related*' },
-        { value: 'IC', label: 'IC – Description Does Not Match (from catalog or web)*' },
+        {
+          value: 'IC',
+          label: 'IC – Description Does Not Match (from catalog or web)*',
+        },
       ],
       delivery: [
         { value: 'DD', label: 'DD – Product was Delivered Damaged*' },
@@ -167,44 +189,50 @@ export const ReturnTypeForm: React.FC<ReturnTypeFormProps> = ({
     onReasonCodeChange('')
   }
 
-  const filteredOptions = returnAction ? TYPE_FILTERED_OPTIONS[returnAction] : null
+  const filteredOptions = returnAction
+    ? TYPE_FILTERED_OPTIONS[returnAction]
+    : null
 
   return (
     <>
       <div className="mb5">
-      <h3>Return Attributes</h3>
-      <div className="mb5">
-        <Dropdown
-          label="Return Type"
-          options={TYPE_OPTIONS}
-          value={returnAction}
-          onChange={handleReturnActionChange}
-          required
-        />
-      </div>
+        <h3>Return Attributes</h3>
+        <div className="mb5">
+          <Dropdown
+            label="Return Type"
+            options={TYPE_OPTIONS}
+            value={returnAction}
+            onChange={handleReturnActionChange}
+            required
+          />
+        </div>
 
-      <div className="mb5">
-        <Dropdown
-          label="Return Category"
-          options={filteredOptions?.returnCategoryOptions || []}
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          disabled={!returnAction}
-          required
-        />
-      </div>
+        <div className="mb5">
+          <Dropdown
+            label="Return Category"
+            options={filteredOptions?.returnCategoryOptions || []}
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            disabled={!returnAction}
+            required
+          />
+        </div>
 
-      <div className="mb5">
-        <Dropdown
-          label="Return Reason Code"
-          options={returnAction && filteredOptions ? filteredOptions.reasonCodeOptions[selectedCategory] || [] : []}
-          value={reasonCode}
-          onChange={(_, value) => onReasonCodeChange(value)}
-          disabled={!selectedCategory}
-          required
-        />
-      </div>
+        <div className="mb5">
+          <Dropdown
+            label="Return Reason Code"
+            options={
+              returnAction && filteredOptions
+                ? filteredOptions.reasonCodeOptions[selectedCategory] || []
+                : []
+            }
+            value={reasonCode}
+            onChange={(_, value) => onReasonCodeChange(value)}
+            disabled={!selectedCategory}
+            required
+          />
+        </div>
       </div>
     </>
   )
-} 
+}

@@ -3,7 +3,7 @@ import { useMutation } from 'react-apollo'
 
 import CREATE_RETURN_REQUEST from '../../graphql/createReturn.gql'
 import type { Order } from '../types/Order'
-import { ReturnRequestForm } from '../types/ReturnRequestForm'
+import type { ReturnRequestForm } from '../types/ReturnRequestForm'
 
 interface FormData extends Omit<ReturnRequestForm, 'additionalInfo'> {
   additionalInfo?: {
@@ -135,14 +135,14 @@ export const useReturnForm = () => {
     setError(null)
     setSuccess(false)
 
-    const filteredItems = formData.items.filter(item => item.quantity > 0)
+    const filteredItems = formData.items.filter((item) => item.quantity > 0)
 
     const returnRequestPayload = {
       ...formData,
       items: filteredItems,
-      additionalInfo: JSON.stringify(formData.additionalInfo)
+      additionalInfo: JSON.stringify(formData.additionalInfo),
     }
-    
+
     try {
       await createReturnRequest({
         variables: {

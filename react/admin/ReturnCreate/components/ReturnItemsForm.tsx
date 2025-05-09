@@ -1,12 +1,11 @@
 import React from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { defineMessages, useIntl } from 'react-intl'
-import { Dropdown } from 'vtex.styleguide'
+import { Dropdown, NumericStepper } from 'vtex.styleguide'
+import { useCssHandles } from 'vtex.css-handles'
 
 import type { Order } from '../types/Order'
-import { ReturnItem } from '../types/ReturnRequestForm'
-import { useCssHandles } from 'vtex.css-handles'
-import { NumericStepper } from 'vtex.styleguide'
+import type { ReturnItem } from '../types/ReturnRequestForm'
 
 interface ReturnItemsFormProps {
   items: ReturnItem[]
@@ -129,79 +128,87 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
   return (
     <div className="mb5">
       <table
-          className={`${handles.itemsListContainer} w-100`}
-          style={{ borderCollapse: 'collapse' }}>
+        className={`${handles.itemsListContainer} w-100`}
+        style={{ borderCollapse: 'collapse' }}
+      >
         <thead
-          className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}>
+          className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}
+        >
           <tr className="w-100 truncate overflow-x-hidden">
             {desktopOrder.map((header) => TableHeader(header))}
           </tr>
         </thead>
         <tbody className="v-mid return-itemsList-body">
-          {order && items.map((item, index) => (
-            <tr key={index} className={`${handles.detailsRowContainer}`}>
-              <td className={`${handles.detailsTdWrapper} pa4`}>
-                <section className={`${handles.productSectionWrapper} flex`}>
-                  <div
-                    className={`${handles.productImageWrapper} flex`}
-                    style={{ flexBasis: '50%' }}
-                  >
-                    <img
-                      className={`${handles.productImage}`}
-                      src={order.items[index].imageUrl}
-                      alt="Product"
-                    />
-                  </div>
-                  <p
-                    className={`${handles.productText} t-body fw5 ml3`}
-                    style={{ flexBasis: '100%' }}
-                  >
-                    {order.items[index].name}
-                  </p>
-                </section>
-              </td>
-              <td className={`${handles.detailsTdWrapper} pa4`}>
-                <p className={`${handles.itemsDetailText} tc`}>{order.items[index].quantity}</p>
-              </td>
-              <td className={`${handles.detailsTdWrapper} pa4`}>
-                <p className={`${handles.itemsDetailText} tc`}>{order.items[index].quantity}</p>
-              </td>
-              <td className={`${handles.detailsTdWrapper} pa4`}>
-                <NumericStepper
-                  size="small"
-                  maxValue={order.items[index].quantity}
-                  value={item.quantity ?? 0}
-                  onChange={(e: { value: number }) => handleItemChange(
-                    index,
-                    'quantity',
-                    e.value
-                  )}
-                />
-              </td>
-              <td className={`${handles.detailsTdWrapper} pa4`}>
-                <Dropdown
-                  placeholder="Return Reason"
-                  options={RETURN_REASONS}
-                  value={item.returnReason?.reason}
-                  onChange={(_, value) =>
-                    handleItemChange(index, 'returnReason', { ...item.returnReason, reason: value })
-                  }
-                />
-              </td>
-              {!enableSelectItemCondition ? null : (
+          {order &&
+            items.map((item, index) => (
+              <tr key={index} className={`${handles.detailsRowContainer}`}>
                 <td className={`${handles.detailsTdWrapper} pa4`}>
-                  <Dropdown
-                    label="Condition"
-                    options={ITEM_CONDITIONS}
-                    value={item.condition}
-                    onChange={(_, value) =>
-                      handleItemChange(index, 'condition', value)
+                  <section className={`${handles.productSectionWrapper} flex`}>
+                    <div
+                      className={`${handles.productImageWrapper} flex`}
+                      style={{ flexBasis: '50%' }}
+                    >
+                      <img
+                        className={`${handles.productImage}`}
+                        src={order.items[index].imageUrl}
+                        alt="Product"
+                      />
+                    </div>
+                    <p
+                      className={`${handles.productText} t-body fw5 ml3`}
+                      style={{ flexBasis: '100%' }}
+                    >
+                      {order.items[index].name}
+                    </p>
+                  </section>
+                </td>
+                <td className={`${handles.detailsTdWrapper} pa4`}>
+                  <p className={`${handles.itemsDetailText} tc`}>
+                    {order.items[index].quantity}
+                  </p>
+                </td>
+                <td className={`${handles.detailsTdWrapper} pa4`}>
+                  <p className={`${handles.itemsDetailText} tc`}>
+                    {order.items[index].quantity}
+                  </p>
+                </td>
+                <td className={`${handles.detailsTdWrapper} pa4`}>
+                  <NumericStepper
+                    size="small"
+                    maxValue={order.items[index].quantity}
+                    value={item.quantity ?? 0}
+                    onChange={(e: { value: number }) =>
+                      handleItemChange(index, 'quantity', e.value)
                     }
                   />
                 </td>
-              )}
-            </tr>
-          ))}
+                <td className={`${handles.detailsTdWrapper} pa4`}>
+                  <Dropdown
+                    placeholder="Return Reason"
+                    options={RETURN_REASONS}
+                    value={item.returnReason?.reason}
+                    onChange={(_, value) =>
+                      handleItemChange(index, 'returnReason', {
+                        ...item.returnReason,
+                        reason: value,
+                      })
+                    }
+                  />
+                </td>
+                {!enableSelectItemCondition ? null : (
+                  <td className={`${handles.detailsTdWrapper} pa4`}>
+                    <Dropdown
+                      label="Condition"
+                      options={ITEM_CONDITIONS}
+                      value={item.condition}
+                      onChange={(_, value) =>
+                        handleItemChange(index, 'condition', value)
+                      }
+                    />
+                  </td>
+                )}
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
