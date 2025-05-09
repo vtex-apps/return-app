@@ -172,7 +172,7 @@ export const ReturnTypeForm: React.FC<ReturnTypeFormProps> = ({
   return (
     <>
       <div className="mb5">
-      <h3>Return Type</h3>
+      <h3>Return Attributes</h3>
       <div className="mb5">
         <Dropdown
           label="Return Type"

@@ -1,6 +1,6 @@
 {
   "admin/return-app.navigation.label": "Devoluciones",
-  "navigation.labelRequests": "Solicitudes",
+  "navigation.labelRequests": "Lista de Solicitudes",
   "admin/return-app.settings.navigation.label": "Configuración de devolución",
   "admin/return-app.create.navigation.label": "Crear devolución",
   "admin/return-app.settings.max-days.label": "Max. días:",
