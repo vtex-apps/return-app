@@ -164,10 +164,21 @@
     "refundData": {
       "type": ["object", "null"],
       "properties": {
-        "invoiceNumber": { "type": "string" },
-        "invoiceValue": { "type": "integer" },
-        "refundedItemsValue": { "type": "integer" },
-        "refundedShippingValue": { "type": "integer" },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "invoiceValue": {
+          "type": "integer"
+        },
+        "refundedItemsValue": {
+          "type": "integer"
+        },
+        "refundedShippingValue": {
+          "type": "integer"
+        },
+        "refundedAdditionalValue": {
+          "type": "integer"
+        },
         "giftCard": {
           "type": "object",
           "properties": {

@@ -64,7 +64,14 @@ export const createRefundData = ({
     )
   }
 
+  if (typeof refundData?.refundedAdditionalValue !== 'number') {
+    throw new UserInputError(
+      'Missing refundedAdditionalValue or not a valid number'
+    )
+  }
+
   const refundedShippingValue = refundData?.refundedShippingValue ?? 0
+  const refundedAdditionalValue = refundData?.refundedAdditionalValue ?? 0
 
   if (refundableShipping < refundedShippingValue) {
     throw new UserInputError(
@@ -76,9 +83,10 @@ export const createRefundData = ({
     // invoiceNumber has to match the requestId.
     // This values is used to filter the invoices created via Return app when calculating the items available to be returned.
     invoiceNumber: requestId,
-    invoiceValue: refundedItemsValue + refundedShippingValue,
+    invoiceValue: refundedItemsValue + refundedShippingValue + refundedAdditionalValue,
     refundedItemsValue,
     refundedShippingValue,
+    refundedAdditionalValue,
     items,
   }
 }

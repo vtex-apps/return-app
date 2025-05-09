@@ -13,10 +13,8 @@ export const RefundPaymentForm: React.FC<RefundPaymentFormProps> = ({
   onChange,
 }) => {
   const paymentMethodOptions = [
-    { value: 'bank', label: 'Bank Transfer' },
-    { value: 'card', label: 'Card' },
-    { value: 'giftCard', label: 'Gift Card' },
     { value: 'sameAsPurchase', label: 'Same as Purchase' },
+    { value: 'giftCard', label: 'Gift Card' },
   ]
 
   return (
@@ -24,7 +22,7 @@ export const RefundPaymentForm: React.FC<RefundPaymentFormProps> = ({
       <h3>Refund Payment Information</h3>
       <div className="mb5">
         <Dropdown
-          label="Refund Payment Method"
+          placeholder="Refund Payment Method"
           options={paymentMethodOptions}
           value={data.refundPaymentMethod}
           onChange={(_, value) => onChange('refundPaymentMethod', value)}

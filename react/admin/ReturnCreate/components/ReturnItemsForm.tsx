@@ -1,18 +1,12 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { Button, Dropdown, Input } from 'vtex.styleguide'
+import type { IntlFormatters } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
+import { Dropdown } from 'vtex.styleguide'
 
 import type { Order } from '../types/Order'
-
-interface ReturnItem {
-  orderItemIndex: number
-  quantity: number
-  condition: string
-  returnReason: {
-    reason: string
-    otherReason?: string
-  }
-}
+import { ReturnItem } from '../types/ReturnRequestForm'
+import { useCssHandles } from 'vtex.css-handles'
+import { NumericStepper } from 'vtex.styleguide'
 
 interface ReturnItemsFormProps {
   items: ReturnItem[]
@@ -35,29 +29,91 @@ const RETURN_REASONS = [
   { value: 'other', label: 'Other' },
 ]
 
+const CSS_HANDLES = [
+  'itemsListContainer',
+  'itemsListTheadWrapper',
+  'cardItemsWrapper',
+  'detailsRowContainer',
+  'detailsTdWrapper',
+  'productSectionWrapper',
+  'productText',
+  'productImageWrapper',
+  'productImage',
+  'itemsDetailText',
+  'cardWrapper',
+  'productDetailsWrapper',
+  'productText',
+  'quantityWrapper',
+  'quantityKey',
+  'quantityValue',
+  'availableToReturnWrapper',
+  'availableToReturnKey',
+  'availableToReturnValue',
+  'quantitySelectorWrapper',
+  'reasonWrapper',
+  'conditionWrapper',
+] as const
+
+const desktopOrder = [
+  'product',
+  'quantity',
+  'available-to-return',
+  'quantity-to-return',
+  'reason',
+  'condition',
+]
+
+export const messages = defineMessages({
+  product: {
+    id: 'admin/return-app.return-order-details.table-header.product',
+  },
+  quantity: {
+    id: 'admin/return-app.return-order-details.table-header.quantity',
+  },
+  'available-to-return': {
+    id: 'admin/return-app.return-order-details.table-header.available-to-return',
+  },
+  'quantity-to-return': {
+    id: 'admin/return-app.return-order-details.table-header.quantity-to-return',
+  },
+  reason: {
+    id: 'admin/return-app.return-order-details.table-header.reason',
+  },
+  condition: {
+    id: 'admin/return-app.return-order-details.table-header.condition',
+  },
+})
+
+const TableHeaderRenderer = (
+  formatMessage: IntlFormatters['formatMessage'],
+  addCondition: boolean
+) => {
+  return function Header(value: string) {
+    if (!addCondition && value === 'condition') {
+      return
+    }
+
+    return (
+      <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+        {formatMessage(messages[value as keyof typeof messages])}
+      </th>
+    )
+  }
+}
+
 export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
   items,
   onChange,
   order,
 }) => {
-  const handleAddItem = () => {
-    const newItem: ReturnItem = {
-      orderItemIndex: 0,
-      quantity: 1,
-      condition: 'unspecified',
-      returnReason: {
-        reason: 'defective',
-      },
-    }
+  const enableSelectItemCondition = false
+  const { formatMessage } = useIntl()
+  const handles = useCssHandles(CSS_HANDLES)
 
-    onChange([...items, newItem])
-  }
-
-  const handleRemoveItem = (index: number) => {
-    const newItems = items.filter((_, i) => i !== index)
-
-    onChange(newItems)
-  }
+  const TableHeader = TableHeaderRenderer(
+    formatMessage,
+    Boolean(enableSelectItemCondition)
+  )
 
   const handleItemChange = (
     index: number,
@@ -70,150 +126,84 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
     onChange(newItems)
   }
 
-  const handleReasonChange = (
-    index: number,
-    field: keyof ReturnItem['returnReason'],
-    value: string
-  ) => {
-    const newItems = [...items]
-
-    newItems[index] = {
-      ...newItems[index],
-      returnReason: {
-        ...newItems[index].returnReason,
-        [field]: value,
-      },
-    }
-    onChange(newItems)
-  }
-
   return (
     <div className="mb5">
-      <div className="flex justify-between items-center mb4">
-        <h3 className="t-heading-3">
-          <FormattedMessage id="admin/return-app.return-items.title" />
-        </h3>
-        <Button variation="secondary" onClick={handleAddItem}>
-          <FormattedMessage id="admin/return-app.return-items.add" />
-        </Button>
-      </div>
-
-      {items.map((item, index) => (
-        <div key={index} className="mb5 pa4 ba b--muted-4 br3">
-          {order && (
-            <div className="items-center mb4 flex">
-              <img
-                src={order.items[index].imageUrl}
-                alt={order.items[index].name}
-                width={250}
-              />
-              <div className="ml4">
-                <p>
-                  <strong>SKU:</strong> {order.items[index].id}
-                </p>
-                <p>
-                  <strong>Name:</strong> {order.items[index].name}
-                </p>
-                <p>
-                  <strong>Price:</strong>{' '}
-                  {new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                  }).format(order.items[index].price / 100)}
-                </p>
-                <p>
-                  <strong>Quantity:</strong> {order.items[index].quantity}
-                </p>
-              </div>
-            </div>
-          )}
-          <div className="flex justify-between items-center mb4">
-            <h4 className="t-heading-4">
-              <FormattedMessage
-                id="admin/return-app.return-items.item"
-                values={{ number: index + 1 }}
-              />
-            </h4>
-            <Button
-              variation="danger"
-              size="small"
-              onClick={() => handleRemoveItem(index)}
-            >
-              <FormattedMessage id="admin/return-app.return-items.remove" />
-            </Button>
-          </div>
-
-          <div className="mb4">
-            <Input
-              label="Order Item Index"
-              type="number"
-              disabled={!!order}
-              value={item.orderItemIndex}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleItemChange(
-                  index,
-                  'orderItemIndex',
-                  parseInt(e.target.value, 10)
-                )
-              }
-              required
-            />
-          </div>
-
-          <div className="mb4">
-            <Input
-              label="Quantity"
-              type="number"
-              value={item.quantity}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleItemChange(
-                  index,
-                  'quantity',
-                  parseInt(e.target.value, 10)
-                )
-              }
-              required
-            />
-          </div>
-
-          <div className="mb4">
-            <Dropdown
-              label="Condition"
-              options={ITEM_CONDITIONS}
-              value={item.condition}
-              onChange={(_, value) =>
-                handleItemChange(index, 'condition', value)
-              }
-              required
-            />
-          </div>
-
-          <div className="mb4">
-            <Dropdown
-              label="Return Reason"
-              options={RETURN_REASONS}
-              value={item.returnReason.reason}
-              onChange={(_, value) =>
-                handleReasonChange(index, 'reason', value)
-              }
-              required
-            />
-          </div>
-
-          {item.returnReason.reason === 'other' && (
-            <div className="mb4">
-              <Input
-                label="Other Reason"
-                value={item.returnReason.otherReason || ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleReasonChange(index, 'otherReason', e.target.value)
-                }
-                required
-              />
-            </div>
-          )}
-        </div>
-      ))}
+      <table
+          className={`${handles.itemsListContainer} w-100`}
+          style={{ borderCollapse: 'collapse' }}>
+        <thead
+          className={`${handles.itemsListContainer} w-100 ph4 truncate overflow-x-hidden c-muted-2 f6`}>
+          <tr className="w-100 truncate overflow-x-hidden">
+            {desktopOrder.map((header) => TableHeader(header))}
+          </tr>
+        </thead>
+        <tbody className="v-mid return-itemsList-body">
+          {order && items.map((item, index) => (
+            <tr key={index} className={`${handles.detailsRowContainer}`}>
+              <td className={`${handles.detailsTdWrapper} pa4`}>
+                <section className={`${handles.productSectionWrapper} flex`}>
+                  <div
+                    className={`${handles.productImageWrapper} flex`}
+                    style={{ flexBasis: '50%' }}
+                  >
+                    <img
+                      className={`${handles.productImage}`}
+                      src={order.items[index].imageUrl}
+                      alt="Product"
+                    />
+                  </div>
+                  <p
+                    className={`${handles.productText} t-body fw5 ml3`}
+                    style={{ flexBasis: '100%' }}
+                  >
+                    {order.items[index].name}
+                  </p>
+                </section>
+              </td>
+              <td className={`${handles.detailsTdWrapper} pa4`}>
+                <p className={`${handles.itemsDetailText} tc`}>{order.items[index].quantity}</p>
+              </td>
+              <td className={`${handles.detailsTdWrapper} pa4`}>
+                <p className={`${handles.itemsDetailText} tc`}>{order.items[index].quantity}</p>
+              </td>
+              <td className={`${handles.detailsTdWrapper} pa4`}>
+                <NumericStepper
+                  size="small"
+                  maxValue={order.items[index].quantity}
+                  value={item.quantity ?? 0}
+                  onChange={(e: { value: number }) => handleItemChange(
+                    index,
+                    'quantity',
+                    e.value
+                  )}
+                />
+              </td>
+              <td className={`${handles.detailsTdWrapper} pa4`}>
+                <Dropdown
+                  placeholder="Return Reason"
+                  options={RETURN_REASONS}
+                  value={item.returnReason?.reason}
+                  onChange={(_, value) =>
+                    handleItemChange(index, 'returnReason', { ...item.returnReason, reason: value })
+                  }
+                />
+              </td>
+              {!enableSelectItemCondition ? null : (
+                <td className={`${handles.detailsTdWrapper} pa4`}>
+                  <Dropdown
+                    label="Condition"
+                    options={ITEM_CONDITIONS}
+                    value={item.condition}
+                    onChange={(_, value) =>
+                      handleItemChange(index, 'condition', value)
+                    }
+                  />
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

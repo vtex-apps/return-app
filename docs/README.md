@@ -182,6 +182,7 @@ with the following example body:
 | refundData items quantity        | `integer` number to be returned for the given `orderItemIndex`                                                                      | true       |
 | refundData items restockFee      | `integer` discount to be applied to the amount to be refunded, can be zero                                                          | true       |
 | refundData refundedShippingValue | `integer` shipping amount to be refunded, can be zero                                                                               | true       |
+| refundData refundedAdditionalValue | `integer` additional amount to be refunded, can be zero                                                                           | true       |
 
 To update the request to the next possible status, one just needs to pass a payload with the key status and the status as its value.
 It's possible to send the comment payload with all the status. When sending the status packageVerified it's necessary to send the refundData object.
