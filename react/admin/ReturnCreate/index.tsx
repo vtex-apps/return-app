@@ -10,7 +10,7 @@ import {
   PageHeader,
   Textarea,
 } from 'vtex.styleguide'
-import { CommentFields } from './components/ReturnTypeForm'
+import { ReturnTypeForm } from './components/ReturnTypeForm'
 import { CustomerProfileForm } from './components/CustomerProfileForm'
 import { PickupReturnForm } from './components/PickupReturnForm'
 import { RefundPaymentForm } from './components/RefundPaymentForm'
@@ -81,39 +81,54 @@ const ReturnCreate: React.FC = () => {
               />
             </Box>
           </div>
+
           <div className="mb5">
             <Box>
-              <CustomerProfileForm
-                data={formData.customerProfileData}
-                onChange={(field, value) =>
-                  handleNestedInputChange('customerProfileData', field, value)
-                }
-                order={order}
-              />
-            </Box>
-          </div>
-          <div className="mb5">
-            <Box>
-              <PickupReturnForm
-                data={formData.pickupReturnData}
-                onChange={(field, value) =>
-                  handleNestedInputChange('pickupReturnData', field, value)
-                }
-              />
-            </Box>
-          </div>
-          <div className="mb5">
-            <Box>
-              <RefundPaymentForm
-                data={formData.refundPaymentData}
-                onChange={(field, value) =>
-                  handleNestedInputChange('refundPaymentData', field, value)
-                }
-              />
+              <div className="flex-ns flex-wrap flex-row">
+                <div className="flex-ns flex-wrap flex-auto flex-column pa5">
+                  <div className="mb5">
+                    <CustomerProfileForm
+                      data={formData.customerProfileData}
+                      onChange={(field, value) =>
+                        handleNestedInputChange('customerProfileData', field, value)
+                      }
+                      order={order}
+                    />
+                  </div>
+                  <div className="mb5">
+                    <RefundPaymentForm
+                      data={formData.refundPaymentData}
+                      onChange={(field, value) =>
+                        handleNestedInputChange('refundPaymentData', field, value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex-ns flex-wrap flex-auto flex-column pa5">
+                    <PickupReturnForm
+                      data={formData.pickupReturnData}
+                      onChange={(field, value) =>
+                        handleNestedInputChange('pickupReturnData', field, value)
+                      }
+                    />
+                </div>
+              </div>
             </Box>
           </div>
 
           <div className="mb5">
+            <Box>
+              <ReturnTypeForm
+                returnAction={formData.additionalInfo?.returnAction || ''}
+                reasonCode={formData.additionalInfo?.reasonCode || ''}
+                onReturnActionChange={(value) => handleNestedInputChange('additionalInfo', 'returnAction', value)}
+                onReasonCodeChange={(value) => handleNestedInputChange('additionalInfo', 'reasonCode', value)}
+              />
+            </Box>
+          </div>
+         
+          <div className="mb5">
+            <Box>
             <Textarea
               label="User Comment"
               value={formData.userComment}
@@ -121,16 +136,6 @@ const ReturnCreate: React.FC = () => {
                 handleInputChange('userComment', e.target.value)
               }
             />
-          </div>
-
-          <div className="mb5">
-            <Box>
-              <CommentFields
-                returnAction={formData.additionalInfo?.returnAction || ''}
-                reasonCode={formData.additionalInfo?.reasonCode || ''}
-                onReturnActionChange={(value) => handleNestedInputChange('additionalInfo', 'returnAction', value)}
-                onReasonCodeChange={(value) => handleNestedInputChange('additionalInfo', 'reasonCode', value)}
-              />
             </Box>
           </div>
 

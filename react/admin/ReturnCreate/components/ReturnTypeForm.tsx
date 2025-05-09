@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dropdown } from 'vtex.styleguide'
 
-interface CommentFieldsProps {
+interface ReturnTypeFormProps {
   returnAction: string
   reasonCode: string
   onReturnActionChange: (value: string) => void
@@ -148,7 +148,7 @@ const TYPE_FILTERED_OPTIONS: Record<string, {
   },
 }
 
-export const CommentFields: React.FC<CommentFieldsProps> = ({
+export const ReturnTypeForm: React.FC<ReturnTypeFormProps> = ({
   returnAction,
   reasonCode,
   onReturnActionChange,
@@ -171,6 +171,8 @@ export const CommentFields: React.FC<CommentFieldsProps> = ({
 
   return (
     <>
+      <div className="mb5">
+      <h3>Return Type</h3>
       <div className="mb5">
         <Dropdown
           label="Return Type"
@@ -201,6 +203,7 @@ export const CommentFields: React.FC<CommentFieldsProps> = ({
           disabled={!selectedCategory}
           required
         />
+      </div>
       </div>
     </>
   )
