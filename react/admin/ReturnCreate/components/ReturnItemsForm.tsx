@@ -129,6 +129,7 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
     const updatedItems = items.map((item, index) => ({
       ...item,
       quantity: order?.items[index].quantity || 0,
+      returnReason: { reason: 'other' },
     }))
 
     onChange(updatedItems)

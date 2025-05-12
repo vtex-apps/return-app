@@ -99,6 +99,7 @@ export const updateRequestStatusService = async (
       oms,
       giftCard: giftCardClient,
       mail,
+      events,
     },
     vtex: { logger },
   } = ctx
@@ -279,6 +280,13 @@ export const updateRequestStatusService = async (
       error,
     })
   }
+
+  events.sendEvent('', 'return-app.updateReturn', {
+    returnRequestId: requestId,
+    status,
+    comment,
+    refundData,
+  })
 
   return { id: requestId, ...updatedRequest }
 }

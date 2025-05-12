@@ -18,6 +18,11 @@ import { RefundPaymentForm } from './components/RefundPaymentForm'
 import { ReturnItemsForm } from './components/ReturnItemsForm'
 import { useReturnForm } from './hooks/useReturnForm'
 
+const cultureInfoData = {
+  currencyCode: 'USD',
+  locale: 'en-US',
+}
+
 const ReturnCreate: React.FC = () => {
   const {
     formData,
@@ -69,7 +74,7 @@ const ReturnCreate: React.FC = () => {
                 onClick={() => completeFormDataFromOrderId(formData.orderId)}
                 isLoading={loadingCompleteFormDataFromOrderId}
               >
-                OK
+                LOAD
               </Button>
             </div>
           </div>
@@ -114,9 +119,11 @@ const ReturnCreate: React.FC = () => {
                       onRefundChange={(field, value) =>
                         handleNestedInputChange('additionalInfo', field, value)
                       }
+                      cultureInfoData={cultureInfoData}
                     />
                   </div>
                 </div>
+                <div className="flex-column pa5">&nbsp;</div>
                 <div className="flex-ns flex-wrap flex-auto flex-column pa5">
                   <PickupReturnForm
                     data={formData.pickupReturnData}

@@ -28,7 +28,7 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
 
   return (
     <div className="mb5">
-      <h3>Return Address</h3>
+      <h3>Address Information</h3>
       <div className="mb5">
         <Input
           label="Address"
@@ -89,6 +89,7 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
           options={shippingMethodOptions}
           value={shippingData.shippingMethod}
           onChange={(_, value) => onShippingChange('shippingMethod', value)}
+          required
         />
       </div>
     </div>

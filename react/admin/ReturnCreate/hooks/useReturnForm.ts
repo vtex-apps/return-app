@@ -169,9 +169,6 @@ export const useReturnForm = () => {
           returnRequest: returnRequestPayload,
         },
       })
-
-      // Open the verified package
-
       setSuccess(true)
       clearForm()
     } catch (err) {
