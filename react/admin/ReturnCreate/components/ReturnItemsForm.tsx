@@ -1,7 +1,7 @@
 import React from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { defineMessages, useIntl } from 'react-intl'
-import { Dropdown, NumericStepper } from 'vtex.styleguide'
+import { Button, Dropdown, NumericStepper } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 
 import type { Order } from '../types/Order'
@@ -125,6 +125,15 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
     onChange(newItems)
   }
 
+  const SelectAllItems = () => {
+    const updatedItems = items.map((item, index) => ({
+      ...item,
+      quantity: order?.items[index].quantity || 0,
+    }))
+
+    onChange(updatedItems)
+  }
+
   return (
     <div className="mb5">
       <table
@@ -211,6 +220,11 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
             ))}
         </tbody>
       </table>
+      <div className="mt6 ml4 flex justify-end">
+        <Button onClick={() => order && SelectAllItems()}>
+          Select All Items
+        </Button>
+      </div>
     </div>
   )
 }

@@ -103,6 +103,7 @@ const ReturnCreate: React.FC = () => {
                   <div className="mb5">
                     <RefundPaymentForm
                       data={formData.refundPaymentData}
+                      refundData={formData.additionalInfo}
                       onChange={(field, value) =>
                         handleNestedInputChange(
                           'refundPaymentData',
@@ -110,14 +111,21 @@ const ReturnCreate: React.FC = () => {
                           value
                         )
                       }
+                      onRefundChange={(field, value) =>
+                        handleNestedInputChange('additionalInfo', field, value)
+                      }
                     />
                   </div>
                 </div>
                 <div className="flex-ns flex-wrap flex-auto flex-column pa5">
                   <PickupReturnForm
                     data={formData.pickupReturnData}
+                    shippingData={formData.additionalInfo}
                     onChange={(field, value) =>
                       handleNestedInputChange('pickupReturnData', field, value)
+                    }
+                    onShippingChange={(field, value) =>
+                      handleNestedInputChange('additionalInfo', field, value)
                     }
                   />
                 </div>

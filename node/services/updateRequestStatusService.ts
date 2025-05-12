@@ -264,7 +264,8 @@ export const updateRequestStatusService = async (
           iban: refundPaymentData?.iban ?? '',
           refundedAmount:
             Number(updatedRefundData?.refundedItemsValue) +
-            Number(updatedRefundData?.refundedShippingValue),
+            Number(updatedRefundData?.refundedShippingValue) +
+            Number(updatedRefundData?.refundedAdditionalValue),
         },
         products: items,
         refundStatusData: updatedRefundStatusData,

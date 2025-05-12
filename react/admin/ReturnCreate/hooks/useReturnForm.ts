@@ -6,9 +6,13 @@ import type { Order } from '../types/Order'
 import type { ReturnRequestForm } from '../types/ReturnRequestForm'
 
 interface FormData extends Omit<ReturnRequestForm, 'additionalInfo'> {
-  additionalInfo?: {
+  additionalInfo: {
     returnAction?: string
     reasonCode?: string
+    shippingMethod?: string
+    locationCode?: string
+    refundShippingValue?: number
+    refundAdditionalValue?: number
   }
 }
 
@@ -33,6 +37,14 @@ export const useReturnForm = () => {
       refundPaymentMethod: '',
     },
     locale: 'en-US',
+    additionalInfo: {
+      returnAction: '',
+      reasonCode: '',
+      shippingMethod: '',
+      locationCode: '',
+      refundShippingValue: 0,
+      refundAdditionalValue: 0,
+    },
   })
 
   const [loading, setLoading] = useState(false)
@@ -126,6 +138,14 @@ export const useReturnForm = () => {
         refundPaymentMethod: '',
       },
       locale: 'en-US',
+      additionalInfo: {
+        returnAction: '',
+        reasonCode: '',
+        shippingMethod: '',
+        locationCode: '',
+        refundShippingValue: 0,
+        refundAdditionalValue: 0,
+      },
     })
   }
 
@@ -149,6 +169,9 @@ export const useReturnForm = () => {
           returnRequest: returnRequestPayload,
         },
       })
+
+      // Open the verified package
+
       setSuccess(true)
       clearForm()
     } catch (err) {

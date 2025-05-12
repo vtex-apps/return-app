@@ -217,6 +217,7 @@
   "admin/return-app.return-request-details.verify-items.table.header.action": "Acción",
   "admin/return-app.return-request-details.verify-items.table.header.refundable-shipping": "Envío reembolsable",
   "admin/return-app.return-request-details.verify-items.table.header.shipping-to-refund": "Reembolso del envío",
+  "admin/return-app.return-request-details.verify-items.table.header.additional-to-refund": "Reembolso adicional",
   "admin/return-app.return-request-details.verify-items.table.header.total-refund-items": "Total de productos",
   "admin/return-app.return-request-details.verify-items.table.header.total-refund": "Total del reembolso",
   "admin/return-app.return-request-details.verify-items.table.title.items": "Ítems",
