@@ -3,12 +3,16 @@ import { useMutation } from 'react-apollo'
 
 import CREATE_RETURN_REQUEST from '../../graphql/createReturn.gql'
 import type { Order } from '../types/Order'
-import { ReturnRequestForm } from '../types/ReturnRequestForm'
+import type { ReturnRequestForm } from '../types/ReturnRequestForm'
 
 interface FormData extends Omit<ReturnRequestForm, 'additionalInfo'> {
-  additionalInfo?: {
+  additionalInfo: {
     returnAction?: string
     reasonCode?: string
+    shippingMethod?: string
+    locationCode?: string
+    refundShippingValue?: number
+    refundAdditionalValue?: number
   }
 }
 
@@ -33,6 +37,14 @@ export const useReturnForm = () => {
       refundPaymentMethod: '',
     },
     locale: 'en-US',
+    additionalInfo: {
+      returnAction: '',
+      reasonCode: '',
+      shippingMethod: '',
+      locationCode: '',
+      refundShippingValue: 0,
+      refundAdditionalValue: 0,
+    },
   })
 
   const [loading, setLoading] = useState(false)
@@ -126,6 +138,14 @@ export const useReturnForm = () => {
         refundPaymentMethod: '',
       },
       locale: 'en-US',
+      additionalInfo: {
+        returnAction: '',
+        reasonCode: '',
+        shippingMethod: '',
+        locationCode: '',
+        refundShippingValue: 0,
+        refundAdditionalValue: 0,
+      },
     })
   }
 
@@ -135,14 +155,21 @@ export const useReturnForm = () => {
     setError(null)
     setSuccess(false)
 
-    const filteredItems = formData.items.filter(item => item.quantity > 0)
+    const filteredItems = formData.items.filter((item) => item.quantity > 0)
+
+    const { additionalInfo } = formData
+
+    additionalInfo.refundShippingValue =
+      (additionalInfo?.refundShippingValue ?? 0) * 100
+    additionalInfo.refundAdditionalValue =
+      (additionalInfo?.refundAdditionalValue ?? 0) * 100
 
     const returnRequestPayload = {
       ...formData,
       items: filteredItems,
-      additionalInfo: JSON.stringify(formData.additionalInfo)
+      additionalInfo: JSON.stringify(additionalInfo),
     }
-    
+
     try {
       await createReturnRequest({
         variables: {

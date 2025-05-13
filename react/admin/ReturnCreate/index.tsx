@@ -10,12 +10,18 @@ import {
   PageHeader,
   Textarea,
 } from 'vtex.styleguide'
+
 import { ReturnTypeForm } from './components/ReturnTypeForm'
 import { CustomerProfileForm } from './components/CustomerProfileForm'
 import { PickupReturnForm } from './components/PickupReturnForm'
 import { RefundPaymentForm } from './components/RefundPaymentForm'
 import { ReturnItemsForm } from './components/ReturnItemsForm'
 import { useReturnForm } from './hooks/useReturnForm'
+
+const cultureInfoData = {
+  currencyCode: 'USD',
+  locale: 'en-US',
+}
 
 const ReturnCreate: React.FC = () => {
   const {
@@ -68,7 +74,7 @@ const ReturnCreate: React.FC = () => {
                 onClick={() => completeFormDataFromOrderId(formData.orderId)}
                 isLoading={loadingCompleteFormDataFromOrderId}
               >
-                OK
+                LOAD
               </Button>
             </div>
           </div>
@@ -90,7 +96,11 @@ const ReturnCreate: React.FC = () => {
                     <CustomerProfileForm
                       data={formData.customerProfileData}
                       onChange={(field, value) =>
-                        handleNestedInputChange('customerProfileData', field, value)
+                        handleNestedInputChange(
+                          'customerProfileData',
+                          field,
+                          value
+                        )
                       }
                       order={order}
                     />
@@ -98,19 +108,33 @@ const ReturnCreate: React.FC = () => {
                   <div className="mb5">
                     <RefundPaymentForm
                       data={formData.refundPaymentData}
+                      refundData={formData.additionalInfo}
                       onChange={(field, value) =>
-                        handleNestedInputChange('refundPaymentData', field, value)
+                        handleNestedInputChange(
+                          'refundPaymentData',
+                          field,
+                          value
+                        )
                       }
+                      onRefundChange={(field, value) =>
+                        handleNestedInputChange('additionalInfo', field, value)
+                      }
+                      cultureInfoData={cultureInfoData}
                     />
                   </div>
                 </div>
+                <div className="flex-column pa5">&nbsp;</div>
                 <div className="flex-ns flex-wrap flex-auto flex-column pa5">
-                    <PickupReturnForm
-                      data={formData.pickupReturnData}
-                      onChange={(field, value) =>
-                        handleNestedInputChange('pickupReturnData', field, value)
-                      }
-                    />
+                  <PickupReturnForm
+                    data={formData.pickupReturnData}
+                    shippingData={formData.additionalInfo}
+                    onChange={(field, value) =>
+                      handleNestedInputChange('pickupReturnData', field, value)
+                    }
+                    onShippingChange={(field, value) =>
+                      handleNestedInputChange('additionalInfo', field, value)
+                    }
+                  />
                 </div>
               </div>
             </Box>
@@ -119,23 +143,31 @@ const ReturnCreate: React.FC = () => {
           <div className="mb5">
             <Box>
               <ReturnTypeForm
-                returnAction={formData.additionalInfo?.returnAction || ''}
-                reasonCode={formData.additionalInfo?.reasonCode || ''}
-                onReturnActionChange={(value) => handleNestedInputChange('additionalInfo', 'returnAction', value)}
-                onReasonCodeChange={(value) => handleNestedInputChange('additionalInfo', 'reasonCode', value)}
+                returnAction={formData.additionalInfo?.returnAction ?? ''}
+                reasonCode={formData.additionalInfo?.reasonCode ?? ''}
+                onReturnActionChange={(value) =>
+                  handleNestedInputChange(
+                    'additionalInfo',
+                    'returnAction',
+                    value
+                  )
+                }
+                onReasonCodeChange={(value) =>
+                  handleNestedInputChange('additionalInfo', 'reasonCode', value)
+                }
               />
             </Box>
           </div>
-         
+
           <div className="mb5">
             <Box>
-            <Textarea
-              label="User Comment"
-              value={formData.userComment}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                handleInputChange('userComment', e.target.value)
-              }
-            />
+              <Textarea
+                label="User Comment"
+                value={formData.userComment}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  handleInputChange('userComment', e.target.value)
+                }
+              />
             </Box>
           </div>
 
@@ -146,7 +178,7 @@ const ReturnCreate: React.FC = () => {
           </div>
           {success && (
             <div className="mt5">
-              <Alert type="success" onClose={()=>{}}>
+              <Alert type="success" onClose={() => {}}>
                 Return request created successfully!
               </Alert>
             </div>

@@ -15,7 +15,12 @@ export const ApprovedValues = () => {
 
   if (!data || !refundData) return null
 
-  const { items, invoiceValue, refundedShippingValue } = refundData
+  const {
+    items,
+    invoiceValue,
+    refundedShippingValue,
+    refundedAdditionalValue,
+  } = refundData
 
   const amountItemRefund = items.reduce((total, item) => {
     return total + item.price * item.quantity
@@ -55,6 +60,12 @@ export const ApprovedValues = () => {
             <FormattedMessage id="return-app.return-request-details.refund-total.shipping" />
           }
           value={refundedShippingValue}
+        />
+        <TotalWrapper
+          title={
+            <FormattedMessage id="return-app.return-request-details.refund-total.additional" />
+          }
+          value={refundedAdditionalValue}
         />
         <TotalWrapper
           title={

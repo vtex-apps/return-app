@@ -99,6 +99,7 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
       id: requestId,
       refundData: {
         refundedShippingValue: shippingToRefund,
+        refundedAdditionalValue: 0,
         items: itemsToRefund,
       },
       cleanUp: onViewVerifyItems,

@@ -25,7 +25,7 @@
     "@types/react-router": "^5.1.18",
     "@vtex/test-tools": "^0.3.2",
     "@vtex/tsconfig": "^0.6.0",
-    "odp.return-app": "http://odp.vtexassets.com/_v/public/typings/v1/odp.return-app@3.8.6/public/@types/odp.return-app",
+    "odp.return-app": "https://test--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.9.4+build1747130651/public/@types/odp.return-app",
     "prop-types": "^15.7.2",
     "vtex.catalog-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.104.0/public/@types/vtex.catalog-graphql",
     "vtex.css-handles": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles",
