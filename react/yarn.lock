@@ -4003,9 +4003,9 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-"odp.return-app@https://test--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.9.4+build1747130651/public/@types/odp.return-app":
+"odp.return-app@https://test--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.9.4+build1747131102/public/@types/odp.return-app":
   version "3.9.4"
-  resolved "https://test--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.9.4+build1747130651/public/@types/odp.return-app#c1446edace6ad6caee85b9126696741b4ec9463c"
+  resolved "https://test--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.9.4+build1747131102/public/@types/odp.return-app#549ccc44bb79526a4fb27c75972657e23152e077"
 
 once@^1.3.0, once@^1.3.1, once@^1.4.0:
   version "1.4.0"
