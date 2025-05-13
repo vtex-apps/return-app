@@ -9,7 +9,6 @@ interface ReturnTypeFormProps {
 }
 
 const TYPE_OPTIONS = [
-  { value: 'deliveryOnly', label: 'Delivery Only' },
   { value: 'returnOnly', label: 'Return Only' },
   { value: 'creditOnly', label: 'Credit Only' },
   { value: 'miscRefund', label: 'Misc Refund' },
@@ -22,27 +21,6 @@ const TYPE_FILTERED_OPTIONS: Record<
     reasonCodeOptions: Record<string, Array<{ value: string; label: string }>>
   }
 > = {
-  deliveryOnly: {
-    returnCategoryOptions: [
-      { value: 'customer', label: 'Customer related' },
-      { value: 'delivery', label: 'Delivery related' },
-      { value: 'warehouse', label: 'Warehouse related' },
-    ],
-    reasonCodeOptions: {
-      customer: [
-        {
-          value: 'CN',
-          label: 'CN – Customer Related* (listed as "No Longer Needs" online)*',
-        },
-      ],
-      delivery: [
-        { value: 'DD', label: 'DD – Product was Delivered Damaged*' },
-        { value: 'DN', label: 'DN – Order/Case Not Delivered' },
-        { value: 'CS', label: 'CS-Customer Signed Disputed' },
-      ],
-      warehouse: [{ value: 'WS', label: 'WS – Short Ship Split-Case/Repack' }],
-    },
-  },
   returnOnly: {
     returnCategoryOptions: [
       { value: 'orderEntry', label: 'Order Entry related' },
@@ -50,6 +28,7 @@ const TYPE_FILTERED_OPTIONS: Record<
       { value: 'item', label: 'Item or product related' },
       { value: 'delivery', label: 'Delivery related' },
       { value: 'warehouse', label: 'Warehouse related' },
+      { value: 'unauthorized', label: 'DC Only - Unauthorized return' },
     ],
     reasonCodeOptions: {
       orderEntry: [
@@ -83,6 +62,9 @@ const TYPE_FILTERED_OPTIONS: Record<
         { value: 'WL', label: 'WL – Wrong Label on Box' },
         { value: 'WM', label: 'WM – Mis-Picked' },
         { value: 'WD', label: 'WD – Duplicate order – (Facility Error)' },
+      ],
+      unauthorized: [
+        { value: 'UR', label: 'UR – DC Only - Unauthorized return' },
       ],
     },
   },

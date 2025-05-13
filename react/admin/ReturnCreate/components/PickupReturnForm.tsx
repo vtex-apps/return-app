@@ -26,11 +26,6 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
     { value: 'pickup', label: 'Pickup' },
   ]
 
-  const locationCodeOptions = [
-    { value: '01', label: 'Main' },
-    { value: '02', label: 'Secondary' },
-  ]
-
   return (
     <div className="mb5">
       <h3>Shipping Information</h3>
@@ -90,7 +85,7 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
       </div>
       <div className="mb5">
         <Dropdown
-          label="Shipping Method"
+          label="Return Method"
           options={shippingMethodOptions}
           value={shippingData.shippingMethod}
           onChange={(_, value) => onShippingChange('shippingMethod', value)}
@@ -98,12 +93,12 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
         />
       </div>
       <div className="mb5">
-        <Dropdown
-          label="DC Location"
-          options={locationCodeOptions}
+        <Input
+          label="Unauthorize Return - Location Code"
           value={shippingData.locationCode}
-          onChange={(_, value) => onShippingChange('locationCode', value)}
-          required
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onShippingChange('locationCode', e.target.value)
+          }
         />
       </div>
     </div>
