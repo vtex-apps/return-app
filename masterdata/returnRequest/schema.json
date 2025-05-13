@@ -17,7 +17,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "enum": ["items", "shipping", "tax"]
+            "enum": ["items", "shipping", "tax", "additional"]
           },
           "value": {
             "type": "integer"

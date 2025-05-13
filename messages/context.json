@@ -247,6 +247,7 @@
   "return-app.return-request-details.refund-total.item-tax": "Item (with taxes)",
   "return-app.return-request-details.refund-total.restock-fee": "Restock Fee",
   "return-app.return-request-details.refund-total.shipping": "Shipping",
+  "return-app.return-request-details.refund-total.additional": "Additional",
   "return-app.return-request-details.refund-total.total": "Total",
   "return-app.return-request-details.contact-details.title": "Contact Details",
   "return-app.return-request-details.contact-details.name": "Name",

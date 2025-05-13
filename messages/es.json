@@ -247,6 +247,7 @@
   "return-app.return-request-details.refund-total.item-tax": "Ítem (con impuestos)",
   "return-app.return-request-details.refund-total.restock-fee": "Tarifa de reposición de stock",
   "return-app.return-request-details.refund-total.shipping": "Envío",
+  "return-app.return-request-details.refund-total.additional": "Adicional",
   "return-app.return-request-details.refund-total.total": "Total",
   "return-app.return-request-details.contact-details.title": "Información de contacto",
   "return-app.return-request-details.pickup-address.title": "Dirección de entrega",

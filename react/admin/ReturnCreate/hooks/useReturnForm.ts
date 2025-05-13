@@ -157,10 +157,17 @@ export const useReturnForm = () => {
 
     const filteredItems = formData.items.filter((item) => item.quantity > 0)
 
+    const { additionalInfo } = formData
+
+    additionalInfo.refundShippingValue =
+      (additionalInfo?.refundShippingValue ?? 0) * 100
+    additionalInfo.refundAdditionalValue =
+      (additionalInfo?.refundAdditionalValue ?? 0) * 100
+
     const returnRequestPayload = {
       ...formData,
       items: filteredItems,
-      additionalInfo: JSON.stringify(formData.additionalInfo),
+      additionalInfo: JSON.stringify(additionalInfo),
     }
 
     try {

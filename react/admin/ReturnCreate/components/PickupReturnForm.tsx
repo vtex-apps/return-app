@@ -5,7 +5,7 @@ import type { PickupReturnData } from '../types/ReturnRequestForm'
 
 interface ShippingData {
   shippingMethod?: string
-  locationCde?: string
+  locationCode?: string
 }
 
 interface PickupReturnFormProps {
@@ -26,9 +26,14 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
     { value: 'pickup', label: 'Pickup' },
   ]
 
+  const locationCodeOptions = [
+    { value: '01', label: 'Main' },
+    { value: '02', label: 'Secondary' },
+  ]
+
   return (
     <div className="mb5">
-      <h3>Address Information</h3>
+      <h3>Shipping Information</h3>
       <div className="mb5">
         <Input
           label="Address"
@@ -89,6 +94,15 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
           options={shippingMethodOptions}
           value={shippingData.shippingMethod}
           onChange={(_, value) => onShippingChange('shippingMethod', value)}
+          required
+        />
+      </div>
+      <div className="mb5">
+        <Dropdown
+          label="DC Location"
+          options={locationCodeOptions}
+          value={shippingData.locationCode}
+          onChange={(_, value) => onShippingChange('locationCode', value)}
           required
         />
       </div>
