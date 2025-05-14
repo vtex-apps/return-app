@@ -168,7 +168,7 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
                       className={`${handles.productText} t-body fw5 ml3`}
                       style={{ flexBasis: '100%' }}
                     >
-                      {order.items[index].name}
+                      {`SKU:${order.items[index].id} - ${order.items[index].name}`}
                     </p>
                   </section>
                 </td>
