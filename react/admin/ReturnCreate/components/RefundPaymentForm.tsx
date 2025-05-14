@@ -71,7 +71,7 @@ export const RefundPaymentForm: React.FC<RefundPaymentFormProps> = ({
 
       <div className="mb5">
         <InputCurrency
-          label="Shipping Refund"
+          label="Shipping To Refund"
           value={refundData.refundShippingValue}
           currencyCode={cultureInfoData.currencyCode}
           locale={cultureInfoData.locale}
@@ -82,7 +82,7 @@ export const RefundPaymentForm: React.FC<RefundPaymentFormProps> = ({
       </div>
       <div className="mb5">
         <InputCurrency
-          label="Additional Refund"
+          label="Misc Refund Amount"
           value={refundData.refundAdditionalValue}
           currencyCode={cultureInfoData.currencyCode}
           locale={cultureInfoData.locale}
