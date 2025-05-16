@@ -351,5 +351,13 @@
   "admin/return-app.return-items.add": "Add",
   "admin/return-app.return-items.item": "Item {number}",
   "admin/return-app.return-items.remove": "Remove",
-  "admin/return-app.return-request-list.success-message": "Return request created successfully!"
+  "admin/return-app.return-request-list.success-message": "Return request created successfully!",
+  "return-app.return-request-details.refund-total.additional": "Additional",
+  "return-app.return-request-details.additional-info.title": "Additional Information",
+  "return-app.return-request-details.additional-info.return-action": "Return Action",
+  "return-app.return-request-details.additional-info.reason-code": "Reason Code",
+  "return-app.return-request-details.additional-info.shipping-method": "Shipping Method",
+  "return-app.return-request-details.additional-info.location-code": "Location Code",
+  "return-app.return-request-details.additional-info.refund-shipping-value": "Refund Shipping Value",
+  "return-app.return-request-details.additional-info.refund-additional-value": "Refund Additional Value"
 }

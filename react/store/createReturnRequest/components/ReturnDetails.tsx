@@ -1,19 +1,18 @@
-import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import type { RouteComponentProps } from 'react-router'
-import type { ShippingData } from 'odp.return-app'
 import { useCssHandles } from 'vtex.css-handles'
-import { Divider, Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
+import { Button, Divider } from 'vtex.styleguide'
 
-import { ContactDetails } from './ContactDetails'
-import { AddressDetails } from './AddressDetails'
-import { UserCommentDetails } from './UserCommentDetails'
+import type { ShippingData } from '../../../admin/ReturnCreate/types/Order'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
+import type { Page } from '../CreateReturnRequest'
+import { AddressDetails } from './AddressDetails'
+import { ContactDetails } from './ContactDetails'
 import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
-import type { Page } from '../CreateReturnRequest'
+import { UserCommentDetails } from './UserCommentDetails'
 
 const CSS_HANDLES = [
   'returnDetailsContainer',
