@@ -358,6 +358,6 @@
   "return-app.return-request-details.additional-info.reason-code": "Código de razón",
   "return-app.return-request-details.additional-info.shipping-method": "Método de envío",
   "return-app.return-request-details.additional-info.location-code": "Código de ubicación",
-  "return-app.return-request-details.additional-info.refund-shipping-value": "Valor de reembolso de envío",
-  "return-app.return-request-details.additional-info.refund-additional-value": "Valor adicional de reembolso"
+  "return-app.return-request-details.additional-info.refund-shipping-value": "Valor a reembolsar de envío",
+  "return-app.return-request-details.additional-info.refund-additional-value": "Valor adicional a reembolsar"
 }

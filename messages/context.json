@@ -358,6 +358,6 @@
   "return-app.return-request-details.additional-info.reason-code": "Reason Code",
   "return-app.return-request-details.additional-info.shipping-method": "Shipping Method",
   "return-app.return-request-details.additional-info.location-code": "Location Code",
-  "return-app.return-request-details.additional-info.refund-shipping-value": "Refund Shipping Value",
-  "return-app.return-request-details.additional-info.refund-additional-value": "Refund Additional Value"
+  "return-app.return-request-details.additional-info.refund-shipping-value": "Shipping To Refund",
+  "return-app.return-request-details.additional-info.refund-additional-value": "Misc Refund Amount"
 }

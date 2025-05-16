@@ -159,7 +159,7 @@ export const RefundMethodDetail = () => {
   if (!refundPaymentData) return null
 
   return (
-    <section>
+    <section className="flex-ns flex-wrap flex-auto flex-column pt4 pb4">
       <h3>
         <FormattedMessage id="return-app.return-request-details.payent-method.title" />
       </h3>

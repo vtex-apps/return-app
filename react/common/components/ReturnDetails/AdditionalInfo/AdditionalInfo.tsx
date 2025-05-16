@@ -39,7 +39,7 @@ export const AdditionalInfo = () => {
       <h3>
         <FormattedMessage id="return-app.return-request-details.additional-info.title" />
       </h3>
-      <div>
+      <div className="mb5">
         {Object.entries(additionalInfo).map(([key, value]) => {
           const translationKey =
             ADDITIONAL_INFO_KEYS[key as keyof typeof ADDITIONAL_INFO_KEYS]
