@@ -186,7 +186,7 @@ interface LogisticsInfo {
   transitTime: string
 }
 
-interface ShippingData {
+export interface ShippingData {
   id: string
   address: Address
   logisticsInfo: LogisticsInfo[]
