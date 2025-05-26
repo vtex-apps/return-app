@@ -69,6 +69,7 @@ export interface ReturnRequestAdditionalInfo {
   reasonCode: string
   shippingMethod: string
   locationCode: string
+  source: string
   refundShippingValue: number
   refundAdditionalValue: number
 }

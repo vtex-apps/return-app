@@ -11,6 +11,7 @@ interface FormData extends Omit<ReturnRequestForm, 'additionalInfo'> {
     reasonCode?: string
     shippingMethod?: string
     locationCode?: string
+    source?: string
     refundShippingValue?: number
     refundAdditionalValue?: number
   }
@@ -42,6 +43,7 @@ export const useReturnForm = () => {
       reasonCode: '',
       shippingMethod: '',
       locationCode: '',
+      source: 'VTEXadmin',
       refundShippingValue: 0,
       refundAdditionalValue: 0,
     },
@@ -143,6 +145,7 @@ export const useReturnForm = () => {
         reasonCode: '',
         shippingMethod: '',
         locationCode: '',
+        source: 'VTEXadmin',
         refundShippingValue: 0,
         refundAdditionalValue: 0,
       },
@@ -159,6 +162,7 @@ export const useReturnForm = () => {
 
     const { additionalInfo } = formData
 
+    // Format the values to have to positions for cents
     additionalInfo.refundShippingValue =
       (additionalInfo?.refundShippingValue ?? 0) * 100
     additionalInfo.refundAdditionalValue =
