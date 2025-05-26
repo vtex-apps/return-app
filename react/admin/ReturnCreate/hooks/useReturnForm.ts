@@ -168,6 +168,21 @@ export const useReturnForm = () => {
     additionalInfo.refundAdditionalValue =
       (additionalInfo?.refundAdditionalValue ?? 0) * 100
 
+    if (!additionalInfo.locationCode) {
+      // Get the closest DC location code
+      try {
+        const closestDC = await getClosestDC(
+          formData.pickupReturnData.zipCode,
+          0,
+          0
+        )
+
+        additionalInfo.locationCode = closestDC.locationId
+      } catch {
+        // If there is an error, we will not set the location code
+      }
+    }
+
     const returnRequestPayload = {
       ...formData,
       items: filteredItems,
@@ -201,4 +216,22 @@ export const useReturnForm = () => {
     loadingCompleteFormDataFromOrderId,
     order,
   }
+}
+
+async function getClosestDC(postalCode: string, lat: number, lng: number) {
+  const response = await fetch(`/_v/private/returns-validation/v0/closest-dc`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      postalCode,
+      lat,
+      lng,
+    }),
+  })
+
+  const data = await response.json()
+
+  return data.closestDC
 }
