@@ -21,7 +21,7 @@ const TYPE_FILTERED_OPTIONS: Record<
     reasonCodeOptions: Record<string, Array<{ value: string; label: string }>>
   }
 > = {
-  returnOnly: {
+  RT: {
     returnCategoryOptions: [
       { value: 'orderEntry', label: 'Order Entry related' },
       { value: 'customer', label: 'Customer related' },
@@ -68,7 +68,7 @@ const TYPE_FILTERED_OPTIONS: Record<
       ],
     },
   },
-  creditOnly: {
+  CO: {
     returnCategoryOptions: [
       { value: 'orderEntry', label: 'Order Entry related' },
       { value: 'customer', label: 'Customer related' },
@@ -118,7 +118,7 @@ const TYPE_FILTERED_OPTIONS: Record<
       ],
     },
   },
-  miscRefund: {
+  MF: {
     returnCategoryOptions: [
       { value: 'orderEntry', label: 'Order Entry related' },
       { value: 'customer', label: 'Customer related' },

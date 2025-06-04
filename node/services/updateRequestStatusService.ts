@@ -288,5 +288,16 @@ export const updateRequestStatusService = async (
     refundData,
   })
 
+  if (
+    status === 'amountRefunded' ||
+    status === 'denied' ||
+    status === 'cancelled'
+  ) {
+    events.sendEvent('', 'return-app.closeReturn', {
+      returnRequestId: requestId,
+      status,
+    })
+  }
+
   return { id: requestId, ...updatedRequest }
 }
