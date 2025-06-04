@@ -9,9 +9,9 @@ interface ReturnTypeFormProps {
 }
 
 const TYPE_OPTIONS = [
-  { value: 'returnOnly', label: 'Return Only' },
-  { value: 'creditOnly', label: 'Credit Only' },
-  { value: 'miscRefund', label: 'Misc Refund' },
+  { value: 'RT', label: 'Return Only' },
+  { value: 'CO', label: 'Credit Only' },
+  { value: 'MF', label: 'Misc Refund' },
 ]
 
 const TYPE_FILTERED_OPTIONS: Record<

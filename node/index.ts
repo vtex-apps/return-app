@@ -15,6 +15,8 @@ import { createReturn } from './middlewares/createReturn'
 import { getRequest } from './middlewares/getRequest'
 import { getRequestList } from './middlewares/getRequestList'
 import { updateRequestStatus } from './middlewares/updateRequestStatus'
+import { updateRequestAdditionalInfo } from './middlewares/updateRequestAdditionalInfo'
+import { getRequestAdditionalInfo } from './middlewares/getRequestAdditionalInfo'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -53,6 +55,10 @@ export default new Service<Clients, State, ParamsContext>({
     returnRequest: method({
       GET: [errorHandler, auth, getRequest],
       PUT: [errorHandler, auth, updateRequestStatus],
+    }),
+    returnRequestAdditionalInfo: method({
+      GET: [errorHandler, auth, getRequestAdditionalInfo],
+      PUT: [errorHandler, auth, updateRequestAdditionalInfo],
     }),
   },
   graphql: {
