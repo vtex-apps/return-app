@@ -12,6 +12,10 @@
     "returnRequest": {
       "path": "/_v/return-request/:requestId",
       "public": true
+    },
+    "returnRequestAdditionalInfo": {
+      "path": "/_v/return-request/:requestId/additional-info",
+      "public": true
     }
   }
 }
