@@ -61,7 +61,7 @@ export const returnRequestListService = async (
   getAllFields = false
 ) => {
   const {
-    clients: { returnRequest: returnRequestClient },
+    clients: { returnRequestClient },
     request: { header },
     state: { userProfile, appkey },
   } = ctx
@@ -119,7 +119,7 @@ export const returnRequestListService = async (
       pageSize: perPage && perPage <= 100 ? perPage : 25,
     },
     resultFields,
-    'dateSubmitted DESC',
+    'createdIn DESC',
     buildWhereClause(adjustedFilter)
   )
 

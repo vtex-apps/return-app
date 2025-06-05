@@ -52,7 +52,7 @@ export const updateRequestAdditionalInfoService = async (
 ): Promise<ReturnRequest> => {
   const {
     state: { userProfile, appkey },
-    clients: { returnRequest: returnRequestClient },
+    clients: { returnRequestClient },
   } = ctx
 
   const { requestId, additionalInfo: newAdditionalInfo, sequenceNumber } = args

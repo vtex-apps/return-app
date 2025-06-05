@@ -46,7 +46,7 @@ export const ReturnRequestResponse = {
     if (refundableAmount) return refundableAmount
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { refundableAmount: refundableAmountValue } =
@@ -64,7 +64,7 @@ export const ReturnRequestResponse = {
     if (customerProfileData) return customerProfileData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { customerProfileData: customerProfile } =
@@ -82,7 +82,7 @@ export const ReturnRequestResponse = {
     if (refundableAmountTotals) return refundableAmountTotals
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { refundableAmountTotals: refundableAmountTotalsData } =
@@ -100,7 +100,7 @@ export const ReturnRequestResponse = {
     if (pickupReturnData) return pickupReturnData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { pickupReturnData: pickupData } = await returnRequestClient.get(
@@ -120,7 +120,7 @@ export const ReturnRequestResponse = {
     if (refundPaymentData) return refundPaymentData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { refundPaymentData: refundData } = await returnRequestClient.get(
@@ -136,7 +136,7 @@ export const ReturnRequestResponse = {
     if (items) return items
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { items: itemsList } = await returnRequestClient.get(id as string, [
@@ -151,7 +151,7 @@ export const ReturnRequestResponse = {
     if (refundData) return refundData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { refundData: refundDataList } = await returnRequestClient.get(
@@ -168,7 +168,7 @@ export const ReturnRequestResponse = {
   ) => {
     const { id, refundStatusData } = root
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
       request: { header },
     } = ctx
 
@@ -190,7 +190,7 @@ export const ReturnRequestResponse = {
     if (cultureInfoData) return cultureInfoData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { returnRequestClient },
     } = ctx
 
     const { cultureInfoData: cultureInfo } = await returnRequestClient.get(

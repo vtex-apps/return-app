@@ -15,12 +15,7 @@ export const orderToReturnSummary = async (
   const { orderId, storeUserEmail } = args
   const {
     state: { userProfile, appkey },
-    clients: {
-      appSettings,
-      oms,
-      returnRequest: returnRequestClient,
-      catalogGQL,
-    },
+    clients: { appSettings, oms, returnRequestClient, catalogGQL },
     vtex: { logger },
   } = ctx
 

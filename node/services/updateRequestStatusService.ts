@@ -95,7 +95,7 @@ export const updateRequestStatusService = async (
   const {
     state: { userProfile, appkey },
     clients: {
-      returnRequest: returnRequestClient,
+      returnRequestClient,
       oms,
       giftCard: giftCardClient,
       mail,
