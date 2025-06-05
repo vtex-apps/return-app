@@ -3,7 +3,7 @@ import type { ReturnRequest } from 'odp.return-app'
 
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {
-    clients: { returnRequest: returnRequestClient },
+    clients: { returnRequestClient },
     state: { userProfile, appkey },
   } = ctx
 

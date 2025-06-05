@@ -26,7 +26,7 @@ export const createReturnRequestService = async (
   const {
     clients: {
       oms,
-      returnRequest: returnRequestClient,
+      returnRequestClient,
       appSettings,
       mail,
       catalogGQL,
@@ -165,7 +165,7 @@ export const createReturnRequestService = async (
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
-  const sequenceNumber = `${sequence}-${total + 1}`
+  const sequenceNumber = `${sequence}-${Number(total) + 1}`
 
   const itemsToReturn = await createItemsToReturn({
     itemsToReturn: items,
