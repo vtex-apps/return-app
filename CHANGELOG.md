@@ -7,31 +7,40 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed the packageVerified validation for returns with no items
+
 ## [3.10.2] - 2025-05-16
 
 ### Added
+
 - Additional information section in return request details
 - Updated translations for return request details
 
 ## [3.9.3] - 2025-04-25
 
 ### Added
+
 - Display item quantity in return items form for enhanced order details
 - Enhanced return creation form with order data integration
 - Added loading state for order ID completion
 
 ### Changed
+
 - Adjusted README documentation
 
 ## [3.9.2] - 2025-04-24
 
 ### Added
+
 - Success message for return request creation in English and Spanish language files
 - Return request creation functionality with forms for customer profile, pickup return, and refund payment
 - AdditionalInfo field for return requests
 - ESLint and Prettier configuration files
 
 ### Changed
+
 - Renamed additinalInfo field to additionalInfo
 
 ## [3.8.5] - 2023-05-15
@@ -43,35 +52,51 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [3.7.1] - 2023-04-05
 
 ## [3.7.0] - 2023-04-05
+
 ### Added
+
 - German translation.
 
 ## [3.6.0] - 2023-04-03
+
 ### Added
+
 - Create new layout for My Returns List and Request Returns Available List (change from table to Grid Layout with cards)
+
 ### Fixed
+
 - Change structure of solicitation details and new request (from table to card) in mobile devices.
 
 ## [3.5.6] - 2023-02-06
 
 ## [3.5.5] - 2022-11-11
+
 ### Fixed
+
 - Allow creation of a return for orders placed with a ` PICKUP_POINT` as customer address.
 
 ## [3.5.4] - 2022-11-07
+
 ### Fixed
+
 - Allow creation of a return that contains only gifts
 
 ## [3.5.3] - 2022-10-04
+
 ### Fixed
+
 - Email template for status update.
 
 ## [3.5.2] - 2022-09-21
+
 ### Fixed
+
 - Default `refId` to an empty string when the value coming from the order is falsy.
 
 ## [3.5.1] - 2022-09-12
+
 ### Fixed
+
 - Allow other reason to be submitted when account is using custom reasons.
 
 ## [3.5.0] - 2022-08-24

@@ -65,14 +65,18 @@ const formatRequestToPartialUpdate = (
 const acceptOrDenyPackage = (refundItemList?: RefundItemInput[]) => {
   if (!refundItemList) {
     throw new UserInputError(
-      'Missing items inside refundData object. It is necessary to pass a list of items to refund. To deny all items, pass a empty array.'
+      'Missing items inside refundData object. It is necessary to pass a list of items to refund. To deny all items, pass an empty array.'
     )
   }
 
   if (!Array.isArray(refundItemList)) {
     throw new UserInputError(
-      'Item has to be an array. To deny all items, pass a empty array.'
+      'Item has to be an array. To deny all items, pass an empty array.'
     )
+  }
+
+  if (refundItemList.length === 0) {
+    return 'packageVerified'
   }
 
   return refundItemList.some(({ quantity, orderItemIndex }) => {
