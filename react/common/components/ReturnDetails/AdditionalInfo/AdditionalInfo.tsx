@@ -14,6 +14,7 @@ const ADDITIONAL_INFO_KEYS = {
     'return-app.return-request-details.additional-info.shipping-method',
   locationCode:
     'return-app.return-request-details.additional-info.location-code',
+  source: 'return-app.return-request-details.additional-info.source',
   refundShippingValue:
     'return-app.return-request-details.additional-info.refund-shipping-value',
   refundAdditionalValue:
@@ -42,16 +43,23 @@ export const AdditionalInfo = () => {
       <div className="mb5">
         {Object.entries(additionalInfo).map(([key, value]) => {
           const translationKey =
-            ADDITIONAL_INFO_KEYS[key as keyof typeof ADDITIONAL_INFO_KEYS]
+            ADDITIONAL_INFO_KEYS[key as keyof typeof ADDITIONAL_INFO_KEYS] ||
+            key
 
-          if (!translationKey) return null
+          // Conditionally divide the value if the key is 'refundShippingValue'
+          const displayValue =
+            (key === 'refundShippingValue' ||
+              key === 'refundAdditionalValue') &&
+            typeof value === 'number'
+              ? (value / 100).toFixed(2)
+              : value
 
           return (
             <p key={key}>
               <strong>
                 <FormattedMessage id={translationKey} />:
               </strong>{' '}
-              {value}
+              {displayValue}
             </p>
           )
         })}

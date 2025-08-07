@@ -352,12 +352,12 @@
   "admin/return-app.return-items.item": "Ítem {number}",
   "admin/return-app.return-items.remove": "Eliminar",
   "admin/return-app.return-request-list.success-message": "¡Solicitud de devolución creada con éxito!",
-  "return-app.return-request-details.refund-total.additional": "Adicional",
   "return-app.return-request-details.additional-info.title": "Información adicional",
   "return-app.return-request-details.additional-info.return-action": "Acción de devolución",
   "return-app.return-request-details.additional-info.reason-code": "Código de razón",
   "return-app.return-request-details.additional-info.shipping-method": "Método de envío",
   "return-app.return-request-details.additional-info.location-code": "Código de ubicación",
+  "return-app.return-request-details.additional-info.source": "Fuente",
   "return-app.return-request-details.additional-info.refund-shipping-value": "Valor a reembolsar de envío",
   "return-app.return-request-details.additional-info.refund-additional-value": "Valor adicional a reembolsar"
 }
