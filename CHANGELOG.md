@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.11.3] - 2025-08-18
+
 ### Fixed
 
 - Allow cancellation of returns in "Package verified" status to support Credit Returns without physical items
