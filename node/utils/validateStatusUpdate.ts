@@ -7,7 +7,7 @@ const statusAllowed: Record<Status, Status[]> = {
   pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'packageVerified', 'denied'],
   pendingVerification: ['pendingVerification', 'packageVerified'],
   // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
-  packageVerified: ['packageVerified', 'amountRefunded'],
+  packageVerified: ['packageVerified', 'amountRefunded', 'cancelled'],
   amountRefunded: ['amountRefunded'],
   denied: ['denied'],
   cancelled: ['cancelled'],
