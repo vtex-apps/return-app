@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Fixed refund amount calculation for Miscellaneous Refunds (MF) to use only refundAdditionalValue + refundShippingValue instead of refundableAmount
+- Fixed function signature to properly accept additionalInfo parameter for MF return handling
+
 ## [3.11.4] - 2025-08-18
 
 ### Fixed

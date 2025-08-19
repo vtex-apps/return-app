@@ -187,6 +187,7 @@ export const updateRequestStatusService = async (
           refundData,
           requestItems: returnRequest.items,
           refundableShipping: maxRefundableShipping,
+          additionalInfo: returnRequest.additionalInfo,
         })
       : returnRequest.refundData
 

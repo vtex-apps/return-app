@@ -6,11 +6,13 @@ export const createRefundData = ({
   refundData,
   requestItems,
   refundableShipping,
+  additionalInfo,
 }: {
   requestId: string
   refundData?: Maybe<RefundDataInput>
   requestItems: ReturnRequest['items']
   refundableShipping: number
+  additionalInfo?: string
 }): ReturnRequest['refundData'] => {
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
@@ -79,11 +81,34 @@ export const createRefundData = ({
     )
   }
 
+  // Check if this is a Miscellaneous Refund (MF) return
+  let parsedAdditionalInfo: any = {}
+  if (additionalInfo) {
+    try {
+      parsedAdditionalInfo = JSON.parse(additionalInfo)
+    } catch (error) {
+      // If parsing fails, continue with empty object
+    }
+  }
+
+  // For MF returns, ignore refundableAmount and only use refundAdditionalValue + refundShippingValue
+  // For other refund types (RT and CO), use the standard calculation
+  const isMFReturn = parsedAdditionalInfo.returnAction === 'MF'
+  
+  let invoiceValue: number
+  if (isMFReturn) {
+    // For MF returns, only use refundAdditionalValue + refundShippingValue
+    invoiceValue = refundedAdditionalValue + refundedShippingValue
+  } else {
+    // For other return types, use the standard calculation
+    invoiceValue = refundedItemsValue + refundedShippingValue + refundedAdditionalValue
+  }
+
   return {
     // invoiceNumber has to match the requestId.
     // This values is used to filter the invoices created via Return app when calculating the items available to be returned.
     invoiceNumber: requestId,
-    invoiceValue: refundedItemsValue + refundedShippingValue + refundedAdditionalValue,
+    invoiceValue,
     refundedItemsValue,
     refundedShippingValue,
     refundedAdditionalValue,
