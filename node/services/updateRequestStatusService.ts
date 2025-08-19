@@ -302,6 +302,9 @@ export const updateRequestStatusService = async (
       returnRequestId: requestId,
       status,
     })
+    logger.warn({
+      message: `Fired closeReturn event for  ${requestId}`,
+    })
   }
 
   return { id: requestId, ...updatedRequest }

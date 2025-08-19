@@ -28,6 +28,12 @@ const clients: ClientsConfig<Clients> = {
       retries: 2,
       timeout: TIMEOUT_MS,
     },
+    events: {
+      exponentialBackoffCoefficient: 2,
+      initialBackoffDelay: 120,
+      retries: 3,
+      timeout: TIMEOUT_MS,
+    },
     catalog: {
       memoryCache: catalogMemoryCache,
     },
