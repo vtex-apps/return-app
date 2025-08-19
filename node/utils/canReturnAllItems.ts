@@ -53,10 +53,10 @@ export const canReturnAllItems = async (
 
   for (let i = 0; i < invoicedItems.length; i++) {
     const { orderItemIndex, quantity } = invoicedItems[i]
-    const isExcluded = excludedItemsIndexMap.get(i) ?? false
+    const isExcluded = excludedItemsIndexMap.get(orderItemIndex) ?? false
     const quantityAvailable = isExcluded
       ? 0
-      : quantity - (processedItemsQuantityIndexMap.get(i) ?? 0)
+      : quantity - (processedItemsQuantityIndexMap.get(orderItemIndex) ?? 0)
 
     itemAvailableMap.set(orderItemIndex, quantityAvailable)
   }
