@@ -319,13 +319,18 @@ export const updateRequestStatusService = async (
   }
   
   // Ensure refundData is always included, especially for amountRefunded status
-  if (status === 'amountRefunded' && !eventData.refundData) {
+  if (status === 'amountRefunded' && !eventData.refundData && refundInvoice) {
     logger.warn({
       message: 'Missing refundData in amountRefunded event - using refundInvoice',
       requestId,
       refundInvoice,
     })
-    eventData.refundData = refundInvoice
+    // Convert refundInvoice to the expected format for the event
+    eventData.refundData = {
+      items: refundInvoice.items || [],
+      refundedShippingValue: refundInvoice.refundedShippingValue || 0,
+      refundedAdditionalValue: refundInvoice.refundedAdditionalValue || 0,
+    }
   }
   
   logger.info({
