@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Fixed missing refundData in updateReturn events for amountRefunded status
+
 ## [3.11.8] - 2025-08-20
 
 ### Added
