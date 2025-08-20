@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.11.8] - 2025-08-20
+
 ### Added
 - Added logging for final refund invoice and external system event data
 
