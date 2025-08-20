@@ -180,6 +180,17 @@ export const updateRequestStatusService = async (
     returnRequest.refundableAmountTotals.find(({ id }) => id === 'shipping')
       ?.value ?? 0
 
+  // Log input data for debugging
+  if (createRefundInvoice && requestStatus !== 'denied') {
+    logger.info({
+      message: 'Creating refund data',
+      requestId,
+      refundData,
+      additionalInfo: returnRequest.additionalInfo,
+      refundableShipping: maxRefundableShipping,
+    })
+  }
+
   const refundInvoice =
     createRefundInvoice && requestStatus !== 'denied'
       ? createRefundData({
@@ -188,6 +199,7 @@ export const updateRequestStatusService = async (
           requestItems: returnRequest.items,
           refundableShipping: maxRefundableShipping,
           additionalInfo: returnRequest.additionalInfo,
+          logger,
         })
       : returnRequest.refundData
 
@@ -301,9 +313,6 @@ export const updateRequestStatusService = async (
     events.sendEvent('', 'return-app.closeReturn', {
       returnRequestId: requestId,
       status,
-    })
-    logger.warn({
-      message: `Fired closeReturn event for  ${requestId}`,
     })
   }
 

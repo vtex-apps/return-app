@@ -7,12 +7,14 @@ export const createRefundData = ({
   requestItems,
   refundableShipping,
   additionalInfo,
+  logger,
 }: {
   requestId: string
   refundData?: Maybe<RefundDataInput>
   requestItems: ReturnRequest['items']
   refundableShipping: number
   additionalInfo?: string
+  logger?: any
 }): ReturnRequest['refundData'] => {
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
@@ -86,7 +88,22 @@ export const createRefundData = ({
   if (additionalInfo) {
     try {
       parsedAdditionalInfo = JSON.parse(additionalInfo)
+      if (logger) {
+        logger.info({
+          message: 'Parsed additionalInfo successfully',
+          requestId,
+          parsedAdditionalInfo,
+        })
+      }
     } catch (error) {
+      if (logger) {
+        logger.error({
+          message: 'Failed to parse additionalInfo',
+          requestId,
+          additionalInfo,
+          error: error.message,
+        })
+      }
       // If parsing fails, continue with empty object
     }
   }
@@ -95,13 +112,42 @@ export const createRefundData = ({
   // For other refund types (RT and CO), use the standard calculation
   const isMFReturn = parsedAdditionalInfo.returnAction === 'MF'
   
+  if (logger) {
+    logger.info({
+      message: 'Refund calculation details',
+      requestId,
+      isMFReturn,
+      returnAction: parsedAdditionalInfo.returnAction,
+      refundedItemsValue,
+      refundedShippingValue,
+      refundedAdditionalValue,
+      refundableShipping,
+    })
+  }
+  
   let invoiceValue: number
   if (isMFReturn) {
     // For MF returns, only use refundAdditionalValue + refundShippingValue
     invoiceValue = refundedAdditionalValue + refundedShippingValue
+    if (logger) {
+      logger.info({
+        message: 'MF return calculation',
+        requestId,
+        invoiceValue,
+        calculation: `${refundedAdditionalValue} + ${refundedShippingValue} = ${invoiceValue}`,
+      })
+    }
   } else {
     // For other return types, use the standard calculation
     invoiceValue = refundedItemsValue + refundedShippingValue + refundedAdditionalValue
+    if (logger) {
+      logger.info({
+        message: 'Standard return calculation',
+        requestId,
+        invoiceValue,
+        calculation: `${refundedItemsValue} + ${refundedShippingValue} + ${refundedAdditionalValue} = ${invoiceValue}`,
+      })
+    }
   }
 
   return {
