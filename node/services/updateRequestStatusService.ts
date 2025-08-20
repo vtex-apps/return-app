@@ -203,6 +203,18 @@ export const updateRequestStatusService = async (
         })
       : returnRequest.refundData
 
+  // Log the final refund invoice for debugging
+  if (refundInvoice) {
+    logger.info({
+      message: 'Final refund invoice created',
+      requestId,
+      invoiceValue: refundInvoice.invoiceValue,
+      refundedItemsValue: refundInvoice.refundedItemsValue,
+      refundedShippingValue: refundInvoice.refundedShippingValue,
+      refundedAdditionalValue: refundInvoice.refundedAdditionalValue,
+    })
+  }
+
   const refundReturn = await handleRefund({
     currentStatus: requestStatus,
     previousStatus: returnRequest.status,
@@ -298,12 +310,21 @@ export const updateRequestStatusService = async (
     })
   }
 
-  events.sendEvent('', 'return-app.updateReturn', {
+  // Log the event data being sent to external systems
+  const eventData = {
     returnRequestId: requestId,
     status,
     comment,
     refundData,
+  }
+  
+  logger.info({
+    message: 'Sending updateReturn event to external systems',
+    requestId,
+    eventData,
   })
+  
+  events.sendEvent('', 'return-app.updateReturn', eventData)
 
   if (
     status === 'amountRefunded' ||
