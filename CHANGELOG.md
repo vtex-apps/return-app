@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Fixed duplicate closeReturn events by only sending when status actually changes
+
 ## [3.11.9] - 2025-08-20
 
 ### Fixed
