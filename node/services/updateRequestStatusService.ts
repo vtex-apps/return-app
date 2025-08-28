@@ -343,10 +343,10 @@ export const updateRequestStatusService = async (
 
   // Only send closeReturn event if the status is actually changing
   if (
-    (status === 'amountRefunded' ||
-     status === 'denied' ||
-     status === 'cancelled') &&
-    status !== returnRequest.status
+    (requestStatus === 'amountRefunded' ||
+     requestStatus === 'denied' ||
+     requestStatus === 'cancelled') &&
+    requestStatus !== returnRequest.status
   ) {
     events.sendEvent('', 'return-app.closeReturn', {
       returnRequestId: requestId,
