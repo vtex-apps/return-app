@@ -275,6 +275,9 @@
     },
     "additionalInfo": {
       "type": "string"
+    },
+    "financialStatus": {
+      "type": ["string", "null"]
     }
   },
   "$defs": {
@@ -323,7 +326,8 @@
     "customerProfileData",
     "status",
     "sequenceNumber",
-    "dateSubmitted"
+    "dateSubmitted",
+    "financialStatus"
   ],
   "v-immediate-indexing": true
 }
