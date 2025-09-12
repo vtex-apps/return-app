@@ -89,20 +89,22 @@ export const handleRefund = async ({
 
   if (refundPayment) {
     try {
-      await omsClient.createInvoice(orderId, {
+      const invoicePayload = {
         type: 'Input',
         issuanceDate: createdAt,
         invoiceNumber: refundInvoice?.invoiceNumber as string,
         invoiceValue: refundInvoice?.invoiceValue as number,
         items:
-          refundInvoice?.items?.map((item) => {
+          refundInvoice?.items?.map((item: { id: string; price: number; restockFee: number; quantity: number }) => {
             return {
               id: item.id as string,
               price: (item.price as number) - (item.restockFee as number),
               quantity: item.quantity as number,
             }
           }) ?? [],
-      })
+      }
+      console.log('invoicePayload', invoicePayload)
+      await omsClient.createInvoice(orderId, invoicePayload)
 
       return null
     } catch (error) {

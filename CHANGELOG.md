@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Inferring types to the invoice payload
+
 ## [3.12.0] - 2025-09-11
 
 ### Added
