@@ -9,6 +9,9 @@
     "sequenceNumber": {
       "type": "string"
     },
+    "externalReference": {
+      "type": ["string", "null"]
+    },
     "status": { "$ref": "#/$defs/status" },
     "refundableAmountTotals": {
       "type": "array",
