@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.12.3] - 2025-09-30
+
 ### Added
 
 - New field `externalReference` to keep Kibo own sequence number
