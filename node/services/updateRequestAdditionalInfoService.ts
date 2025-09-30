@@ -13,6 +13,7 @@ const formatRequestToPartialUpdate = (
     orderId,
     refundableAmount,
     sequenceNumber,
+    externalReference,
     status,
     customerProfileData,
     pickupReturnData,
@@ -30,6 +31,7 @@ const formatRequestToPartialUpdate = (
     orderId,
     refundableAmount,
     sequenceNumber,
+    externalReference,
     status,
     customerProfileData,
     pickupReturnData,
@@ -55,7 +57,7 @@ export const updateRequestAdditionalInfoService = async (
     clients: { returnRequestClient },
   } = ctx
 
-  const { requestId, additionalInfo: newAdditionalInfo, sequenceNumber } = args
+  const { requestId, additionalInfo: newAdditionalInfo, externalReference } = args
 
   const { role } = userProfile ?? {}
 
@@ -87,7 +89,7 @@ export const updateRequestAdditionalInfoService = async (
   const updatedRequest = {
     ...formatRequestToPartialUpdate(returnRequest),
     additionalInfo: JSON.stringify(updatedAdditionalInfo),
-    ...(sequenceNumber ? { sequenceNumber } : {}),
+    ...(externalReference ? { externalReference } : {}),
   }
 
   try {
