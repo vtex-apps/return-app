@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage, defineMessages } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
@@ -21,62 +21,23 @@ export const PickupAddress = () => {
   const pickupAddressMessageRoute =
     'return-app.return-request-details.pickup-address'
 
-  const messages = defineMessages({
-    [`${pickupAddressMessageRoute}.title`]: {
-      id: `${pickupAddressMessageRoute}.title`,
-      defaultMessage: 'Pickup Address'
-    },
-    [`${pickupAddressMessageRoute}.pickup-type`]: {
-      id: `${pickupAddressMessageRoute}.pickup-type`,
-      defaultMessage: 'Pickup Type'
-    },
-    [`${pickupAddressMessageRoute}.pickup-type.pickup-point`]: {
-      id: `${pickupAddressMessageRoute}.pickup-type.pickup-point`,
-      defaultMessage: 'Pickup Point'
-    },
-    [`${pickupAddressMessageRoute}.pickup-type.customer-address`]: {
-      id: `${pickupAddressMessageRoute}.pickup-type.customer-address`,
-      defaultMessage: 'Customer Address'
-    },
-    [`${pickupAddressMessageRoute}.country`]: {
-      id: `${pickupAddressMessageRoute}.country`,
-      defaultMessage: 'Country'
-    },
-    [`${pickupAddressMessageRoute}.locality`]: {
-      id: `${pickupAddressMessageRoute}.locality`,
-      defaultMessage: 'City'
-    },
-    [`${pickupAddressMessageRoute}.address`]: {
-      id: `${pickupAddressMessageRoute}.address`,
-      defaultMessage: 'Address'
-    },
-    [`${pickupAddressMessageRoute}.state`]: {
-      id: `${pickupAddressMessageRoute}.state`,
-      defaultMessage: 'State'
-    },
-    [`${pickupAddressMessageRoute}.zip`]: {
-      id: `${pickupAddressMessageRoute}.zip`,
-      defaultMessage: 'ZIP Code'
-    }
-  })
-
   return (
     <section
       className={`${handles.commonPickupContainer} flex-ns flex-wrap flex-auto flex-column pt4 pb4`}
     >
       <h3>
-        <FormattedMessage {...messages[`${pickupAddressMessageRoute}.title`]} />
+        <FormattedMessage id={`${pickupAddressMessageRoute}.title`} />
       </h3>
       <div className="mb5">
         <p className="ma0">
-          <FormattedMessage {...messages[`${pickupAddressMessageRoute}.pickup-type`]} />:{' '}
+          <FormattedMessage id={`${pickupAddressMessageRoute}.pickup-type`} />:{' '}
           {addressType === 'PICKUP_POINT' ? (
             <FormattedMessage
-              {...messages[`${pickupAddressMessageRoute}.pickup-type.pickup-point`]}
+              id={`${pickupAddressMessageRoute}.pickup-type.pickup-point`}
             />
           ) : (
             <FormattedMessage
-              {...messages[`${pickupAddressMessageRoute}.pickup-type.customer-address`]}
+              id={`${pickupAddressMessageRoute}.pickup-type.customer-address`}
             />
           )}
         </p>
@@ -84,7 +45,7 @@ export const PickupAddress = () => {
       <div className="mb5">
         <p className="ma0">
           <FormattedMessage
-            {...messages[`${pickupAddressMessageRoute}.country`]}
+            id={`${pickupAddressMessageRoute}.country`}
             values={{
               country,
             }}
@@ -94,7 +55,7 @@ export const PickupAddress = () => {
       <div className="mb5">
         <p className="ma0">
           <FormattedMessage
-            {...messages[`${pickupAddressMessageRoute}.locality`]}
+            id={`${pickupAddressMessageRoute}.locality`}
             values={{
               city,
             }}
@@ -104,7 +65,7 @@ export const PickupAddress = () => {
       <div className="mb5">
         <p className="ma0">
           <FormattedMessage
-            {...messages[`${pickupAddressMessageRoute}.address`]}
+            id={`${pickupAddressMessageRoute}.address`}
             values={{
               address,
             }}
@@ -114,7 +75,7 @@ export const PickupAddress = () => {
       <div className="mb5">
         <p className="ma0">
           <FormattedMessage
-            {...messages[`${pickupAddressMessageRoute}.state`]}
+            id={`${pickupAddressMessageRoute}.state`}
             values={{
               state,
             }}
@@ -124,7 +85,7 @@ export const PickupAddress = () => {
       <div className="mb5">
         <p className="ma0">
           <FormattedMessage
-            {...messages[`${pickupAddressMessageRoute}.zip`]}
+            id={`${pickupAddressMessageRoute}.zip`}
             values={{
               zipCode,
             }}
