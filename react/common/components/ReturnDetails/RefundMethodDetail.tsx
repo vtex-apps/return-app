@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage, FormattedNumber } from 'react-intl'
+import { FormattedMessage, FormattedNumber, defineMessages } from 'react-intl'
 import type { GiftCard, Maybe, RefundPaymentData } from 'odp.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
@@ -10,6 +10,29 @@ const CSS_HANDLES = ['refundMethodDetailContainer'] as const
 
 const messageId =
   'return-app.return-request-details.payent-method.refund-option'
+
+const messages = defineMessages({
+  [`${messageId}.refund-method`]: {
+    id: `${messageId}.refund-method`,
+    defaultMessage: 'Refund Method'
+  },
+  [`${messageId}.gift-card`]: {
+    id: `${messageId}.gift-card`,
+    defaultMessage: 'Gift Card'
+  },
+  [`${messageId}.bank`]: {
+    id: `${messageId}.bank`,
+    defaultMessage: 'Bank'
+  },
+  [`${messageId}.card`]: {
+    id: `${messageId}.card`,
+    defaultMessage: 'Card'
+  },
+  [`${messageId}.same-as-purchase`]: {
+    id: `${messageId}.same-as-purchase`,
+    defaultMessage: 'Same as Purchase'
+  }
+})
 
 interface RefundMethodProps {
   refundPaymentData: RefundPaymentData
@@ -38,9 +61,9 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div className={handles.refundMethodDetailContainer}>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            {...messages[`${messageId}.refund-method`]}
             values={{
-              refundMethod: <FormattedMessage id={`${messageId}.gift-card`} />,
+              refundMethod: <FormattedMessage {...messages[`${messageId}.gift-card`]} />,
             }}
           />
         </p>
@@ -82,9 +105,9 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            {...messages[`${messageId}.refund-method`]}
             values={{
-              refundMethod: <FormattedMessage id={`${messageId}.bank`} />,
+              refundMethod: <FormattedMessage {...messages[`${messageId}.bank`]} />,
             }}
           />
         </p>
@@ -111,9 +134,9 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            {...messages[`${messageId}.refund-method`]}
             values={{
-              refundMethod: <FormattedMessage id={`${messageId}.card`} />,
+              refundMethod: <FormattedMessage {...messages[`${messageId}.card`]} />,
             }}
           />
         </p>
@@ -126,10 +149,10 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            {...messages[`${messageId}.refund-method`]}
             values={{
               refundMethod: (
-                <FormattedMessage id={`${messageId}.same-as-purchase`} />
+                <FormattedMessage {...messages[`${messageId}.same-as-purchase`]} />
               ),
             }}
           />

@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, defineMessages } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
 import type { ReturnRequestDetails } from '../../../../types/ReturnRequestDetails'
@@ -20,6 +20,37 @@ const ADDITIONAL_INFO_KEYS = {
   refundAdditionalValue:
     'return-app.return-request-details.additional-info.refund-additional-value',
 } as const
+
+const messages = defineMessages({
+  'return-app.return-request-details.additional-info.return-action': {
+    id: 'return-app.return-request-details.additional-info.return-action',
+    defaultMessage: 'Return Action'
+  },
+  'return-app.return-request-details.additional-info.reason-code': {
+    id: 'return-app.return-request-details.additional-info.reason-code',
+    defaultMessage: 'Reason Code'
+  },
+  'return-app.return-request-details.additional-info.shipping-method': {
+    id: 'return-app.return-request-details.additional-info.shipping-method',
+    defaultMessage: 'Shipping Method'
+  },
+  'return-app.return-request-details.additional-info.location-code': {
+    id: 'return-app.return-request-details.additional-info.location-code',
+    defaultMessage: 'Location Code'
+  },
+  'return-app.return-request-details.additional-info.source': {
+    id: 'return-app.return-request-details.additional-info.source',
+    defaultMessage: 'Source'
+  },
+  'return-app.return-request-details.additional-info.refund-shipping-value': {
+    id: 'return-app.return-request-details.additional-info.refund-shipping-value',
+    defaultMessage: 'Refund Shipping Value'
+  },
+  'return-app.return-request-details.additional-info.refund-additional-value': {
+    id: 'return-app.return-request-details.additional-info.refund-additional-value',
+    defaultMessage: 'Refund Additional Value'
+  }
+})
 
 export const AdditionalInfo = () => {
   const handles = useCssHandles(CSS_HANDLES)
@@ -57,7 +88,7 @@ export const AdditionalInfo = () => {
           return (
             <p key={key}>
               <strong>
-                <FormattedMessage id={translationKey} />:
+                <FormattedMessage {...messages[translationKey as keyof typeof messages]} />:
               </strong>{' '}
               {displayValue}
             </p>
