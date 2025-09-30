@@ -1,5 +1,5 @@
 export interface UpdateReturnRequestAdditionalInfoArgs {
   requestId: string
-  sequenceNumber: string
+  externalReference: string
   additionalInfo: Record<string, unknown>
 }
