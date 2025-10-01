@@ -11,6 +11,7 @@ import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
+import { keepAlive } from './middlewares/keepAlive'
 import { createReturn } from './middlewares/createReturn'
 import { getRequest } from './middlewares/getRequest'
 import { getRequestList } from './middlewares/getRequestList'
@@ -65,6 +66,9 @@ export default new Service<Clients, State, ParamsContext>({
     returnRequestAdditionalInfo: method({
       GET: [errorHandler, auth, getRequestAdditionalInfo],
       PUT: [errorHandler, auth, updateRequestAdditionalInfo],
+    }),
+     keepAlive: method({
+      GET: [keepAlive],
     }),
   },
   graphql: {

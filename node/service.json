@@ -16,6 +16,10 @@
     "returnRequestAdditionalInfo": {
       "path": "/_v/return-request/:requestId/additional-info",
       "public": true
+    },
+    "keepAlive": {
+      "path": "/_v/private/return-app/_v/keep-alive",
+      "public": true
     }
   }
 }
