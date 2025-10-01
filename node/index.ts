@@ -67,9 +67,18 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, auth, getRequestAdditionalInfo],
       PUT: [errorHandler, auth, updateRequestAdditionalInfo],
     }),
+    // adjustmentNotes: method({
+    //  GET: [errorHandler, auth, getAdjustmentList],
+    //  POST: [errorHandler, auth, createAdjustment],
+    // }),
     adjustmentNote: method({
       GET: [errorHandler, auth, getAdjustment],
+      // PUT: [errorHandler, auth, updateAdjustmentStatus],
     }),
+    // adjustmentNoteAdditionalInfo: method({
+    //  GET: [errorHandler, auth, getAdjustmentAdditionalInfo],
+    //  PUT: [errorHandler, auth, updateAdjustmentAdditionalInfo],
+    // }),
   },
   graphql: {
     resolvers: {
