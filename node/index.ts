@@ -17,6 +17,7 @@ import { getRequestList } from './middlewares/getRequestList'
 import { updateRequestStatus } from './middlewares/updateRequestStatus'
 import { updateRequestAdditionalInfo } from './middlewares/updateRequestAdditionalInfo'
 import { getRequestAdditionalInfo } from './middlewares/getRequestAdditionalInfo'
+import { getAdjustment } from './middlewares/getAdjustment'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -65,6 +66,9 @@ export default new Service<Clients, State, ParamsContext>({
     returnRequestAdditionalInfo: method({
       GET: [errorHandler, auth, getRequestAdditionalInfo],
       PUT: [errorHandler, auth, updateRequestAdditionalInfo],
+    }),
+    adjustmentNote: method({
+      GET: [errorHandler, auth, getAdjustment],
     }),
   },
   graphql: {
