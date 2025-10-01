@@ -4003,10 +4003,6 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-"odp.return-app@https://yash--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.11.10+build1756990884/public/@types/odp.return-app":
-  version "3.11.10"
-  resolved "https://yash--odpdev.myvtex.com/_v/private/typings/linked/v1/odp.return-app@3.11.10+build1756990884/public/@types/odp.return-app#74c597ce98b331856563751b4442a3e565c3351d"
-
 once@^1.3.0, once@^1.3.1, once@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
