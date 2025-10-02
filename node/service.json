@@ -17,8 +17,16 @@
       "path": "/_v/return-request/:requestId/additional-info",
       "public": true
     },
+    "adjustmentNotes": {
+      "path": "/_v/adjustment-note",
+      "public": true
+    },
     "adjustmentNote": {
       "path": "/_v/adjustment-note/:adjustmentId",
+      "public": true
+    },
+    "adjustmentNoteAdditionalInfo": {
+      "path": "/_v/adjustment-note/:adjustmentId/additional-info",
       "public": true
     }
   }

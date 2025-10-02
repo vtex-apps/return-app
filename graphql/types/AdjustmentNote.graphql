@@ -1,0 +1,120 @@
+input AdjustmentNoteInput {
+  orderId: String!
+  requestAmount: Int!
+  customerProfileData: CustomerProfileDataInput!
+  adjustmentData: AdjustmentDataInput!
+  userComment: String
+  locale: String!
+  additionalInfo: String
+  financialStatus: String
+}
+
+input AdjustmentDataInput {
+  paymentMethod: PaymentMethod!
+}
+
+enum PaymentMethod {
+  giftCard
+  sameAsPurchase
+}
+
+input AdjustmentNoteFilters {
+  status: AdjustmentNoteStatus
+  sequenceNumber: String
+  id: String
+  """
+  createdIn: It uses the field dateSubmitted in the return request schema to search for documents.
+  The field createdIn is auto generated when the document is created, not reflecting the real value for documents migrated from older versions.
+  """
+  createdIn: DateRangeInput
+  orderId: String
+  """
+  userId: If not passed, resolver will try to get it from cookie session
+  """
+  userId: String
+  userEmail: String
+}
+
+type AdjustmentNoteList {
+  list: [AdjustmentNoteResponse!]!
+  paging: Pagination!
+}
+
+type AdjustmentNoteCreated {
+  adjustmentNoteId: String!
+}
+
+input AdjustmentNoteCommentInput {
+  value: String!
+  visibleForCustomer: Boolean!
+}
+
+input AuthorizationDataInput {
+  authorizedAmount: Int!
+}
+
+input TransactionDataInput {
+  invoiceValue: Int!
+}
+
+type AdjustmentNoteResponse {
+  id: ID!
+  orderId: String!
+  requestAmount: Int!
+  sequenceNumber: String!
+  createdIn: String!
+  status: AdjustmentNoteStatus!
+  dateSubmitted: String!
+  userComment: String
+  additionalInfo: String
+  customerProfileData: CustomerProfileData!
+  adjustmentData: AdjustmentData!
+  authorizationData: AuthorizationData!
+  transactionData: TransactionData!
+  statusData: [AdjustmentStatusData!]!
+  cultureInfoData: CultureInfoData!
+  financialStatus: String
+}
+
+type AdjustmentData {
+  paymentMethod: AdjustmentPaymentMethod!
+}
+
+type AuthorizationData {
+  authorizedAmount: Int!
+}
+
+type TransactionData {
+  invoiceNumber: String!
+  invoiceValue: Int!
+  giftCard: GiftCard
+}
+
+type AdjustmentStatusData {
+  status: AdjustmentNoteStatus
+  submittedBy: String
+  createdAt: String
+  comments: [AdjustmentStatusComment!]!
+}
+
+type AdjustmentStatusComment {
+  comment: String!
+  createdAt: String!
+  role: UserRole!
+  visibleForCustomer: Boolean
+  submittedBy: String!
+}
+
+enum AdjustmentNoteStatus {
+  pending
+  authorized
+  refunded
+  charged
+  denied
+  cancelled
+}
+
+enum AdjustmentPaymentMethod {
+  giftCard
+  sameAsPurchase
+}

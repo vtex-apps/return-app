@@ -1,4 +1,11 @@
-import type { Status, Maybe, ReturnRequest, GiftCard } from 'odp.return-app'
+import type {
+  Status,
+  Maybe,
+  ReturnRequest,
+  GiftCard,
+  AdjustmentNote,
+  AdjustmentNoteStatus,
+} from 'odp.return-app'
 import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'
@@ -22,6 +29,20 @@ interface HandleRefundProps {
   createdAt: string
   userEmail: string
   refundInvoice: ReturnRequest['refundData']
+  clients: {
+    omsClient: OMSCustom
+    giftCardClient: GiftCardClient
+  }
+}
+
+interface HandleAdjustmentRefundProps {
+  currentStatus: AdjustmentNoteStatus
+  previousStatus?: AdjustmentNoteStatus
+  adjustmentData: AdjustmentNote['adjustmentData']
+  orderId: string
+  createdAt: string
+  userEmail: string
+  refundInvoice: AdjustmentNote['transactionData']
   clients: {
     omsClient: OMSCustom
     giftCardClient: GiftCardClient
@@ -95,15 +116,99 @@ export const handleRefund = async ({
         invoiceNumber: refundInvoice?.invoiceNumber as string,
         invoiceValue: refundInvoice?.invoiceValue as number,
         items:
-          refundInvoice?.items?.map((item: { id: string; price: number; restockFee: number; quantity: number }) => {
-            return {
-              id: item.id as string,
-              price: (item.price as number) - (item.restockFee as number),
-              quantity: item.quantity as number,
+          refundInvoice?.items?.map(
+            (item: {
+              id: string
+              price: number
+              restockFee: number
+              quantity: number
+            }) => {
+              return {
+                id: item.id as string,
+                price: (item.price as number) - (item.restockFee as number),
+                quantity: item.quantity as number,
+              }
             }
-          }) ?? [],
+          ) ?? [],
       }
-      console.log('invoicePayload', invoicePayload)
+
+      await omsClient.createInvoice(orderId, invoicePayload)
+
+      return null
+    } catch (error) {
+      throw new ResolverError('Error creating refund invoice')
+    }
+  }
+
+  return null
+}
+
+export const handleAdjustmentRefund = async ({
+  currentStatus,
+  previousStatus,
+  adjustmentData,
+  orderId,
+  createdAt,
+  refundInvoice,
+  clients,
+  userEmail,
+}: HandleAdjustmentRefundProps): Promise<Maybe<{ giftCard: GiftCard }>> => {
+  // To avoid handling the amountRefunded after it has been already done, we check the previous status.
+  // If the current status is already amountRefunded, it means the refund has already been done and we don't need to do it again.
+  const shouldHandle =
+    currentStatus === 'refunded' &&
+    previousStatus !== 'refunded' &&
+    refundInvoice
+
+  if (!shouldHandle) {
+    return null
+  }
+
+  const { omsClient, giftCardClient } = clients
+
+  const { paymentMethod, automaticallyCreateTransaction } = adjustmentData ?? {}
+
+  if (paymentMethod === 'giftCard') {
+    try {
+      const { id, redemptionCode } = await giftCardClient.createGiftCard({
+        relationName: refundInvoice?.invoiceNumber as string,
+        caption: 'Gift Card from Return Request',
+        expiringDate: getOneYearLaterDate(createdAt),
+        balance: 0,
+        profileId: userEmail,
+        discount: true,
+      })
+
+      const giftCardIdSplit = id.split('_')
+
+      const giftCardId = giftCardIdSplit[giftCardIdSplit.length - 1]
+
+      await giftCardClient.updateGiftCard(giftCardId, {
+        description: 'Initial Charge',
+        value: refundInvoice?.invoiceValue as number,
+      })
+
+      return {
+        giftCard: { id: giftCardId, redemptionCode },
+      }
+    } catch (error) {
+      throw new ResolverError('Error creating/updating gift card')
+    }
+  }
+
+  const refundPayment =
+    paymentMethod === 'sameAsPurchase' && automaticallyCreateTransaction
+
+  if (refundPayment) {
+    try {
+      const invoicePayload = {
+        type: 'Input',
+        issuanceDate: createdAt,
+        invoiceNumber: refundInvoice?.invoiceNumber as string,
+        invoiceValue: refundInvoice?.invoiceValue as number,
+        items: [],
+      }
+
       await omsClient.createInvoice(orderId, invoicePayload)
 
       return null

@@ -1,4 +1,9 @@
-import type { Maybe, RefundDataInput, ReturnRequest } from 'odp.return-app'
+import type {
+  Maybe,
+  RefundDataInput,
+  ReturnRequest,
+  AdjustmentNote,
+} from 'odp.return-app'
 import { UserInputError } from '@vtex/api'
 
 export const createRefundData = ({
@@ -85,6 +90,7 @@ export const createRefundData = ({
 
   // Check if this is a Miscellaneous Refund (MF) return
   let parsedAdditionalInfo: any = {}
+
   if (additionalInfo) {
     try {
       parsedAdditionalInfo = JSON.parse(additionalInfo)
@@ -111,7 +117,7 @@ export const createRefundData = ({
   // For MF returns, ignore refundableAmount and only use refundAdditionalValue + refundShippingValue
   // For other refund types (RT and CO), use the standard calculation
   const isMFReturn = parsedAdditionalInfo.returnAction === 'MF'
-  
+
   if (logger) {
     logger.info({
       message: 'Refund calculation details',
@@ -124,11 +130,13 @@ export const createRefundData = ({
       refundableShipping,
     })
   }
-  
+
   let invoiceValue: number
+
   if (isMFReturn) {
     // For MF returns, only use refundAdditionalValue + refundShippingValue
-    invoiceValue = refundedAdditionalValue + refundedShippingValue
+    invoiceValue =
+      (refundedAdditionalValue as number) + (refundedShippingValue as number)
     if (logger) {
       logger.info({
         message: 'MF return calculation',
@@ -139,7 +147,10 @@ export const createRefundData = ({
     }
   } else {
     // For other return types, use the standard calculation
-    invoiceValue = refundedItemsValue + refundedShippingValue + refundedAdditionalValue
+    invoiceValue =
+      (refundedItemsValue as number) +
+      (refundedShippingValue as number) +
+      (refundedAdditionalValue as number)
     if (logger) {
       logger.info({
         message: 'Standard return calculation',
@@ -159,5 +170,39 @@ export const createRefundData = ({
     refundedShippingValue,
     refundedAdditionalValue,
     items,
+  }
+}
+
+export const createAdjustmentRefundData = ({
+  sequenceNumber,
+  requestAmount,
+  authorizedAmount,
+  refundValue,
+}: {
+  sequenceNumber: number
+  requestAmount: number
+  authorizedAmount: number
+  refundValue: number
+  additionalInfo?: string
+  logger?: any
+}): AdjustmentNote['transactionData'] => {
+  if (requestAmount < refundValue) {
+    throw new UserInputError(
+      `Requested value (${requestAmount}) is less than the value sent (${refundValue})`
+    )
+  }
+
+  if (authorizedAmount < refundValue) {
+    throw new UserInputError(
+      `Authorized value (${authorizedAmount}) is less than the value sent (${refundValue})`
+    )
+  }
+
+  const invoiceValue = refundValue
+
+  return {
+    // invoiceNumber has to match the sequenceNumber.
+    invoiceNumber: `CN-${sequenceNumber}`,
+    invoiceValue,
   }
 }
