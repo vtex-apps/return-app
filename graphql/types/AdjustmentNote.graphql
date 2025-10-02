@@ -1,5 +1,6 @@
 input AdjustmentNoteInput {
   orderId: String!
+  type: AdjustmentNoteType!
   requestAmount: Int!
   customerProfileData: CustomerProfileDataInput!
   adjustmentData: AdjustmentDataInput!
@@ -7,6 +8,11 @@ input AdjustmentNoteInput {
   locale: String!
   additionalInfo: String
   financialStatus: String
+}
+
+enum AdjustmentNoteType {
+  creditNote
+  debitNote
 }
 
 input AdjustmentDataInput {

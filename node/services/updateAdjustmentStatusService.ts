@@ -1,6 +1,7 @@
 import type {
   MutationUpdateAdjustmentNoteStatusArgs,
   AdjustmentNote,
+  AdjustmentNoteStatus,
 } from 'odp.return-app'
 import {
   ResolverError,
@@ -12,6 +13,7 @@ import {
 import { createOrUpdateAdjustmentStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createAdjustmentRefundData } from '../utils/createRefundData'
 import { handleAdjustmentRefund } from '../utils/handleRefund'
+import { validateAdjustmentStatusUpdate } from '../utils/validateStatusUpdate'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -101,7 +103,11 @@ export const updateAdjustmentStatusService = async (
     throw new ForbiddenError('Not authorized')
   }
 
-  // validateStatusUpdate(status, adjustmentNote.status as Status)
+  validateAdjustmentStatusUpdate(
+    status,
+    adjustmentNote.status as AdjustmentNoteStatus,
+    adjustmentNote.type
+  )
 
   // when a request is made for the same status, it means admin user is adding a new comment
   if (status === adjustmentNote.status && !comment) {
@@ -125,7 +131,10 @@ export const updateAdjustmentStatusService = async (
 
   // This is need in case a user wants to add a comment when status is refunded.
   // It avoids recreating a new transactionData object and updating the request status
-  const createRefundInvoice = isRefunded && !adjustmentNote.transactionData
+  const createRefundInvoice =
+    isRefunded &&
+    adjustmentNote.type === 'creditNote' &&
+    !adjustmentNote.transactionData
 
   if (createRefundInvoice && !transactionData) {
     throw new UserInputError(

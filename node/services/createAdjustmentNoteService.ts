@@ -19,6 +19,7 @@ export const createAdjustmentNoteService = async (
 
   const {
     orderId,
+    type,
     requestAmount,
     customerProfileData,
     adjustmentData,
@@ -82,6 +83,14 @@ export const createAdjustmentNoteService = async (
     status,
   })
 
+  if (requestAmount <= 0) {
+    throw new UserInputError('Request amount must be greater than 0')
+  }
+
+  if (type !== 'creditNote' && type !== 'debitNote') {
+    throw new UserInputError('Invalid adjustment note type')
+  }
+
   const userCommentData = userComment
     ? [
         {
@@ -117,8 +126,6 @@ export const createAdjustmentNoteService = async (
     paymentMethod === 'sameAsPurchase'
       ? Boolean(automaticallyRefundPaymentMethod)
       : null
-
-  const type = requestAmount > 0 ? 'creditNote' : 'debitNote'
 
   let adjDocument: DocumentResponse
 
