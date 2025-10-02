@@ -57,7 +57,11 @@ export const updateRequestAdditionalInfoService = async (
     clients: { returnRequestClient },
   } = ctx
 
-  const { requestId, additionalInfo: newAdditionalInfo, externalReference } = args
+  const {
+    requestId,
+    additionalInfo: newAdditionalInfo,
+    externalReference,
+  } = args
 
   const { role } = userProfile ?? {}
 

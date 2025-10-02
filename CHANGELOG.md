@@ -7,27 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [3.12.4] - 2025-09-30
-
-### Fixed
-
-- Translation
-
-## [3.12.3] - 2025-09-30
-
-### Added
-
-- New field `externalReference` to keep Kibo own sequence number
-
-### Fixed
-
-- Translation references using `defineMessages` for dynamic keys
-
-## [3.12.2] - 2025-09-30
-
-### Added
-
-- New field `externalReference` to keep Kibo own sequence number
+## [3.13.0] - 2025-09-30
+- Adding keep alive route implementation
 
 ## [3.12.1] - 2025-09-11
 

@@ -11,6 +11,7 @@ import { errorHandler } from './middlewares/errorHandler'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
+import { keepAlive } from './middlewares/keepAlive'
 import { createReturn } from './middlewares/createReturn'
 import { getRequest } from './middlewares/getRequest'
 import { getRequestList } from './middlewares/getRequestList'
@@ -83,6 +84,9 @@ export default new Service<Clients, State, ParamsContext>({
     adjustmentNoteAdditionalInfo: method({
       GET: [errorHandler, auth, getAdjustmentAdditionalInfo],
       PUT: [errorHandler, auth, updateAdjustmentAdditionalInfo],
+    }),  
+    keepAlive: method({
+      GET: [keepAlive],
     }),
   },
   graphql: {
