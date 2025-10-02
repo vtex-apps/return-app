@@ -14,6 +14,7 @@ import { createOrUpdateAdjustmentStatusPayload } from '../utils/createOrUpdateSt
 import { createAdjustmentRefundData } from '../utils/createRefundData'
 import { handleAdjustmentRefund } from '../utils/handleRefund'
 import { validateAdjustmentStatusUpdate } from '../utils/validateStatusUpdate'
+import { createAdjustmentAuthorizationData } from '../utils/createAuthorizationData'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -28,7 +29,7 @@ const formatRequestToPartialUpdate = (
     type,
     status,
     customerProfileData,
-    adjustmentData,
+    paymentData,
     authorizationData,
     transactionData,
     statusData,
@@ -45,7 +46,7 @@ const formatRequestToPartialUpdate = (
     sequenceNumber,
     status,
     customerProfileData,
-    adjustmentData,
+    paymentData,
     authorizationData,
     transactionData,
     statusData,
@@ -152,11 +153,19 @@ export const updateAdjustmentStatusService = async (
     createdAt: requestDate,
   })
 
+  const authorizationInfo = createAuthorization
+    ? createAdjustmentAuthorizationData({
+        requestAmount: adjustmentNote.requestAmount,
+        authorizedAmount: authorizationData?.authorizedAmount ?? 0,
+      })
+    : adjustmentNote.authorizationData
+
   const refundInvoice = createRefundInvoice
     ? createAdjustmentRefundData({
         sequenceNumber: adjustmentNote.sequenceNumber ?? 0,
         requestAmount: adjustmentNote.requestAmount,
-        authorizedAmount: authorizationData?.authorizedAmount ?? 0,
+        authorizedAmount:
+          adjustmentNote.authorizationData?.authorizedAmount ?? 0,
         refundValue: transactionData?.invoiceValue ?? 0,
       })
     : adjustmentNote.transactionData
@@ -164,7 +173,7 @@ export const updateAdjustmentStatusService = async (
   const refundReturn = await handleAdjustmentRefund({
     currentStatus: requestStatus,
     previousStatus: adjustmentNote.status,
-    adjustmentData: adjustmentNote.adjustmentData,
+    paymentData: adjustmentNote.paymentData,
     orderId: adjustmentNote.orderId as string,
     createdAt: requestDate,
     refundInvoice,
@@ -181,6 +190,7 @@ export const updateAdjustmentStatusService = async (
     ...formatRequestToPartialUpdate(adjustmentNote),
     status: requestStatus,
     statusData,
+    authorizationData: authorizationInfo,
     transactionData: refundInvoice
       ? { ...refundInvoice, ...(giftCard ? { giftCard } : null) }
       : null,

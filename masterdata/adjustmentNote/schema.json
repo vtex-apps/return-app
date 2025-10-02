@@ -36,7 +36,7 @@
       },
       "required": ["userId", "name", "phoneNumber", "email"]
     },
-    "adjustmentData": {
+    "paymentData": {
       "type": "object",
       "properties": {
         "paymentMethod": {
@@ -178,13 +178,12 @@
     "requestAmount",
     "status",
     "customerProfileData",
-    "adjustmentData",
+    "paymentData",
     "authorizationData",
     "transactionData",
     "statusData",
     "cultureInfoData",
-    "dateSubmitted",
-    "cultureInfoData"
+    "dateSubmitted"
   ],
   "v-cache": false,
   "v-default-fields": [

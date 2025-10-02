@@ -1,27 +1,36 @@
+enum AdjustmentNoteType {
+  creditNote
+  debitNote
+}
+
+enum AdjustmentPaymentMethod {
+  giftCard
+  sameAsPurchase
+}
+
+enum AdjustmentNoteStatus {
+  pending
+  authorized
+  refunded
+  charged
+  denied
+  cancelled
+}
+
 input AdjustmentNoteInput {
   orderId: String!
   type: AdjustmentNoteType!
   requestAmount: Int!
   customerProfileData: CustomerProfileDataInput!
-  adjustmentData: AdjustmentDataInput!
+  paymentData: AdjustmentPaymentDataInput!
   userComment: String
   locale: String!
   additionalInfo: String
   financialStatus: String
 }
 
-enum AdjustmentNoteType {
-  creditNote
-  debitNote
-}
-
-input AdjustmentDataInput {
-  paymentMethod: PaymentMethod!
-}
-
-enum PaymentMethod {
-  giftCard
-  sameAsPurchase
+input AdjustmentPaymentDataInput {
+  paymentMethod: AdjustmentPaymentMethod!
 }
 
 input AdjustmentNoteFilters {
@@ -46,10 +55,6 @@ type AdjustmentNoteList {
   paging: Pagination!
 }
 
-type AdjustmentNoteCreated {
-  adjustmentNoteId: String!
-}
-
 input AdjustmentNoteCommentInput {
   value: String!
   visibleForCustomer: Boolean!
@@ -63,6 +68,10 @@ input TransactionDataInput {
   invoiceValue: Int!
 }
 
+type AdjustmentNoteCreated {
+  adjustmentNoteId: String!
+}
+
 type AdjustmentNoteResponse {
   id: ID!
   orderId: String!
@@ -74,7 +83,7 @@ type AdjustmentNoteResponse {
   userComment: String
   additionalInfo: String
   customerProfileData: CustomerProfileData!
-  adjustmentData: AdjustmentData!
+  paymentData: AdjustmentPaymentData!
   authorizationData: AuthorizationData!
   transactionData: TransactionData!
   statusData: [AdjustmentStatusData!]!
@@ -82,7 +91,7 @@ type AdjustmentNoteResponse {
   financialStatus: String
 }
 
-type AdjustmentData {
+type AdjustmentPaymentData {
   paymentMethod: AdjustmentPaymentMethod!
 }
 
@@ -109,18 +118,4 @@ type AdjustmentStatusComment {
   role: UserRole!
   visibleForCustomer: Boolean
   submittedBy: String!
-}
-
-enum AdjustmentNoteStatus {
-  pending
-  authorized
-  refunded
-  charged
-  denied
-  cancelled
-}
-
-enum AdjustmentPaymentMethod {
-  giftCard
-  sameAsPurchase
 }

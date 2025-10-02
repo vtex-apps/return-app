@@ -1,4 +1,8 @@
-import type { AdjustmentNoteCreated, AdjustmentNoteInput } from 'odp.return-app'
+import type {
+  AdjustmentNoteCreated,
+  AdjustmentNoteInput,
+  AdjustmentNoteStatus,
+} from 'odp.return-app'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
 
@@ -22,7 +26,7 @@ export const createAdjustmentNoteService = async (
     type,
     requestAmount,
     customerProfileData,
-    adjustmentData,
+    paymentData,
     userComment,
     locale,
     additionalInfo,
@@ -64,6 +68,10 @@ export const createAdjustmentNoteService = async (
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
+  }
+
+  if (!order) {
+    throw new ResolverError('Order not found', 404)
   }
 
   const {
@@ -118,7 +126,7 @@ export const createAdjustmentNoteService = async (
     }
   )
 
-  const { paymentMethod } = adjustmentData
+  const { paymentMethod } = paymentData
 
   const { automaticallyRefundPaymentMethod } = paymentOptions
 
@@ -130,18 +138,18 @@ export const createAdjustmentNoteService = async (
   let adjDocument: DocumentResponse
 
   try {
-    adjDocument = await adjustmentNoteClient.save({
+    const adjDocumentPayload = {
       orderId,
       requestAmount,
       type,
-      status: 'pending',
+      status: 'pending' as AdjustmentNoteStatus,
       customerProfileData: {
         userId: clientProfileData.userProfileId,
         name: customerProfileData.name,
         email: customerEmail,
         phoneNumber: customerProfileData.phoneNumber,
       },
-      adjustmentData: {
+      paymentData: {
         paymentMethod,
         automaticallyCreateTransaction: createTransaction,
       },
@@ -150,7 +158,7 @@ export const createAdjustmentNoteService = async (
       transactionData: null,
       statusData: [
         {
-          status: 'pending',
+          status: 'pending' as AdjustmentNoteStatus,
           submittedBy,
           createdAt: requestDate,
           comments: userCommentData,
@@ -161,9 +169,11 @@ export const createAdjustmentNoteService = async (
         locale,
       },
       additionalInfo: additionalInfo ?? undefined,
-    })
+    }
+
+    adjDocument = await adjustmentNoteClient.save(adjDocumentPayload)
   } catch (error) {
-    const mdValidationErrors = error?.response?.data?.errors[0]?.errors
+    const mdValidationErrors = error?.response?.data?.errors?.[0]?.errors
 
     const errorMessageString = mdValidationErrors
       ? JSON.stringify(

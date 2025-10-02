@@ -8,7 +8,7 @@ import type {
 import type { AdjustmentNote } from 'odp.return-app'
 
 const DATA_ENTITY_NAME = 'odp_return_app_adjustmentNote'
-const SCHEMA_NAME = 'odp_adjustmentNote'
+const SCHEMA_NAME = 'odp_adjustments'
 
 interface PaginationArgs {
   page: number

@@ -38,7 +38,7 @@ interface HandleRefundProps {
 interface HandleAdjustmentRefundProps {
   currentStatus: AdjustmentNoteStatus
   previousStatus?: AdjustmentNoteStatus
-  adjustmentData: AdjustmentNote['adjustmentData']
+  paymentData: AdjustmentNote['paymentData']
   orderId: string
   createdAt: string
   userEmail: string
@@ -146,7 +146,7 @@ export const handleRefund = async ({
 export const handleAdjustmentRefund = async ({
   currentStatus,
   previousStatus,
-  adjustmentData,
+  paymentData,
   orderId,
   createdAt,
   refundInvoice,
@@ -166,7 +166,7 @@ export const handleAdjustmentRefund = async ({
 
   const { omsClient, giftCardClient } = clients
 
-  const { paymentMethod, automaticallyCreateTransaction } = adjustmentData ?? {}
+  const { paymentMethod, automaticallyCreateTransaction } = paymentData ?? {}
 
   if (paymentMethod === 'giftCard') {
     try {
