@@ -8,6 +8,7 @@ import { Service, method, LRUCache } from '@vtex/api'
 
 import { Clients } from './clients'
 import { errorHandler } from './middlewares/errorHandler'
+import { setupLogger } from './middlewares/setupLogger'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
@@ -42,7 +43,9 @@ const clients: ClientsConfig<Clients> = {
 }
 
 declare global {
-  type Context = ServiceContext<Clients, State>
+  type Context = ServiceContext<Clients, State> & {
+    logger?: any // Dynatrace logger instance from setupLogger middleware
+  }
 
   interface State extends RecorderState {
     // Added in the state via graphql directive or auth middleware when request has vtexidclientautcookie
@@ -56,19 +59,19 @@ export default new Service<Clients, State, ParamsContext>({
   clients,
   routes: {
     returnRequests: method({
-      POST: [errorHandler, auth, createReturn],
-      GET: [errorHandler, auth, getRequestList],
+      POST: [setupLogger, errorHandler, auth, createReturn],
+      GET: [setupLogger, errorHandler, auth, getRequestList],
     }),
     returnRequest: method({
-      GET: [errorHandler, auth, getRequest],
-      PUT: [errorHandler, auth, updateRequestStatus],
+      GET: [setupLogger, errorHandler, auth, getRequest],
+      PUT: [setupLogger, errorHandler, auth, updateRequestStatus],
     }),
     returnRequestAdditionalInfo: method({
-      GET: [errorHandler, auth, getRequestAdditionalInfo],
-      PUT: [errorHandler, auth, updateRequestAdditionalInfo],
+      GET: [setupLogger, errorHandler, auth, getRequestAdditionalInfo],
+      PUT: [setupLogger, errorHandler, auth, updateRequestAdditionalInfo],
     }),
      keepAlive: method({
-      GET: [keepAlive],
+      GET: [setupLogger, keepAlive],
     }),
   },
   graphql: {
