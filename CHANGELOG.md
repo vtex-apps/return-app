@@ -7,44 +7,58 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.14.0] - 2025-10-09
+
+### Added
+
+- Adjustment Notes implementation
+
 ## [3.13.0] - 2025-09-30
+
 - Adding keep alive route implementation
 
 ## [3.12.1] - 2025-09-11
 
 ### Fixed
+
 - Inferring types to the invoice payload
 
 ## [3.12.0] - 2025-09-11
 
 ### Added
- - `finantialStatus` field to the return Schema
+
+- `finantialStatus` field to the return Schema
 
 ## [3.11.11] - 2025-08-28
 
 ## [3.11.10] - 2025-08-21
 
 ### Fixed
+
 - Fixed duplicate closeReturn events by only sending when status actually changes
 
 ## [3.11.9] - 2025-08-20
 
 ### Fixed
+
 - Fixed missing refundData in updateReturn events for amountRefunded status
 
 ## [3.11.8] - 2025-08-20
 
 ### Added
+
 - Added logging for final refund invoice and external system event data
 
 ## [3.11.7] - 2025-08-20
 
 ### Added
+
 - Enhanced logging for refund amount calculation to debug MF return processing
 
 ## [3.11.6] - 2025-08-20
 
 ### Fixed
+
 - Fixed refund amount calculation for Miscellaneous Refunds (MF) to use only refundAdditionalValue + refundShippingValue instead of refundableAmount
 - Fixed function signature to properly accept additionalInfo parameter for MF return handling
 
@@ -53,6 +67,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [3.11.4] - 2025-08-18
 
 ### Fixed
+
 - Fixed frontend validation to allow cancellation button for returns in "Package verified" status
 
 ## [3.11.3] - 2025-08-18

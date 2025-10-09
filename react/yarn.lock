@@ -5178,9 +5178,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.106.0/public/@types/vtex.catalog-graphql":
-  version "1.106.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.106.0/public/@types/vtex.catalog-graphql#2c5f6814a9aa119c9580bf4b80faf48c12b940f6"
+"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.104.0/public/@types/vtex.catalog-graphql":
+  version "1.104.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.104.0/public/@types/vtex.catalog-graphql#fd89541fea7398e58ef004871af94873a9cc94c1"
 
 "vtex.css-handles@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles":
   version "0.4.4"
@@ -5198,9 +5198,9 @@ verror@1.10.0:
   version "1.7.2"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.7.2/public/@types/vtex.my-account-commons#f65d3ee9999f88d07e40e1587958c0ba39c18c37"
 
-"vtex.my-account@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.30.0/public/@types/vtex.my-account":
-  version "1.30.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.30.0/public/@types/vtex.my-account#9b64ef28d3da4044ad31fa2aac5067e4af3ebcd6"
+"vtex.my-account@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.29.0/public/@types/vtex.my-account":
+  version "1.29.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.29.0/public/@types/vtex.my-account#014ffc22855e21f321b5ed81d1c95e547740b0ba"
 
 "vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.1/public/@types/vtex.render-runtime":
   version "8.136.1"

@@ -18,6 +18,12 @@ import { getRequestList } from './middlewares/getRequestList'
 import { updateRequestStatus } from './middlewares/updateRequestStatus'
 import { updateRequestAdditionalInfo } from './middlewares/updateRequestAdditionalInfo'
 import { getRequestAdditionalInfo } from './middlewares/getRequestAdditionalInfo'
+import { getAdjustment } from './middlewares/getAdjustment'
+import { getAdjustmentList } from './middlewares/getAdjustmentList'
+import { createAdjustment } from './middlewares/createAdjustment'
+import { updateAdjustmentStatus } from './middlewares/updateAdjustmentStatus'
+import { getAdjustmentAdditionalInfo } from './middlewares/getAdjustmentAdditionalInfo'
+import { updateAdjustmentAdditionalInfo } from './middlewares/updateAdjustmentAdditionalInfo'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -67,7 +73,19 @@ export default new Service<Clients, State, ParamsContext>({
       GET: [errorHandler, auth, getRequestAdditionalInfo],
       PUT: [errorHandler, auth, updateRequestAdditionalInfo],
     }),
-     keepAlive: method({
+    adjustmentNotes: method({
+      GET: [errorHandler, auth, getAdjustmentList],
+      POST: [errorHandler, auth, createAdjustment],
+    }),
+    adjustmentNote: method({
+      GET: [errorHandler, auth, getAdjustment],
+      PUT: [errorHandler, auth, updateAdjustmentStatus],
+    }),
+    adjustmentNoteAdditionalInfo: method({
+      GET: [errorHandler, auth, getAdjustmentAdditionalInfo],
+      PUT: [errorHandler, auth, updateAdjustmentAdditionalInfo],
+    }),  
+    keepAlive: method({
       GET: [keepAlive],
     }),
   },
