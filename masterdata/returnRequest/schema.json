@@ -329,6 +329,7 @@
     "customerProfileData",
     "status",
     "sequenceNumber",
+    "externalReference",
     "dateSubmitted",
     "financialStatus"
   ],
