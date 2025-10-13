@@ -69,6 +69,173 @@ Both templates will always be created in English, it is responsability of the st
 
 ## API
 
+### Adjustment Notes
+
+Adjustment Notes allow merchants to create credit or debit notes for orders, providing a way to handle financial adjustments outside of the standard return process. This feature is particularly useful for handling partial refunds, overcharges, or other financial corrections.
+
+#### Adjustment Note Types
+
+- **Credit Note**: Used to provide a credit/refund to the customer
+- **Debit Note**: Used to charge additional amounts to the customer
+
+#### Adjustment Note Statuses
+
+- **pending**: Initial status when the adjustment note is created
+- **authorized**: The adjustment has been approved by an admin
+- **refunded**: The credit has been processed (for credit notes)
+- **charged**: The debit has been processed (for debit notes)
+- **denied**: The adjustment request has been rejected
+- **cancelled**: The adjustment request has been cancelled
+
+### Create Adjustment Note
+
+To create an Adjustment Note make a POST request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/adjustment-note`
+with an example body in the form of:
+
+```
+{
+    "orderId": "1240221188059-01",
+    "type": "creditNote",
+    "requestAmount": 5000,
+    "customerProfileData": {
+        "name": "Filadelfo Braz",
+        "email": "filadelfo.braz+test@gmail.com",
+        "phoneNumber": "123432122"
+    },
+    "paymentData": {
+        "paymentMethod": "sameAsPurchase"
+    },
+    "userComment": "This is a test adjustment note from API",
+    "locale": "pt-PT",
+    "additionalInfo": "Additional information for the adjustment note"
+}
+```
+
+| Field                           | Description                                                    | isRequired |
+| ------------------------------- | -------------------------------------------------------------- | ---------- |
+| orderId                         | `string` orderId to where the Adjustment Note is being made to | true       |
+| type                            | `enum` values: creditNote, debitNote                           | true       |
+| requestAmount                   | `integer` amount to be adjusted (in cents)                     | true       |
+| customerProfileData             | `object` with customer information                             | true       |
+| customerProfileData name        | `string` Customer name for the adjustment note                 | true       |
+| customerProfileData email       | `string` customer's email for the adjustment note              | true       |
+| customerProfileData phoneNumber | `string` customer's phone number for the adjustment note       | true       |
+| paymentData                     | `object` with payment information                              | true       |
+| paymentData paymentMethod       | `enum` possible values: giftCard, sameAsPurchase               | true       |
+| userComment                     | `string` comment to be added to the creation                   | false      |
+| locale                          | `string` locale for the customer to visualize the adjustment   | true       |
+| additionalInfo                  | `string` additional information for the adjustment note        | false      |
+| financialStatus                 | `string` financial status for the adjustment note              | false      |
+
+A successful creation of an Adjustment Note should return a status 201 with a response in the form of:
+
+```
+{
+    "adjustmentNoteId": "adjustmentNoteId"
+}
+```
+
+### Update an Adjustment Note Status
+
+Make a PUT request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/adjustment-note/{adjustmentId}`
+with the following example body:
+
+```
+{
+    "status": "authorized",
+    "comment": {
+        "value": "Adjustment approved by admin",
+        "visibleForCustomer": true
+    },
+    "authorizationData": {
+        "authorizedAmount": 5000
+    }
+}
+```
+
+For refunded status (credit notes only):
+
+```
+{
+    "status": "refunded",
+    "comment": {
+        "value": "Refund processed successfully",
+        "visibleForCustomer": true
+    },
+    "transactionData": {
+        "invoiceValue": 5000
+    }
+}
+```
+
+| Field                              | Description                                                                       | isRequired |
+| ---------------------------------- | --------------------------------------------------------------------------------- | ---------- |
+| status                             | `enum` possible values: pending, authorized, refunded, charged, denied, cancelled | true       |
+| comment                            | `object` only required if not updating status                                     | false      |
+| comment value                      | `string` only required if not updating status                                     | true       |
+| comment visibleForCustomer         | `boolean` the comment will be shown to the customer. Default false                | false      |
+| authorizationData                  | `object` only considered when status sent is `authorized`                         | false      |
+| authorizationData authorizedAmount | `integer` amount authorized for the adjustment (in cents)                         | true       |
+| transactionData                    | `object` only considered when status sent is `refunded` or `charged`              | false      |
+| transactionData invoiceValue       | `integer` invoice value for the transaction (in cents)                            | true       |
+
+To update the request to the next possible status, one just needs to pass a payload with the key status and the status as its value.
+It's possible to send the comment payload with all the status. When sending the status `authorized` it's necessary to send the `authorizationData` object. When sending the status `refunded` or `charged` it's necessary to send the `transactionData` object.
+
+**Add comments without updating status**
+To add a comment to an adjustment note, one only needs to send the payload with status equals to the current one and pass the comment object.
+
+### Retrieve an Adjustment Note
+
+To get an Adjustment Note make a GET request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/adjustment-note/{adjustmentId}`
+
+### Retrieve Adjustment Note List
+
+To retrieve a List of Adjustment Notes make a GET request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/adjustment-note`
+The search params available are:
+
+- \_page `integer`
+- \_perPage `integer`
+- \_status `enum`
+- \_sequenceNumber `string`
+- \_id `string`
+- \_dateSubmitted `string` e.g: \_dateSubmitted=2022-06-12,2022-07-13
+- \_orderId `string`
+- \_userEmail `string`
+
+By default, the requests will only have a summary of the adjustment note. If you want to get all the fields for the adjustment notes, you can pass another search param:
+
+- \_allFields `string` (any truthy value)
+
+### Update Adjustment Note Additional Info
+
+To update additional information for an Adjustment Note make a PUT request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/adjustment-note/{adjustmentId}/additional-info`
+with the following example body:
+
+```
+{
+    "additionalInfo": "Updated additional information",
+    "externalReference": "EXT-REF-123"
+}
+```
+
+| Field             | Description                                             | isRequired |
+| ----------------- | ------------------------------------------------------- | ---------- |
+| additionalInfo    | `string` additional information for the adjustment note | true       |
+| externalReference | `string` external reference for the adjustment note     | false      |
+
+### Get Adjustment Note Additional Info
+
+To retrieve additional information for an Adjustment Note make a GET request to the following endpoint:
+`https://{accountName}.myvtex.com/_v/adjustment-note/{adjustmentId}/additional-info`
+
+This endpoint returns the parsed JSON from the additionalInfo field.
+
 ### Create Return Request
 
 To create a Return Request make a POST request to the following endpoint:
@@ -170,19 +337,19 @@ with the following example body:
 }
 ```
 
-| Field                            | Description                                                                                                                         | isRequired |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| status                           | `enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled | true       |
-| comment                          | `object` only required if not updating status                                                                                       | false      |
-| comment value                    | `string` only required if not updating status                                                                                       | true       |
-| comment visibleForCustomer       | `boolean` the comment will be shown to the customer. Default false                                                                  | false      |
-| refundData                       | `object` only considered when status sent is `packagedVerified`                                                                     | false      |
-| refundData items                 | `array` of `objects` with items approved to be returned                                                                             | true       |
-| refundData items orderItemIndex  | `integer`Index of the item in the Order object form the OMS                                                                         | true       |
-| refundData items quantity        | `integer` number to be returned for the given `orderItemIndex`                                                                      | true       |
-| refundData items restockFee      | `integer` discount to be applied to the amount to be refunded, can be zero                                                          | true       |
-| refundData refundedShippingValue | `integer` shipping amount to be refunded, can be zero                                                                               | true       |
-| refundData refundedAdditionalValue | `integer` additional amount to be refunded, can be zero                                                                           | true       |
+| Field                              | Description                                                                                                                         | isRequired |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| status                             | `enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled | true       |
+| comment                            | `object` only required if not updating status                                                                                       | false      |
+| comment value                      | `string` only required if not updating status                                                                                       | true       |
+| comment visibleForCustomer         | `boolean` the comment will be shown to the customer. Default false                                                                  | false      |
+| refundData                         | `object` only considered when status sent is `packagedVerified`                                                                     | false      |
+| refundData items                   | `array` of `objects` with items approved to be returned                                                                             | true       |
+| refundData items orderItemIndex    | `integer`Index of the item in the Order object form the OMS                                                                         | true       |
+| refundData items quantity          | `integer` number to be returned for the given `orderItemIndex`                                                                      | true       |
+| refundData items restockFee        | `integer` discount to be applied to the amount to be refunded, can be zero                                                          | true       |
+| refundData refundedShippingValue   | `integer` shipping amount to be refunded, can be zero                                                                               | true       |
+| refundData refundedAdditionalValue | `integer` additional amount to be refunded, can be zero                                                                             | true       |
 
 To update the request to the next possible status, one just needs to pass a payload with the key status and the status as its value.
 It's possible to send the comment payload with all the status. When sending the status packageVerified it's necessary to send the refundData object.
