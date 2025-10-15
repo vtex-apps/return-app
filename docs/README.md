@@ -192,6 +192,116 @@ To add a comment to an adjustment note, one only needs to send the payload with 
 To get an Adjustment Note make a GET request to the following endpoint:
 `https://{accountName}.myvtex.com/_v/adjustment-note/{adjustmentId}`
 
+#### Example (Credit Note GET response)
+
+```
+{
+  "id": "055a4c59-fdee-4d78-ad40-6bd0bc340ed1",
+  "dataEntityId": "odp_return_app_adjustmentNote",
+  "orderId": "1520340500774-01",
+  "requestAmount": 100,
+  "type": "creditNote",
+  "createdBy": "1234567890",
+  "status": "refunded",
+  "customerProfileData": {
+    "userId": "53fa1533-eea0-11ef-b37f-d8f903c0054a",
+    "name": "John Doe",
+    "email": "john.doe@vtex.com",
+    "phoneNumber": "+13511234567"
+  },
+  "paymentData": {
+    "paymentMethod": "sameAsPurchase",
+    "automaticallyCreateTransaction": true
+  },
+  "authorizationData": {
+    "authorizedAmount": 100
+  },
+  "transactionData": {
+    "invoiceNumber": "CN-1",
+    "invoiceValue": 100
+  },
+  "statusData": [
+    {
+      "status": "pending",
+      "submittedBy": "User",
+      "createdAt": "2025-10-02T06:37:50.347Z",
+      "comments": [
+        {
+          "comment": "This is a test from API",
+          "createdAt": "2025-10-02T06:37:50.347Z",
+          "submittedBy": "User",
+          "visibleForCustomer": true,
+          "role": "storeUser"
+        }
+      ]
+    },
+    {
+      "status": "authorized",
+      "submittedBy": "User",
+      "createdAt": "2025-10-02T06:42:56.195Z",
+      "comments": [
+        {
+          "comment": "Test comment",
+          "createdAt": "2025-10-02T06:42:56.195Z",
+          "submittedBy": "User",
+          "visibleForCustomer": false,
+          "role": "adminUser"
+        },
+        {
+          "comment": "Test comment",
+          "createdAt": "2025-10-02T07:04:30.686Z",
+          "submittedBy": "User",
+          "visibleForCustomer": false,
+          "role": "adminUser"
+        }
+      ]
+    },
+    {
+      "status": "refunded",
+      "submittedBy": "User",
+      "createdAt": "2025-10-02T07:13:11.174Z",
+      "comments": [
+        {
+          "comment": "Test comment refund",
+          "createdAt": "2025-10-02T07:13:11.174Z",
+          "submittedBy": "User",
+          "visibleForCustomer": false,
+          "role": "adminUser"
+        }
+      ]
+    }
+  ],
+  "cultureInfoData": {
+    "currencyCode": "USD",
+    "locale": "en-US"
+  },
+  "dateSubmitted": "2025-10-02T06:37:50.347Z",
+  "createdBy_USER": {
+    "Id": "1234567890",
+    "Login": "user@user.com",
+    "Name": null
+  },
+  "createdIn": "2025-10-02T06:37:50.6112866Z",
+  "lastInteractionBy": "1234567890",
+  "lastInteractionBy_USER": {
+    "Id": "8e23850e-c2b0-4745-873d-0bc2e38ab66f",
+    "Login": "user@user.com",
+    "Name": null
+  },
+  "lastInteractionIn": "2025-10-02T07:13:11.9857701Z",
+  "tags": [],
+  "dataInstanceId": "055a4c59-fdee-4d78-ad40-6bd0bc340ed1",
+  "sequenceNumber": 1,
+  "updatedBy": "1234567890",
+  "updatedBy_USER": {
+    "Id": "1234567890",
+    "Login": "user@user.com",
+    "Name": null
+  },
+  "updatedIn": "2025-10-02T07:13:11.9857693Z"
+}
+```
+
 ### Retrieve Adjustment Note List
 
 To retrieve a List of Adjustment Notes make a GET request to the following endpoint:
