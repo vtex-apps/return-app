@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Fixed SQL injection vulnerability in buildWhereClause functions by implementing proper string escaping with correct order of operations (escape backslashes before quotes)
+- Fix camelCase naming in schemas
+
 ## [3.15.0] - 2025-10-21
 
 ### Added
@@ -30,7 +35,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improved authentication system for GraphQL queries
 - Enhanced service layer to handle new filter parameters with proper string quoting and escaping
 - Updated REST API middleware to support new filter parameters
-- Fixed SQL injection vulnerability in buildWhereClause functions by implementing proper string escaping
 
 ## [3.14.0] - 2025-10-09
 

@@ -18,7 +18,7 @@ const filterDate = (date: string): string => {
 
 // Escape string values to prevent SQL injection
 const escapeString = (value: string): string => {
-  return value.replace(/"/g, '\\"').replace(/\\/g, '\\\\')
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 }
 
 const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
