@@ -16,6 +16,11 @@ const filterDate = (date: string): string => {
   }`
 }
 
+// Escape string values to prevent SQL injection
+const escapeString = (value: string): string => {
+  return value.replace(/"/g, '\\"').replace(/\\/g, '\\\\')
+}
+
 const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
   if (!filter) return
 
@@ -28,13 +33,13 @@ const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
     }
 
     if (key === 'userId') {
-      where += `customerProfileData.userId = "${value}"`
+      where += `customerProfileData.userId = "${escapeString(value as string)}"`
 
       return where
     }
 
     if (key === 'userEmail') {
-      where += `customerProfileData.email = "${value}"`
+      where += `customerProfileData.email = "${escapeString(value as string)}"`
 
       return where
     }
@@ -47,7 +52,7 @@ const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
       return where
     }
 
-    // Handle string fields that need proper quoting
+    // Handle string fields that need proper quoting and escaping
     if (
       [
         'reasonCode',
@@ -59,7 +64,7 @@ const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
         'orderId',
       ].includes(key)
     ) {
-      where += `${key}="${value}"`
+      where += `${key}="${escapeString(value as string)}"`
     } else {
       where += `${key}=${value}`
     }

@@ -28,8 +28,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated adjustmentNote schema to include new indexed fields
 - Enhanced GraphQL query capabilities with additional filter options for both return requests and adjustment notes
 - Improved authentication system for GraphQL queries
-- Enhanced service layer to handle new filter parameters with proper string quoting
+- Enhanced service layer to handle new filter parameters with proper string quoting and escaping
 - Updated REST API middleware to support new filter parameters
+- Fixed SQL injection vulnerability in buildWhereClause functions by implementing proper string escaping
 
 ## [3.14.0] - 2025-10-09
 
