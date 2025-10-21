@@ -69,6 +69,127 @@ Both templates will always be created in English, it is responsability of the st
 
 ## API
 
+### GraphQL API
+
+The Return App provides a comprehensive GraphQL API for managing return requests and adjustment notes. All GraphQL queries and mutations require authentication via session cookies or app credentials.
+
+#### Authentication
+
+GraphQL queries use the following authentication directives:
+
+- `@withUserProfile`: Extracts user profile from session cookie and sets it in context
+- `@auth`: Validates authentication via session cookie or app credentials
+
+#### Return Request Schema
+
+The return request schema includes the following fields:
+
+**Core Fields:**
+
+- `id`: Unique identifier for the return request
+- `orderId`: ID of the order being returned
+- `sequenceNumber`: Sequential number for the return request
+- `status`: Current status of the return request
+- `dateSubmitted`: Date when the return was submitted
+- `refundableAmount`: Total amount that can be refunded
+
+**Additional Fields:**
+
+- `locationCode`: Location code for the return request
+- `returnType`: Type of return (enum: `standardReturn`, `creditReturn`, `notDeliveryReturn`)
+- `reasonCode`: Reason code for the return
+- `originalPaymentMethod`: Original payment method used for the order
+- `externalReference`: External reference for the return request
+
+**Related Data:**
+
+- `customerProfileData`: Customer information
+- `pickupReturnData`: Pickup/return address information
+- `refundPaymentData`: Refund payment method details
+- `items`: Array of items being returned
+- `refundData`: Refund processing information
+- `refundStatusData`: Status history and comments
+
+#### Return Request List Query
+
+Query return requests with filtering and pagination:
+
+```graphql
+query getReturnRequestList($filter: ReturnRequestFilters, $page: Int!) {
+  returnRequestList(filter: $filter, page: $page) {
+    list {
+      id
+      sequenceNumber
+      createdIn
+      status
+      orderId
+      externalReference
+      returnType
+      reasonCode
+      originalPaymentMethod
+      refundData {
+        invoiceNumber
+        invoiceValue
+      }
+      items {
+        id
+        imageUrl
+      }
+    }
+    paging {
+      total
+      pages
+      currentPage
+      perPage
+    }
+  }
+}
+```
+
+**Available Filters:**
+
+- `status`: Filter by return request status
+- `sequenceNumber`: Filter by sequence number
+- `id`: Filter by return request ID
+- `createdIn`: Filter by date range
+- `orderId`: Filter by order ID
+- `userId`: Filter by user ID (admin only)
+- `userEmail`: Filter by user email (admin only)
+- `returnType`: Filter by return type
+- `reasonCode`: Filter by reason code
+- `originalPaymentMethod`: Filter by original payment method
+- `externalReference`: Filter by external reference
+- `locationCode`: Filter by location code
+
+#### Create Return Request Mutation
+
+Create a new return request:
+
+```graphql
+mutation createReturnRequest($returnRequest: ReturnRequestInput!) {
+  createReturnRequest(returnRequest: $returnRequest) {
+    id
+    sequenceNumber
+  }
+}
+```
+
+**Input Fields:**
+
+- `orderId`: Order ID (required)
+- `items`: Array of items to return (required)
+- `customerProfileData`: Customer information (required)
+- `pickupReturnData`: Pickup/return address (required)
+- `refundPaymentData`: Refund payment method (required)
+- `locale`: Locale for the request (required)
+- `userComment`: User comment (optional)
+- `additionalInfo`: Additional information (optional)
+- `financialStatus`: Financial status (optional)
+- `locationCode`: Location code (optional)
+- `returnType`: Return type (optional)
+- `reasonCode`: Reason code (optional)
+- `originalPaymentMethod`: Original payment method (optional)
+
 ### Adjustment Notes
 
 Adjustment Notes allow merchants to create credit or debit notes for orders, providing a way to handle financial adjustments outside of the standard return process. This feature is particularly useful for handling partial refunds, overcharges, or other financial corrections.
@@ -386,34 +507,38 @@ with an example body in the form of:
 }
 ```
 
-| Field                                 | Description                                                           | isRequired |
-| ------------------------------------- | --------------------------------------------------------------------- | ---------- |
-| orderId                               | `string` orderId to where the Return Request is being made to         | true       |
-| items                                 | array of individual itemObject to be returned                         | true       |
-| items orderItemIndex                  | `integer` Index of the item in the Order object form the OMS          | true       |
-| items quantity                        | `integer` number to be returned for the given `orderItemIndex`        | true       |
-| items condition                       | `enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox | false      |
-| items returnReason                    | `object` with reason to return the item                               | true       |
-| items returnReason reason             | `string` reason to return                                             | true       |
-| items returnReason otherReason        | `string` Description of the reason when it is `otherReason`           | false      |
-| customerProfileData                   | `object` with customer information                                    | true       |
-| customerProfileData name              | `string` Customer name for the return request                         | true       |
-| customerProfileData email             | `string` customer's email for the return request                      | true       |
-| customerProfileData phoneNumber       | `string` customer's phone number for the return request               | true       |
-| pickupReturnData                      | `object` with information where the items should be picked up         | true       |
-| pickupReturnData addressId            | `string` id of the customer's address can be empty string             | true       |
-| pickupReturnData address              | `string`customer address                                              | true       |
-| pickupReturnData city                 | `string` city of the address                                          | true       |
-| pickupReturnData country              | `string` country of the address                                       | true       |
-| pickupReturnData zipCode              | `string` postal code of the address                                   | true       |
-| pickupReturnData addressType          | `enum` possible values: PICKUP_POINT, CUSTOMER_ADDRESS                | true       |
-| refundPaymentData                     | `object` with refund information                                      | true       |
-| refundPaymentData refundPaymentMethod | `enum` possible values: bank, card, giftCard, sameAsPurchase          | true       |
-| refundPaymentData iban                | `string`required when refundPaymentMethod is set as bank              | false      |
-| refundPaymentData accountHolderName   | `string` required when refundPaymentMethod is set as bank             | false      |
-| userComment                           | `string` comment to be added to the creation                          | false      |
-| locale                                | `string` locale for the customer to visualize the return              | true       |
-| additionalInfo                        | `string` additional information for the return request                | false      |
+| Field                                 | Description                                                            | isRequired |
+| ------------------------------------- | ---------------------------------------------------------------------- | ---------- |
+| orderId                               | `string` orderId to where the Return Request is being made to          | true       |
+| items                                 | array of individual itemObject to be returned                          | true       |
+| items orderItemIndex                  | `integer` Index of the item in the Order object form the OMS           | true       |
+| items quantity                        | `integer` number to be returned for the given `orderItemIndex`         | true       |
+| items condition                       | `enum` values: newWithBox, newWithoutBox, usedWithBox, usedWithoutBox  | false      |
+| items returnReason                    | `object` with reason to return the item                                | true       |
+| items returnReason reason             | `string` reason to return                                              | true       |
+| items returnReason otherReason        | `string` Description of the reason when it is `otherReason`            | false      |
+| customerProfileData                   | `object` with customer information                                     | true       |
+| customerProfileData name              | `string` Customer name for the return request                          | true       |
+| customerProfileData email             | `string` customer's email for the return request                       | true       |
+| customerProfileData phoneNumber       | `string` customer's phone number for the return request                | true       |
+| pickupReturnData                      | `object` with information where the items should be picked up          | true       |
+| pickupReturnData addressId            | `string` id of the customer's address can be empty string              | true       |
+| pickupReturnData address              | `string`customer address                                               | true       |
+| pickupReturnData city                 | `string` city of the address                                           | true       |
+| pickupReturnData country              | `string` country of the address                                        | true       |
+| pickupReturnData zipCode              | `string` postal code of the address                                    | true       |
+| pickupReturnData addressType          | `enum` possible values: PICKUP_POINT, CUSTOMER_ADDRESS                 | true       |
+| refundPaymentData                     | `object` with refund information                                       | true       |
+| refundPaymentData refundPaymentMethod | `enum` possible values: bank, card, giftCard, sameAsPurchase           | true       |
+| refundPaymentData iban                | `string`required when refundPaymentMethod is set as bank               | false      |
+| refundPaymentData accountHolderName   | `string` required when refundPaymentMethod is set as bank              | false      |
+| userComment                           | `string` comment to be added to the creation                           | false      |
+| locale                                | `string` locale for the customer to visualize the return               | true       |
+| additionalInfo                        | `string` additional information for the return request                 | false      |
+| locationCode                          | `string` location code for the return request                          | false      |
+| returnType                            | `enum` type of return: standardReturn, creditReturn, notDeliveryReturn | false      |
+| reasonCode                            | `string` reason code for the return                                    | false      |
+| originalPaymentMethod                 | `string` original payment method used for the order                    | false      |
 
 A successful creation of a Return Request should return a status 201 with a response in the form of:
 
@@ -484,6 +609,8 @@ To retrieve a List of Return Requests make a GET request to the following endpoi
 `https://{accountName}.myvtex.com/_v/return-request`
 The search params available are:
 
+**Basic Parameters:**
+
 - \_page `integer`
 - \_perPage `integer`
 - \_status `enum`
@@ -493,9 +620,23 @@ The search params available are:
 - \_orderId `string`
 - \_userEmail `string`
 
-By default, the requests will only have a summary of the request. If you want to get all the fields for the requests, you can pass another search param:
+**Additional Filter Parameters:**
 
-- \_allFields `string` (any truthy value)
+- \_returnType `enum` - Filter by return type (standardReturn, creditReturn, notDeliveryReturn)
+- \_reasonCode `string` - Filter by reason code
+- \_originalPaymentMethod `string` - Filter by original payment method
+- \_externalReference `string` - Filter by external reference
+- \_locationCode `string` - Filter by location code
+
+**Additional Parameters:**
+
+- \_allFields `string` (any truthy value) - By default, the requests will only have a summary of the request. If you want to get all the fields for the requests, you can pass this parameter.
+
+**Example Request:**
+
+```
+GET https://{accountName}.myvtex.com/_v/return-request?_page=1&_perPage=25&_returnType=standardReturn&_reasonCode=DEFECTIVE&_locationCode=NYC001
+```
 
 ## Customization
 

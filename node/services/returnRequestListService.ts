@@ -47,7 +47,24 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
       return where
     }
 
-    where += `${key}=${value}`
+    // Handle string fields that need proper quoting
+    if (
+      [
+        'returnType',
+        'reasonCode',
+        'originalPaymentMethod',
+        'externalReference',
+        'locationCode',
+        'status',
+        'sequenceNumber',
+        'id',
+        'orderId',
+      ].includes(key)
+    ) {
+      where += `${key}="${value}"`
+    } else {
+      where += `${key}=${value}`
+    }
 
     return where
   }, '')
@@ -111,6 +128,11 @@ export const returnRequestListService = async (
         'createdIn',
         'status',
         'dateSubmitted',
+        'externalReference',
+        'returnType',
+        'reasonCode',
+        'originalPaymentMethod',
+        'refundData',
       ]
 
   const rmaSearchResult = await returnRequestClient.searchRaw(

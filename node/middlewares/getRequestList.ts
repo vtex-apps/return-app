@@ -1,4 +1,4 @@
-import type { Status } from 'odp.return-app'
+import type { Status, ReturnType } from 'odp.return-app'
 
 import { returnRequestListService } from '../services/returnRequestListService'
 
@@ -14,6 +14,11 @@ export async function getRequestList(ctx: Context) {
     _dateSubmitted,
     _orderId,
     _userEmail,
+    _returnType,
+    _reasonCode,
+    _originalPaymentMethod,
+    _externalReference,
+    _locationCode,
     _allFields,
   } = query
 
@@ -35,6 +40,11 @@ export async function getRequestList(ctx: Context) {
         createdIn: _dateSubmitted ? { from, to } : undefined,
         orderId: _orderId as string | undefined,
         userEmail: _userEmail as string | undefined,
+        returnType: _returnType as ReturnType | undefined,
+        reasonCode: _reasonCode as string | undefined,
+        originalPaymentMethod: _originalPaymentMethod as string | undefined,
+        externalReference: _externalReference as string | undefined,
+        locationCode: _locationCode as string | undefined,
       },
     },
     getAllFields

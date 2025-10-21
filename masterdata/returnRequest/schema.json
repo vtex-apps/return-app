@@ -281,6 +281,19 @@
     },
     "financialStatus": {
       "type": ["string", "null"]
+    },
+    "LocationCode": {
+      "type": "string"
+    },
+    "ReturnType": {
+      "type": "string",
+      "enum": ["standardReturn", "creditReturn", "notDeliveryReturn"]
+    },
+    "ReasonCode": {
+      "type": "string"
+    },
+    "originalPaymentMethod": {
+      "type": "string"
     }
   },
   "$defs": {
@@ -331,7 +344,11 @@
     "sequenceNumber",
     "externalReference",
     "dateSubmitted",
-    "financialStatus"
+    "financialStatus",
+    "LocationCode",
+    "ReturnType",
+    "ReasonCode",
+    "originalPaymentMethod"
   ],
   "v-immediate-indexing": true
 }

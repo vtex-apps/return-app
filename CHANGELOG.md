@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- New fields to returnRequest schema: `LocationCode`, `ReturnType`, `ReasonCode`, `originalPaymentMethod`
+- `ReturnType` enum with values: `standardReturn`, `creditReturn`, `notDeliveryReturn`
+- New fields to ReturnRequestList GraphQL response: `externalReference`, `returnType`, `reasonCode`, `originalPaymentMethod`, `refundData.invoiceNumber`, `refundData.invoiceValue`
+- New filters to ReturnRequestList GraphQL: `returnType`, `reasonCode`, `originalPaymentMethod`, `externalReference`, `locationCode`
+- `@auth` GraphQL directive for authentication
+- Support for new filter fields in REST API endpoints
+
+### Changed
+
+- Updated returnRequest schema to include new indexed fields
+- Enhanced GraphQL query capabilities with additional filter options
+- Improved authentication system for GraphQL queries
+
 ## [3.14.0] - 2025-10-09
 
 ### Added
