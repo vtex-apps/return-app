@@ -14,6 +14,9 @@ export async function getAdjustmentList(ctx: Context) {
     _dateSubmitted,
     _orderId,
     _userEmail,
+    _reasonCode,
+    _locationCode,
+    _originalPaymentMethod,
     _allFields,
   } = query
 
@@ -35,6 +38,9 @@ export async function getAdjustmentList(ctx: Context) {
         createdIn: _dateSubmitted ? { from, to } : undefined,
         orderId: _orderId as string | undefined,
         userEmail: _userEmail as string | undefined,
+        reasonCode: _reasonCode as string | undefined,
+        locationCode: _locationCode as string | undefined,
+        originalPaymentMethod: _originalPaymentMethod as string | undefined,
       },
     },
     getAllFields

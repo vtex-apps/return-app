@@ -157,6 +157,15 @@
     },
     "financialStatus": {
       "type": ["string", "null"]
+    },
+    "ReasonCode": {
+      "type": "string"
+    },
+    "LocationCode": {
+      "type": "string"
+    },
+    "originalPaymentMethod": {
+      "type": "string"
     }
   },
   "$defs": {
@@ -204,7 +213,10 @@
     "status",
     "sequenceNumber",
     "dateSubmitted",
-    "financialStatus"
+    "financialStatus",
+    "ReasonCode",
+    "LocationCode",
+    "originalPaymentMethod"
   ],
   "v-immediate-indexing": true,
   "v-triggers": [],

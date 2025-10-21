@@ -190,6 +190,83 @@ mutation createReturnRequest($returnRequest: ReturnRequestInput!) {
 - `reasonCode`: Reason code (optional)
 - `originalPaymentMethod`: Original payment method (optional)
 
+#### Adjustment Note List Query
+
+Query adjustment notes with filtering and pagination:
+
+```graphql
+query getAdjustmentNoteList($filter: AdjustmentNoteFilters, $page: Int!) {
+  adjustmentNoteList(filter: $filter, page: $page) {
+    list {
+      id
+      orderId
+      requestAmount
+      sequenceNumber
+      createdIn
+      status
+      dateSubmitted
+      reasonCode
+      locationCode
+      originalPaymentMethod
+      customerProfileData {
+        name
+        email
+        phoneNumber
+      }
+      paymentData {
+        paymentMethod
+      }
+    }
+    paging {
+      total
+      pages
+      currentPage
+      perPage
+    }
+  }
+}
+```
+
+**Available Filters:**
+
+- `status`: Filter by adjustment note status
+- `sequenceNumber`: Filter by sequence number
+- `id`: Filter by adjustment note ID
+- `createdIn`: Filter by date range
+- `orderId`: Filter by order ID
+- `userId`: Filter by user ID (admin only)
+- `userEmail`: Filter by user email (admin only)
+- `reasonCode`: Filter by reason code
+- `locationCode`: Filter by location code
+- `originalPaymentMethod`: Filter by original payment method
+
+#### Create Adjustment Note Mutation
+
+Create a new adjustment note:
+
+```graphql
+mutation createAdjustmentNote($adjustmentNote: AdjustmentNoteInput!) {
+  createAdjustmentNote(adjustmentNote: $adjustmentNote) {
+    adjustmentNoteId
+  }
+}
+```
+
+**Input Fields:**
+
+- `orderId`: Order ID (required)
+- `type`: Adjustment note type (required)
+- `requestAmount`: Request amount (required)
+- `customerProfileData`: Customer information (required)
+- `paymentData`: Payment data (required)
+- `locale`: Locale for the request (required)
+- `userComment`: User comment (optional)
+- `additionalInfo`: Additional information (optional)
+- `financialStatus`: Financial status (optional)
+- `reasonCode`: Reason code (optional)
+- `locationCode`: Location code (optional)
+- `originalPaymentMethod`: Original payment method (optional)
+
 ### Adjustment Notes
 
 Adjustment Notes allow merchants to create credit or debit notes for orders, providing a way to handle financial adjustments outside of the standard return process. This feature is particularly useful for handling partial refunds, overcharges, or other financial corrections.
@@ -248,6 +325,9 @@ with an example body in the form of:
 | locale                          | `string` locale for the customer to visualize the adjustment   | true       |
 | additionalInfo                  | `string` additional information for the adjustment note        | false      |
 | financialStatus                 | `string` financial status for the adjustment note              | false      |
+| reasonCode                      | `string` reason code for the adjustment note                   | false      |
+| locationCode                    | `string` location code for the adjustment note                 | false      |
+| originalPaymentMethod           | `string` original payment method used for the order            | false      |
 
 A successful creation of an Adjustment Note should return a status 201 with a response in the form of:
 
@@ -429,6 +509,8 @@ To retrieve a List of Adjustment Notes make a GET request to the following endpo
 `https://{accountName}.myvtex.com/_v/adjustment-note`
 The search params available are:
 
+**Basic Parameters:**
+
 - \_page `integer`
 - \_perPage `integer`
 - \_status `enum`
@@ -438,9 +520,21 @@ The search params available are:
 - \_orderId `string`
 - \_userEmail `string`
 
-By default, the requests will only have a summary of the adjustment note. If you want to get all the fields for the adjustment notes, you can pass another search param:
+**Additional Filter Parameters:**
 
-- \_allFields `string` (any truthy value)
+- \_reasonCode `string` - Filter by reason code
+- \_locationCode `string` - Filter by location code
+- \_originalPaymentMethod `string` - Filter by original payment method
+
+**Additional Parameters:**
+
+- \_allFields `string` (any truthy value) - By default, the requests will only have a summary of the adjustment note. If you want to get all the fields for the adjustment notes, you can pass this parameter.
+
+**Example Request:**
+
+```
+GET https://{accountName}.myvtex.com/_v/adjustment-note?_page=1&_perPage=25&_reasonCode=DEFECTIVE&_locationCode=NYC001&_originalPaymentMethod=credit_card
+```
 
 ### Update Adjustment Note Additional Info
 

@@ -27,6 +27,9 @@ input AdjustmentNoteInput {
   locale: String!
   additionalInfo: String
   financialStatus: String
+  reasonCode: String
+  locationCode: String
+  originalPaymentMethod: String
 }
 
 input AdjustmentPaymentDataInput {
@@ -48,6 +51,9 @@ input AdjustmentNoteFilters {
   """
   userId: String
   userEmail: String
+  reasonCode: String
+  locationCode: String
+  originalPaymentMethod: String
 }
 
 type AdjustmentNoteList {
@@ -89,6 +95,9 @@ type AdjustmentNoteResponse {
   statusData: [AdjustmentStatusData!]!
   cultureInfoData: CultureInfoData!
   financialStatus: String
+  reasonCode: String
+  locationCode: String
+  originalPaymentMethod: String
 }
 
 type AdjustmentPaymentData {

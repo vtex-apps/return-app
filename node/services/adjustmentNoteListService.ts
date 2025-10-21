@@ -47,7 +47,22 @@ const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
       return where
     }
 
-    where += `${key}=${value}`
+    // Handle string fields that need proper quoting
+    if (
+      [
+        'reasonCode',
+        'locationCode',
+        'originalPaymentMethod',
+        'status',
+        'sequenceNumber',
+        'id',
+        'orderId',
+      ].includes(key)
+    ) {
+      where += `${key}="${value}"`
+    } else {
+      where += `${key}=${value}`
+    }
 
     return where
   }, '')
@@ -111,6 +126,9 @@ export const adjustmentNoteListService = async (
         'createdIn',
         'status',
         'dateSubmitted',
+        'reasonCode',
+        'locationCode',
+        'originalPaymentMethod',
       ]
 
   const rmaSearchResult = await adjustmentNoteClient.searchRaw(
