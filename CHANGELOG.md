@@ -11,11 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- New fields to returnRequest schema: `LocationCode`, `ReturnType`, `ReasonCode`, `originalPaymentMethod`
+- New fields to returnRequest schema: `locationCode`, `returnType`, `reasonCode`, `originalPaymentMethod`
 - `ReturnType` enum with values: `standardReturn`, `creditReturn`, `notDeliveryReturn`
 - New fields to ReturnRequestList GraphQL response: `externalReference`, `returnType`, `reasonCode`, `originalPaymentMethod`, `refundData.invoiceNumber`, `refundData.invoiceValue`
 - New filters to ReturnRequestList GraphQL: `returnType`, `reasonCode`, `originalPaymentMethod`, `externalReference`, `locationCode`
-- New fields to adjustmentNote schema: `ReasonCode`, `LocationCode`, `originalPaymentMethod`
+- New fields to adjustmentNote schema: `reasonCode`, `locationCode`, `originalPaymentMethod`
 - New fields to AdjustmentNoteList GraphQL response: `reasonCode`, `locationCode`, `originalPaymentMethod`
 - New filters to AdjustmentNoteList GraphQL: `reasonCode`, `locationCode`, `originalPaymentMethod`
 - New fields to AdjustmentNoteInput GraphQL: `reasonCode`, `locationCode`, `originalPaymentMethod`

@@ -282,14 +282,14 @@
     "financialStatus": {
       "type": ["string", "null"]
     },
-    "LocationCode": {
+    "locationCode": {
       "type": "string"
     },
-    "ReturnType": {
+    "returnType": {
       "type": "string",
       "enum": ["standardReturn", "creditReturn", "notDeliveryReturn"]
     },
-    "ReasonCode": {
+    "reasonCode": {
       "type": "string"
     },
     "originalPaymentMethod": {
@@ -345,9 +345,9 @@
     "externalReference",
     "dateSubmitted",
     "financialStatus",
-    "LocationCode",
-    "ReturnType",
-    "ReasonCode",
+    "locationCode",
+    "returnType",
+    "reasonCode",
     "originalPaymentMethod"
   ],
   "v-immediate-indexing": true

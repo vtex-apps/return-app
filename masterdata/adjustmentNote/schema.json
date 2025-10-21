@@ -158,10 +158,10 @@
     "financialStatus": {
       "type": ["string", "null"]
     },
-    "ReasonCode": {
+    "reasonCode": {
       "type": "string"
     },
-    "LocationCode": {
+    "locationCode": {
       "type": "string"
     },
     "originalPaymentMethod": {
@@ -214,8 +214,8 @@
     "sequenceNumber",
     "dateSubmitted",
     "financialStatus",
-    "ReasonCode",
-    "LocationCode",
+    "reasonCode",
+    "locationCode",
     "originalPaymentMethod"
   ],
   "v-immediate-indexing": true,
