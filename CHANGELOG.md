@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [3.16.0] - 2025-10-21
 
-## [3.15.1] - 2025-10-21
-
 ### Changed
 
 - Fixed SQL injection vulnerability in buildWhereClause functions by implementing proper string escaping with correct order of operations (escape backslashes before quotes)
