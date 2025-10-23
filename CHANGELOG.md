@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- New "closed" status for return requests to mark them as completely closed after refund completion
+- Status transition from "amountRefunded" to "closed" to provide a final terminal status
+- UI rendering support for the "closed" status with gray styling and check icon
+- Translations for "closed" status in English and Spanish (both regular and timeline messages)
+- Updated GraphQL schema and masterdata schema to include the "closed" status
+- Comprehensive documentation of return request statuses and workflow in README.md
+
 ## [3.16.0] - 2025-10-21
 
 ### Changed

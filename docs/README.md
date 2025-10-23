@@ -67,6 +67,50 @@ Additional to the confirmation template, on successful Return Request Status upd
 
 Both templates will always be created in English, it is responsability of the store to translate them to the desired locale.
 
+## Return Request Statuses
+
+The Return App uses a status-based workflow to track the progress of return requests. Each status represents a specific stage in the return process.
+
+### Available Statuses
+
+- **`new`**: Initial status when a return request is first created
+- **`processing`**: Return request is being processed by the merchant
+- **`pickedUpFromClient`**: Items have been collected from the customer
+- **`pendingVerification`**: Items are awaiting verification by staff
+- **`packageVerified`**: Items have been verified and approved for refund
+- **`amountRefunded`**: Refund has been processed and completed
+- **`denied`**: Return request has been denied
+- **`cancelled`**: Return request has been cancelled
+- **`closed`**: Return request has been closed (final status after refund completion)
+
+### Status Flow
+
+The typical return request flow follows this sequence:
+
+```
+new → processing → pickedUpFromClient → pendingVerification → packageVerified → amountRefunded → closed
+```
+
+**Alternative paths:**
+
+- At any point before `pendingVerification`, the request can be `denied` or `cancelled`
+- After `pendingVerification`, the system automatically assigns either `packageVerified` or `denied` based on verification results
+- The `closed` status is a terminal status that can only be reached from `amountRefunded`
+
+### Status Transitions
+
+Each status has specific allowed transitions:
+
+- **`new`**: Can transition to `processing`, `denied`, or `cancelled`
+- **`processing`**: Can transition to `pickedUpFromClient`, `denied`, or `cancelled`
+- **`pickedUpFromClient`**: Can transition to `pendingVerification` or `denied`
+- **`pendingVerification`**: System automatically assigns `packageVerified` or `denied`
+- **`packageVerified`**: Can transition to `amountRefunded`
+- **`amountRefunded`**: Can transition to `closed`
+- **`denied`**: Terminal status (no further transitions)
+- **`cancelled`**: Terminal status (no further transitions)
+- **`closed`**: Terminal status (no further transitions)
+
 ## API
 
 ### GraphQL API
@@ -666,19 +710,19 @@ with the following example body:
 }
 ```
 
-| Field                              | Description                                                                                                                         | isRequired |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| status                             | `enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled | true       |
-| comment                            | `object` only required if not updating status                                                                                       | false      |
-| comment value                      | `string` only required if not updating status                                                                                       | true       |
-| comment visibleForCustomer         | `boolean` the comment will be shown to the customer. Default false                                                                  | false      |
-| refundData                         | `object` only considered when status sent is `packagedVerified`                                                                     | false      |
-| refundData items                   | `array` of `objects` with items approved to be returned                                                                             | true       |
-| refundData items orderItemIndex    | `integer`Index of the item in the Order object form the OMS                                                                         | true       |
-| refundData items quantity          | `integer` number to be returned for the given `orderItemIndex`                                                                      | true       |
-| refundData items restockFee        | `integer` discount to be applied to the amount to be refunded, can be zero                                                          | true       |
-| refundData refundedShippingValue   | `integer` shipping amount to be refunded, can be zero                                                                               | true       |
-| refundData refundedAdditionalValue | `integer` additional amount to be refunded, can be zero                                                                             | true       |
+| Field                              | Description                                                                                                                                 | isRequired |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| status                             | `enum` possible values: new, processing, pickedUpFromClient,pendingVerification, packageVerified, amountRefunded, denied, cancelled, closed | true       |
+| comment                            | `object` only required if not updating status                                                                                               | false      |
+| comment value                      | `string` only required if not updating status                                                                                               | true       |
+| comment visibleForCustomer         | `boolean` the comment will be shown to the customer. Default false                                                                          | false      |
+| refundData                         | `object` only considered when status sent is `packagedVerified`                                                                             | false      |
+| refundData items                   | `array` of `objects` with items approved to be returned                                                                                     | true       |
+| refundData items orderItemIndex    | `integer`Index of the item in the Order object form the OMS                                                                                 | true       |
+| refundData items quantity          | `integer` number to be returned for the given `orderItemIndex`                                                                              | true       |
+| refundData items restockFee        | `integer` discount to be applied to the amount to be refunded, can be zero                                                                  | true       |
+| refundData refundedShippingValue   | `integer` shipping amount to be refunded, can be zero                                                                                       | true       |
+| refundData refundedAdditionalValue | `integer` additional amount to be refunded, can be zero                                                                                     | true       |
 
 To update the request to the next possible status, one just needs to pass a payload with the key status and the status as its value.
 It's possible to send the comment payload with all the status. When sending the status packageVerified it's necessary to send the refundData object.
