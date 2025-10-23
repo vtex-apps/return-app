@@ -110,6 +110,7 @@ enum Status {
   amountRefunded
   denied
   cancelled
+  closed
 }
 
 type CustomerProfileData {
