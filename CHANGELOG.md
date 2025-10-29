@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Update return request status transition rules:
+  - Removed transition from "new" → "denied".
+  - Allowed transition from "pendingVerification" → "denied".
+  - Replaced "packageVerified" → "cancelled" with "packageVerified" → "denied".
+
 ## [3.17.0] - 2025-10-27
 
 ### Added
