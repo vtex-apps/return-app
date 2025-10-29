@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.17.1] - 2025-10-29
+
 ### Changed
 
 - Update return request status transition rules:
