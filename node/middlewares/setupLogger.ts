@@ -1,4 +1,3 @@
-import { Context } from '@vtex/api'
 import { DynatraceLoggerFactory, LogLevel } from '@odp-ecom/js-logger'
 
 export async function setupLogger(ctx: Context, next: () => Promise<any>) {
@@ -24,18 +23,21 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
 
     // Create logger with app-specific token
     // The js-logger package provides the endpoint, app provides the token
+    const logLevelKey = appSettings.logLevel?.toUpperCase() as keyof typeof LogLevel
+    const selectedLogLevel = logLevelKey && LogLevel[logLevelKey] ? LogLevel[logLevelKey] : LogLevel.INFO
+
     const logger = await DynatraceLoggerFactory.createLogger({
       environment: 'dev', // Pre-configured ODP Dynatrace endpoint
       source: `vtex-${process.env.VTEX_APP_NAME}`,
       apiToken: appSettings.dynatraceToken, // From VTEX Admin settings - secure!
-      level: LogLevel[appSettings.logLevel?.toUpperCase()] || LogLevel.INFO
+      level: selectedLogLevel
     })
 
     // Add logger to context
     ctx.logger = logger
     
     // Log successful initialization
-    ctx.logger.info('Logger initialized from VTEX app settings', {
+    ctx.logger.info('Dynatrace logger initialized from VTEX app settings', {
       environment: 'dev',
       appName: process.env.VTEX_APP_NAME,
       workspace: process.env.VTEX_WORKSPACE,
