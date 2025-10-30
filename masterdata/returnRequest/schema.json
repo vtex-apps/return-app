@@ -281,6 +281,19 @@
     },
     "financialStatus": {
       "type": ["string", "null"]
+    },
+    "locationCode": {
+      "type": "string"
+    },
+    "returnType": {
+      "type": "string",
+      "enum": ["standardReturn", "creditReturn", "notDeliveryReturn"]
+    },
+    "reasonCode": {
+      "type": "string"
+    },
+    "originalPaymentMethod": {
+      "type": "string"
     }
   },
   "$defs": {
@@ -294,7 +307,8 @@
         "packageVerified",
         "amountRefunded",
         "denied",
-        "cancelled"
+        "cancelled",
+        "closed"
       ]
     }
   },
@@ -329,8 +343,13 @@
     "customerProfileData",
     "status",
     "sequenceNumber",
+    "externalReference",
     "dateSubmitted",
-    "financialStatus"
+    "financialStatus",
+    "locationCode",
+    "returnType",
+    "reasonCode",
+    "originalPaymentMethod"
   ],
   "v-immediate-indexing": true
 }

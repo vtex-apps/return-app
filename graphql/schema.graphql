@@ -1,6 +1,10 @@
 type Query {
-  returnAppSettings: ReturnAppSettings @cacheControl(maxAge: ZERO)
-  categoryTreeName: [CategoryInfo]! @cacheControl(maxAge: MEDIUM)
+  returnAppSettings: ReturnAppSettings
+    @cacheControl(maxAge: ZERO)
+    @auth(scope: PUBLIC)
+  categoryTreeName: [CategoryInfo]!
+    @cacheControl(maxAge: MEDIUM)
+    @auth(scope: PUBLIC)
   """
   storeUserEmail: If not passed, resolver will try to parse it from session cookie.
   """
@@ -10,6 +14,7 @@ type Query {
   ): OrdersToReturnList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
+    @auth(scope: PUBLIC)
   """
   storeUserEmail: If not passed, resolver will try to parse it from session cookie.
   """
@@ -19,9 +24,11 @@ type Query {
   ): OrderToReturnSummary
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
+    @auth(scope: PUBLIC)
   returnRequest(requestId: ID!): ReturnRequestResponse
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
+    @auth(scope: PUBLIC)
   returnRequestList(
     filter: ReturnRequestFilters
     page: Int!
@@ -29,17 +36,50 @@ type Query {
   ): ReturnRequestList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
-  nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
+    @auth(scope: PUBLIC)
+  nearestPickupPoints(
+    lat: String!
+    long: String!
+  ): NearPickupPointQueryResponse @auth(scope: PUBLIC)
+  adjustmentNote(adjustmentId: ID!): AdjustmentNoteResponse
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+    @auth(scope: PUBLIC)
+  adjustmentNoteList(
+    filter: AdjustmentNoteFilters
+    page: Int!
+    perPage: Int
+  ): AdjustmentNoteList
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+    @auth(scope: PUBLIC)
 }
 
 type Mutation {
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
     @withUserProfile
+    @auth(scope: PUBLIC)
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
+    @auth(scope: PUBLIC)
   updateReturnRequestStatus(
     requestId: ID!
     status: Status!
     comment: ReturnRequestCommentInput
     refundData: RefundDataInput
-  ): ReturnRequestResponse @withUserProfile
+  ): ReturnRequestResponse @withUserProfile @auth(scope: PUBLIC)
+  createAdjustmentNote(
+    adjustmentNote: AdjustmentNoteInput!
+  ): AdjustmentNoteCreated @withUserProfile @auth(scope: PUBLIC)
+  updateAdjustmentNoteStatus(
+    adjustmentId: ID!
+    status: AdjustmentNoteStatus!
+    comment: AdjustmentNoteCommentInput
+    authorizationData: AuthorizationDataInput
+    transactionData: TransactionDataInput
+  ): AdjustmentNoteResponse @withUserProfile @auth(scope: PUBLIC)
+  updateAdjustmentNoteAdditionalInfo(
+    adjustmentId: ID!
+    additionalInfo: String!
+    externalReference: String
+  ): AdjustmentNoteResponse @withUserProfile @auth(scope: PUBLIC)
 }

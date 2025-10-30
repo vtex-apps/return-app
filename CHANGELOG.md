@@ -7,44 +7,109 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.17.1] - 2025-10-29
+
+### Changed
+
+- Update return request status transition rules:
+  - Removed transition from "new" → "denied".
+  - Allowed transition from "pendingVerification" → "denied".
+  - Replaced "packageVerified" → "cancelled" with "packageVerified" → "denied".
+
+## [3.17.0] - 2025-10-27
+
+### Added
+
+- New "closed" status for return requests to mark them as completely closed after refund completion
+- Status transition from "amountRefunded" to "closed" to provide a final terminal status
+- UI rendering support for the "closed" status with gray styling and check icon
+- Translations for "closed" status in English and Spanish (both regular and timeline messages)
+- Updated GraphQL schema and masterdata schema to include the "closed" status
+- Comprehensive documentation of return request statuses and workflow in README.md
+
+## [3.16.0] - 2025-10-21
+
+### Changed
+
+- Fixed SQL injection vulnerability in buildWhereClause functions by implementing proper string escaping with correct order of operations (escape backslashes before quotes)
+- Fix camelCase naming in schemas
+
+## [3.15.0] - 2025-10-21
+
+### Added
+
+- New fields to returnRequest schema: `locationCode`, `returnType`, `reasonCode`, `originalPaymentMethod`
+- `ReturnType` enum with values: `standardReturn`, `creditReturn`, `notDeliveryReturn`
+- New fields to ReturnRequestList GraphQL response: `externalReference`, `returnType`, `reasonCode`, `originalPaymentMethod`, `refundData.invoiceNumber`, `refundData.invoiceValue`
+- New filters to ReturnRequestList GraphQL: `returnType`, `reasonCode`, `originalPaymentMethod`, `externalReference`, `locationCode`
+- New fields to adjustmentNote schema: `reasonCode`, `locationCode`, `originalPaymentMethod`
+- New fields to AdjustmentNoteList GraphQL response: `reasonCode`, `locationCode`, `originalPaymentMethod`
+- New filters to AdjustmentNoteList GraphQL: `reasonCode`, `locationCode`, `originalPaymentMethod`
+- New fields to AdjustmentNoteInput GraphQL: `reasonCode`, `locationCode`, `originalPaymentMethod`
+- `@auth` GraphQL directive for authentication
+- Support for new filter fields in REST API endpoints for both return requests and adjustment notes
+
+### Changed
+
+- Updated returnRequest schema to include new indexed fields
+- Updated adjustmentNote schema to include new indexed fields
+- Enhanced GraphQL query capabilities with additional filter options for both return requests and adjustment notes
+- Improved authentication system for GraphQL queries
+- Enhanced service layer to handle new filter parameters with proper string quoting and escaping
+- Updated REST API middleware to support new filter parameters
+
+## [3.14.0] - 2025-10-09
+
+### Added
+
+- Adjustment Notes implementation
+
 ## [3.13.0] - 2025-09-30
+
 - Adding keep alive route implementation
 
 ## [3.12.1] - 2025-09-11
 
 ### Fixed
+
 - Inferring types to the invoice payload
 
 ## [3.12.0] - 2025-09-11
 
 ### Added
- - `finantialStatus` field to the return Schema
+
+- `finantialStatus` field to the return Schema
 
 ## [3.11.11] - 2025-08-28
 
 ## [3.11.10] - 2025-08-21
 
 ### Fixed
+
 - Fixed duplicate closeReturn events by only sending when status actually changes
 
 ## [3.11.9] - 2025-08-20
 
 ### Fixed
+
 - Fixed missing refundData in updateReturn events for amountRefunded status
 
 ## [3.11.8] - 2025-08-20
 
 ### Added
+
 - Added logging for final refund invoice and external system event data
 
 ## [3.11.7] - 2025-08-20
 
 ### Added
+
 - Enhanced logging for refund amount calculation to debug MF return processing
 
 ## [3.11.6] - 2025-08-20
 
 ### Fixed
+
 - Fixed refund amount calculation for Miscellaneous Refunds (MF) to use only refundAdditionalValue + refundShippingValue instead of refundableAmount
 - Fixed function signature to properly accept additionalInfo parameter for MF return handling
 
@@ -53,6 +118,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [3.11.4] - 2025-08-18
 
 ### Fixed
+
 - Fixed frontend validation to allow cancellation button for returns in "Package verified" status
 
 ## [3.11.3] - 2025-08-18

@@ -10,6 +10,7 @@ import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 import ReturnRequestClient from './returnRequest'
+import AdjustmentNoteClient from './adjustmentNote'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 /* const ReturnRequest = masterDataFor<ReturnRequest>(
@@ -61,5 +62,9 @@ export class Clients extends IOClients {
 
   public get returnRequestClient() {
     return this.getOrSet('returnRequestClient', ReturnRequestClient)
+  }
+
+  public get adjustmentNoteClient() {
+    return this.getOrSet('adjustmentNoteClient', AdjustmentNoteClient)
   }
 }

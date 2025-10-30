@@ -26,3 +26,9 @@ export const canOrderBeReturned = ({
     throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
   }
 }
+
+export const canOrderBeAdjusted = ({ status }: { status: string }) => {
+  if (status !== 'invoiced') {
+    throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
+  }
+}

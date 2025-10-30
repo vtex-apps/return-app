@@ -19,6 +19,7 @@ const status = {
   denied: 'denied',
   refunded: 'amountRefunded',
   cancelled: 'cancelled',
+  closed: 'closed',
 } as const
 
 /**
@@ -93,6 +94,16 @@ export function renderStatus(requestStatus: Status) {
             <IconExternalLinkMini size={11} />
           </span>
           <FormattedMessage id="return-app.return-request-list.table.status.pickedup-from-client" />
+        </div>
+      )
+
+    case status.closed:
+      return (
+        <div className="gray flex items-center">
+          <span className="mr2 flex">
+            <IconCheck size={14} />
+          </span>
+          <FormattedMessage id="return-app.return-request-list.table.status.closed" />
         </div>
       )
 

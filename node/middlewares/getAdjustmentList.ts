@@ -1,8 +1,8 @@
-import type { Status, ReturnType } from 'odp.return-app'
+import type { AdjustmentNoteStatus } from 'odp.return-app'
 
-import { returnRequestListService } from '../services/returnRequestListService'
+import { adjustmentNoteListService } from '../services/adjustmentNoteListService'
 
-export async function getRequestList(ctx: Context) {
+export async function getAdjustmentList(ctx: Context) {
   const { query } = ctx
 
   const {
@@ -14,11 +14,9 @@ export async function getRequestList(ctx: Context) {
     _dateSubmitted,
     _orderId,
     _userEmail,
-    _returnType,
     _reasonCode,
-    _originalPaymentMethod,
-    _externalReference,
     _locationCode,
+    _originalPaymentMethod,
     _allFields,
   } = query
 
@@ -28,23 +26,21 @@ export async function getRequestList(ctx: Context) {
 
   ctx.set('Cache-Control', 'no-cache')
 
-  ctx.body = await returnRequestListService(
+  ctx.body = await adjustmentNoteListService(
     ctx,
     {
       page: _page ? Number(_page) : 1,
       perPage: _perPage ? Number(_perPage) : 25,
       filter: {
-        status: _status as Status | undefined,
+        status: _status as AdjustmentNoteStatus | undefined,
         sequenceNumber: _sequenceNumber as string | undefined,
         id: _id as string | undefined,
         createdIn: _dateSubmitted ? { from, to } : undefined,
         orderId: _orderId as string | undefined,
         userEmail: _userEmail as string | undefined,
-        returnType: _returnType as ReturnType | undefined,
         reasonCode: _reasonCode as string | undefined,
-        originalPaymentMethod: _originalPaymentMethod as string | undefined,
-        externalReference: _externalReference as string | undefined,
         locationCode: _locationCode as string | undefined,
+        originalPaymentMethod: _originalPaymentMethod as string | undefined,
       },
     },
     getAllFields

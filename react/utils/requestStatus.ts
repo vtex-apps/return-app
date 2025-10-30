@@ -12,6 +12,7 @@ const statusSequence: Status[] = [
   'pendingVerification',
   'packageVerified',
   'amountRefunded',
+  'closed',
 ]
 
 export const statusAllowed: Record<Status, Status[]> = {
@@ -21,9 +22,10 @@ export const statusAllowed: Record<Status, Status[]> = {
   // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
   pendingVerification: ['pendingVerification'],
   packageVerified: ['packageVerified', 'amountRefunded'],
-  amountRefunded: ['amountRefunded'],
+  amountRefunded: ['amountRefunded', 'closed'],
   denied: ['denied'],
   cancelled: ['cancelled'],
+  closed: ['closed'],
 }
 
 export const statusMessageIdAdmin = defineMessages({
@@ -35,6 +37,7 @@ export const statusMessageIdAdmin = defineMessages({
   amountRefunded: { id: 'return-app-status.refunded' },
   denied: { id: 'return-app-status.denied' },
   cancelled: { id: 'return-app-status.cancelled' },
+  closed: { id: 'return-app-status.closed' },
 })
 
 export const timelineStatusMessageId = defineMessages({
@@ -50,6 +53,7 @@ export const timelineStatusMessageId = defineMessages({
   amountRefunded: { id: 'return-app-status.timeline.refunded' },
   denied: { id: 'return-app-status.timeline.denied' },
   cancelled: { id: 'return-app-status.timeline.cancelled' },
+  closed: { id: 'return-app-status.timeline.closed' },
 })
 
 type Comments = RefundStatusComment[]

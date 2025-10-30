@@ -8,6 +8,10 @@ input ReturnRequestInput {
   locale: String!
   additionalInfo: String
   financialStatus: String
+  locationCode: String
+  returnType: ReturnType
+  reasonCode: String
+  originalPaymentMethod: String
 }
 
 input ReturnRequestItemInput {
@@ -67,6 +71,12 @@ enum RefundPaymentMethod {
   sameAsPurchase
 }
 
+enum ReturnType {
+  standardReturn
+  creditReturn
+  notDeliveryReturn
+}
+
 type ReturnRequestResponse {
   id: ID!
   orderId: String!
@@ -85,6 +95,10 @@ type ReturnRequestResponse {
   refundData: RefundData
   refundStatusData: [RefundStatusData!]!
   cultureInfoData: CultureInfoData!
+  locationCode: String
+  returnType: ReturnType
+  reasonCode: String
+  originalPaymentMethod: String
 }
 
 enum Status {
@@ -96,6 +110,7 @@ enum Status {
   amountRefunded
   denied
   cancelled
+  closed
 }
 
 type CustomerProfileData {
@@ -201,6 +216,11 @@ input ReturnRequestFilters {
   """
   userId: String
   userEmail: String
+  returnType: ReturnType
+  reasonCode: String
+  originalPaymentMethod: String
+  externalReference: String
+  locationCode: String
 }
 
 input DateRangeInput {

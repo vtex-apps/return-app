@@ -1,7 +1,7 @@
 {
   "vendor": "odp",
   "name": "return-app",
-  "version": "3.13.0",
+  "version": "3.17.1",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -22,7 +22,7 @@
     "docs": "0.x",
     "store": "0.x",
     "node": "6.x",
-    "graphql": "1.x",
+    "graphql": "2.x",
     "masterdata": "1.x"
   },
   "scripts": {

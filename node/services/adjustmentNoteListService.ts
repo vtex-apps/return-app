@@ -1,6 +1,6 @@
 import type {
-  QueryReturnRequestListArgs,
-  ReturnRequestFilters,
+  QueryAdjustmentNoteListArgs,
+  AdjustmentNoteFilters,
   Maybe,
 } from 'odp.return-app'
 import { ForbiddenError } from '@vtex/api'
@@ -21,7 +21,7 @@ const escapeString = (value: string): string => {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 }
 
-const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
+const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
   if (!filter) return
 
   const returnFilters = Object.entries(filter)
@@ -55,11 +55,9 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
     // Handle string fields that need proper quoting and escaping
     if (
       [
-        'returnType',
         'reasonCode',
-        'originalPaymentMethod',
-        'externalReference',
         'locationCode',
+        'originalPaymentMethod',
         'status',
         'sequenceNumber',
         'id',
@@ -77,13 +75,13 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
   return whereFilter
 }
 
-export const returnRequestListService = async (
+export const adjustmentNoteListService = async (
   ctx: Context,
-  args: QueryReturnRequestListArgs,
+  args: QueryAdjustmentNoteListArgs,
   getAllFields = false
 ) => {
   const {
-    clients: { returnRequestClient },
+    clients: { adjustmentNoteClient },
     request: { header },
     state: { userProfile, appkey },
   } = ctx
@@ -133,14 +131,12 @@ export const returnRequestListService = async (
         'createdIn',
         'status',
         'dateSubmitted',
-        'externalReference',
-        'returnType',
         'reasonCode',
+        'locationCode',
         'originalPaymentMethod',
-        'refundData',
       ]
 
-  const rmaSearchResult = await returnRequestClient.searchRaw(
+  const rmaSearchResult = await adjustmentNoteClient.searchRaw(
     {
       page,
       pageSize: perPage && perPage <= 100 ? perPage : 25,

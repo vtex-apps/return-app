@@ -1,0 +1,226 @@
+{
+  "properties": {
+    "sequenceNumber": {
+      "type": "integer"
+    },
+    "orderId": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["creditNote", "debitNote"]
+    },
+    "requestAmount": {
+      "type": "integer"
+    },
+    "status": {
+      "$ref": "#/$defs/status"
+    },
+    "customerProfileData": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 50
+        }
+      },
+      "required": ["userId", "name", "phoneNumber", "email"]
+    },
+    "paymentData": {
+      "type": "object",
+      "properties": {
+        "paymentMethod": {
+          "type": "string",
+          "enum": ["giftCard", "sameAsPurchase"]
+        },
+        "automaticallyCreateTransaction": {
+          "type": ["boolean", "null"]
+        }
+      },
+      "required": ["paymentMethod"]
+    },
+    "dateSubmitted": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authorizationData": {
+      "type": ["object", "null"],
+      "properties": {
+        "authorizedAmount": {
+          "type": "integer"
+        }
+      },
+      "required": ["authorizedAmount"]
+    },
+    "transactionData": {
+      "type": ["object", "null"],
+      "properties": {
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "invoiceValue": {
+          "type": "integer"
+        },
+        "transactionID": {
+          "type": "string"
+        },
+        "giftCard": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "redemptionCode": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "redemptionCode"]
+        }
+      },
+      "required": ["invoiceNumber", "invoiceValue"]
+    },
+    "statusData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/$defs/status"
+          },
+          "submittedBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": ["adminUser", "storeUser"]
+                },
+                "submittedBy": {
+                  "type": "string"
+                },
+                "visibleForCustomer": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "comment",
+                "createdAt",
+                "role",
+                "submittedBy",
+                "visibleForCustomer"
+              ]
+            }
+          }
+        },
+        "required": ["status", "submittedBy", "createdAt", "comments"]
+      }
+    },
+    "cultureInfoData": {
+      "type": "object",
+      "properties": {
+        "currencyCode": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        }
+      },
+      "required": ["currencyCode", "locale"]
+    },
+    "additionalInfo": {
+      "type": "string"
+    },
+    "financialStatus": {
+      "type": ["string", "null"]
+    },
+    "reasonCode": {
+      "type": "string"
+    },
+    "locationCode": {
+      "type": "string"
+    },
+    "originalPaymentMethod": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "authorized",
+        "refunded",
+        "charged",
+        "denied",
+        "cancelled"
+      ]
+    }
+  },
+  "required": [
+    "orderId",
+    "type",
+    "requestAmount",
+    "status",
+    "customerProfileData",
+    "paymentData",
+    "authorizationData",
+    "transactionData",
+    "statusData",
+    "cultureInfoData",
+    "dateSubmitted"
+  ],
+  "v-cache": false,
+  "v-default-fields": [
+    "id",
+    "createdIn",
+    "orderId",
+    "type",
+    "sequenceNumber",
+    "dateSubmitted",
+    "status"
+  ],
+  "v-indexed": [
+    "id",
+    "createdIn",
+    "orderId",
+    "type",
+    "customerProfileData",
+    "status",
+    "sequenceNumber",
+    "dateSubmitted",
+    "financialStatus",
+    "reasonCode",
+    "locationCode",
+    "originalPaymentMethod"
+  ],
+  "v-immediate-indexing": true,
+  "v-triggers": [],
+  "v-security": {
+    "allowGetAll": true
+  }
+}
