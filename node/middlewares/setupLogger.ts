@@ -21,9 +21,6 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
       return
     }
 
-    // TODO: REMOVE IN PRODUCTION - Testing token value
-    console.log('🔑 Dynatrace Token (for testing):', appSettings.dynatraceToken)
-    console.log('🔑 Token length:', appSettings.dynatraceToken?.length)
 
     // Create logger with app-specific token
     // The js-logger package provides the endpoint, app provides the token
