@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@odp-ecom/js-logger": "^0.3.2",
+    "@odp-ecom/js-logger": "^0.3.4",
     "@vtex/api": "6.50.1",
     "@vtex/clients": "^2.21.0",
     "co-body": "^6.0.0",

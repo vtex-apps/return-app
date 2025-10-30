@@ -21,11 +21,15 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
       return
     }
 
+    // TODO: REMOVE IN PRODUCTION - Testing token value
+    console.log('🔑 Dynatrace Token (for testing):', appSettings.dynatraceToken)
+    console.log('🔑 Token length:', appSettings.dynatraceToken?.length)
+
     // Create logger with app-specific token
     // The js-logger package provides the endpoint, app provides the token
     const logLevelKey = appSettings.logLevel?.toUpperCase() as keyof typeof LogLevel
     const selectedLogLevel = logLevelKey && LogLevel[logLevelKey] ? LogLevel[logLevelKey] : LogLevel.INFO
-
+    
     const logger = await DynatraceLoggerFactory.createLogger({
       environment: 'dev', // Pre-configured ODP Dynatrace endpoint
       source: `vtex-${process.env.VTEX_APP_NAME}`,

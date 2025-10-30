@@ -126,7 +126,14 @@
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "*.live.dynatrace.com",
+        "host": "ooq19131.live.dynatrace.com",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "wdl06559.live.dynatrace.com",
         "path": "*"
       }
     },
