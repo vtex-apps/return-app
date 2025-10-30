@@ -77,19 +77,19 @@ export default new Service<Clients, State, ParamsContext>({
       PUT: [setupLogger, errorHandler, auth, updateRequestAdditionalInfo],
     }),
     adjustmentNotes: method({
-      GET: [errorHandler, auth, getAdjustmentList],
-      POST: [errorHandler, auth, createAdjustment],
+      GET: [setupLogger, errorHandler, auth, getAdjustmentList],
+      POST: [setupLogger, errorHandler, auth, createAdjustment],
     }),
     adjustmentNote: method({
-      GET: [errorHandler, auth, getAdjustment],
-      PUT: [errorHandler, auth, updateAdjustmentStatus],
+      GET: [setupLogger, errorHandler, auth, getAdjustment],
+      PUT: [setupLogger, errorHandler, auth, updateAdjustmentStatus],
     }),
     adjustmentNoteAdditionalInfo: method({
-      GET: [errorHandler, auth, getAdjustmentAdditionalInfo],
-      PUT: [errorHandler, auth, updateAdjustmentAdditionalInfo],
+      GET: [setupLogger, errorHandler, auth, getAdjustmentAdditionalInfo],
+      PUT: [setupLogger, errorHandler, auth, updateAdjustmentAdditionalInfo],
     }),  
     keepAlive: method({
-      GET: [keepAlive],
+      GET: [setupLogger, keepAlive],
     }),
   },
   graphql: {
