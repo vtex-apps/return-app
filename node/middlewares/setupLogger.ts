@@ -37,13 +37,7 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
     // Add logger to context
     ctx.logger = logger
     
-    // Log successful initialization
-    ctx.logger.info('Dynatrace logger initialized from VTEX app settings', {
-      environment: 'dev',
-      appName: process.env.VTEX_APP_NAME,
-      workspace: process.env.VTEX_WORKSPACE,
-      logLevel: appSettings.logLevel
-    })
+    // Note: Logger initialization successful (no need to log this on every request)
 
   } catch (error) {
     console.error('Failed to setup Dynatrace logger:', error)
