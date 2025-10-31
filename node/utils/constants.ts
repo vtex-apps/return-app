@@ -11,8 +11,10 @@ export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,
   OrderToReturnValidation
 > = {
+  VALID: 'VALID',
   OUT_OF_MAX_DAYS: 'OUT_OF_MAX_DAYS',
   ORDER_NOT_INVOICED: 'ORDER_NOT_INVOICED',
+  ALREADY_RETURNED: 'ALREADY_RETURNED',
 }
 
 export const OMS_RETURN_REQUEST_CONFIRMATION = (

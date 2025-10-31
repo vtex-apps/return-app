@@ -6,10 +6,10 @@ export async function getAdjustment(ctx: Context) {
 
   // Log adjustment retrieval
   CommonLogger.logApiOperation(ctx, 'getAdjustment', {
-    adjustmentId
+    adjustmentId,
   }, { 
     file: 'middlewares/getAdjustment.ts', 
-    function: 'getAdjustment' 
+    function: 'getAdjustment', 
   })
 
   ctx.set('Cache-Control', 'no-cache')

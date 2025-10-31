@@ -16,10 +16,10 @@ export async function updateAdjustmentAdditionalInfo(ctx: Context) {
   // Log additional info update
   CommonLogger.logBusinessOperation(ctx, 'updateAdjustmentAdditionalInfo', {
     adjustmentId,
-    hasAdditionalInfo: !!body.additionalInfo
+    hasAdditionalInfo: !!body.additionalInfo,
   }, { 
     file: 'middlewares/updateAdjustmentAdditionalInfo.ts', 
-    function: 'updateAdjustmentAdditionalInfo' 
+    function: 'updateAdjustmentAdditionalInfo', 
   })
 
   const updatedAdjustment = await updateAdjustmentAdditionalInfoService(ctx, {

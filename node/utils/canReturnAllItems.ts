@@ -36,13 +36,13 @@ export const canReturnAllItems = async (
 
   const excludedItemsIndexMap = new Map<number, boolean>()
 
-  for (const excludedItem of excludedItems) {
+  for (const excludedItem of excludedItems ?? []) {
     excludedItemsIndexMap.set(excludedItem.itemIndex, true)
   }
 
   const processedItemsQuantityIndexMap = new Map<number, number>()
 
-  for (const processedItem of processedItems) {
+  for (const processedItem of processedItems ?? []) {
     processedItemsQuantityIndexMap.set(
       processedItem.itemIndex,
       processedItem.quantity
@@ -51,8 +51,8 @@ export const canReturnAllItems = async (
 
   const itemAvailableMap = new Map<number, number>()
 
-  for (let i = 0; i < invoicedItems.length; i++) {
-    const { orderItemIndex, quantity } = invoicedItems[i]
+  for (let i = 0; i < (invoicedItems?.length ?? 0); i++) {
+    const { orderItemIndex, quantity } = invoicedItems![i]
     const isExcluded = excludedItemsIndexMap.get(orderItemIndex) ?? false
     const quantityAvailable = isExcluded
       ? 0

@@ -31,7 +31,7 @@ export function handleTranlateItems(
         ...item,
         localizedName: await translateItemName(
           item.id,
-          item.name,
+          item.name ?? '',
           catalogClient
         ),
       }

@@ -31,7 +31,7 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
       environment: 'dev', // Pre-configured ODP Dynatrace endpoint
       source: `vtex-${process.env.VTEX_APP_NAME}`,
       apiToken: appSettings.dynatraceToken, // From VTEX Admin settings - secure!
-      level: selectedLogLevel
+      level: selectedLogLevel,
     })
 
     // Add logger to context

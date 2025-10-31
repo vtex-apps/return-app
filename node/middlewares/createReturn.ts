@@ -13,10 +13,10 @@ export async function createReturn(ctx: Context) {
     orderId,
     locale,
     hasItems: !!body.items,
-    itemCount: body.items?.length
+    itemCount: body.items?.length,
   }, { 
     file: 'middlewares/createReturn.ts', 
-    function: 'createReturn' 
+    function: 'createReturn', 
   })
 
   if (!locale) {
@@ -30,10 +30,10 @@ export async function createReturn(ctx: Context) {
   CommonLogger.logBusinessOperation(ctx, 'returnRequestCreated', {
     requestId: result.returnRequestId,
     orderId,
-    locale
+    locale,
   }, { 
     file: 'middlewares/createReturn.ts', 
-    function: 'createReturn' 
+    function: 'createReturn', 
   })
 
   ctx.body = result

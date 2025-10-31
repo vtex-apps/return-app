@@ -18,10 +18,10 @@ export async function updateRequestStatus(ctx: Context) {
     requestId,
     newStatus: body.status,
     hasComment: !!body.comment,
-    hasRefundData: !!body.refundData
+    hasRefundData: !!body.refundData,
   }, { 
     file: 'middlewares/updateRequestStatus.ts', 
-    function: 'updateRequestStatus' 
+    function: 'updateRequestStatus', 
   })
 
   const updatedRequest = await updateRequestStatusService(ctx, {
@@ -33,10 +33,10 @@ export async function updateRequestStatus(ctx: Context) {
   CommonLogger.logBusinessOperation(ctx, 'returnRequestStatusUpdated', {
     requestId: updatedRequest.id,
     newStatus: updatedRequest.status,
-    refundAmount: updatedRequest.refundableAmount
+    refundAmount: updatedRequest.refundableAmount,
   }, { 
     file: 'middlewares/updateRequestStatus.ts', 
-    function: 'updateRequestStatus' 
+    function: 'updateRequestStatus', 
   })
 
   ctx.body = updatedRequest

@@ -12,10 +12,10 @@ export async function getAdjustmentAdditionalInfo(ctx: Context) {
 
   // Log additional info retrieval
   CommonLogger.logApiOperation(ctx, 'getAdjustmentAdditionalInfo', {
-    adjustmentId
+    adjustmentId,
   }, { 
     file: 'middlewares/getAdjustmentAdditionalInfo.ts', 
-    function: 'getAdjustmentAdditionalInfo' 
+    function: 'getAdjustmentAdditionalInfo', 
   })
 
   ctx.set('Cache-Control', 'no-cache')
@@ -32,10 +32,10 @@ export async function getAdjustmentAdditionalInfo(ctx: Context) {
     // Log parsing error
     CommonLogger.logError(ctx, error as Error, 'parseAdditionalInfo', {
       adjustmentId,
-      rawAdditionalInfo: adjustmentNote.additionalInfo
+      rawAdditionalInfo: adjustmentNote.additionalInfo,
     }, { 
       file: 'middlewares/getAdjustmentAdditionalInfo.ts', 
-      function: 'getAdjustmentAdditionalInfo' 
+      function: 'getAdjustmentAdditionalInfo', 
     })
 
     ctx.status = 500

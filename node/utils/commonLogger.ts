@@ -34,7 +34,7 @@ function getVtexContext(ctx: Context, sourceLocation?: { file?: string, function
     userRole: ctx.state?.userProfile?.role,
     
     // Timestamp
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   }
 }
 
@@ -52,7 +52,7 @@ export const CommonLogger = {
       ...getVtexContext(ctx, sourceLocation),
       operation,
       operationType: 'API',
-      ...data
+      ...data,
     })
   },
 
@@ -65,7 +65,7 @@ export const CommonLogger = {
       ...getVtexContext(ctx, sourceLocation),
       operation,
       operationType: 'Business',
-      businessData: data
+      businessData: data,
     })
   },
 
@@ -79,11 +79,11 @@ export const CommonLogger = {
       error: {
         message: error.message,
         name: error.name,
-        stack: error.stack
+        stack: error.stack,
       },
       operation,
       operationType: 'Error',
-      ...data
+      ...data,
     })
   },
 
@@ -95,7 +95,7 @@ export const CommonLogger = {
     logger?.debug(message, {
       ...getVtexContext(ctx, sourceLocation),
       operationType: 'Debug',
-      ...data
+      ...data,
     })
   },
 
@@ -107,7 +107,7 @@ export const CommonLogger = {
     logger?.warn(message, {
       ...getVtexContext(ctx, sourceLocation),
       operationType: 'Warning',
-      ...data
+      ...data,
     })
-  }
+  },
 }

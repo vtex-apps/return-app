@@ -31,12 +31,12 @@ export async function getAdjustmentList(ctx: Context) {
     filters: {
       status: _status,
       orderId: _orderId,
-      userEmail: _userEmail
+      userEmail: _userEmail,
     },
-    getAllFields
+    getAllFields,
   }, { 
     file: 'middlewares/getAdjustmentList.ts', 
-    function: 'getAdjustmentList' 
+    function: 'getAdjustmentList', 
   })
 
   ctx.set('Cache-Control', 'no-cache')

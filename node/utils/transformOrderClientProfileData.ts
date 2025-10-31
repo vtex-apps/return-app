@@ -6,6 +6,7 @@ export const transformOrderClientProfileData = (
   email: string
 ): ClientProfileData => {
   return {
+    userId: clientProfileData.userProfileId || '',
     name: `${clientProfileData.firstName} ${clientProfileData.lastName}`,
     email,
     phoneNumber: clientProfileData.phone,

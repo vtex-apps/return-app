@@ -17,10 +17,10 @@ export async function updateAdjustmentStatus(ctx: Context) {
   CommonLogger.logBusinessOperation(ctx, 'updateAdjustmentStatus', {
     adjustmentId,
     newStatus: body.status,
-    hasComment: !!body.comment
+    hasComment: !!body.comment,
   }, { 
     file: 'middlewares/updateAdjustmentStatus.ts', 
-    function: 'updateAdjustmentStatus' 
+    function: 'updateAdjustmentStatus', 
   })
 
   const updatedAdjustment = await updateAdjustmentStatusService(ctx, {
@@ -31,10 +31,10 @@ export async function updateAdjustmentStatus(ctx: Context) {
   // Log successful status update  
   CommonLogger.logBusinessOperation(ctx, 'adjustmentStatusUpdated', {
     adjustmentId: updatedAdjustment.id,
-    newStatus: updatedAdjustment.status
+    newStatus: updatedAdjustment.status,
   }, { 
     file: 'middlewares/updateAdjustmentStatus.ts', 
-    function: 'updateAdjustmentStatus' 
+    function: 'updateAdjustmentStatus', 
   })
 
   ctx.body = updatedAdjustment

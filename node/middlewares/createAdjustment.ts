@@ -14,10 +14,10 @@ export async function createAdjustment(ctx: Context) {
     locale,
     reasonCode,
     hasItems: !!body.items,
-    itemCount: body.items?.length
+    itemCount: body.items?.length,
   }, { 
     file: 'middlewares/createAdjustment.ts', 
-    function: 'createAdjustment' 
+    function: 'createAdjustment', 
   })
 
   if (!locale) {
@@ -31,10 +31,10 @@ export async function createAdjustment(ctx: Context) {
   CommonLogger.logBusinessOperation(ctx, 'adjustmentNoteCreated', {
     adjustmentId: result.adjustmentNoteId,
     orderId,
-    locale
+    locale,
   }, { 
     file: 'middlewares/createAdjustment.ts', 
-    function: 'createAdjustment' 
+    function: 'createAdjustment', 
   })
 
   ctx.body = result
