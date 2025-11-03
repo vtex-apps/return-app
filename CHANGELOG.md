@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.18.0] - 2025-11-03
+
 ### Added
 
 - Comprehensive Dynatrace logging integration using `@odp-ecom/js-logger@^0.3.4`
