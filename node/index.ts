@@ -87,7 +87,7 @@ export default new Service<Clients, State, ParamsContext>({
     adjustmentNoteAdditionalInfo: method({
       GET: [setupLogger, errorHandler, auth, getAdjustmentAdditionalInfo],
       PUT: [setupLogger, errorHandler, auth, updateAdjustmentAdditionalInfo],
-    }),  
+    }),
     keepAlive: method({
       GET: [setupLogger, keepAlive],
     }),

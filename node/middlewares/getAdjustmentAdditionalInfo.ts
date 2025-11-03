@@ -11,12 +11,17 @@ export async function getAdjustmentAdditionalInfo(ctx: Context) {
   const { adjustmentId } = params as { adjustmentId: string }
 
   // Log additional info retrieval
-  CommonLogger.logApiOperation(ctx, 'getAdjustmentAdditionalInfo', {
-    adjustmentId,
-  }, { 
-    file: 'middlewares/getAdjustmentAdditionalInfo.ts', 
-    function: 'getAdjustmentAdditionalInfo', 
-  })
+  CommonLogger.logApiOperation(
+    ctx,
+    'getAdjustmentAdditionalInfo',
+    {
+      adjustmentId,
+    },
+    {
+      file: 'middlewares/getAdjustmentAdditionalInfo.ts',
+      function: 'getAdjustmentAdditionalInfo',
+    }
+  )
 
   ctx.set('Cache-Control', 'no-cache')
 
@@ -30,13 +35,19 @@ export async function getAdjustmentAdditionalInfo(ctx: Context) {
     )
   } catch (error) {
     // Log parsing error
-    CommonLogger.logError(ctx, error as Error, 'parseAdditionalInfo', {
-      adjustmentId,
-      rawAdditionalInfo: adjustmentNote.additionalInfo,
-    }, { 
-      file: 'middlewares/getAdjustmentAdditionalInfo.ts', 
-      function: 'getAdjustmentAdditionalInfo', 
-    })
+    CommonLogger.logError(
+      ctx,
+      error as Error,
+      'parseAdditionalInfo',
+      {
+        adjustmentId,
+        rawAdditionalInfo: adjustmentNote.additionalInfo,
+      },
+      {
+        file: 'middlewares/getAdjustmentAdditionalInfo.ts',
+        function: 'getAdjustmentAdditionalInfo',
+      }
+    )
 
     ctx.status = 500
     ctx.body = {

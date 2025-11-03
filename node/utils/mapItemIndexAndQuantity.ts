@@ -1,7 +1,9 @@
 import type { ItemPackage } from '@vtex/clients'
 
 export const mapItemIndexAndQuantity = (
-  itemPackages: Omit<ItemPackage, 'description' | 'price' | 'unitMultiplier'>[]
+  itemPackages: Array<
+    Omit<ItemPackage, 'description' | 'price' | 'unitMultiplier'>
+  >
 ): Map<number, number> => {
   const itemIndexAndQuantityMap = new Map<number, number>()
 

@@ -10,10 +10,10 @@ import type { CatalogGQL } from '../clients/catalogGQL'
 import { translateItemName } from './translateItems'
 
 interface ItemMetadata {
-  Items: {
+  Items: Array<{
     Id: string
     ImageUrl: string
-  }[]
+  }>
 }
 
 const calculateItemTax = ({

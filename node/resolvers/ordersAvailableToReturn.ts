@@ -85,7 +85,7 @@ export const ordersAvailableToReturn = async (
 
   const orders = await Promise.all(orderListPromises)
 
-  const orderSummaryPromises: Promise<OrderToReturnSummary>[] = []
+  const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
 
   for (const order of orders) {
     const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {

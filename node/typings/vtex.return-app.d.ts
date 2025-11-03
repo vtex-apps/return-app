@@ -44,18 +44,49 @@ interface AuthenticationSession {
 declare module 'odp.return-app' {
   // Basic types
   export type Maybe<T> = T | null | undefined
-  
+
   // Enum types
-  export type Status = 'new' | 'processing' | 'pickedUpFromClient' | 'pendingVerification' | 'packageVerified' | 'amountRefunded' | 'denied' | 'cancelled' | 'closed'
-  export type AdjustmentNoteStatus = 'pending' | 'authorized' | 'refunded' | 'charged' | 'denied' | 'cancelled'
+  export type Status =
+    | 'new'
+    | 'processing'
+    | 'pickedUpFromClient'
+    | 'pendingVerification'
+    | 'packageVerified'
+    | 'amountRefunded'
+    | 'denied'
+    | 'cancelled'
+    | 'closed'
+  export type AdjustmentNoteStatus =
+    | 'pending'
+    | 'authorized'
+    | 'refunded'
+    | 'charged'
+    | 'denied'
+    | 'cancelled'
   export type AdjustmentNoteType = 'creditNote' | 'debitNote'
-  export type ReturnType = 'standardReturn' | 'creditReturn' | 'notDeliveryReturn'
+  export type ReturnType =
+    | 'standardReturn'
+    | 'creditReturn'
+    | 'notDeliveryReturn'
   export type AddressType = 'PICKUP_POINT' | 'CUSTOMER_ADDRESS'
-  export type RefundPaymentMethod = 'bank' | 'card' | 'giftCard' | 'sameAsPurchase'
-  export type ItemCondition = 'unspecified' | 'newWithBox' | 'newWithoutBox' | 'usedWithBox' | 'usedWithoutBox'
+  export type RefundPaymentMethod =
+    | 'bank'
+    | 'card'
+    | 'giftCard'
+    | 'sameAsPurchase'
+  export type ItemCondition =
+    | 'unspecified'
+    | 'newWithBox'
+    | 'newWithoutBox'
+    | 'usedWithBox'
+    | 'usedWithoutBox'
   export type UserRole = 'adminUser' | 'storeUser'
   export type RefundableAmountId = 'items' | 'shipping' | 'tax' | 'additional'
-  export type OrderToReturnValidation = 'VALID' | 'ORDER_NOT_INVOICED' | 'OUT_OF_MAX_DAYS' | 'ALREADY_RETURNED'
+  export type OrderToReturnValidation =
+    | 'VALID'
+    | 'ORDER_NOT_INVOICED'
+    | 'OUT_OF_MAX_DAYS'
+    | 'ALREADY_RETURNED'
 
   // Main interfaces
   export interface ReturnRequest {
@@ -324,7 +355,7 @@ declare module 'odp.return-app' {
   }
 
   export interface QueryAdjustmentNoteListArgs {
-    filter?: AdjustmentNoteFilters  
+    filter?: AdjustmentNoteFilters
     page: number
     perPage?: number
   }
@@ -565,5 +596,6 @@ declare module 'odp.return-app' {
   }
 
   // Type alias for return request created response
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   export type returnRequestCreated = ReturnRequestCreated
 }

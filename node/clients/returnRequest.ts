@@ -141,10 +141,10 @@ export default class ReturnRequestClient extends JanusClient {
   // eslint-disable-next-line max-params
   public async search<K extends keyof WithMetadata<ReturnRequest>>(
     pagination: PaginationArgs,
-    fields: (ThisType<K> | '_all')[],
+    fields: Array<ThisType<K> | '_all'>,
     sort?: string,
     where?: string
-  ): Promise<Pick<WithMetadata<ReturnRequest>, K>[]> {
+  ): Promise<Array<Pick<WithMetadata<ReturnRequest>, K>>> {
     return this.inner.searchDocuments<Pick<WithMetadata<ReturnRequest>, K>>({
       dataEntity: this.dataEntity,
       pagination,
@@ -158,11 +158,11 @@ export default class ReturnRequestClient extends JanusClient {
   // eslint-disable-next-line max-params
   public async searchRaw<K extends keyof WithMetadata<ReturnRequest>>(
     pagination: PaginationArgs,
-    fields: (ThisType<K> | '_all')[],
+    fields: Array<ThisType<K> | '_all'>,
     sort?: string,
     where?: string
   ): Promise<{
-    data: Pick<WithMetadata<ReturnRequest>, K>[]
+    data: Array<Pick<WithMetadata<ReturnRequest>, K>>
     pagination: { total: number; page: number; pageSize: number }
   }> {
     return this.inner.searchDocumentsWithPaginationInfo({
@@ -177,7 +177,7 @@ export default class ReturnRequestClient extends JanusClient {
 
   public async get<K extends keyof WithMetadata<ReturnRequest>>(
     id: string,
-    fields: (ThisType<K> | '_all')[]
+    fields: Array<ThisType<K> | '_all'>
   ) {
     return this.inner.getDocument<Pick<WithMetadata<ReturnRequest>, K>>({
       dataEntity: this.dataEntity,
@@ -201,7 +201,7 @@ export default class ReturnRequestClient extends JanusClient {
      */
     return {
       mdToken,
-      data: data as unknown as Pick<WithMetadata<ReturnRequest>, K>[],
+      data: data as unknown as Array<Pick<WithMetadata<ReturnRequest>, K>>,
     }
   }
 }

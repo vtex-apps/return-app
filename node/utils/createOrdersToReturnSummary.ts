@@ -42,7 +42,7 @@ export const createOrdersToReturnSummary = async (
   )
 
   const invoicesCreatedByReturnApp: string[] = []
-  const committedItemsToReturn: { itemIndex: number; quantity: number }[] =
+  const committedItemsToReturn: Array<{ itemIndex: number; quantity: number }> =
     []
 
   for (const returnRequest of returnRequestSameOrder) {
