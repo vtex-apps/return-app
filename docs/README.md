@@ -736,6 +736,14 @@ When sending the status amountRefunded, the app will refund the payment method w
 **Add comments without updating status**
 To add a comment to a request, ones only needs to send the payload with status equals to the current one and pass the comment object.
 
+### Item availability and duplicate prevention
+
+The app prevents adding the same order item to multiple return requests by computing the remaining quantity available to return:
+
+- Cancelled or denied return requests are ignored for blocking purposes.
+- For finalized/non-cancelled requests, only approved items (the ones listed in `refundData.items`) are counted as processed. Items denied during verification do not block future returns.
+- For active requests that are not cancelled or denied and do not yet have `refundData.items`, the originally requested items are temporarily committed to prevent in-flight duplicates.
+
 ### Retrieve a Return Request
 
 To get a Return Request make a GET request to the following endpoint:

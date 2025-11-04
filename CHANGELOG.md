@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Validation for adding items to a new return:
+  - Ignore returns with status `cancelled` or `denied` when computing previously processed quantities.
+  - Consider only approved items (`refundData.items`) from prior finalized requests; items denied during verification no longer block new returns.
+  - Internally performs two MasterData searches (not-cancelled and not-denied) and intersects by `id` to reliably exclude both statuses.
+
 ## [3.18.4] - 2025-11-11
 
 ### Added

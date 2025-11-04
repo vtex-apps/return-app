@@ -34,11 +34,26 @@ export const createOrdersToReturnSummary = async (
 ): Promise<OrderToReturnSummary> => {
   const { items, orderId, creationDate } = order
 
-  const returnRequestSameOrder = await returnRequestClient.search(
-    { page: 1, pageSize: 100 },
-    ['items', 'refundData', 'refundPaymentData'],
-    undefined,
-    `orderId=${orderId} AND status <> cancelled`
+  // MasterData filtering does not allow combining two different status comparisons
+  // in a single query reliably. Perform two searches and intersect the results by id.
+  const [notCancelled, notDenied] = await Promise.all([
+    returnRequestClient.search(
+      { page: 1, pageSize: 100 },
+      ['id', 'items', 'refundData', 'refundPaymentData'],
+      undefined,
+      `orderId=${orderId} AND status <> cancelled`
+    ),
+    returnRequestClient.search(
+      { page: 1, pageSize: 100 },
+      ['id', 'items', 'refundData', 'refundPaymentData'],
+      undefined,
+      `orderId=${orderId} AND status <> denied`
+    ),
+  ])
+
+  const notDeniedIdSet = new Set((notDenied as any[]).map((doc) => doc.id))
+  const returnRequestSameOrder = (notCancelled as any[]).filter((doc) =>
+    notDeniedIdSet.has(doc.id)
   )
 
   const invoicesCreatedByReturnApp: string[] = []
@@ -52,7 +67,7 @@ export const createOrdersToReturnSummary = async (
         'items' | 'refundData' | 'refundPaymentData'
       >) ?? {}
 
-    const { invoiceNumber } = refundData ?? {}
+    const { invoiceNumber, items: approvedItems } = refundData ?? {}
 
     /**
      * Colect all invoices created by the return app.
@@ -64,7 +79,13 @@ export const createOrdersToReturnSummary = async (
       invoicesCreatedByReturnApp.push(invoiceNumber)
     }
 
-    for (const item of rmaItems ?? []) {
+    // If refundData.items exists, it represents only the approved quantities to be returned.
+    // Use approved items to avoid blocking items that were denied during verification.
+    // Otherwise (request still open and not cancelled/denied), use the original request items to prevent duplicates in-flight.
+    const itemsToCommit =
+      approvedItems && approvedItems.length > 0 ? approvedItems : rmaItems
+
+    for (const item of itemsToCommit ?? []) {
       const { orderItemIndex, quantity } = item
 
       if (orderItemIndex === undefined || quantity === undefined) continue
@@ -132,7 +153,7 @@ export const createOrdersToReturnSummary = async (
     })
 
     const categoryIdList = categoriesIds.split('/').filter(Boolean)
-    const excludedCategory = excludedCategories.filter((categoryId) =>
+    const excludedCategory = excludedCategories.filter((categoryId: string) =>
       categoryIdList.includes(categoryId)
     )
 
