@@ -5,7 +5,7 @@ export const validateItemCondition = (
   itemsToReturn: ReturnRequestItemInput[],
   considerCondition?: boolean | null
 ) => {
-  considerCondition &&
+  if (considerCondition) {
     itemsToReturn.forEach(({ condition }, orderItemIndex) => {
       if (!condition || condition === 'unspecified') {
         throw new UserInputError(
@@ -13,4 +13,5 @@ export const validateItemCondition = (
         )
       }
     })
+  }
 }

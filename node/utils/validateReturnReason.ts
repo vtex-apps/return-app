@@ -1,7 +1,4 @@
-import type {
-  ReturnRequestItemInput,
-  CustomReturnReason,
-} from 'odp.return-app'
+import type { ReturnRequestItemInput, CustomReturnReason } from 'odp.return-app'
 import { ResolverError, UserInputError } from '@vtex/api'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'

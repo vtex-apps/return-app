@@ -1,7 +1,7 @@
 {
   "vendor": "odp",
   "name": "return-app",
-  "version": "3.17.1",
+  "version": "3.18.0",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -27,6 +27,44 @@
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
+  },
+  "settingsSchema": {
+    "title": "Application Configuration",
+    "type": "object",
+    "properties": {
+      "dynatraceToken": {
+        "title": "Dynatrace API Token",
+        "description": "Dynatrace API token for logging (plain text). Contact admin if not available.",
+        "type": "string"
+      },
+      "loggingEnvironment": {
+        "title": "Logging Environment",
+        "description": "Development environment for Dynatrace logging",
+        "type": "string",
+        "enum": [
+          "dev"
+        ],
+        "default": "dev"
+      },
+      "enableDynatraceLogging": {
+        "title": "Enable Dynatrace Logging",
+        "description": "Enable/disable sending logs to Dynatrace",
+        "type": "boolean",
+        "default": true
+      },
+      "logLevel": {
+        "title": "Log Level",
+        "description": "Minimum log level to send to Dynatrace",
+        "type": "string",
+        "enum": [
+          "debug",
+          "info",
+          "warn",
+          "error"
+        ],
+        "default": "info"
+      }
+    }
   },
   "credentialType": "absolute",
   "policies": [
@@ -84,6 +122,27 @@
     },
     {
       "name": "vtex.catalog-graphql:resolve-graphql"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "ooq19131.live.dynatrace.com",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "wdl06559.live.dynatrace.com",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*.dynatrace.com",
+        "path": "*"
+      }
     }
   ],
   "billingOptions": {

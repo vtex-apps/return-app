@@ -22,18 +22,31 @@ export const validatePaymentOptions = (
       )
     }
 
-    return paymentOptions
+    return {
+      enablePaymentMethodSelection: enablePaymentMethodSelection ?? false,
+      allowedPaymentTypes: {
+        bank: allowedPaymentTypes?.bank ?? false,
+        card: allowedPaymentTypes?.card ?? false,
+        giftCard: allowedPaymentTypes?.giftCard ?? false,
+      },
+      automaticallyRefundPaymentMethod,
+    }
   }
 
-  // Make automaticallyRefundPaymentMethod null when enablePaymentMethodSelection is true. This way we avoid confusion. We cannot have this value as true when payment method selection is eneble.
-  const adjustedPaymentOptions = {
-    ...paymentOptions,
-    automaticallyRefundPaymentMethod: null,
+  // Make automaticallyRefundPaymentMethod undefined when enablePaymentMethodSelection is true. This way we avoid confusion. We cannot have this value as true when payment method selection is eneble.
+  const adjustedPaymentOptions: PaymentOptions = {
+    enablePaymentMethodSelection,
+    allowedPaymentTypes: {
+      bank: allowedPaymentTypes?.bank ?? false,
+      card: allowedPaymentTypes?.card ?? false,
+      giftCard: allowedPaymentTypes?.giftCard ?? false,
+    },
+    automaticallyRefundPaymentMethod: undefined,
   }
 
-  for (const paymentType of Object.keys(allowedPaymentTypes)) {
+  for (const paymentType of Object.keys(allowedPaymentTypes ?? {})) {
     // If we have at least one payment method selected, then the payment options are valid.
-    if (allowedPaymentTypes[paymentType as keyof PaymentTypeInput]) {
+    if (allowedPaymentTypes?.[paymentType as keyof PaymentTypeInput]) {
       return adjustedPaymentOptions
     }
   }

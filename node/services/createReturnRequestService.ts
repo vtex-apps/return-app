@@ -249,7 +249,7 @@ export const createReturnRequestService = async (
       pickupReturnData,
       refundPaymentData: {
         ...refundPaymentDataResult,
-        automaticallyRefundPaymentMethod: createInvoiceTypeInput,
+        automaticallyRefundPaymentMethod: createInvoiceTypeInput ?? undefined,
       },
       items: itemsToReturn,
       dateSubmitted: requestDate,

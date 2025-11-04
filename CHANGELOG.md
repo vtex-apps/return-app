@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.18.0] - 2025-11-03
+
+### Added
+
+- Comprehensive Dynatrace logging integration using `@odp-ecom/js-logger@^0.3.4`
+- `setupLogger` middleware for all API routes to initialize Dynatrace logger per request
+- `commonLogger.ts` utility providing standardized VTEX logging patterns with full context
+- Structured logging for all return request operations:
+  - Return request creation with business metadata (orderId, locale, itemCount)
+  - Return request status updates with before/after states
+  - Return request list queries with pagination and filter parameters
+  - Individual return request retrievals
+- Structured logging for all adjustment note operations:
+  - Adjustment note creation with business metadata (orderId, reasonCode, itemCount)
+  - Adjustment note status updates with state transitions
+  - Adjustment note list queries with pagination and filter parameters
+  - Individual adjustment note retrievals
+  - Additional info retrieval and updates with error handling
+- Source location tracing in all logs (file and function names for easier debugging)
+- Full VTEX context metadata in logs:
+  - App identification (appId, appName, appVersion, appVendor)
+  - Request context (account, workspace, method, path)
+  - User context (userId, userRole when available)
+  - Timestamp and operation type classification
+
+### Changed
+
+- All API routes now include `setupLogger` middleware as the first middleware in the chain
+- Enhanced error handling middleware to log all errors with full VTEX context
+- Improved error boundary pattern to ensure logging failures don't break request flow
+
+### Fixed
+
+- TypeScript compilation errors in logging implementation by using correct GraphQL return types
+- Property access issues by verifying actual service return types vs. assumed types
+- Removed repetitive logger initialization logs to reduce noise and improve signal-to-noise ratio
+
 ## [3.17.1] - 2025-10-29
 
 ### Changed

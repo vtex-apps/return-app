@@ -13,15 +13,15 @@ const transformCategoryTree = (
         name: parentName ? `${parentName} > ${category.name}` : category.name,
       })
     } else {
-      const categoryTreeName = parentName
+      const fullCategoryName = parentName
         ? `${parentName} > ${category.name}`
         : category.name
 
-      const group = transformCategoryTree(category.children, categoryTreeName)
+      const group = transformCategoryTree(category.children, fullCategoryName)
 
       categoryInfoFlatten.push(...group, {
         id: category.id,
-        name: categoryTreeName,
+        name: fullCategoryName,
       })
     }
   }

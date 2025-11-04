@@ -1,9 +1,9 @@
-function mod97(string: string) {
-  let checksum = string.slice(0, 2) as string | number
+function mod97(str: string) {
+  let checksum = str.slice(0, 2) as string | number
   let fragment
 
-  for (let offset = 2; offset < string.length; offset += 7) {
-    fragment = `${String(checksum)}${string.substring(offset, offset + 7)}`
+  for (let offset = 2; offset < str.length; offset += 7) {
+    fragment = `${String(checksum)}${str.substring(offset, offset + 7)}`
     checksum = parseInt(fragment, 10) % 97
   }
 

@@ -162,7 +162,7 @@ export const updateAdjustmentStatusService = async (
 
   const refundInvoice = createRefundInvoice
     ? createAdjustmentRefundData({
-        sequenceNumber: adjustmentNote.sequenceNumber ?? 0,
+        sequenceNumber: Number(adjustmentNote.sequenceNumber) || 0,
         requestAmount: adjustmentNote.requestAmount,
         authorizedAmount:
           adjustmentNote.authorizationData?.authorizedAmount ?? 0,

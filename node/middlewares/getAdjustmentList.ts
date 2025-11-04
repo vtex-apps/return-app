@@ -1,5 +1,6 @@
 import type { AdjustmentNoteStatus } from 'odp.return-app'
 
+import { CommonLogger } from '../utils/commonLogger'
 import { adjustmentNoteListService } from '../services/adjustmentNoteListService'
 
 export async function getAdjustmentList(ctx: Context) {
@@ -23,6 +24,26 @@ export async function getAdjustmentList(ctx: Context) {
   const [from, to] = (_dateSubmitted as string | undefined)?.split(',') ?? []
 
   const getAllFields = Boolean(_allFields)
+
+  // Log adjustment list query
+  CommonLogger.logApiOperation(
+    ctx,
+    'getAdjustmentList',
+    {
+      page: _page ? Number(_page) : 1,
+      perPage: _perPage ? Number(_perPage) : 25,
+      filters: {
+        status: _status,
+        orderId: _orderId,
+        userEmail: _userEmail,
+      },
+      getAllFields,
+    },
+    {
+      file: 'middlewares/getAdjustmentList.ts',
+      function: 'getAdjustmentList',
+    }
+  )
 
   ctx.set('Cache-Control', 'no-cache')
 

@@ -64,7 +64,11 @@ const RequestCancellation = () => {
 
   if (isAdmin) {
     messageKey =
-      status === 'new' || status === 'processing' || status === 'packageVerified' ? 'adminAllow' : 'adminRefuse'
+      status === 'new' ||
+      status === 'processing' ||
+      status === 'packageVerified'
+        ? 'adminAllow'
+        : 'adminRefuse'
   } else {
     messageKey = status === 'new' ? 'storeAllow' : 'storeRefuse'
   }
