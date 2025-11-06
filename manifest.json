@@ -1,7 +1,7 @@
 {
   "vendor": "odp",
   "name": "return-app",
-  "version": "3.18.0",
+  "version": "3.18.1",
   "title": "Return app",
   "description": "Return app",
   "dependencies": {
@@ -41,10 +41,7 @@
         "title": "Logging Environment",
         "description": "Environment for Dynatrace logging (dev or prod)",
         "type": "string",
-        "enum": [
-          "dev",
-          "prod"
-        ],
+        "enum": ["dev", "prod"],
         "default": "dev"
       },
       "enableDynatraceLogging": {
@@ -57,12 +54,7 @@
         "title": "Log Level",
         "description": "Minimum log level to send to Dynatrace",
         "type": "string",
-        "enum": [
-          "debug",
-          "info",
-          "warn",
-          "error"
-        ],
+        "enum": ["debug", "info", "warn", "error"],
         "default": "info"
       }
     }
