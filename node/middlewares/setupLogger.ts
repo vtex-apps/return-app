@@ -36,7 +36,7 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
         : LogLevel.INFO
 
     // Determine environment - must be 'dev' or 'prod' as per js-logger interface
-    const environment = 
+    const environment =
       appSettings.loggingEnvironment === 'prod' ? 'prod' : 'dev'
 
     const logger = await DynatraceLoggerFactory.createLogger({
