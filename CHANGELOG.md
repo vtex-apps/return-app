@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Remove unsafe cast in `react/common/components/ReturnDetails/AdditionalInfo/AdditionalInfo.tsx` causing TS2352 during React build. Parse `additionalInfo` directly from `ReturnRequestResponse` to align with GraphQL types (`refundStatusData.comments` is `RefundStatusComment[]`).
+
 ## [3.18.0] - 2025-11-03
 
 ### Added

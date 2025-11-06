@@ -1,7 +1,6 @@
 import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
-import type { ReturnRequestDetails } from '../../../../types/ReturnRequestDetails'
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 
 const CSS_HANDLES = ['additionalInfoContainer'] as const
@@ -28,7 +27,7 @@ export const AdditionalInfo = () => {
   if (!data?.returnRequestDetails) return null
 
   const additionalInfo = JSON.parse(
-    (data.returnRequestDetails as ReturnRequestDetails).additionalInfo
+    data.returnRequestDetails.additionalInfo ?? '{}'
   )
 
   if (!Object.keys(additionalInfo).length) return null
