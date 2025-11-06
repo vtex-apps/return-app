@@ -35,8 +35,12 @@ export async function setupLogger(ctx: Context, next: () => Promise<any>) {
         ? LogLevel[logLevelKey]
         : LogLevel.INFO
 
+    // Determine environment - must be 'dev' or 'prod' as per js-logger interface
+    const environment = 
+      appSettings.loggingEnvironment === 'prod' ? 'prod' : 'dev'
+
     const logger = await DynatraceLoggerFactory.createLogger({
-      environment: 'dev', // Pre-configured ODP Dynatrace endpoint
+      environment, // Pre-configured ODP Dynatrace endpoint ('dev' | 'prod')
       source: `vtex-${process.env.VTEX_APP_NAME}`,
       apiToken: appSettings.dynatraceToken, // From VTEX Admin settings - secure!
       level: selectedLogLevel,
