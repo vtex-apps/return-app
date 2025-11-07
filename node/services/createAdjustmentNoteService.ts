@@ -30,6 +30,10 @@ export const createAdjustmentNoteService = async (
     userComment,
     locale,
     additionalInfo,
+    refundType,
+    reasonCode,
+    locationCode,
+    originalPaymentMethod,
   } = args
 
   if (!appkey && !userProfile) {
@@ -169,6 +173,10 @@ export const createAdjustmentNoteService = async (
         locale,
       },
       additionalInfo: additionalInfo ?? undefined,
+      refundType: refundType ?? undefined,
+      reasonCode: reasonCode ?? undefined,
+      locationCode: locationCode ?? undefined,
+      originalPaymentMethod: originalPaymentMethod ?? undefined,
     }
 
     adjDocument = await adjustmentNoteClient.save(adjDocumentPayload)

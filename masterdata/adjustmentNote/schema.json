@@ -10,6 +10,10 @@
       "type": "string",
       "enum": ["creditNote", "debitNote"]
     },
+    "refundType": {
+      "type": "string",
+      "enum": ["Miscellaneous", "PriceVariation", "DeliveryFee", "SalesTax"]
+    },
     "requestAmount": {
       "type": "integer"
     },
@@ -216,7 +220,8 @@
     "financialStatus",
     "reasonCode",
     "locationCode",
-    "originalPaymentMethod"
+    "originalPaymentMethod",
+    "refundType"
   ],
   "v-immediate-indexing": true,
   "v-triggers": [],

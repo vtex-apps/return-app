@@ -17,6 +17,13 @@ enum AdjustmentNoteStatus {
   cancelled
 }
 
+enum RefundType {
+  Miscellaneous
+  PriceVariation
+  DeliveryFee
+  SalesTax
+}
+
 input AdjustmentNoteInput {
   orderId: String!
   type: AdjustmentNoteType!
@@ -30,6 +37,7 @@ input AdjustmentNoteInput {
   reasonCode: String
   locationCode: String
   originalPaymentMethod: String
+  refundType: RefundType
 }
 
 input AdjustmentPaymentDataInput {
@@ -54,6 +62,7 @@ input AdjustmentNoteFilters {
   reasonCode: String
   locationCode: String
   originalPaymentMethod: String
+  refundType: RefundType
 }
 
 type AdjustmentNoteList {
@@ -98,6 +107,7 @@ type AdjustmentNoteResponse {
   reasonCode: String
   locationCode: String
   originalPaymentMethod: String
+  refundType: RefundType
 }
 
 type AdjustmentPaymentData {

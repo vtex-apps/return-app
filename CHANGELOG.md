@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- `refundType` field to adjustmentNote schema with enum values: `Miscellaneous`, `PriceVariation`, `DeliveryFee`, `SalesTax`
+- `RefundType` enum to GraphQL schema for adjustment notes
+- `refundType` field to `AdjustmentNoteInput` and `AdjustmentNoteResponse` GraphQL types
+- `refundType` filter to `AdjustmentNoteFilters` for querying adjustment notes by refund type
+- Support for `refundType` in adjustment note creation service
+- Support for `refundType` filtering in adjustment note list service
+
 ## [3.18.1] - 2025-11-06
 
 ### Fixed

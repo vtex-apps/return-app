@@ -58,6 +58,7 @@ const buildWhereClause = (filter: Maybe<AdjustmentNoteFilters> | undefined) => {
         'reasonCode',
         'locationCode',
         'originalPaymentMethod',
+        'refundType',
         'status',
         'sequenceNumber',
         'id',

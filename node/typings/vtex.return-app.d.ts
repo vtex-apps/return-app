@@ -64,6 +64,11 @@ declare module 'odp.return-app' {
     | 'denied'
     | 'cancelled'
   export type AdjustmentNoteType = 'creditNote' | 'debitNote'
+  export type RefundType =
+    | 'Miscellaneous'
+    | 'PriceVariation'
+    | 'DeliveryFee'
+    | 'SalesTax'
   export type ReturnType =
     | 'standardReturn'
     | 'creditReturn'
@@ -418,6 +423,7 @@ declare module 'odp.return-app' {
     reasonCode?: string
     locationCode?: string
     originalPaymentMethod?: string
+    refundType?: RefundType
   }
 
   export interface AdjustmentNoteInput {
@@ -433,6 +439,7 @@ declare module 'odp.return-app' {
     reasonCode?: string
     locationCode?: string
     originalPaymentMethod?: string
+    refundType?: RefundType
   }
 
   export interface AdjustmentPaymentDataInput {
