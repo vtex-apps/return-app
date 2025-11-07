@@ -344,6 +344,11 @@ export const updateRequestStatusService = async (
 
   events.sendEvent('', 'return-app.updateReturn', eventData)
 
+  // Only send updateReturnStatus event if the status is actually changing
+  if (requestStatus !== returnRequest.status) {
+    events.sendEvent('', 'return-app.updateReturnStatus', eventData)
+  }
+
   // Only send closeReturn event if the status is actually changing
   if (
     (requestStatus === 'closed' ||

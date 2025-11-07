@@ -245,6 +245,11 @@ export const updateAdjustmentStatusService = async (
 
   events.sendEvent('', 'return-app.updateAdjustmentNote', eventData)
 
+  // Only send updateAdjustmentNoteStatus event if the status is actually changing
+  if (requestStatus !== adjustmentNote.status) {
+    events.sendEvent('', 'return-app.updateAdjustmentNoteStatus', eventData)
+  }
+
   // Only send closeReturn event if the status is actually changing
   if (
     (requestStatus === 'refunded' ||
