@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Enhanced logging for refund data creation and final refund invoice in return request status updates
 - Event data logging for adjustment note status updates to track data sent to external systems
 - Event data logging for return request status updates to track data sent to external systems
 
