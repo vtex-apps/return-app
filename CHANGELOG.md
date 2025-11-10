@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.18.3] - 2025-11-10
+
+### Fixed
+
+- Fixed TypeScript compilation error in `setupLogger` middleware by adding explicit type annotation for `environment` variable (`'prod' | 'dev'`)
+- Refactored logger initialization to use `createVtexLogger` factory method for cleaner VTEX-specific configuration
+
 ## [3.18.2] - 2025-11-07
 
 ### Added
