@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Fixed event data to use the final `requestStatus` instead of input `status` parameter in `updateRequestStatusService`. When `acceptOrDenyPackage` transforms the status (e.g., from `packageVerified` to `denied` based on item quantities), events sent to external systems now correctly reflect the actual status saved to the database.
+- Fixed event data to use `requestStatus` instead of input `status` parameter in `updateAdjustmentStatusService` for consistency with return request service. This ensures external systems receive correct status values if transformation logic is added in the future.
 
 ## [3.18.3] - 2025-11-10
 

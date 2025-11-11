@@ -218,13 +218,17 @@ export const updateAdjustmentStatusService = async (
   // Log the event data being sent to external systems
   const eventData = {
     adjustmentNoteId: adjustmentId,
-    status,
+    status: requestStatus,
     comment,
     transactionData,
   }
 
   // Ensure refundData is always included, especially for amountRefunded status
-  if (status === 'refunded' && !eventData.transactionData && refundInvoice) {
+  if (
+    requestStatus === 'refunded' &&
+    !eventData.transactionData &&
+    refundInvoice
+  ) {
     logger.warn({
       message:
         'Missing transactionData in refunded event - using refundInvoice',
@@ -260,7 +264,7 @@ export const updateAdjustmentStatusService = async (
   ) {
     events.sendEvent('', 'return-app.closeAdjustmentNote', {
       adjustmentNoteId: adjustmentId,
-      status,
+      status: requestStatus,
     })
   }
 
