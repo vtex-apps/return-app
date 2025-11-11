@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Event data logging for adjustment note status updates to track data sent to external systems
 - Event data logging for return request status updates to track data sent to external systems
 
+### Fixed
+
+- Fixed event data to use the final `requestStatus` instead of input `status` parameter in `updateRequestStatusService`. When `acceptOrDenyPackage` transforms the status (e.g., from `packageVerified` to `denied` based on item quantities), events sent to external systems now correctly reflect the actual status saved to the database.
+
 ## [3.18.3] - 2025-11-10
 
 ### Fixed

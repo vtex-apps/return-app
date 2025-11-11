@@ -315,13 +315,17 @@ export const updateRequestStatusService = async (
   // Log the event data being sent to external systems
   const eventData = {
     returnRequestId: requestId,
-    status,
+    status: requestStatus,
     comment,
     refundData,
   }
 
   // Ensure refundData is always included, especially for amountRefunded status
-  if (status === 'amountRefunded' && !eventData.refundData && refundInvoice) {
+  if (
+    requestStatus === 'amountRefunded' &&
+    !eventData.refundData &&
+    refundInvoice
+  ) {
     logger.warn({
       message:
         'Missing refundData in amountRefunded event - using refundInvoice',
@@ -358,7 +362,7 @@ export const updateRequestStatusService = async (
   ) {
     events.sendEvent('', 'return-app.closeReturn', {
       returnRequestId: requestId,
-      status,
+      status: requestStatus,
     })
   }
 
