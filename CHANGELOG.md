@@ -12,15 +12,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Event data logging for adjustment note status updates to track data sent to external systems
 - Event data logging for return request status updates to track data sent to external systems
 
-### Fixed
-
-- Prevent duplicate `updateAdjustmentNoteStatus` events by only sending when status actually changes
-- Prevent duplicate `updateReturnStatus` events by only sending when status actually changes
-- Prevent duplicate `closeAdjustmentNote` events by only sending when status actually changes
-- Prevent duplicate `closeReturn` events by only sending when status actually changes
-- Ensure `transactionData` is always included in `refunded` events for adjustment notes, using refundInvoice as fallback
-- Ensure `refundData` is always included in `amountRefunded` events for return requests, using refundInvoice as fallback
-
 ## [3.18.3] - 2025-11-10
 
 ### Fixed
