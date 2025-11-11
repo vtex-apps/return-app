@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.18.4] - 2025-11-11
+
 ### Added
 
 - Event data logging for adjustment note status updates to track data sent to external systems
