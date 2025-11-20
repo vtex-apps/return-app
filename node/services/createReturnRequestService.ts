@@ -18,6 +18,7 @@ import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
 import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
+import { CommonLogger } from '../utils/commonLogger'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -47,7 +48,29 @@ export const createReturnRequestService = async (
     additionalInfo,
   } = args
 
+  CommonLogger.logApiOperation(
+    ctx,
+    'createReturnRequest.started',
+    {
+      orderId,
+      itemsCount: items?.length,
+      locale,
+      hasAppkey: !!appkey,
+      hasUserProfile: !!userProfile,
+    },
+    {
+      file: 'services/createReturnRequestService.ts',
+      function: 'createReturnRequestService',
+    }
+  )
+
   if (!appkey && !userProfile) {
+    CommonLogger.logError(
+      ctx,
+      new Error('Missing appkey or userProfile'),
+      'createReturnRequest.authentication',
+      { orderId }
+    )
     throw new ResolverError('Missing appkey or userProfile')
   }
 
@@ -98,7 +121,28 @@ export const createReturnRequestService = async (
     settingsPromise,
   ])
 
+  CommonLogger.logApiOperation(
+    ctx,
+    'createReturnRequest.dataFetched',
+    {
+      orderId,
+      orderStatus: order.status,
+      existingRMACount: searchRMA?.pagination?.total || 0,
+      settingsConfigured: !!settings,
+    },
+    {
+      file: 'services/createReturnRequestService.ts',
+      function: 'createReturnRequestService',
+    }
+  )
+
   if (!settings) {
+    CommonLogger.logError(
+      ctx,
+      new Error('Return App settings is not configured'),
+      'createReturnRequest.settings',
+      { orderId }
+    )
     throw new ResolverError('Return App settings is not configured', 500)
   }
 
@@ -127,6 +171,20 @@ export const createReturnRequestService = async (
     paymentOptions,
     options: settingsOptions,
   } = settings
+
+  CommonLogger.logApiOperation(
+    ctx,
+    'createReturnRequest.validationStarted',
+    {
+      orderId,
+      orderStatus: status,
+      maxDays,
+    },
+    {
+      file: 'services/createReturnRequestService.ts',
+      function: 'createReturnRequestService',
+    }
+  )
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -162,6 +220,19 @@ export const createReturnRequestService = async (
 
   // validate item condition
   validateItemCondition(items, settingsOptions?.enableSelectItemCondition)
+
+  CommonLogger.logApiOperation(
+    ctx,
+    'createReturnRequest.validationPassed',
+    {
+      orderId,
+      itemsCount: items?.length,
+    },
+    {
+      file: 'services/createReturnRequestService.ts',
+      function: 'createReturnRequestService',
+    }
+  )
 
   // Possible bug here: If someone deletes a request, it can lead to a duplicated sequence number.
   // Possible alternative: Save a key value pair in to VBase where key is the orderId and value is either the latest sequence (as number) or an array with all Ids, so we can use the length to calcualate the next seuqence number.
@@ -233,6 +304,22 @@ export const createReturnRequestService = async (
 
   let rmaDocument: DocumentResponse
 
+  CommonLogger.logApiOperation(
+    ctx,
+    'createReturnRequest.savingToMasterData',
+    {
+      orderId,
+      sequenceNumber,
+      refundableAmount,
+      refundPaymentMethod,
+      customerEmail,
+    },
+    {
+      file: 'services/createReturnRequestService.ts',
+      function: 'createReturnRequestService',
+    }
+  )
+
   try {
     rmaDocument = await returnRequestClient.save({
       orderId,
@@ -268,6 +355,20 @@ export const createReturnRequestService = async (
       },
       additionalInfo: additionalInfo ?? undefined,
     })
+
+    CommonLogger.logApiOperation(
+      ctx,
+      'createReturnRequest.masterDataSaved',
+      {
+        orderId,
+        returnRequestId: rmaDocument.DocumentId,
+        sequenceNumber,
+      },
+      {
+        file: 'services/createReturnRequestService.ts',
+        function: 'createReturnRequestService',
+      }
+    )
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
@@ -281,6 +382,22 @@ export const createReturnRequestService = async (
           2
         )
       : error.message
+
+    CommonLogger.logError(
+      ctx,
+      error,
+      'createReturnRequest.masterDataSaveFailed',
+      {
+        orderId,
+        sequenceNumber,
+        errorMessage: errorMessageString,
+        validationErrors: mdValidationErrors,
+      },
+      {
+        file: 'services/createReturnRequestService.ts',
+        function: 'createReturnRequestService',
+      }
+    )
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
   }
@@ -334,7 +451,35 @@ export const createReturnRequestService = async (
     }
 
     await mail.sendMail(mailData)
+
+    CommonLogger.logApiOperation(
+      ctx,
+      'createReturnRequest.emailSent',
+      {
+        orderId,
+        returnRequestId: rmaDocument.DocumentId,
+        customerEmail,
+      },
+      {
+        file: 'services/createReturnRequestService.ts',
+        function: 'createReturnRequestService',
+      }
+    )
   } catch (error) {
+    CommonLogger.logWarning(
+      ctx,
+      `Failed to send email for return request ${rmaDocument.DocumentId}`,
+      {
+        orderId,
+        returnRequestId: rmaDocument.DocumentId,
+        error: error.message,
+      },
+      {
+        file: 'services/createReturnRequestService.ts',
+        function: 'createReturnRequestService',
+      }
+    )
+
     logger.warn({
       message: `Failed to send email for return request ${rmaDocument.DocumentId}`,
       error,
@@ -344,6 +489,22 @@ export const createReturnRequestService = async (
   events.sendEvent('', 'return-app.createReturn', {
     returnRequestId: rmaDocument.DocumentId,
   })
+
+  CommonLogger.logApiOperation(
+    ctx,
+    'createReturnRequest.completed',
+    {
+      orderId,
+      returnRequestId: rmaDocument.DocumentId,
+      sequenceNumber,
+      refundableAmount,
+      itemsCount: items?.length,
+    },
+    {
+      file: 'services/createReturnRequestService.ts',
+      function: 'createReturnRequestService',
+    }
+  )
 
   return { returnRequestId: rmaDocument.DocumentId }
 }

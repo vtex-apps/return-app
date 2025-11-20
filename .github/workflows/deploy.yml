@@ -1,0 +1,20 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - deploy
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy:
+    name: Deploy IO App
+    uses: odp-ecom/gha-workflows-glpi/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      ASSIGNMENT_GROUP: 'ODP - eCommerce Systems'
+      CI_NAME: 'Digital Platform Modernization - Ecom'

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- GitHub Actions workflows for automated CI/CD:
+  - `release.yml` workflow for automated versioning and release management using semantic-release
+  - `deploy.yml` workflow for automated deployment to VTEX environments (dev, staging, production)
+- `.releaserc.json` configuration file for semantic-release automation with plugins:
+  - `@semantic-release/commit-analyzer` for version bump analysis
+  - `@semantic-release/release-notes-generator` for automated release notes
+  - `@semantic-release/changelog` for CHANGELOG.md updates
+  - `@semantic-release/github` for GitHub release creation
+
 ### Changed
 
 - Validation for adding items to a new return:
