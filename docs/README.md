@@ -93,19 +93,20 @@ new → processing → pickedUpFromClient → pendingVerification → packageVer
 
 **Alternative paths:**
 
-- At any point before `pendingVerification`, the request can be `denied` or `cancelled`
-- After `pendingVerification`, the system automatically assigns either `packageVerified` or `denied` based on verification results
+- From `new`, the request can only be `cancelled` (not `denied`)
+- From `processing` onwards (except `new`), the request can be `denied` at any point before `amountRefunded`
+- `cancelled` is only available from `new` or `processing` statuses
 - The `closed` status is a terminal status that can only be reached from `amountRefunded`
 
 ### Status Transitions
 
 Each status has specific allowed transitions:
 
-- **`new`**: Can transition to `processing`, `denied`, or `cancelled`
-- **`processing`**: Can transition to `pickedUpFromClient`, `denied`, or `cancelled`
-- **`pickedUpFromClient`**: Can transition to `pendingVerification` or `denied`
-- **`pendingVerification`**: System automatically assigns `packageVerified` or `denied`
-- **`packageVerified`**: Can transition to `amountRefunded`
+- **`new`**: Can transition to `processing` or `cancelled`
+- **`processing`**: Can transition to `pickedUpFromClient`, `pendingVerification`, `packageVerified`, `denied`, or `cancelled`
+- **`pickedUpFromClient`**: Can transition to `pendingVerification`, `packageVerified`, or `denied`
+- **`pendingVerification`**: Can transition to `packageVerified` or `denied`
+- **`packageVerified`**: Can transition to `amountRefunded` or `denied`
 - **`amountRefunded`**: Can transition to `closed`
 - **`denied`**: Terminal status (no further transitions)
 - **`cancelled`**: Terminal status (no further transitions)
