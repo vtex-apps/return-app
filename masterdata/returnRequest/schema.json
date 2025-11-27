@@ -12,7 +12,9 @@
     "externalReference": {
       "type": ["string", "null"]
     },
-    "status": { "$ref": "#/$defs/status" },
+    "status": {
+      "$ref": "#/$defs/status"
+    },
     "refundableAmountTotals": {
       "type": "array",
       "items": {
@@ -42,9 +44,13 @@
           "type": "string",
           "format": "email"
         },
-        "phoneNumber": { "type": "string", "maxLength": 50 }
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 50
+        }
       },
-      "required": ["userId", "name", "phoneNumber", "email"]
+      "required": ["userId", "name", "phoneNumber", "email"],
+      "v-indexed": ["userId", "name", "phoneNumber", "email"]
     },
     "pickupReturnData": {
       "type": "object",
@@ -109,19 +115,45 @@
       "items": {
         "type": "object",
         "properties": {
-          "orderItemIndex": { "type": "integer" },
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "localizedName": { "type": ["string", "null"] },
-          "sellingPrice": { "type": "integer" },
-          "tax": { "type": "integer" },
-          "quantity": { "type": "integer" },
-          "imageUrl": { "type": "string" },
-          "unitMultiplier": { "type": "number" },
-          "sellerId": { "type": "string" },
-          "sellerName": { "type": "string" },
-          "productId": { "type": "string" },
-          "refId": { "type": "string" },
+          "orderItemIndex": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "localizedName": {
+            "type": ["string", "null"]
+          },
+          "sellingPrice": {
+            "type": "integer"
+          },
+          "tax": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "unitMultiplier": {
+            "type": "number"
+          },
+          "sellerId": {
+            "type": "string"
+          },
+          "sellerName": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "refId": {
+            "type": "string"
+          },
           "returnReason": {
             "type": "object",
             "properties": {
@@ -163,7 +195,10 @@
         ]
       }
     },
-    "dateSubmitted": { "type": "string", "format": "date-time" },
+    "dateSubmitted": {
+      "type": "string",
+      "format": "date-time"
+    },
     "refundData": {
       "type": ["object", "null"],
       "properties": {
@@ -199,11 +234,21 @@
           "items": {
             "type": "object",
             "properties": {
-              "orderItemIndex": { "type": "integer" },
-              "id": { "type": "string" },
-              "price": { "type": "integer" },
-              "quantity": { "type": "integer" },
-              "restockFee": { "type": "integer" }
+              "orderItemIndex": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "string"
+              },
+              "price": {
+                "type": "integer"
+              },
+              "quantity": {
+                "type": "integer"
+              },
+              "restockFee": {
+                "type": "integer"
+              }
             },
             "required": [
               "orderItemIndex",
@@ -227,8 +272,12 @@
       "items": {
         "type": "object",
         "properties": {
-          "status": { "$ref": "#/$defs/status" },
-          "submittedBy": { "type": "string" },
+          "status": {
+            "$ref": "#/$defs/status"
+          },
+          "submittedBy": {
+            "type": "string"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -238,18 +287,23 @@
             "items": {
               "type": "object",
               "properties": {
-                "comment": { "type": "string" },
+                "comment": {
+                  "type": "string"
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
                 },
                 "role": {
                   "type": "string",
-
                   "enum": ["adminUser", "storeUser"]
                 },
-                "submittedBy": { "type": "string" },
-                "visibleForCustomer": { "type": "boolean" }
+                "submittedBy": {
+                  "type": "string"
+                },
+                "visibleForCustomer": {
+                  "type": "boolean"
+                }
               },
               "required": [
                 "comment",
