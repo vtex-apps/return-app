@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added "Deny request" button to admin cancellation popup, allowing admins to deny return requests directly from the cancellation modal
+
 ### Changed
 
 - Updated returnRequest schema with customerProfileData fields indexed
+- Updated cancellation popup to display Deny and Cancel buttons based on status transition rules (buttons only show when the transition is allowed according to backend validation)
+- Updated admin cancellation modal message logic to follow status transition rules instead of hardcoded status checks
 
 ## [3.19.0] - 2025-11-25
 

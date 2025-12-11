@@ -346,6 +346,7 @@
   "return-app.return-request-details.cancellation.cta": "Cancelar solicitud",
   "return-app.return-request-details.cancellation.modal.accept": "Proceder a la cancelación",
   "return-app.return-request-details.cancellation.modal.close": "Cerrar",
+  "return-app.return-request-details.cancellation.modal.deny": "Proceder a denegar",
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Atención: El status de esta solicitud se establecerá como CANCELADA.</p><p>El usuario será notificado por correo electrónico y podrá crear una nueva solicitud de devolución con los elementos de la solicitud cancelada.</p><p>Si esa no es tu intención, define la solicitud como DENEGADA.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Lo sentimos, no se puede cancelar esta solicitud debido a su status actual.</p> <p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Cancelar esta solicitud permitirá utilizar los ítems actuales en una nueva solicitud de devolución.</p><p>Esta acción es irreversible.</p>",

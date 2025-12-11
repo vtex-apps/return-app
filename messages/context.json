@@ -343,6 +343,7 @@
   "return-app.return-request-details.cancellation.cta": "Call to action to open cancellation modal",
   "return-app.return-request-details.cancellation.modal.accept": "Button text for accepting cancelling a request",
   "return-app.return-request-details.cancellation.modal.close": "Button text for refusing cancelling a request",
+  "return-app.return-request-details.cancellation.modal.deny": "Button text for denying a request",
   "return-app.return-request-details.cancellation.modal.adminAllow": "Text message for allowing a cancellation for admins",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "Text message for refusing a cancellation for admins",
   "return-app.return-request-details.cancellation.modal.storeAllow": "Text message for allowing a cancellation for store users",

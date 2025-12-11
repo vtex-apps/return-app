@@ -4,6 +4,7 @@ import type { FormEvent, ReactElement } from 'react'
 import { utils, Button, EXPERIMENTAL_Modal as Modal } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
+import type { Status } from 'odp.return-app'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import { useUpdateRequestStatus } from '../../../admin/hooks/useUpdateRequestStatus'
@@ -13,6 +14,38 @@ type CancellationMessage =
   | 'adminRefuse'
   | 'storeAllow'
   | 'storeRefuse'
+
+// Status transition rules based on backend validation
+// Source: node/utils/validateStatusUpdate.ts
+const statusAllowed: Record<Status, Status[]> = {
+  new: ['new', 'processing', 'cancelled'],
+  processing: [
+    'processing',
+    'pickedUpFromClient',
+    'pendingVerification',
+    'packageVerified',
+    'cancelled',
+  ],
+  pickedUpFromClient: [
+    'pickedUpFromClient',
+    'pendingVerification',
+    'packageVerified',
+    'denied',
+  ],
+  pendingVerification: ['pendingVerification', 'packageVerified', 'denied'],
+  packageVerified: ['packageVerified', 'amountRefunded', 'denied'],
+  amountRefunded: ['amountRefunded', 'closed'],
+  denied: ['denied'],
+  cancelled: ['cancelled'],
+  closed: ['closed'],
+}
+
+const canTransitionTo = (
+  currentStatus: Status,
+  targetStatus: Status
+): boolean => {
+  return statusAllowed[currentStatus]?.includes(targetStatus) ?? false
+}
 
 export const messages = defineMessages({
   adminAllow: {
@@ -59,16 +92,15 @@ const RequestCancellation = () => {
 
   const isAdmin = domain === 'admin'
 
+  // Check if status transitions are allowed based on backend rules
+  const canCancel = canTransitionTo(status, 'cancelled')
+  const canDeny = canTransitionTo(status, 'denied')
+
   // Both the user and the admin have different rules and messages
   let messageKey: CancellationMessage
 
   if (isAdmin) {
-    messageKey =
-      status === 'new' ||
-      status === 'processing' ||
-      status === 'packageVerified'
-        ? 'adminAllow'
-        : 'adminRefuse'
+    messageKey = canCancel ? 'adminAllow' : 'adminRefuse'
   } else {
     messageKey = status === 'new' ? 'storeAllow' : 'storeRefuse'
   }
@@ -82,6 +114,20 @@ const RequestCancellation = () => {
     handleStatusUpdate({
       id,
       status: 'cancelled',
+      cleanUp: () => {
+        onClose()
+      },
+    })
+  }
+
+  const handleDeny = async () => {
+    if (submitting) {
+      return
+    }
+
+    handleStatusUpdate({
+      id,
+      status: 'denied',
       cleanUp: () => {
         onClose()
       },
@@ -117,17 +163,32 @@ const RequestCancellation = () => {
                 <FormattedMessage id="return-app.return-request-details.cancellation.modal.close" />
               </Button>
             </span>
-            <span>
-              <Button
-                size="small"
-                disabled={['adminRefuse', 'storeRefuse'].includes(messageKey)}
-                variation="danger"
-                onClick={handleSubmit}
-                isLoading={submitting}
-              >
-                <FormattedMessage id="return-app.return-request-details.cancellation.modal.accept" />
-              </Button>
-            </span>
+            {canDeny && (
+              <span className="mr4">
+                <Button
+                  size="small"
+                  variation="secondary"
+                  onClick={handleDeny}
+                  disabled={submitting}
+                  isLoading={submitting}
+                >
+                  <FormattedMessage id="return-app.return-request-details.cancellation.modal.deny" />
+                </Button>
+              </span>
+            )}
+            {canCancel && (
+              <span>
+                <Button
+                  size="small"
+                  disabled={submitting}
+                  variation="danger"
+                  onClick={handleSubmit}
+                  isLoading={submitting}
+                >
+                  <FormattedMessage id="return-app.return-request-details.cancellation.modal.accept" />
+                </Button>
+              </span>
+            )}
           </div>
         }
       >
