@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.19.1] - 2025-12-11
+
 ### Added
 
 - Added "Deny request" button to admin cancellation popup, allowing admins to deny return requests directly from the cancellation modal
