@@ -16,7 +16,7 @@ interface ItemMetadata {
   }>
 }
 
-const calculateItemTax = ({
+export const calculateItemTax = ({
   tax,
   priceTags,
   quantity,
@@ -29,9 +29,8 @@ const calculateItemTax = ({
 }): number => {
   if (tax) return tax
 
-  const taxHubItems = priceTags.filter((priceTag) =>
-    priceTag.name.includes('TAXHUB')
-  )
+  const taxHubItems =
+    priceTags?.filter((priceTag) => priceTag.name.includes('TAXHUB')) ?? []
 
   if (taxHubItems.length === 0) return 0
 

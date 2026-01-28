@@ -7,6 +7,54 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.20.0] - 2026-01-28
+
+### Added
+
+- Validation step for creating adjustment notes (`validateAdjustmentNoteCreation`) that validates refund amounts against available amounts using `orderDataStatsService`:
+  - Requires `additionalInfo` with `items` property unless `refundType === 'DeliveryFee'`
+  - For `DeliveryFee` refunds: allows creation without item-level data (validation to be implemented)
+  - For other refund types: validates each item's refund amount against `amountAvailableForRefund` when items are provided
+  - Returns validation result with `valid` boolean and `message` string
+- Validation step for updating adjustment note status to `refunded` (`validateAdjustmentNoteRefund`) that validates refund amounts for credit notes:
+  - Only runs when updating credit notes to `refunded` status
+  - Requires `additionalInfo` with `items` property unless `refundType === 'DeliveryFee'`
+  - For `DeliveryFee` refunds: allows refund without item-level data (validation to be implemented)
+  - For other refund types: validates each item's amount against `amountAvailableForRefund` when items are provided
+  - Returns validation result with `valid` boolean and `message` string
+- Unified validation logic for both `validateAdjustmentNoteCreation` and `validateAdjustmentNoteRefund`:
+  - Both functions now use the same code path to handle missing `additionalInfo` or missing `items`
+  - Consistent error messages and validation behavior across creation and refund flows
+- Validation step for updating return request status to `amountRefunded` (`validateReturnRequestRefund`) that validates refund amounts:
+  - Only runs when updating return request status to `amountRefunded`
+  - Requires `refundData.items` to be present and non-empty (validation fails if missing)
+  - Validates each item in `refundData.items` to ensure refund amounts (price \* quantity - restockFee) don't exceed `amountAvailableForRefund`
+  - Note: Does not validate `quantityAvailableForReturn` as the current return request's items are already subtracted from available quantities
+  - Returns validation result with `valid` boolean and `message` string
+- Added `amountsToRefund` field to `orderDataStatsService` return value:
+  - Calculates the sum of all adjustment notes that are not refunded (status is not `refunded` or `charged`)
+  - Returns per-item amounts as an array, matching the structure of `amountsReturned` and `amountsAvailableForReturn`
+  - Useful for tracking pending refund amounts from adjustment notes that have been created but not yet processed
+- Added shipping-related fields to `orderDataStatsService` return value:
+  - `shippingRefunded`: Total shipping amount refunded from return requests (status `amountRefunded`) and adjustment notes (status `refunded` or `charged` with `refundType === 'DeliveryFee'`)
+  - `shippingToRefund`: Total shipping amount pending refund from adjustment notes with `refundType === 'DeliveryFee'` that are not yet refunded/charged
+  - `shippingAvailableForReturn`: Shipping amount still available for refund, calculated as `orderShippingTotal - shippingRefunded`
+  - Shipping amounts are tracked separately from item amounts and follow the same calculation patterns
+
+### Changed
+
+- Added `orderDataStats` REST endpoint to expose per-order return statistics (items and amounts returned/available) based on OMS orders, return requests, and adjustment notes.
+- `orderDataStatsService` now only includes amounts from return requests with status `amountRefunded` when calculating `amountsReturned`. Previously, amounts from all return requests (excluding cancelled/denied) were included, which could incorrectly reduce available refund amounts for requests that haven't been refunded yet.
+- `orderDataStatsService` now considers return requests with status `closed` as refunded in addition to `amountRefunded` when calculating `amountsReturned` and `shippingRefunded`.
+- `validateAdjustmentNoteCreation` now accounts for pending adjustment notes when validating refund amounts: The validation checks that the amount doesn't exceed `(amountAvailableForRefund - amountToRefund)`, ensuring new adjustment notes don't exceed the available amount after accounting for already created (but not yet refunded) adjustment notes. This prevents creating adjustment notes that would collectively exceed the available refund amount.
+
+### Fixed
+
+- Fixed inconsistency in `amount` field calculation in `orderDataStatsService`: The `amount` field in `OrderItemStats` now includes tax in its calculation `(sellingPrice + tax) * quantity`, matching the `amountAvailableForRefund` calculation and the documented base amount formula. Previously, `amount` was calculated as `sellingPrice * quantity` without tax, causing data inconsistency when no refunds had occurred.
+- Fixed tax calculation in `orderDataStatsService` and `createRefundableTotals` to include CustomTax fields:
+  - `orderDataStatsService` now calculates tax from `priceTags` (TAXHUB entries) when `item.tax` is zero or missing, ensuring CustomTax values are properly included in item-level tax calculations
+  - `createRefundableTotals` now sums all `CustomTax` entries from the order totals array in addition to the standard `Tax` field, ensuring complete tax totals are used for refund calculations
+
 ## [3.19.1] - 2025-12-11
 
 ### Added

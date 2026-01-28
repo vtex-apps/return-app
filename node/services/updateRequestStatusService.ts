@@ -15,9 +15,13 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
+import {
+  OMS_RETURN_REQUEST_STATUS_UPDATE,
+  SETTINGS_PATH,
+} from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
+import { validateReturnRequestRefund } from '../utils/validateReturnRequestRefund'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -106,6 +110,7 @@ export const updateRequestStatusService = async (
       giftCard: giftCardClient,
       mail,
       events,
+      appSettings,
     },
     vtex: { logger },
   } = ctx
@@ -145,6 +150,34 @@ export const updateRequestStatusService = async (
   }
 
   validateStatusUpdate(status, returnRequest.status as Status)
+
+  // Fetch order and settings for validation only when status is changing to amountRefunded
+  if (status === 'amountRefunded' && status !== returnRequest.status) {
+    const orderPromise = oms.order(returnRequest.orderId, 'AUTH_TOKEN')
+    const settingsPromise = appSettings.get(SETTINGS_PATH, true)
+
+    const [order, settings] = await Promise.all([orderPromise, settingsPromise])
+
+    if (!settings) {
+      throw new ResolverError('Return App settings is not configured', 500)
+    }
+
+    if (!order) {
+      throw new ResolverError('Order not found', 404)
+    }
+
+    // Validate return request refund
+    const validationResult = await validateReturnRequestRefund({
+      currentReturnRequest: returnRequest,
+      order,
+      settings,
+      ctx,
+    })
+
+    if (!validationResult.valid) {
+      throw new UserInputError(validationResult.message)
+    }
+  }
 
   // when a request is made for the same status, it means admin user is adding a new comment
   if (status === returnRequest.status && !comment) {

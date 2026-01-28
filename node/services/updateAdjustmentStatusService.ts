@@ -15,6 +15,8 @@ import { createAdjustmentRefundData } from '../utils/createRefundData'
 import { handleAdjustmentRefund } from '../utils/handleRefund'
 import { validateAdjustmentStatusUpdate } from '../utils/validateStatusUpdate'
 import { createAdjustmentAuthorizationData } from '../utils/createAuthorizationData'
+import { validateAdjustmentNoteRefund } from '../utils/validateAdjustmentNote'
+import { SETTINGS_PATH } from '../utils/constants'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -65,7 +67,13 @@ export const updateAdjustmentStatusService = async (
 ): Promise<AdjustmentNote> => {
   const {
     state: { userProfile, appkey },
-    clients: { adjustmentNoteClient, oms, giftCard: giftCardClient, events },
+    clients: {
+      adjustmentNoteClient,
+      oms,
+      giftCard: giftCardClient,
+      events,
+      appSettings,
+    },
     vtex: { logger },
   } = ctx
 
@@ -109,6 +117,34 @@ export const updateAdjustmentStatusService = async (
     adjustmentNote.status as AdjustmentNoteStatus,
     adjustmentNote.type
   )
+
+  // Fetch order and settings for validation only when status is changing to refunded
+  if (status === 'refunded' && status !== adjustmentNote.status) {
+    const orderPromise = oms.order(adjustmentNote.orderId, 'AUTH_TOKEN')
+    const settingsPromise = appSettings.get(SETTINGS_PATH, true)
+
+    const [order, settings] = await Promise.all([orderPromise, settingsPromise])
+
+    if (!settings) {
+      throw new ResolverError('Return App settings is not configured', 500)
+    }
+
+    if (!order) {
+      throw new ResolverError('Order not found', 404)
+    }
+
+    // Validate adjustment note update
+    const validationResult = await validateAdjustmentNoteRefund({
+      currentAdjustmentNote: adjustmentNote,
+      order,
+      settings,
+      ctx,
+    })
+
+    if (!validationResult.valid) {
+      throw new UserInputError(validationResult.message)
+    }
+  }
 
   // when a request is made for the same status, it means admin user is adding a new comment
   if (status === adjustmentNote.status && !comment) {

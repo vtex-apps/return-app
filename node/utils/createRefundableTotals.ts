@@ -49,7 +49,14 @@ export const createRefundableTotals = (
 
   const shippingTotal = { id: 'shipping' as const, value: shippingAmount }
 
-  const orderTaxTotal = totals.find(({ id }) => id === 'Tax')?.value ?? 0
+  // Sum both Tax and all CustomTax entries from totals
+  const standardTaxTotal = totals.find(({ id }) => id === 'Tax')?.value ?? 0
+  const customTaxTotal = totals
+    .filter(({ id }) => id === 'CustomTax')
+    .reduce((sum, total) => sum + (total.value ?? 0), 0)
+
+  const orderTaxTotal = standardTaxTotal + customTaxTotal
+
   // Additional amount is only refundable when no items are selected
   const additionalAmount =
     itemsAmount === 0 ? orderItemsValue + orderTaxTotal : 0

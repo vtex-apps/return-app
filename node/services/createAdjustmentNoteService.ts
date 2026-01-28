@@ -10,6 +10,7 @@ import { SETTINGS_PATH } from '../utils/constants'
 import { isUserAdmin } from '../utils/isUserAllowed'
 import { canOrderBeAdjusted } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
+import { validateAdjustmentNoteCreation } from '../utils/validateAdjustmentNote'
 
 export const createAdjustmentNoteService = async (
   ctx: Context,
@@ -101,6 +102,18 @@ export const createAdjustmentNoteService = async (
 
   if (type !== 'creditNote' && type !== 'debitNote') {
     throw new UserInputError('Invalid adjustment note type')
+  }
+
+  // Validate adjustment note data
+  const validationResult = await validateAdjustmentNoteCreation({
+    adjustmentNote: args,
+    order,
+    settings,
+    ctx,
+  })
+
+  if (!validationResult.valid) {
+    throw new UserInputError(validationResult.message)
   }
 
   const userCommentData = userComment

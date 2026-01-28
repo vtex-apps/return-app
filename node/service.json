@@ -28,7 +28,11 @@
     "adjustmentNoteAdditionalInfo": {
       "path": "/_v/adjustment-note/:adjustmentId/additional-info",
       "public": true
-    },  
+    },
+    "orderDataStats": {
+      "path": "/_v/order-data/:orderId/stats",
+      "public": true
+    },
     "keepAlive": {
       "path": "/_v/private/return-app/_v/keep-alive",
       "public": true

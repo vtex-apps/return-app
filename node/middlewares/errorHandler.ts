@@ -1,3 +1,5 @@
+import { LINKED } from '@vtex/api'
+
 import { CommonLogger } from '../utils/commonLogger'
 
 export async function errorHandler(ctx: Context, next: () => Promise<void>) {
@@ -18,6 +20,8 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
         function: 'errorHandler',
       }
     )
+    // eslint-disable-next-line no-console
+    LINKED && console.log('error', error)
 
     ctx.status = error.status || error.response?.status || 500
     ctx.body = { error: error.message }

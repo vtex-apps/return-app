@@ -25,6 +25,7 @@ import { createAdjustment } from './middlewares/createAdjustment'
 import { updateAdjustmentStatus } from './middlewares/updateAdjustmentStatus'
 import { getAdjustmentAdditionalInfo } from './middlewares/getAdjustmentAdditionalInfo'
 import { updateAdjustmentAdditionalInfo } from './middlewares/updateAdjustmentAdditionalInfo'
+import { orderDataStats } from './middlewares/orderDataStats'
 
 const TIMEOUT_MS = 5000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -90,6 +91,9 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     keepAlive: method({
       GET: [setupLogger, keepAlive],
+    }),
+    orderDataStats: method({
+      GET: [setupLogger, errorHandler, auth, orderDataStats],
     }),
   },
   graphql: {
