@@ -1,12 +1,9 @@
 name: Release and Publish
 
 on:
-  push:
-    branches:
-      - main
-      - master
-    paths-ignore:
-      - "**/push-test.txt"
+  pull_request:
+    types: [closed]
+    branches: [main, master]
   workflow_dispatch:
     inputs:
       jira_id:
@@ -34,4 +31,3 @@ jobs:
     with:
       jira_id: ${{ inputs.jira_id }}
       release_type: ${{ inputs.release_type }}
-      NPM_PAT: ${{ inputs.NPM_PAT }}
