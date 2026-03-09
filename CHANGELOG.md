@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Ensure `createReturnRequestService` persists `locationCode`, `returnType`, `reasonCode`, and `originalPaymentMethod` fields to Master Data when creating return requests (including via `/_v/return-request`), making list filters and GraphQL fields consistent with stored data.
+
 ## [3.20.0] - 2026-01-28
 
 ### Added

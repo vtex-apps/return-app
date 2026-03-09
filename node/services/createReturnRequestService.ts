@@ -46,6 +46,10 @@ export const createReturnRequestService = async (
     userComment,
     locale,
     additionalInfo,
+    locationCode,
+    returnType,
+    reasonCode,
+    originalPaymentMethod,
   } = args
 
   CommonLogger.logApiOperation(
@@ -354,6 +358,10 @@ export const createReturnRequestService = async (
         locale,
       },
       additionalInfo: additionalInfo ?? undefined,
+      locationCode: locationCode ?? undefined,
+      returnType: returnType ?? undefined,
+      reasonCode: reasonCode ?? undefined,
+      originalPaymentMethod: originalPaymentMethod ?? undefined,
     })
 
     CommonLogger.logApiOperation(

@@ -158,6 +158,10 @@ declare module 'odp.return-app' {
     locale: string
     additionalInfo?: string
     financialStatus?: string
+    locationCode?: string
+    returnType?: ReturnType
+    reasonCode?: string
+    originalPaymentMethod?: string
   }
 
   export interface ReturnRequestItemInput {
