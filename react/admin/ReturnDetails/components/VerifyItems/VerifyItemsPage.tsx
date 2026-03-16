@@ -96,7 +96,6 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
 
     handleStatusUpdate({
       status: 'packageVerified',
-      id: requestId,
       refundData: {
         refundedShippingValue: shippingToRefund,
         items: itemsToRefund,

@@ -23,7 +23,7 @@ import { AlertProvider } from '../../admin/provider/AlertProvider'
 
 const CSS_HANDLES = ['contactPickupContainer'] as const
 
-const StoreReturnDetails = () => {
+const StoreReturnDetails = ({ requestId }: { requestId: string }) => {
   const { loading, error } = useReturnDetails()
   const { navigate } = useRuntime()
   const handles = useCssHandles(CSS_HANDLES)
@@ -45,7 +45,7 @@ const StoreReturnDetails = () => {
           }}
         >
           <AlertProvider>
-            <UpdateRequestStatusProvider>
+            <UpdateRequestStatusProvider requestId={requestId}>
               <RequestCancellation />
             </UpdateRequestStatusProvider>
           </AlertProvider>
@@ -75,7 +75,7 @@ export const StoreReturnDetailsContainer = (
 ) => {
   return (
     <ReturnDetailsProvider requestId={props.match.params.id}>
-      <StoreReturnDetails />
+      <StoreReturnDetails requestId={props.match.params.id} />
     </ReturnDetailsProvider>
   )
 }

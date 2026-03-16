@@ -62,7 +62,6 @@ export const UpdateRequestStatus = ({ onViewVerifyItems }: Props) => {
         }
 
     handleStatusUpdate({
-      id: data.returnRequestDetails?.id,
       status: selectedStatus,
       comment: newComment,
       cleanUp,
