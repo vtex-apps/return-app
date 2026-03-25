@@ -75,7 +75,7 @@ export async function orderDataStats(ctx: Context) {
     itemsReturns: stats.itemsStats,
     shippingRefunded: stats.shippingRefunded,
     shippingToRefund: stats.shippingToRefund,
-    shippingAvailableForReturn: stats.shippingAvailableForReturn,
+    shippingAvailableForRefund: stats.shippingAvailableForRefund,
   }
   ctx.status = 200
 }

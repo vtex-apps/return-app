@@ -26,6 +26,9 @@ export interface OrderItemStats {
   amountRefunded: number
   amountAvailableForRefund: number
   amountToRefund: number
+  taxRefunded: number
+  taxToRefund: number
+  taxAvailableForRefund: number
 }
 
 export interface OrderDataStatsResult {
@@ -38,7 +41,7 @@ export interface OrderDataStatsResult {
   itemsStats: OrderItemStats[]
   shippingRefunded: number
   shippingToRefund: number
-  shippingAvailableForReturn: number
+  shippingAvailableForRefund: number
 }
 
 interface OrderDataStatsServiceSetup {
@@ -72,7 +75,7 @@ export const orderDataStatsService = async (
       itemsStats: [],
       shippingRefunded: 0,
       shippingToRefund: 0,
-      shippingAvailableForReturn: 0,
+      shippingAvailableForRefund: 0,
     }
   }
 
@@ -82,6 +85,8 @@ export const orderDataStatsService = async (
   const amountsToRefund: number[] = Array(itemsCount).fill(0)
   let shippingRefunded = 0
   let shippingToRefund = 0
+  const salesTaxRefundedByLine = Array(itemsCount).fill(0) as number[]
+  const salesTaxToRefundByLine = Array(itemsCount).fill(0) as number[]
 
   // MasterData filtering does not allow combining two different status comparisons
   // in a single query reliably. Perform two searches and intersect the results by id.
@@ -197,6 +202,63 @@ export const orderDataStatsService = async (
       }
 
       // Skip item processing for DeliveryFee notes
+      continue
+    }
+
+    // SalesTax: per-line amounts from additionalInfo.items (same shape as other adjustment notes)
+    if (refundType === 'SalesTax') {
+      if (!additionalInfoRaw) {
+        continue
+      }
+
+      let parsedSalesTax: any
+
+      try {
+        parsedSalesTax = JSON.parse(additionalInfoRaw)
+      } catch {
+        continue
+      }
+
+      if (!parsedSalesTax?.items || !Array.isArray(parsedSalesTax.items)) {
+        continue
+      }
+
+      if (status === 'refunded' || status === 'charged') {
+        for (const item of parsedSalesTax.items) {
+          const { orderItemIndex, amount } = item ?? {}
+
+          if (
+            typeof orderItemIndex !== 'number' ||
+            orderItemIndex < 0 ||
+            orderItemIndex >= itemsCount
+          ) {
+            continue
+          }
+
+          const lineAmount = typeof amount === 'number' ? amount : 0
+
+          salesTaxRefundedByLine[orderItemIndex] += lineAmount
+          amountsReturned[orderItemIndex] += lineAmount
+        }
+      } else {
+        for (const item of parsedSalesTax.items) {
+          const { orderItemIndex, amount } = item ?? {}
+
+          if (
+            typeof orderItemIndex !== 'number' ||
+            orderItemIndex < 0 ||
+            orderItemIndex >= itemsCount
+          ) {
+            continue
+          }
+
+          const lineAmount = typeof amount === 'number' ? amount : 0
+
+          salesTaxToRefundByLine[orderItemIndex] += lineAmount
+          amountsToRefund[orderItemIndex] += lineAmount
+        }
+      }
+
       continue
     }
 
@@ -330,6 +392,23 @@ export const orderDataStatsService = async (
     return Math.max(0, baseAmount - refunded)
   })
 
+  const lineTaxTotals = orderItems.map((_, index) => {
+    const item = orderItems[index] as any
+    const selling = Number((item?.sellingPrice as number | undefined) ?? 0)
+    const taxValue = Number((item?.tax as number | undefined) ?? 0)
+    const priceTags = (item?.priceTags as any[]) ?? []
+    const quantity = (item?.quantity as number | undefined) ?? 0
+
+    const tax = calculateItemTax({
+      tax: taxValue,
+      priceTags,
+      quantity,
+      sellingPrice: selling,
+    })
+
+    return tax * quantity
+  })
+
   const buildItemMetadata = (index: number): OrderItemStats => {
     const item = orderItems[index] as any
     const selling = Number((item?.sellingPrice as number | undefined) ?? 0)
@@ -347,6 +426,15 @@ export const orderDataStatsService = async (
     const unitPrice = selling + tax
     const lineQty = quantity
     const baseAmount = unitPrice * lineQty
+    const lineTaxTotal = lineTaxTotals[index] ?? 0
+
+    const amountRefunded = amountsReturned[index] ?? 0
+    const amountAvailableForRefund = amountsAvailableForReturn[index] ?? 0
+    const amountToRefundLine = amountsToRefund[index] ?? 0
+
+    const taxRefunded = salesTaxRefundedByLine[index] ?? 0
+    const taxToRefund = salesTaxToRefundByLine[index] ?? 0
+    const taxAvailableForRefund = Math.max(0, lineTaxTotal - taxRefunded)
 
     return {
       orderItemIndex: index,
@@ -360,9 +448,12 @@ export const orderDataStatsService = async (
       amount: baseAmount,
       quantityReturned: itemsReturned[index] ?? 0,
       quantityAvailableForReturn: itemsAvailableForReturn[index] ?? 0,
-      amountRefunded: amountsReturned[index] ?? 0,
-      amountAvailableForRefund: amountsAvailableForReturn[index] ?? 0,
-      amountToRefund: amountsToRefund[index] ?? 0,
+      amountRefunded,
+      amountAvailableForRefund,
+      amountToRefund: amountToRefundLine,
+      taxRefunded,
+      taxToRefund,
+      taxAvailableForRefund,
     }
   }
 
@@ -372,7 +463,7 @@ export const orderDataStatsService = async (
   const orderShippingTotal =
     order.totals?.find(({ id }) => id === 'Shipping')?.value ?? 0
 
-  const shippingAvailableForReturn = Math.max(
+  const shippingAvailableForRefund = Math.max(
     0,
     orderShippingTotal - shippingRefunded
   )
@@ -387,6 +478,6 @@ export const orderDataStatsService = async (
     itemsStats,
     shippingRefunded,
     shippingToRefund,
-    shippingAvailableForReturn,
+    shippingAvailableForRefund,
   }
 }

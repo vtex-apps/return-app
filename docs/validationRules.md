@@ -55,6 +55,8 @@ The validation behavior depends on whether `additionalInfo` contains item-level 
 
 #### When `additionalInfo` contains item-level data:
 
+**`amount` semantics:** Each `amount` is a **per-line total** for that `orderItemIndex` in this adjustment (in the same currency units as `requestAmount`, typically cents), **not** a unit price. For `refundType === 'SalesTax'`, it is the **total sales tax** for that order line in this note (not tax per unit). The sum of all `amount` values must equal `requestAmount`.
+
 For each item in `additionalInfo.items`:
 
 1. **Amount Validation**
@@ -71,6 +73,14 @@ For each item in `additionalInfo.items`:
    - `amount` must be <= `(amountAvailableForRefund - amountToRefund)` for the item
    - Accounts for pending adjustment notes that have been created but not yet refunded (`amountToRefund`)
    - **Error**: `"Amount to refund for item {orderItemIndex} ({amount}) exceeds available amount ({effectiveAmountAvailable}). Already pending: {amountToRefund}, Total available: {amountAvailableForRefund}"`
+
+4. **Total Matches `requestAmount`**
+   - The sum of all `amount` values in `additionalInfo.items` must strictly equal `requestAmount` on the adjustment note
+   - **Error**: `"Sum of item amounts ({itemsTotal}) must equal requestAmount ({requestAmount})"`
+
+5. **Sales tax (`refundType === 'SalesTax'`)**
+   - Each line `amount` is the **line total** of sales tax for that `orderItemIndex` (same shape as other refund types: line totals, not unit amounts). After the checks above, each line `amount` must be <= **`effectiveTaxAvailable`** where `effectiveTaxAvailable = taxAvailableForRefund - taxToRefund` (same pattern as dollar amounts: `taxAvailableForRefund` is `max(0, lineTaxTotal - taxRefunded)` only; pending SalesTax stays in `taxToRefund`; `lineTaxTotal` is unit tax × quantity for that order line)
+   - **Error**: `"Sales tax amount to refund for item {orderItemIndex} ({amount}) exceeds available amount ({effectiveTaxAvailable}). Already pending: {taxToRefund}, Total available: {taxAvailableForRefund}"`
 
 ### Notes
 
@@ -119,6 +129,12 @@ For each item in `additionalInfo.items`:
    - Validates status transition is allowed (handled by `validateAdjustmentStatusUpdate`)
    - For credit notes: cannot transition to `charged` status
    - For debit notes: cannot transition to `refunded` status
+
+3. **Total Matches `requestAmount`**
+   - The sum of all `amount` values in `additionalInfo.items` must strictly equal the adjustment note’s `requestAmount` (same rule as at creation)
+
+4. **Sales tax (`refundType === 'SalesTax'`)**
+   - Same **`effectiveTaxAvailable`** (`taxAvailableForRefund - taxToRefund`) check as at creation
 
 ### Notes
 
@@ -223,6 +239,8 @@ The `orderDataStatsService` calculates `amountAvailableForRefund` for each order
    - Amounts from return requests with status `amountRefunded` (using `refundData.items`)
    - Amounts from adjustment notes with status `refunded` or `charged` (from `additionalInfo.items`)
 3. **Available Amount**: `max(0, baseAmount - refundedAmounts)`
+
+**Sales tax adjustments (`refundType === 'SalesTax'`)** use **`additionalInfo.items`** (same `{ orderItemIndex, amount }` shape as other adjustment notes). Per line, those amounts add to **`taxRefunded`** / **`taxToRefund`** (SalesTax-specific totals) and also to **`amountRefunded`** / **`amountToRefund`**. **`taxAvailableForRefund`** is `max(0, lineTaxTotal - taxRefunded)` (completed SalesTax only; pending in **`taxToRefund`**), matching **`amountAvailableForRefund`**. **`GET /_v/order-data/:orderId/stats`** exposes tax fields only on each **`itemsReturns`** entry.
 
 ### Quantity Available for Return Calculation
 

@@ -368,7 +368,7 @@ with an example body in the form of:
 | paymentData paymentMethod       | `enum` possible values: giftCard, sameAsPurchase               | true       |
 | userComment                     | `string` comment to be added to the creation                   | false      |
 | locale                          | `string` locale for the customer to visualize the adjustment   | true       |
-| additionalInfo                  | `string` additional information for the adjustment note        | false      |
+| additionalInfo                  | `string` JSON string; when it includes `items`, each item has `orderItemIndex` and `amount`. **`amount` is a per-line total** for that order line in this adjustment (cents). For `refundType === 'SalesTax'`, **`amount` is the total sales tax for that line** (not per unit). `sum(items[].amount)` must equal `requestAmount`. | false      |
 | financialStatus                 | `string` financial status for the adjustment note              | false      |
 | reasonCode                      | `string` reason code for the adjustment note                   | false      |
 | locationCode                    | `string` location code for the adjustment note                 | false      |

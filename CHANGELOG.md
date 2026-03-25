@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- `orderDataStatsService` / `GET /_v/order-data/:orderId/stats`: per-item `taxRefunded`, `taxToRefund`, `taxAvailableForRefund` (SalesTax; `taxAvailableForRefund` = line tax after completed refunds, pending in `taxToRefund`).
+
+### Changed
+
+- `shippingAvailableForReturn` → `shippingAvailableForRefund` (same value).
+- SalesTax lines update `amountRefunded` / `amountToRefund` and tax columns; tax only on each `itemsReturns` row (no top-level tax totals).
+- `validateAdjustmentNoteCreation` / `validateAdjustmentNoteRefund`: `sum(additionalInfo.items[].amount) === requestAmount`; SalesTax lines also capped by `taxAvailableForRefund - taxToRefund` per line.
+
 ## [3.20.1] - 2026-03-09
 
 ### Fixed

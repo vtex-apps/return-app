@@ -29,6 +29,7 @@ export const validateAdjustmentNoteCreation = async ({
   const { additionalInfo } = adjustmentNote
   const refundType = (adjustmentNote as any).refundType as
     | 'DeliveryFee'
+    | 'SalesTax'
     | undefined
 
   const {
@@ -78,12 +79,12 @@ export const validateAdjustmentNoteCreation = async ({
 
       // Account for pending adjustment notes that haven't been refunded yet
       const effectiveShippingAvailable =
-        stats.shippingAvailableForReturn - stats.shippingToRefund
+        stats.shippingAvailableForRefund - stats.shippingToRefund
 
       if (requestAmount > effectiveShippingAvailable) {
         return {
           valid: false,
-          message: `Shipping amount to refund (${requestAmount}) exceeds available amount (${effectiveShippingAvailable}). Already pending: ${stats.shippingToRefund}, Total available: ${stats.shippingAvailableForReturn}`,
+          message: `Shipping amount to refund (${requestAmount}) exceeds available amount (${effectiveShippingAvailable}). Already pending: ${stats.shippingToRefund}, Total available: ${stats.shippingAvailableForRefund}`,
         }
       }
 
@@ -164,6 +165,31 @@ export const validateAdjustmentNoteCreation = async ({
         message: `Amount to refund for item ${orderItemIndex} (${amount}) exceeds available amount (${effectiveAmountAvailable}). Already pending: ${amountToRefund}, Total available: ${amountAvailableForRefund}`,
       }
     }
+
+    if (refundType === 'SalesTax') {
+      const taxAvailableForRefund = itemStats?.taxAvailableForRefund ?? 0
+      const taxToRefund = itemStats?.taxToRefund ?? 0
+      const effectiveTaxAvailable = taxAvailableForRefund - taxToRefund
+
+      if (amount > effectiveTaxAvailable) {
+        return {
+          valid: false,
+          message: `Sales tax amount to refund for item ${orderItemIndex} (${amount}) exceeds available amount (${effectiveTaxAvailable}). Already pending: ${taxToRefund}, Total available: ${taxAvailableForRefund}`,
+        }
+      }
+    }
+  }
+
+  const itemsTotal = parsedAdditionalInfo.items.reduce(
+    (sum, item) => sum + item.amount,
+    0
+  )
+
+  if (itemsTotal !== adjustmentNote.requestAmount) {
+    return {
+      valid: false,
+      message: `Sum of item amounts (${itemsTotal}) must equal requestAmount (${adjustmentNote.requestAmount})`,
+    }
   }
 
   return {
@@ -188,6 +214,7 @@ export const validateAdjustmentNoteRefund = async ({
   const { orderId, additionalInfo } = currentAdjustmentNote
   const refundType = (currentAdjustmentNote as any).refundType as
     | 'DeliveryFee'
+    | 'SalesTax'
     | undefined
 
   const {
@@ -236,15 +263,15 @@ export const validateAdjustmentNoteRefund = async ({
       }
 
       // When refunding, validate that requestAmount doesn't exceed what's available
-      // shippingAvailableForReturn = orderShippingTotal - shippingRefunded (doesn't account for pending)
+      // shippingAvailableForRefund = orderShippingTotal - shippingRefunded (doesn't account for pending)
       // shippingToRefund includes all pending notes (including current note)
-      // To check if current note's amount is valid, we need: requestAmount <= shippingAvailableForReturn
+      // To check if current note's amount is valid, we need: requestAmount <= shippingAvailableForRefund
       // This ensures we don't exceed what's available after accounting for already refunded amounts
       // Note: This doesn't prevent other pending notes from also being refunded, but they'll be validated separately
-      if (requestAmount > stats.shippingAvailableForReturn) {
+      if (requestAmount > stats.shippingAvailableForRefund) {
         return {
           valid: false,
-          message: `Shipping amount to refund (${requestAmount}) exceeds available amount (${stats.shippingAvailableForReturn}). Already refunded: ${stats.shippingRefunded}, Pending: ${stats.shippingToRefund}`,
+          message: `Shipping amount to refund (${requestAmount}) exceeds available amount (${stats.shippingAvailableForRefund}). Already refunded: ${stats.shippingRefunded}, Pending: ${stats.shippingToRefund}`,
         }
       }
 
@@ -320,6 +347,29 @@ export const validateAdjustmentNoteRefund = async ({
         valid: false,
         message: `Amount to refund for item ${orderItemIndex} (${amount}) exceeds available amount (${amountAvailableForRefund})`,
       }
+    }
+
+    if (refundType === 'SalesTax') {
+      const taxAvailableForRefund = itemStats?.taxAvailableForRefund ?? 0
+
+      if (amount > taxAvailableForRefund) {
+        return {
+          valid: false,
+          message: `Sales tax amount to refund for item ${orderItemIndex} (${amount}) exceeds available amount (${taxAvailableForRefund})`,
+        }
+      }
+    }
+  }
+
+  const itemsTotal = parsedAdditionalInfo.items.reduce(
+    (sum, item) => sum + item.amount,
+    0
+  )
+
+  if (itemsTotal !== currentAdjustmentNote.requestAmount) {
+    return {
+      valid: false,
+      message: `Sum of item amounts (${itemsTotal}) must equal requestAmount (${currentAdjustmentNote.requestAmount})`,
     }
   }
 
