@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.20.2] - 2026-03-25
+
 ### Added
 
 - `orderDataStatsService` / `GET /_v/order-data/:orderId/stats`: per-item `taxRefunded`, `taxToRefund`, `taxAvailableForRefund` (SalesTax; `taxAvailableForRefund` = line tax after completed refunds, pending in `taxToRefund`).
