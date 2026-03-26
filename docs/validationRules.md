@@ -79,7 +79,7 @@ For each item in `additionalInfo.items`:
    - **Error**: `"Sum of item amounts ({itemsTotal}) must equal requestAmount ({requestAmount})"`
 
 5. **Sales tax (`refundType === 'SalesTax'`)**
-   - Each line `amount` is the **line total** of sales tax for that `orderItemIndex` (same shape as other refund types: line totals, not unit amounts). After the checks above, each line `amount` must be <= **`effectiveTaxAvailable`** where `effectiveTaxAvailable = taxAvailableForRefund - taxToRefund` (same pattern as dollar amounts: `taxAvailableForRefund` is `max(0, lineTaxTotal - taxRefunded)` only; pending SalesTax stays in `taxToRefund`; `lineTaxTotal` is unit tax × quantity for that order line)
+   - Each line `amount` is the **line total** of sales tax for that `orderItemIndex` (same shape as other refund types: line totals, not unit amounts). After the checks above, each line `amount` must be <= **`effectiveTaxAvailable`** where `effectiveTaxAvailable = taxAvailableForRefund - taxToRefund` (same pattern as dollar amounts: `taxAvailableForRefund` is `max(0, lineTaxTotal - taxRefunded)` only; pending SalesTax stays in `taxToRefund`; `lineTaxTotal` matches **`taxAmount`** on `OrderItemStats` from `orderDataStatsService`: total tax for that line)
    - **Error**: `"Sales tax amount to refund for item {orderItemIndex} ({amount}) exceeds available amount ({effectiveTaxAvailable}). Already pending: {taxToRefund}, Total available: {taxAvailableForRefund}"`
 
 ### Notes
@@ -240,7 +240,7 @@ The `orderDataStatsService` calculates `amountAvailableForRefund` for each order
    - Amounts from adjustment notes with status `refunded` or `charged` (from `additionalInfo.items`)
 3. **Available Amount**: `max(0, baseAmount - refundedAmounts)`
 
-**Sales tax adjustments (`refundType === 'SalesTax'`)** use **`additionalInfo.items`** (same `{ orderItemIndex, amount }` shape as other adjustment notes). Per line, those amounts add to **`taxRefunded`** / **`taxToRefund`** (SalesTax-specific totals) and also to **`amountRefunded`** / **`amountToRefund`**. **`taxAvailableForRefund`** is `max(0, lineTaxTotal - taxRefunded)` (completed SalesTax only; pending in **`taxToRefund`**), matching **`amountAvailableForRefund`**. **`GET /_v/order-data/:orderId/stats`** exposes tax fields only on each **`itemsReturns`** entry.
+**Sales tax adjustments (`refundType === 'SalesTax'`)** use **`additionalInfo.items`** (same `{ orderItemIndex, amount }` shape as other adjustment notes). Per line, those amounts add to **`taxRefunded`** / **`taxToRefund`** (SalesTax-specific totals) and also to **`amountRefunded`** / **`amountToRefund`**. **`taxAvailableForRefund`** is `max(0, lineTaxTotal - taxRefunded)` (completed SalesTax only; pending in **`taxToRefund`**), matching **`amountAvailableForRefund`**. **`GET /_v/order-data/:orderId/stats`** exposes **`taxAmount`** (line total tax), **`taxRefunded`**, **`taxToRefund`**, and **`taxAvailableForRefund`** on each **`itemsReturns`** entry.
 
 ### Quantity Available for Return Calculation
 

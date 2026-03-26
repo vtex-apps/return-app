@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- `orderDataStatsService` / `GET /_v/order-data/:orderId/stats`: **`tax`** → **`taxAmount`** (line tax via **`calculateLineItemTax`**); **`amount`** / **`amountAvailableForRefund`** use `selling * quantity +` that line tax (aligned totals, no unit-tax × qty rounding drift).
+
 ## [3.20.2] - 2026-03-25
 
 ### Added

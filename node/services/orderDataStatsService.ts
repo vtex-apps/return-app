@@ -8,7 +8,7 @@ import type {
 } from 'odp.return-app'
 
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
-import { calculateItemTax } from '../utils/createItemsToReturn'
+import { calculateLineItemTax } from '../utils/createItemsToReturn'
 import type { CatalogGQL } from '../clients/catalogGQL'
 
 export interface OrderItemStats {
@@ -18,7 +18,7 @@ export interface OrderItemStats {
   productId?: string
   quantity?: number
   sellingPrice?: number
-  tax?: number
+  taxAmount: number
   taxCode?: string
   amount: number
   quantityReturned: number
@@ -366,32 +366,6 @@ export const orderDataStatsService = async (
 
   const itemsAvailableForReturn = itemAvailableMap
 
-  // Amount available to refund is based on the full line value (price * original quantity)
-  // minus everything already refunded for that line (return requests + adjustments),
-  // even if there is no quantity left available to return.
-  const amountsAvailableForReturn = orderItems.map((_, index) => {
-    const item = orderItems[index] as any
-    const selling = Number((item?.sellingPrice as number | undefined) ?? 0)
-    const taxValue = Number((item?.tax as number | undefined) ?? 0)
-    const priceTags = (item?.priceTags as any[]) ?? []
-    const quantity = (item?.quantity as number | undefined) ?? 0
-
-    const tax = calculateItemTax({
-      tax: taxValue,
-      priceTags,
-      quantity,
-      sellingPrice: selling,
-    })
-
-    const unitPrice = selling + tax
-    const lineQty = quantity
-    const baseAmount = unitPrice * lineQty
-
-    const refunded = amountsReturned[index] ?? 0
-
-    return Math.max(0, baseAmount - refunded)
-  })
-
   const lineTaxTotals = orderItems.map((_, index) => {
     const item = orderItems[index] as any
     const selling = Number((item?.sellingPrice as number | undefined) ?? 0)
@@ -399,34 +373,33 @@ export const orderDataStatsService = async (
     const priceTags = (item?.priceTags as any[]) ?? []
     const quantity = (item?.quantity as number | undefined) ?? 0
 
-    const tax = calculateItemTax({
+    return calculateLineItemTax({
       tax: taxValue,
       priceTags,
       quantity,
       sellingPrice: selling,
     })
+  })
 
-    return tax * quantity
+  // Amount available to refund: line net + line tax (same line totals as `taxAmount`), minus refunded.
+  const amountsAvailableForReturn = orderItems.map((_, index) => {
+    const item = orderItems[index] as any
+    const selling = Number((item?.sellingPrice as number | undefined) ?? 0)
+    const quantity = (item?.quantity as number | undefined) ?? 0
+    const lineTaxTotal = lineTaxTotals[index] ?? 0
+    const baseAmount = selling * quantity + lineTaxTotal
+
+    const refunded = amountsReturned[index] ?? 0
+
+    return Math.max(0, baseAmount - refunded)
   })
 
   const buildItemMetadata = (index: number): OrderItemStats => {
     const item = orderItems[index] as any
     const selling = Number((item?.sellingPrice as number | undefined) ?? 0)
-    const taxValue = Number((item?.tax as number | undefined) ?? 0)
-    const priceTags = (item?.priceTags as any[]) ?? []
     const quantity = (item?.quantity as number | undefined) ?? 0
-
-    const tax = calculateItemTax({
-      tax: taxValue,
-      priceTags,
-      quantity,
-      sellingPrice: selling,
-    })
-
-    const unitPrice = selling + tax
-    const lineQty = quantity
-    const baseAmount = unitPrice * lineQty
     const lineTaxTotal = lineTaxTotals[index] ?? 0
+    const baseAmount = selling * quantity + lineTaxTotal
 
     const amountRefunded = amountsReturned[index] ?? 0
     const amountAvailableForRefund = amountsAvailableForReturn[index] ?? 0
@@ -443,7 +416,7 @@ export const orderDataStatsService = async (
       productId: item?.productId,
       quantity: item?.quantity,
       sellingPrice: item?.sellingPrice,
-      tax,
+      taxAmount: lineTaxTotal,
       taxCode: item?.taxCode,
       amount: baseAmount,
       quantityReturned: itemsReturned[index] ?? 0,
