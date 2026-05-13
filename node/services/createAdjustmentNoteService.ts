@@ -2,7 +2,7 @@ import type {
   AdjustmentNoteCreated,
   AdjustmentNoteInput,
   AdjustmentNoteStatus,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
 

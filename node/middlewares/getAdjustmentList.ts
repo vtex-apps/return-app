@@ -1,4 +1,4 @@
-import type { AdjustmentNoteStatus } from 'odp.return-app'
+import type { AdjustmentNoteStatus } from 'vtex.return-app'
 
 import { CommonLogger } from '../utils/commonLogger'
 import { adjustmentNoteListService } from '../services/adjustmentNoteListService'

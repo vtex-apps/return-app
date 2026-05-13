@@ -3,7 +3,7 @@ import type { RouteComponentProps } from 'react-router'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 import { Button, Divider } from 'vtex.styleguide'
-import type { ShippingData } from 'odp.return-app'
+import type { ShippingData } from 'vtex.return-app'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 import type { Page } from '../CreateReturnRequest'

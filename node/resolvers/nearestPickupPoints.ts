@@ -1,7 +1,7 @@
 import type {
   QueryNearestPickupPointsArgs,
   NearPickupPointQueryResponse,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 export const nearestPickupPoints = async (
   _: unknown,

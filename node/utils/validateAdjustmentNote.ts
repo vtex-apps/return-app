@@ -2,7 +2,7 @@ import type {
   AdjustmentNoteInput,
   AdjustmentNote,
   ReturnAppSettings,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import type { OrderDetailResponse } from '@vtex/clients'
 
 import { orderDataStatsService } from '../services/orderDataStatsService'

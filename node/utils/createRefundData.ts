@@ -3,7 +3,7 @@ import type {
   RefundDataInput,
   ReturnRequest,
   AdjustmentNote,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { UserInputError } from '@vtex/api'
 
 export const createRefundData = ({
@@ -12,6 +12,7 @@ export const createRefundData = ({
   requestItems,
   refundableShipping,
   additionalInfo,
+  returnType,
   logger,
 }: {
   requestId: string
@@ -19,6 +20,7 @@ export const createRefundData = ({
   requestItems: ReturnRequest['items']
   refundableShipping: number
   additionalInfo?: string
+  returnType?: string | null
   logger?: any
 }): ReturnRequest['refundData'] => {
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
@@ -88,7 +90,7 @@ export const createRefundData = ({
     )
   }
 
-  // Check if this is a Miscellaneous Refund (MF) return
+  // Parse additionalInfo for legacy `returnAction` (e.g. MF) used in refund math
   let parsedAdditionalInfo: any = {}
 
   if (additionalInfo) {
@@ -114,16 +116,17 @@ export const createRefundData = ({
     }
   }
 
-  // For MF returns, ignore refundableAmount and only use refundAdditionalValue + refundShippingValue
-  // For other refund types (RT and CO), use the standard calculation
-  const isMFReturn = parsedAdditionalInfo.returnAction === 'MF'
+  const usesShippingAndAdditionalOnly =
+    parsedAdditionalInfo.returnAction === 'MF' ||
+    returnType === 'notDeliveryReturn'
 
   if (logger) {
     logger.info({
       message: 'Refund calculation details',
       requestId,
-      isMFReturn,
+      usesShippingAndAdditionalOnly,
       returnAction: parsedAdditionalInfo.returnAction,
+      returnType,
       refundedItemsValue,
       refundedShippingValue,
       refundedAdditionalValue,
@@ -133,8 +136,8 @@ export const createRefundData = ({
 
   let invoiceValue: number
 
-  if (isMFReturn) {
-    // For MF returns, only use refundAdditionalValue + refundShippingValue
+  if (usesShippingAndAdditionalOnly) {
+    // Shipping + additional only (notDeliveryReturn)
     invoiceValue =
       (refundedAdditionalValue as number) + (refundedShippingValue as number)
     if (logger) {

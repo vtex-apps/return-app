@@ -1,4 +1,4 @@
-import type { AdjustmentNote } from 'odp.return-app'
+import type { AdjustmentNote } from 'vtex.return-app'
 import { ResolverError, ForbiddenError, NotFoundError } from '@vtex/api'
 
 import type { UpdateAdjustmentNoteAdditionalInfoArgs } from '../typings/adjustmentNote'

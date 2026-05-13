@@ -7,11 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Saving admin RMA settings (`saveReturnAppSettings`) ensures Master Data schemas exist for `return_app_returnRequest` (`returns`) and `return_app_adjustmentNote` (`adjustments`), using the same JSON definitions as the `masterdata/` app builder, so accounts or workspaces without a prior link still get working entities.
+
+### Fixed
+
+- Return reason validation: admin-created requests use `other` for free-text “Other”, same as storefront `otherReason`, so both are excluded from the custom-reason allowlist check.
+- Storefront reason dropdown: when custom return reasons exist, always build options from app settings (optional order `creationDate` only filters by max-days when present). Previously, missing `creationDate` fell back to default localized strings, which failed `createReturnRequest` validation whenever custom reasons were configured.
+
+- `ReturnRequestClient`: correct `getSchema` / `createOrUpdateSchema` wrappers for `@vtex/api` `MasterData` (`CreateSchemaInput` uses `schemaName`; `schemaBody` is a method argument).
+
 ## [3.20.3] - 2026-03-26
 
 ### Changed
 
-- `orderDataStatsService` / `GET /_v/order-data/:orderId/stats`: **`tax`** → **`taxAmount`** (line tax via **`calculateLineItemTax`**); **`amount`** / **`amountAvailableForRefund`** use `selling * quantity +` that line tax (aligned totals, no unit-tax × qty rounding drift). 
+- `orderDataStatsService` / `GET /_v/order-data/:orderId/stats`: **`tax`** → **`taxAmount`** (line tax via **`calculateLineItemTax`**); **`amount`** / **`amountAvailableForRefund`** use `selling * quantity +` that line tax (aligned totals, no unit-tax × qty rounding drift).
 
 ## [3.20.2] - 2026-03-25
 
@@ -151,8 +162,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Comprehensive Dynatrace logging integration using `@odp-ecom/js-logger@^0.3.4`
-- `setupLogger` middleware for all API routes to initialize Dynatrace logger per request
 - `commonLogger.ts` utility providing standardized VTEX logging patterns with full context
 - Structured logging for all return request operations:
   - Return request creation with business metadata (orderId, locale, itemCount)

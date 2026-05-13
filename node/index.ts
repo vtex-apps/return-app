@@ -8,7 +8,6 @@ import { Service, method, LRUCache } from '@vtex/api'
 
 import { Clients } from './clients'
 import { errorHandler } from './middlewares/errorHandler'
-import { setupLogger } from './middlewares/setupLogger'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { auth } from './middlewares/auth'
@@ -66,34 +65,34 @@ export default new Service<Clients, State, ParamsContext>({
   clients,
   routes: {
     returnRequests: method({
-      POST: [setupLogger, errorHandler, auth, createReturn],
-      GET: [setupLogger, errorHandler, auth, getRequestList],
+      POST: [errorHandler, auth, createReturn],
+      GET: [errorHandler, auth, getRequestList],
     }),
     returnRequest: method({
-      GET: [setupLogger, errorHandler, auth, getRequest],
-      PUT: [setupLogger, errorHandler, auth, updateRequestStatus],
+      GET: [errorHandler, auth, getRequest],
+      PUT: [errorHandler, auth, updateRequestStatus],
     }),
     returnRequestAdditionalInfo: method({
-      GET: [setupLogger, errorHandler, auth, getRequestAdditionalInfo],
-      PUT: [setupLogger, errorHandler, auth, updateRequestAdditionalInfo],
+      GET: [errorHandler, auth, getRequestAdditionalInfo],
+      PUT: [errorHandler, auth, updateRequestAdditionalInfo],
     }),
     adjustmentNotes: method({
-      GET: [setupLogger, errorHandler, auth, getAdjustmentList],
-      POST: [setupLogger, errorHandler, auth, createAdjustment],
+      GET: [errorHandler, auth, getAdjustmentList],
+      POST: [errorHandler, auth, createAdjustment],
     }),
     adjustmentNote: method({
-      GET: [setupLogger, errorHandler, auth, getAdjustment],
-      PUT: [setupLogger, errorHandler, auth, updateAdjustmentStatus],
+      GET: [errorHandler, auth, getAdjustment],
+      PUT: [errorHandler, auth, updateAdjustmentStatus],
     }),
     adjustmentNoteAdditionalInfo: method({
-      GET: [setupLogger, errorHandler, auth, getAdjustmentAdditionalInfo],
-      PUT: [setupLogger, errorHandler, auth, updateAdjustmentAdditionalInfo],
+      GET: [errorHandler, auth, getAdjustmentAdditionalInfo],
+      PUT: [errorHandler, auth, updateAdjustmentAdditionalInfo],
     }),
     keepAlive: method({
-      GET: [setupLogger, keepAlive],
+      GET: [keepAlive],
     }),
     orderDataStats: method({
-      GET: [setupLogger, errorHandler, auth, orderDataStats],
+      GET: [errorHandler, auth, orderDataStats],
     }),
   },
   graphql: {

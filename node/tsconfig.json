@@ -1,7 +1,13 @@
 {
   "extends": "@vtex/tsconfig",
-  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"],
+  "include": [
+    "./typings/*.d.ts",
+    "./**/*.tsx",
+    "./**/*.ts",
+    "../masterdata/**/*.json"
+  ],
   "compilerOptions": {
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "resolveJsonModule": true
   }
 }

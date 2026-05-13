@@ -6,7 +6,7 @@ import type {
   ReturnRequestCommentInput,
   Status,
   AdjustmentNoteStatus,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 export const createOrUpdateStatusPayload = ({
   refundStatusData,

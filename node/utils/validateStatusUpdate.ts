@@ -3,7 +3,7 @@ import type {
   AdjustmentNoteStatus,
   AdjustmentNoteType,
   Status,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'cancelled'],

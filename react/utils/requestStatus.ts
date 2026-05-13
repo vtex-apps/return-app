@@ -2,7 +2,7 @@ import type {
   Status,
   RefundStatusData,
   RefundStatusComment,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { defineMessages } from 'react-intl'
 
 const statusSequence: Status[] = [

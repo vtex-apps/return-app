@@ -1,7 +1,7 @@
 import type {
   ReturnAppSettings,
   MutationSaveReturnAppSettingsArgs,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 import {
   validateMaxDaysCustomReasons,
@@ -9,6 +9,7 @@ import {
   valideteUniqueCustomReasonsPerLocale,
 } from '../utils/appSettingsValidation'
 import { SETTINGS_PATH } from '../utils/constants'
+import { ensureReturnAppMasterDataSchemas } from '../utils/ensureReturnAppMasterDataSchemas'
 
 const returnAppSettings = async (
   _root: unknown,
@@ -49,6 +50,8 @@ const saveReturnAppSettings = async (
     // validate that there is at least one payment method selected or user has to use the same as in the order
     paymentOptions: validatePaymentOptions(args.settings.paymentOptions),
   }
+
+  await ensureReturnAppMasterDataSchemas(ctx)
 
   await appSettings.save(SETTINGS_PATH, settings)
 

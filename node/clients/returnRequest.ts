@@ -5,10 +5,10 @@ import type {
   ScrollInput,
   WithMetadata,
 } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
-import type { ReturnRequest } from 'odp.return-app'
+import type { ReturnRequest } from 'vtex.return-app'
 
-const DATA_ENTITY_NAME = 'odp_return_app_returnRequest'
-const SCHEMA_NAME = 'odp.returns'
+const DATA_ENTITY_NAME = 'return_app_returnRequest'
+const SCHEMA_NAME = 'returns'
 
 interface PaginationArgs {
   page: number
@@ -203,5 +203,20 @@ export default class ReturnRequestClient extends JanusClient {
       mdToken,
       data: data as unknown as Array<Pick<WithMetadata<ReturnRequest>, K>>,
     }
+  }
+
+  public async getSchema(): Promise<unknown> {
+    return this.inner.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schema,
+    })
+  }
+
+  public async createOrUpdateSchema(schemaBody: object): Promise<unknown> {
+    return this.inner.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schema,
+      schemaBody,
+    })
   }
 }

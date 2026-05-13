@@ -1,4 +1,4 @@
-import type { CustomReturnReason } from 'odp.return-app'
+import type { CustomReturnReason } from 'vtex.return-app'
 
 import { isWithinMaxDaysToReturn } from '../../../node/utils/dateHelpers'
 
@@ -10,11 +10,14 @@ interface Option {
 export function generateCustomReasonOptions(
   customReturnReasons: CustomReturnReason[],
   locale: string,
-  creationDate: string
+  creationDate?: string
 ) {
   return customReturnReasons.reduce(
     (filteredOptions: Option[], customReason: CustomReturnReason) => {
-      if (!isWithinMaxDaysToReturn(creationDate, customReason.maxDays)) {
+      if (
+        creationDate &&
+        !isWithinMaxDaysToReturn(creationDate, customReason.maxDays)
+      ) {
         return filteredOptions
       }
 

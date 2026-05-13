@@ -1,5 +1,5 @@
 import { UserInputError } from '@vtex/api'
-import type { AdjustmentNote } from 'odp.return-app'
+import type { AdjustmentNote } from 'vtex.return-app'
 
 export const createAdjustmentAuthorizationData = ({
   requestAmount,

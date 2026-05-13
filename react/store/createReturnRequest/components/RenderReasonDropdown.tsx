@@ -48,7 +48,7 @@ export const RenderReasonDropdown = (props: Props) => {
 
   let reasonOptions: Array<{ value: string; label: string }>
 
-  if (customReturnReasons && customReturnReasons.length > 0 && creationDate) {
+  if (customReturnReasons && customReturnReasons.length > 0) {
     reasonOptions = generateCustomReasonOptions(
       customReturnReasons,
       locale,

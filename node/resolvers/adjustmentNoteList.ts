@@ -1,4 +1,4 @@
-import type { QueryAdjustmentNoteListArgs } from 'odp.return-app'
+import type { QueryAdjustmentNoteListArgs } from 'vtex.return-app'
 
 import { adjustmentNoteListService } from '../services/adjustmentNoteListService'
 

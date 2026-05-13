@@ -5,7 +5,7 @@ import type {
   GiftCard,
   AdjustmentNote,
   AdjustmentNoteStatus,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'

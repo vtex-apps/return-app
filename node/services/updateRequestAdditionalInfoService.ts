@@ -1,4 +1,4 @@
-import type { ReturnRequest } from 'odp.return-app'
+import type { ReturnRequest } from 'vtex.return-app'
 import { ResolverError, ForbiddenError, NotFoundError } from '@vtex/api'
 
 import type { UpdateReturnRequestAdditionalInfoArgs } from '../typings/returnRequest'

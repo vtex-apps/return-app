@@ -5,7 +5,6 @@ import type { PickupReturnData } from '../types/ReturnRequestForm'
 
 interface ShippingData {
   shippingMethod?: string
-  locationCode?: string
 }
 
 interface PickupReturnFormProps {
@@ -90,15 +89,6 @@ export const PickupReturnForm: React.FC<PickupReturnFormProps> = ({
           value={shippingData.shippingMethod}
           onChange={(_, value) => onShippingChange('shippingMethod', value)}
           required
-        />
-      </div>
-      <div className="mb5">
-        <Input
-          label="Unauthorize Return - Location Code"
-          value={shippingData.locationCode}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onShippingChange('locationCode', e.target.value)
-          }
         />
       </div>
     </div>

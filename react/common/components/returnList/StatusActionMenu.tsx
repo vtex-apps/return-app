@@ -1,6 +1,6 @@
 import React from 'react'
 import { defineMessages, useIntl } from 'react-intl'
-import type { Status } from 'odp.return-app'
+import type { Status } from 'vtex.return-app'
 import { ActionMenu } from 'vtex.styleguide'
 
 import type { FilterKeys } from './ListTableFilter'

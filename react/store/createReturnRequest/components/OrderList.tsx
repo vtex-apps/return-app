@@ -4,7 +4,7 @@ import type {
   OrdersToReturnList,
   OrderToReturnSummary,
   QueryOrdersAvailableToReturnArgs,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime/'
 import { Table, Button } from 'vtex.styleguide'

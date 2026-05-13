@@ -1,7 +1,7 @@
 import type {
   MutationUpdateAdjustmentNoteStatusArgs,
   AdjustmentNote,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 import { updateAdjustmentStatusService } from '../services/updateAdjustmentStatusService'
 

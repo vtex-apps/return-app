@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { Table, EmptyState, Spinner } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
-import type { ReturnRequestResponse } from 'odp.return-app'
+import type { ReturnRequestResponse } from 'vtex.return-app'
 
 import ReturnListSchema from './ListTableSchema'
 import JumpToPage from './JumpToPage'

@@ -141,7 +141,7 @@ The return request schema includes the following fields:
 **Additional Fields:**
 
 - `locationCode`: Location code for the return request
-- `returnType`: Type of return (enum: `standardReturn`, `creditReturn`, `notDeliveryReturn`)
+- `returnType`: Type of return (enum: `standardReturn`, `creditReturn`, `notDeliveryReturn`). The admin **Create return** screen sets this from the Return Type dropdown (same enum values).
 - `reasonCode`: Reason code for the return
 - `originalPaymentMethod`: Original payment method used for the order
 - `externalReference`: External reference for the return request
@@ -355,24 +355,24 @@ with an example body in the form of:
 }
 ```
 
-| Field                           | Description                                                    | isRequired |
-| ------------------------------- | -------------------------------------------------------------- | ---------- |
-| orderId                         | `string` orderId to where the Adjustment Note is being made to | true       |
-| type                            | `enum` values: creditNote, debitNote                           | true       |
-| requestAmount                   | `integer` amount to be adjusted (in cents)                     | true       |
-| customerProfileData             | `object` with customer information                             | true       |
-| customerProfileData name        | `string` Customer name for the adjustment note                 | true       |
-| customerProfileData email       | `string` customer's email for the adjustment note              | true       |
-| customerProfileData phoneNumber | `string` customer's phone number for the adjustment note       | true       |
-| paymentData                     | `object` with payment information                              | true       |
-| paymentData paymentMethod       | `enum` possible values: giftCard, sameAsPurchase               | true       |
-| userComment                     | `string` comment to be added to the creation                   | false      |
-| locale                          | `string` locale for the customer to visualize the adjustment   | true       |
+| Field                           | Description                                                                                                                                                                                                                                                                                                                        | isRequired |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| orderId                         | `string` orderId to where the Adjustment Note is being made to                                                                                                                                                                                                                                                                     | true       |
+| type                            | `enum` values: creditNote, debitNote                                                                                                                                                                                                                                                                                               | true       |
+| requestAmount                   | `integer` amount to be adjusted (in cents)                                                                                                                                                                                                                                                                                         | true       |
+| customerProfileData             | `object` with customer information                                                                                                                                                                                                                                                                                                 | true       |
+| customerProfileData name        | `string` Customer name for the adjustment note                                                                                                                                                                                                                                                                                     | true       |
+| customerProfileData email       | `string` customer's email for the adjustment note                                                                                                                                                                                                                                                                                  | true       |
+| customerProfileData phoneNumber | `string` customer's phone number for the adjustment note                                                                                                                                                                                                                                                                           | true       |
+| paymentData                     | `object` with payment information                                                                                                                                                                                                                                                                                                  | true       |
+| paymentData paymentMethod       | `enum` possible values: giftCard, sameAsPurchase                                                                                                                                                                                                                                                                                   | true       |
+| userComment                     | `string` comment to be added to the creation                                                                                                                                                                                                                                                                                       | false      |
+| locale                          | `string` locale for the customer to visualize the adjustment                                                                                                                                                                                                                                                                       | true       |
 | additionalInfo                  | `string` JSON string; when it includes `items`, each item has `orderItemIndex` and `amount`. **`amount` is a per-line total** for that order line in this adjustment (cents). For `refundType === 'SalesTax'`, **`amount` is the total sales tax for that line** (not per unit). `sum(items[].amount)` must equal `requestAmount`. | false      |
-| financialStatus                 | `string` financial status for the adjustment note              | false      |
-| reasonCode                      | `string` reason code for the adjustment note                   | false      |
-| locationCode                    | `string` location code for the adjustment note                 | false      |
-| originalPaymentMethod           | `string` original payment method used for the order            | false      |
+| financialStatus                 | `string` financial status for the adjustment note                                                                                                                                                                                                                                                                                  | false      |
+| reasonCode                      | `string` reason code for the adjustment note                                                                                                                                                                                                                                                                                       | false      |
+| locationCode                    | `string` location code for the adjustment note                                                                                                                                                                                                                                                                                     | false      |
+| originalPaymentMethod           | `string` original payment method used for the order                                                                                                                                                                                                                                                                                | false      |
 
 A successful creation of an Adjustment Note should return a status 201 with a response in the form of:
 
@@ -443,7 +443,7 @@ To get an Adjustment Note make a GET request to the following endpoint:
 ```
 {
   "id": "055a4c59-fdee-4d78-ad40-6bd0bc340ed1",
-  "dataEntityId": "odp_return_app_adjustmentNote",
+  "dataEntityId": "return_app_adjustmentNote",
   "orderId": "1520340500774-01",
   "requestAmount": 100,
   "type": "creditNote",
@@ -936,6 +936,6 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 
 - When a store has a process to create return invoices ([invoice type input](https://developers.vtex.com/vtex-rest-api/reference/invoicenotification)) outside the return app, the app will consider those items and they will not be able to be returned via the app. However when an item is already committed in a return request and an invoice is created considering that item with a invoice number different than the return request id, there will be more processed items to return then invoices items - It can be seen using the query `orderToReturnSummary` on GraphQL.
 
-- When installing the app in a workspace - or creating a new one - the app will not behavior as expected. This is due to the masterdata builder not creating a schema for that workspace automatically. To fix that, one can just link the app in the workspace using the toolbelt. Doing so, there will be a new masterdata schema related to that workspace and the app should work fine.
+- When installing the app in a workspace - or creating a new one - the app may not behave as expected if Master Data schemas were not created for that workspace (the masterdata builder does not always provision them automatically). You can link the app in the workspace with the toolbelt so new schemas are created. Alternatively, saving RMA settings in the admin (Return app → settings) runs a check and creates the `return_app_returnRequest` / `returns` and `return_app_adjustmentNote` / `adjustments` schemas when they are missing, using the same definitions as under `masterdata/` in this repository.
 
 ---

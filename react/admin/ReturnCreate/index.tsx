@@ -143,17 +143,9 @@ const ReturnCreate: React.FC = () => {
           <div className="mb5">
             <Box>
               <ReturnTypeForm
-                returnAction={formData.additionalInfo?.returnAction ?? ''}
-                reasonCode={formData.additionalInfo?.reasonCode ?? ''}
-                onReturnActionChange={(value) =>
-                  handleNestedInputChange(
-                    'additionalInfo',
-                    'returnAction',
-                    value
-                  )
-                }
-                onReasonCodeChange={(value) =>
-                  handleNestedInputChange('additionalInfo', 'reasonCode', value)
+                returnType={formData.returnType ?? ''}
+                onReturnTypeChange={(value) =>
+                  handleInputChange('returnType', value)
                 }
               />
             </Box>

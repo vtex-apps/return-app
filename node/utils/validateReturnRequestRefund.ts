@@ -1,4 +1,4 @@
-import type { ReturnRequest, ReturnAppSettings } from 'odp.return-app'
+import type { ReturnRequest, ReturnAppSettings } from 'vtex.return-app'
 import type { OrderDetailResponse } from '@vtex/clients'
 
 import { orderDataStatsService } from '../services/orderDataStatsService'

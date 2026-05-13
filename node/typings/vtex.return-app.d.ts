@@ -38,10 +38,10 @@ interface AuthenticationSession {
   }
 }
 
-// Declare the 'odp.return-app' module for TypeScript
+// Declare the 'vtex.return-app' module for TypeScript
 // Types are auto-generated from GraphQL schema during `vtex link`
 // For local linting, we manually declare them here based on graphql/types/*.graphql
-declare module 'odp.return-app' {
+declare module 'vtex.return-app' {
   // Basic types
   export type Maybe<T> = T | null | undefined
 

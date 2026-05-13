@@ -1,4 +1,4 @@
-import type { Status, ReturnType } from 'odp.return-app'
+import type { Status, ReturnType } from 'vtex.return-app'
 
 import { returnRequestListService } from '../services/returnRequestListService'
 

@@ -5,7 +5,7 @@ import type {
   OrdersToReturnList,
   OrderToReturnSummary,
   QueryOrdersAvailableToReturnArgs,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { ContentWrapper, BaseLoading } from 'vtex.my-account-commons'
 import { FormattedMessage } from 'react-intl'
 

@@ -10,7 +10,7 @@ import {
   Tooltip,
   IconInfo,
 } from 'vtex.styleguide'
-import type { Status } from 'odp.return-app'
+import type { Status } from 'vtex.return-app'
 
 import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
 import {

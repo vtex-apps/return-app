@@ -34,6 +34,7 @@ export interface RefundPaymentData {
 
 export interface ReturnRequestForm {
   orderId: string
+  returnType?: string
   items: ReturnItem[]
   customerProfileData: CustomerProfileData
   pickupReturnData: PickupReturnData

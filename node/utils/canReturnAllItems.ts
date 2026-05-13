@@ -4,7 +4,7 @@ import type {
   ReturnRequestItemInput,
   ReturnAppSettings,
   ReturnRequest,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'

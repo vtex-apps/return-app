@@ -5,10 +5,10 @@ import type {
   ScrollInput,
   WithMetadata,
 } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
-import type { AdjustmentNote } from 'odp.return-app'
+import type { AdjustmentNote } from 'vtex.return-app'
 
-const DATA_ENTITY_NAME = 'odp_return_app_adjustmentNote'
-const SCHEMA_NAME = 'odp_adjustments'
+const DATA_ENTITY_NAME = 'return_app_adjustmentNote'
+const SCHEMA_NAME = 'adjustments'
 
 interface PaginationArgs {
   page: number
@@ -203,5 +203,20 @@ export default class AdjustmentNoteClient extends JanusClient {
       mdToken,
       data: data as unknown as Array<Pick<WithMetadata<AdjustmentNote>, K>>,
     }
+  }
+
+  public async getSchema(): Promise<unknown> {
+    return this.inner.getSchema({
+      dataEntity: this.dataEntity,
+      schema: this.schema,
+    })
+  }
+
+  public async createOrUpdateSchema(schemaBody: object): Promise<unknown> {
+    return this.inner.createOrUpdateSchema({
+      dataEntity: this.dataEntity,
+      schemaName: this.schema,
+      schemaBody,
+    })
   }
 }

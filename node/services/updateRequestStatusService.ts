@@ -3,7 +3,7 @@ import type {
   ReturnRequest,
   Status,
   RefundItemInput,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import {
   ResolverError,
   ForbiddenError,
@@ -234,6 +234,7 @@ export const updateRequestStatusService = async (
           requestItems: returnRequest.items,
           refundableShipping: maxRefundableShipping,
           additionalInfo: returnRequest.additionalInfo,
+          returnType: returnRequest.returnType,
           logger,
         })
       : returnRequest.refundData

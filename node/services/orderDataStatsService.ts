@@ -5,7 +5,7 @@ import type {
   OrderToReturnSummary,
   ReturnAppSettings,
   ReturnRequest,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { calculateLineItemTax } from '../utils/createItemsToReturn'

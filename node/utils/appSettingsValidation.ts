@@ -3,7 +3,7 @@ import type {
   PaymentTypeInput,
   CustomReturnReasonInput,
   PaymentOptions,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 export const validatePaymentOptions = (
   paymentOptions: PaymentOptionsInput

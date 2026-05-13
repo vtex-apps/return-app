@@ -3,7 +3,7 @@ import type {
   PaymentOptions,
   ReturnAppSettings,
   ReturnOption,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 export const initialSettingsState: ReturnAppSettings = {
   maxDays: 0,

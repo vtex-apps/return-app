@@ -1,4 +1,7 @@
-import type { ReturnRequestItemInput, CustomReturnReason } from 'odp.return-app'
+import type {
+  ReturnRequestItemInput,
+  CustomReturnReason,
+} from 'vtex.return-app'
 import { ResolverError, UserInputError } from '@vtex/api'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'
@@ -38,7 +41,8 @@ export const validateReturnReason = (
       returnReason: { reason },
     } = item
 
-    if (reason === 'otherReason') {
+    // Store "Other" uses otherReason; admin form uses other — both skip custom-reason lookup
+    if (reason === 'otherReason' || reason === 'other') {
       continue
     }
 

@@ -19,10 +19,10 @@ function getVtexContext(
     workspace: ctx.vtex?.workspace || process.env.VTEX_WORKSPACE,
 
     // App Context
-    appId: appIdentifier, // Full app identifier: 'odp.return-app'
+    appId: appIdentifier, // Full app identifier: 'vtex.return-app'
     appName: process.env.VTEX_APP_NAME, // Just 'return-app'
     appVersion: process.env.VTEX_APP_VERSION,
-    appVendor: process.env.VTEX_APP_VENDOR, // 'odp'
+    appVendor: process.env.VTEX_APP_VENDOR, // 'vtex'
 
     // Source Location (for tracing)
     sourceFile: sourceLocation?.file,

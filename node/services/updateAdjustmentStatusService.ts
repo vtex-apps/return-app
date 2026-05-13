@@ -2,7 +2,7 @@ import type {
   MutationUpdateAdjustmentNoteStatusArgs,
   AdjustmentNote,
   AdjustmentNoteStatus,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import {
   ResolverError,
   ForbiddenError,

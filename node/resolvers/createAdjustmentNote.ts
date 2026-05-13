@@ -1,4 +1,4 @@
-import type { MutationCreateAdjustmentNoteArgs } from 'odp.return-app'
+import type { MutationCreateAdjustmentNoteArgs } from 'vtex.return-app'
 
 import { createAdjustmentNoteService } from '../services/createAdjustmentNoteService'
 

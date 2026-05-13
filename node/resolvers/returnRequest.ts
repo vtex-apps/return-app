@@ -1,4 +1,4 @@
-import type { QueryReturnRequestArgs } from 'odp.return-app'
+import type { QueryReturnRequestArgs } from 'vtex.return-app'
 
 import { returnRequestService } from '../services/returnRequestService'
 

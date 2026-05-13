@@ -2,7 +2,7 @@ import type {
   QueryAdjustmentNoteListArgs,
   AdjustmentNoteFilters,
   Maybe,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 import { ForbiddenError } from '@vtex/api'
 
 const filterDate = (date: string): string => {

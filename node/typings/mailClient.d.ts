@@ -1,4 +1,4 @@
-import type { ReturnRequestItem, Status } from 'odp.return-app'
+import type { ReturnRequestItem, Status } from 'vtex.return-app'
 
 export type ReturnRequestConfirmation = string
 

@@ -1,4 +1,4 @@
-import type { InvoicedItem } from 'odp.return-app'
+import type { InvoicedItem } from 'vtex.return-app'
 
 import type { CatalogGQL } from '../clients/catalogGQL'
 

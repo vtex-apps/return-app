@@ -4,7 +4,7 @@ import type { FormEvent, ReactElement } from 'react'
 import { utils, Button, EXPERIMENTAL_Modal as Modal } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
-import type { Status } from 'odp.return-app'
+import type { Status } from 'vtex.return-app'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import { useUpdateRequestStatus } from '../../../admin/hooks/useUpdateRequestStatus'

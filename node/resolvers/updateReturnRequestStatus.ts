@@ -1,7 +1,7 @@
 import type {
   MutationUpdateReturnRequestStatusArgs,
   ReturnRequest,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
 

@@ -7,7 +7,7 @@ import type {
   ProcessedItem,
   ReturnAppSettings,
   ReturnRequest,
-} from 'odp.return-app'
+} from 'vtex.return-app'
 
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
