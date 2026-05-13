@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-05-13
+
 ### Added
 
 - Saving admin RMA settings (`saveReturnAppSettings`) ensures Master Data schemas exist for `return_app_returnRequest` (`returns`) and `return_app_adjustmentNote` (`adjustments`), using the same JSON definitions as the `masterdata/` app builder, so accounts or workspaces without a prior link still get working entities.
