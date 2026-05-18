@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { defineMessages, useIntl } from 'react-intl'
-import { Button, Dropdown, NumericStepper } from 'vtex.styleguide'
+import { useQuery } from 'react-apollo'
+import { useRuntime } from 'vtex.render-runtime'
+import type { ReturnAppSettings } from 'vtex.return-app'
+import { Button, Dropdown, NumericStepper, Textarea } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 
+import { getReasonOptions } from '../../../common/constants/returnsRequest'
+import GET_APP_SETTINGS from '../../settings/graphql/getAppSettings.gql'
+import { defaultReturnReasonsMessages } from '../../../store/utils/defaultReturnReasonsMessages'
+import { generateCustomReasonOptions } from '../../../store/utils/generateCustomReasonOptions'
 import type { Order } from '../types/Order'
-import type { ReturnItem } from '../types/ReturnRequestForm'
+import type { ReturnItem, ReturnReason } from '../types/ReturnRequestForm'
 
 interface ReturnItemsFormProps {
   items: ReturnItem[]
@@ -21,7 +28,7 @@ const ITEM_CONDITIONS = [
   { value: 'usedWithoutBox', label: 'Used without box' },
 ]
 
-const RETURN_REASONS = [
+const ADMIN_DEFAULT_RETURN_REASONS = [
   { value: 'defective', label: 'Defective' },
   { value: 'wrongItem', label: 'Wrong item' },
   { value: 'sizeIssue', label: 'Size issue' },
@@ -100,6 +107,38 @@ const TableHeaderRenderer = (
   }
 }
 
+function buildReturnReasonOptions(
+  settings: ReturnAppSettings | undefined,
+  formatMessage: IntlFormatters['formatMessage'],
+  locale: string,
+  creationDate?: string
+) {
+  const customReturnReasons = settings?.customReturnReasons
+
+  if (customReturnReasons?.length) {
+    const options = generateCustomReasonOptions(
+      customReturnReasons,
+      locale,
+      creationDate
+    )
+
+    if (settings?.options?.enableOtherOptionSelection) {
+      options.push({
+        value: 'other',
+        label: formatMessage(defaultReturnReasonsMessages.reasonOtherReason),
+      })
+    }
+
+    return options
+  }
+
+  const defaultOptions = getReasonOptions(formatMessage)
+
+  return defaultOptions.length > 0
+    ? defaultOptions
+    : ADMIN_DEFAULT_RETURN_REASONS
+}
+
 export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
   items,
   onChange,
@@ -108,6 +147,34 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
   const enableSelectItemCondition = false
   const { formatMessage } = useIntl()
   const handles = useCssHandles(CSS_HANDLES)
+  const {
+    culture: { locale: runtimeLocale },
+  } = useRuntime()
+
+  const { data: settingsData } = useQuery<{
+    returnAppSettings: ReturnAppSettings
+  }>(GET_APP_SETTINGS)
+
+  const locale =
+    order?.clientPreferencesData?.locale ?? runtimeLocale ?? 'en-US'
+
+  const reasonOptions = useMemo(
+    () =>
+      buildReturnReasonOptions(
+        settingsData?.returnAppSettings,
+        formatMessage,
+        locale,
+        order?.creationDate
+      ),
+    [
+      settingsData?.returnAppSettings,
+      formatMessage,
+      locale,
+      order?.creationDate,
+    ]
+  )
+
+  const defaultReturnReason = reasonOptions[0]?.value ?? 'other'
 
   const TableHeader = TableHeaderRenderer(
     formatMessage,
@@ -125,11 +192,30 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
     onChange(newItems)
   }
 
+  const handleReturnReasonChange = (index: number, reason: string) => {
+    const returnReason: ReturnReason = {
+      reason,
+      ...(reason === 'other' || reason === 'otherReason'
+        ? { otherReason: items[index].returnReason?.otherReason ?? '' }
+        : {}),
+    }
+
+    handleItemChange(index, 'returnReason', returnReason)
+  }
+
+  const handleOtherReasonChange = (index: number, otherReason: string) => {
+    handleItemChange(index, 'returnReason', {
+      ...items[index].returnReason,
+      reason: items[index].returnReason?.reason ?? 'other',
+      otherReason,
+    })
+  }
+
   const SelectAllItems = () => {
     const updatedItems = items.map((item, index) => ({
       ...item,
       quantity: order?.items[index].quantity || 0,
-      returnReason: { reason: 'other' },
+      returnReason: { reason: defaultReturnReason },
     }))
 
     onChange(updatedItems)
@@ -193,17 +279,28 @@ export const ReturnItemsForm: React.FC<ReturnItemsFormProps> = ({
                   />
                 </td>
                 <td className={`${handles.detailsTdWrapper} pa4`}>
-                  <Dropdown
-                    placeholder="Return Reason"
-                    options={RETURN_REASONS}
-                    value={item.returnReason?.reason}
-                    onChange={(_, value) =>
-                      handleItemChange(index, 'returnReason', {
-                        ...item.returnReason,
-                        reason: value,
-                      })
-                    }
-                  />
+                  <div className={`${handles.reasonWrapper}`}>
+                    <Dropdown
+                      placeholder="Return Reason"
+                      options={reasonOptions}
+                      value={item.returnReason?.reason}
+                      onChange={(_, value) =>
+                        handleReturnReasonChange(index, value)
+                      }
+                    />
+                    {item.returnReason?.reason === 'other' ||
+                    item.returnReason?.reason === 'otherReason' ? (
+                      <div className="mt3">
+                        <Textarea
+                          resize="none"
+                          value={item.returnReason?.otherReason ?? ''}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLTextAreaElement>
+                          ) => handleOtherReasonChange(index, e.target.value)}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
                 </td>
                 {!enableSelectItemCondition ? null : (
                   <td className={`${handles.detailsTdWrapper} pa4`}>
