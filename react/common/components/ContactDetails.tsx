@@ -19,7 +19,8 @@ export const ContactDetails = () => {
     },
   } = data
 
-  const messagesRoute = 'store/return-app.return-request-details.contact-details'
+  const messagesRoute =
+    'store/return-app.return-request-details.contact-details'
 
   return (
     <section
