@@ -71,6 +71,9 @@
     },
     {
       "name": "vtex.catalog-graphql:resolve-graphql"
+    },
+    {
+      "name": "ViewProduct"
     }
   ],
   "billingOptions": {
