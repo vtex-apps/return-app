@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add `ViewProduct` policy so the app token is authorized by `catalog-graphql` when translating SKU names.
 
+### Changed
+
+- Migrate `node` builder to 7.x, `@vtex/api` to 7.x and TypeScript to 5.x.
+
 ## [3.11.1] - 2026-02-19
 
 ### Fixed
