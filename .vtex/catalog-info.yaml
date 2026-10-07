@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: return-app
+  annotations:
+    github.com/project-slug: vtex-apps/return-app
+spec:
+  type: other
+  lifecycle: unknown
+  owner: te-0013
