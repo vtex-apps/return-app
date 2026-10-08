@@ -80,10 +80,9 @@ export const returnRequestListService = async (
   // only admin users can pass userId or userEmail in the request.
   // For non admin users, the userId or userEmail must be gotten from cookie session.
   // Otherwise, a non admin user could search for another user's return requests
-  const userId = userIsAdmin ? userIdArg || userIdProfile : userIdProfile
-  const userEmail = userIsAdmin
-    ? userEmailArg || userEmailProfile
-    : userEmailProfile
+  const userId = userIsAdmin && userIdArg ? userIdArg : userIdProfile
+  const userEmail =
+    userIsAdmin && userEmailArg ? userEmailArg : userEmailProfile
 
   // vtexProduct is undefined when coming from GraphQL IDE or from a external request
   const vtexProduct = header['x-vtex-product'] as 'admin' | 'store' | undefined
@@ -92,7 +91,7 @@ export const returnRequestListService = async (
   const requireFilterByUser =
     !userIsAdmin || vtexProduct === 'store' || role === 'store-user'
 
-  const hasUserIdOrEmail = Boolean(userId || userEmail)
+  const hasUserIdOrEmail = Boolean(userId) || Boolean(userEmail)
 
   if (requireFilterByUser && !hasUserIdOrEmail) {
     throw new ForbiddenError('Missing params to filter by store user')

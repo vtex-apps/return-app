@@ -178,7 +178,10 @@ export const ReturnRequestResponse = {
       ? { refundStatusData }
       : await returnRequestClient.get(id as string, ['refundStatusData'])
 
-    return transformStatusForStoreUser(refundStatusDataList, vtexProduct)
+    return transformStatusForStoreUser(
+      refundStatusDataList as ReturnRequest['refundStatusData'],
+      vtexProduct
+    )
   },
   cultureInfoData: async (
     root: ReturnRequest,
