@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Update German (de) translations following the Admin German grammar review (2 strings, e.g. "Suchkategorie" → "Kategorie suchen", "Lokales" → "Sprache")
+
 ## [3.11.2] - 2026-10-08
 
 ### Fixed
