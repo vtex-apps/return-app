@@ -4,6 +4,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import { FormattedMessage } from 'react-intl'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { messageId } from '../../utils/messageId'
 
 export const OrderLink = () => {
   const { data } = useReturnDetails()
@@ -23,7 +24,7 @@ export const OrderLink = () => {
   return (
     <Link href={targetHref} target="_blank">
       <FormattedMessage
-        id="store/return-app.return-request-details.order-id.link"
+        id={messageId('store/return-app.return-request-details.order-id.link')}
         values={{ orderId }}
       />
     </Link>

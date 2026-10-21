@@ -5,6 +5,7 @@ import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { createStatusTimeline } from '../../../../utils/requestStatus'
 import { StatusTag } from './StatusTag'
 import { CommentList } from './CommentList'
+import { messageId } from '../../../utils/messageId'
 
 export const StatusTimeline = () => {
   const { data } = useReturnDetails()
@@ -18,7 +19,7 @@ export const StatusTimeline = () => {
   return (
     <section className="mv8">
       <h3>
-        <FormattedMessage id="store/return-app.return-request-details.status-timeline.header" />
+        <FormattedMessage id={messageId('store/return-app.return-request-details.status-timeline.header')} />
       </h3>
       <div className="mb5">
         {timeline.map((statusDetails, index) => (

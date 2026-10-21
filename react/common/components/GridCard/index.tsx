@@ -7,6 +7,7 @@ import { useRuntime } from 'vtex.render-runtime/'
 import { renderStatus } from '../RenderStatus'
 
 import './styles.css'
+import { messageId } from '../../utils/messageId'
 
 interface GridCardProps {
   cardTypeByPage?: 'my-returns' | 'request-return'
@@ -72,7 +73,7 @@ export const GridCard = ({
       {cardTypeByPage === 'my-returns' && (
         <div className={handles.returnListItemHeader}>
           <span>
-            <FormattedMessage id="store/return-app.request-return.page.card.sequential-number" />
+            <FormattedMessage id={messageId('store/return-app.request-return.page.card.sequential-number')} />
           </span>
           <span>{item?.sequenceNumber ?? '123456-7'}</span>
         </div>
@@ -107,7 +108,7 @@ export const GridCard = ({
             </div>
             <div className={handles.returnListItemInfoStatus}>
               <span>
-                <FormattedMessage id="store/return-app.return-request-details.status-timeline.header" />
+                <FormattedMessage id={messageId('store/return-app.return-request-details.status-timeline.header')} />
                 :
               </span>
               {!!item?.status && <span>{renderStatus(item.status)}</span>}
@@ -118,7 +119,7 @@ export const GridCard = ({
         {cardTypeByPage === 'request-return' && (
           <div className={handles.returnListItemInfoStatus}>
             <span>
-              <FormattedMessage id="store/return-app.request-return.page.card.return-text" />
+              <FormattedMessage id={messageId('store/return-app.request-return.page.card.return-text')} />
             </span>
             <span>
               {availableItemsToReturnCount ?? 0}/
