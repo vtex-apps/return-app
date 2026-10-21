@@ -4,6 +4,7 @@ import type { Status } from 'vtex.return-app'
 import { ActionMenu } from 'vtex.styleguide'
 
 import type { FilterKeys } from './ListTableFilter'
+import { messageId } from '../../utils/messageId'
 
 interface Props {
   handleOnChange: (key: FilterKeys, value: string) => void
@@ -15,31 +16,31 @@ const allStatusKey = 'allStatus'
 
 const keyedStatusMessages = defineMessages({
   [allStatusKey]: {
-    id: 'store/return-app.return-request-list.table.status.allStatus',
+    id: messageId('store/return-app.return-request-list.table.status.allStatus'),
   },
   new: {
-    id: 'store/return-app.return-request-list.table.status.new',
+    id: messageId('store/return-app.return-request-list.table.status.new'),
   },
   processing: {
-    id: 'store/return-app.return-request-list.table.status.processing',
+    id: messageId('store/return-app.return-request-list.table.status.processing'),
   },
   pickedUpFromClient: {
-    id: 'store/return-app.return-request-list.table.status.pickedup-from-client',
+    id: messageId('store/return-app.return-request-list.table.status.pickedup-from-client'),
   },
   pendingVerification: {
-    id: 'store/return-app.return-request-list.table.status.pending-verification',
+    id: messageId('store/return-app.return-request-list.table.status.pending-verification'),
   },
   packageVerified: {
-    id: 'store/return-app.return-request-list.table.status.package-verified',
+    id: messageId('store/return-app.return-request-list.table.status.package-verified'),
   },
   denied: {
-    id: 'store/return-app.return-request-list.table.status.denied',
+    id: messageId('store/return-app.return-request-list.table.status.denied'),
   },
   cancelled: {
-    id: 'store/return-app.return-request-list.table.status.cancelled',
+    id: messageId('store/return-app.return-request-list.table.status.cancelled'),
   },
   amountRefunded: {
-    id: 'store/return-app.return-request-list.table.status.refunded',
+    id: messageId('store/return-app.return-request-list.table.status.refunded'),
   },
 })
 

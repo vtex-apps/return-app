@@ -8,6 +8,7 @@ import SingleGridIcon from './icons/SingleGrid'
 import DoubleGridIcon from './icons/DoubleGrid'
 
 import './styles.css'
+import { messageId } from '../../../utils/messageId'
 
 interface MobileListProps {
   cardTypeByPage?: 'my-returns' | 'request-return'
@@ -37,7 +38,7 @@ const MobileList = ({
     <div className={handles.mobileReturnListContainer}>
       {!hasItems && (
         <span className={handles.emptyList}>
-          <FormattedMessage id="store/return-app.return-request-list.table.emptyState" />
+          <FormattedMessage id={messageId('store/return-app.return-request-list.table.emptyState')} />
         </span>
       )}
 
@@ -45,7 +46,7 @@ const MobileList = ({
         <>
           <div className={handles.controlGridVisibility}>
             <span>
-              <FormattedMessage id="store/return-app.return-request-list.table.view" />
+              <FormattedMessage id={messageId('store/return-app.return-request-list.table.view')} />
             </span>
             <div className={handles.controlGridVisibilityButtons}>
               <button onClick={() => setShowDoubleGridVisibility(false)}>

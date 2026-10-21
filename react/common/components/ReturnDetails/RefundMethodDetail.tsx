@@ -5,11 +5,13 @@ import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { messageId } from '../../utils/messageId'
 
 const CSS_HANDLES = ['refundMethodDetailContainer'] as const
 
-const messageId =
+const refundMethodIdPrefix = messageId(
   'store/return-app.return-request-details.payent-method.refund-option'
+)
 
 interface RefundMethodProps {
   refundPaymentData: RefundPaymentData
@@ -38,9 +40,9 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div className={handles.refundMethodDetailContainer}>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            id={`${refundMethodIdPrefix}.refund-method`}
             values={{
-              refundMethod: <FormattedMessage id={`${messageId}.gift-card`} />,
+              refundMethod: <FormattedMessage id={`${refundMethodIdPrefix}.gift-card`} />,
             }}
           />
         </p>
@@ -48,7 +50,7 @@ const RefundPayment = (props: RefundMethodProps) => {
           <>
             <p>
               <FormattedMessage
-                id={`${messageId}.gift-card-code`}
+                id={`${refundMethodIdPrefix}.gift-card-code`}
                 values={{
                   code: giftCard.redemptionCode,
                 }}
@@ -57,7 +59,7 @@ const RefundPayment = (props: RefundMethodProps) => {
 
             <p>
               <FormattedMessage
-                id={`${messageId}.gift-card-value`}
+                id={`${refundMethodIdPrefix}.gift-card-value`}
                 values={{
                   value: (
                     <FormattedNumber
@@ -82,15 +84,15 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            id={`${refundMethodIdPrefix}.refund-method`}
             values={{
-              refundMethod: <FormattedMessage id={`${messageId}.bank`} />,
+              refundMethod: <FormattedMessage id={`${refundMethodIdPrefix}.bank`} />,
             }}
           />
         </p>
         <p>
           <FormattedMessage
-            id={`${messageId}.iban`}
+            id={`${refundMethodIdPrefix}.iban`}
             values={{
               iban,
             }}
@@ -98,7 +100,7 @@ const RefundPayment = (props: RefundMethodProps) => {
         </p>
         <p>
           <FormattedMessage
-            id={`${messageId}.account-holder`}
+            id={`${refundMethodIdPrefix}.account-holder`}
             values={{ accountHolderName }}
           />
         </p>
@@ -111,9 +113,9 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            id={`${refundMethodIdPrefix}.refund-method`}
             values={{
-              refundMethod: <FormattedMessage id={`${messageId}.card`} />,
+              refundMethod: <FormattedMessage id={`${refundMethodIdPrefix}.card`} />,
             }}
           />
         </p>
@@ -126,17 +128,17 @@ const RefundPayment = (props: RefundMethodProps) => {
       <div>
         <p>
           <FormattedMessage
-            id={`${messageId}.refund-method`}
+            id={`${refundMethodIdPrefix}.refund-method`}
             values={{
               refundMethod: (
-                <FormattedMessage id={`${messageId}.same-as-purchase`} />
+                <FormattedMessage id={`${refundMethodIdPrefix}.same-as-purchase`} />
               ),
             }}
           />
         </p>
         {domain !== 'admin' ? null : (
           <FormattedMessage
-            id="store/return-app.return-request-details.payent-method.refund-option.refund-process"
+            id={messageId('store/return-app.return-request-details.payent-method.refund-option.refund-process')}
             values={{ automaticallyRefundPaymentMethod }}
           />
         )}
@@ -161,7 +163,7 @@ export const RefundMethodDetail = () => {
   return (
     <section>
       <h3>
-        <FormattedMessage id="store/return-app.return-request-details.payent-method.title" />
+        <FormattedMessage id={messageId('store/return-app.return-request-details.payent-method.title')} />
       </h3>
       <RefundPayment
         refundPaymentData={refundPaymentData}

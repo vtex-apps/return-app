@@ -7,6 +7,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import { useUpdateRequestStatus } from '../../../admin/hooks/useUpdateRequestStatus'
+import { messageId } from '../../utils/messageId'
 
 type CancellationMessage =
   | 'adminAllow'
@@ -16,16 +17,16 @@ type CancellationMessage =
 
 export const messages = defineMessages({
   adminAllow: {
-    id: 'store/return-app.return-request-details.cancellation.modal.adminAllow',
+    id: messageId('store/return-app.return-request-details.cancellation.modal.adminAllow'),
   },
   adminRefuse: {
-    id: 'store/return-app.return-request-details.cancellation.modal.adminRefuse',
+    id: messageId('store/return-app.return-request-details.cancellation.modal.adminRefuse'),
   },
   storeAllow: {
-    id: 'store/return-app.return-request-details.cancellation.modal.storeAllow',
+    id: messageId('store/return-app.return-request-details.cancellation.modal.storeAllow'),
   },
   storeRefuse: {
-    id: 'store/return-app.return-request-details.cancellation.modal.storeRefuse',
+    id: messageId('store/return-app.return-request-details.cancellation.modal.storeRefuse'),
   },
 })
 
@@ -52,7 +53,7 @@ const RequestCancellation = () => {
   if (isDisabled) {
     return (
       <Button variation="danger" size="small" disabled>
-        <FormattedMessage id="store/return-app.return-request-details.cancellation.cta" />
+        <FormattedMessage id={messageId('store/return-app.return-request-details.cancellation.cta')} />
       </Button>
     )
   }
@@ -93,7 +94,7 @@ const RequestCancellation = () => {
           onClick={onOpen}
           disabled={isDisabled}
         >
-          <FormattedMessage id="store/return-app.return-request-details.cancellation.cta" />
+          <FormattedMessage id={messageId('store/return-app.return-request-details.cancellation.cta')} />
         </Button>
       </div>
 
@@ -110,7 +111,7 @@ const RequestCancellation = () => {
                 onClick={onClose}
                 disabled={submitting}
               >
-                <FormattedMessage id="store/return-app.return-request-details.cancellation.modal.close" />
+                <FormattedMessage id={messageId('store/return-app.return-request-details.cancellation.modal.close')} />
               </Button>
             </span>
             <span>
@@ -121,7 +122,7 @@ const RequestCancellation = () => {
                 onClick={handleSubmit}
                 isLoading={submitting}
               >
-                <FormattedMessage id="store/return-app.return-request-details.cancellation.modal.accept" />
+                <FormattedMessage id={messageId('store/return-app.return-request-details.cancellation.modal.accept')} />
               </Button>
             </span>
           </div>

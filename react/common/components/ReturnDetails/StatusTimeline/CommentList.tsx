@@ -3,6 +3,7 @@ import type { RefundStatusComment, UserRole } from 'vtex.return-app'
 import { useRuntime } from 'vtex.render-runtime'
 import { FormattedMessage } from 'react-intl'
 import { Tag } from 'vtex.styleguide'
+import { messageId } from '../../../utils/messageId'
 
 interface Props {
   comments: RefundStatusComment[]
@@ -49,7 +50,7 @@ export const CommentList = ({ comments, isLast }: Props) => {
           ) : null}
           {contextDomain === 'store' ? (
             <FormattedMessage
-              id="store/return-app.return-request-details.status-timeline.comment"
+              id={messageId('store/return-app.return-request-details.status-timeline.comment')}
               values={{
                 ts: new Date(comment.createdAt),
                 comment: comment.comment,
