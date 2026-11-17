@@ -5178,9 +5178,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.3/public/@types/vtex.catalog-graphql":
-  version "1.102.3"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.102.3/public/@types/vtex.catalog-graphql#ce99343170d314d3231612357ef62e3356b50d81"
+"vtex.catalog-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.108.0/public/@types/vtex.catalog-graphql":
+  version "1.108.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-graphql@1.108.0/public/@types/vtex.catalog-graphql#10fa91bb10e029831d382c366443b8e82814b3fc"
 
 "vtex.css-handles@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles":
   version "0.4.4"
@@ -5194,25 +5194,25 @@ verror@1.10.0:
   version "0.4.1"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency#aaed82b498270f0bb6f37e93eff7e7f401e4d283"
 
-"vtex.my-account-commons@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.1/public/@types/vtex.my-account-commons":
-  version "1.6.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.6.1/public/@types/vtex.my-account-commons#653e7fc1d66a92c9eef99f621e9b2358eed1cbe9"
+"vtex.my-account-commons@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.7.2/public/@types/vtex.my-account-commons":
+  version "1.7.2"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@1.7.2/public/@types/vtex.my-account-commons#f65d3ee9999f88d07e40e1587958c0ba39c18c37"
 
-"vtex.my-account@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account":
-  version "1.25.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.25.0/public/@types/vtex.my-account#3bc46389c0aa28f4e3e2e008fe3690f5901b1f2a"
+"vtex.my-account@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.30.1/public/@types/vtex.my-account":
+  version "1.30.1"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.30.1/public/@types/vtex.my-account#393cbadfe2c4d1c8f2ad9027169b26f00c03faee"
 
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
-  version "8.132.4"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.3/public/@types/vtex.render-runtime":
+  version "8.136.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.3/public/@types/vtex.render-runtime#3cc4f3fa3300fbaee4d4ef81a67ffbfd57b155c9"
 
-"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.8.0/public/@types/vtex.return-app":
-  version "3.8.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.8.0/public/@types/vtex.return-app#b4b0693d48eaf98748f87e310238b3aba0cb5edf"
+"vtex.return-app@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.11.2/public/@types/vtex.return-app":
+  version "3.11.2"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.return-app@3.11.2/public/@types/vtex.return-app#6f1290eed21722533f665445e71c36cbb229c595"
 
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.4/public/@types/vtex.styleguide":
-  version "9.146.4"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.4/public/@types/vtex.styleguide#0b5e5ec3e20bbcd4f93701376d007feba294c9d3"
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.16/public/@types/vtex.styleguide":
+  version "9.146.16"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.16/public/@types/vtex.styleguide#9f95876bdd800dc51a6fd49f775348c126382f60"
 
 "vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql":
   version "0.1.2"
