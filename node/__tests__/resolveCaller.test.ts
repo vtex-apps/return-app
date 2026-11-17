@@ -266,6 +266,19 @@ describe('resolveGraphQLCaller', () => {
     expect(ctx.state.userProfile?.userId).toBe('shopper-id')
   })
 
+  it('shares one verification across concurrent calls on the same context', async () => {
+    const { ctx, validate, getSession } = buildCtx({
+      profile: storeProfile,
+      adminToken: ADMIN_TOKEN,
+    })
+
+    await Promise.all([resolveGraphQLCaller(ctx), resolveGraphQLCaller(ctx)])
+
+    expect(validate).toHaveBeenCalledTimes(1)
+    expect(getSession).toHaveBeenCalledTimes(1)
+    expect(ctx.state.userProfile?.role).toBe('admin')
+  })
+
   it('ignores the authentication namespace', async () => {
     const { ctx } = buildCtx({
       authentication: {

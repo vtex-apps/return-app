@@ -89,14 +89,9 @@ export const verifyAppKey = async (
   return token
 }
 
-/**
- * Sets ctx.state.userProfile for GraphQL requests. Identity comes from the
- * store session profile. A verified admin token only grants the role, and
- * gives the identity only when there is no store profile.
- */
-export const resolveGraphQLCaller = async (ctx: Context): Promise<void> => {
-  if (ctx.state.userProfile) return
+const inFlightResolutions = new WeakMap<Context, Promise<void>>()
 
+const resolveGraphQLCallerOnce = async (ctx: Context): Promise<void> => {
   const {
     cookies,
     clients: { session },
@@ -129,6 +124,25 @@ export const resolveGraphQLCaller = async (ctx: Context): Promise<void> => {
   }
 
   throw new ResolverError('Invalid session data')
+}
+
+/**
+ * Sets ctx.state.userProfile for GraphQL requests. Identity comes from the
+ * store session profile. A verified admin token only grants the role, and
+ * gives the identity only when there is no store profile.
+ */
+export const resolveGraphQLCaller = (ctx: Context): Promise<void> => {
+  if (ctx.state.userProfile) return Promise.resolve()
+
+  // Sibling fields resolve in parallel: share one resolution per request.
+  let pending = inFlightResolutions.get(ctx)
+
+  if (!pending) {
+    pending = resolveGraphQLCallerOnce(ctx)
+    inFlightResolutions.set(ctx, pending)
+  }
+
+  return pending
 }
 
 /**
