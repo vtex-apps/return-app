@@ -7,7 +7,7 @@ const VTEX_SESSION = 'vtex_session'
 
 const warnAdminVerification = (ctx: Context, reason: string) => {
   ctx.vtex.logger.warn({
-    message: 'MR-1601 admin verification failed',
+    message: 'admin verification failed',
     reason,
   })
 }
@@ -77,7 +77,7 @@ export const verifyAppKey = async (
     granted = await licenseManagerClient.isGranted(appkey)
   } catch (error) {
     ctx.vtex.logger.warn({
-      message: 'MR-1601 appkey verification failed',
+      message: 'appkey verification failed',
       reason: errorReason(error),
     })
   }
