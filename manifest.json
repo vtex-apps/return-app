@@ -40,6 +40,13 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "vtexid.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/oms/pvt/orders/*"
       }
