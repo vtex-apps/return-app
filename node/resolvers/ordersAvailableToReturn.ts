@@ -1,4 +1,4 @@
-import { ResolverError } from '@vtex/api'
+import { ForbiddenError, ResolverError } from '@vtex/api'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 
 import { SETTINGS_PATH } from '../utils/constants'
@@ -39,6 +39,42 @@ const createParams = ({
   }
 }
 
+const normalizeEmail = (email: string) => email.trim().toLowerCase()
+
+export const resolveTargetEmail = (
+  userProfile: UserProfile | undefined,
+  storeUserEmail?: string | null
+): string => {
+  const sessionEmail = userProfile?.email
+
+  if (userProfile?.role === 'admin') {
+    const adminTarget = storeUserEmail ?? sessionEmail
+
+    if (!adminTarget) {
+      throw new ResolverError('Missing user email', 400)
+    }
+
+    return adminTarget
+  }
+
+  if (storeUserEmail) {
+    if (
+      !sessionEmail ||
+      normalizeEmail(storeUserEmail) !== normalizeEmail(sessionEmail)
+    ) {
+      throw new ForbiddenError('User cannot access orders of another customer')
+    }
+
+    return sessionEmail
+  }
+
+  if (!sessionEmail) {
+    throw new ResolverError('Missing user email', 400)
+  }
+
+  return sessionEmail
+}
+
 export const ordersAvailableToReturn = async (
   _: unknown,
   args: { page: number; storeUserEmail?: string },
@@ -63,13 +99,7 @@ export const ordersAvailableToReturn = async (
   }
 
   const { maxDays, excludedCategories } = settings
-  const { email } = userProfile ?? {}
-
-  const userEmail = storeUserEmail ?? email
-
-  if (!userEmail) {
-    throw new ResolverError('Missing user email', 400)
-  }
+  const userEmail = resolveTargetEmail(userProfile, storeUserEmail)
 
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
