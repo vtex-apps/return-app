@@ -3,7 +3,7 @@ import type {
   ReturnRequestFilters,
   Maybe,
 } from 'vtex.return-app'
-import { ForbiddenError } from '@vtex/api'
+import { ForbiddenError, UserInputError } from '@vtex/api'
 
 const filterDate = (date: string): string => {
   const newDate = new Date(date)
@@ -16,7 +16,14 @@ const filterDate = (date: string): string => {
   }`
 }
 
-const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
+const SAFE_UNQUOTED_VALUE = /^[A-Za-z0-9-]+$/
+const UNSAFE_QUOTED_VALUE = /["\\]/
+
+const invalidFilterValue = () => new UserInputError('Invalid filter value')
+
+export const buildWhereClause = (
+  filter: Maybe<ReturnRequestFilters> | undefined
+) => {
   if (!filter) return
 
   const returnFilters = Object.entries(filter)
@@ -28,12 +35,16 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
     }
 
     if (key === 'userId') {
+      if (UNSAFE_QUOTED_VALUE.test(String(value))) throw invalidFilterValue()
+
       where += `customerProfileData.userId = "${value}"`
 
       return where
     }
 
     if (key === 'userEmail') {
+      if (UNSAFE_QUOTED_VALUE.test(String(value))) throw invalidFilterValue()
+
       where += `customerProfileData.email = "${value}"`
 
       return where
@@ -46,6 +57,8 @@ const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
 
       return where
     }
+
+    if (!SAFE_UNQUOTED_VALUE.test(String(value))) throw invalidFilterValue()
 
     where += `${key}=${value}`
 
