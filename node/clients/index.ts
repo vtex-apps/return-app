@@ -9,6 +9,8 @@ import { MailClient } from './mail'
 import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
+import { VtexIdCredential } from './vtexIdCredential'
+import { LicenseManager } from './licenseManager'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>(
@@ -52,6 +54,14 @@ export class Clients extends IOClients {
 
   public get vtexId() {
     return this.getOrSet('vtexId', VtexId)
+  }
+
+  public get vtexIdCredential() {
+    return this.getOrSet('vtexIdCredential', VtexIdCredential)
+  }
+
+  public get licenseManagerClient() {
+    return this.getOrSet('licenseManagerClient', LicenseManager)
   }
 
   public get sphinx() {

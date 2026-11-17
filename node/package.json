@@ -29,6 +29,7 @@
     "vtex.tenant-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql"
   },
   "scripts": {
+    "test": "vtex-test-tools test",
     "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"
   },
   "version": "3.11.2"
