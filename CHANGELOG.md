@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Admin role on REST endpoints now requires a verified admin token.
+- REST endpoints accept appkeys only when they are authorized (License Manager `granted`) in the current account.
+- Admin role in GraphQL now comes from a verified admin token (VTEX ID and License Manager), not from session data.
+- `saveReturnAppSettings` now requires an admin.
+- `ordersAvailableToReturn` and `storeUserEmail`: shoppers can query only their own orders. Admins can still query any customer.
+- Set `allowGetAll` to `false` in the Master Data return request schema, so new schemas are accepted.
+
+### Changed
+
+- Migrate `graphql` builder to 2.x with explicit `@auth` declarations.
+- Remove the unused `sphinx-is-admin` policy.
+- Add outbound-access policy for VTEX ID.
+
 ## [3.11.2] - 2026-10-08
 
 ### Fixed
