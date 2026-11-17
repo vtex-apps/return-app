@@ -34,6 +34,13 @@ export class LicenseManager extends ExternalClient {
         ?.status
 
       if (typeof status === 'number' && status >= 400 && status < 500) {
+        if (status === 401 || status === 403) {
+          this.context.logger.error({
+            message: 'License Manager rejected the app credential',
+            status,
+          })
+        }
+
         return false
       }
 
