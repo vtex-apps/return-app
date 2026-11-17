@@ -1,38 +1,41 @@
 import type { Session } from '@vtex/api'
-import { ResolverError } from '@vtex/api'
 
-const createUserProfile = (sessionData: SessionData): UserProfile => {
-  const {
-    namespaces: { profile, authentication },
-  } = sessionData
+export interface SessionIdentity {
+  store?: {
+    userId: string
+    email: string
+    firstName: string
+    lastName: string
+  }
+}
 
-  const email = profile.email?.value ?? authentication.adminUserEmail?.value
-  const userId = profile.id?.value ?? authentication.adminUserId?.value
+// Only the store profile namespace is trusted for identity. The
+// authentication namespace is never read: a caller can write it into the
+// session, so it must not grant a role or an identity.
+const createSessionIdentity = (sessionData: SessionData): SessionIdentity => {
+  const profile = sessionData?.namespaces?.profile
 
-  const role = authentication.adminUserId ? 'admin' : 'store-user'
+  const userId = profile?.id?.value
+  const email = profile?.email?.value
 
-  if (!email || !userId) {
-    throw new ResolverError('Invalid session data')
+  if (!userId || !email) {
+    return {}
   }
 
-  const { firstName, lastName } = profile
-
-  const firstNameValue = firstName?.value ?? ''
-  const lastNameValue = lastName?.value ?? ''
-
   return {
-    email,
-    userId,
-    role,
-    firstName: firstNameValue,
-    lastName: lastNameValue,
+    store: {
+      userId,
+      email,
+      firstName: profile.firstName?.value ?? '',
+      lastName: profile.lastName?.value ?? '',
+    },
   }
 }
 
 export const getUserProfileFromSession = async (
   session: Session,
   sessionCookie: string | undefined
-) => {
+): Promise<SessionIdentity> => {
   if (!sessionCookie) throw new Error('No session cookie provided')
 
   const { sessionData } = (await session.getSession(sessionCookie, [
@@ -40,12 +43,10 @@ export const getUserProfileFromSession = async (
     'profile.email',
     'profile.firstName',
     'profile.lastName',
-    'authentication.adminUserEmail',
-    'authentication.adminUserId',
   ])) as {
     sessionData: SessionData
     sessionToken: string
   }
 
-  return createUserProfile(sessionData)
+  return createSessionIdentity(sessionData)
 }
