@@ -50,7 +50,7 @@ describe('resolveTargetEmail', () => {
 
   it('rejects another email for a store-user', () => {
     expect(() =>
-      resolveTargetEmail(profile('store-user'), 'victim@y.com')
+      resolveTargetEmail(profile('store-user'), 'other@y.com')
     ).toThrow(
       expect.objectContaining({
         name: 'ForbiddenError',
@@ -60,7 +60,7 @@ describe('resolveTargetEmail', () => {
   })
 
   it('fails closed when there is no profile but storeUserEmail is given', () => {
-    expect(() => resolveTargetEmail(undefined, 'victim@y.com')).toThrow(
+    expect(() => resolveTargetEmail(undefined, 'other@y.com')).toThrow(
       expect.objectContaining({ name: 'ForbiddenError' })
     )
   })

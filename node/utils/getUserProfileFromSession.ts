@@ -9,9 +9,7 @@ export interface SessionIdentity {
   }
 }
 
-// Only the store profile namespace is trusted for identity. The
-// authentication namespace is never read: a caller can write it into the
-// session, so it must not grant a role or an identity.
+// Identity comes only from the profile namespace.
 const createSessionIdentity = (sessionData: SessionData): SessionIdentity => {
   const profile = sessionData?.namespaces?.profile
 

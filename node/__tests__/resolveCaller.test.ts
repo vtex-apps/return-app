@@ -148,7 +148,7 @@ describe('verifyAdminToken', () => {
     expect(await verifyAdminToken(ctx, ADMIN_TOKEN)).toBeNull()
     expect(warn).toHaveBeenCalledWith(
       expect.objectContaining({
-        message: 'MR-1601 admin verification failed',
+        message: 'admin verification failed',
         reason: expect.any(String),
       })
     )
@@ -266,11 +266,11 @@ describe('resolveGraphQLCaller', () => {
     expect(ctx.state.userProfile?.userId).toBe('shopper-id')
   })
 
-  it('rejects a forged session with only authentication.adminUserId', async () => {
+  it('ignores the authentication namespace', async () => {
     const { ctx } = buildCtx({
       authentication: {
-        adminUserId: { value: 'victim-admin' },
-        adminUserEmail: { value: 'victim@acme.com' },
+        adminUserId: { value: 'other-admin' },
+        adminUserEmail: { value: 'other@acme.com' },
       },
     })
 
