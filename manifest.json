@@ -74,9 +74,6 @@
       }
     },
     {
-      "name": "sphinx-is-admin"
-    },
-    {
       "name": "vtex.catalog-graphql:resolve-graphql"
     },
     {
