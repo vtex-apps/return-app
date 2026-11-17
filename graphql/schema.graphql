@@ -35,7 +35,7 @@ type Query {
 type Mutation {
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
     @withUserProfile
-  saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
+  saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean @adminOnly
   updateReturnRequestStatus(
     requestId: ID!
     status: Status!
