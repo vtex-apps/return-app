@@ -26,7 +26,11 @@ const stored = (ownerId = 'owner-id') => ({
       status: 'new',
       submittedBy: 'Staff Member',
       comments: [
-        { comment: 'visible', visibleForCustomer: true },
+        {
+          comment: 'visible',
+          visibleForCustomer: true,
+          submittedBy: 'Staff Member',
+        },
         { comment: 'internal', visibleForCustomer: false },
       ],
     },
@@ -57,7 +61,9 @@ describe('returnRequestService', () => {
     )
 
     expect(result.refundStatusData[0].submittedBy).toBeUndefined()
-    expect(result.refundStatusData[0].comments).toHaveLength(1)
+    expect(result.refundStatusData[0].comments).toEqual([
+      expect.objectContaining({ comment: 'visible', submittedBy: '' }),
+    ])
   })
 
   it('returns everything to an admin', async () => {
@@ -73,6 +79,9 @@ describe('returnRequestService', () => {
 
     expect(result.refundStatusData[0].submittedBy).toBe('Staff Member')
     expect(result.refundStatusData[0].comments).toHaveLength(2)
+    expect(result.refundStatusData[0].comments?.[0].submittedBy).toBe(
+      'Staff Member'
+    )
   })
 
   it('rejects a caller without userId on a request without userId', async () => {

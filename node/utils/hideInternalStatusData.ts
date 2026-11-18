@@ -12,9 +12,11 @@ export const hideInternalStatusData = (
   refundStatusData?.map((statusData) => ({
     ...statusData,
     submittedBy: undefined,
-    comments: statusData.comments?.filter(
-      (comment) => comment.visibleForCustomer
-    ),
+    // Comment authors are staff names too. An empty string keeps the
+    // GraphQL String! contract.
+    comments: statusData.comments
+      ?.filter((comment) => comment.visibleForCustomer)
+      .map((comment) => ({ ...comment, submittedBy: '' })),
   })) ?? []
 
 /** Applies hideInternalStatusData to a full return request document. */

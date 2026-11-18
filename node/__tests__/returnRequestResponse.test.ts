@@ -36,7 +36,7 @@ describe('ReturnRequestResponse.refundStatusData', () => {
 
     expect(status.submittedBy).toBeUndefined()
     expect(status.comments).toEqual([
-      { comment: 'visible', visibleForCustomer: true },
+      { comment: 'visible', visibleForCustomer: true, submittedBy: '' },
     ])
   })
 

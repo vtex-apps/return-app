@@ -64,7 +64,16 @@ export const verifyAdminToken = async (
       return null
     }
 
-    const granted = await licenseManagerClient.isGranted(info.user)
+    let granted: boolean
+
+    try {
+      granted = await licenseManagerClient.isGranted(info.user)
+    } catch (error) {
+      // isGranted only throws when License Manager could not answer.
+      warnAdminVerification(ctx, errorReason(error))
+
+      throw authorizationUnavailable()
+    }
 
     if (!granted) {
       warnAdminVerification(ctx, 'not-granted')
@@ -74,6 +83,8 @@ export const verifyAdminToken = async (
 
     return info
   } catch (error) {
+    if (error instanceof ResolverError) throw error
+
     warnAdminVerification(ctx, errorReason(error))
 
     if (isCredentialRejection(error)) return null
@@ -83,9 +94,28 @@ export const verifyAdminToken = async (
 }
 
 /**
+ * Runs a VTEX ID call. A credential rejection propagates unchanged; any
+ * other failure becomes a retryable 503.
+ */
+const callVtexId = async <T>(ctx: Context, call: () => Promise<T>) => {
+  try {
+    return await call()
+  } catch (error) {
+    if (isCredentialRejection(error)) throw error
+
+    ctx.vtex.logger.warn({
+      message: 'VTEX ID unavailable',
+      reason: errorReason(error),
+    })
+
+    throw authorizationUnavailable()
+  }
+}
+
+/**
  * Logs in with the appkey and checks that the appkey is granted in the
- * current account. A login error propagates (today's 401). When License
- * Manager is unavailable, the request fails with a retryable 503.
+ * current account. A login rejection propagates (today's 401). When VTEX ID
+ * or License Manager is unavailable, the request fails with a retryable 503.
  */
 export const verifyAppKey = async (
   ctx: Context,
@@ -94,7 +124,9 @@ export const verifyAppKey = async (
 ): Promise<string> => {
   const { vtexId, licenseManagerClient } = ctx.clients
 
-  const { token } = await vtexId.login({ appkey, apptoken })
+  const { token } = await callVtexId(ctx, () =>
+    vtexId.login({ appkey, apptoken })
+  )
 
   let granted: boolean
 
@@ -194,7 +226,9 @@ export const resolveRestCaller = async (ctx: Context): Promise<void> => {
   const authCookie = header.vtexidclientautcookie as string | undefined
 
   if (authCookie) {
-    const authenticatedUser = await vtexId.getAuthenticatedUser(authCookie)
+    const authenticatedUser = await callVtexId(ctx, () =>
+      vtexId.getAuthenticatedUser(authCookie)
+    )
 
     // When the auth cookie is invalid, the API returns null
     if (authenticatedUser) {

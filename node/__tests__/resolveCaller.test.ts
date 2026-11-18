@@ -227,14 +227,32 @@ describe('verifyAppKey', () => {
     ).rejects.toMatchObject({ name: 'ResolverError', status: 503 })
   })
 
-  it('propagates the login error', async () => {
+  it('propagates a login rejection', async () => {
     const { ctx, login, isGranted } = buildCtx()
-    const error = new Error('Request failed with status code 401')
+    const error = {
+      message: 'Request failed with status code 401',
+      response: { status: 401 },
+    }
 
     login.mockRejectedValue(error)
 
     await expect(verifyAppKey(ctx, 'k', 't')).rejects.toBe(error)
     expect(isGranted).not.toHaveBeenCalled()
+  })
+
+  it.each<[string, unknown]>([
+    ['times out', new Error('timeout of 5000ms exceeded')],
+    ['answers 502', { response: { status: 502 } }],
+    ['answers 429', { response: { status: 429 } }],
+  ])('throws a retryable 503 when the login %s', async (_, failure) => {
+    const { ctx, login } = buildCtx()
+
+    login.mockRejectedValue(failure)
+
+    await expect(verifyAppKey(ctx, 'k', 't')).rejects.toMatchObject({
+      name: 'ResolverError',
+      status: 503,
+    })
   })
 })
 
@@ -439,6 +457,30 @@ describe('resolveRestCaller', () => {
       role: 'admin',
     })
     expect(ctx.vtex.adminUserAuthToken).toBe(ADMIN_TOKEN)
+  })
+
+  it('throws a retryable 503 when VTEX ID cannot check the cookie', async () => {
+    const { ctx, getAuthenticatedUser } = buildCtx({
+      header: { vtexidclientautcookie: 'cookie' },
+    })
+
+    getAuthenticatedUser.mockRejectedValue({ response: { status: 502 } })
+
+    await expect(resolveRestCaller(ctx)).rejects.toMatchObject({
+      name: 'ResolverError',
+      status: 503,
+    })
+  })
+
+  it('throws a retryable 503 when License Manager rejects the app credential', async () => {
+    const { ctx, isGranted } = buildCtx()
+
+    isGranted.mockRejectedValue({ response: { status: 403 } })
+
+    await expect(verifyAdminToken(ctx, ADMIN_TOKEN)).rejects.toMatchObject({
+      name: 'ResolverError',
+      status: 503,
+    })
   })
 
   it('throws AuthenticationError when the cookie is invalid', async () => {
