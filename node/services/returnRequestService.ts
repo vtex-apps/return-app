@@ -21,7 +21,8 @@ export const returnRequestService = async (ctx: Context, requestId: string) => {
 
   const { customerProfileData } = returnRequestResult as ReturnRequest
 
-  const requestBelongsToUser = userId === customerProfileData?.userId
+  const requestBelongsToUser =
+    Boolean(userId) && userId === customerProfileData?.userId
 
   if (!requestBelongsToUser && !userIsAdmin) {
     throw new ForbiddenError('User cannot access this request')

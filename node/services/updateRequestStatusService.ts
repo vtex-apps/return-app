@@ -15,7 +15,10 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-import { hideInternalFields } from '../utils/hideInternalStatusData'
+import {
+  hideInternalFields,
+  hideInternalStatusData,
+} from '../utils/hideInternalStatusData'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
@@ -276,7 +279,8 @@ export const updateRequestStatusService = async (
             Number(updatedRefundData?.refundedShippingValue),
         },
         products: items,
-        refundStatusData: updatedRefundStatusData,
+        // The email goes to the customer: send only what they may see.
+        refundStatusData: hideInternalStatusData(updatedRefundStatusData),
       },
     }
 

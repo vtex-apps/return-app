@@ -12,15 +12,15 @@ export const createOrUpdateStatusPayload = ({
   comment,
   submittedBy,
   createdAt,
-  commentRole = 'adminUser',
+  commentRole,
 }: {
   refundStatusData: ReturnRequest['refundStatusData']
   requestStatus: Status
   comment: Maybe<ReturnRequestCommentInput> | undefined
   submittedBy: string
   createdAt: string
-  /** A store user comment is always visible to the customer. */
-  commentRole?: 'adminUser' | 'storeUser'
+  /** Required so no caller defaults to admin. A store user comment is always visible to the customer. */
+  commentRole: 'adminUser' | 'storeUser'
 }): ReturnRequest['refundStatusData'] => {
   if (!refundStatusData) {
     throw new ResolverError('Request does not have refundStatusData')

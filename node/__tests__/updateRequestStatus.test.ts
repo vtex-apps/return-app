@@ -76,7 +76,7 @@ const buildCtx = ({
     vtex: { logger: { error: jest.fn(), warn: jest.fn() } },
   }
 
-  return { ctx, update }
+  return { ctx, update, sendMail: ctx.clients.mail.sendMail as jest.Mock }
 }
 
 describe('updateRequestStatusService for the request owner', () => {
@@ -182,5 +182,25 @@ describe('updateRequestStatusService for an admin', () => {
       visibleForCustomer: false,
     })
     expect(result.refundStatusData[0].comments).toHaveLength(2)
+  })
+
+  it('sends the customer email without internal comments or staff names', async () => {
+    const { ctx, sendMail } = buildCtx({ role: 'admin', userId: 'admin-id' })
+
+    await updateRequestStatusService(ctx, {
+      requestId: 'request-id',
+      status: 'new' as any,
+      comment: { value: 'internal note', visibleForCustomer: false },
+    })
+
+    const [{ jsonData }] = sendMail.mock.calls[0]
+    const statuses = jsonData.refundStatusData
+
+    expect(statuses.every((s: any) => !s.submittedBy)).toBe(true)
+    expect(
+      statuses
+        .flatMap((s: any) => s.comments)
+        .some((c: any) => !c.visibleForCustomer)
+    ).toBe(false)
   })
 })
