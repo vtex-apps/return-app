@@ -57,7 +57,13 @@ export const buildWhereClause = (
     // Marketplace order ids have no fixed format: match them as one quoted
     // value instead of applying the unquoted allowlist.
     if (key === 'orderId') {
-      if (UNSAFE_QUOTED_VALUE.test(String(value))) throw invalidFilterValue()
+      // `*` is a Master Data wildcard and never part of an order id.
+      if (
+        UNSAFE_QUOTED_VALUE.test(String(value)) ||
+        String(value).includes('*')
+      ) {
+        throw invalidFilterValue()
+      }
 
       where += `orderId="${value}"`
 
