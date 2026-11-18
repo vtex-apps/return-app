@@ -1,3 +1,5 @@
+import type { ReturnRequest } from 'vtex.return-app'
+
 import { ReturnRequestResponse } from '../resolvers/ReturnRequestResponse'
 
 const refundStatusData = [
@@ -12,17 +14,23 @@ const refundStatusData = [
   },
 ]
 
-const resolve = (state: unknown, header: Record<string, string> = {}) =>
+const resolve = (state: Partial<State>, header: Record<string, string> = {}) =>
   ReturnRequestResponse.refundStatusData(
-    { id: 'request-id', refundStatusData } as any,
+    { id: 'request-id', refundStatusData } as unknown as ReturnRequest,
     {},
-    { state, request: { header }, clients: {} } as any
+    { state, request: { header }, clients: {} } as unknown as Context
   )
 
 describe('ReturnRequestResponse.refundStatusData', () => {
   it('hides internal comments and submittedBy from a store user without the store header', async () => {
     const [status] = await resolve(
-      { userProfile: { role: 'store-user' } },
+      {
+        userProfile: {
+          userId: 'shopper-id',
+          email: 'shopper@acme.com',
+          role: 'store-user',
+        },
+      },
       { 'x-vtex-product': 'admin' }
     )
 
@@ -34,7 +42,13 @@ describe('ReturnRequestResponse.refundStatusData', () => {
 
   it('shows everything to an admin outside the storefront', async () => {
     const [status] = await resolve(
-      { userProfile: { role: 'admin' } },
+      {
+        userProfile: {
+          userId: 'admin-id',
+          email: 'admin@acme.com',
+          role: 'admin',
+        },
+      },
       { 'x-vtex-product': 'admin' }
     )
 
@@ -44,7 +58,13 @@ describe('ReturnRequestResponse.refundStatusData', () => {
 
   it('keeps the storefront view for an admin browsing the store', async () => {
     const [status] = await resolve(
-      { userProfile: { role: 'admin' } },
+      {
+        userProfile: {
+          userId: 'admin-id',
+          email: 'admin@acme.com',
+          role: 'admin',
+        },
+      },
       { 'x-vtex-product': 'store' }
     )
 

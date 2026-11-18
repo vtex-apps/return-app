@@ -1,4 +1,6 @@
 /* tslint:disable:max-classes-per-file */
+import type { GraphQLField } from 'graphql'
+
 import { AdminOnly } from '../directives/adminOnly'
 import { NoSessionCookieError } from '../utils/getUserProfileFromSession'
 import {
@@ -27,30 +29,56 @@ jest.mock('../utils/resolveCaller', () => ({
 
 const mockedResolveCaller = resolveGraphQLCaller as jest.Mock
 
+type FieldResolve = (
+  root: unknown,
+  args: unknown,
+  ctx: Context,
+  info: unknown
+) => Promise<unknown>
+
+// SchemaDirectiveVisitor's constructor is protected; graphql-tools calls it
+// internally. The test calls it directly with the same config shape.
+type VisitorConstructor = new (config: {
+  name: string
+  args: Record<string, unknown>
+  visitedType: unknown
+  schema: unknown
+  context: Record<string, unknown>
+}) => AdminOnly
+
 const applyDirective = (resolve: jest.Mock) => {
-  const field: any = { resolve }
-  const visitor: any = new (AdminOnly as any)({
+  const field = { resolve } as unknown as GraphQLField<unknown, Context>
+  const visitor = new (AdminOnly as unknown as VisitorConstructor)({
     name: 'adminOnly',
     args: {},
     visitedType: field,
-    schema: undefined as any,
+    schema: undefined,
     context: {},
   })
 
   visitor.visitFieldDefinition(field)
 
-  return field.resolve as (...args: any[]) => Promise<unknown>
+  return field.resolve as unknown as FieldResolve
 }
+
+const ctxWith = (state: Partial<State> = {}) =>
+  ({ state } as unknown as Context)
+
+const profile = (role: UserProfile['role']): UserProfile => ({
+  userId: 'user-id',
+  email: 'user@acme.com',
+  role,
+})
 
 describe('@adminOnly directive', () => {
   beforeEach(() => mockedResolveCaller.mockReset())
 
   it('rejects a store user and does not call the resolver', async () => {
     const original = jest.fn()
-    const ctx: any = { state: {} }
+    const ctx = ctxWith()
 
-    mockedResolveCaller.mockImplementation(async (c: any) => {
-      c.state.userProfile = { role: 'store-user' }
+    mockedResolveCaller.mockImplementation(async (c: Context) => {
+      c.state.userProfile = profile('store-user')
     })
 
     await expect(applyDirective(original)({}, {}, ctx, {})).rejects.toThrow(
@@ -61,10 +89,10 @@ describe('@adminOnly directive', () => {
 
   it('resolves the caller itself and allows a verified admin with no prior userProfile', async () => {
     const original = jest.fn().mockResolvedValue(true)
-    const ctx: any = { state: {} }
+    const ctx = ctxWith()
 
-    mockedResolveCaller.mockImplementation(async (c: any) => {
-      c.state.userProfile = { role: 'admin' }
+    mockedResolveCaller.mockImplementation(async (c: Context) => {
+      c.state.userProfile = profile('admin')
     })
 
     expect(await applyDirective(original)({}, {}, ctx, {})).toBe(true)
@@ -74,7 +102,7 @@ describe('@adminOnly directive', () => {
 
   it('requires an admin profile even when appkey state is present', async () => {
     const original = jest.fn()
-    const ctx: any = { state: { appkey: 'vtexappkey-acme-ABC' } }
+    const ctx = ctxWith({ appkey: 'vtexappkey-acme-ABC' })
 
     await expect(applyDirective(original)({}, {}, ctx, {})).rejects.toThrow(
       'Only admin users can perform this operation'
@@ -91,7 +119,7 @@ describe('@adminOnly directive', () => {
     mockedResolveCaller.mockRejectedValue(makeError())
 
     await expect(
-      applyDirective(original)({}, {}, { state: {} }, {})
+      applyDirective(original)({}, {}, ctxWith(), {})
     ).rejects.toThrow('Only admin users can perform this operation')
     expect(original).not.toHaveBeenCalled()
   })
@@ -102,9 +130,9 @@ describe('@adminOnly directive', () => {
 
     mockedResolveCaller.mockRejectedValue(failure)
 
-    await expect(
-      applyDirective(original)({}, {}, { state: {} }, {})
-    ).rejects.toBe(failure)
+    await expect(applyDirective(original)({}, {}, ctxWith(), {})).rejects.toBe(
+      failure
+    )
     expect(original).not.toHaveBeenCalled()
   })
 })
