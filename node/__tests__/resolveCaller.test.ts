@@ -145,10 +145,13 @@ describe('verifyAdminToken', () => {
     expect(serializedCalls(warn)).not.toContain(ADMIN_TOKEN)
   })
 
-  it('returns null and logs a warning without the token when validate rejects', async () => {
+  it('returns null and logs a warning without the token when validate rejects the token', async () => {
     const { ctx, validate, warn } = buildCtx()
 
-    validate.mockRejectedValue(new Error('Request failed with status 401'))
+    validate.mockRejectedValue({
+      message: 'Request failed with status code 401',
+      response: { status: 401 },
+    })
 
     expect(await verifyAdminToken(ctx, ADMIN_TOKEN)).toBeNull()
     expect(warn).toHaveBeenCalledWith(
@@ -160,13 +163,20 @@ describe('verifyAdminToken', () => {
     expect(serializedCalls(warn)).not.toContain(ADMIN_TOKEN)
   })
 
-  it('returns null when isGranted throws', async () => {
-    const { ctx, isGranted, warn } = buildCtx()
+  it.each([
+    ['VTEX ID times out', 'validate', new Error('timeout of 5000ms exceeded')],
+    ['VTEX ID answers 502', 'validate', { response: { status: 502 } }],
+    ['VTEX ID answers 429', 'validate', { response: { status: 429 } }],
+    ['License Manager is unavailable', 'isGranted', new Error('LM down')],
+  ])('throws a retryable 503 when %s', async (_, client, failure) => {
+    const built: any = buildCtx()
 
-    isGranted.mockRejectedValue(new Error('LM down'))
+    built[client].mockRejectedValue(failure)
 
-    expect(await verifyAdminToken(ctx, ADMIN_TOKEN)).toBeNull()
-    expect(warn).toHaveBeenCalled()
+    await expect(
+      verifyAdminToken(built.ctx, ADMIN_TOKEN)
+    ).rejects.toMatchObject({ name: 'ResolverError', status: 503 })
+    expect(serializedCalls(built.warn)).not.toContain(ADMIN_TOKEN)
   })
 
   it('returns null without calling any client when the token is missing', async () => {
@@ -265,7 +275,7 @@ describe('resolveGraphQLCaller', () => {
       adminToken: ADMIN_TOKEN,
     })
 
-    validate.mockRejectedValue(new Error('invalid'))
+    validate.mockRejectedValue({ response: { status: 401 } })
 
     await resolveGraphQLCaller(ctx)
 

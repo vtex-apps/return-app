@@ -81,6 +81,16 @@ describe('LicenseManager.isGranted', () => {
     expect(client.options.headers.VtexIdclientAutCookie).toBe(context.authToken)
   })
 
+  it.each([408, 429])(
+    'rejects on a transient %i error instead of answering not granted',
+    async (status) => {
+      const error = { response: { status } }
+      const get = jest.fn().mockRejectedValue(error)
+
+      await expect(build(get).isGranted('a@b.com')).rejects.toBe(error)
+    }
+  )
+
   it('rejects on a 500 error', async () => {
     const error = { response: { status: 500 } }
     const get = jest.fn().mockRejectedValue(error)
