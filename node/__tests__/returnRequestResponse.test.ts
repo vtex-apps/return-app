@@ -51,4 +51,11 @@ describe('ReturnRequestResponse.refundStatusData', () => {
     expect(status.submittedBy).toBeUndefined()
     expect(status.comments).toHaveLength(1)
   })
+
+  it('hides internal data from a caller with no profile and no header', async () => {
+    const [status] = await resolve({})
+
+    expect(status.submittedBy).toBeUndefined()
+    expect(status.comments).toHaveLength(1)
+  })
 })

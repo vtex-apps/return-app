@@ -1,4 +1,7 @@
-import { buildWhereClause } from '../services/returnRequestListService'
+import {
+  buildWhereClause,
+  returnRequestListService,
+} from '../services/returnRequestListService'
 
 // The jest 24 resolver cannot load @vtex/api (see licenseManager.test.ts).
 jest.mock('@vtex/api', () => {
@@ -65,5 +68,57 @@ describe('buildWhereClause', () => {
     expect(() => buildWhereClause({ userId: 'x" OR id="y' })).toThrow(
       'Invalid filter value'
     )
+  })
+})
+
+const rowWithInternalComment = () => ({
+  id: 'request-id',
+  refundStatusData: [
+    {
+      status: 'new',
+      submittedBy: 'Staff Member',
+      comments: [
+        { comment: 'visible', visibleForCustomer: true },
+        { comment: 'internal', visibleForCustomer: false },
+      ],
+    },
+  ],
+})
+
+const listCtx = (state: unknown) =>
+  ({
+    state,
+    request: { header: {} },
+    clients: {
+      returnRequest: {
+        searchRaw: jest.fn().mockResolvedValue({
+          data: [rowWithInternalComment()],
+          pagination: { page: 1, pageSize: 25, total: 1 },
+        }),
+      },
+    },
+  } as any)
+
+describe('returnRequestListService with all fields', () => {
+  it('hides internal comments and submittedBy from a store user', async () => {
+    const ctx = listCtx({
+      userProfile: { userId: 'u', email: 'u@acme.com', role: 'store-user' },
+    })
+
+    const { list }: any = await returnRequestListService(ctx, { page: 1 }, true)
+    const [status] = list[0].refundStatusData
+
+    expect(status.submittedBy).toBeUndefined()
+    expect(status.comments).toEqual([
+      { comment: 'visible', visibleForCustomer: true },
+    ])
+  })
+
+  it('keeps everything for an appkey caller', async () => {
+    const ctx = listCtx({ appkey: 'vtexappkey-acme-ABC' })
+
+    const { list }: any = await returnRequestListService(ctx, { page: 1 }, true)
+
+    expect(list[0].refundStatusData[0].comments).toHaveLength(2)
   })
 })
