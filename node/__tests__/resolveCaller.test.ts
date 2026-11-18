@@ -19,7 +19,11 @@ jest.mock('@vtex/api', () => {
   return {
     AuthenticationError: class AuthenticationError extends FakeError {},
     ForbiddenError: class ForbiddenError extends FakeError {},
-    ResolverError: class ResolverError extends FakeError {},
+    ResolverError: class ResolverError extends FakeError {
+      constructor(message: string, public status = 500) {
+        super(message)
+      }
+    },
   }
 })
 
@@ -200,14 +204,16 @@ describe('verifyAppKey', () => {
     })
   })
 
-  it('throws ForbiddenError when isGranted throws', async () => {
+  it('throws a retryable 503 when License Manager is unavailable', async () => {
     const { ctx, isGranted } = buildCtx()
 
-    isGranted.mockRejectedValue(new Error('LM down'))
+    isGranted.mockRejectedValue(
+      new Error('Request failed with status code 502')
+    )
 
     await expect(
       verifyAppKey(ctx, 'vtexappkey-acme-X', 'tok')
-    ).rejects.toMatchObject({ name: 'ForbiddenError' })
+    ).rejects.toMatchObject({ name: 'ResolverError', status: 503 })
   })
 
   it('propagates the login error', async () => {

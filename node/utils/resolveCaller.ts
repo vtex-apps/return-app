@@ -60,7 +60,8 @@ export const verifyAdminToken = async (
 
 /**
  * Logs in with the appkey and checks that the appkey is granted in the
- * current account. A login error propagates (today's 401).
+ * current account. A login error propagates (today's 401). When License
+ * Manager is unavailable, the request fails with a retryable 503.
  */
 export const verifyAppKey = async (
   ctx: Context,
@@ -71,7 +72,7 @@ export const verifyAppKey = async (
 
   const { token } = await vtexId.login({ appkey, apptoken })
 
-  let granted = false
+  let granted: boolean
 
   try {
     granted = await licenseManagerClient.isGranted(appkey)
@@ -80,6 +81,8 @@ export const verifyAppKey = async (
       message: 'appkey verification failed',
       reason: errorReason(error),
     })
+
+    throw new ResolverError('Authorization service unavailable', 503)
   }
 
   if (!granted) {
