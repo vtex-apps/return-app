@@ -58,13 +58,16 @@ describe('buildWhereClause', () => {
     expect(buildWhereClause({ orderId: 'MKP_1234.5678-01' })).toBe(
       'orderId="MKP_1234.5678-01"'
     )
-    expect(buildWhereClause({ orderId: '* OR id=*' })).toBe(
-      'orderId="* OR id=*"'
+    expect(buildWhereClause({ orderId: '1 OR id=2' })).toBe(
+      'orderId="1 OR id=2"'
     )
   })
 
-  it('rejects quotes and backslashes in orderId', () => {
+  it('rejects quotes, backslashes and wildcards in orderId', () => {
     expect(() => buildWhereClause({ orderId: '1" OR id="x' })).toThrow(
+      'Invalid filter value'
+    )
+    expect(() => buildWhereClause({ orderId: '123*' })).toThrow(
       'Invalid filter value'
     )
   })

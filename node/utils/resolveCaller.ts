@@ -51,46 +51,46 @@ export const verifyAdminToken = async (
 
   const { vtexIdCredential, licenseManagerClient } = ctx.clients
 
+  let info: VtexIdCredentialInfo
+
   try {
-    const info = await vtexIdCredential.validate(token)
-
-    if (info?.authStatus !== 'Success') {
-      warnAdminVerification(ctx, 'auth-status')
-
-      return null
-    }
-
-    if (info.audience !== 'admin') {
-      return null
-    }
-
-    let granted: boolean
-
-    try {
-      granted = await licenseManagerClient.isGranted(info.user)
-    } catch (error) {
-      // isGranted only throws when License Manager could not answer.
-      warnAdminVerification(ctx, errorReason(error))
-
-      throw authorizationUnavailable()
-    }
-
-    if (!granted) {
-      warnAdminVerification(ctx, 'not-granted')
-
-      return null
-    }
-
-    return info
+    info = await vtexIdCredential.validate(token)
   } catch (error) {
-    if (error instanceof ResolverError) throw error
-
     warnAdminVerification(ctx, errorReason(error))
 
     if (isCredentialRejection(error)) return null
 
     throw authorizationUnavailable()
   }
+
+  if (info?.authStatus !== 'Success') {
+    warnAdminVerification(ctx, 'auth-status')
+
+    return null
+  }
+
+  if (info.audience !== 'admin') {
+    return null
+  }
+
+  let granted: boolean
+
+  try {
+    granted = await licenseManagerClient.isGranted(info.user)
+  } catch (error) {
+    // isGranted only throws when License Manager could not answer.
+    warnAdminVerification(ctx, errorReason(error))
+
+    throw authorizationUnavailable()
+  }
+
+  if (!granted) {
+    warnAdminVerification(ctx, 'not-granted')
+
+    return null
+  }
+
+  return info
 }
 
 /**
@@ -169,7 +169,15 @@ const resolveGraphQLCallerOnce = async (ctx: Context): Promise<void> => {
   )
 
   // A shopper without an admin token never reaches VTEX ID or License Manager.
-  const admin = await verifyAdminToken(ctx, ctx.vtex.adminUserAuthToken)
+  // When the admin check cannot run, a caller with a store profile is still
+  // served as store-user; only an admin-only caller gets the 503.
+  let admin: VtexIdCredentialInfo | null = null
+
+  try {
+    admin = await verifyAdminToken(ctx, ctx.vtex.adminUserAuthToken)
+  } catch (error) {
+    if (!store) throw error
+  }
 
   if (store) {
     ctx.state.userProfile = { ...store, role: admin ? 'admin' : 'store-user' }

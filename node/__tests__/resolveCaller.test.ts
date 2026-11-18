@@ -287,6 +287,31 @@ describe('resolveGraphQLCaller', () => {
     })
   })
 
+  it('serves a shopper as store-user when License Manager cannot verify their admin token', async () => {
+    const { ctx, isGranted } = buildCtx({
+      profile: storeProfile,
+      adminToken: ADMIN_TOKEN,
+    })
+
+    isGranted.mockRejectedValue({ response: { status: 403 } })
+
+    await resolveGraphQLCaller(ctx)
+
+    expect(ctx.state.userProfile?.role).toBe('store-user')
+    expect(ctx.state.userProfile?.userId).toBe('shopper-id')
+  })
+
+  it('throws a retryable 503 for an admin without a store profile when License Manager cannot answer', async () => {
+    const { ctx, isGranted } = buildCtx({ adminToken: ADMIN_TOKEN })
+
+    isGranted.mockRejectedValue(new Error('LM down'))
+
+    await expect(resolveGraphQLCaller(ctx)).rejects.toMatchObject({
+      name: 'ResolverError',
+      status: 503,
+    })
+  })
+
   it('keeps store-user and does not throw when the admin token is invalid', async () => {
     const { ctx, validate } = buildCtx({
       profile: storeProfile,
