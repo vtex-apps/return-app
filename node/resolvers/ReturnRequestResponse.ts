@@ -4,9 +4,9 @@ type VtexProduct = 'admin' | 'store' | undefined
 
 const removeSubmittedByForStoreUser = (
   statusData: ReturnRequest['refundStatusData'][number],
-  vtexProduct: VtexProduct
+  hideInternal: boolean
 ) => {
-  if (vtexProduct === 'store') {
+  if (hideInternal) {
     return {
       ...statusData,
       submittedBy: undefined,
@@ -19,14 +19,14 @@ const removeSubmittedByForStoreUser = (
 // This function hides the submittedBy field and removes the comments that should not be visible to the store user
 const transformStatusForStoreUser = (
   refundStatusDataList: ReturnRequest['refundStatusData'],
-  vtexProduct: VtexProduct
+  hideInternal: boolean
 ) => {
   return (
     refundStatusDataList?.map((statusData) => {
       return {
-        ...removeSubmittedByForStoreUser(statusData, vtexProduct),
+        ...removeSubmittedByForStoreUser(statusData, hideInternal),
         comments: statusData.comments?.filter((comment) => {
-          return vtexProduct !== 'store' || comment.visibleForCustomer
+          return !hideInternal || comment.visibleForCustomer
         }),
       }
     }) ?? []
@@ -170,9 +170,14 @@ export const ReturnRequestResponse = {
     const {
       clients: { returnRequest: returnRequestClient },
       request: { header },
+      state: { userProfile, appkey },
     } = ctx
 
     const vtexProduct = header['x-vtex-product'] as VtexProduct
+    // The header is set by the caller, so it cannot be the only gate:
+    // anyone who is not an admin or an appkey gets the store view.
+    const isAdminCaller = Boolean(appkey) || userProfile?.role === 'admin'
+    const hideInternal = vtexProduct === 'store' || !isAdminCaller
 
     const { refundStatusData: refundStatusDataList } = refundStatusData
       ? { refundStatusData }
@@ -180,7 +185,7 @@ export const ReturnRequestResponse = {
 
     return transformStatusForStoreUser(
       refundStatusDataList as ReturnRequest['refundStatusData'],
-      vtexProduct
+      hideInternal
     )
   },
   cultureInfoData: async (
