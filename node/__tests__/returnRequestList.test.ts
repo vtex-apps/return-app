@@ -1,3 +1,5 @@
+import type { ReturnRequest } from 'vtex.return-app'
+
 import {
   buildWhereClause,
   returnRequestListService,
@@ -85,7 +87,7 @@ const rowWithInternalComment = () => ({
   ],
 })
 
-const listCtx = (state: unknown) =>
+const listCtx = (state: Partial<State>) =>
   ({
     state,
     request: { header: {} },
@@ -97,15 +99,25 @@ const listCtx = (state: unknown) =>
         }),
       },
     },
-  } as any)
+  } as unknown as Context)
+
+const listAll = async (ctx: Context) => {
+  const { list } = await returnRequestListService(ctx, { page: 1 }, true)
+
+  return list as ReturnRequest[]
+}
 
 describe('returnRequestListService with all fields', () => {
   it('hides internal comments and submittedBy from a store user', async () => {
     const ctx = listCtx({
-      userProfile: { userId: 'u', email: 'u@acme.com', role: 'store-user' },
+      userProfile: {
+        userId: 'u',
+        email: 'u@acme.com',
+        role: 'store-user',
+      },
     })
 
-    const { list }: any = await returnRequestListService(ctx, { page: 1 }, true)
+    const list = await listAll(ctx)
     const [status] = list[0].refundStatusData
 
     expect(status.submittedBy).toBeUndefined()
@@ -117,7 +129,7 @@ describe('returnRequestListService with all fields', () => {
   it('keeps everything for an appkey caller', async () => {
     const ctx = listCtx({ appkey: 'vtexappkey-acme-ABC' })
 
-    const { list }: any = await returnRequestListService(ctx, { page: 1 }, true)
+    const list = await listAll(ctx)
 
     expect(list[0].refundStatusData[0].comments).toHaveLength(2)
   })

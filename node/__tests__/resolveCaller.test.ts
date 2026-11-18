@@ -163,13 +163,13 @@ describe('verifyAdminToken', () => {
     expect(serializedCalls(warn)).not.toContain(ADMIN_TOKEN)
   })
 
-  it.each([
+  it.each<[string, 'validate' | 'isGranted', unknown]>([
     ['VTEX ID times out', 'validate', new Error('timeout of 5000ms exceeded')],
     ['VTEX ID answers 502', 'validate', { response: { status: 502 } }],
     ['VTEX ID answers 429', 'validate', { response: { status: 429 } }],
     ['License Manager is unavailable', 'isGranted', new Error('LM down')],
   ])('throws a retryable 503 when %s', async (_, client, failure) => {
-    const built: any = buildCtx()
+    const built = buildCtx()
 
     built[client].mockRejectedValue(failure)
 

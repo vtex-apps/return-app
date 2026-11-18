@@ -1,4 +1,6 @@
 /* tslint:disable:max-classes-per-file */
+import type { ReturnRequest } from 'vtex.return-app'
+
 import { returnRequestService } from '../services/returnRequestService'
 
 // The jest 24 resolver cannot load @vtex/api (see licenseManager.test.ts).
@@ -31,19 +33,27 @@ const stored = (ownerId = 'owner-id') => ({
   ],
 })
 
-const ctxFor = (state: unknown, ownerId?: string) =>
+const ctxFor = (state: Partial<State>, ownerId?: string) =>
   ({
     state,
     clients: {
       returnRequest: { get: jest.fn().mockResolvedValue(stored(ownerId)) },
     },
-  } as any)
+  } as unknown as Context)
+
+const read = async (ctx: Context) =>
+  (await returnRequestService(ctx, 'request-id')) as ReturnRequest
 
 describe('returnRequestService', () => {
   it('hides internal comments and submittedBy from the owner', async () => {
-    const result: any = await returnRequestService(
-      ctxFor({ userProfile: { userId: 'owner-id', role: 'store-user' } }),
-      'request-id'
+    const result = await read(
+      ctxFor({
+        userProfile: {
+          userId: 'owner-id',
+          email: 'owner@acme.com',
+          role: 'store-user',
+        },
+      })
     )
 
     expect(result.refundStatusData[0].submittedBy).toBeUndefined()
@@ -51,9 +61,14 @@ describe('returnRequestService', () => {
   })
 
   it('returns everything to an admin', async () => {
-    const result: any = await returnRequestService(
-      ctxFor({ userProfile: { userId: 'admin-id', role: 'admin' } }),
-      'request-id'
+    const result = await read(
+      ctxFor({
+        userProfile: {
+          userId: 'admin-id',
+          email: 'admin@acme.com',
+          role: 'admin',
+        },
+      })
     )
 
     expect(result.refundStatusData[0].submittedBy).toBe('Staff Member')
@@ -63,7 +78,16 @@ describe('returnRequestService', () => {
   it('rejects a caller without userId on a request without userId', async () => {
     await expect(
       returnRequestService(
-        ctxFor({ userProfile: { userId: '', role: 'store-user' } }, ''),
+        ctxFor(
+          {
+            userProfile: {
+              userId: '',
+              email: 'shopper@acme.com',
+              role: 'store-user',
+            },
+          },
+          ''
+        ),
         'request-id'
       )
     ).rejects.toMatchObject({ name: 'ForbiddenError' })

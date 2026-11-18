@@ -1,4 +1,6 @@
 /* tslint:disable:max-classes-per-file */
+import type { ReturnRequest, Status } from 'vtex.return-app'
+
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
 
 // The jest 24 resolver bundled with @vtex/test-tools cannot load @vtex/api
@@ -21,14 +23,21 @@ jest.mock('@vtex/api', () => {
 
 const OWNER_ID = 'shopper-id'
 
+interface CtxOptions {
+  userId?: string
+  ownerId?: string
+  status?: Status
+  role?: UserProfile['role']
+}
+
 const buildCtx = ({
-  userId = OWNER_ID as string | undefined,
-  ownerId = OWNER_ID as string | undefined,
+  userId = OWNER_ID,
+  ownerId = OWNER_ID,
   status = 'new',
   role = 'store-user',
-} = {}) => {
+}: CtxOptions = {}) => {
   const update = jest.fn().mockResolvedValue({})
-  const ctx: any = {
+  const ctx = {
     state: {
       userProfile: {
         userId,
@@ -74,13 +83,24 @@ const buildCtx = ({
       },
     },
     vtex: { logger: { error: jest.fn(), warn: jest.fn() } },
-  }
+  } as unknown as Context
 
-  return { ctx, update, sendMail: ctx.clients.mail.sendMail as jest.Mock }
+  return { ctx, update }
+}
+
+/** The document passed to returnRequest.update in the first call. */
+const savedDocument = (update: jest.Mock) =>
+  update.mock.calls[0][1] as ReturnRequest
+
+const lastComment = (request: ReturnRequest) => {
+  const [firstStatus] = request.refundStatusData
+  const { comments = [] } = firstStatus
+
+  return comments[comments.length - 1]
 }
 
 describe('updateRequestStatusService for the request owner', () => {
-  it.each(['processing', 'denied'])(
+  it.each<Status>(['processing', 'denied'])(
     'rejects moving their own new request to %s',
     async (status) => {
       const { ctx, update } = buildCtx()
@@ -88,7 +108,7 @@ describe('updateRequestStatusService for the request owner', () => {
       await expect(
         updateRequestStatusService(ctx, {
           requestId: 'request-id',
-          status: status as any,
+          status,
         })
       ).rejects.toMatchObject({ name: 'ForbiddenError' })
       expect(update).not.toHaveBeenCalled()
@@ -100,7 +120,7 @@ describe('updateRequestStatusService for the request owner', () => {
 
     await updateRequestStatusService(ctx, {
       requestId: 'request-id',
-      status: 'cancelled' as any,
+      status: 'cancelled',
     })
 
     expect(update).toHaveBeenCalledWith(
@@ -114,15 +134,11 @@ describe('updateRequestStatusService for the request owner', () => {
 
     await updateRequestStatusService(ctx, {
       requestId: 'request-id',
-      status: 'new' as any,
+      status: 'new',
       comment: { value: 'please refund', visibleForCustomer: false },
     })
 
-    const [, saved] = update.mock.calls[0]
-    const [newStatus] = saved.refundStatusData
-    const added = newStatus.comments[newStatus.comments.length - 1]
-
-    expect(added).toMatchObject({
+    expect(lastComment(savedDocument(update))).toMatchObject({
       comment: 'please refund',
       role: 'storeUser',
       visibleForCustomer: true,
@@ -134,16 +150,20 @@ describe('updateRequestStatusService for the request owner', () => {
 
     const result = await updateRequestStatusService(ctx, {
       requestId: 'request-id',
-      status: 'cancelled' as any,
+      status: 'cancelled',
     })
 
-    const comments = result.refundStatusData.flatMap((s: any) => s.comments)
+    const comments = result.refundStatusData.flatMap(
+      (statusData) => statusData.comments ?? []
+    )
 
-    expect(comments.some((c: any) => !c.visibleForCustomer)).toBe(false)
-    expect(result.refundStatusData.every((s: any) => !s.submittedBy)).toBe(true)
+    expect(comments.some((comment) => !comment.visibleForCustomer)).toBe(false)
+    expect(
+      result.refundStatusData.every((statusData) => !statusData.submittedBy)
+    ).toBe(true)
   })
 
-  it.each([
+  it.each<[string, CtxOptions]>([
     ['a non-owner', { ownerId: 'someone-else' }],
     ['the owner of a request that is no longer new', { status: 'processing' }],
     [
@@ -151,12 +171,12 @@ describe('updateRequestStatusService for the request owner', () => {
       { userId: '', ownerId: '' },
     ],
   ])('rejects %s', async (_, options) => {
-    const { ctx, update } = buildCtx(options as any)
+    const { ctx, update } = buildCtx(options)
 
     await expect(
       updateRequestStatusService(ctx, {
         requestId: 'request-id',
-        status: 'cancelled' as any,
+        status: 'cancelled',
       })
     ).rejects.toMatchObject({ name: 'ForbiddenError' })
     expect(update).not.toHaveBeenCalled()
@@ -169,15 +189,11 @@ describe('updateRequestStatusService for an admin', () => {
 
     const result = await updateRequestStatusService(ctx, {
       requestId: 'request-id',
-      status: 'new' as any,
+      status: 'new',
       comment: { value: 'internal note', visibleForCustomer: false },
     })
 
-    const [, saved] = update.mock.calls[0]
-    const [newStatus] = saved.refundStatusData
-    const added = newStatus.comments[newStatus.comments.length - 1]
-
-    expect(added).toMatchObject({
+    expect(lastComment(savedDocument(update))).toMatchObject({
       role: 'adminUser',
       visibleForCustomer: false,
     })
