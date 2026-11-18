@@ -1,0 +1,31 @@
+import type { ReturnRequest } from 'vtex.return-app'
+
+type RefundStatusData = ReturnRequest['refundStatusData']
+
+/**
+ * Removes what only the merchant should see: who changed each status and
+ * comments not marked as visible for the customer.
+ */
+export const hideInternalStatusData = (
+  refundStatusData: RefundStatusData | null | undefined
+) =>
+  refundStatusData?.map((statusData) => ({
+    ...statusData,
+    submittedBy: undefined,
+    comments: statusData.comments?.filter(
+      (comment) => comment.visibleForCustomer
+    ),
+  })) ?? []
+
+/** Applies hideInternalStatusData to a full return request document. */
+export const hideInternalFields = <
+  T extends { refundStatusData?: RefundStatusData | null }
+>(
+  request: T
+): T =>
+  request?.refundStatusData
+    ? ({
+        ...request,
+        refundStatusData: hideInternalStatusData(request.refundStatusData),
+      } as T)
+    : request

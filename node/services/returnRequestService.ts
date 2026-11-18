@@ -1,6 +1,8 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
 import type { ReturnRequest } from 'vtex.return-app'
 
+import { hideInternalFields } from '../utils/hideInternalStatusData'
+
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {
     clients: { returnRequest: returnRequestClient },
@@ -25,5 +27,7 @@ export const returnRequestService = async (ctx: Context, requestId: string) => {
     throw new ForbiddenError('User cannot access this request')
   }
 
-  return returnRequestResult
+  return userIsAdmin
+    ? returnRequestResult
+    : hideInternalFields(returnRequestResult as ReturnRequest)
 }

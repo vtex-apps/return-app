@@ -15,6 +15,7 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
+import { hideInternalFields } from '../utils/hideInternalStatusData'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
@@ -130,6 +131,7 @@ export const updateRequestStatusService = async (
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
   const belongsToStoreUser =
+    Boolean(userId) &&
     returnRequest.customerProfileData.userId === userId &&
     returnRequest.status === 'new'
 
@@ -175,6 +177,7 @@ export const updateRequestStatusService = async (
     comment,
     submittedBy,
     createdAt: requestDate,
+    commentRole: userIsAdmin ? 'adminUser' : 'storeUser',
   })
 
   const maxRefundableShipping =
@@ -285,5 +288,7 @@ export const updateRequestStatusService = async (
     })
   }
 
-  return { id: requestId, ...updatedRequest }
+  const response = { id: requestId, ...updatedRequest }
+
+  return userIsAdmin ? response : hideInternalFields(response)
 }

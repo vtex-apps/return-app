@@ -5,6 +5,8 @@ import type {
 } from 'vtex.return-app'
 import { ForbiddenError, UserInputError } from '@vtex/api'
 
+import { hideInternalFields } from '../utils/hideInternalStatusData'
+
 const filterDate = (date: string): string => {
   const newDate = new Date(date)
   const day = newDate.getDate()
@@ -141,7 +143,7 @@ export const returnRequestListService = async (
   const { page: currentPage, pageSize, total } = pagination
 
   return {
-    list: data,
+    list: userIsAdmin ? data : data.map(hideInternalFields),
     paging: {
       total,
       perPage: pageSize,

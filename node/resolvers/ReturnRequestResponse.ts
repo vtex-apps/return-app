@@ -1,37 +1,8 @@
 import type { ReturnRequest } from 'vtex.return-app'
 
+import { hideInternalStatusData } from '../utils/hideInternalStatusData'
+
 type VtexProduct = 'admin' | 'store' | undefined
-
-const removeSubmittedByForStoreUser = (
-  statusData: ReturnRequest['refundStatusData'][number],
-  hideInternal: boolean
-) => {
-  if (hideInternal) {
-    return {
-      ...statusData,
-      submittedBy: undefined,
-    }
-  }
-
-  return statusData
-}
-
-// This function hides the submittedBy field and removes the comments that should not be visible to the store user
-const transformStatusForStoreUser = (
-  refundStatusDataList: ReturnRequest['refundStatusData'],
-  hideInternal: boolean
-) => {
-  return (
-    refundStatusDataList?.map((statusData) => {
-      return {
-        ...removeSubmittedByForStoreUser(statusData, hideInternal),
-        comments: statusData.comments?.filter((comment) => {
-          return !hideInternal || comment.visibleForCustomer
-        }),
-      }
-    }) ?? []
-  )
-}
 
 // This resolver allows the parent one to fetch just the root fields for a ReturnRequest.
 // This stategy can save some kb when transfering data, since that in a search, we don't need all the fields.
@@ -170,23 +141,23 @@ export const ReturnRequestResponse = {
     const {
       clients: { returnRequest: returnRequestClient },
       request: { header },
-      state: { userProfile, appkey },
+      state: { userProfile },
     } = ctx
 
     const vtexProduct = header['x-vtex-product'] as VtexProduct
     // The header is set by the caller, so it cannot be the only gate:
-    // anyone who is not an admin or an appkey gets the store view.
-    const isAdminCaller = Boolean(appkey) || userProfile?.role === 'admin'
-    const hideInternal = vtexProduct === 'store' || !isAdminCaller
+    // anyone who is not an admin gets the store view. GraphQL never sets
+    // state.appkey, so appkeys are not considered here.
+    const hideInternal =
+      vtexProduct === 'store' || userProfile?.role !== 'admin'
 
     const { refundStatusData: refundStatusDataList } = refundStatusData
       ? { refundStatusData }
       : await returnRequestClient.get(id as string, ['refundStatusData'])
 
-    return transformStatusForStoreUser(
-      refundStatusDataList as ReturnRequest['refundStatusData'],
-      hideInternal
-    )
+    const list = refundStatusDataList as ReturnRequest['refundStatusData']
+
+    return hideInternal ? hideInternalStatusData(list) : list ?? []
   },
   cultureInfoData: async (
     root: ReturnRequest,
