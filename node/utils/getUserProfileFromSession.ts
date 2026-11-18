@@ -30,11 +30,18 @@ const createSessionIdentity = (sessionData: SessionData): SessionIdentity => {
   }
 }
 
+export class NoSessionCookieError extends Error {
+  constructor() {
+    super('No session cookie provided')
+    this.name = 'NoSessionCookieError'
+  }
+}
+
 export const getUserProfileFromSession = async (
   session: Session,
   sessionCookie: string | undefined
 ): Promise<SessionIdentity> => {
-  if (!sessionCookie) throw new Error('No session cookie provided')
+  if (!sessionCookie) throw new NoSessionCookieError()
 
   const { sessionData } = (await session.getSession(sessionCookie, [
     'profile.id',

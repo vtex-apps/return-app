@@ -1,5 +1,6 @@
 /* tslint:disable:max-classes-per-file */
 import {
+  InvalidSessionError,
   resolveGraphQLCaller,
   resolveRestCaller,
   verifyAdminToken,
@@ -293,10 +294,10 @@ describe('resolveGraphQLCaller', () => {
       },
     })
 
-    await expect(resolveGraphQLCaller(ctx)).rejects.toMatchObject({
-      name: 'ResolverError',
-      message: 'Invalid session data',
-    })
+    const rejection = resolveGraphQLCaller(ctx)
+
+    await expect(rejection).rejects.toBeInstanceOf(InvalidSessionError)
+    await expect(rejection).rejects.toThrow('Invalid session data')
     expect(ctx.state.userProfile).toBeUndefined()
   })
 
