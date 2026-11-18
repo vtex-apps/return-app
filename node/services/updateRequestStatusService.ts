@@ -60,6 +60,8 @@ const formatRequestToPartialUpdate = (
   return partialUpdate
 }
 
+const STORE_USER_ALLOWED_STATUS: Status[] = ['new', 'cancelled']
+
 const acceptOrDenyPackage = (refundItemList?: RefundItemInput[]) => {
   if (!refundItemList) {
     throw new UserInputError(
@@ -132,6 +134,12 @@ export const updateRequestStatusService = async (
     returnRequest.status === 'new'
 
   if (!userIsAdmin && !belongsToStoreUser) {
+    throw new ForbiddenError('Not authorized')
+  }
+
+  // The owner may only cancel the request or add a comment to it.
+  // Every other transition is a merchant decision.
+  if (!userIsAdmin && !STORE_USER_ALLOWED_STATUS.includes(status)) {
     throw new ForbiddenError('Not authorized')
   }
 
