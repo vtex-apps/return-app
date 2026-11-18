@@ -15,10 +15,32 @@ const warnAdminVerification = (ctx: Context, reason: string) => {
 const errorReason = (error: unknown) =>
   error instanceof Error ? error.message : 'unknown error'
 
+const authorizationUnavailable = () =>
+  new ResolverError('Authorization service unavailable', 503)
+
+/**
+ * A 4xx answer (except 408 and 429) rejects the credential. Anything else,
+ * such as a 5xx, a timeout or a rate limit, means the service could not
+ * answer.
+ */
+const isCredentialRejection = (error: unknown) => {
+  const status = (error as { response?: { status?: unknown } })?.response
+    ?.status
+
+  return (
+    typeof status === 'number' &&
+    status >= 400 &&
+    status < 500 &&
+    status !== 408 &&
+    status !== 429
+  )
+}
+
 /**
  * Verifies that the token is a valid VTEX ID admin token whose login is
- * granted in the current account. Fails closed: any error returns null.
- * The token account is not compared with the current account, so logins
+ * granted in the current account. A rejected or ungranted token returns
+ * null. When VTEX ID or License Manager cannot answer, it throws a
+ * retryable 503, as for appkeys. The token account is not compared with the current account, so logins
  * and appkeys granted from another account keep working.
  */
 export const verifyAdminToken = async (
@@ -54,7 +76,9 @@ export const verifyAdminToken = async (
   } catch (error) {
     warnAdminVerification(ctx, errorReason(error))
 
-    return null
+    if (isCredentialRejection(error)) return null
+
+    throw authorizationUnavailable()
   }
 }
 
@@ -82,7 +106,7 @@ export const verifyAppKey = async (
       reason: errorReason(error),
     })
 
-    throw new ResolverError('Authorization service unavailable', 503)
+    throw authorizationUnavailable()
   }
 
   if (!granted) {
