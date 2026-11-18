@@ -27,7 +27,9 @@ export const buildWhereClause = (
   if (!filter) return
 
   const returnFilters = Object.entries(filter)
-  const whereFilter = returnFilters.reduce((where, [key, value]) => {
+  const whereFilter = returnFilters.reduce((where, [key, rawValue]) => {
+    const value = typeof rawValue === 'string' ? rawValue.trim() : rawValue
+
     if (!value) return where
 
     if (where.length) {

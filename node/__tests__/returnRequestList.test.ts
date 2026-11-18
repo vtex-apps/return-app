@@ -34,6 +34,21 @@ describe('buildWhereClause', () => {
     )
   })
 
+  it('trims surrounding whitespace before validating', () => {
+    expect(
+      buildWhereClause({
+        orderId: ' 1352940506688-02 ',
+        userEmail: ' jane.doe@acme.com',
+      })
+    ).toBe(
+      'orderId=1352940506688-02 AND customerProfileData.email = "jane.doe@acme.com"'
+    )
+  })
+
+  it('ignores a value that is only whitespace', () => {
+    expect(buildWhereClause({ orderId: '   ' })).toBe('')
+  })
+
   it('rejects an unquoted value with query syntax', () => {
     expect(() => buildWhereClause({ orderId: '* OR orderId=*' })).toThrow(
       'Invalid filter value'
