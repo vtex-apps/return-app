@@ -16,9 +16,9 @@ jest.mock('@vtex/api', () => {
   }
 })
 
-const stored = () => ({
+const stored = (ownerId = 'owner-id') => ({
   id: 'request-id',
-  customerProfileData: { userId: 'owner-id' },
+  customerProfileData: { userId: ownerId },
   refundStatusData: [
     {
       status: 'new',
@@ -31,10 +31,12 @@ const stored = () => ({
   ],
 })
 
-const ctxFor = (state: unknown) =>
+const ctxFor = (state: unknown, ownerId?: string) =>
   ({
     state,
-    clients: { returnRequest: { get: jest.fn().mockResolvedValue(stored()) } },
+    clients: {
+      returnRequest: { get: jest.fn().mockResolvedValue(stored(ownerId)) },
+    },
   } as any)
 
 describe('returnRequestService', () => {
@@ -56,5 +58,14 @@ describe('returnRequestService', () => {
 
     expect(result.refundStatusData[0].submittedBy).toBe('Staff Member')
     expect(result.refundStatusData[0].comments).toHaveLength(2)
+  })
+
+  it('rejects a caller without userId on a request without userId', async () => {
+    await expect(
+      returnRequestService(
+        ctxFor({ userProfile: { userId: '', role: 'store-user' } }, ''),
+        'request-id'
+      )
+    ).rejects.toMatchObject({ name: 'ForbiddenError' })
   })
 })
