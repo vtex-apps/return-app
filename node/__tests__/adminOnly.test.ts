@@ -1,6 +1,10 @@
 /* tslint:disable:max-classes-per-file */
 import { AdminOnly } from '../directives/adminOnly'
-import { resolveGraphQLCaller } from '../utils/resolveCaller'
+import { NoSessionCookieError } from '../utils/getUserProfileFromSession'
+import {
+  InvalidSessionError,
+  resolveGraphQLCaller,
+} from '../utils/resolveCaller'
 
 jest.mock('@vtex/api', () => {
   class FakeError extends Error {
@@ -17,6 +21,7 @@ jest.mock('@vtex/api', () => {
 })
 
 jest.mock('../utils/resolveCaller', () => ({
+  ...jest.requireActual('../utils/resolveCaller'),
   resolveGraphQLCaller: jest.fn(),
 }))
 
@@ -67,23 +72,39 @@ describe('@adminOnly directive', () => {
     expect(original).toHaveBeenCalledTimes(1)
   })
 
-  it('allows an app key caller', async () => {
-    const original = jest.fn().mockResolvedValue(true)
+  it('requires an admin profile even when appkey state is present', async () => {
+    const original = jest.fn()
     const ctx: any = { state: { appkey: 'vtexappkey-acme-ABC' } }
 
-    expect(await applyDirective(original)({}, {}, ctx, {})).toBe(true)
+    await expect(applyDirective(original)({}, {}, ctx, {})).rejects.toThrow(
+      'Only admin users can perform this operation'
+    )
+    expect(original).not.toHaveBeenCalled()
   })
 
-  it('returns Forbidden when the caller cannot be resolved', async () => {
+  it.each([
+    ['there is no session cookie', () => new NoSessionCookieError()],
+    ['the session has no identity', () => new InvalidSessionError()],
+  ])('returns Forbidden when %s', async (_, makeError) => {
     const original = jest.fn()
 
-    mockedResolveCaller.mockRejectedValue(
-      new Error('No session cookie provided')
-    )
+    mockedResolveCaller.mockRejectedValue(makeError())
 
     await expect(
       applyDirective(original)({}, {}, { state: {} }, {})
     ).rejects.toThrow('Only admin users can perform this operation')
+    expect(original).not.toHaveBeenCalled()
+  })
+
+  it('propagates a session service failure instead of hiding it as Forbidden', async () => {
+    const original = jest.fn()
+    const failure = new Error('Request failed with status code 503')
+
+    mockedResolveCaller.mockRejectedValue(failure)
+
+    await expect(
+      applyDirective(original)({}, {}, { state: {} }, {})
+    ).rejects.toBe(failure)
     expect(original).not.toHaveBeenCalled()
   })
 })

@@ -92,6 +92,13 @@ export const verifyAppKey = async (
   return token
 }
 
+/** The request has a session, but no store profile and no verified admin. */
+export class InvalidSessionError extends ResolverError {
+  constructor() {
+    super('Invalid session data')
+  }
+}
+
 const inFlightResolutions = new WeakMap<Context, Promise<void>>()
 
 const resolveGraphQLCallerOnce = async (ctx: Context): Promise<void> => {
@@ -126,7 +133,7 @@ const resolveGraphQLCallerOnce = async (ctx: Context): Promise<void> => {
     return
   }
 
-  throw new ResolverError('Invalid session data')
+  throw new InvalidSessionError()
 }
 
 /**
