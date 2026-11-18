@@ -35,7 +35,7 @@ describe('buildWhereClause', () => {
         userEmail: 'jane.doe+tag@acme.com',
       })
     ).toBe(
-      'orderId=1352940506688-02 AND sequenceNumber=506689-2 AND id=3f2a9c1e-5b7d-4e1a-9c3b-1a2b3c4d5e6f AND customerProfileData.userId = "a1b2c3d4-0000-1111-2222-333344445555" AND customerProfileData.email = "jane.doe+tag@acme.com"'
+      'orderId="1352940506688-02" AND sequenceNumber=506689-2 AND id=3f2a9c1e-5b7d-4e1a-9c3b-1a2b3c4d5e6f AND customerProfileData.userId = "a1b2c3d4-0000-1111-2222-333344445555" AND customerProfileData.email = "jane.doe+tag@acme.com"'
     )
   })
 
@@ -46,7 +46,7 @@ describe('buildWhereClause', () => {
         userEmail: ' jane.doe@acme.com',
       })
     ).toBe(
-      'orderId=1352940506688-02 AND customerProfileData.email = "jane.doe@acme.com"'
+      'orderId="1352940506688-02" AND customerProfileData.email = "jane.doe@acme.com"'
     )
   })
 
@@ -54,10 +54,25 @@ describe('buildWhereClause', () => {
     expect(buildWhereClause({ orderId: '   ' })).toBe('')
   })
 
-  it('rejects an unquoted value with query syntax', () => {
-    expect(() => buildWhereClause({ orderId: '* OR orderId=*' })).toThrow(
+  it('keeps marketplace order ids with any format as one quoted value', () => {
+    expect(buildWhereClause({ orderId: 'MKP_1234.5678-01' })).toBe(
+      'orderId="MKP_1234.5678-01"'
+    )
+    expect(buildWhereClause({ orderId: '* OR id=*' })).toBe(
+      'orderId="* OR id=*"'
+    )
+  })
+
+  it('rejects quotes and backslashes in orderId', () => {
+    expect(() => buildWhereClause({ orderId: '1" OR id="x' })).toThrow(
       'Invalid filter value'
     )
+  })
+
+  it('rejects an unquoted value with query syntax', () => {
+    expect(() =>
+      buildWhereClause({ sequenceNumber: '* OR orderId=*' })
+    ).toThrow('Invalid filter value')
   })
 
   it('rejects quotes and backslashes in userEmail and userId', () => {
@@ -122,7 +137,7 @@ describe('returnRequestListService with all fields', () => {
 
     expect(status.submittedBy).toBeUndefined()
     expect(status.comments).toEqual([
-      { comment: 'visible', visibleForCustomer: true },
+      { comment: 'visible', visibleForCustomer: true, submittedBy: '' },
     ])
   })
 

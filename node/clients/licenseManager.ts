@@ -33,25 +33,26 @@ export class LicenseManager extends ExternalClient {
       const status = (error as { response?: { status?: unknown } })?.response
         ?.status
 
-      // 408 and 429 are transient: let the caller answer with a retryable
-      // error instead of "not granted".
-      const isPermanentClientError =
+      // 401 and 403 reject the app's own credential, not the login being
+      // checked. Log it and let the caller answer with a retryable error.
+      if (status === 401 || status === 403) {
+        this.context.logger.error({
+          message: 'License Manager rejected the app credential',
+          status,
+        })
+
+        throw error
+      }
+
+      // Other 4xx (except the transient 408 and 429) mean "not granted".
+      const isNotGranted =
         typeof status === 'number' &&
         status >= 400 &&
         status < 500 &&
         status !== 408 &&
         status !== 429
 
-      if (isPermanentClientError) {
-        if (status === 401 || status === 403) {
-          this.context.logger.error({
-            message: 'License Manager rejected the app credential',
-            status,
-          })
-        }
-
-        return false
-      }
+      if (isNotGranted) return false
 
       throw error
     }

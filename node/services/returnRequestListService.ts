@@ -54,6 +54,16 @@ export const buildWhereClause = (
       return where
     }
 
+    // Marketplace order ids have no fixed format: match them as one quoted
+    // value instead of applying the unquoted allowlist.
+    if (key === 'orderId') {
+      if (UNSAFE_QUOTED_VALUE.test(String(value))) throw invalidFilterValue()
+
+      where += `orderId="${value}"`
+
+      return where
+    }
+
     if (key === 'createdIn' && typeof value !== 'string') {
       where += `dateSubmitted between ${filterDate(
         value.from

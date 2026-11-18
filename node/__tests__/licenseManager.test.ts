@@ -60,12 +60,13 @@ describe('LicenseManager.isGranted', () => {
   })
 
   it.each([401, 403])(
-    'returns false and logs an error on a %i error',
+    'rejects and logs an error when the app credential gets %i',
     async (status) => {
-      const get = jest.fn().mockRejectedValue({ response: { status } })
+      const failure = { response: { status } }
+      const get = jest.fn().mockRejectedValue(failure)
       const error = jest.fn()
 
-      expect(await build(get, error).isGranted('a@b.com')).toBe(false)
+      await expect(build(get, error).isGranted('a@b.com')).rejects.toBe(failure)
       expect(error).toHaveBeenCalledWith({
         message: 'License Manager rejected the app credential',
         status,
