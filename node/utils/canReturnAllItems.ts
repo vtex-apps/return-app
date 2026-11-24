@@ -1,19 +1,15 @@
 import type { OrderDetailResponse } from '@vtex/clients'
-import type { MasterDataEntity } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
-import type {
-  ReturnRequestItemInput,
-  ReturnAppSettings,
-  ReturnRequest,
-} from 'vtex.return-app'
+import type { ReturnRequestItemInput, ReturnAppSettings } from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
+import type { ReturnRequestClient } from '../clients/returnRequest'
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'
 import type { CatalogGQL } from '../clients/catalogGQL'
 
 interface CanReturnAllItemsSetup {
   order: OrderDetailResponse
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: MasterDataEntity<ReturnRequest>
+  returnRequestClient: ReturnRequestClient
   catalogGQL: CatalogGQL
 }
 

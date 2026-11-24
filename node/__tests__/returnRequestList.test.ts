@@ -1,9 +1,8 @@
-import type { ReturnRequest } from 'vtex.return-app'
-
 import {
   buildWhereClause,
   returnRequestListService,
 } from '../services/returnRequestListService'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 // The jest 24 resolver cannot load @vtex/api (see licenseManager.test.ts).
 jest.mock('@vtex/api', () => {

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Read and write return requests with the existing `3.11.2` Master Data schema instead of a schema per app version, so return request lists are not empty after a new version is installed. The schema is created when an account does not have it.
+
+### Removed
+
+- `masterdata` builder. The app no longer creates a Master Data schema for each version.
+
 ## [3.12.0] - 2026-11-19
 
 ### Fixed

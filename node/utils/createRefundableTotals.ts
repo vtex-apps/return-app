@@ -1,5 +1,7 @@
-import type { RefundableAmountTotal, ReturnRequest } from 'vtex.return-app'
+import type { RefundableAmountTotal } from 'vtex.return-app'
 import type { ItemTotal } from '@vtex/clients'
+
+import type { ReturnRequest } from '../typings/returnRequest'
 
 export const createRefundableTotals = (
   itemsToReturn: ReturnRequest['items'],

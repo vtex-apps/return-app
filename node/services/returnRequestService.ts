@@ -1,7 +1,7 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
-import type { ReturnRequest } from 'vtex.return-app'
 
 import { hideInternalFields } from '../utils/hideInternalStatusData'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {

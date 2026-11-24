@@ -1,8 +1,9 @@
-import type { Status, Maybe, ReturnRequest, GiftCard } from 'vtex.return-app'
+import type { Status, Maybe, GiftCard } from 'vtex.return-app'
 import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 const getOneYearLaterDate = (createdAt: string) => {
   const date = new Date(createdAt)

@@ -1,6 +1,5 @@
-import type { ReturnRequest } from 'vtex.return-app'
-
 import { ReturnRequestResponse } from '../resolvers/ReturnRequestResponse'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 const refundStatusData = [
   {
