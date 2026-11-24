@@ -4,6 +4,10 @@
  * v-security made private, because Master Data rejects new schemas with
  * allowGetAll set to true. The app only creates it in an account that does
  * not have it yet.
+ *
+ * It is copied from the saved schema, not from the old masterdata/ source
+ * file: the builder stored 'v-immediate-indexing' as false and added an empty
+ * 'v-triggers', so this body matches the schema that accounts already have.
  */
 export const RETURN_REQUEST_SCHEMA_BODY = {
   $defs: {
