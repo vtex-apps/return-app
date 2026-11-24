@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Read and write return requests with the existing `3.11.2` Master Data schema instead of a schema per app version, so return request lists are not empty after a new version is installed. The schema is created when an account does not have it.
+- Make the `3.11.2` Master Data schema private (`allowGetAll: false`) when the app finds it public. Only `v-security` changes, so no reindex starts.
 
 ### Removed
 

@@ -2,7 +2,7 @@
 /**
  * Return request document stored in Master Data (entity
  * vtex_return_app_returnRequest). Generated with json-schema-to-typescript
- * from the schema in masterdata/returnRequestSchema.ts. It lives in the repo
+ * from the schema in node/masterdata/returnRequestSchema.ts. It lives in the repo
  * because the app no longer uses the masterdata builder, which used to
  * generate it.
  */
