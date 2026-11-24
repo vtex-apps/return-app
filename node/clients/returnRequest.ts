@@ -30,8 +30,15 @@ const ensuredSchemas = new Map<string, Promise<void>>()
 
 export const resetEnsuredSchemas = () => ensuredSchemas.clear()
 
-const isNotFound = (error: unknown) =>
-  (error as { response?: { status?: number } })?.response?.status === 404
+interface SchemaBody {
+  'v-security'?: { allowGetAll?: boolean; [key: string]: unknown }
+  [key: string]: unknown
+}
+
+const statusOf = (error: unknown) =>
+  (error as { response?: { status?: number } })?.response?.status
+
+const isNotFound = (error: unknown) => statusOf(error) === 404
 
 export class ReturnRequestClient extends MasterData {
   public async get<K extends keyof WithMetadata<ReturnRequest>>(
@@ -111,46 +118,98 @@ export class ReturnRequestClient extends MasterData {
   }
 
   /**
-   * Creates the pinned schema when the account does not have it, for example
-   * a new install. Accounts that ran 3.11.2 already have it, so nothing is
-   * written and no reindex starts.
+   * Makes sure the pinned schema is ready before a search or write:
+   * - creates it when the account does not have it, for example a new
+   *   install. A failure here fails the request and is retried next time;
+   * - makes it private when it still allows get-all, keeping the rest of its
+   *   body. Changing only v-security does not start a reindex. A failure here
+   *   is logged and not retried by this process;
+   * - when the check itself fails, the request goes on and the next request
+   *   checks again.
    */
   private ensureSchema(): Promise<void> {
     const { account } = this.context
     let pending = ensuredSchemas.get(account)
 
     if (!pending) {
-      pending = this.createSchemaIfMissing().catch((error) => {
-        ensuredSchemas.delete(account)
-        throw error
-      })
+      pending = this.prepareSchema()
+        .then((settled) => {
+          if (!settled) ensuredSchemas.delete(account)
+        })
+        .catch((error) => {
+          ensuredSchemas.delete(account)
+          throw error
+        })
       ensuredSchemas.set(account, pending)
     }
 
     return pending
   }
 
-  private async createSchemaIfMissing(): Promise<void> {
+  /** Returns false when the schema could not be checked. */
+  private async prepareSchema(): Promise<boolean> {
+    let schema: SchemaBody | undefined
+
     try {
-      const schema = await this.getSchema({
+      schema = await this.getSchema<SchemaBody>({
         dataEntity: RETURN_REQUEST_ENTITY,
         schema: RETURN_REQUEST_SCHEMA,
       })
-
-      if (schema) return
     } catch (error) {
-      if (!isNotFound(error)) throw error
+      if (!isNotFound(error)) {
+        this.context.logger.warn({
+          message: 'Could not check the return request schema',
+          schema: RETURN_REQUEST_SCHEMA,
+          status: statusOf(error),
+        })
+
+        return false
+      }
     }
 
-    this.context.logger.info({
-      message: 'Creating the return request schema',
-      schema: RETURN_REQUEST_SCHEMA,
-    })
+    if (!schema) {
+      this.context.logger.info({
+        message: 'Creating the return request schema',
+        schema: RETURN_REQUEST_SCHEMA,
+      })
 
-    await this.createOrUpdateSchema({
-      dataEntity: RETURN_REQUEST_ENTITY,
-      schemaName: RETURN_REQUEST_SCHEMA,
-      schemaBody: RETURN_REQUEST_SCHEMA_BODY,
-    })
+      await this.createOrUpdateSchema({
+        dataEntity: RETURN_REQUEST_ENTITY,
+        schemaName: RETURN_REQUEST_SCHEMA,
+        schemaBody: RETURN_REQUEST_SCHEMA_BODY,
+      })
+
+      return true
+    }
+
+    if (schema['v-security']?.allowGetAll === true) {
+      await this.makeSchemaPrivate(schema)
+    }
+
+    return true
+  }
+
+  private async makeSchemaPrivate(schema: SchemaBody): Promise<void> {
+    try {
+      await this.createOrUpdateSchema({
+        dataEntity: RETURN_REQUEST_ENTITY,
+        schemaName: RETURN_REQUEST_SCHEMA,
+        schemaBody: {
+          ...schema,
+          'v-security': { ...schema['v-security'], allowGetAll: false },
+        },
+      })
+
+      this.context.logger.info({
+        message: 'Made the return request schema private',
+        schema: RETURN_REQUEST_SCHEMA,
+      })
+    } catch (error) {
+      this.context.logger.warn({
+        message: 'Could not make the return request schema private',
+        schema: RETURN_REQUEST_SCHEMA,
+        status: statusOf(error),
+      })
+    }
   }
 }

@@ -52,7 +52,9 @@ const notFound = () => ({ response: { status: 404 } })
 beforeEach(() => {
   Object.values(mockMasterData).forEach((spy) => spy.mockReset())
   resetEnsuredSchemas()
-  mockMasterData.getSchema.mockResolvedValue({ properties: {} })
+  mockMasterData.getSchema.mockResolvedValue({
+    'v-security': { allowGetAll: false },
+  })
   mockMasterData.searchDocumentsWithPaginationInfo.mockResolvedValue({
     data: [],
     pagination: { total: 0, page: 1, pageSize: 25 },
@@ -142,21 +144,96 @@ describe('ReturnRequestClient', () => {
     expect(mockMasterData.getSchema).toHaveBeenCalledTimes(2)
   })
 
-  it('propagates other errors and retries the check on the next request', async () => {
-    const failure = { response: { status: 503 } }
+  it('makes an existing public schema private, keeping the rest of its body', async () => {
+    const existing = {
+      properties: { orderId: { type: 'string' } },
+      'v-indexed': ['orderId', 'customerProfileData'],
+      'v-security': { allowGetAll: true },
+    }
 
-    mockMasterData.getSchema.mockRejectedValueOnce(failure)
+    mockMasterData.getSchema.mockResolvedValue(existing)
 
     const client = new ReturnRequestClient(contextFor('acme'))
+
+    await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
+
+    expect(mockMasterData.createOrUpdateSchema).toHaveBeenCalledWith({
+      dataEntity: RETURN_REQUEST_ENTITY,
+      schemaName: RETURN_REQUEST_SCHEMA,
+      schemaBody: { ...existing, 'v-security': { allowGetAll: false } },
+    })
+    expect(
+      mockMasterData.searchDocumentsWithPaginationInfo
+    ).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not save the schema when it is already private', async () => {
+    mockMasterData.getSchema.mockResolvedValue({
+      'v-security': { allowGetAll: false },
+    })
+
+    const client = new ReturnRequestClient(contextFor('acme'))
+
+    await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
+
+    expect(mockMasterData.createOrUpdateSchema).not.toHaveBeenCalled()
+  })
+
+  it('serves the request and does not retry when making the schema private fails', async () => {
+    mockMasterData.getSchema.mockResolvedValue({
+      'v-security': { allowGetAll: true },
+    })
+    mockMasterData.createOrUpdateSchema.mockRejectedValue({
+      response: { status: 423 },
+    })
+
+    const context = contextFor('acme')
+    const client = new ReturnRequestClient(context)
+
+    await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
+    await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
+
+    expect(
+      mockMasterData.searchDocumentsWithPaginationInfo
+    ).toHaveBeenCalledTimes(2)
+    expect(mockMasterData.createOrUpdateSchema).toHaveBeenCalledTimes(1)
+    expect(context.logger.warn).toHaveBeenCalled()
+  })
+
+  it('serves the request when the schema check fails, and checks again next time', async () => {
+    mockMasterData.getSchema.mockRejectedValueOnce({
+      response: { status: 503 },
+    })
+
+    const context = contextFor('acme')
+    const client = new ReturnRequestClient(context)
+
+    await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
+    await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
+
+    expect(
+      mockMasterData.searchDocumentsWithPaginationInfo
+    ).toHaveBeenCalledTimes(2)
+    expect(mockMasterData.getSchema).toHaveBeenCalledTimes(2)
+    expect(mockMasterData.createOrUpdateSchema).not.toHaveBeenCalled()
+    expect(context.logger.warn).toHaveBeenCalled()
+  })
+
+  it('fails the request when the missing schema cannot be created, and retries next time', async () => {
+    const failure = { response: { status: 500 } }
+
+    mockMasterData.getSchema.mockRejectedValue(notFound())
+    mockMasterData.createOrUpdateSchema.mockRejectedValueOnce(failure)
+
+    const client = new ReturnRequestClient(contextFor('newaccount'))
 
     await expect(
       client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
     ).rejects.toBe(failure)
-    expect(mockMasterData.createOrUpdateSchema).not.toHaveBeenCalled()
 
     await client.searchRaw({ page: 1, pageSize: 25 }, ['id'])
 
-    expect(mockMasterData.getSchema).toHaveBeenCalledTimes(2)
+    expect(mockMasterData.createOrUpdateSchema).toHaveBeenCalledTimes(2)
     expect(
       mockMasterData.searchDocumentsWithPaginationInfo
     ).toHaveBeenCalledTimes(1)
