@@ -1,7 +1,7 @@
 /* tslint:disable:max-classes-per-file */
-import type { ReturnRequest } from 'vtex.return-app'
 
 import { returnRequestService } from '../services/returnRequestService'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 // The jest 24 resolver cannot load @vtex/api (see licenseManager.test.ts).
 jest.mock('@vtex/api', () => {

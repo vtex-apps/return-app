@@ -1,7 +1,8 @@
 /* tslint:disable:max-classes-per-file */
-import type { ReturnRequest, Status } from 'vtex.return-app'
+import type { Status } from 'vtex.return-app'
 
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 // The jest 24 resolver bundled with @vtex/test-tools cannot load @vtex/api
 // (see licenseManager.test.ts). Replace the error classes with simple fakes.

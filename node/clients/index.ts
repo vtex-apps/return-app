@@ -1,6 +1,6 @@
 import { IOClients } from '@vtex/api'
-import { vbaseFor, masterDataFor } from '@vtex/clients'
-import { ReturnAppSettings, ReturnRequest } from 'vtex.return-app'
+import { vbaseFor } from '@vtex/clients'
+import { ReturnAppSettings } from 'vtex.return-app'
 
 import { Catalog } from './catalog'
 import { OMSCustom as OMS } from './oms'
@@ -11,13 +11,9 @@ import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 import { VtexIdCredential } from './vtexIdCredential'
 import { LicenseManager } from './licenseManager'
+import { ReturnRequestClient } from './returnRequest'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
-const ReturnRequest = masterDataFor<ReturnRequest>(
-  'returnRequest',
-  undefined,
-  1
-)
 
 export class Clients extends IOClients {
   public get oms() {
@@ -37,7 +33,7 @@ export class Clients extends IOClients {
   }
 
   public get returnRequest() {
-    return this.getOrSet('returnRequest', ReturnRequest)
+    return this.getOrSet('returnRequest', ReturnRequestClient)
   }
 
   public get giftCard() {

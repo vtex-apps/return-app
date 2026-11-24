@@ -1,6 +1,5 @@
 import type {
   MutationUpdateReturnRequestStatusArgs,
-  ReturnRequest,
   Status,
   RefundItemInput,
 } from 'vtex.return-app'
@@ -19,6 +18,7 @@ import { hideInternalFields } from '../utils/hideInternalStatusData'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
 import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
 import type { StatusUpdateMailData } from '../typings/mailClient'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.

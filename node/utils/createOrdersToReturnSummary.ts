@@ -1,14 +1,13 @@
 import type { OrderDetailResponse } from '@vtex/clients'
-import type { MasterDataEntity } from '@vtex/clients/build/clients/masterData/MasterDataEntity'
 import type {
   OrderToReturnSummary,
   InvoicedItem,
   ExcludedItem,
   ProcessedItem,
   ReturnAppSettings,
-  ReturnRequest,
 } from 'vtex.return-app'
 
+import type { ReturnRequestClient } from '../clients/returnRequest'
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
@@ -16,10 +15,11 @@ import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
 import type { CatalogGQL } from '../clients/catalogGQL'
 import { handleTranlateItems } from './translateItems'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: MasterDataEntity<ReturnRequest>
+  returnRequestClient: ReturnRequestClient
   catalogGQL: CatalogGQL
 }
 

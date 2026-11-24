@@ -1,6 +1,5 @@
-import type { ReturnRequest } from 'vtex.return-app'
-
 import { hideInternalStatusData } from '../utils/hideInternalStatusData'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 type VtexProduct = 'admin' | 'store' | undefined
 

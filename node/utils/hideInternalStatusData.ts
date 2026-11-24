@@ -1,4 +1,4 @@
-import type { ReturnRequest } from 'vtex.return-app'
+import type { ReturnRequest } from '../typings/returnRequest'
 
 type RefundStatusData = ReturnRequest['refundStatusData']
 
