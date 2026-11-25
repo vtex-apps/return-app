@@ -12,6 +12,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { StatusActionMenu } from './StatusActionMenu'
+import { messageId } from '../../utils/messageId'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 
@@ -119,7 +120,7 @@ const ListTableFilter = (props: Props) => {
       <div className={`${handles.listTableFilterContainer} flex items-center`}>
         {route.domain === 'admin' ? (
           <div className="mr2">
-            <FormattedMessage id="store/return-app.return-request-list.table-data.requestId">
+            <FormattedMessage id={messageId('store/return-app.return-request-list.table-data.requestId')}>
               {(formattedMessage) => (
                 <Input
                   placeholder={formattedMessage}
@@ -135,7 +136,7 @@ const ListTableFilter = (props: Props) => {
           </div>
         ) : null}
         <div className="mh2">
-          <FormattedMessage id="store/return-app.return-request-list.table-data.sequenceNumber">
+          <FormattedMessage id={messageId('store/return-app.return-request-list.table-data.sequenceNumber')}>
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -150,7 +151,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="store/return-app.return-request-list.table-data.orderId">
+          <FormattedMessage id={messageId('store/return-app.return-request-list.table-data.orderId')}>
             {(formattedMessage) => (
               <Input
                 placeholder={formattedMessage}
@@ -165,7 +166,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="store/return-app.return-request-list.table-filters.fromDate">
+          <FormattedMessage id={messageId('store/return-app.return-request-list.table-filters.fromDate')}>
             {(formattedMessage) => (
               <DatePicker
                 maxDate={new Date()}
@@ -182,7 +183,7 @@ const ListTableFilter = (props: Props) => {
           </FormattedMessage>
         </div>
         <div className="mh2">
-          <FormattedMessage id="store/return-app.return-request-list.table-filters.toDate">
+          <FormattedMessage id={messageId('store/return-app.return-request-list.table-filters.toDate')}>
             {(formattedMessage) => (
               <DatePicker
                 maxDate={new Date()}
@@ -211,7 +212,7 @@ const ListTableFilter = (props: Props) => {
             type="submit"
             disabled={!hasSelectedFilters || loading}
           >
-            <FormattedMessage id="store/return-app.return-request-list.table-filters.apply-filters" />
+            <FormattedMessage id={messageId('store/return-app.return-request-list.table-filters.apply-filters')} />
           </Button>
         </div>
         <div className="mh2">
@@ -221,7 +222,7 @@ const ListTableFilter = (props: Props) => {
             disabled={!isFiltering || loading}
             variation="danger"
           >
-            <FormattedMessage id="store/return-app.return-request-list.table-filters.clear-filters" />
+            <FormattedMessage id={messageId('store/return-app.return-request-list.table-filters.clear-filters')} />
           </Button>
         </div>
       </div>

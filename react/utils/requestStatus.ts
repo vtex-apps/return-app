@@ -4,6 +4,7 @@ import type {
   RefundStatusComment,
 } from 'vtex.return-app'
 import { defineMessages } from 'react-intl'
+import { messageId } from '../common/utils/messageId'
 
 const statusSequence: Status[] = [
   'new',
@@ -27,29 +28,29 @@ export const statusAllowed: Record<Status, Status[]> = {
 }
 
 export const statusMessageIdAdmin = defineMessages({
-  new: { id: 'store/return-app-status.new' },
-  processing: { id: 'store/return-app-status.processing' },
-  pickedUpFromClient: { id: 'store/return-app-status.pickedup-from-client' },
-  pendingVerification: { id: 'store/return-app-status.pending-verification' },
-  packageVerified: { id: 'store/return-app-status.package-verified' },
-  amountRefunded: { id: 'store/return-app-status.refunded' },
-  denied: { id: 'store/return-app-status.denied' },
-  cancelled: { id: 'store/return-app-status.cancelled' },
+  new: { id: messageId('store/return-app-status.new') },
+  processing: { id: messageId('store/return-app-status.processing') },
+  pickedUpFromClient: { id: messageId('store/return-app-status.pickedup-from-client') },
+  pendingVerification: { id: messageId('store/return-app-status.pending-verification') },
+  packageVerified: { id: messageId('store/return-app-status.package-verified') },
+  amountRefunded: { id: messageId('store/return-app-status.refunded') },
+  denied: { id: messageId('store/return-app-status.denied') },
+  cancelled: { id: messageId('store/return-app-status.cancelled') },
 })
 
 export const timelineStatusMessageId = defineMessages({
-  new: { id: 'store/return-app-status.timeline.new' },
-  processing: { id: 'store/return-app-status.timeline.processing' },
+  new: { id: messageId('store/return-app-status.timeline.new') },
+  processing: { id: messageId('store/return-app-status.timeline.processing') },
   pickedUpFromClient: {
-    id: 'store/return-app-status.timeline.pickedup-from-client',
+    id: messageId('store/return-app-status.timeline.pickedup-from-client'),
   },
   pendingVerification: {
-    id: 'store/return-app-status.timeline.pending-verification',
+    id: messageId('store/return-app-status.timeline.pending-verification'),
   },
-  packageVerified: { id: 'store/return-app-status.timeline.package-verified' },
-  amountRefunded: { id: 'store/return-app-status.timeline.refunded' },
-  denied: { id: 'store/return-app-status.timeline.denied' },
-  cancelled: { id: 'store/return-app-status.timeline.cancelled' },
+  packageVerified: { id: messageId('store/return-app-status.timeline.package-verified') },
+  amountRefunded: { id: messageId('store/return-app-status.timeline.refunded') },
+  denied: { id: messageId('store/return-app-status.timeline.denied') },
+  cancelled: { id: messageId('store/return-app-status.timeline.cancelled') },
 })
 
 type Comments = RefundStatusComment[]

@@ -5,6 +5,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { TotalWrapper } from './TotalWrapper'
 import { TotalContainer } from './TotalContainer'
+import { messageId } from '../../../utils/messageId'
 
 const CSS_HANDLES = ['requestedValuesContainer'] as const
 
@@ -29,24 +30,24 @@ export const RequestedValues = () => {
   return (
     <div className={`${handles.requestedValuesContainer} mb5`}>
       <h3>
-        <FormattedMessage id="store/return-app.return-request-details.request-total.header" />
+        <FormattedMessage id={messageId('store/return-app.return-request-details.request-total.header')} />
       </h3>
       <TotalContainer>
         <TotalWrapper
           title={
-            <FormattedMessage id="store/return-app.return-request-details.request-total.item-tax" />
+            <FormattedMessage id={messageId('store/return-app.return-request-details.request-total.item-tax')} />
           }
           value={totalRefundableItems + totalRefundableTaxes}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="store/return-app.return-request-details.request-total.shipping" />
+            <FormattedMessage id={messageId('store/return-app.return-request-details.request-total.shipping')} />
           }
           value={totalRefundableShipping}
         />
         <TotalWrapper
           title={
-            <FormattedMessage id="store/return-app.return-request-details.request-total.total" />
+            <FormattedMessage id={messageId('store/return-app.return-request-details.request-total.total')} />
           }
           value={refundableAmount}
         />

@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
+import { messageId } from '../../utils/messageId'
 
 const CSS_HANDLES = ['commonPickupContainer'] as const
 
@@ -19,7 +20,7 @@ export const PickupAddress = () => {
   } = data
 
   const pickupAddressMessageRoute =
-    'store/return-app.return-request-details.pickup-address'
+    messageId('store/return-app.return-request-details.pickup-address')
 
   return (
     <section

@@ -8,6 +8,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import { defaultReturnConditionsMessages } from '../../../utils/defaultReturnConditionsMessages'
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
+import { messageId } from '../../../utils/messageId'
 
 const SpanChunk = (chunks: ReactElement) => <span>{chunks}</span>
 
@@ -82,7 +83,7 @@ export const ItemDetailsCard = ({
           {!refId ? null : (
             <div className={`${handles.productRefWrapper} mb2`}>
               <FormattedMessage
-                id="store/return-app.return-request-details.table.product-info.ref-id"
+                id={messageId('store/return-app.return-request-details.table.product-info.ref-id')}
                 values={{
                   refId,
                   b: SpanChunk,
@@ -93,7 +94,7 @@ export const ItemDetailsCard = ({
 
           <div className={`${handles.productReasonWrapper} mb2`}>
             <FormattedMessage
-              id="store/return-app.return-request-details.table.product-info.reason"
+              id={messageId('store/return-app.return-request-details.table.product-info.reason')}
               values={{
                 reason: returnReason.otherReason ?? returnReason.reason,
                 b: SpanChunk,
@@ -104,7 +105,7 @@ export const ItemDetailsCard = ({
           {condition === 'unspecified' ? null : (
             <div className={`${handles.productConditionWrapper} mb2`}>
               <FormattedMessage
-                id="store/return-app.return-request-details.table.product-info.condition"
+                id={messageId('store/return-app.return-request-details.table.product-info.condition')}
                 values={{
                   condition: formatMessage(
                     defaultReturnConditionsMessages[condition]
@@ -118,7 +119,7 @@ export const ItemDetailsCard = ({
           {!sellerName ? null : (
             <div className={`${handles.productSellerWrapper} mb2`}>
               <FormattedMessage
-                id="store/return-app.return-request-details.table.product-info.sold-by"
+                id={messageId('store/return-app.return-request-details.table.product-info.sold-by')}
                 values={{
                   seller: sellerName,
                   b: SpanChunk,
@@ -129,7 +130,7 @@ export const ItemDetailsCard = ({
 
           <div className={`${handles.productQuantityWrapper} mb2`}>
             <span className={`${handles.productKey} mr2`}>
-              <FormattedMessage id="store/return-app.return-request-details.table.header.quantity" />
+              <FormattedMessage id={messageId('store/return-app.return-request-details.table.header.quantity')} />
               :
             </span>
             <span className={`${handles.productValue}`}>{quantity}</span>
@@ -137,7 +138,7 @@ export const ItemDetailsCard = ({
 
           <div className={`${handles.productSellingPriceWrapper} mb2`}>
             <span className={`${handles.productKey} mr2`}>
-              <FormattedMessage id="store/return-app.return-request-details.table.header.unit-price" />
+              <FormattedMessage id={messageId('store/return-app.return-request-details.table.header.unit-price')} />
               :
             </span>
             <span className={`${handles.productValue}`}>
@@ -151,7 +152,7 @@ export const ItemDetailsCard = ({
 
           <div className={`${handles.productTaxWrapper} mb2`}>
             <span className={`${handles.productKey} mr2`}>
-              <FormattedMessage id="store/return-app.return-request-details.table.header.tax" />
+              <FormattedMessage id={messageId('store/return-app.return-request-details.table.header.tax')} />
               :
             </span>
 
@@ -166,7 +167,7 @@ export const ItemDetailsCard = ({
 
           <div className={`${handles.productTotalWrapper}`}>
             <span className={`${handles.productKey} mr2`}>
-              <FormattedMessage id="store/return-app.return-request-details.table.header.total-price" />
+              <FormattedMessage id={messageId('store/return-app.return-request-details.table.header.total-price')} />
               :
             </span>
 

@@ -5,6 +5,7 @@ import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 import { renderStatus } from '../RenderStatus'
+import { messageId } from '../../utils/messageId'
 
 const CSS_HANDLES = ['currentRequestStatusContainer'] as const
 const renderChunks = (chunks: ReactElement) => <b>{chunks}</b>
@@ -22,14 +23,14 @@ export const CurrentRequestStatus = () => {
     <div className={`${handles.currentRequestStatusContainer} mv4`}>
       <div className="mb4">
         <FormattedMessage
-          id="store/return-app.return-request-details.current-status.request-id"
+          id={messageId('store/return-app.return-request-details.current-status.request-id')}
           values={{ id, b: renderChunks }}
         />
       </div>
       <div className="flex">
         <span className="mr2">
           <FormattedMessage
-            id="store/return-app.return-request-details.current-status.status"
+            id={messageId('store/return-app.return-request-details.current-status.status')}
             values={{
               b: renderChunks,
             }}

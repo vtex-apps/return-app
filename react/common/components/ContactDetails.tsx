@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnDetails } from '../hooks/useReturnDetails'
+import { messageId } from '../utils/messageId'
 
 const CSS_HANDLES = ['contactDetailsCommonContainer'] as const
 
@@ -20,7 +21,7 @@ export const ContactDetails = () => {
   } = data
 
   const messagesRoute =
-    'store/return-app.return-request-details.contact-details'
+    messageId('store/return-app.return-request-details.contact-details')
 
   return (
     <section

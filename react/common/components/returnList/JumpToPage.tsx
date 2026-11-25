@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, Button } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
+import { messageId } from '../../utils/messageId'
 
 const CSS_HANDLES = ['jumpToPageContainer'] as const
 
@@ -46,7 +47,7 @@ const JumpToPage = (props: Props) => {
       >
         <div className="mr3">
           <span className="c-muted-2 t-small">
-            <FormattedMessage id="store/return-app.return-request-list.table-jumpToPage.pageText" />{' '}
+            <FormattedMessage id={messageId('store/return-app.return-request-list.table-jumpToPage.pageText')} />{' '}
             {`${currentPage} - ${maxPage}`}
           </span>
         </div>
@@ -69,7 +70,7 @@ const JumpToPage = (props: Props) => {
             onClick={handleSubmit}
             disabled={!desiredPage || !canSubmit}
           >
-            <FormattedMessage id="store/return-app.return-request-list.table-jumpToPage.cta" />
+            <FormattedMessage id={messageId('store/return-app.return-request-list.table-jumpToPage.cta')} />
           </Button>
         </div>
       </div>

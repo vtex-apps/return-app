@@ -10,6 +10,7 @@ import JumpToPage from './JumpToPage'
 import ListTableFilter from './ListTableFilter'
 import MobileList from './MobileList'
 import { useReturnRequestList } from '../../../hooks/useReturnRequestList'
+import { messageId } from '../../utils/messageId'
 
 const CSS_HANDLES = [
   'listTableContainer',
@@ -141,10 +142,10 @@ const ListTable = () => {
     return (
       <EmptyState
         title={
-          <FormattedMessage id="store/return-app.return-request-list.error.title" />
+          <FormattedMessage id={messageId('store/return-app.return-request-list.error.title')} />
         }
       >
-        <FormattedMessage id="store/return-app.return-request-list.error.description" />
+        <FormattedMessage id={messageId('store/return-app.return-request-list.error.description')} />
       </EmptyState>
     )
   }
@@ -176,17 +177,17 @@ const ListTable = () => {
           loading={loading}
           items={list}
           emptyStateLabel={
-            <FormattedMessage id="store/return-app.return-request-list.table.emptyState" />
+            <FormattedMessage id={messageId('store/return-app.return-request-list.table.emptyState')} />
           }
           emptyStateChildren={
             <p>
-              <FormattedMessage id="store/return-app.return-request-list.table.emptyState-children" />
+              <FormattedMessage id={messageId('store/return-app.return-request-list.table.emptyState-children')} />
             </p>
           }
           schema={returnsListSchema}
           pagination={{
             textOf: (
-              <FormattedMessage id="store/return-app.return-request-list.table-pagination.textOf" />
+              <FormattedMessage id={messageId('store/return-app.return-request-list.table-pagination.textOf')} />
             ),
             onNextClick: handleNextPage,
             onPrevClick: handlePrevPage,
